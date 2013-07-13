@@ -3,6 +3,6 @@
     "description": "D language utility library",
     "authors": ["Timur Gafarov"],
     "homepage": "http://github.com/gecko0307/dlib",
-    "license": "Boost"
+    "license": "Boost",
     "sourcePaths": ["dlib"],
 }
