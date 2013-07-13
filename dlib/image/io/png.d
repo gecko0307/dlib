@@ -153,7 +153,7 @@ SuperImage loadPNG(string filename)
     PNGHeader readHeader(ref PNGChunk chunk)
     {
         PNGHeader hdr;
-        hdr.bytes = chunk.data;
+        hdr.bytes[] = chunk.data[];
         hdr.width = bigEndian(hdr.width);
         hdr.height = bigEndian(hdr.height);
         version(PNGDebug)
