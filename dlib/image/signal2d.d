@@ -159,7 +159,7 @@ class Signal2D
         return res;
     }
 	
-	Signal2D divide(Signal2D img)
+    Signal2D divide(Signal2D img)
     {
         assert(img.width == width && img.height == height);
         
@@ -168,7 +168,10 @@ class Signal2D
         
         foreach(i, v; data)
         {
-            res.data[i] = v / img.data[i];
+            if (img.data[i].re == 0.0f)
+                res.data[i] = v;
+            else
+                res.data[i] = v / img.data[i];
         }
         
         return res;
