@@ -545,16 +545,16 @@ struct Vector(T, int size)
             {
                 case 'w', 'a', 'q': 
                     if (size < 4) return false;
-                    break;
+                    else break;
                 case 'z', 'b', 'p': 
                     if (size < 3) return false;
-                    break;
+                    else break;
                 case 'y', 'g', 't': 
                     if (size < 2) return false;
-                    break;
+                    else break;
                 case 'x', 'r', 's': 
                     if (size < 1) return false;
-                    break;
+                    else break;
                 default:
                     return false;
             }
