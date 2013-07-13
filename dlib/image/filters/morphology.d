@@ -90,14 +90,16 @@ body
 
             auto pix = img[ix, iy];
 
+			auto fpix = ColorRGBAf(pix);
+			auto fresc = ColorRGBAf(resc);
             static if (op == MorphOperation.Dilate)
             {
-                if (ColorRGBAf(pix) > ColorRGBAf(resc)) 
+                if (fpix > fresc)
                     resc = pix;
             }
             static if (op == MorphOperation.Erode)
             {
-                if (ColorRGBAf(pix) < ColorRGBAf(resc)) 
+                if (fpix < fresc) 
                     resc = pix;
             }
         }

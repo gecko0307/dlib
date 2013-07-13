@@ -158,6 +158,21 @@ class Signal2D
         
         return res;
     }
+	
+	Signal2D divide(Signal2D img)
+    {
+        assert(img.width == width && img.height == height);
+        
+        Signal2D res = new Signal2D(width, height);
+        res.domain = domain;
+        
+        foreach(i, v; data)
+        {
+            res.data[i] = v / img.data[i];
+        }
+        
+        return res;
+    }
     
     Complex!(float) opIndex(int x, int y)
     {
