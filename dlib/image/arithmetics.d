@@ -42,7 +42,7 @@ in
 }
 body
 {
-    auto img = a.dup();
+    auto img = a.dup;
 
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
@@ -50,7 +50,7 @@ body
         ColorRGBAf acol = ColorRGBAf(a[x, y]);
         ColorRGBAf bcol = ColorRGBAf(b[x, y]);
         ColorRGBAf col = acol + (bcol * t);
-        img[x, y] = col.convert(8);
+        img[x, y] = col.convert(img.bitDepth);
     }
 
     return img;
@@ -64,7 +64,7 @@ in
 }
 body
 {
-    auto img = a.dup();
+    auto img = a.dup;
 
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
@@ -72,7 +72,7 @@ body
         ColorRGBAf acol = ColorRGBAf(a[x, y]);
         ColorRGBAf bcol = ColorRGBAf(b[x, y]);
         ColorRGBAf col = acol - (bcol * t);
-        img[x, y] = col.convert(8);
+        img[x, y] = col.convert(img.bitDepth);
     }
 
     return img;
@@ -86,7 +86,7 @@ in
 }
 body
 {
-    auto img = a.dup();
+    auto img = a.dup;
 
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
@@ -94,7 +94,7 @@ body
         ColorRGBAf acol = ColorRGBAf(a[x, y]);
         ColorRGBAf bcol = ColorRGBAf(b[x, y]);
         ColorRGBAf col = acol * (bcol * t);
-        img[x, y] = col.convert(8);
+        img[x, y] = col.convert(img.bitDepth);
     }
 
     return img;
@@ -108,7 +108,7 @@ in
 }
 body
 {
-    auto img = a.dup();
+    auto img = a.dup;
 
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
@@ -116,7 +116,7 @@ body
         ColorRGBAf acol = ColorRGBAf(a[x, y]);
         ColorRGBAf bcol = ColorRGBAf(b[x, y]);
         ColorRGBAf col = acol / (bcol * t);
-        img[x, y] = col.convert(8);
+        img[x, y] = col.convert(img.bitDepth);
     }
 
     return img;
@@ -124,7 +124,7 @@ body
 
 SuperImage invert(SuperImage a)
 {
-    auto img = a.dup();
+    auto img = a.dup;
 
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
@@ -134,3 +134,4 @@ SuperImage invert(SuperImage a)
 
     return img;
 }
+

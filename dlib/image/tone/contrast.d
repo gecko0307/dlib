@@ -42,7 +42,7 @@ enum ContrastMethod
 
 SuperImage contrast(SuperImage a, float k, ContrastMethod method = ContrastMethod.AverageGray)
 {
-    SuperImage img = a.dup();
+    SuperImage img = a.dup;
     ColorRGBAf aver = ColorRGBAf(0.0f, 0.0f, 0.0f);
 
     if (method == ContrastMethod.AverageGray)
@@ -56,6 +56,7 @@ SuperImage contrast(SuperImage a, float k, ContrastMethod method = ContrastMetho
         {
             aver += ColorRGBAf(a[x, y]);
         }
+
         aver /= (img.height * img.width);
     }
 
@@ -64,8 +65,9 @@ SuperImage contrast(SuperImage a, float k, ContrastMethod method = ContrastMetho
     {
         auto col = ColorRGBAf(a[x, y]);
         col = (k * (col - aver) + aver);
-        img[x, y] = col.convert(8);
+        img[x, y] = col.convert(img.bitDepth);
     }
 
     return img;
 }
+
