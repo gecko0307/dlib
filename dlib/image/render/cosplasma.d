@@ -35,21 +35,21 @@ private
     import dlib.image.color;
 }
 
-void renderCosPlasma(SuperImage img, float factor)
+SuperImage renderCosPlasma(SuperImage img, float factor)
 in
 {
     assert (img.data.length);
 }
 body
 {
-    ColorRGBA color;
-    color.a = 255;
-
     foreach (y; 0..img.height)
     foreach (x; 0..img.width)
     {
-        ubyte value = cast(ubyte)(127 + 63.5 * cos(x * factor) + 63.5 * cos(y * factor));
-        color.r = color.g = color.b = value;
-        img[x, y] = color;
+        float value = 0.5f + 0.25f * cos(x * factor) + 0.25f * cos(y * factor);
+        auto col = ColorRGBAf(value, value, value);
+        img[x, y] = col.convert(img.bitDepth);
     }
+
+    return img;
 }
+
