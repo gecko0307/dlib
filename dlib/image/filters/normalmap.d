@@ -42,7 +42,7 @@ private
  * TODO: optionally transfer height data to alpha channel
  */
 SuperImage heightToNormal(
-    SuperImage img, 
+    SuperImage img,
     Channel channel = Channel.R, 
     float strength = 2.0f)
 in
@@ -51,7 +51,10 @@ in
 }
 body
 {
-    ImageRGBA8 res = new ImageRGBA8(img.width, img.height);
+    auto res = img.dup;
+
+    if (img.channels == 1)
+        channel = Channel.R;
     
     float[8] sobelTaps;
     
@@ -91,8 +94,9 @@ body
         col.a = 1.0f;
         
         // write result
-        res[x, y] = col.convert(8);
+        res[x, y] = col.convert(img.bitDepth);
     }
     
     return res;
 }
+
