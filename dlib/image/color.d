@@ -102,10 +102,10 @@ struct ColorRGBAf
     {
         float maxv = (2 ^^ bitDepth) - 1;
         return ColorRGBA(
-            cast(ubyte)(r.clamp(0.0f, 1.0f) * maxv),
-            cast(ubyte)(g.clamp(0.0f, 1.0f) * maxv),
-            cast(ubyte)(b.clamp(0.0f, 1.0f) * maxv),
-            cast(ubyte)(a.clamp(0.0f, 1.0f) * maxv)
+            cast(ushort)(r.clamp(0.0f, 1.0f) * maxv),
+            cast(ushort)(g.clamp(0.0f, 1.0f) * maxv),
+            cast(ushort)(b.clamp(0.0f, 1.0f) * maxv),
+            cast(ushort)(a.clamp(0.0f, 1.0f) * maxv)
         );
     }
     
@@ -124,3 +124,4 @@ ColorRGBAf packNormal(Vector3f n)
 {
     return ColorRGBAf((n + 1.0f) * 0.5f);
 }
+
