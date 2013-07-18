@@ -61,14 +61,14 @@ body
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
     {       
-        sobelTaps[0] = ColorRGBAf(img[x-1, y-1])[channel];
-        sobelTaps[1] = ColorRGBAf(img[x,   y-1])[channel];
-        sobelTaps[2] = ColorRGBAf(img[x+1, y-1])[channel];
-        sobelTaps[3] = ColorRGBAf(img[x-1, y+1])[channel];
-        sobelTaps[4] = ColorRGBAf(img[x,   y+1])[channel];
-        sobelTaps[5] = ColorRGBAf(img[x+1, y+1])[channel];
-        sobelTaps[6] = ColorRGBAf(img[x-1, y  ])[channel];
-        sobelTaps[7] = ColorRGBAf(img[x+1, y  ])[channel];
+        sobelTaps[0] = Color4f(img[x-1, y-1])[channel];
+        sobelTaps[1] = Color4f(img[x,   y-1])[channel];
+        sobelTaps[2] = Color4f(img[x+1, y-1])[channel];
+        sobelTaps[3] = Color4f(img[x-1, y+1])[channel];
+        sobelTaps[4] = Color4f(img[x,   y+1])[channel];
+        sobelTaps[5] = Color4f(img[x+1, y+1])[channel];
+        sobelTaps[6] = Color4f(img[x-1, y  ])[channel];
+        sobelTaps[7] = Color4f(img[x+1, y  ])[channel];
             
         float dx, dy;
         
@@ -90,7 +90,7 @@ body
         
         // pack normal into floating-point RGBA
         Vector3f normal = Vector3f(-dx, -dy, 1.0f / strength);
-        ColorRGBAf col = packNormal(normal);
+        Color4f col = packNormal(normal);
         col.a = 1.0f;
         
         // write result

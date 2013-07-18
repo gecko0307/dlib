@@ -65,7 +65,7 @@ class Signal2D
         foreach(y; 0..height)
         foreach(x; 0..width)
         {
-            auto col = ColorRGBAf(img[x, y]);
+            auto col = Color4f(img[x, y]);
             size_t index = (y * width + x);
             data[index].re = col.vec[channel];
             data[index].im = 0.0f;
@@ -100,7 +100,7 @@ class Signal2D
         {
             size_t index = (y * width + x);
             float m = fpImage[index];
-            auto col = ColorRGBAf(m, m, m);
+            auto col = Color4f(m, m, m);
             img[x, y] = col.convert(8);
         }
         

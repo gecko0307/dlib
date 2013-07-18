@@ -149,8 +149,8 @@ ImageRGB8 composeRGB(
     {
         size_t index = (y * img.width + x);
         Vector3f m = fpImage[index];
-        auto col = ColorRGBAf(m);
-        img[x, y] = col.convert(8);
+        //auto col = Color4f(m);
+        img[x, y] = Color4f(m).convert(8);
     }
         
     return img;

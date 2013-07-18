@@ -55,8 +55,6 @@ body
 
     uint kw = 3, kh = 3;
 
-    float pixelPersentage = 1.0f / cast(float)(res.width * res.height);
-
     ushort maxChV = cast(ushort)((2 ^^ img.bitDepth) - 1);
 
     foreach(y; 0..img.height)
@@ -66,11 +64,11 @@ body
 
         static if (op == MorphOperation.Dilate)
         {
-            ColorRGBA resc = ColorRGBA(0, 0, 0, maxChV);
+            Color4 resc = Color4(0, 0, 0, maxChV);
         }
         static if (op == MorphOperation.Erode)
         {
-            ColorRGBA resc = img[x, y];
+            Color4 resc = img[x, y];
         }
 
         foreach(ky; 0..kh)
@@ -90,8 +88,9 @@ body
 
             auto pix = img[ix, iy];
 
-			auto fpix = ColorRGBAf(pix);
-			auto fresc = ColorRGBAf(resc);
+            auto fpix = Color4f(pix);
+            auto fresc = Color4f(resc);
+
             static if (op == MorphOperation.Dilate)
             {
                 if (fpix > fresc)
@@ -104,7 +103,7 @@ body
             }
         }
 
-        res[x, y] = ColorRGBA(resc.r, resc.g, resc.b, alpha);
+        res[x, y] = Color4(resc.r, resc.g, resc.b, alpha);
     }
 
     return res;
@@ -120,3 +119,4 @@ enum gradient = (SuperImage img) => subtract(img.dilate, img.erode);
 
 enum topHatWhite = (SuperImage img) => subtract(img, img.open);
 enum topHatBlack = (SuperImage img) => subtract(img, img.close);
+

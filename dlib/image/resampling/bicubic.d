@@ -78,7 +78,7 @@ body
             int oy1 = cast(int)oy;
             float dy = oy - oy1;
 
-            ColorRGBAf colSum;
+            Color4f colSum;
 
             foreach(kx; -1..3)
             {
@@ -94,7 +94,7 @@ body
                     if (iy < 0) iy = 0;
                     if (iy >= img.height) iy = img.height - 1;
 
-                    auto col = ColorRGBAf(img[ix, iy]);
+                    auto col = Color4f(img[ix, iy]);
 
                     float k1 = bicubic(dy - cast(float)ky);
                     float k2 = k1 * bicubic(cast(float)kx - dx);
@@ -109,3 +109,4 @@ body
 
     return res;
 }
+

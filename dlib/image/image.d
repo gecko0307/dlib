@@ -59,8 +59,8 @@ interface SuperImage
 
     @property SuperImage dup();
 
-    ColorRGBA opIndex(int x, int y);
-    ColorRGBA opIndexAssign(ColorRGBA c, int x, int y);
+    Color4 opIndex(int x, int y);
+    Color4 opIndexAssign(Color4 c, int x, int y);
 
     SuperImage createSameFormat(uint w, uint h);
 }
@@ -139,7 +139,7 @@ class Image(PixelFormat fmt): SuperImage
         _data = new ubyte[_width * _height * _pixelSize];
     }
 
-    ColorRGBA opIndex(int x, int y)
+    Color4 opIndex(int x, int y)
     {
         while(x >= width) x = width-1;
         while(y >= height) y = height-1;
@@ -151,38 +151,38 @@ class Image(PixelFormat fmt): SuperImage
         static if (fmt == PixelFormat.L8)
         {
             auto v = _data[index];
-            return ColorRGBA(v, v, v);
+            return Color4(v, v, v);
         }
         else if (fmt == PixelFormat.LA8)
         {
             auto v = _data[index];
-            return ColorRGBA(v, v, v, data[index+1]);
+            return Color4(v, v, v, data[index+1]);
         }
         else if (fmt == PixelFormat.RGB8)
         {
-            return ColorRGBA(_data[index], _data[index+1], _data[index+2]);
+            return Color4(_data[index], _data[index+1], _data[index+2]);
         }
         else if (fmt == PixelFormat.RGBA8)
         {
-            return ColorRGBA(_data[index], _data[index+1], _data[index+2], _data[index+3]);
+            return Color4(_data[index], _data[index+1], _data[index+2], _data[index+3]);
         }
         else if (fmt == PixelFormat.L16)
         {
             ushort v = _data[index] << 8 | _data[index+1];
-            return ColorRGBA(v, v, v);
+            return Color4(v, v, v);
         }
         else if (fmt == PixelFormat.LA16)
         {
             ushort v = _data[index]   << 8 | _data[index+1];
             ushort a = _data[index+2] << 8 | _data[index+3];
-            return ColorRGBA(v, v, v, a);
+            return Color4(v, v, v, a);
         }
         else if (fmt == PixelFormat.RGB16)
         {
             ushort r = _data[index]   << 8 | _data[index+1];
             ushort g = _data[index+2] << 8 | _data[index+3];
             ushort b = _data[index+4] << 8 | _data[index+5];
-            return ColorRGBA(r, g, b);
+            return Color4(r, g, b);
         }
         else if (fmt == PixelFormat.RGBA16)
         {
@@ -190,7 +190,7 @@ class Image(PixelFormat fmt): SuperImage
             ushort g = _data[index+2] << 8 | _data[index+3];
             ushort b = _data[index+4] << 8 | _data[index+5];
             ushort a = _data[index+6] << 8 | _data[index+7];
-            return ColorRGBA(r, g, b, a);
+            return Color4(r, g, b, a);
         }
         else
         {
@@ -198,7 +198,7 @@ class Image(PixelFormat fmt): SuperImage
         }
     }
 
-    ColorRGBA opIndexAssign(ColorRGBA c, int x, int y)
+    Color4 opIndexAssign(Color4 c, int x, int y)
     {
         while(x >= width) x = width-1;
         while(y >= height) y = height-1;

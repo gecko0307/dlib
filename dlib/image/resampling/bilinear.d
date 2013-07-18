@@ -50,8 +50,8 @@ body
     int floor_x, floor_y, ceil_x, ceil_y;
     float fraction_x, fraction_y, one_minus_x, one_minus_y;
 
-    ColorRGBAf c1, c2, c3, c4;
-    ColorRGBAf col;
+    Color4f c1, c2, c3, c4;
+    Color4f col;
     float b1, b2;
 
     foreach(y; 0..res.height)
@@ -73,10 +73,10 @@ body
         one_minus_x = 1.0f - fraction_x;
         one_minus_y = 1.0f - fraction_y;
 
-        c1 = ColorRGBAf(img[floor_x, floor_y]);
-        c2 = ColorRGBAf(img[ceil_x,  floor_y]);
-        c3 = ColorRGBAf(img[floor_x, ceil_y]);
-        c4 = ColorRGBAf(img[ceil_x,  ceil_y]);
+        c1 = Color4f(img[floor_x, floor_y]);
+        c2 = Color4f(img[ceil_x,  floor_y]);
+        c3 = Color4f(img[floor_x, ceil_y]);
+        c4 = Color4f(img[ceil_x,  ceil_y]);
 
         // Red
         b1 = one_minus_x * c1.r + fraction_x * c2.r;
@@ -103,3 +103,4 @@ body
 
     return res;
 }
+

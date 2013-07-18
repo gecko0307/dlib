@@ -47,9 +47,9 @@ body
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
     {
-        ColorRGBAf acol = ColorRGBAf(a[x, y]);
-        ColorRGBAf bcol = ColorRGBAf(b[x, y]);
-        ColorRGBAf col = acol + (bcol * t);
+        Color4f acol = Color4f(a[x, y]);
+        Color4f bcol = Color4f(b[x, y]);
+        Color4f col  = acol + (bcol * t);
         img[x, y] = col.convert(img.bitDepth);
     }
 
@@ -69,9 +69,9 @@ body
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
     {
-        ColorRGBAf acol = ColorRGBAf(a[x, y]);
-        ColorRGBAf bcol = ColorRGBAf(b[x, y]);
-        ColorRGBAf col = acol - (bcol * t);
+        Color4f acol = Color4f(a[x, y]);
+        Color4f bcol = Color4f(b[x, y]);
+        Color4f col  = acol - (bcol * t);
         img[x, y] = col.convert(img.bitDepth);
     }
 
@@ -91,9 +91,9 @@ body
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
     {
-        ColorRGBAf acol = ColorRGBAf(a[x, y]);
-        ColorRGBAf bcol = ColorRGBAf(b[x, y]);
-        ColorRGBAf col = acol * (bcol * t);
+        Color4f acol = Color4f(a[x, y]);
+        Color4f bcol = Color4f(b[x, y]);
+        Color4f col  = acol * (bcol * t);
         img[x, y] = col.convert(img.bitDepth);
     }
 
@@ -113,9 +113,9 @@ body
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
     {
-        ColorRGBAf acol = ColorRGBAf(a[x, y]);
-        ColorRGBAf bcol = ColorRGBAf(b[x, y]);
-        ColorRGBAf col = acol / (bcol * t);
+        Color4f acol = Color4f(a[x, y]);
+        Color4f bcol = Color4f(b[x, y]);
+        Color4f col  = acol / (bcol * t);
         img[x, y] = col.convert(img.bitDepth);
     }
 

@@ -41,9 +41,9 @@ body
     foreach (y; 0..src.height) 
     foreach (x; 0..src.width)
     {
-        ColorRGBAf total = ColorRGBAf(0.0f, 0.0f, 0.0f, 1.0f);
+        Color4f total = Color4f(0.0f, 0.0f, 0.0f, 1.0f);
         for (int kx = -radius; kx <= radius; ++kx)
-             total += ColorRGBAf(src[x + kx, y], src.bitDepth);
+             total += Color4f(src[x + kx, y], src.bitDepth);
         total /= (radius * 2.0f + 1.0f);
         dest[x, y] = total.convert(src.bitDepth);
     }
@@ -57,9 +57,9 @@ body
     foreach (y; 0..src.height) 
     foreach (x; 0..src.width)
     {
-        ColorRGBAf total = ColorRGBAf(0.0f, 0.0f, 0.0f, 1.0f);
+        Color4f total = Color4f(0.0f, 0.0f, 0.0f, 1.0f);
         for (int ky = -radius; ky <= radius; ++ky)
-             total += ColorRGBAf(src[x, y + ky], src.bitDepth);
+             total += Color4f(src[x, y + ky], src.bitDepth);
         total /= (radius * 2.0f + 1.0f);
         dest[x, y] = total.convert(src.bitDepth);
     }
@@ -77,3 +77,4 @@ body
 
     return output;
 }
+
