@@ -42,23 +42,24 @@ enum Channel
     A = 3
 }
 
-alias Vector!(ushort, 4) ColorRGBA;
+alias Vector!(ushort, 4) Color4;
+alias Color4 ColorRGBA;
 
-ColorRGBA invert(ColorRGBA c)
+Color4 invert(Color4 c)
 {
-    return ColorRGBA(
+    return Color4(
         cast(ushort)(255 - c.r), 
         cast(ushort)(255 - c.g), 
         cast(ushort)(255 - c.b), 
         c.a);
 }
 
-struct ColorRGBAf
+struct Color4f
 {
     Vector4f vec;
     alias vec this;
     
-    this(ColorRGBA c, uint bitDepth = 8)
+    this(Color4 c, uint bitDepth = 8)
     {
         float maxv = (2 ^^ bitDepth) - 1;
         vec.r = c.r / maxv;
@@ -67,7 +68,7 @@ struct ColorRGBAf
         vec.a = c.a / maxv;
     }
     
-    this(ColorRGBAf c)
+    this(Color4f c)
     {
         vec = c.vec;
     }
@@ -79,29 +80,23 @@ struct ColorRGBAf
     
     this(Vector3f v)
     {
-        vec.r = v.x;
-        vec.g = v.y;
-        vec.b = v.z;
-        vec.a = 1.0f;
+        vec = Vector4f(v.x, v.y, v.z, 1.0f);
     }
     
     this(float cr, float cg, float cb, float ca = 1.0f)
     {
-        vec.r = cr;
-        vec.g = cg;
-        vec.b = cb;
-        vec.a = ca;
+        vec = Vector4f(cr, cg, cb, ca);
     }
     
-    static ColorRGBAf opCall()
+    static Color4f opCall()
     {
-        return ColorRGBAf(0.0f, 0.0f, 0.0f, 0.0f);
+        return Color4f(0.0f, 0.0f, 0.0f, 0.0f);
     }
 
-    ColorRGBA convert(int bitDepth)
+    Color4 convert(int bitDepth)
     {
         float maxv = (2 ^^ bitDepth) - 1;
-        return ColorRGBA(
+        return Color4(
             cast(ushort)(r.clamp(0.0f, 1.0f) * maxv),
             cast(ushort)(g.clamp(0.0f, 1.0f) * maxv),
             cast(ushort)(b.clamp(0.0f, 1.0f) * maxv),
@@ -109,19 +104,25 @@ struct ColorRGBAf
         );
     }
     
-    int opCmp(ref const(ColorRGBAf) c) const
+    int opCmp(ref const(Color4f) c) const
     {
         return cast(int)((luminance() - c.luminance()) * 100);
     }
 
     float luminance() const
     {
-        return (vec.arrayof[0] * 0.3f + vec.arrayof[1] * 0.59f + vec.arrayof[2] * 0.11f);
+        return (
+            vec.arrayof[0] * 0.3f + 
+            vec.arrayof[1] * 0.59f + 
+            vec.arrayof[2] * 0.11f
+        );
     }
 }
 
-ColorRGBAf packNormal(Vector3f n)
+Color4f packNormal(Vector3f n)
 {
-    return ColorRGBAf((n + 1.0f) * 0.5f);
+    return Color4f((n + 1.0f) * 0.5f);
 }
+
+alias Color4f ColorRGBAf;
 
