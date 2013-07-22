@@ -35,6 +35,7 @@ private
     import std.range;
     import std.format;
     import std.math;
+    import std.traits;
 
     import dlib.math.utils;
     import dlib.math.vector;
@@ -201,7 +202,7 @@ struct Quaternion(T)
     Quaternion!(T) opDiv (T k)
     in
     {
-        assert (k != 0.0, "Quaternion!(T).opDiv(T k): division by zero");
+        //assert (k != 0.0, "Quaternion!(T).opDiv(T k): division by zero");
     }
     body
     {
@@ -215,7 +216,7 @@ struct Quaternion(T)
     Quaternion!(T) opDivAssign (T k)
     in
     {
-        assert (k != 0.0, "Quaternion!(T).opDivAssign(T k): division by zero");
+        //assert (k != 0.0, "Quaternion!(T).opDivAssign(T k): division by zero");
     }
     body
     {
@@ -309,7 +310,7 @@ struct Quaternion(T)
     void identity()
     body
     {
-        w = 1.0; 
+        w = 1.0;
         x = y = z = 0.0;
     }
 
@@ -319,7 +320,7 @@ struct Quaternion(T)
     void normalize()
     body
     {
-        T mag = sqrt( (w * w) + (x * x) + (y * y) + (z * z) );
+        T mag = ( (w * w) + (x * x) + (y * y) + (z * z) ).sqrt;
         if (mag > 0.0)
         {
             T oneOverMag = 1.0 / mag;
@@ -336,27 +337,16 @@ struct Quaternion(T)
     void computeW()
     body
     {
-        T t = 1.0 - (x * x) - (y * y) - (z * z);
+        T t = cast(T)1.0 - (x * x) - (y * y) - (z * z);
         if (t < 0.0) 
             w = 0.0;
         else 
-            w = -sqrt(t);
+            w = -(t.sqrt);
     }
 
    /* 
     * Rotate a point by quaternion
     */
-/*
-    void rotate(ref Vector!(T,3) v)
-    body
-    {
-        Quaternion!(T) qf = this * v * (~this);
-        v.x = qf.x;
-        v.y = qf.y;
-        v.z = qf.z;
-    }
-*/
-
     Vector!(T,3) rotate(Vector!(T,3) v)
     body
     {
@@ -367,6 +357,8 @@ struct Quaternion(T)
    /* 
     * Convert to 4x4 matrix
     */
+    static if (isNumeric!(T))
+    {
     Matrix4x4!(T) toMatrix()
     body
     {
@@ -517,6 +509,7 @@ struct Quaternion(T)
             y * oneOverSinThetaOver2,
             z * oneOverSinThetaOver2
         );
+    }
     }
 
    /*
