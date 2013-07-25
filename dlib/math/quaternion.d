@@ -39,6 +39,7 @@ private
 
     import dlib.math.utils;
     import dlib.math.vector;
+    import dlib.math.matrix3x3;
     import dlib.math.matrix4x4;
 }
 
@@ -354,162 +355,186 @@ struct Quaternion(T)
         return Vector!(T,3)(qf.x, qf.y, qf.z);
     }
 
-   /* 
-    * Convert to 4x4 matrix
-    */
     static if (isNumeric!(T))
     {
-    Matrix4x4!(T) toMatrix()
-    body
-    {
-        Matrix4x4!(T) mat;
-        mat.identity();
-
-        mat[0]  = 1.0 - 2.0 * (y * y + z * z);
-        mat[1]  = 2.0 * (x * y + z * w);
-        mat[2]  = 2.0 * (x * z - y * w);
-        mat[3]  = 0.0;
-
-        mat[4]  = 2.0 * (x * y - z * w);
-        mat[5]  = 1.0 - 2.0 * (x * x + z * z);
-        mat[6]  = 2.0 * (z * y + x * w);
-        mat[7]  = 0.0;
-
-        mat[8]  = 2.0 * (x * z + y * w);
-        mat[9]  = 2.0 * (y * z - x * w);
-        mat[10] = 1.0 - 2.0 * (x * x + y * y);
-        mat[11] = 0.0;
-
-        mat[12] = 0.0;
-        mat[13] = 0.0;
-        mat[14] = 0.0;
-        mat[15] = 1.0;
-
-        return mat;
-    }
-
-   /*
-    * Setup the quaternion to perform a rotation, 
-    * given the angular displacement in matrix form
-    */
-    void fromMatrix (Matrix4x4!(T) m)
-    body
-    {
-        T trace = m.m11 + m.m22 + m.m33 + 1.0;
-
-        if (trace > 0.0001)
+       /* 
+        * Convert to 4x4 matrix
+        */
+        Matrix4x4!(T) toMatrix()
+        body
         {
-            T s = 0.5 / sqrt(trace);
-            w = 0.25 / s;
-            x = (m.m23 - m.m32) * s;
-            y = (m.m31 - m.m13) * s;
-            z = (m.m12 - m.m21) * s;
+            Matrix4x4!(T) mat;
+            mat.identity();
+
+            mat[0]  = 1.0 - 2.0 * (y * y + z * z);
+            mat[1]  = 2.0 * (x * y + z * w);
+            mat[2]  = 2.0 * (x * z - y * w);
+            mat[3]  = 0.0;
+
+            mat[4]  = 2.0 * (x * y - z * w);
+            mat[5]  = 1.0 - 2.0 * (x * x + z * z);
+            mat[6]  = 2.0 * (z * y + x * w);
+            mat[7]  = 0.0;
+
+            mat[8]  = 2.0 * (x * z + y * w);
+            mat[9]  = 2.0 * (y * z - x * w);
+            mat[10] = 1.0 - 2.0 * (x * x + y * y);
+            mat[11] = 0.0;
+
+            mat[12] = 0.0;
+            mat[13] = 0.0;
+            mat[14] = 0.0;
+            mat[15] = 1.0;
+
+            return mat;
         }
-        else
+
+       /* 
+        * Convert to 3x3 matrix
+        */
+        Matrix3x3!(T) toMatrix3x3()
+        body
         {
-            if ((m.m11 > m.m22) && (m.m11 > m.m33))
+            Matrix3x3!(T) mat;
+            mat.identity();
+
+            mat[0] = 1.0 - 2.0 * (y * y + z * z);
+            mat[1] = 2.0 * (x * y + z * w);
+            mat[2] = 2.0 * (x * z - y * w);
+
+            mat[3] = 2.0 * (x * y - z * w);
+            mat[4] = 1.0 - 2.0 * (x * x + z * z);
+            mat[5] = 2.0 * (z * y + x * w);
+
+            mat[6] = 2.0 * (x * z + y * w);
+            mat[7] = 2.0 * (y * z - x * w);
+            mat[8] = 1.0 - 2.0 * (x * x + y * y);
+
+            return mat;
+        }
+
+       /*
+        * Setup the quaternion to perform a rotation, 
+        * given the angular displacement in matrix form
+        */
+        void fromMatrix (Matrix4x4!(T) m)
+        body
+        {
+            T trace = m.m11 + m.m22 + m.m33 + 1.0;
+
+            if (trace > 0.0001)
             {
-                T s = 0.5 / sqrt(1.0 + m.m11 - m.m22 - m.m33);
-                x = 0.25 / s;
-                y = (m.m21 + m.m12) * s;
-                z = (m.m31 + m.m13) * s;
-                w = (m.m32 - m.m23) * s;
-            }
-            else if (m.m22 > m.m33)
-            {
-                T s = 0.5 / sqrt(1.0 + m.m22 - m.m11 - m.m33);
-                x = (m.m21 + m.m12) * s;
-                y = 0.25 / s;
-                z = (m.m32 + m.m23) * s;
-                w = (m.m31 - m.m13) * s;
+                T s = 0.5 / sqrt(trace);
+                w = 0.25 / s;
+                x = (m.m23 - m.m32) * s;
+                y = (m.m31 - m.m13) * s;
+                z = (m.m12 - m.m21) * s;
             }
             else
             {
-                T s = 0.5 / sqrt(1.0 + m.m33 - m.m11 - m.m22);
-                x = (m.m31 + m.m13) * s;
-                y = (m.m32 + m.m23) * s;
-                z = 0.25 / s;
-                w = (m.m21 - m.m12) * s;
+                if ((m.m11 > m.m22) && (m.m11 > m.m33))
+                {
+                    T s = 0.5 / sqrt(1.0 + m.m11 - m.m22 - m.m33);
+                    x = 0.25 / s;
+                    y = (m.m21 + m.m12) * s;
+                    z = (m.m31 + m.m13) * s;
+                    w = (m.m32 - m.m23) * s;
+                }
+                else if (m.m22 > m.m33)
+                {
+                    T s = 0.5 / sqrt(1.0 + m.m22 - m.m11 - m.m33);
+                    x = (m.m21 + m.m12) * s;
+                    y = 0.25 / s;
+                    z = (m.m32 + m.m23) * s;
+                    w = (m.m31 - m.m13) * s;
+                }
+                else
+                {
+                    T s = 0.5 / sqrt(1.0 + m.m33 - m.m11 - m.m22);
+                    x = (m.m31 + m.m13) * s;
+                    y = (m.m32 + m.m23) * s;
+                    z = 0.25 / s;
+                    w = (m.m21 - m.m12) * s;
+                }
             }
         }
-    }
 
-   /*
-    * Setup the quaternion to perform a rotation, 
-    * given the orientation in XYZ-Euler angles format (in radians)
-    */
-    void fromEulerAngles (T x, T y, T z)
-    body
-    {
-        T sr = sin(x * 0.5);
-        T cr = cos(x * 0.5);
-        T sp = sin(y * 0.5);
-        T cp = cos(y * 0.5);
-        T sy = sin(z * 0.5);
-        T cy = cos(z * 0.5);
-
-        w =  (cy * cp * cr) + (sy * sp * sr);
-        x = -(sy * sp * cr) + (cy * cp * sr);
-        y =  (cy * sp * cr) + (sy * cp * sr);
-        z = -(cy * sp * sr) + (sy * cp * cr);
-    }
-
-   /* 
-    * Setup the Euler angles, given a rotation Quaternion.
-    * Returned x,y,z are in radians
-    */
-    void toEulerAngles (out T x, out T y, out T z)
-    body
-    {
-        y = asin(2.0 * ((x * z) + (w * y)));
-
-        T cy = cos(y);
-        T oneOverCosY = 1.0 / cy;
-
-        if (fabs(cy) > 0.001)
+       /*
+        * Setup the quaternion to perform a rotation, 
+        * given the orientation in XYZ-Euler angles format (in radians)
+        */
+        void fromEulerAngles (T x, T y, T z)
+        body
         {
-            x = atan2(2.0 * ((w * x) - (y * z)) * oneOverCosY,
-                     (1.0 - 2.0 *  (x*x + y*y)) * oneOverCosY);
-            z = atan2(2.0 * ((w * z) - (x * y)) * oneOverCosY,
-                     (1.0 - 2.0 *  (y*y + z*z)) * oneOverCosY);
+            T sr = sin(x * 0.5);
+            T cr = cos(x * 0.5);
+            T sp = sin(y * 0.5);
+            T cp = cos(y * 0.5);
+            T sy = sin(z * 0.5);
+            T cy = cos(z * 0.5);
+
+            w =  (cy * cp * cr) + (sy * sp * sr);
+            x = -(sy * sp * cr) + (cy * cp * sr);
+            y =  (cy * sp * cr) + (sy * cp * sr);
+            z = -(cy * sp * sr) + (sy * cp * cr);
         }
-        else
+
+       /* 
+        * Setup the Euler angles, given a rotation Quaternion.
+        * Returned x,y,z are in radians
+        */
+        void toEulerAngles (out T x, out T y, out T z)
+        body
         {
-            x = 0.0;
-            z = atan2(2.0 * ((x * y) + (w * z)), 
-                      1.0 - 2.0 *  (x*x + z*z));
+            y = asin(2.0 * ((x * z) + (w * y)));
+
+            T cy = cos(y);
+            T oneOverCosY = 1.0 / cy;
+
+            if (fabs(cy) > 0.001)
+            {
+                x = atan2(2.0 * ((w * x) - (y * z)) * oneOverCosY,
+                         (1.0 - 2.0 *  (x*x + y*y)) * oneOverCosY);
+                z = atan2(2.0 * ((w * z) - (x * y)) * oneOverCosY,
+                         (1.0 - 2.0 *  (y*y + z*z)) * oneOverCosY);
+            }
+            else
+            {
+                x = 0.0;
+                z = atan2(2.0 * ((x * y) + (w * z)), 
+                          1.0 - 2.0 *  (x*x + z*z));
+            }
         }
-    }
 
-   /* 
-    * Return the rotation angle theta (in radians)
-    */
-    T rotationAngle()
-    body
-    {
-        T thetaOver2 = acos(w);
-        return thetaOver2 * 2.0;
-    }
+       /* 
+        * Return the rotation angle theta (in radians)
+        */
+        T rotationAngle()
+        body
+        {
+            T thetaOver2 = acos(w);
+            return thetaOver2 * 2.0;
+        }
 
-   /* 
-    * Return the rotation axis
-    */
-    Vector!(T,3) rotationAxis()
-    body
-    {
-        T sinThetaOver2Sq = 1.0 - (w * w);
+       /* 
+        * Return the rotation axis
+        */
+        Vector!(T,3) rotationAxis()
+        body
+        {
+            T sinThetaOver2Sq = 1.0 - (w * w);
 
-        if (sinThetaOver2Sq <= 0.0)
-            return Vector!(T,3)(1.0, 0.0, 0.0);
+            if (sinThetaOver2Sq <= 0.0)
+                return Vector!(T,3)(1.0, 0.0, 0.0);
 
-        T oneOverSinThetaOver2 = 1.0 / sqrt(sinThetaOver2Sq);
-        return Vector!(T,3)
-        (
-            x * oneOverSinThetaOver2,
-            y * oneOverSinThetaOver2,
-            z * oneOverSinThetaOver2
-        );
-    }
+            T oneOverSinThetaOver2 = 1.0 / sqrt(sinThetaOver2Sq);
+            return Vector!(T,3)
+            (
+                x * oneOverSinThetaOver2,
+                y * oneOverSinThetaOver2,
+                z * oneOverSinThetaOver2
+            );
+        }
     }
 
    /*
