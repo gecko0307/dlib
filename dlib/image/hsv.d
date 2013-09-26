@@ -57,7 +57,7 @@ struct ColorHSVAf
         float[4] arrayof;
     }
     
-    this(ColorRGBAf c)
+    this(Color4f c)
     {
         a = c.a;
         
@@ -95,9 +95,9 @@ struct ColorHSVAf
             h += 360.0f;
     }
     
-    ColorRGBAf rgba()
+    Color4f rgba()
     {
-        ColorRGBAf res;
+        Color4f res;
         
         res.a = a;
 
