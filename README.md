@@ -15,4 +15,4 @@ Currently dlib contains the following packages:
 
 * dlib.image - image processing (filters, color correction, FFT, graphics formats I/O, support for 8 and 16-bit RGBA buffers and floating point operations)
 
-* dlib.xml - lightweight XML parser (only reaing, only Unicode)
+* dlib.xml - lightweight XML parser (only reading, only Unicode)
