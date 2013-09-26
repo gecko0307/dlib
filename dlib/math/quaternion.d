@@ -360,7 +360,7 @@ struct Quaternion(T)
        /* 
         * Convert to 4x4 matrix
         */
-        Matrix4x4!(T) toMatrix()
+        Matrix4x4!(T) toMatrix4x4()
         body
         {
             Matrix4x4!(T) mat;
