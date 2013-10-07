@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2013 Timur Gafarov 
+Copyright (c) 2013 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -28,43 +28,64 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.math.matrix;
 
-private 
-{
-    import std.stdio;
-    import std.math;
+import std.math;
+import std.range;
+import std.format;
+import std.conv;
 
-    import dlib.math.utils;
-    import dlib.math.vector;
-}
+import dlib.math.vector;
 
-public:
-
-struct Matrix(T, size_t rows, size_t columns)
+/*
+ * Square (NxN) matrix
+ */
+struct Matrix(T, size_t N)
 {
    /*
     * Return zero matrix
     */
-    static opCall() 
+    static opCall()
+    body
     {
-        Matrix!(T,rows,columns) res;
+        Matrix!(T,N) res;
         foreach (ref v; res.arrayof)
-            v = 0.0f;
+            v = 0;
         return res;
+    }
+
+   /*
+    * Create from array
+    */
+    this(F)(F[] arr)
+    in
+    {
+        assert (arr.length == N * N, 
+            "Matrix!(T,N): wrong array length in constructor");
+    }
+    body
+    {
+        foreach (i, ref v; arrayof)
+            v = arr[i];
     }
 
    /*
     * Matrix * Matrix
     */
-    Matrix!(T,rows,columns) opMul (Matrix!(T,rows,columns) mat)
+    Matrix!(T,N) opMul (Matrix!(T,N) mat)
     body
     {       
-        auto res = Matrix!(T,rows,columns)(); 
+        auto res = Matrix!(T,N)();
 
-        foreach (r; 0..rows)
-        foreach (c; 0..columns)
+        foreach (y; 0..N)
+        foreach (x; 0..N)
         {
-            foreach (m; 0..columns)
-                res.arrayof[r][c] += arrayof[r][m] * mat.arrayof[m][c];
+            auto i = y * N + x;
+
+            foreach (k; 0..N)
+            {
+                auto i1 = y * N + k;
+                auto i2 = k * N + x;
+                res.arrayof[i] += arrayof[i1] * mat.arrayof[i2];
+            }
         }
 
         return res;
@@ -73,16 +94,22 @@ struct Matrix(T, size_t rows, size_t columns)
    /*
     * Matrix *= Matrix
     */
-    Matrix!(T,rows,columns) opMulAssign (Matrix!(T,rows,columns) mat)
+    Matrix!(T,N) opMulAssign (Matrix!(T,N) mat)
     body
     {
-        auto res = Matrix!(T,rows,columns)(); 
+        auto res = Matrix!(T,N)();
 
-        foreach (r; 0..rows)
-        foreach (c; 0..columns)
+        foreach (y; 0..N)
+        foreach (x; 0..N)
         {
-            foreach (m; 0..columns)
-                res.arrayof[r][c] += arrayof[r][m] * mat.arrayof[m][c];
+            auto i = y * N + x;
+
+            foreach (k; 0..N)
+            {
+                auto i1 = y * N + k;
+                auto i2 = k * N + x;
+                res.arrayof[i] += arrayof[i1] * mat.arrayof[i2];
+            }
         }
 
         arrayof[] = res.arrayof[];
@@ -93,85 +120,446 @@ struct Matrix(T, size_t rows, size_t columns)
    /* 
     * T = Matrix[x, y]
     */
-    T opIndex(size_t x, size_t y)
-    in
-    {
-        assert ((0 < x) && (x < columns) && (0 < y) && (y < rows), 
-            "Matrix.opIndex(int x, int y): array index out of bounds");
-    }
+    T opIndex(in size_t x, in size_t y)
     body
     {
-        return arrayof[y][x];
+        return arrayof[y * N + x];
     }
 
    /* 
     * Matrix[x, y] = T
     */
-    T opIndexAssign(T t, int x, int y)
-    in
-    {
-        assert ((0 < x) && (x < columns) && (0 < y) && (y < rows), 
-            "Matrix.opIndexAssign(int x, int y): array index out of bounds");
-    }
+    T opIndexAssign(in T t, in size_t x, in size_t y)
     body
     {
-        return (arrayof[y][x] = t);
+        return (arrayof[y * N + x] = t);
     }
 
-    void setRow(size_t row, Vector!(T,columns) vec)
+   /* 
+    * Determinant of an upper-left 3x3 portion
+    */
+    static if (N >= 3)
+    {
+        T determinant3x3()
+        body
+        {
+            return a11 * (a33 * a22 - a32 * a23)
+                 - a21 * (a33 * a12 - a32 * a13)
+                 + a31 * (a23 * a12 - a22 * a13);
+        }
+    }
+
+   /* 
+    * Determinant
+    */
+    static if (N == 1)
+    {
+        T determinant()
+        body
+        {
+            return a11;
+        }
+    }
+    else
+    static if (N == 2)
+    {
+        T determinant()
+        body
+        {
+            return a11 * a22 - a12 * a21;
+        }
+    }    
+    else 
+    static if (N == 3)
+    {
+        alias determinant3x3 determinant;
+    }
+    else
+    {
+       /* 
+        * Determinant of a given upper-left portion
+        */
+        T determinant(size_t n = N)
+        body
+        {
+            T d = 0;
+
+            if (n == 1)
+                d = this[0,0];
+            else if (n == 2)
+                d = this[0,0] * this[1,1] - this[1,0] * this[0,1];
+            else
+            {
+                auto submat = Matrix!(T,N)();
+
+                for (uint c = 0; c < n; c++)
+                {
+                    uint subi = 0;
+                    for (uint i = 1; i < n; i++)
+                    {
+                        uint subj = 0;
+                        for (uint j = 0; j < n; j++)
+                        {
+                            if (j == c)
+                                continue;
+                            submat[subi, subj] = this[i, j];
+                            subj++;
+                        }
+                        subi++;
+                    }
+
+                    d += pow(-1, c + 2.0) * this[0, c] * submat.determinant(n-1);
+                }
+            }
+
+            return d;
+        }
+    }
+
+    alias determinant det;
+
+   /*
+    * Return true if matrix is singular
+    */
+    bool singular() @property
     body
     {
-        foreach (c; 0..columns)
-            arrayof[row][c] = vec[c];
+        return (determinant == 0);
     }
 
-    Vector!(T,columns) getRow(size_t row)
-    body
-    {
-        Vector!(T,columns) vec;
-
-        foreach (c; 0..columns)
-            vec[c] = arrayof[row][c];
-
-        return vec;
-    }
-
-    void setColumn(size_t column, Vector!(T,rows) vec)
-    body
-    {
-        foreach (r; 0..rows)
-            arrayof[r][column] = vec[r];
-    }
-
-    Vector!(T,rows) getColumn(size_t column)
-    body
-    {
-        Vector!(T,rows) vec;
-
-        foreach (r; 0..rows)
-            vec[r] = arrayof[r][column];
-
-        return vec;
-    }
-
+   /*
+    * Transpose
+    */
     void transpose()
     body
     {
-        Matrix!(T,rows,columns) res = transposed;
+        Matrix!(T,N) res = transposed;
         arrayof[] = res.arrayof[];
     }
 
-    @property Matrix!(T,rows,columns) transposed()
+   /*
+    * Return the transposed matrix
+    */
+    Matrix!(T,N) transposed() @property
     body
     {
-        Matrix!(T,rows,columns) res;
+        Matrix!(T,N) res;
 
-        foreach (r; 0..rows)
-        foreach (c; 0..columns)
-            res.arrayof[c][r] = arrayof[r][c];
+        foreach(y; 0..N)
+        foreach(x; 0..N)
+            res.arrayof[y * N + x] = arrayof[x * N + y];
 
         return res;
     }
 
-    T[rows][columns] arrayof;
+   /* 
+    * Inverse of a matrix
+    */
+    static if (N == 1)
+    {
+        Matrix!(T,N) inverse() @property
+        body
+        {
+            Matrix!(T,N) res;
+            res.a11 = 1.0 / a11;
+            return res;
+        }
+    }
+    else
+    static if (N == 2)
+    {
+        Matrix!(T,N) inverse() @property
+        body
+        {
+            Matrix!(T,N) res;
+
+            T invd = 1.0 / (a11 * a22 - a12 * a21);
+            
+            res.a11 =  a22 * invd;
+            res.a12 = -a12 * invd;
+            res.a22 =  a11 * invd;
+            res.a21 = -a21 * invd;
+
+            return res;
+        }
+    }
+    else
+    static if (N == 3)
+    {
+        Matrix!(T,N) inverse() @property
+        body
+        {
+            T d = determinant;
+        
+            T oneOverDet = 1.0 / d;
+        
+            Matrix!(T,N) res;
+        
+            res.a11 =  (a33 * a22 - a32 * a23) * oneOverDet;
+            res.a12 = -(a33 * a12 - a32 * a13) * oneOverDet;
+            res.a13 =  (a23 * a12 - a22 * a13) * oneOverDet;
+        
+            res.a21 = -(a33 * a21 - a31 * a23) * oneOverDet;
+            res.a22 =  (a33 * a11 - a31 * a13) * oneOverDet;
+            res.a23 = -(a23 * a11 - a21 * a13) * oneOverDet;
+        
+            res.a31 =  (a32 * a21 - a31 * a22) * oneOverDet;
+            res.a32 = -(a32 * a11 - a31 * a12) * oneOverDet;
+            res.a33 =  (a22 * a11 - a21 * a12) * oneOverDet;
+        
+            return res;
+        }
+    }
+    else 
+    static if (N > 1)
+    {
+        static if (N == 4)
+        {
+           /* 
+            * Inverse of a 4x4 affine matrix is a special case
+            */
+            private Matrix!(T,N) inverseAffine() @property
+            body
+            {
+                T d = determinant3x3;
+                //assert (fabs(det) > 0.000001);
+
+                T oneOverDet = 1.0 / d;
+
+                auto res = Matrix!(T,N)();
+
+                res.a11 = ((a22 * a33) - (a23 * a32)) * oneOverDet;
+                res.a12 = ((a13 * a32) - (a12 * a33)) * oneOverDet;
+                res.a13 = ((a12 * a23) - (a13 * a22)) * oneOverDet;
+
+                res.a21 = ((a23 * a31) - (a21 * a33)) * oneOverDet;
+                res.a22 = ((a11 * a33) - (a13 * a31)) * oneOverDet;
+                res.a23 = ((a13 * a21) - (a11 * a23)) * oneOverDet;
+
+                res.a31 = ((a21 * a32) - (a22 * a31)) * oneOverDet;
+                res.a32 = ((a12 * a31) - (a11 * a32)) * oneOverDet;
+                res.a33 = ((a11 * a22) - (a12 * a21)) * oneOverDet;
+      
+                res.a41 = -((a41 * res.a11) + (a42 * res.a21) + (a43 * res.a31));
+                res.a42 = -((a41 * res.a12) + (a42 * res.a22) + (a43 * res.a32));
+                res.a43 = -((a41 * res.a13) + (a42 * res.a23) + (a43 * res.a33));
+
+                res.a44 = 1;
+
+                return res;
+            }
+
+           /* 
+            * Check if matrix represents affine transformation
+            */
+            bool affine() @property
+            {
+                return (a14 == 0.0  
+                     && a24 == 0.0
+                     && a34 == 0.0
+                     && a44 == 1.0);
+            }
+        }
+
+        Matrix!(T,N) inverse() @property
+        body
+        {
+            // Analytical inversion
+            enum inv = q{{
+                auto res = adjugate;
+                T oneOverDet = 1.0 / determinant;
+                foreach(ref v; res.arrayof)
+                    v *= oneOverDet;
+                return res;
+            }};
+
+            static if (N == 4)
+            {
+                if (affine)
+                    return inverseAffine;
+                else
+                    mixin(inv);
+            }
+            else
+                mixin(inv);
+        }
+    }
+
+   /*
+    * Adjugate and cofactor matrices
+    */
+    static if (N == 1)
+    {
+        Matrix!(T,N) adjugate() @property
+        body
+        {
+            Matrix!(T,N) res;
+            res.arrayof[0] = 1;
+            return res;
+        }
+
+        Matrix!(T,N) cofactor() @property
+        {
+            Matrix!(T,N) res;
+            res.arrayof[0] = 1;
+            return res;
+        }
+    }
+    else
+    static if (N == 2)
+    {
+        Matrix!(T,N) adjugate() @property
+        body
+        {
+            Matrix!(T,N) res;
+            res.arrayof[0] =  arrayof[3];
+            res.arrayof[1] = -arrayof[1];
+            res.arrayof[2] = -arrayof[2];
+            res.arrayof[3] =  arrayof[0];
+            return res;
+        }
+
+        Matrix!(T,N) cofactor() @property
+        {
+            Matrix!(T,N) res;
+            res.arrayof[0] =  arrayof[3];
+            res.arrayof[1] = -arrayof[2];
+            res.arrayof[2] = -arrayof[1];
+            res.arrayof[3] =  arrayof[0];
+            return res;
+        }
+    }
+    else
+    static if (N > 1)
+    {
+        Matrix!(T,N) adjugate() @property
+        {
+            return cofactor.transposed;
+        }
+
+        Matrix!(T,N) cofactor() @property
+        {
+            Matrix!(T,N) res;
+
+            foreach(y; 0..N)
+            foreach(x; 0..N)
+            {
+                auto submat = Matrix!(T,N-1)();
+
+                uint suby = 0;
+                foreach(yy; 0..N) 
+                if (yy != y)
+                {
+                    uint subx = 0;
+                    foreach(xx; 0..N)
+                    if (xx != x)
+                    {
+                        submat[subx, suby] = this[xx, yy];
+                        subx++;
+                    }
+                    suby++;
+                }
+
+                res[x, y] = submat.determinant * (((x + y) % 2)? -1:1);
+            }
+
+            return res;
+        }
+    }
+
+   /*
+    * Convert to string
+    */
+    string toString() @property
+    body
+    {
+        auto writer = appender!string();
+        foreach (y; 0..N)
+        {
+            formattedWrite(writer, "[");
+            foreach (x; 0..N)
+            {
+                formattedWrite(writer, "%s", arrayof[y * N + x]);
+                if (x < N-1)
+                    formattedWrite(writer, ", ");
+            }
+            formattedWrite(writer, "]");
+            if (y < N-1)
+                formattedWrite(writer, "\n");
+        }
+        return writer.data;
+    }
+
+   /*
+    * Symbolic element access
+    */
+    private static string elements(string letter) @property
+    body
+    {
+        string res;
+        foreach (y; 0..N)
+        {
+            foreach (x; 0..N)
+            {
+                res ~= "T " ~ letter ~ to!string(y+1) ~ to!string(x+1) ~ ";";
+            }
+        }
+        return res;
+    }
+
+   /*
+    * Symbolic row vector access
+    */
+    private static string rowVectors() @property
+    body
+    {
+        string res;
+        foreach (y; 0..N)
+        {
+            res ~= "Vector!(T,N) row" ~ to!string(y+1) ~ ";";
+        }
+        return res;
+    }
+
+   /* 
+    * Matrix components
+    */
+    union 
+    {
+        struct { mixin(elements("a")); }
+        struct { mixin(rowVectors); }
+
+        T[N * N] arrayof;
+    }
 }
+
+/*
+ * Predefined matrix type aliases
+ *
+ * NOTE: these conflict with dlib.math.matrix2x2,
+ * dlib.math.matrix3x3 and dlib.math.matrix4x4.
+ */
+alias Matrix!(float, 2) Matrix2x2f, Matrix2f;
+alias Matrix!(float, 3) Matrix3x3f, Matrix3f;
+alias Matrix!(float, 4) Matrix4x4f, Matrix4f;
+alias Matrix!(double, 2) Matrix2x2d, Matrix2d;
+alias Matrix!(double, 3) Matrix3x3d, Matrix3d;
+alias Matrix!(double, 4) Matrix4x4d, Matrix4d;
+
+/*
+ * Matrix factory function
+ */
+auto matrixf(A...)(A arr)
+{
+    static assert(isPerfectSquare(arr.length),
+        "matrixf(A): input array length is not perfect square integer");
+    return Matrix!(float, cast(size_t)sqrt(cast(float)arr.length))([arr]);
+}
+
+// TODO: move this to dlib.math.utils
+bool isPerfectSquare(float n)
+{
+    float r = sqrt(n);
+    return(r * r == n);
+}
+
