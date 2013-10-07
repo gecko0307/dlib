@@ -135,16 +135,16 @@ struct Complex(T)
     
     Complex!(T) reciprocal()
     {
-        float scale = re * re + im * im;
+        T scale = re * re + im * im;
         return Complex!(T)(re / scale, -im / scale);
     }
     
-    float magnitude()
+    T magnitude()
     {
         return sqrt(re * re + im * im);
     }
     
-    float norm()
+    T norm()
     {
         return (re * re + im * im);
     }
@@ -156,3 +156,4 @@ struct Complex(T)
         return writer.data;
     }
 }
+
