@@ -68,6 +68,17 @@ struct Matrix(T, size_t N)
     }
 
    /*
+    * Return identity matrix
+    */
+    static identity()
+    body
+    {
+        Matrix!(T,N) res;
+        res.setIdentity();
+        return res;
+    }
+
+   /*
     * Matrix * Matrix
     */
     Matrix!(T,N) opMul (Matrix!(T,N) mat)
@@ -97,30 +108,101 @@ struct Matrix(T, size_t N)
     Matrix!(T,N) opMulAssign (Matrix!(T,N) mat)
     body
     {
+        this = this * mat;
+        return this;
+    }
+
+   /*
+    * Matrix * T
+    */
+    Matrix!(T,N) opMul (T k)
+    body
+    {
         auto res = Matrix!(T,N)();
+        foreach(i, v; arrayof)
+            res.arrayof[i] = v * k;
+        return res;
+    }
 
-        foreach (y; 0..N)
-        foreach (x; 0..N)
+   /*
+    * Matrix =* T
+    */
+    Matrix!(T,N) opMulAssign (T k)
+    body
+    {
+        auto res = Matrix!(T,N)();
+        foreach(ref v; arrayof)
+            v *= k;
+        return this;
+    }
+
+   /*
+    * Multiply a vector by the matrix
+    */
+    static if (N == 2)
+    {
+        Vector!(T,2) opBinaryRight(string op) (Vector!(T,2) v) if (op == "*")
+        body
         {
-            auto i = y * N + x;
-
-            foreach (k; 0..N)
-            {
-                auto i1 = y * N + k;
-                auto i2 = k * N + x;
-                res.arrayof[i] += arrayof[i1] * mat.arrayof[i2];
-            }
+            return Vector!(T,2) 
+            (
+                (v.x * a11) + (v.y * a21),
+                (v.x * a12) + (v.y * a22)
+            );
         }
+    }
+    else
+    static if (N == 3)
+    {
+        Vector!(T,3) opBinaryRight(string op) (Vector!(T,3) v) if (op == "*")
+        body
+        {
+            return Vector!(T,3) 
+            (
+                (v.x * a11) + (v.y * a21) + (v.z * a31),
+                (v.x * a12) + (v.y * a22) + (v.z * a32),
+                (v.x * a13) + (v.y * a23) + (v.z * a33)
+            );
+        }
+    }
+    else
+    static if (N == 4)
+    {
+        Vector!(T,3) opBinaryRight(string op) (Vector!(T,3) v) if (op == "*")
+        body
+        {
+            if (affine)
+            {
+                return Vector!(T,3) 
+                (
+                    (v.x * a11) + (v.y * a21) + (v.z * a31) + a41,
+                    (v.x * a12) + (v.y * a22) + (v.z * a32) + a42,
+                    (v.x * a13) + (v.y * a23) + (v.z * a33) + a43
+                );
+            }
+            else
+                assert(0, "Cannot multiply Vector!(T,3) by non-affine Matrix!(T,4)");
+        }
+    }
 
-        arrayof[] = res.arrayof[];
-
-        return mat;
+    Vector!(T,N) opBinaryRight(string op)(Vector!(T,N) v) if (op == "*")
+    body
+    {
+        Vector!(T,N) res;
+        foreach(x; 0..N)
+        {
+            T n = 0;
+            foreach(y; 0..N)
+                n += v.arrayof[y] * arrayof[y * N + x];
+            res.arrayof[x] = n;
+        }
+        return res;
     }
 
    /* 
     * T = Matrix[x, y]
     */
-    T opIndex(in size_t x, in size_t y)
+    T opIndex(in size_t x, in size_t y) const
     body
     {
         return arrayof[y * N + x];
@@ -133,6 +215,73 @@ struct Matrix(T, size_t N)
     body
     {
         return (arrayof[y * N + x] = t);
+    }
+
+   /* 
+    * T = Matrix[index]
+    */
+    T opIndex(in int index) const
+    in
+    {
+        assert ((0 <= index) && (index < N), 
+            "Matrix.opIndex(int index): array index out of bounds");
+    }
+    body
+    {
+        return arrayof[index];
+    }
+
+   /*
+    * Matrix[index] = T
+    */
+    T opIndexAssign(in T t, in int index)
+    in
+    {
+        assert ((0 <= index) && (index < N), 
+            "Matrix.opIndexAssign(T t, int index): array index out of bounds");
+    }
+    body
+    {
+        return (arrayof[index] = t);
+    }
+
+   /*
+    * Matrix4x4!(T)[index1..index2] = T
+    */
+    T[] opSliceAssign(in T t, in int index1, in int index2)
+    in
+    {
+        assert ((0 <= index1) && (index1 < N) && (0 <= index2) && (index2 < N), 
+            "Matrix.opSliceAssign(T t, int index1, int index2): array index out of bounds");
+    }
+    body
+    {
+        return (arrayof[index1..index2] = t);
+    }
+
+   /* 
+    * Matrix[] = T
+    */
+    T[] opSliceAssign(in T t)
+    body
+    {
+        return (arrayof[] = t);
+    }
+
+   /*
+    * Set to identity
+    */
+    void setIdentity()
+    body
+    {
+        foreach(y; 0..N)
+        foreach(x; 0..N)
+        {
+            if (y == x)
+                arrayof[y * N + x] = 1;
+            else
+                arrayof[y * N + x] = 0;
+        }
     }
 
    /* 
@@ -227,14 +376,27 @@ struct Matrix(T, size_t N)
         return (determinant == 0);
     }
 
+   /* 
+    * Check if matrix represents affine transformation
+    */
+    static if (N == 4)
+    {
+        bool affine() @property
+        {
+            return (a14 == 0.0  
+                 && a24 == 0.0
+                 && a34 == 0.0
+                 && a44 == 1.0);
+        }
+    }
+
    /*
     * Transpose
     */
     void transpose()
     body
     {
-        Matrix!(T,N) res = transposed;
-        arrayof[] = res.arrayof[];
+        this = transposed;
     }
 
    /*
@@ -250,6 +412,15 @@ struct Matrix(T, size_t N)
             res.arrayof[y * N + x] = arrayof[x * N + y];
 
         return res;
+    }
+
+   /*
+    * Invert
+    */
+    void invert()
+    body
+    {
+        this = inverse;
     }
 
    /* 
@@ -347,17 +518,6 @@ struct Matrix(T, size_t N)
                 res.a44 = 1;
 
                 return res;
-            }
-
-           /* 
-            * Check if matrix represents affine transformation
-            */
-            bool affine() @property
-            {
-                return (a14 == 0.0  
-                     && a24 == 0.0
-                     && a34 == 0.0
-                     && a44 == 1.0);
             }
         }
 
@@ -465,6 +625,15 @@ struct Matrix(T, size_t N)
 
             return res;
         }
+    }
+
+   /*
+    * Negative matrix
+    */
+    Matrix!(T,N) negative() @property
+    body
+    {
+        return this * -1;
     }
 
    /*
