@@ -83,23 +83,35 @@ struct Matrix(T, size_t N)
     */
     Matrix!(T,N) opMul (Matrix!(T,N) mat)
     body
-    {       
-        auto res = Matrix!(T,N)();
-
-        foreach (y; 0..N)
-        foreach (x; 0..N)
+    {
+        static if (N == 2)
         {
-            auto i = y * N + x;
-
-            foreach (k; 0..N)
-            {
-                auto i1 = y * N + k;
-                auto i2 = k * N + x;
-                res.arrayof[i] += arrayof[i1] * mat.arrayof[i2];
-            }
+            Matrix!(T,N) res;
+            res.a11 = (a11 * mat.a11) + (a21 * mat.a12);
+            res.a12 = (a12 * mat.a11) + (a22 * mat.a12);
+            res.a21 = (a11 * mat.a21) + (a21 * mat.a22);
+            res.a22 = (a12 * mat.a21) + (a22 * mat.a22);
+            return res;
         }
+        else
+        {
+            auto res = Matrix!(T,N)();
 
-        return res;
+            foreach (y; 0..N)
+            foreach (x; 0..N)
+            {
+                auto i = y * N + x;
+
+                foreach (k; 0..N)
+                {
+                    auto i1 = y * N + k;
+                    auto i2 = k * N + x;
+                    res.arrayof[i] += arrayof[i1] * mat.arrayof[i2];
+                }
+            }
+
+            return res;
+        }
     }
 
    /*
@@ -139,19 +151,6 @@ struct Matrix(T, size_t N)
    /*
     * Multiply a vector by the matrix
     */
-    static if (N == 2)
-    {
-        Vector!(T,2) opBinaryRight(string op) (Vector!(T,2) v) if (op == "*")
-        body
-        {
-            return Vector!(T,2) 
-            (
-                (v.x * a11) + (v.y * a21),
-                (v.x * a12) + (v.y * a22)
-            );
-        }
-    }
-    else
     static if (N == 3)
     {
         Vector!(T,3) opBinaryRight(string op) (Vector!(T,3) v) if (op == "*")
@@ -185,18 +184,43 @@ struct Matrix(T, size_t N)
         }
     }
 
-    Vector!(T,N) opBinaryRight(string op)(Vector!(T,N) v) if (op == "*")
+    static if (N == 2)
+    {
+        Vector!(T,2) opBinaryRight(string op) (Vector!(T,2) v) if (op == "*")
+        body
+        {
+            return Vector!(T,2) 
+            (
+                (v.x * a11) + (v.y * a21),
+                (v.x * a12) + (v.y * a22)
+            );
+        }
+    }
+    else
+    static if (N != 3)
+    {
+        Vector!(T,N) opBinaryRight(string op)(Vector!(T,N) v) if (op == "*")
+        body
+        {
+            Vector!(T,N) res;
+            foreach(x; 0..N)
+            {
+                T n = 0;
+                foreach(y; 0..N)
+                    n += v.arrayof[y] * arrayof[y * N + x];
+                res.arrayof[x] = n;
+            }
+            return res;
+        }
+    }
+
+   /*
+    * Transform a vector by the matrix
+    */
+    Vector!(T,N) transform(Vector!(T,N) v)
     body
     {
-        Vector!(T,N) res;
-        foreach(x; 0..N)
-        {
-            T n = 0;
-            foreach(y; 0..N)
-                n += v.arrayof[y] * arrayof[y * N + x];
-            res.arrayof[x] = n;
-        }
-        return res;
+        return v * this;
     }
 
    /* 
