@@ -125,7 +125,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) * Vector!(T,size)
     */
-    Vector!(T,size) opMul (Vector!(T,size) v)
+    Vector!(T,size) opBinary(string op) (Vector!(T,size) v) if (op == "*")
     body
     {
         Vector!(T,size) res;
@@ -177,7 +177,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) * T
     */
-    Vector!(T,size) opMul (T t)
+    Vector!(T,size) opBinary(string op) (T t) if (op == "*")
     body
     {
         Vector!(T,size) res;
