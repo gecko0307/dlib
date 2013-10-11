@@ -39,8 +39,7 @@ private
 
     import dlib.math.utils;
     import dlib.math.vector;
-    import dlib.math.matrix3x3;
-    import dlib.math.matrix4x4;
+    import dlib.math.matrix;
 }
 
 public:
@@ -360,11 +359,10 @@ struct Quaternion(T)
        /* 
         * Convert to 4x4 matrix
         */
-        Matrix4x4!(T) toMatrix4x4()
+        Matrix!(T,4) toMatrix()
         body
         {
-            Matrix4x4!(T) mat;
-            mat.identity();
+            auto mat = Matrix!(T,4).identity;
 
             mat[0]  = 1.0 - 2.0 * (y * y + z * z);
             mat[1]  = 2.0 * (x * y + z * w);
@@ -392,11 +390,10 @@ struct Quaternion(T)
        /* 
         * Convert to 3x3 matrix
         */
-        Matrix3x3!(T) toMatrix3x3()
+        Matrix!(T,3) toMatrix3x3()
         body
         {
-            Matrix3x3!(T) mat;
-            mat.identity();
+            auto mat = Matrix!(T,3).identity;
 
             mat[0] = 1.0 - 2.0 * (y * y + z * z);
             mat[1] = 2.0 * (x * y + z * w);
@@ -417,44 +414,44 @@ struct Quaternion(T)
         * Setup the quaternion to perform a rotation, 
         * given the angular displacement in matrix form
         */
-        void fromMatrix (Matrix4x4!(T) m)
+        void fromMatrix (Matrix!(T,4) m)
         body
         {
-            T trace = m.m11 + m.m22 + m.m33 + 1.0;
+            T trace = m.a11 + m.a22 + m.a33 + 1.0;
 
             if (trace > 0.0001)
             {
                 T s = 0.5 / sqrt(trace);
                 w = 0.25 / s;
-                x = (m.m23 - m.m32) * s;
-                y = (m.m31 - m.m13) * s;
-                z = (m.m12 - m.m21) * s;
+                x = (m.a23 - m.a32) * s;
+                y = (m.a31 - m.a13) * s;
+                z = (m.a12 - m.a21) * s;
             }
             else
             {
-                if ((m.m11 > m.m22) && (m.m11 > m.m33))
+                if ((m.a11 > m.a22) && (m.a11 > m.a33))
                 {
-                    T s = 0.5 / sqrt(1.0 + m.m11 - m.m22 - m.m33);
+                    T s = 0.5 / sqrt(1.0 + m.a11 - m.a22 - m.a33);
                     x = 0.25 / s;
-                    y = (m.m21 + m.m12) * s;
-                    z = (m.m31 + m.m13) * s;
-                    w = (m.m32 - m.m23) * s;
+                    y = (m.a21 + m.a12) * s;
+                    z = (m.a31 + m.a13) * s;
+                    w = (m.a32 - m.a23) * s;
                 }
-                else if (m.m22 > m.m33)
+                else if (m.a22 > m.a33)
                 {
-                    T s = 0.5 / sqrt(1.0 + m.m22 - m.m11 - m.m33);
-                    x = (m.m21 + m.m12) * s;
+                    T s = 0.5 / sqrt(1.0 + m.a22 - m.a11 - m.a33);
+                    x = (m.a21 + m.a12) * s;
                     y = 0.25 / s;
-                    z = (m.m32 + m.m23) * s;
-                    w = (m.m31 - m.m13) * s;
+                    z = (m.a32 + m.a23) * s;
+                    w = (m.a31 - m.a13) * s;
                 }
                 else
                 {
-                    T s = 0.5 / sqrt(1.0 + m.m33 - m.m11 - m.m22);
-                    x = (m.m31 + m.m13) * s;
-                    y = (m.m32 + m.m23) * s;
+                    T s = 0.5 / sqrt(1.0 + m.a33 - m.a11 - m.a22);
+                    x = (m.a31 + m.a13) * s;
+                    y = (m.a32 + m.a23) * s;
                     z = 0.25 / s;
-                    w = (m.m21 - m.m12) * s;
+                    w = (m.a21 - m.a12) * s;
                 }
             }
         }

@@ -38,7 +38,7 @@ private
     import dlib.core.tuple;
 
     import dlib.math.utils;
-    import dlib.math.matrix4x4;
+    import dlib.math.matrix;
 }
 
 public:
@@ -464,19 +464,20 @@ struct Vector(T, int size)
         */
         static if (size == 3 && isFloatingPoint!T)
         {
-            void transform(Matrix4x4!(T) m)
+            deprecated("Vector!(T,size).transform is deprecated, use vector to matrix multiplication instead")
             {
-                m.transform(this);
+                void transform(Matrix!(T,4) m)
+                {
+                    this = this * m;
+                }
             }
 
-           /*
-            * Return transformed copy
-            */
-            @property auto transformed(Matrix4x4!(T) m)
+            deprecated("Vector!(T,size).transformed is deprecated, use vector to matrix multiplication instead")
             {
-                auto res = this;
-                m.transform(res);
-                return res;
+                @property auto transformed(Matrix!(T,4) m)
+                {
+                    return this * m;
+                }
             }
         }
 
@@ -822,3 +823,4 @@ enum AxisVector: Vector3f
     z = Vector3f(0.0f, 0.0f, 1.0f)
 }
 */
+

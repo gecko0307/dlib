@@ -34,6 +34,7 @@ import std.format;
 import std.conv;
 
 import dlib.math.vector;
+import dlib.math.utils;
 
 /*
  * Square (NxN) matrix
@@ -215,12 +216,49 @@ struct Matrix(T, size_t N)
     }
 
    /*
-    * Transform a vector by the matrix
+    * Transform a point by the matrix
     */
-    Vector!(T,N) transform(Vector!(T,N) v)
-    body
+    deprecated("Matrix!(T,N).transform is deprecated, use vector to matrix multiplication instead")
     {
-        return v * this;
+        static if (N == 4)
+        {
+            Vector!(T,3) transform(Vector!(T,3) v)
+            body
+            {
+                return v * this;
+            }
+        }
+    }
+    
+    static if (N == 3 || N == 4)
+    {
+       /*
+        * Rotate a vector by the 3x3 upper-left portion of the matrix
+        */
+        Vector!(T,3) rotate(Vector!(T,3) v) 
+        body
+        {
+            return Vector!(T,3) 
+            (
+                (v.x * a11) + (v.y * a21) + (v.z * a31),
+                (v.x * a12) + (v.y * a22) + (v.z * a32),
+                (v.x * a13) + (v.y * a23) + (v.z * a33)
+            );
+        }
+        
+       /*
+        * Rotate a vector by the inverse 3x3 upper-left portion of the matrix
+        */
+        Vector!(T,3) invRotate(Vector!(T,3) v)
+        body
+        {
+            return Vector!(T,3) 
+            (
+                (v.x * a11) + (v.y * a12) + (v.z * a13),
+                (v.x * a21) + (v.y * a22) + (v.z * a23),
+                (v.x * a31) + (v.y * a32) + (v.z * a33)
+            );
+        }
     }
 
    /* 
@@ -406,6 +444,7 @@ struct Matrix(T, size_t N)
     static if (N == 4)
     {
         bool affine() @property
+        body
         {
             return (a14 == 0.0  
                  && a24 == 0.0
@@ -617,11 +656,13 @@ struct Matrix(T, size_t N)
     static if (N > 1)
     {
         Matrix!(T,N) adjugate() @property
+        body
         {
             return cofactor.transposed;
         }
 
         Matrix!(T,N) cofactor() @property
+        body
         {
             Matrix!(T,N) res;
 
@@ -740,6 +781,49 @@ alias Matrix!(double, 3) Matrix3x3d, Matrix3d;
 alias Matrix!(double, 4) Matrix4x4d, Matrix4d;
 
 /*
+ * Return identity matrix
+ * (deprecated, use Matrix!(T,N).identity instead)
+ */
+deprecated("identityMatrix* functions are deprecated, use Matrix!(T,N).identity instead")
+{
+    Matrix!(T,2) identityMatrix2(T) ()
+    body
+    {
+        return Matrix!(T,2).identity;
+    }
+
+    Matrix!(T,3) identityMatrix3(T) ()
+    body
+    {
+        return Matrix!(T,3).identity;
+    }
+
+    Matrix!(T,4) identityMatrix4(T) ()
+    body
+    {
+        return Matrix!(T,4).identity;
+    }
+
+    alias identityMatrix2!(float) identityMatrix2f;
+    alias identityMatrix2!(double) identityMatrix2d;
+
+    alias identityMatrix3!(float) identityMatrix3f;
+    alias identityMatrix3!(double) identityMatrix3d;
+
+    alias identityMatrix4!(float) identityMatrix4f;
+    alias identityMatrix4!(double) identityMatrix4d;
+
+    alias identityMatrix2x2f = identityMatrix2f;
+    alias identityMatrix2x2d = identityMatrix2d;
+
+    alias identityMatrix3x3f = identityMatrix3f;
+    alias identityMatrix3x3d = identityMatrix3d;
+
+    alias identityMatrix4x4f = identityMatrix4f;
+    alias identityMatrix4x4d = identityMatrix4d;
+}
+
+/*
  * Matrix factory function
  */
 auto matrixf(A...)(A arr)
@@ -749,10 +833,24 @@ auto matrixf(A...)(A arr)
     return Matrix!(float, cast(size_t)sqrt(cast(float)arr.length))([arr]);
 }
 
-// TODO: move this to dlib.math.utils
-bool isPerfectSquare(float n)
+/*
+ * Conversions between 3x3 and 4x4 matrices
+ */
+Matrix!(T,4) matrix3x3to4x4(T) (Matrix!(T,3) m)
 {
-    float r = sqrt(n);
-    return(r * r == n);
+    auto res = Matrix!(T,4).identity;
+    res.a11 = m.a11; res.a12 = m.a12; res.a13 = m.a13;
+    res.a21 = m.a21; res.a22 = m.a22; res.a23 = m.a23;
+    res.a31 = m.a31; res.a32 = m.a32; res.a33 = m.a33;
+    return res;
+}
+
+Matrix!(T,3) matrix4x4to3x3(T) (Matrix!(T,4) m)
+{
+    auto res = Matrix!(T,3).identity;
+    res.a11 = m.a11; res.a12 = m.a12; res.a13 = m.a13;
+    res.a21 = m.a21; res.a22 = m.a22; res.a23 = m.a23;
+    res.a31 = m.a31; res.a32 = m.a32; res.a33 = m.a33;
+    return res;
 }
 
