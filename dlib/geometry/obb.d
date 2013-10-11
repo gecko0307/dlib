@@ -31,8 +31,7 @@ module dlib.geometry.obb;
 private
 {
     import dlib.math.vector;
-    import dlib.math.matrix3x3;
-    import dlib.math.matrix4x4;
+    import dlib.math.matrix;
 }
 
 struct OBB
@@ -42,7 +41,7 @@ struct OBB
     
     this(Vector3f position, Vector3f size)
     {
-        transform = identityMatrix4x4f();
+        transform = Matrix4x4f.identity;
         center = position;
         extent = size;
     }
