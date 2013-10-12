@@ -121,17 +121,13 @@ struct Matrix(T, size_t N)
         {
             auto res = Matrix!(T,N)();
 
-            foreach (y; 0..N)
-            foreach (x; 0..N)
+            foreach (i; 0..N)
+            foreach (j; 0..N)
             {
-                auto i = y * N + x;
-
+                T sumProduct = 0;
                 foreach (k; 0..N)
-                {
-                    auto i1 = y * N + k;
-                    auto i2 = k * N + x;
-                    res.arrayof[i] += arrayof[i1] * mat.arrayof[i2];
-                }
+                    sumProduct += this[i, k] * mat[k, j];
+                res[i, j] = sumProduct;
             }
 
             return res;
