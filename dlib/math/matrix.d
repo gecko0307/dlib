@@ -95,6 +95,29 @@ struct Matrix(T, size_t N)
             return res;
         }
         else
+        static if (N == 4)
+        {       
+            auto res = Matrix!(T,N).identity;
+
+            res.a11 = (a11 * mat.a11) + (a21 * mat.a12) + (a31 * mat.a13);
+            res.a12 = (a12 * mat.a11) + (a22 * mat.a12) + (a32 * mat.a13);
+            res.a13 = (a13 * mat.a11) + (a23 * mat.a12) + (a33 * mat.a13);
+
+            res.a21 = (a11 * mat.a21) + (a21 * mat.a22) + (a31 * mat.a23);
+            res.a22 = (a12 * mat.a21) + (a22 * mat.a22) + (a32 * mat.a23);
+            res.a23 = (a13 * mat.a21) + (a23 * mat.a22) + (a33 * mat.a23);
+
+            res.a31 = (a11 * mat.a31) + (a21 * mat.a32) + (a31 * mat.a33);
+            res.a32 = (a12 * mat.a31) + (a22 * mat.a32) + (a32 * mat.a33);
+            res.a33 = (a13 * mat.a31) + (a23 * mat.a32) + (a33 * mat.a33);
+
+            res.a41 = (a11 * mat.a41) + (a21 * mat.a42) + (a31 * mat.a43) + a41;
+            res.a42 = (a12 * mat.a41) + (a22 * mat.a42) + (a32 * mat.a43) + a42;
+            res.a43 = (a13 * mat.a41) + (a23 * mat.a42) + (a33 * mat.a43) + a43;
+
+            return res;
+        }
+        else
         {
             auto res = Matrix!(T,N)();
 
@@ -285,7 +308,7 @@ struct Matrix(T, size_t N)
     T opIndex(in int index) const
     in
     {
-        assert ((0 <= index) && (index < N), 
+        assert ((0 <= index) && (index < N * N), 
             "Matrix.opIndex(int index): array index out of bounds");
     }
     body
@@ -299,7 +322,7 @@ struct Matrix(T, size_t N)
     T opIndexAssign(in T t, in int index)
     in
     {
-        assert ((0 <= index) && (index < N), 
+        assert ((0 <= index) && (index < N * N), 
             "Matrix.opIndexAssign(T t, int index): array index out of bounds");
     }
     body
@@ -560,7 +583,7 @@ struct Matrix(T, size_t N)
 
                 T oneOverDet = 1.0 / d;
 
-                auto res = Matrix!(T,N)();
+                auto res = Matrix!(T,N).identity;
 
                 res.a11 = ((a22 * a33) - (a23 * a32)) * oneOverDet;
                 res.a12 = ((a13 * a32) - (a12 * a33)) * oneOverDet;
