@@ -9,7 +9,7 @@ Currently dlib contains the following packages:
 
 * dlib.functional - some functional programming idioms (HOFs, combiners, quantifiers, etc.)
 
-* dlib.math - linear algebra (vectors, matrices, quaternions, etc.)
+* dlib.math - linear algebra and numerical analysis (vectors, matrices, quaternions, etc.)
 
 * dlib.geometry - computational geometry (ray casting, primitives, intersection, etc.)
 
