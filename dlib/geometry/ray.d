@@ -116,7 +116,7 @@ struct Ray
             return false;
         }
 
-        Vector3f I = p0 + r * dir; // intersect point of ray and plane
+        Vector3f I = p0 + dir * r; // intersect point of ray and plane
 
         float uu, uv, vv, wu, wv, D;
         uu = dot(u, u);

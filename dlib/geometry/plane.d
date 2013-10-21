@@ -120,7 +120,7 @@ struct Plane
     Vector3f reflect(Vector3f vec)
     {
         float d = distance(vec);
-        return vec + 2 * Vector3f(-x, -y, -z) * d;
+        return vec + Vector3f(-x, -y, -z) * 2 * d;
     }
 
     Vector3f project(Vector3f p)
@@ -163,7 +163,7 @@ struct Plane
             return false;
         }
         float u = -distance(p0) / div;
-        ip = p0 + u * (p1 - p0);
+        ip = p0 + (p1 - p0) * u;
         return true;
     }
 
