@@ -29,9 +29,9 @@ body
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
     {
-        float alpha = ColorRGBAf(img[x, y]).a;
+        float alpha = Color4f(img[x, y]).a;
 
-        ColorRGBAf csum = ColorRGBAf();
+        Color4f csum = Color4f();
 
         foreach(ky; 0..kh)
         foreach(kx; 0..kw)
@@ -48,7 +48,7 @@ body
             // TODO:
             // Wrap
 
-            auto pix = ColorRGBAf(img[ix, iy]);
+            auto pix = Color4f(img[ix, iy]);
             auto k = kernel[kx + ky * kw];
 
             csum += pix * k;
@@ -75,7 +75,11 @@ body
             csum.a = alpha;
 
         res[x,y] = csum.convert(img.bitDepth);
+        
+        img.updateProgress();
     }
+    
+    img.resetProgress();
 
     return res;
 }

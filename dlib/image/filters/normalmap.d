@@ -95,7 +95,11 @@ body
         
         // write result
         res[x, y] = col.convert(img.bitDepth);
+        
+        img.updateProgress();
     }
+    
+    img.resetProgress();
     
     return res;
 }

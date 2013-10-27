@@ -55,18 +55,24 @@ SuperImage contrast(SuperImage a, float k, ContrastMethod method = ContrastMetho
         foreach(x; 0..img.width)
         {
             aver += Color4f(a[x, y]);
+            a.updateProgress();
         }
 
         aver /= (img.height * img.width);
+        
+        a.resetProgress();
     }
 
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
     {
         auto col = Color4f(a[x, y]);
-        col = (k * (col - aver) + aver);
+        col = ((col - aver) * k + aver);
         img[x, y] = col.convert(img.bitDepth);
+        a.updateProgress();
     }
+    
+    a.resetProgress();
 
     return img;
 }

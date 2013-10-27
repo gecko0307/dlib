@@ -46,7 +46,9 @@ body
              total += Color4f(src[x + kx, y], src.bitDepth);
         total /= (radius * 2.0f + 1.0f);
         dest[x, y] = total.convert(src.bitDepth);
+        src.updateProgress();
     }
+    src.resetProgress();
     return dest;
 }
 
@@ -62,7 +64,9 @@ body
              total += Color4f(src[x, y + ky], src.bitDepth);
         total /= (radius * 2.0f + 1.0f);
         dest[x, y] = total.convert(src.bitDepth);
+        src.updateProgress();
     }
+    src.resetProgress();
     return dest;
 }
 

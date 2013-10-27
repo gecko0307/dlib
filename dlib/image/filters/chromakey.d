@@ -66,7 +66,11 @@ SuperImage chromaKey(
             valThres);
 
         res[x, y] = hsva.rgba.convert(img.bitDepth);
+        
+        img.updateProgress();
     }
+    
+    img.resetProgress();
 
     return res;
 }
@@ -107,7 +111,11 @@ body
             valThres);
         
         res[x, y] = hsva.rgba.convert(img.bitDepth);
+        
+        img.updateProgress();
     }
+    
+    img.resetProgress();
     
     return res;
 }

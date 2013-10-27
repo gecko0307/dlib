@@ -104,7 +104,11 @@ body
         }
 
         res[x, y] = Color4(resc.r, resc.g, resc.b, alpha);
+        
+        img.updateProgress();
     }
+    
+    img.resetProgress();
 
     return res;
 }

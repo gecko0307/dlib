@@ -63,6 +63,10 @@ interface SuperImage
     Color4 opIndexAssign(Color4 c, int x, int y);
 
     SuperImage createSameFormat(uint w, uint h);
+
+    @property float progress();
+    void updateProgress();
+    void resetProgress();
 }
 
 class Image(PixelFormat fmt): SuperImage
@@ -137,6 +141,9 @@ class Image(PixelFormat fmt): SuperImage
 
         _pixelSize = (_bitDepth / 8) * _channels;
         _data = new ubyte[_width * _height * _pixelSize];
+        
+        _pixelCost = 1.0f / (_width * _height);
+        _progress = 0.0f;
     }
 
     Color4 opIndex(int x, int y)
@@ -268,6 +275,21 @@ class Image(PixelFormat fmt): SuperImage
 
         return c;
     }
+   
+    @property float progress()
+    {
+        return _progress;
+    }
+    
+    void updateProgress()
+    {
+        _progress += _pixelCost;
+    }
+    
+    void resetProgress()
+    {
+        _progress = 0.0f;
+    }
 
     protected:
 
@@ -277,6 +299,9 @@ class Image(PixelFormat fmt): SuperImage
     uint _channels;
     uint _pixelSize;
     ubyte[] _data;
+    
+    float _pixelCost;
+    shared float _progress;
 }
 
 alias Image!(PixelFormat.L8) ImageL8;

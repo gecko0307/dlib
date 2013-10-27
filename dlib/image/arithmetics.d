@@ -51,7 +51,12 @@ body
         Color4f bcol = Color4f(b[x, y]);
         Color4f col  = acol + (bcol * t);
         img[x, y] = col.convert(img.bitDepth);
+        a.updateProgress();
+        b.updateProgress();
     }
+    
+    a.resetProgress();
+    b.resetProgress();
 
     return img;
 }
@@ -73,7 +78,12 @@ body
         Color4f bcol = Color4f(b[x, y]);
         Color4f col  = acol - (bcol * t);
         img[x, y] = col.convert(img.bitDepth);
+        a.updateProgress();
+        b.updateProgress();
     }
+    
+    a.resetProgress();
+    b.resetProgress();
 
     return img;
 }
@@ -95,7 +105,12 @@ body
         Color4f bcol = Color4f(b[x, y]);
         Color4f col  = acol * (bcol * t);
         img[x, y] = col.convert(img.bitDepth);
+        a.updateProgress();
+        b.updateProgress();
     }
+    
+    a.resetProgress();
+    b.resetProgress();
 
     return img;
 }
@@ -117,7 +132,12 @@ body
         Color4f bcol = Color4f(b[x, y]);
         Color4f col  = acol / (bcol * t);
         img[x, y] = col.convert(img.bitDepth);
+        a.updateProgress();
+        b.updateProgress();
     }
+    
+    a.resetProgress();
+    b.resetProgress();
 
     return img;
 }
@@ -130,7 +150,10 @@ SuperImage invert(SuperImage a)
     foreach(x; 0..img.width)
     {
         img[x, y] = dlib.image.color.invert(a[x, y]);
+        a.updateProgress();
     }
+    
+    a.resetProgress();
 
     return img;
 }
