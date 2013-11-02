@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2013 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
@@ -152,8 +152,49 @@ struct Complex(T)
     string toString()
     {
         auto writer = appender!string();
-        formattedWrite(writer, "[%s, %s]", re, im);
+        formattedWrite(writer, "%s + %si", re, im);
         return writer.data;
     }
 }
 
+T abs(T)(Complex!T x)
+{
+    return sqrt(x.re * x.re + x.im * x.im);
+}
+
+T arg(T)(Complex!T x)
+{
+    return atan2(x.im, x.re);
+}
+
+Complex!T pow(T)(Complex!T x, Complex!T n)
+{
+    T r = abs(x);
+    T t = arg(x);
+    T c = n.re;
+    T d = n.im;
+    
+    Complex!T res;
+    res.re = std.math.pow(r, c) * std.math.exp(-d*t) * cos(c*t + d*log(r));
+    res.im = std.math.pow(r, c) * std.math.exp(-d*t) * sin(c*t + d*log(r));
+
+    return res;
+}
+
+Complex!T exp(T)(Complex!T s)
+{
+    return Complex!T(
+        std.math.exp(s.re) * cos(s.im), 
+        std.math.exp(s.re) * sin(s.im));
+}
+
+/*
+ * Riemann zeta function
+ * ζ(s) = 1/1^s + 1/2^s + 1/3^s + ...
+ */
+Complex!T zeta(T)(Complex!T s)
+{
+    return Complex!T(1.0) +
+        (s + Complex!T(3.0)) / (s - Complex!T(1.0)) *
+        Complex!T(1.0) / pow(Complex!T(2.0), s + Complex!T(1.0));
+}
