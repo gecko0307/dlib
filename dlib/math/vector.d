@@ -513,10 +513,10 @@ struct Vector(T, int size)
 
         static if (s.length == 1)
         {
-            enum res = arrayof[["x":0, "y":1, "z":2, "w":3,
-                                "r":0, "g":1, "b":2, "a":3,
-                                "s":0, "t":1, "p":2, "q":3][s]];
-            return res;
+            enum i = ["x":0, "y":1, "z":2, "w":3,
+                      "r":0, "g":1, "b":2, "a":3,
+                      "s":0, "t":1, "p":2, "q":3][s];
+            return arrayof[i];
         }
         else
         {
