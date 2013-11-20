@@ -572,7 +572,7 @@ struct Vector(T, int size)
 /*
  * Dot product
  */
-T dot(T, int size) (Vector!(T,size) a, Vector!(T,size) b) if (size == 2)
+T dot(T, int size) (Vector!(T,size) a, Vector!(T,size) b)
 body
 {
     static if (size == 1)
