@@ -575,23 +575,28 @@ struct Vector(T, int size)
 T dot(T, int size) (Vector!(T,size) a, Vector!(T,size) b) if (size == 2)
 body
 {
-    return ((a.x * b.x) + (a.y * b.y));
-}
-
-T dot(T, int size) (Vector!(T,size) a, Vector!(T,size) b) if (size == 3)
-body
-{
-    return ((a.x * b.x) + (a.y * b.y) + (a.z * b.z));
-}
-
-T dot(T, int size) (Vector!(T,size) a, Vector!(T,size) b) if (size != 3)
-body
-{
-    T d = 0;
-    //foreach (i; 0..size)
-    foreach(i; RangeTuple!(0, size))
-        d += a[i] * b[i];
-    return d;
+    static if (size == 1)
+    {
+        return a.x * b.x;
+    }
+    else
+    static if (size == 2)
+    {
+        return ((a.x * b.x) + (a.y * b.y));
+    }
+    else
+    static if (size == 3)
+    {
+        return ((a.x * b.x) + (a.y * b.y) + (a.z * b.z));
+    }
+    else
+    {
+        T d = 0;
+        //foreach (i; 0..size)
+        foreach(i; RangeTuple!(0, size))
+            d += a[i] * b[i];
+        return d;
+    }
 }
 
 /*
