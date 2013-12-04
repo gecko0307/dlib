@@ -184,13 +184,14 @@ final class Lexer
     {
         foreach(v; list)
         {
-            dstring forward = getForward(start,v.length);
-            if (forward == v) return forward;
+            dstring forward = getForward(start, v.length);
+            if (forward == v)
+                return forward;
         }
         return "";
     }
 
-    dstring getForward(size_t position, int num)
+    dstring getForward(size_t position, size_t num)
     {
         if (position + num < source.length)
              return source[position..position+num];

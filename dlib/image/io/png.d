@@ -361,7 +361,7 @@ body
     void writeChunk(ubyte[4] chunkType, ubyte[] chunkData)
     {
         PNGChunk hdrChunk;
-        hdrChunk.length = networkByteOrder(chunkData.length);
+        hdrChunk.length = networkByteOrder(cast(uint)chunkData.length);
         hdrChunk.type = chunkType;
         hdrChunk.data = chunkData;
         hdrChunk.crc = networkByteOrder(crc32(chunkType ~ hdrChunk.data));
@@ -439,7 +439,7 @@ pure ubyte paeth(ubyte a, ubyte b, ubyte c)
 ubyte[] filter(SuperImage img, ubyte[] ibuffer)
 {
     ubyte[] tmp = ibuffer;
-    uint dataSize = tmp.length;
+    uint dataSize = cast(uint)tmp.length;
     if (dataSize != img.width * img.height * img.channels + img.height)
     {
         writeln("PNG error: image size and data mismatch");

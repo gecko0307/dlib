@@ -43,8 +43,7 @@ struct ZlibDecodeStream
         result.dest = dest;
 
         result.zlibStream.next_out = dest.ptr;
-        result.zlibStream.avail_out = dest.length;
-        result.zlibStream.avail_out = dest.length;
+        result.zlibStream.avail_out = cast(uint)dest.length;
         result.zlibStream.data_type = Z_BINARY;
 
         return result;
@@ -58,7 +57,7 @@ struct ZlibDecodeStream
     void opCall(ubyte[] input)
     {
         zlibStream.next_in = input.ptr;
-        zlibStream.avail_in = input.length;
+        zlibStream.avail_in = cast(uint)input.length;
 
         if (!isInitialized)
         {
@@ -91,7 +90,7 @@ struct ZlibDecodeStream
             {
                 dest.length = dest.length * 2;
                 zlibStream.next_out = &dest[dest.length / 2];
-                zlibStream.avail_out = dest.length / 2;
+                zlibStream.avail_out = cast(uint)(dest.length / 2);
             }
         }
     }

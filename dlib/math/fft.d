@@ -49,7 +49,7 @@ void fastFourierTransform(Complex!(float)[] data, bool forward)
             data[target] = data[pos];
             data[pos] = temp;
         }
-        uint mask = data.length;
+        uint mask = cast(uint)data.length;
         while (target & (mask >>= 1))
             target &= ~mask;
         target |= mask;
