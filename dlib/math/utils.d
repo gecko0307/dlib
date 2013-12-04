@@ -225,3 +225,10 @@ void swap(T)(T* a, T* b)
     *a = *b;
     *b = c;
 }
+
+bool isPerfectSquare(float n)
+{
+    float r = sqrt(n);
+    return(r * r == n);
+}
+
