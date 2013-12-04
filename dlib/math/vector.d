@@ -188,6 +188,19 @@ struct Vector(T, int size)
     }
 
    /*
+    * T * Vector!(T,size)
+    */
+    Vector!(T,size) opBinaryRight(string op) (T t) if (op == "*" && isNumeric!T)
+    body
+    {
+        Vector!(T,size) res;
+        //foreach(i; 0..size)
+        foreach(i; RangeTuple!(0, size))
+            res.arrayof[i] = cast(T)(arrayof[i] * t);
+        return res;
+    }
+
+   /*
     * Vector!(T,size) / T
     */
     Vector!(T,size) opDiv (T t)
