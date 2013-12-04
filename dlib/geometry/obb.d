@@ -32,6 +32,7 @@ private
 {
     import dlib.math.vector;
     import dlib.math.matrix;
+    import dlib.math.affine;
 }
 
 struct OBB
@@ -56,7 +57,10 @@ struct OBB
         Vector3f center(Vector3f v)
         body
         {
-            transform.translation = v;
+            //transform.translation = v;
+            transform.a41 = v.x;
+            transform.a42 = v.y;
+            transform.a43 = v.z;
             return v;
         }
     }

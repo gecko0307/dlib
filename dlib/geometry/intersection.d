@@ -33,6 +33,7 @@ private
     import std.math;
     import dlib.math.vector;
     import dlib.math.utils;
+    import dlib.math.affine;
     import dlib.geometry.sphere;
     import dlib.geometry.plane;
     import dlib.geometry.triangle;
@@ -125,7 +126,7 @@ void measureSphereAndTriEdge(
         dir *= (1.0f / edgeLen);
     Vector3f vert2Point = center - tri.v[whichVert0];
     float dot = dir.dot(vert2Point);
-    Vector3f project = tri.v[whichVert0] + dot * dir;
+    Vector3f project = tri.v[whichVert0] + dir * dot;
     if (dot > 0.0f && dot < edgeLen)
     {
         Vector3f diff = center - project;
@@ -212,39 +213,39 @@ Intersection intrSphereVsOBB(ref Sphere s, ref OBB b)
     Vector3f relativeCenter = s.center - b.transform.translation;
     relativeCenter = b.transform.invRotate(relativeCenter);
     
-	if (abs(relativeCenter.x) - s.radius > b.extent.x ||
-	    abs(relativeCenter.y) - s.radius > b.extent.y ||
-	    abs(relativeCenter.z) - s.radius > b.extent.z)
-		return intr;
-        
-	Vector3f closestPt = Vector3f(0.0f, 0.0f, 0.0f);
-	float distance;
-
-	distance = relativeCenter.x;
-	if (distance >  b.extent.x)	distance =  b.extent.x;
-	if (distance < -b.extent.x)	distance = -b.extent.x;
-	closestPt.x = distance;
-    
-	distance = relativeCenter.y;
-	if (distance >  b.extent.y)	distance =  b.extent.y;
-	if (distance < -b.extent.y)	distance = -b.extent.y;
-	closestPt.y = distance;
-    
-	distance = relativeCenter.z;
-	if (distance >  b.extent.z)	distance =  b.extent.z;
-	if (distance < -b.extent.z)	distance = -b.extent.z;
-	closestPt.z = distance;
-    
-	float distanceSqr = (closestPt - relativeCenter).lengthsqr;
-	if (distanceSqr > s.radius * s.radius) 
+    if (abs(relativeCenter.x) - s.radius > b.extent.x ||
+        abs(relativeCenter.y) - s.radius > b.extent.y ||
+        abs(relativeCenter.z) - s.radius > b.extent.z)
         return intr;
         
-	Vector3f closestPointWorld = b.transform.transform(closestPt);
+    Vector3f closestPt = Vector3f(0.0f, 0.0f, 0.0f);
+    float distance;
+
+    distance = relativeCenter.x;
+    if (distance >  b.extent.x) distance =  b.extent.x;
+    if (distance < -b.extent.x) distance = -b.extent.x;
+    closestPt.x = distance;
+    
+    distance = relativeCenter.y;
+    if (distance >  b.extent.y) distance =  b.extent.y;
+    if (distance < -b.extent.y) distance = -b.extent.y;
+    closestPt.y = distance;
+    
+    distance = relativeCenter.z;
+    if (distance >  b.extent.z) distance =  b.extent.z;
+    if (distance < -b.extent.z) distance = -b.extent.z;
+    closestPt.z = distance;
+    
+    float distanceSqr = (closestPt - relativeCenter).lengthsqr;
+    if (distanceSqr > s.radius * s.radius) 
+    return intr;
+        
+    Vector3f closestPointWorld = closestPt * b.transform;
     
     intr.fact = true;
-	intr.normal	= -(closestPointWorld - s.center).normalized;
-	intr.point = closestPointWorld;
-	intr.penetrationDepth = s.radius - sqrt(distanceSqr);
+    intr.normal = -(closestPointWorld - s.center).normalized;
+    intr.point = closestPointWorld;
+    intr.penetrationDepth = s.radius - sqrt(distanceSqr);
     
     return intr;
 }
