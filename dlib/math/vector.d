@@ -46,8 +46,18 @@ public:
 struct Vector(T, int size)
 {
     public:
+    
+    this (V)(V v)
+    {           
+        if (v.arrayof.length >= size)
+            foreach(i; 0..size)
+                arrayof[i] = v.arrayof[i];       
+        else
+            foreach(i; 0..v.arrayof.length)
+                arrayof[i] = v.arrayof[i];
+    }
 
-    this (T[] components...) 
+    this (F)(F[] components...) if (isNumeric!F)
     {        
         if (components.length >= size)
             foreach(i; 0..size)
@@ -57,13 +67,13 @@ struct Vector(T, int size)
                 arrayof[i] = components[i];
     }
 
-    this (T[size] components) 
+    this (F)(F[size] components) if (isNumeric!F)
     {
         foreach(i; 0..size)
             arrayof[i] = components[i]; 
     }
 
-    this (Vector v)
+    void opAssign(int size2)(Vector!(T,size2) v)
     {           
         if (v.arrayof.length >= size)
             foreach(i; 0..size)
