@@ -72,7 +72,7 @@ struct Color4f
     {
         vec = c.vec;
     }
-    
+
     this(Vector4f v)
     {
         vec = v;
@@ -91,6 +91,12 @@ struct Color4f
     static Color4f opCall()
     {
         return Color4f(0.0f, 0.0f, 0.0f, 0.0f);
+    }
+
+    Color4f opAssign(Vector4f v)
+    {
+        vec = v;
+        return this;
     }
 
     Color4 convert(int bitDepth)

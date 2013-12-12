@@ -55,20 +55,20 @@ body
 
     uint kw = 3, kh = 3;
 
-    ushort maxChV = cast(ushort)((2 ^^ img.bitDepth) - 1);
+    //ushort maxChV = cast(ushort)((2 ^^ img.bitDepth) - 1);
 
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
     {
-        auto alpha = img[x, y].a;
+        //auto alpha = img[x, y].a;
 
         static if (op == MorphOperation.Dilate)
         {
-            Color4 resc = Color4(0, 0, 0, maxChV);
+            Color4f resc = Color4f(0, 0, 0, 1); //maxChV
         }
         static if (op == MorphOperation.Erode)
         {
-            Color4 resc = img[x, y];
+            Color4f resc = Color4f(img[x, y]);
         }
 
         foreach(ky; 0..kh)
@@ -86,7 +86,7 @@ body
             // TODO:
             // Wrap
 
-            auto pix = img[ix, iy];
+            auto pix = Color4f(img[ix, iy]);
 
             auto fpix = Color4f(pix);
             auto fresc = Color4f(resc);
@@ -103,7 +103,7 @@ body
             }
         }
 
-        res[x, y] = Color4(resc.r, resc.g, resc.b, alpha);
+        res[x, y] = resc.convert(img.bitDepth); //Color4f(resc.r, resc.g, resc.b, alpha);
         
         img.updateProgress();
     }
