@@ -28,26 +28,108 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.functional.range;
 
-pure T[] range(T) (T minb, T maxb)
-in
+auto range(T)(T start, T end, T step = 1)
 {
-    assert (minb < maxb);
-}
-body
-{
-    T[] r = new T[maxb - minb];
-    foreach(i, v; r) r[i] = minb + i;
-    return r;
+    struct ResultRange
+    {
+        bool empty = false;
+        T front;
+        T back;
+
+        T start;
+        T end;
+        T step;
+
+        this(T start, T end, T step = 1)
+        {
+            this.start = start;
+            this.end = end;
+            this.step = step;
+
+            front = start;
+            back = end;
+        }
+
+        void popFront()
+        {
+            front += step;
+            if (front >= end)
+                empty = true;
+        }
+
+        void popBack()
+        {
+            back -= step;
+            if (back <= start)
+                empty = true;
+        }
+    }
+
+    return ResultRange(start, end, step);
 }
 
-pure T[] range(T) (T maxb)
-in
+auto map(alias func, Range)(Range r)
 {
-    assert (0 < maxb);
+    struct ResultRange
+    {
+        Range input;
+        alias input this;
+
+        typeof(input.front) front;
+ 
+        this(Range r)
+        {
+            input = r;
+            front = func(input.front);
+        }
+        
+        void popFront()
+        {
+            if (!input.empty)
+            {
+                input.popFront();
+                front = func(input.front);
+            }
+        }
+    }
+    
+    return ResultRange(r);
 }
-body
+
+auto filter(alias pred, Range)(Range r)
 {
-    T[] r = new T[maxb];
-    foreach(i, v; r) r[i] = i;
-    return r;
+    struct ResultRange
+    {
+        Range input;
+        alias input this;
+ 
+        this(Range r)
+        {
+            input = r;
+            while (!input.empty && !pred(input.front))
+                input.popFront();
+        }
+        
+        void popFront()
+        {
+            do
+            {
+                input.popFront();
+            }
+            while (!input.empty && !pred(input.front));
+        }
+    }
+    
+    return ResultRange(r);
 }
+
+alias where = filter;
+
+auto reduce(alias func, Range)(Range r)
+{
+    typeof(r.front) res = 0;
+    foreach(v; r)
+        res = func(res, v);
+    return res;
+}
+

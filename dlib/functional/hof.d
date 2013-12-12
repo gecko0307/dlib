@@ -28,73 +28,8 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.functional.hof;
 
-T apply(T, S...) (T delegate(S) func, S s)
-{
-    return func(s);
-}
-
-T map(T) (T val, T delegate(T) exp)
-{
-    return exp(val);
-}
-
-T[] map(T) (T[] val, T delegate(T) exp)
-{
-    foreach(ref v; val)
-        v = exp(v);
-    return val;
-}
-
-T[] map(T) (T[] val, void delegate(ref T) exp)
-{
-    foreach(ref v; val)
-        exp(v);
-    return val;
-}
-
-void forEvery(T) (T[] val, void delegate(T) exp)
-{
-    foreach(v; val)
-        exp(v);
-}
-
-T[] filter(T) (T[] arr, bool delegate(T i) func)
-{
-    auto newArr = arr.dup;
-    size_t j = 0;
-    arr.map((ref T v) 
-    {  
-        if (func(v)) 
-        { 
-            newArr[j] = v; 
-            j++; 
-        } 
-    });
-    newArr.length = j;
-    return newArr;
-}
-
-alias filter where;
-
-template Operator(T)
-{
-    alias T delegate(T, T) Operator;
-}
-
-T reduce(T) (in T[] numbers, T delegate(T, T) func)
-{
-    T res = 0;
-    foreach(n; numbers)
-        res = func(res, n);
-    return res;
-}
-
 T delegate(S) compose(T, U, S)(T function(U) f, U function(S) g) 
 {
     return (S s) => f(g(s));
 }
 
-T delegate(S) compose(T, U, S)(T delegate(U) f, U delegate(S) g) 
-{
-    return (S s) => f(g(s));
-}
