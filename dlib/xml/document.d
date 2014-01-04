@@ -78,7 +78,7 @@ final class XmlDocument
 
     this(string text)
     {
-        this(text.toUTF32[1..$]);
+        this(text.toUTF32);
     }
     
     this(dstring text)
@@ -423,7 +423,7 @@ int hexCharacterCode(dstring input)
 
 /+
     // usage:
-    XmlDocument doc = new XmlDocument(readText("test1.xml").toUTF32[1..$]);
+    XmlDocument doc = new XmlDocument(readText("test1.xml"));
     auto b = doc.rootNode.getChildByName("b");
     if (b)
     {
