@@ -28,44 +28,44 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.functional.range;
 
-auto range(T)(T start, T end, T step = 1)
+struct Range(T)
 {
-    struct ResultRange
+    bool empty = false;
+    T front;
+    T back;
+
+    T start;
+    T end;
+    T step;
+
+    this(T start, T end, T step = 1)
     {
-        bool empty = false;
-        T front;
-        T back;
+        this.start = start;
+        this.end = end;
+        this.step = step;
 
-        T start;
-        T end;
-        T step;
-
-        this(T start, T end, T step = 1)
-        {
-            this.start = start;
-            this.end = end;
-            this.step = step;
-
-            front = start;
-            back = end;
-        }
-
-        void popFront()
-        {
-            front += step;
-            if (front >= end)
-                empty = true;
-        }
-
-        void popBack()
-        {
-            back -= step;
-            if (back <= start)
-                empty = true;
-        }
+        front = start;
+        back = end;
     }
 
-    return ResultRange(start, end, step);
+    void popFront()
+    {
+        front += step;
+        if (front >= end)
+            empty = true;
+    }
+
+    void popBack()
+    {
+        back -= step;
+        if (back <= start)
+            empty = true;
+    }
+}
+
+auto range(T)(T start, T end, T step = 1)
+{
+    return Range!(T)(start, end, step);
 }
 
 auto map(alias func, Range)(Range r)
