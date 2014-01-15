@@ -57,6 +57,14 @@ struct ColorHSVAf
         float[4] arrayof;
     }
     
+    this(float h, float s, float v, float a)
+    {
+        this.h = h;
+        this.s = s;
+        this.v = v;
+        this.a = a;
+    }
+    
     this(Color4f c)
     {
         a = c.a;
@@ -189,3 +197,7 @@ struct ColorHSVAf
     }
 }
 
+Color4f hsv(float h, float s, float v, float a = 1.0f)
+{
+    return ColorHSVAf(h, s, v, a).rgba;
+}
