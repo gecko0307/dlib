@@ -31,6 +31,7 @@ module dlib.image.image;
 private
 {
     import std.conv;
+    import dlib.functional.range;
     import dlib.math.vector;
     import dlib.image.color;
 }
@@ -47,7 +48,7 @@ enum PixelFormat
     RGBA16
 }
 
-interface SuperImage
+abstract class SuperImage
 {
     @property uint width();
     @property uint height();
@@ -67,55 +68,65 @@ interface SuperImage
     @property float progress();
     void updateProgress();
     void resetProgress();
+    
+    @property auto row()
+    {
+        return range!uint(0, width);
+    }
+    
+    @property auto col()
+    {
+        return range!uint(0, height);
+    }
 }
 
 class Image(PixelFormat fmt): SuperImage
 {
     public:
 
-    @property uint width()
+    override @property uint width()
     {
         return _width;
     }
 
-    @property uint height()
+    override @property uint height()
     {
         return _height;
     }
 
-    @property uint bitDepth()
+    override @property uint bitDepth()
     {
         return _bitDepth;
     }
 
-    @property uint channels()
+    override @property uint channels()
     {
         return _channels;
     }
 
-    @property uint pixelSize()
+    override @property uint pixelSize()
     {
         return _pixelSize;
     }
 
-    @property PixelFormat pixelFormat()
+    override @property PixelFormat pixelFormat()
     {
         return fmt;
     }
 
-    @property ref ubyte[] data()
+    override @property ref ubyte[] data()
     {
         return _data;
     }
 
-    @property Image!(fmt) dup()
+    override @property Image!(fmt) dup()
     {
         auto res = new Image!(fmt)(_width, _height);
         res.data = _data.dup;
         return res;
     }
 
-    SuperImage createSameFormat(uint w, uint h)
+    override SuperImage createSameFormat(uint w, uint h)
     {
         return new Image!(fmt)(w, h);
     }
@@ -146,7 +157,7 @@ class Image(PixelFormat fmt): SuperImage
         _progress = 0.0f;
     }
 
-    Color4 opIndex(int x, int y)
+    override Color4 opIndex(int x, int y)
     {
         while(x >= width) x = width-1;
         while(y >= height) y = height-1;
@@ -205,7 +216,7 @@ class Image(PixelFormat fmt): SuperImage
         }
     }
 
-    Color4 opIndexAssign(Color4 c, int x, int y)
+    override Color4 opIndexAssign(Color4 c, int x, int y)
     {
         while(x >= width) x = width-1;
         while(y >= height) y = height-1;
@@ -276,17 +287,17 @@ class Image(PixelFormat fmt): SuperImage
         return c;
     }
    
-    @property float progress()
+    override @property float progress()
     {
         return _progress;
     }
     
-    void updateProgress()
+    override void updateProgress()
     {
         _progress += _pixelCost;
     }
     
-    void resetProgress()
+    override void resetProgress()
     {
         _progress = 0.0f;
     }
@@ -309,8 +320,53 @@ alias Image!(PixelFormat.LA8) ImageLA8;
 alias Image!(PixelFormat.RGB8) ImageRGB8;
 alias Image!(PixelFormat.RGBA8) ImageRGBA8;
 
-alias Image!(PixelFormat.L8) ImageL16;
-alias Image!(PixelFormat.LA8) ImageLA16;
-alias Image!(PixelFormat.RGB8) ImageRGB16;
-alias Image!(PixelFormat.RGBA8) ImageRGBA16;
+alias Image!(PixelFormat.L16) ImageL16;
+alias Image!(PixelFormat.LA16) ImageLA16;
+alias Image!(PixelFormat.RGB16) ImageRGB16;
+alias Image!(PixelFormat.RGBA16) ImageRGBA16;
 
+/*
+ * All-in-one image factory
+ */
+SuperImage image(uint w, uint h, uint channels = 3, uint bitDepth = 8)
+in
+{
+    assert(channels > 0 && channels <= 4);
+    assert(bitDepth == 8 || bitDepth == 16);
+}
+body
+{
+    switch(channels)
+    {
+        case 1:
+        {
+            if (bitDepth == 8)
+                return new ImageL8(w, h);
+            else
+                return new ImageL16(w, h);
+        }
+        case 2:
+        {
+            if (bitDepth == 8)
+                return new ImageLA8(w, h);
+            else
+                return new ImageLA16(w, h);
+        }
+        case 3:
+        {
+            if (bitDepth == 8)
+                return new ImageRGB8(w, h);
+            else
+                return new ImageRGB16(w, h);
+        }
+        case 4:
+        {
+            if (bitDepth == 8)
+                return new ImageRGBA8(w, h);
+            else
+                return new ImageRGBA16(w, h);
+        }
+        default:
+            assert(0);
+    }
+}
