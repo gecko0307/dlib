@@ -62,6 +62,7 @@ abstract class SuperImage
 
     Color4 opIndex(int x, int y);
     Color4 opIndexAssign(Color4 c, int x, int y);
+    Color4f opIndexAssign(Color4f c, int x, int y);
 
     SuperImage createSameFormat(uint w, uint h);
 
@@ -284,6 +285,12 @@ class Image(PixelFormat fmt): SuperImage
             assert (0, "Image.opIndexAssign is not implemented for PixelFormat." ~ to!string(fmt));
         }
 
+        return c;
+    }
+    
+    override Color4f opIndexAssign(Color4f c, int x, int y)
+    {
+        opIndexAssign(c.convert(_bitDepth), x, y);
         return c;
     }
    
