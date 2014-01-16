@@ -94,7 +94,7 @@ body
                     if (iy < 0) iy = 0;
                     if (iy >= img.height) iy = img.height - 1;
 
-                    auto col = Color4f(img[ix, iy]);
+                    auto col = img[ix, iy];
 
                     float k1 = bicubic(dy - cast(float)ky);
                     float k2 = k1 * bicubic(cast(float)kx - dx);
@@ -103,7 +103,7 @@ body
                 }
             }
 
-            res[x, y] = colSum.convert(res.bitDepth);
+            res[x, y] = colSum;
         }
     }
 

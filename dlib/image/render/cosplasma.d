@@ -46,8 +46,7 @@ body
     foreach (x; 0..img.width)
     {
         float value = 0.5f + 0.25f * cos(x * factor) + 0.25f * cos(y * factor);
-        auto col = Color4f(value, value, value);
-        img[x, y] = col.convert(img.bitDepth);
+        img[x, y] = Color4f(value, value, value);
     }
 
     return img;

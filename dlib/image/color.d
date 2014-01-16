@@ -123,6 +123,15 @@ struct Color4f
             vec.arrayof[2] * 0.11f
         );
     }
+
+    @property Color4f inverse()
+    {
+        return Color4f(
+            1.0f - vec.r,
+            1.0f - vec.g,
+            1.0f - vec.b, 
+            vec.a);
+    }
 }
 
 Color4f packNormal(Vector3f n)

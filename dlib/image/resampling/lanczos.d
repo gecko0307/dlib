@@ -102,7 +102,7 @@ body
                 colSum /= kSum;
 
             //colSum.clamp(0.0f, 1.0f);
-            res[x, y] = colSum.convert(res.bitDepth);
+            res[x, y] = colSum;
         }
     }
 

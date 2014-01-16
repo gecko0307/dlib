@@ -43,9 +43,9 @@ body
     {
         Color4f total = Color4f(0.0f, 0.0f, 0.0f, 1.0f);
         for (int kx = -radius; kx <= radius; ++kx)
-             total += Color4f(src[x + kx, y], src.bitDepth);
+             total += src[x + kx, y];
         total /= (radius * 2.0f + 1.0f);
-        dest[x, y] = total.convert(src.bitDepth);
+        dest[x, y] = total;
         src.updateProgress();
     }
     src.resetProgress();
@@ -61,9 +61,9 @@ body
     {
         Color4f total = Color4f(0.0f, 0.0f, 0.0f, 1.0f);
         for (int ky = -radius; ky <= radius; ++ky)
-             total += Color4f(src[x, y + ky], src.bitDepth);
+             total += src[x, y + ky];
         total /= (radius * 2.0f + 1.0f);
-        dest[x, y] = total.convert(src.bitDepth);
+        dest[x, y] = total;
         src.updateProgress();
     }
     src.resetProgress();

@@ -61,14 +61,14 @@ body
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
     {       
-        sobelTaps[0] = Color4f(img[x-1, y-1])[channel];
-        sobelTaps[1] = Color4f(img[x,   y-1])[channel];
-        sobelTaps[2] = Color4f(img[x+1, y-1])[channel];
-        sobelTaps[3] = Color4f(img[x-1, y+1])[channel];
-        sobelTaps[4] = Color4f(img[x,   y+1])[channel];
-        sobelTaps[5] = Color4f(img[x+1, y+1])[channel];
-        sobelTaps[6] = Color4f(img[x-1, y  ])[channel];
-        sobelTaps[7] = Color4f(img[x+1, y  ])[channel];
+        sobelTaps[0] = img[x-1, y-1][channel];
+        sobelTaps[1] = img[x,   y-1][channel];
+        sobelTaps[2] = img[x+1, y-1][channel];
+        sobelTaps[3] = img[x-1, y+1][channel];
+        sobelTaps[4] = img[x,   y+1][channel];
+        sobelTaps[5] = img[x+1, y+1][channel];
+        sobelTaps[6] = img[x-1, y  ][channel];
+        sobelTaps[7] = img[x+1, y  ][channel];
             
         float dx, dy;
         
@@ -94,7 +94,7 @@ body
         col.a = 1.0f;
         
         // write result
-        res[x, y] = col.convert(img.bitDepth);
+        res[x, y] = col;
         
         img.updateProgress();
     }

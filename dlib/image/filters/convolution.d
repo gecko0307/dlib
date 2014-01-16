@@ -74,7 +74,7 @@ body
         if (!useAlpha)
             csum.a = alpha;
 
-        res[x,y] = csum.convert(img.bitDepth);
+        res[x,y] = csum;
         
         img.updateProgress();
     }

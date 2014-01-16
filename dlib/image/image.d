@@ -60,8 +60,7 @@ abstract class SuperImage
 
     @property SuperImage dup();
 
-    Color4 opIndex(int x, int y);
-    Color4 opIndexAssign(Color4 c, int x, int y);
+    Color4f opIndex(int x, int y);
     Color4f opIndexAssign(Color4f c, int x, int y);
 
     SuperImage createSameFormat(uint w, uint h);
@@ -158,7 +157,7 @@ class Image(PixelFormat fmt): SuperImage
         _progress = 0.0f;
     }
 
-    override Color4 opIndex(int x, int y)
+    private Color4 getPixel(int x, int y)
     {
         while(x >= width) x = width-1;
         while(y >= height) y = height-1;
@@ -217,7 +216,7 @@ class Image(PixelFormat fmt): SuperImage
         }
     }
 
-    override Color4 opIndexAssign(Color4 c, int x, int y)
+    private Color4 setPixel(Color4 c, int x, int y)
     {
         while(x >= width) x = width-1;
         while(y >= height) y = height-1;
@@ -287,10 +286,15 @@ class Image(PixelFormat fmt): SuperImage
 
         return c;
     }
+
+    override Color4f opIndex(int x, int y)
+    {
+        return Color4f(getPixel(x, y));
+    }
     
     override Color4f opIndexAssign(Color4f c, int x, int y)
     {
-        opIndexAssign(c.convert(_bitDepth), x, y);
+        setPixel(c.convert(_bitDepth), x, y);
         return c;
     }
    

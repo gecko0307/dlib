@@ -52,7 +52,7 @@ SuperImage chromaKey(
     foreach(x; 0..img.width)
     foreach(y; 0..img.height)
     {
-        Color4f col = Color4f(res[x, y]);
+        Color4f col = res[x, y];
         ColorHSVAf hsva = ColorHSVAf(col);
         
         hsva.selectiveScale(
@@ -65,7 +65,7 @@ SuperImage chromaKey(
             satThres,
             valThres);
 
-        res[x, y] = hsva.rgba.convert(img.bitDepth);
+        res[x, y] = hsva.rgba;
         
         img.updateProgress();
     }
@@ -98,7 +98,7 @@ body
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
     {
-        Color4f col = Color4f(res[x, y]);
+        Color4f col = res[x, y];
         ColorHSVAf hsva = ColorHSVAf(col);
         hsva.selectiveScale(
             hue, 
@@ -110,7 +110,7 @@ body
             satThres, 
             valThres);
         
-        res[x, y] = hsva.rgba.convert(img.bitDepth);
+        res[x, y] = hsva.rgba;
         
         img.updateProgress();
     }

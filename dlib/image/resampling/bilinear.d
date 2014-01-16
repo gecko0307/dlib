@@ -73,10 +73,10 @@ body
         one_minus_x = 1.0f - fraction_x;
         one_minus_y = 1.0f - fraction_y;
 
-        c1 = Color4f(img[floor_x, floor_y]);
-        c2 = Color4f(img[ceil_x,  floor_y]);
-        c3 = Color4f(img[floor_x, ceil_y]);
-        c4 = Color4f(img[ceil_x,  ceil_y]);
+        c1 = img[floor_x, floor_y];
+        c2 = img[ceil_x,  floor_y];
+        c3 = img[floor_x, ceil_y];
+        c4 = img[ceil_x,  ceil_y];
 
         // Red
         b1 = one_minus_x * c1.r + fraction_x * c2.r;
@@ -98,7 +98,7 @@ body
         b2 = one_minus_x * c3.a + fraction_x * c4.a;
         col.a = one_minus_y * b1 + fraction_y * b2;
 
-        res[x, y] = col.convert(res.bitDepth);
+        res[x, y] = col;
     }
 
     return res;

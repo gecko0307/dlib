@@ -68,7 +68,7 @@ SuperImage contrast(SuperImage a, float k, ContrastMethod method = ContrastMetho
     {
         auto col = Color4f(a[x, y]);
         col = ((col - aver) * k + aver);
-        img[x, y] = col.convert(img.bitDepth);
+        img[x, y] = col;
         a.updateProgress();
     }
     

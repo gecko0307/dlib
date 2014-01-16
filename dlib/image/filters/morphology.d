@@ -68,7 +68,7 @@ body
         }
         static if (op == MorphOperation.Erode)
         {
-            Color4f resc = Color4f(img[x, y]);
+            Color4f resc = img[x, y];
         }
 
         foreach(ky; 0..kh)
@@ -86,24 +86,21 @@ body
             // TODO:
             // Wrap
 
-            auto pix = Color4f(img[ix, iy]);
-
-            auto fpix = Color4f(pix);
-            auto fresc = Color4f(resc);
+            auto pix = img[ix, iy];
 
             static if (op == MorphOperation.Dilate)
             {
-                if (fpix > fresc)
+                if (pix > resc)
                     resc = pix;
             }
             static if (op == MorphOperation.Erode)
             {
-                if (fpix < fresc) 
+                if (pix < resc) 
                     resc = pix;
             }
         }
 
-        res[x, y] = resc.convert(img.bitDepth); //Color4f(resc.r, resc.g, resc.b, alpha);
+        res[x, y] = resc; //Color4f(resc.r, resc.g, resc.b, alpha);
         
         img.updateProgress();
     }
