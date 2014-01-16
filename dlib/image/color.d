@@ -132,6 +132,16 @@ struct Color4f
             1.0f - vec.b, 
             vec.a);
     }
+
+    @property Color4f clamped(float minv, float maxv)
+    {
+        return Color4f(
+            vec.r.clamp(minv, maxv),
+            vec.g.clamp(minv, maxv),
+            vec.b.clamp(minv, maxv),
+            vec.a.clamp(minv, maxv)
+        );
+    }
 }
 
 Color4f packNormal(Vector3f n)

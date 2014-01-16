@@ -45,7 +45,8 @@ enum PixelFormat
     L16,
     LA16,
     RGB16,
-    RGBA16
+    RGBA16,
+    RGBA_FLOAT
 }
 
 abstract class SuperImage
@@ -166,6 +167,8 @@ class Image(PixelFormat fmt): SuperImage
 
         auto index = (y * _width + x) * _pixelSize;
 
+        auto maxv = (2 ^^ bitDepth) - 1;
+
         static if (fmt == PixelFormat.L8)
         {
             auto v = _data[index];
@@ -178,7 +181,7 @@ class Image(PixelFormat fmt): SuperImage
         }
         else if (fmt == PixelFormat.RGB8)
         {
-            return Color4(_data[index], _data[index+1], _data[index+2]);
+            return Color4(_data[index], _data[index+1], _data[index+2], cast(ubyte)maxv);
         }
         else if (fmt == PixelFormat.RGBA8)
         {
@@ -200,7 +203,8 @@ class Image(PixelFormat fmt): SuperImage
             ushort r = _data[index]   << 8 | _data[index+1];
             ushort g = _data[index+2] << 8 | _data[index+3];
             ushort b = _data[index+4] << 8 | _data[index+5];
-            return Color4(r, g, b);
+            ushort a = cast(ushort)maxv;
+            return Color4(r, g, b, a);
         }
         else if (fmt == PixelFormat.RGBA16)
         {
@@ -289,7 +293,7 @@ class Image(PixelFormat fmt): SuperImage
 
     override Color4f opIndex(int x, int y)
     {
-        return Color4f(getPixel(x, y));
+        return Color4f(getPixel(x, y), _bitDepth);
     }
     
     override Color4f opIndexAssign(Color4f c, int x, int y)
