@@ -385,3 +385,16 @@ body
             assert(0);
     }
 }
+
+/*
+ * Convert image to specified pixel format
+ */
+T convert(T)(SuperImage img)
+{
+    auto res = new T(img.width, img.height);
+    foreach(x; 0..img.width)
+    foreach(y; 0..img.height)
+        res[x, y] = img[x, y];
+    return res;
+}
+
