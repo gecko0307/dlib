@@ -48,7 +48,7 @@ struct Vector(T, int size)
 {
     public:
     
-    this (V)(V v)
+    this (int size2)(Vector!(T, size2) v)
     {           
         if (v.arrayof.length >= size)
             foreach(i; 0..size)
@@ -74,7 +74,7 @@ struct Vector(T, int size)
             arrayof[i] = components[i]; 
     }
 
-    this (string str)
+    this (S)(S str) if (isSomeString!S)
     {
         arrayof = parse!(T[size])(str);
     }
