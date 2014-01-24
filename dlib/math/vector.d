@@ -531,39 +531,51 @@ struct Vector(T, int size)
    /*
     * Swizzling
     */
-    @property auto ref opDispatch(string s)() if (s.length <= 4 && valid(s))
+    template opDispatch(string s) if (valid(s))
     {
-        auto extend(string s) 
-        {
-            while (s.length < 4) 
-                s ~= s[$-1];
-            return s;
-        }
-
         static if (s.length == 1)
         {
             enum i = ["x":0, "y":1, "z":2, "w":3,
                       "r":0, "g":1, "b":2, "a":3,
                       "s":0, "t":1, "p":2, "q":3][s];
-            return arrayof[i];
-        }
-        else
-        {
-            enum p = extend(s);
-            enum i = (char c) => ['x':0, 'y':1, 'z':2, 'w':3,
-                                  'r':0, 'g':1, 'b':2, 'a':3,
-                                  's':0, 't':1, 'p':2, 'q':3][c]; //[3,0,1,2][c-'w'];
-            enum i0 = i(p[0]), 
-                 i1 = i(p[1]), 
-                 i2 = i(p[2]), 
-                 i3 = i(p[3]);
 
-            static if (s.length == 4)
-                return Vector!(T,4)(arrayof[i0], arrayof[i1], arrayof[i2], arrayof[i3]);
-            else static if (s.length == 3)
-                return Vector!(T,3)(arrayof[i0], arrayof[i1], arrayof[i2]);
-            else static if (s.length == 2)
-                return Vector!(T,2)(arrayof[i0], arrayof[i1]);
+            @property auto ref opDispatch(this X)()
+            {
+                return arrayof[i];
+            }
+
+            @property auto ref opDispatch(this X, V)(auto ref V v)
+            {
+                return arrayof[i] = v;
+            }
+        }
+        else static if (s.length <= 4)
+        { 
+            @property auto ref opDispatch(this X)()
+            {
+                auto extend(string s) 
+                {
+                    while (s.length < 4) 
+                        s ~= s[$-1];
+                    return s;
+                }
+
+                enum p = extend(s);
+                enum i = (char c) => ['x':0, 'y':1, 'z':2, 'w':3,
+                                      'r':0, 'g':1, 'b':2, 'a':3,
+                                      's':0, 't':1, 'p':2, 'q':3][c];
+                enum i0 = i(p[0]), 
+                     i1 = i(p[1]), 
+                     i2 = i(p[2]), 
+                     i3 = i(p[3]);
+
+                static if (s.length == 4)
+                    return Vector!(T,4)(arrayof[i0], arrayof[i1], arrayof[i2], arrayof[i3]);
+                else static if (s.length == 3)
+                    return Vector!(T,3)(arrayof[i0], arrayof[i1], arrayof[i2]);
+                else static if (s.length == 2)
+                    return Vector!(T,2)(arrayof[i0], arrayof[i1]);
+            }
         }
     }
 
