@@ -9,10 +9,20 @@
     "importPaths": [
         "."
     ],
-    "sourcePaths": [
-        "dlib"
-    ],
     "buildRequirements":[
         "allowWarnings"
+    ],
+    "configurations": [
+        {
+            "name": "library",
+            "targetType": "library",
+            "sourcePaths": ["dlib"]
+        },
+        {
+            "name": "import",
+            "targetType": "sourceLibrary",
+            "sourceFiles-posix": ["libdlib.a"],
+            "sourceFiles-windows": ["dlib.lib"]
+        }
     ]
 }
