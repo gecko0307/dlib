@@ -92,7 +92,7 @@ struct Vector(T, int size)
    /* 
     * -Vector!(T,size)
     */
-    Vector!(T,size) opUnary(string s) () if (s == "-")
+    Vector!(T,size) opUnary(string s) () const if (s == "-")
     body
     {
         Vector!(T,size) res;
@@ -106,7 +106,7 @@ struct Vector(T, int size)
    /* 
     * +Vector!(T,size)
     */
-    Vector!(T,size) opUnary(string s) () if (s == "+")
+    Vector!(T,size) opUnary(string s) () const if (s == "+")
     body
     {
         return Vector!(T,size)(this);
@@ -115,7 +115,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) + Vector!(T,size)
     */
-    Vector!(T,size) opAdd (Vector!(T,size) v)
+    Vector!(T,size) opAdd (Vector!(T,size) v) const
     body
     {
         Vector!(T,size) res;
@@ -128,7 +128,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) - Vector!(T,size)
     */
-    Vector!(T,size) opSub (Vector!(T,size) v)
+    Vector!(T,size) opSub (Vector!(T,size) v) const
     body
     {
         Vector!(T,size) res;
@@ -141,7 +141,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) * Vector!(T,size)
     */
-    Vector!(T,size) opBinary(string op) (Vector!(T,size) v) if (op == "*")
+    Vector!(T,size) opBinary(string op) (Vector!(T,size) v) const if (op == "*")
     body
     {
         Vector!(T,size) res;
@@ -154,7 +154,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) / Vector!(T,size)
     */
-    Vector!(T,size) opDiv (Vector!(T,size) v)
+    Vector!(T,size) opDiv (Vector!(T,size) v) const
     body
     {
         Vector!(T,size) res;
@@ -167,7 +167,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) + T
     */
-    Vector!(T,size) opAdd (T t)
+    Vector!(T,size) opAdd (T t) const
     body
     {
         Vector!(T,size) res;
@@ -180,7 +180,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) - T
     */
-    Vector!(T,size) opSub (T t)
+    Vector!(T,size) opSub (T t) const
     body
     {
         Vector!(T,size) res;
@@ -193,7 +193,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) * T
     */
-    Vector!(T,size) opBinary(string op) (T t) if (op == "*")
+    Vector!(T,size) opBinary(string op) (T t) const if (op == "*")
     body
     {
         Vector!(T,size) res;
@@ -206,7 +206,7 @@ struct Vector(T, int size)
    /*
     * T * Vector!(T,size)
     */
-    Vector!(T,size) opBinaryRight(string op) (T t) if (op == "*" && isNumeric!T)
+    Vector!(T,size) opBinaryRight(string op) (T t) const if (op == "*" && isNumeric!T)
     body
     {
         Vector!(T,size) res;
@@ -219,7 +219,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) / T
     */
-    Vector!(T,size) opDiv (T t)
+    Vector!(T,size) opDiv (T t) const
     body
     {
         Vector!(T,size) res;
@@ -328,7 +328,7 @@ struct Vector(T, int size)
    /*
     * T = Vector!(T,size)[index]
     */
-    auto ref T opIndex (size_t index)
+    auto ref T opIndex (this X)(size_t index)
     in
     {
         assert ((0 <= index) && (index < size),
@@ -356,7 +356,7 @@ struct Vector(T, int size)
    /*
     * T[] = Vector!(T,size)[index1..index2]
     */
-    T[] opSlice (size_t index1, size_t index2)
+    auto opSlice (this X)(size_t index1, size_t index2)
     in
     {
         assert ((0 <= index1) || (index1 < 3) || (0 <= index2) || (index2 < 3) || (index1 < index2), 
@@ -385,7 +385,7 @@ struct Vector(T, int size)
    /*
     * T = Vector!(T,size)[]
     */
-    T[] opSlice ()
+    auto opSlice (this X)()
     body
     {
         return arrayof[];
@@ -409,7 +409,7 @@ struct Vector(T, int size)
        /*
         * Get vector length squared
         */
-        @property T lengthsqr()
+        @property T lengthsqr() const
         body
         {
             T res = 0;
@@ -421,7 +421,7 @@ struct Vector(T, int size)
        /*
         * Get vector length
         */
-        @property T length()
+        @property T length() const
         body
         {
             static if (isFloatingPoint!T)
@@ -471,7 +471,7 @@ struct Vector(T, int size)
        /*
         * Return normalized copy
         */
-        @property Vector!(T,size) normalized()
+        @property Vector!(T,size) normalized() const
         body
         {
             Vector!(T,size) res = this;
@@ -482,7 +482,7 @@ struct Vector(T, int size)
        /*
         * Return true if all components are zero
         */
-        @property bool isZero()
+        @property bool isZero() const
         body
         {
             return (arrayof[] == [0]);
@@ -520,7 +520,7 @@ struct Vector(T, int size)
    /*
     * Convert to string
     */
-    @property string toString()
+    @property string toString() const
     body
     {
         auto writer = appender!string();
@@ -858,3 +858,25 @@ enum AxisVector: Vector3f
 }
 */
 
+unittest
+{
+    const vec3 a = vec3(10.5f, 20.0f, 33.12345f);
+    const vec3 b = -a;
+    const vec3 c = +a - b;
+    const vec3 d = a * b / c;
+
+    assert(isAlmostZero(to!vec3(c.toString()) - c));
+
+    ivec2 ab = ivec2(5, 15);
+    ab += ivec2(20, 30);
+    ab *= 3;
+
+    assert(ab[0] == 75 && ab[1] == 135);
+
+    c.length();
+    c.lengthsqr();
+    distance(a, b);
+
+    auto xy = a[0..1];
+    auto n = a[];
+}
