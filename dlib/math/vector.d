@@ -30,6 +30,7 @@ module dlib.math.vector;
 
 private
 {
+    import std.conv;
     import std.math;
     import std.random;
     import std.range;
@@ -71,6 +72,11 @@ struct Vector(T, int size)
     {
         foreach(i; 0..size)
             arrayof[i] = components[i]; 
+    }
+
+    this (string str)
+    {
+        arrayof = parse!(T[size])(str);
     }
 
     void opAssign(int size2)(Vector!(T,size2) v)
