@@ -33,6 +33,7 @@ private
     import std.path;
 
     import dlib.image.image;
+    import dlib.image.io.bmp;
     import dlib.image.io.png;
     import dlib.image.io.tga;
 }
@@ -41,6 +42,9 @@ void saveImage(SuperImage img, string filename)
 {
     switch(filename.extension)
     {
+        case ".bmp", ".BMP":
+            img.saveBMP(filename);
+            break;
         case ".png", ".PNG":
             img.savePNG(filename);
             break;
@@ -56,6 +60,8 @@ SuperImage loadImage(string filename)
 {
     switch(filename.extension)
     {
+        case ".bmp", ".BMP":
+            return loadBMP(filename);
         case ".png", ".PNG":
             return loadPNG(filename);
         case ".tga", ".TGA":
