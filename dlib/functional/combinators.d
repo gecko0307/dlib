@@ -64,6 +64,9 @@ auto Y(R, P...) (R delegate(P) delegate(R delegate(P)) lambda)
 
 unittest
 {
+    import std.algorithm;
+    import std.range;
+
     auto factorial = Y((int delegate(int) self) =>
         (int n) => 0 == n ? 1 : n * self(n - 1));
 

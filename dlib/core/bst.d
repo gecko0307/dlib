@@ -107,12 +107,10 @@ class BST(T)
             else if (this == par.left) 
             { 
                 par.left = (left !is null)? left : right; 
-                delete this; 
             } 
             else if (this == par.right) 
             { 
                 par.right = (left !is null)? left : right; 
-                delete this; 
             } 
         } 
     }
