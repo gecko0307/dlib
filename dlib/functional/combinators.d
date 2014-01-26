@@ -30,7 +30,7 @@ module dlib.functional.combinators;
 
 /+++
  Y combinator
- ----------------------------------------------------------------------------------
+ Description:
  We're all familiar with the idea of a function as something that takes some 
  input value and returns some output value. Say, the function for squaring numbers:
 
