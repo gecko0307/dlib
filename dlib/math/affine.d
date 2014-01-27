@@ -414,25 +414,25 @@ body
     T height = t - b;
     T depth  = f - n;
 
-    res.m[0] = (2 * n) / width;
-    res.m[1] = 0.0;
-    res.m[2] = 0.0;
-    res.m[3] = 0.0;
+    res.arrayof[0] = (2 * n) / width;
+    res.arrayof[1] = 0.0;
+    res.arrayof[2] = 0.0;
+    res.arrayof[3] = 0.0;
 
-    res.m[4] = 0.0;
-    res.m[5] = (2 * n) / height;
-    res.m[6] = 0.0;
-    res.m[7] = 0.0;
+    res.arrayof[4] = 0.0;
+    res.arrayof[5] = (2 * n) / height;
+    res.arrayof[6] = 0.0;
+    res.arrayof[7] = 0.0;
 
-    res.m[8] = (r + l) / width;
-    res.m[9] = (t + b) / height;
-    res.m[10]= -(f + n) / depth;
-    res.m[11]= -1.0;
+    res.arrayof[8] = (r + l) / width;
+    res.arrayof[9] = (t + b) / height;
+    res.arrayof[10]= -(f + n) / depth;
+    res.arrayof[11]= -1.0;
 
-    res.m[12]= 0.0;
-    res.m[13]= 0.0;
-    res.m[14]= -(2 * f * n) / depth;
-    res.m[15]= 0.0;
+    res.arrayof[12]= 0.0;
+    res.arrayof[13]= 0.0;
+    res.arrayof[14]= -(2 * f * n) / depth;
+    res.arrayof[15]= 0.0;
 
     return res;
 }
@@ -454,25 +454,25 @@ body
 
     cot = cos(angle) / sin(angle);
 
-    res.m[0] = cot / aspect;
-    res.m[1] = 0.0;
-    res.m[2] = 0.0;
-    res.m[3] = 0.0;
+    res.arrayof[0] = cot / aspect;
+    res.arrayof[1] = 0.0;
+    res.arrayof[2] = 0.0;
+    res.arrayof[3] = 0.0;
 
-    res.m[4] = 0.0;
-    res.m[5] = cot;
-    res.m[6] = 0.0;
-    res.m[7] = 0.0;
+    res.arrayof[4] = 0.0;
+    res.arrayof[5] = cot;
+    res.arrayof[6] = 0.0;
+    res.arrayof[7] = 0.0;
 
-    res.m[8] = 0.0;
-    res.m[9] = 0.0;
-    res.m[10]= -(f + n) / (f - n);
-    res.m[11]= -1.0;
+    res.arrayof[8] = 0.0;
+    res.arrayof[9] = 0.0;
+    res.arrayof[10]= -(f + n) / (f - n);
+    res.arrayof[11]= -1.0;
 
-    res.m[12]= 0.0;
-    res.m[13]= 0.0;
-    res.m[14]= -(2 * f * n) / (f - n);
-    res.m[15]= 0.0;
+    res.arrayof[12]= 0.0;
+    res.arrayof[13]= 0.0;
+    res.arrayof[14]= -(2 * f * n) / (f - n);
+    res.arrayof[15]= 0.0;
 
     return res;
 }
@@ -490,25 +490,25 @@ body
     T height = t - b;
     T depth  = f - n;
 
-    res.m[0] =  2.0 / width;
-    res.m[1] =  0.0;
-    res.m[2] =  0.0;
-    res.m[3] =  0.0;
+    res.arrayof[0] =  2.0 / width;
+    res.arrayof[1] =  0.0;
+    res.arrayof[2] =  0.0;
+    res.arrayof[3] =  0.0;
 
-    res.m[4] =  0.0;
-    res.m[5] =  2.0 / height;
-    res.m[6] =  0.0;
-    res.m[7] =  0.0;
+    res.arrayof[4] =  0.0;
+    res.arrayof[5] =  2.0 / height;
+    res.arrayof[6] =  0.0;
+    res.arrayof[7] =  0.0;
 
-    res.m[8] =  0.0;
-    res.m[9] =  0.0;
-    res.m[10]= -2.0 / depth;
-    res.m[11]=  0.0;
+    res.arrayof[8] =  0.0;
+    res.arrayof[9] =  0.0;
+    res.arrayof[10]= -2.0 / depth;
+    res.arrayof[11]=  0.0;
 
-    res.m[12]= -(r + l) / width;
-    res.m[13]= -(t + b) / height;
-    res.m[14]= -(f + n) / depth;
-    res.m[15]=  1.0;
+    res.arrayof[12]= -(r + l) / width;
+    res.arrayof[13]= -(t + b) / height;
+    res.arrayof[14]= -(f + n) / depth;
+    res.arrayof[15]=  1.0;
 
     return res;
 }
@@ -521,10 +521,10 @@ body
 {
     auto res = Matrix!(T,4).identity;
 
-    res.m[0] = xdir.x; res.m[4] = ydir.x; res.m[8] = zdir.x; res.m[12] = 0.0;
-    res.m[1] = xdir.y; res.m[5] = ydir.y; res.m[9] = zdir.y; res.m[13] = 0.0;
-    res.m[2] = xdir.z; res.m[6] = ydir.z; res.m[10]= zdir.z; res.m[14] = 0.0;
-    res.m[3] = 0.0;    res.m[7] = 0.0;    res.m[11]= 0.0;    res.m[15] = 1.0;
+    res.arrayof[0] = xdir.x; res.arrayof[4] = ydir.x; res.arrayof[8] = zdir.x; res.arrayof[12] = 0.0;
+    res.arrayof[1] = xdir.y; res.arrayof[5] = ydir.y; res.arrayof[9] = zdir.y; res.arrayof[13] = 0.0;
+    res.arrayof[2] = xdir.z; res.arrayof[6] = ydir.z; res.arrayof[10]= zdir.z; res.arrayof[14] = 0.0;
+    res.arrayof[3] = 0.0;    res.arrayof[7] = 0.0;    res.arrayof[11]= 0.0;    res.arrayof[15] = 1.0;
 
     return res;
 }
