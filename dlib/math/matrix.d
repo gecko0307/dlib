@@ -95,29 +95,6 @@ struct Matrix(T, size_t N)
             return res;
         }
         else
-        static if (N == 4)
-        {       
-            auto res = Matrix!(T,N).identity;
-
-            res.a11 = (a11 * mat.a11) + (a21 * mat.a12) + (a31 * mat.a13);
-            res.a12 = (a12 * mat.a11) + (a22 * mat.a12) + (a32 * mat.a13);
-            res.a13 = (a13 * mat.a11) + (a23 * mat.a12) + (a33 * mat.a13);
-
-            res.a21 = (a11 * mat.a21) + (a21 * mat.a22) + (a31 * mat.a23);
-            res.a22 = (a12 * mat.a21) + (a22 * mat.a22) + (a32 * mat.a23);
-            res.a23 = (a13 * mat.a21) + (a23 * mat.a22) + (a33 * mat.a23);
-
-            res.a31 = (a11 * mat.a31) + (a21 * mat.a32) + (a31 * mat.a33);
-            res.a32 = (a12 * mat.a31) + (a22 * mat.a32) + (a32 * mat.a33);
-            res.a33 = (a13 * mat.a31) + (a23 * mat.a32) + (a33 * mat.a33);
-
-            res.a41 = (a11 * mat.a41) + (a21 * mat.a42) + (a31 * mat.a43) + a41;
-            res.a42 = (a12 * mat.a41) + (a22 * mat.a42) + (a32 * mat.a43) + a42;
-            res.a43 = (a13 * mat.a41) + (a23 * mat.a42) + (a33 * mat.a43) + a43;
-
-            return res;
-        }
-        else
         {
             auto res = Matrix!(T,N)();
 
@@ -873,3 +850,43 @@ Matrix!(T,3) matrix4x4to3x3(T) (Matrix!(T,4) m)
     return res;
 }
 
+unittest
+{
+    // Matrix Multiply Bug
+    
+    import dlib.math.affine;
+    
+    bool isAlmostZero(Vector4f v)
+    {
+        float e = 0.002f;
+        
+        return abs(v.x) < e &&
+                abs(v.y) < e &&
+                abs(v.z) < e &&
+                abs(v.w) < e;
+    }
+    
+    // build ModelView (World to Camera)
+    vec3 center = vec3(0.0f, 0.0f, 0.0f);
+    vec3 eye = center + vec3(0.0f, 1.0f, 1.0f);
+    vec3 up = vec3(0.0f, -0.707f, 0.707f);
+    
+    Matrix4f modelView = lookAtMatrix(eye, center, up);
+    
+    // build Projection (Camera to Eye)
+    Matrix4f projection = perspectiveMatrix(45.0f, 16.0f / 9.0f, 1.0f, 100.0f);
+    
+    // compose into one transformation
+    Matrix4f projectionModelView = projection * modelView; // <-- this is where things go wrong
+    
+    //
+    vec4 positionInWorld = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+    
+    vec4 transformed1 =
+        positionInWorld * projectionModelView;  // w is incorrectly 1, perspective division fails
+
+    vec4 transformed2 =
+        (positionInWorld * modelView) * projection;
+    
+    assert(isAlmostZero(transformed1 - transformed2));
+}
