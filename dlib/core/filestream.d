@@ -71,15 +71,15 @@ class FileStream : dlib.core.stream.IOStream {
         return true;
     }
     
-    override PosType getPosition() @property {
+    override StreamPos getPosition() @property {
         return input.position();
     }
     
-    override bool setPosition(PosType pos) {
+    override bool setPosition(StreamPos pos) {
         return input.seek(pos, SeekPos.Set) == pos;
     }
     
-    override PosType size() {
+    override StreamSize size() {
         return input.size();
     }
     

@@ -31,63 +31,110 @@ module dlib.core.stream;
 import std.stdint;
 import std.conv;
 
-alias uint64_t PosType;
+alias StreamPos = uint64_t;
+alias StreamSize = uint64_t;
+alias StreamOffset = int64_t;
 
-interface Seekable {
-    PosType getPosition() @property;
-    bool setPosition(uint64_t pos);
-    PosType size();
+class SeekException : Exception
+{
+    this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null)
+    {
+        super(msg, file, line, next);
+    }
 }
 
-PosType position(Seekable s, PosType pos)
+/// Seekable
+interface Seekable
+{
+    // Won't throw on invalid position, may throw on a more serious error.
+    
+    StreamPos getPosition() @property;
+    bool setPosition(StreamPos pos);
+    StreamSize size();
+}
+
+// Throw-on-error wrappers
+
+StreamPos position(Seekable s, StreamPos pos)
 {
     if (!s.setPosition(pos))
-        throw new Exception("Cannot set Seekable position to " ~ pos.to!string);
+        throw new SeekException("Cannot set Seekable position to " ~ pos.to!string);
+        
     return pos;
 }
 
-PosType position(Seekable s) {
+StreamPos position(Seekable s)
+{
     return s.getPosition();
 }
 
-interface Stream : Seekable {
+// TODO: Non-throwing version
+StreamPos seek(Seekable s, StreamOffset amount)
+{
+    immutable StreamPos seekTo = s.getPosition() + amount;
+    
+    if (!s.setPosition(seekTo))
+        throw new SeekException("Cannot set Seekable position to " ~ seekTo.to!string);
+
+    return seekTo;
+}
+
+/// Stream
+interface Stream : Seekable
+{
     void close();
     bool seekable();
 }
 
-interface InputStream : Stream {
+interface InputStream : Stream
+{
+    // Won't throw on EOF, may throw on a more serious error.
+    
     bool readable();
     size_t readBytes(void* buffer, size_t count);
 }
 
-interface OutputStream : Stream {
+interface OutputStream : Stream
+{
+    // Won't throw on full disk, may throw on a more serious error.
+    
     void flush();
     bool writeable();
     size_t writeBytes(const void* buffer, size_t count);
 }
 
-interface IOStream : InputStream, OutputStream {
+interface IOStream : InputStream, OutputStream
+{
 }
 
-interface OpenFile {
+interface OpenFile
+{
     IOStream openFile(string fileName, bool readOnly, bool create);
 }
 
-// FIXME: assumes little endian platform
-
-bool readLE(T)(InputStream stream, T* value) {
+bool readNoSwap(T)(InputStream stream, T* value)
+{
     return stream.readBytes(cast(ubyte*) value, T.sizeof) == T.sizeof;
 }
 
-bool writeLE(T)(OutputStream stream, const T value) {
+bool writeNoSwap(T)(OutputStream stream, const T value)
+{
     return stream.writeBytes(cast(const(ubyte)*) &value, T.sizeof) == T.sizeof;
 }
 
-PosType copyFromTo(InputStream input, OutputStream output) {
-    ubyte buffer[0x1000];
-    PosType total = 0;
+// FIXME: assumes little endian platform for now
+alias readLE = readNoSwap;
+alias writeLE = writeNoSwap;
+//alias readBE = readSwap;
+//alias writeBE = writeSwap;
 
-    for ( ; ; ) {
+StreamSize copyFromTo(InputStream input, OutputStream output)
+{
+    ubyte buffer[0x1000];
+    StreamSize total = 0;
+
+    while (input.readable)
+    {
         size_t have = input.readBytes(buffer.ptr, buffer.length);
 
         if (have == 0)
@@ -98,8 +145,4 @@ PosType copyFromTo(InputStream input, OutputStream output) {
     }
 
     return total;
-}
-
-bool seek(Seekable s, int64_t amount) {
-    return s.setPosition(s.getPosition() + amount);
 }
