@@ -38,6 +38,14 @@ private
     import dlib.image.io.tga;
 }
 
+class ImageLoadException : Exception
+{
+    this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null)
+    {
+        super(msg, file, line, next);
+    }
+}
+
 void saveImage(SuperImage img, string filename)
 {
     switch(filename.extension)

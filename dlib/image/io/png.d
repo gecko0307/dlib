@@ -30,13 +30,19 @@ module dlib.image.io.png;
 
 private
 {
+    import std.stdint;
     import std.stdio;
+    import std.stream : File, FileMode;
     import std.math;
     import std.zlib;
+
+    import dlib.core.stream;
+    import dlib.core.filestream;
 
     import dlib.math.utils;
 
     import dlib.image.image;
+    import dlib.image.io.io;
     import dlib.image.io.zstream;
 }
 
@@ -75,20 +81,10 @@ enum FilterMethod: ubyte
 
 struct PNGChunk
 {
-    union
-    {
-        uint length;
-        ubyte[4] length_bytes;
-    }
-    
+    uint length;
     ubyte[4] type;
     ubyte[] data;
-
-    union
-    {
-        uint crc;
-        ubyte[4] crc_bytes;
-    }
+    uint crc;
 }
 
 struct PNGHeader
@@ -109,32 +105,86 @@ struct PNGHeader
     }
 }
 
-SuperImage loadPNG(string filename)
+class PNGLoadException : ImageLoadException
+{
+    this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null)
+    {
+        super(msg, file, line, next);
+    }
+}
+
+SuperImage loadPNG(string fileName)
+{
+    // TODO: Use new OpenFile when ready
+    InputStream input = new FileStream(new std.stream.File(fileName, FileMode.In));
+    
+    try
+    {
+        return loadPNG(input);
+    }
+    catch (PNGLoadException ex)
+    {
+        // Add fileName to exception message
+        throw new Exception("'" ~ fileName ~ "' :" ~ ex.msg, ex.file, ex.line, ex.next);
+    }
+    finally
+    {
+        input.close();
+    }
+}
+
+void savePNG(SuperImage img, string fileName)
+{
+    // TODO: Use new OpenFile when ready
+    OutputStream output = new FileStream(new std.stream.File(fileName, FileMode.OutNew));
+    
+    try
+    {
+        savePNG(img, output);
+    }
+    catch (PNGLoadException ex)
+    {
+        // Add fileName to exception message
+        throw new Exception("'" ~ fileName ~ "' :" ~ ex.msg, ex.file, ex.line, ex.next);
+    }
+    finally
+    {
+        output.close();
+    }
+}
+
+SuperImage loadPNG(InputStream input)
 {
     SuperImage img;
 
-    auto f = new File(filename, "r");
+    void eof(string file = __FILE__, size_t line = __LINE__)
+    {
+        throw new PNGLoadException("PNG error: Unexpected end of input", file, line);
+    }
 
     PNGChunk readChunk()
     {
         PNGChunk chunk;
 
-        f.rawRead(chunk.length_bytes);
-        chunk.length = bigEndian(chunk.length);
-        version(PNGDebug) writefln("Chunk length = %s", chunk.length);
+        if (!input.readBE!uint32_t(&chunk.length)
+            || !input.fillArray(chunk.type))
+            eof();
 
-        f.rawRead(chunk.type);
+        version(PNGDebug) writefln("Chunk length = %s", chunk.length);
         version(PNGDebug) writefln("Chunk type = %s", cast(char[])chunk.type);
 
         if (chunk.length > 0)
         {
             chunk.data = new ubyte[chunk.length];
-            f.rawRead(chunk.data);
+            
+            if (!input.fillArray(chunk.data))
+                eof();
         }
         version(PNGDebug) writefln("Chunk data.length = %s", chunk.data.length);
 
-        f.rawRead(chunk.crc_bytes);
-        chunk.crc = bigEndian(chunk.crc);
+        if (!input.readBE!uint32_t(&chunk.crc))
+            eof();
+
         uint calculatedCRC = crc32(chunk.type ~ chunk.data);
 
         version(PNGDebug) 
@@ -144,8 +194,8 @@ SuperImage loadPNG(string filename)
             writeln("-------------------");
         }
 
-        //if (chunk.length)
-        assert(chunk.crc == calculatedCRC, "PNG Error: CRC check failed");
+        if (chunk.crc != calculatedCRC)
+            throw new PNGLoadException("PNG error: CRC check failed");
 
         return chunk;
     }
@@ -173,7 +223,10 @@ SuperImage loadPNG(string filename)
     ZlibDecodeStream inflator;
 
     ubyte[8] signatureBuffer;
-    f.rawRead(signatureBuffer);
+    
+    if (!input.fillArray(signatureBuffer))
+        eof();
+    
     version(PNGDebug) 
     {
         writeln("-------------------");
@@ -181,11 +234,7 @@ SuperImage loadPNG(string filename)
         writeln("-------------------");
     }
     if (signatureBuffer != PNGSignature)
-    {
-        writefln("PNG error: file \"%s\" not a PNG", filename);
-        f.close();
-        return img;
-    }
+        throw new PNGLoadException("PNG error: not a valid PNG file");
 
     ubyte[] buffer;
     //ubyte[] ilaceBuffer; // interlaced filtered scanlines
@@ -197,7 +246,7 @@ SuperImage loadPNG(string filename)
     PNGHeader hdr;
 
     PNGChunk chunk;
-    while (chunk.type != IEND && !f.eof)
+    while (chunk.type != IEND && input.readable)
     {
         chunk = readChunk();
 
@@ -206,32 +255,16 @@ SuperImage loadPNG(string filename)
             hdr = readHeader(chunk);
 
             if (hdr.bitDepth != 8 && hdr.bitDepth != 16) 
-            {
-                writeln("PNG error: unsupported PNG bit depth"); 
-                f.close(); 
-                return img;
-            }
+                throw new PNGLoadException("PNG error: unsupported bit depth"); 
 
-            if (hdr.compressionMethod != 0) 
-            {
-                writeln("PNG error: unknown PNG compression method"); 
-                f.close(); 
-                return img;
-            }
+            if (hdr.compressionMethod != 0)
+                throw new PNGLoadException("PNG error: unknown compression method");
 
-            if (hdr.filterMethod != 0) 
-            {
-                writeln("PNG error: unknown PNG filter method"); 
-                f.close(); 
-                return img;
-            }
+            if (hdr.filterMethod != 0)
+                throw new PNGLoadException("PNG error: unknown filter method");
 
             if (hdr.interlaceMethod != 0) 
-            {
-                writeln("PNG error: interlacing is not supported"); 
-                f.close(); 
-                return img;
-            }
+                throw new PNGLoadException("PNG error: interlacing is not supported"); 
 
             if (hdr.colorType == ColorType.Greyscale)
             {
@@ -266,11 +299,7 @@ SuperImage loadPNG(string filename)
                 img = new ImageL8(hdr.width, hdr.height);
             }
             else
-            {
-                writeln("PNG error: unsupported PNG Color type (%s)", hdr.colorType); 
-                f.close(); 
-                return img;
-            }
+                throw new PNGLoadException("PNG error: unsupported PNG color type"); 
 
             version(PNGDebug)
             {
@@ -311,8 +340,9 @@ SuperImage loadPNG(string filename)
     assert(inflator.hasEnded);
     buffer = inflator();
 
-    f.close();
-
+    // don't close, just release our reference
+    input = null;
+    
     //return (info.interlace == 0) ? reconstruct(buffer, info.image)
     //                             : deinterlace(buffer, ilaceBuffer, info.image);
 
@@ -324,10 +354,8 @@ SuperImage loadPNG(string filename)
     if (hdr.colorType == ColorType.Palette)
     {
         if (palette.length == 0)
-        {
-            writefln("PNG error: palette chunk not found"); 
-            return img;
-        }
+            throw new PNGLoadException("PNG error: palette chunk not found"); 
+
         img = new ImageRGB8(img.width, img.height);
         pdata = new ubyte[img.width * img.height * img.channels];
         for (int i = 0; i < buffer.length; ++i)
@@ -347,29 +375,39 @@ SuperImage loadPNG(string filename)
     return img;
 }
 
-void savePNG(SuperImage img, string filename)
+void savePNG(SuperImage img, OutputStream output)
 in
 {
     assert (img.data.length);
 }
 body
 {
-    assert(img.bitDepth == 8, "PNG error: only 8-bit images are supported by encoder");
-
-    auto f = new File(filename, "w");
+    void writeFail()
+    {
+        throw new PNGLoadException("PNG error: write failed (disk full?)");
+    }
+    
+    if (img.bitDepth != 8)
+        throw new PNGLoadException("PNG error: only 8-bit images are supported by encoder");
 
     void writeChunk(ubyte[4] chunkType, ubyte[] chunkData)
     {
         PNGChunk hdrChunk;
-        hdrChunk.length = networkByteOrder(cast(uint)chunkData.length);
+        hdrChunk.length = cast(uint) chunkData.length;
         hdrChunk.type = chunkType;
         hdrChunk.data = chunkData;
-        hdrChunk.crc = networkByteOrder(crc32(chunkType ~ hdrChunk.data));
-        f.rawWrite(hdrChunk.length_bytes);
-        f.rawWrite(hdrChunk.type);
+        hdrChunk.crc = crc32(chunkType ~ hdrChunk.data);
+        
+        if (!output.writeBE!uint32_t(hdrChunk.length)        
+            || !output.writeArray(hdrChunk.type))
+            writeFail();
+        
         if (chunkData.length)
-            f.rawWrite(hdrChunk.data);
-        f.rawWrite(hdrChunk.crc_bytes);
+            if (!output.writeArray(hdrChunk.data))
+                writeFail();
+
+        if (!output.writeBE!uint32_t(hdrChunk.crc))
+            writeFail();
     }
 
     void writeHeader()
@@ -393,7 +431,7 @@ body
         writeChunk(IHDR, hdr.bytes);
     }
 
-    f.rawWrite(PNGSignature);
+    output.writeArray(PNGSignature);
     writeHeader();
 
     //TODO: filtering
@@ -415,8 +453,6 @@ body
 
     writeChunk(IDAT, cast(ubyte[])compress(raw));
     writeChunk(IEND, []);
-
-    f.close();
 }
 
 /*
@@ -524,4 +560,25 @@ uint crc32(ubyte[] buf, uint inCrc = 0)
         crc = (crc >> 8) ^ table[(crc ^ byteBuf[i]) & 0xFF];
 
     return (crc ^ 0xFFFFFFFF);
+}
+
+unittest
+{
+    import std.base64;
+    
+    InputStream png() {
+        string minimal =
+            "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADklEQVR42mL4z8AAEGAAAwEBAGb9nyQAAAAASUVORK5CYII=";
+    
+        ubyte[] bytes = Base64.decode(minimal);
+        return new ArrayStream(bytes, bytes.length);
+    }
+    
+    SuperImage img = loadPNG(png());
+    
+    assert(img.width == 1);
+    assert(img.height == 1);
+    assert(img.channels == 3);
+    assert(img.pixelSize == 3);
+    assert(img.data == [0xff, 0x00, 0x00]);
 }

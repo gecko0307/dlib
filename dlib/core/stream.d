@@ -28,6 +28,7 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.core.stream;
 
+import std.bitmanip;
 import std.stdint;
 import std.conv;
 
@@ -103,6 +104,22 @@ interface OutputStream : Stream
     size_t writeBytes(const void* buffer, size_t count);
 }
 
+/// Read array.length elements into an pre-allocated array.
+/// Returns: true if all elements were read, false otherwise
+bool fillArray(T)(InputStream stream, T[] array)
+{
+    immutable size_t len = array.length * T.sizeof;
+    return stream.readBytes(array.ptr, len) == len;
+}
+
+/// Write array.length elements from array.
+/// Returns: true if all elements were written, false otherwise
+bool writeArray(T)(OutputStream stream, const T[] array)
+{
+    immutable size_t len = array.length * T.sizeof;
+    return stream.writeBytes(array.ptr, len) == len;
+}
+
 interface IOStream : InputStream, OutputStream
 {
 }
@@ -112,21 +129,41 @@ interface OpenFile
     IOStream openFile(string fileName, bool readOnly, bool create);
 }
 
-bool readNoSwap(T)(InputStream stream, T* value)
+bool readLE(T)(InputStream stream, T* value)
 {
-    return stream.readBytes(cast(ubyte*) value, T.sizeof) == T.sizeof;
+    ubyte[T.sizeof] buffer;
+    
+    if (stream.readBytes(buffer.ptr, buffer.length) != buffer.length)
+        return false;
+    
+    *value = littleEndianToNative!T(buffer);
+    return true;
 }
 
-bool writeNoSwap(T)(OutputStream stream, const T value)
+bool writeLE(T)(OutputStream stream, const T value)
 {
-    return stream.writeBytes(cast(const(ubyte)*) &value, T.sizeof) == T.sizeof;
+    ubyte[T.sizeof] buffer = nativeToLittleEndian!T(value);
+    
+    return stream.writeBytes(buffer.ptr, buffer.length) == buffer.length;
 }
 
-// FIXME: assumes little endian platform for now
-alias readLE = readNoSwap;
-alias writeLE = writeNoSwap;
-//alias readBE = readSwap;
-//alias writeBE = writeSwap;
+bool readBE(T)(InputStream stream, T* value)
+{
+    ubyte[T.sizeof] buffer;
+    
+    if (stream.readBytes(buffer.ptr, buffer.length) != buffer.length)
+        return false;
+    
+    *value = bigEndianToNative!T(buffer);
+    return true;
+}
+
+bool writeBE(T)(OutputStream stream, const T value)
+{
+    ubyte[T.sizeof] buffer = nativeToBigEndian!T(value);
+    
+    return stream.writeBytes(buffer.ptr, buffer.length) == buffer.length;
+}
 
 StreamSize copyFromTo(InputStream input, OutputStream output)
 {
@@ -145,4 +182,66 @@ StreamSize copyFromTo(InputStream input, OutputStream output)
     }
 
     return total;
+}
+
+// TODO: Move this?
+// TODO: Add OutputStream methods
+class ArrayStream : InputStream {
+    import std.algorithm;
+    
+    this() {
+    }
+    
+    this(ubyte[] data, size_t size) {
+        assert(size_ <= data.length);
+        
+        this.size_ = size;
+        this.data = data;
+    }
+    
+    override void close() {
+        this.pos = 0;
+        this.size_ = 0;
+        this.data = null;
+    }
+    
+    override bool readable() {
+        return pos < size_;
+    }
+    
+    override size_t readBytes(void* buffer, size_t count) {
+        import std.c.string;
+        
+        count = min(count, size_ - pos);
+        
+        // whoops, memcpy out of nowhere, can we do better than that?
+        memcpy(buffer, data.ptr + pos, count);
+        
+        pos += count;
+        return count;
+    }
+    
+    override bool seekable() {
+        return true;
+    }
+    
+    override StreamPos getPosition() {
+        return pos;
+    }
+    
+    override bool setPosition(StreamPos pos) {
+        if (pos > size_)
+            return false;
+
+        this.pos = pos;
+        return true;
+    }
+    
+    override StreamSize size() {
+        return size;
+    }
+    
+    private:
+    size_t pos = 0, size_ = 0;
+    ubyte[] data;       // data.length is capacity
 }
