@@ -52,32 +52,32 @@ interface Seekable
     StreamPos getPosition() @property;
     bool setPosition(StreamPos pos);
     StreamSize size();
-}
-
-// Throw-on-error wrappers
-
-StreamPos position(Seekable s, StreamPos pos)
-{
-    if (!s.setPosition(pos))
-        throw new SeekException("Cannot set Seekable position to " ~ pos.to!string);
-        
-    return pos;
-}
-
-StreamPos position(Seekable s)
-{
-    return s.getPosition();
-}
-
-// TODO: Non-throwing version
-StreamPos seek(Seekable s, StreamOffset amount)
-{
-    immutable StreamPos seekTo = s.getPosition() + amount;
     
-    if (!s.setPosition(seekTo))
-        throw new SeekException("Cannot set Seekable position to " ~ seekTo.to!string);
+    // Throw-on-error wrappers
 
-    return seekTo;
+    final StreamPos position(StreamPos pos)
+    {
+        if (!setPosition(pos))
+            throw new SeekException("Cannot set Seekable position to " ~ pos.to!string);
+            
+        return pos;
+    }
+    
+    final StreamPos position()
+    {
+        return getPosition();
+    }
+    
+    // TODO: Non-throwing version
+    final StreamPos seek(StreamOffset amount)
+    {
+        immutable StreamPos seekTo = getPosition() + amount;
+        
+        if (!setPosition(seekTo))
+            throw new SeekException("Cannot set Seekable position to " ~ seekTo.to!string);
+    
+        return seekTo;
+    }
 }
 
 /// Stream
@@ -93,6 +93,38 @@ interface InputStream : Stream
     
     bool readable();
     size_t readBytes(void* buffer, size_t count);
+    
+    /// Read array.length elements into an pre-allocated array.
+    /// Returns: true if all elements were read, false otherwise
+    final bool fillArray(T)(T[] array)
+    {
+        immutable size_t len = array.length * T.sizeof;
+        return readBytes(array.ptr, len) == len;
+    }
+    
+    /// Read an integer in little-endian encoding
+    final bool readLE(T)(T* value)
+    {
+        ubyte[T.sizeof] buffer;
+        
+        if (readBytes(buffer.ptr, buffer.length) != buffer.length)
+            return false;
+        
+        *value = littleEndianToNative!T(buffer);
+        return true;
+    }
+    
+    /// Read an integer in big-endian encoding
+    final bool readBE(T)(T* value)
+    {
+        ubyte[T.sizeof] buffer;
+        
+        if (readBytes(buffer.ptr, buffer.length) != buffer.length)
+            return false;
+        
+        *value = bigEndianToNative!T(buffer);
+        return true;
+    }
 }
 
 interface OutputStream : Stream
@@ -102,22 +134,40 @@ interface OutputStream : Stream
     void flush();
     bool writeable();
     size_t writeBytes(const void* buffer, size_t count);
-}
-
-/// Read array.length elements into an pre-allocated array.
-/// Returns: true if all elements were read, false otherwise
-bool fillArray(T)(InputStream stream, T[] array)
-{
-    immutable size_t len = array.length * T.sizeof;
-    return stream.readBytes(array.ptr, len) == len;
-}
-
-/// Write array.length elements from array.
-/// Returns: true if all elements were written, false otherwise
-bool writeArray(T)(OutputStream stream, const T[] array)
-{
-    immutable size_t len = array.length * T.sizeof;
-    return stream.writeBytes(array.ptr, len) == len;
+    
+    /// Write array.length elements from array.
+    /// Returns: true if all elements were written, false otherwise
+    final bool writeArray(T)(const T[] array)
+    {
+        immutable size_t len = array.length * T.sizeof;
+        return writeBytes(array.ptr, len) == len;
+    }
+    
+    /// Write a string as zero-terminated
+    /// Returns: true on success, false otherwise
+    final bool writeStringz(string text)
+    {
+        ubyte[1] zero = [0];
+        
+        return writeBytes(text.ptr, text.length)
+            && writeBytes(zero.ptr, zero.length);
+    }
+    
+    /// Write an integer in little-endian encoding
+    final bool writeLE(T)(const T value)
+    {
+        ubyte[T.sizeof] buffer = nativeToLittleEndian!T(value);
+        
+        return writeBytes(buffer.ptr, buffer.length) == buffer.length;
+    }
+    
+    /// Write an integer in big-endian encoding
+    final bool writeBE(T)(const T value)
+    {
+        ubyte[T.sizeof] buffer = nativeToBigEndian!T(value);
+        
+        return writeBytes(buffer.ptr, buffer.length) == buffer.length;
+    }
 }
 
 interface IOStream : InputStream, OutputStream
@@ -127,42 +177,6 @@ interface IOStream : InputStream, OutputStream
 interface OpenFile
 {
     IOStream openFile(string fileName, bool readOnly, bool create);
-}
-
-bool readLE(T)(InputStream stream, T* value)
-{
-    ubyte[T.sizeof] buffer;
-    
-    if (stream.readBytes(buffer.ptr, buffer.length) != buffer.length)
-        return false;
-    
-    *value = littleEndianToNative!T(buffer);
-    return true;
-}
-
-bool writeLE(T)(OutputStream stream, const T value)
-{
-    ubyte[T.sizeof] buffer = nativeToLittleEndian!T(value);
-    
-    return stream.writeBytes(buffer.ptr, buffer.length) == buffer.length;
-}
-
-bool readBE(T)(InputStream stream, T* value)
-{
-    ubyte[T.sizeof] buffer;
-    
-    if (stream.readBytes(buffer.ptr, buffer.length) != buffer.length)
-        return false;
-    
-    *value = bigEndianToNative!T(buffer);
-    return true;
-}
-
-bool writeBE(T)(OutputStream stream, const T value)
-{
-    ubyte[T.sizeof] buffer = nativeToBigEndian!T(value);
-    
-    return stream.writeBytes(buffer.ptr, buffer.length) == buffer.length;
 }
 
 StreamSize copyFromTo(InputStream input, OutputStream output)
