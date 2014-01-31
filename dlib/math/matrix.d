@@ -37,17 +37,6 @@ import dlib.math.vector;
 import dlib.math.utils;
 
 /*
-// TODO: move this to dlib.math.vector
-Vector!(T,N) zeroVector(T, size_t N) ()
-{
-    Vector!(T,N) res;
-    foreach(i; 0..N)
-        res.arrayof[i] = 0;
-    return res; 
-}
-*/
-
-/*
  * Square (NxN) matrix.
  *
  * Implementation notes:
@@ -262,6 +251,7 @@ struct Matrix(T, size_t N)
    /*
     * Multiply column vector by the matrix
     */
+
     static if (N == 2)
     {
         Vector!(T,2) opBinaryRight(string op) (Vector!(T,2) v) if (op == "*")
@@ -324,27 +314,6 @@ struct Matrix(T, size_t N)
             }
             else
                 assert(0, "Cannot multiply Vector!(T,3) by non-affine Matrix!(T,4)");
-        }
-    }
-
-   /*
-    * Transform a point by the matrix
-    */
-    deprecated("Matrix!(T,N).transform is deprecated, use vector to matrix multiplication instead")
-    {
-        Vector!(T,N) transform(Vector!(T,N) v)
-        body
-        {
-            return v * this;
-        }
-
-        static if (N == 4)
-        {
-            Vector!(T,3) transform(Vector!(T,3) v)
-            body
-            {
-                return v * this;
-            }
         }
     }
 
