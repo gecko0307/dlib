@@ -35,15 +35,22 @@ import std.datetime;
 
 alias FileSize = StreamSize;
 
-/// FileStat
+/// Holds general information about a file or directory.
 struct FileStat {
+    ///
     bool isFile, isDirectory;
-    FileSize sizeInBytes;       // valid if isFile
+    /// valid if isFile is true
+    FileSize sizeInBytes;
+    ///
     SysTime creationTimestamp, modificationTimestamp;
 }
 
-/// FileIterator
+/// Allows to iterate over a collection of files
 interface FileIterator {
+    /** Retrieve next entry from the collection.
+        Returns: true on success, false if there no more entries to retrieve
+        or an error occured
+    */
     bool next(out string path, FileStat* stat_out = null);
     
     final int opApply(int delegate(ref string path) dg)  {
@@ -84,9 +91,13 @@ interface FileIterator {
     }
 }
 
-/// Directory
+/// A directory in the file system.
 interface Directory {
+    ///
     void close();
+    
+    /// Get directory contents as a FileIterator.
+    /// The entries "." and ".." are skipped.
     FileIterator contents();
     
     final int opApply(int delegate(ref string path) dg)  {
@@ -98,82 +109,109 @@ interface Directory {
     }
 }
 
-/// ReadOnlyFileSystem
+/// A file system limited to read access.
 interface ReadOnlyFileSystem {
-    bool stat(string fileName, out FileStat stat);
-    ///
-    unittest {
-        import dlib.filesystem.localfilesystem;
-        import std.conv;
-        import std.stdio;
-        
-        void printStat(string fileName) {
+    /** Get file or directory stats.
+        Example:
+        ---
+        void printFileInfo(ReadOnlyFileSystem fs, string fileName) {
             FileStat stat;
-            assert(localFS.stat(fileName, stat));
             
             writef("'%s'\t", fileName);
+            
+            if (!fs.stat(fileName, stat)) {
+                writeln("ERROR");
+                return;
+            }
             
             if (stat.isFile)
                 writefln("%u", stat.sizeInBytes);
             else if (stat.isDirectory)
-                writefln("DIR");
+                writeln("DIR");
             
             writefln("  created: %s", to!string(stat.creationTimestamp));
             writefln("  modified: %s", to!string(stat.modificationTimestamp));
         }
-        
-        // FileSystem.stat
-        printStat("package.json");
-        printStat("dlib");
-        writeln();
-    }
+        ---
+    */
+    bool stat(string fileName, out FileStat stat);
     
+    /** Open a file for input.
+        Returns: a valid InputStream on success, null on failure
+    */
     InputStream openForInput(string fileName);
     
+    /** Open a directory.
+    */
     Directory openDir(string path);
     
-    FileIterator findFiles(string baseDir, bool recursive, bool delegate(string path) filter);
-    int findFiles(string baseDir, bool recursive, bool delegate(string path) filter, int delegate(string path) dg);
-    ///
-    unittest {
-        import dlib.filesystem.localfilesystem;
-        import std.regex;
-        import std.stdio;
-        
-        writeln("Listing dlib/core/*.d:");
+    /**
+        Find files in the specified directory, conforming to the specified filter. (if any)
+        Params:
+        baseDir = path to the base directory (if empty, defaults to current working directory)
+        recursive = if true, the search will recurse into subdirectories
+        filter = a delegate to be called for each entry found to decide whether it should be returned as part of the collection (optional)
     
-        foreach (string path, FileStat stat; localFS.findFiles("", true, delegate bool(string path) {
-                return !matchFirst(path, `^dlib/core/.*\.d$`).empty;
+        Examples:
+        ---
+        void listImagesInDirectory(ReadOnlyFileSystem fs, string baseDir = "") {
+            foreach (string path, FileStat stat; fs.findFiles(baseDir, true, delegate bool(string path) {
+                return !matchFirst(path, `.*\.(gif|jpg|png)$`).empty;
             })) {
-            writefln("%s: %u bytes", path, stat.sizeInBytes);
+                if (stat.isFile)
+                    writefln("%s:\t%u bytes", path, stat.sizeInBytes);
+            }
         }
-        
-        writeln();
-    }
+        ---
+    */
+    FileIterator findFiles(string baseDir, bool recursive, bool delegate(string path) filter);
+    /// ditto
+    int findFiles(string baseDir, bool recursive, bool delegate(string path) filter, int delegate(string path) dg);
 }
 
 // TODO: Use exceptions or not?
-/// FileSystem
+/// A file system with read/write access.
 interface FileSystem: ReadOnlyFileSystem {
     /*enum AccessFlags {
         read,
         write
     }*/
     
-    /// creation flags
+    /// File creation flags.
     enum {
         create = 1,
         truncate = 2,
     }
     
     // TODO: Keep it this way? (strongly-typed)
+    
+    /** Open a file for output.
+        Returns: a valid OutputStream on success, null on failure
+    */
     OutputStream openForOutput(string fileName, uint creationFlags);
+    
+    /** Open a file for input & output.
+        Returns: a valid IOStream on success, null on failure
+    */
     IOStream openForIO(string fileName, uint creationFlags);
     
     //IOStream openFile(string fileName, uint accessFlags, uint creationFlags);
     
-    bool makeDir(string path, bool recursive);
+    /** Create a new directory.
+        Returns: true if a new directory was created
+        Examples:
+        ---
+        fs.createDir("New Directory", false);
+        fs.createDir("nested/directories/are/easy", true);
+        ---
+    */
+    bool createDir(string path, bool recursive);
     
+    /** Rename or move a file.
+    */
     bool move(string path, string newPath);
+    
+    /** Permanently delete a file or directory.
+    */
     bool remove(string path, bool recursive);
 }

@@ -135,14 +135,14 @@ class LocalFileSystem : FileSystem {
         return openFile(fileName, read | write, creationFlags);
     }
     
-    override bool makeDir(string path, bool recursive) {
+    override bool createDir(string path, bool recursive) {
         // TODO: Windows implementation
         
         if (recursive) {
             ptrdiff_t index = path.lastIndexOf("/");
             
             if (index != -1)
-                makeDir(path[0..index], true);
+                createDir(path[0..index], true);
         }
         
         version (Posix) {
@@ -406,6 +406,7 @@ unittest {
     // TODO: test >4GiB files
     
     import std.conv;
+    import std.regex;
     import std.stdio;
     
     FileSystem fs = new LocalFileSystem;
@@ -413,7 +414,27 @@ unittest {
     fs.remove("tests", true);
     assert(fs.openDir("tests") is null);
     
-    assert(fs.makeDir("tests/test_data/main", true));
+    assert(fs.createDir("tests/test_data/main", true));
+    
+    void printStat(string fileName) {
+        FileStat stat;
+        assert(localFS.stat(fileName, stat));
+        
+        writef("'%s'\t", fileName);
+        
+        if (stat.isFile)
+            writefln("%u", stat.sizeInBytes);
+        else if (stat.isDirectory)
+            writefln("DIR");
+        
+        writefln("  created: %s", to!string(stat.creationTimestamp));
+        writefln("  modified: %s", to!string(stat.modificationTimestamp));
+    }
+    
+    writeln("File stats:");
+    printStat("package.json");
+    printStat("dlib");
+    writeln();
     
     enum dir = "dlib/filesystem";
     writefln("Listing contents of %s:", dir);
@@ -430,6 +451,16 @@ unittest {
     
     writeln();
     
+    writeln("Listing dlib/core/*.d:");
+
+    foreach (string path, FileStat stat; localFS.findFiles("", true, delegate bool(string path) {
+            return !matchFirst(path, `^dlib/core/.*\.d$`).empty;
+        })) {
+        writefln("%s: %u bytes", path, stat.sizeInBytes);
+    }
+
+    writeln();
+
     //
     OutputStream outp = fs.openForOutput("tests/test_data/main/hello_world.txt", FileSystem.create | FileSystem.truncate);
     assert(outp);
