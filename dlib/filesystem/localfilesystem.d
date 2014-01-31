@@ -123,16 +123,16 @@ private class PosixDirectory : Directory {
 
 /// LocalFileSystem
 class LocalFileSystem : FileSystem {
-    override InputStream openForInput(string fileName) {
-        return cast(InputStream) openFile(fileName, read, 0);
+    override InputStream openForInput(string filename) {
+        return cast(InputStream) openFile(filename, read, 0);
     }
     
-    override OutputStream openForOutput(string fileName, uint creationFlags) {
-        return cast(OutputStream) openFile(fileName, write, creationFlags); 
+    override OutputStream openForOutput(string filename, uint creationFlags) {
+        return cast(OutputStream) openFile(filename, write, creationFlags); 
     }
     
-    override IOStream openForIO(string fileName, uint creationFlags) {
-        return openFile(fileName, read | write, creationFlags);
+    override IOStream openForIO(string filename, uint creationFlags) {
+        return openFile(filename, read | write, creationFlags);
     }
     
     override bool createDir(string path, bool recursive) {
@@ -281,7 +281,7 @@ private:
         enum access_0755 = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
     }
 
-    IOStream openFile(string fileName, uint accessFlags, uint creationFlags) {
+    IOStream openFile(string filename, uint accessFlags, uint creationFlags) {
         // TODO: Windows implementation
         
         version (Posix) {
@@ -300,7 +300,7 @@ private:
             if (creationFlags & FileSystem.truncate)
                 flags |= O_TRUNC;
             
-            int fd = open(toStringz(fileName), flags, access_0644);
+            int fd = open(toStringz(filename), flags, access_0644);
             
             if (fd < 0)
                 return null;
@@ -416,11 +416,11 @@ unittest {
     
     assert(fs.createDir("tests/test_data/main", true));
     
-    void printStat(string fileName) {
+    void printStat(string filename) {
         FileStat stat;
-        assert(localFS.stat(fileName, stat));
+        assert(localFS.stat(filename, stat));
         
-        writef("'%s'\t", fileName);
+        writef("'%s'\t", filename);
         
         if (stat.isFile)
             writefln("%u", stat.sizeInBytes);

@@ -114,12 +114,12 @@ interface ReadOnlyFileSystem {
     /** Get file or directory stats.
         Example:
         ---
-        void printFileInfo(ReadOnlyFileSystem fs, string fileName) {
+        void printFileInfo(ReadOnlyFileSystem fs, string filename) {
             FileStat stat;
             
-            writef("'%s'\t", fileName);
+            writef("'%s'\t", filename);
             
-            if (!fs.stat(fileName, stat)) {
+            if (!fs.stat(filename, stat)) {
                 writeln("ERROR");
                 return;
             }
@@ -134,12 +134,12 @@ interface ReadOnlyFileSystem {
         }
         ---
     */
-    bool stat(string fileName, out FileStat stat);
+    bool stat(string filename, out FileStat stat);
     
     /** Open a file for input.
         Returns: a valid InputStream on success, null on failure
     */
-    InputStream openForInput(string fileName);
+    InputStream openForInput(string filename);
     
     /** Open a directory.
     */
@@ -188,14 +188,14 @@ interface FileSystem: ReadOnlyFileSystem {
     /** Open a file for output.
         Returns: a valid OutputStream on success, null on failure
     */
-    OutputStream openForOutput(string fileName, uint creationFlags);
+    OutputStream openForOutput(string filename, uint creationFlags);
     
     /** Open a file for input & output.
         Returns: a valid IOStream on success, null on failure
     */
-    IOStream openForIO(string fileName, uint creationFlags);
+    IOStream openForIO(string filename, uint creationFlags);
     
-    //IOStream openFile(string fileName, uint accessFlags, uint creationFlags);
+    //IOStream openFile(string filename, uint accessFlags, uint creationFlags);
     
     /** Create a new directory.
         Returns: true if a new directory was created
