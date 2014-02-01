@@ -172,10 +172,11 @@ interface ReadOnlyFileSystem {
 // TODO: Use exceptions or not?
 /// A file system with read/write access.
 interface FileSystem: ReadOnlyFileSystem {
-    /*enum AccessFlags {
-        read,
-        write
-    }*/
+    /// File access flags.
+    enum {
+        read = 1,
+        write = 2,
+    }
     
     /// File creation flags.
     enum {
