@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.filesystem.filesystem;
 
-import dlib.core.stream;
+public import dlib.core.stream;
 
 import std.datetime;
 

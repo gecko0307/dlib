@@ -38,12 +38,6 @@ import std.path;
 import std.stdio;
 import std.string;
 
-LocalFileSystem localFS;
-
-static this() {
-    localFS = new LocalFileSystem;
-}
-
 version (Posix) {
     import core.sys.posix.dirent;
     import core.sys.posix.fcntl;
@@ -652,94 +646,4 @@ class WindowsFile : IOStream {
     
     override void flush() {
     }    
-}
-
-unittest {
-    // TODO: test >4GiB files
-    
-    import std.conv;
-    import std.regex;
-    import std.stdio;
-    
-    FileSystem fs = new LocalFileSystem;
-
-    fs.remove("tests", true);
-    
-    assert(fs.openDir("tests") is null);
-    
-    assert(fs.createDir("tests/test_data/main", true));
-    
-    void printStat(string filename) {
-        FileStat stat;
-        assert(localFS.stat(filename, stat));
-        
-        writef("'%s'\t", filename);
-        
-        if (stat.isFile)
-            writefln("%u", stat.sizeInBytes);
-        else if (stat.isDirectory)
-            writefln("DIR");
-        
-        writefln("  created: %s", to!string(stat.creationTimestamp));
-        writefln("  modified: %s", to!string(stat.modificationTimestamp));
-    }
-    
-    writeln("File stats:");
-    printStat("package.json");
-    printStat("dlib/core");     // make sure slashes work on Windows
-    writeln();
-    
-    enum dir = "dlib/filesystem";
-    writefln("Listing contents of %s:", dir);
-    
-    auto d = fs.openDir(dir);
-    
-    try {
-        foreach (string path, FileStat stat; d)
-            writefln("%s: %u bytes", path, stat.sizeInBytes);
-    }
-    finally {
-        d.close();
-    }
-    
-    writeln();
-    
-    writeln("Listing dlib/core/*.d:");
-
-    foreach (string path, FileStat stat; localFS.findFiles("", true, delegate bool(string path) {
-            return !matchFirst(path, `^dlib/core/.*\.d$`).empty;
-        })) {
-        writefln("%s: %u bytes", path, stat.sizeInBytes);
-    }
-
-    writeln();
-
-    //
-    OutputStream outp = fs.openForOutput("tests/test_data/main/hello_world.txt", FileSystem.create | FileSystem.truncate);
-    assert(outp);
-    
-    try {
-        assert(outp.writeArray("Hello, World!\n"));
-    }
-    finally {
-        outp.close();
-    }
-    
-    //
-    InputStream inp = fs.openForInput("tests/test_data/main/hello_world.txt");
-    assert(inp);
-    
-    try {
-        while (inp.readable) {
-            char buffer[1];
-            
-            auto have = inp.readBytes(buffer.ptr, buffer.length);
-            std.stdio.write(buffer[0..have]);
-        }
-    }
-    finally {
-        inp.close();
-    }
-
-    writeln();
 }

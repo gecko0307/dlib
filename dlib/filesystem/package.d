@@ -30,6 +30,6 @@ DEALINGS IN THE SOFTWARE.
 module dlib.filesystem;
 
 public {
-    import dlib.filesystem.localfilesystem;
     import dlib.filesystem.filesystem;
+    import dlib.filesystem.functions;
 }
