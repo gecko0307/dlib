@@ -26,19 +26,19 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.filesystem.posixfile;
+module dlib.filesystem.windowsfile;
 
-version (Posix) {
+version (Windows) {
 import dlib.filesystem.filesystem;
-import dlib.filesystem.posixcommon;
+import dlib.filesystem.windowscommon;
 
-class PosixFile : IOStream {
-    int fd;
+class WindowsFile : IOStream {
+    HANDLE handle;
     uint accessFlags;
     bool eof = false;
     
-    this(int fd, uint accessFlags) {
-        this.fd = fd;
+    this(HANDLE handle, uint accessFlags) {
+        this.handle = handle;
         this.accessFlags = accessFlags;
     }
     
@@ -47,9 +47,9 @@ class PosixFile : IOStream {
     }
 
     override void close() {
-        if (fd != -1) {
-            core.sys.posix.unistd.close(fd);
-            fd = -1;
+        if (handle != INVALID_HANDLE_VALUE) {
+            CloseHandle(handle);
+            handle = INVALID_HANDLE_VALUE;
         }
     }
     
@@ -58,48 +58,65 @@ class PosixFile : IOStream {
     }
     
     override StreamPos getPosition() {
-        import core.sys.posix.stdio;
-        
-        return lseek(fd, 0, SEEK_CUR);
+        LONG pos_high = 0;
+        LONG pos_low = SetFilePointer(handle, 0, &pos_high, FILE_CURRENT);
+
+        wenforce(pos_low != INVALID_SET_FILE_POINTER || GetLastError() == NO_ERROR);
+
+        return cast(StreamPos) pos_high << 32 | pos_low;
     }
     
     override bool setPosition(StreamPos pos) {
-        import core.sys.posix.stdio;
-        
-        return lseek(fd, pos, SEEK_SET) == pos;
+        LONG pos_high = pos >> 32;
+
+        if (SetFilePointer(handle, cast(LONG) pos, &pos_high, FILE_BEGIN) == INVALID_SET_FILE_POINTER
+            && GetLastError() != NO_ERROR)
+            return false;
+        else
+            return true;
     }
     
     override StreamSize size() {
-        import core.sys.posix.stdio;
-        
-        auto off = lseek(fd, 0, SEEK_CUR);
-        auto end = lseek(fd, 0, SEEK_END);
-        lseek(fd, off, SEEK_SET);
-        return end;
+        DWORD size_high;
+        DWORD size_low = GetFileSize(handle, &size_high);
+
+        wenforce(size_low != INVALID_FILE_SIZE || GetLastError() == NO_ERROR);
+
+        return cast(StreamPos) size_high << 32 | size_low;
     }
     
     override bool readable() {
-        return fd != -1 && (accessFlags & FileSystem.read) && !eof;
+        return handle != INVALID_HANDLE_VALUE && (accessFlags & FileSystem.read) && !eof;
     }
     
     override size_t readBytes(void* buffer, size_t count) {
-        immutable size_t got = core.sys.posix.unistd.read(fd, buffer, count);
-        
-        if (count > got)
+        // TODO: make sure that count fits in a DWORD
+        DWORD dwCount = cast(DWORD) count;
+
+        DWORD dwGot = void;
+        wenforce(ReadFile(handle, buffer, dwCount, &dwGot, null));
+
+        if (dwCount > dwGot)
             eof = true;
         
-        return got;
+        return dwGot;
     }
     
     override bool writeable() {
-        return fd != -1 && (accessFlags & FileSystem.write);
+        return handle != INVALID_HANDLE_VALUE && (accessFlags & FileSystem.write);
     }
     
     override size_t writeBytes(const void* buffer, size_t count) {
-        return core.sys.posix.unistd.write(fd, buffer, count);
+        // TODO: make sure that count fits in a DWORD
+        DWORD dwCount = cast(DWORD) count;
+
+        DWORD dwGot = void;
+        wenforce(WriteFile(handle, buffer, dwCount, &dwGot, null));
+
+        return dwGot;
     }
     
     override void flush() {
-    }
+    }    
 }
 }

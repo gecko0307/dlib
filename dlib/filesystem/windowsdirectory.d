@@ -26,60 +26,74 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.filesystem.posixdirectory;
+module dlib.filesystem.windowsdirectory;
 
-version (Posix) {
+version (Windows) {
 import dlib.filesystem.filesystem;
-import dlib.filesystem.posixcommon;
+import dlib.filesystem.windowscommon;
 
 import std.conv;
+import std.datetime;
+import std.string;
 
-class PosixDirectory : Directory {
+class WindowsDirectory : Directory {
     FileSystem fs;
-    DIR* dir;
+    HANDLE find = INVALID_HANDLE_VALUE;
     string prefix;
     
-    this(FileSystem fs, DIR* dir, string prefix) {
+    WIN32_FIND_DATAW entry;
+    bool entryValid = false;
+
+    this(FileSystem fs, string path, string prefix) {
         this.fs = fs;
-        this.dir = dir;
         this.prefix = prefix;
-    } 
+
+        find = FindFirstFileW(toUTF16z(path ~ `\*.*`), &entry);
+
+        if (find != INVALID_HANDLE_VALUE)
+            entryValid = true;
+    }
     
     ~this() {
         close();
     }
     
     void close() {
-        if (dir != null) {
-            closedir(dir);
-            dir = null;
+        if (find != INVALID_HANDLE_VALUE) {
+            FindClose(find);
+            find = INVALID_HANDLE_VALUE;
         }
     }
-    
+
     FileIterator contents() {
-        if (dir == null)
-            return null;        // FIXME: throw an error
-        
         class Iterator : FileIterator {
-            override bool next(out string path, FileStat* stat) {
-                dirent entry_buf;
-                dirent* entry;
-                
+            override bool next(out string path, FileStat* stat_out) {
                 for (;;) {
-                    readdir_r(dir, &entry_buf, &entry);
+                    WIN32_FIND_DATAW* entry = nextEntry();
                     
                     if (entry == null)
                         return false;
                     else {
-                        string name = to!string(cast(const char*) entry.d_name);
+                        size_t len = wcslen(entry.cFileName.ptr);
+                        string name = to!string(entry.cFileName[0..len]);
                         
                         if (name == "." || name == "..")
                             continue;
                         
                         path = prefix ~ name;
                         
-                        if (stat != null)
-                            return fs.stat(path, *stat);
+                        if (stat_out != null) {
+                            if (entry.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+                                stat_out.isDirectory = true;
+                            else
+                                stat_out.isFile = true;
+
+                            stat_out.sizeInBytes = (cast(FileSize) entry.nFileSizeHigh << 32) | entry.nFileSizeLow;
+                            stat_out.creationTimestamp = SysTime(FILETIMEToStdTime(&entry.ftCreationTime));
+                            stat_out.modificationTimestamp = SysTime(FILETIMEToStdTime(&entry.ftLastWriteTime));
+
+                            return true;
+                        }
                         else
                             return true;
                     }
@@ -88,6 +102,18 @@ class PosixDirectory : Directory {
         }
         
         return new Iterator;
+    }
+
+    private WIN32_FIND_DATAW* nextEntry() {
+        if (entryValid) {
+            entryValid = false;
+            return &entry;
+        }
+
+        if (find == INVALID_HANDLE_VALUE || !FindNextFileW(find, &entry))
+            return null;
+
+        return &entry;
     }
 }
 }
