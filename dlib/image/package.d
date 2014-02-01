@@ -37,6 +37,7 @@ public
     import dlib.image.hdri;
     import dlib.image.hsv;
     import dlib.image.image;
+    import dlib.image.parallel;
     import dlib.image.signal2d;
 
     import dlib.image.filters.boxblur;
@@ -47,7 +48,10 @@ public
     import dlib.image.filters.normalmap;
     import dlib.image.filters.sharpen;
 
+    import dlib.image.io.bmp;
+    import dlib.image.io.io;
     import dlib.image.io.png;
+    import dlib.image.io.tga;
 
     import dlib.image.render.cosplasma;
 

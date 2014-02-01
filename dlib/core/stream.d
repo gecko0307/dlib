@@ -247,7 +247,7 @@ class ArrayStream : InputStream {
         if (pos > size_)
             return false;
 
-        this.pos = pos;
+        this.pos = cast(size_t)pos;
         return true;
     }
     
