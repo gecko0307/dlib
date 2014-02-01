@@ -39,88 +39,15 @@ import std.stdio;
 import std.string;
 
 version (Posix) {
-    import core.sys.posix.dirent;
-    import core.sys.posix.fcntl;
-    import core.sys.posix.sys.stat;
-    import core.sys.posix.sys.types;
-    import core.sys.posix.unistd;
+    import dlib.filesystem.posixcommon;
+    import dlib.filesystem.posixdirectory;
+    import dlib.filesystem.posixfile;
 }
 else version (Windows) {
     import core.sys.windows.windows;
     import std.utf;
 
     enum DWORD NO_ERROR = 0;
-}
-
-// Rename stat to stat_ because of method name collision
-version (Linux) {
-    alias off_t = off64_t;
-    alias stat_t = stat64_t;
-    
-    alias lseek = lseek64;
-    alias open = open64;
-    alias stat_ = stat64;
-}
-else version (Posix) {
-    alias stat_ = stat;
-}
-
-version (Posix)
-private class PosixDirectory : Directory {
-    LocalFileSystem fs;
-    DIR* dir;
-    string prefix;
-    
-    this(LocalFileSystem fs, DIR* dir, string prefix) {
-        this.fs = fs;
-        this.dir = dir;
-        this.prefix = prefix;
-    } 
-    
-    ~this() {
-        close();
-    }
-    
-    void close() {
-        if (dir != null) {
-            closedir(dir);
-            dir = null;
-        }
-    }
-    
-    FileIterator contents() {
-        if (dir == null)
-            return null;        // FIXME: throw an error
-        
-        class Iterator : FileIterator {
-            override bool next(out string path, FileStat* stat) {
-                dirent entry_buf;
-                dirent* entry;
-                
-                for (;;) {
-                    readdir_r(dir, &entry_buf, &entry);
-                    
-                    if (entry == null)
-                        return false;
-                    else {
-                        string name = to!string(cast(const char*) entry.d_name);
-                        
-                        if (name == "." || name == "..")
-                            continue;
-                        
-                        path = prefix ~ name;
-                        
-                        if (stat != null)
-                            return fs.stat(path, *stat);
-                        else
-                            return true;
-                    }
-                }
-            }
-        }
-        
-        return new Iterator;
-    }
 }
 
 version (Windows)
@@ -478,78 +405,6 @@ private:
         }
         else
             throw new Exception("Not implemented.");
-    }
-}
-
-version (Posix)
-class PosixFile : IOStream {
-    int fd;
-    uint accessFlags;
-    bool eof = false;
-    
-    this(int fd, uint accessFlags) {
-        this.fd = fd;
-        this.accessFlags = accessFlags;
-    }
-    
-    ~this() {
-        close();
-    }
-
-    override void close() {
-        if (fd != -1) {
-            core.sys.posix.unistd.close(fd);
-            fd = -1;
-        }
-    }
-    
-    override bool seekable() {
-        return true;
-    }
-    
-    override StreamPos getPosition() {
-        import core.sys.posix.stdio;
-        
-        return lseek(fd, 0, SEEK_CUR);
-    }
-    
-    override bool setPosition(StreamPos pos) {
-        import core.sys.posix.stdio;
-        
-        return lseek(fd, pos, SEEK_SET) == pos;
-    }
-    
-    override StreamSize size() {
-        import core.sys.posix.stdio;
-        
-        auto off = lseek(fd, 0, SEEK_CUR);
-        auto end = lseek(fd, 0, SEEK_END);
-        lseek(fd, off, SEEK_SET);
-        return end;
-    }
-    
-    override bool readable() {
-        return fd != -1 && (accessFlags & FileSystem.read) && !eof;
-    }
-    
-    override size_t readBytes(void* buffer, size_t count) {
-        immutable size_t got = core.sys.posix.unistd.read(fd, buffer, count);
-        
-        if (count > got)
-            eof = true;
-        
-        return got;
-    }
-    
-    override bool writeable() {
-        return fd != -1 && (accessFlags & FileSystem.write);
-    }
-    
-    override size_t writeBytes(const void* buffer, size_t count) {
-        return core.sys.posix.unistd.write(fd, buffer, count);
-    }
-    
-    override void flush() {
     }
 }
 
