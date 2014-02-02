@@ -35,6 +35,7 @@ import std.array;
 import std.conv;
 import std.datetime;
 import std.path;
+import std.range;
 import std.stdio;
 import std.string;
 
@@ -162,72 +163,52 @@ class LocalFileSystem : FileSystem {
         if (!this.stat(path, stat))
             return false;
         
-        return remove(path, stat, recursive);
+        return remove(path, stat.isDirectory, recursive);
     }
     
-    override FileIterator findFiles(string baseDir, bool recursive, bool delegate(string path) filter) {
-        class Iterator : FileIterator {
-            string[] entries;
-            
-            this(string[] entries) {
-                this.entries = entries;
-            }
-            
-            bool next(out string path, FileStat* stat_out) {
-                if (entries.empty)
-                    return false;
-                
-                path = entries[0];
-                entries.popFront();
-                
-                if (stat_out != null)
-                    return stat(path, *stat_out);
-                else
-                    return true;
-            }
-        }
-        
+    override InputRange!DirEntry findFiles(string baseDir, bool recursive) {
         // TODO: lazy evaluation
-        string[] entries;
+        DirEntry[] entries;
         
-        findFiles(baseDir, recursive, filter, delegate int(string path) {
-            entries ~= path;
+        findFiles(baseDir, recursive, delegate int(ref DirEntry entry) {
+            entries ~= entry;
             return 0;
         });
         
-        return new Iterator(entries);
+        return inputRangeObject(entries);
     }
     
-    override int findFiles(string baseDir, bool recursive, bool delegate(string path) filter, int delegate(string path) dg) {
+    private int findFiles(string baseDir, bool recursive, int delegate(ref DirEntry entry) dg) {
         Directory dir = openDir(baseDir);
 
         if (dir is null)
             return 0;
         
-        try {
-            int result = 0;
+        int result = 0;
         
-            foreach (string path, FileStat stat; dir) {
-                if (filter && filter(path)) {
-                    result = dg(path);
+        try {
+            foreach (entry; dir.contents) {
+                if (!baseDir.empty)
+                    entry.name = baseDir ~ "/" ~ entry.name;
                 
-                    if (result != 0)
-                        return result;
-                }
+                result = dg(entry);
                 
-                if (recursive && stat.isDirectory) {
-                    result = findFiles(path, recursive, filter, dg);
+                if (result != 0)
+                    return result;
+
+                if (recursive && entry.isDirectory) {
+                    result = findFiles(entry.name, recursive, dg);
                 
                     if (result != 0)
                         return result;
                 }
             }
-            
-            return result;
         }
         finally {
             dir.close();
         }
+        
+        return result;
     }
     
 private:
@@ -292,16 +273,16 @@ private:
             throw new Exception("Not implemented.");
     }
     
-    bool remove(string path, const ref FileStat stat, bool recursive) {
+    bool remove(string path, bool isDirectory, bool recursive) {
         // TODO: Windows implementation
         
-        if (stat.isDirectory && recursive) {
+        if (isDirectory && recursive) {
             // Remove contents
             auto dir = openDir(path);
             
             try {
-                foreach (string entryPath, FileStat stat; dir)
-                    remove(entryPath, stat, true);
+                foreach (entry; dir.contents)
+                    remove(path ~ "/" ~ entry.name, entry.isDirectory, recursive);
             }
             finally {
                 dir.close();
@@ -309,13 +290,13 @@ private:
         }
             
         version (Posix) {
-            if (stat.isDirectory) 
+            if (isDirectory) 
                 return rmdir(toStringz(path)) == 0;
             else
                 return std.stdio.remove(toStringz(path)) == 0;
         }
         else version (Windows) {
-            if (stat.isDirectory)
+            if (isDirectory)
                 return RemoveDirectoryW(toUTF16z(path)) != 0;
             else
                 return DeleteFileW(toUTF16z(path)) != 0;
@@ -323,4 +304,18 @@ private:
         else
             throw new Exception("Not implemented.");
     }
+}
+
+unittest {
+    import std.regex;
+    
+    void listImagesInDirectory(ReadOnlyFileSystem fs, string baseDir = "") {
+        foreach (entry; fs.findFiles(baseDir, true)
+                .filter!(entry => entry.isFile)
+                .filter!(entry => !matchFirst(entry.name, `.*\.(gif|jpg|png)$`).empty)) {
+            writefln("%s", entry.name);
+        }
+    }
+    
+    listImagesInDirectory(new LocalFileSystem);
 }

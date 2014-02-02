@@ -26,65 +26,62 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.filesystem.posixdirectory;
+module dlib.filesystem.inputrangefromdelegate;
 
-version (Posix) {
-import dlib.filesystem.filesystem;
-import dlib.filesystem.inputrangefromdelegate;
-import dlib.filesystem.posixcommon;
-
-import std.conv;
 import std.range;
 
-class PosixDirectory : Directory {
-    FileSystem fs;
-    DIR* dir;
-    string prefix;
+final class InputRangeFromDelegate(T) : InputRange!T {
+    bool delegate(out T t) fetch;
+    bool have = false;
+    T front_;
     
-    this(FileSystem fs, DIR* dir, string prefix) {
-        this.fs = fs;
-        this.dir = dir;
-        this.prefix = prefix;
-    } 
-    
-    ~this() {
-        close();
+    this(bool delegate(out T t) fetch) {
+        this.fetch = fetch;
     }
     
-    void close() {
-        if (dir != null) {
-            closedir(dir);
-            dir = null;
-        }
-    }
-    
-    InputRange!DirEntry contents() {
-        if (dir == null)
-            return null;        // FIXME: throw an error
+    override bool empty() {
+        if (!have)
+            have = fetch(front_);
         
-        return new InputRangeFromDelegate!DirEntry(delegate bool(out DirEntry de) {
-            dirent entry_buf;
-            dirent* entry;
-            
-            for (;;) {
-                readdir_r(dir, &entry_buf, &entry);
-                
-                if (entry == null)
-                    return false;
-                else {
-                    string name = to!string(cast(const char*) entry.d_name);
-                    
-                    if (name == "." || name == "..")
-                        continue;
-                    
-                    de.name = name;
-                    de.isFile = (entry.d_type & DT_REG) != 0;
-                    de.isDirectory = (entry.d_type & DT_DIR) != 0;
-                    
-                    return true;
-                }
-            }
-        });
+        return !have;
     }
-}
+    
+    override T front() {
+        return front_;
+    }
+    
+    override void popFront() {
+        have = false;
+    }
+    
+    override T moveFront() {
+        have = false;
+        return front_;
+    }
+    
+    override int opApply(int delegate(T) dg) {
+        int result = 0;
+        
+        for (size_t i = 0; !empty; i++) {
+            result = dg(moveFront);
+            
+            if (result != 0)
+                break;
+        }
+        
+        return result;
+    }
+    
+    override int opApply(int delegate(size_t, T) dg) {
+        int result = 0;
+        
+        for (size_t i = 0; !empty; i++) {
+            result = dg(i, moveFront);
+            
+            if (result != 0)
+                break;
+        }
+        
+        return result;
+    }
 }

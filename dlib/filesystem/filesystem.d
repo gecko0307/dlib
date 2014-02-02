@@ -32,6 +32,7 @@ module dlib.filesystem.filesystem;
 public import dlib.core.stream;
 
 import std.datetime;
+import std.range;
 
 alias FileSize = StreamSize;
 
@@ -45,50 +46,11 @@ struct FileStat {
     SysTime creationTimestamp, modificationTimestamp;
 }
 
-/// Allows to iterate over a collection of files
-interface FileIterator {
-    /** Retrieve next entry from the collection.
-        Returns: true on success, false if there no more entries to retrieve
-        or an error occured
-    */
-    bool next(out string path, FileStat* stat_out = null);
-    
-    final int opApply(int delegate(ref string path) dg)  {
-        int result = 0;
-        
-        for (;;) {
-            string path;
-            
-            if (!next(path, null))
-                break;
-            
-            result = dg(path);
-            
-            if (result)
-                break;
-        }
-        
-        return result;
-    }
-    
-    final int opApply(int delegate(ref string path, ref FileStat entry) dg) {
-        int result = 0;
-        
-        for (;;) {
-            string path;
-            FileStat entry;
-            
-            if (!next(path, &entry))
-                break;
-            
-            result = dg(path, entry);
-            
-            if (result)
-                break;
-        }
-        
-        return result;
-    }
+struct DirEntry {
+    ///
+    string name;
+    ///
+    bool isFile, isDirectory;
 }
 
 /// A directory in the file system.
@@ -96,17 +58,10 @@ interface Directory {
     ///
     void close();
     
-    /// Get directory contents as a FileIterator.
+    /// Get directory contents as a range.
+    /// This range $(I should) be lazily evaluated when practical.
     /// The entries "." and ".." are skipped.
-    FileIterator contents();
-    
-    final int opApply(int delegate(ref string path) dg)  {
-        return contents.opApply(dg);
-    }
-    
-    final int opApply(int delegate(ref string path, ref FileStat entry) dg) {
-        return contents.opApply(dg);
-    }
+    InputRange!DirEntry contents();
 }
 
 /// A file system limited to read access.
@@ -155,18 +110,15 @@ interface ReadOnlyFileSystem {
         Examples:
         ---
         void listImagesInDirectory(ReadOnlyFileSystem fs, string baseDir = "") {
-            foreach (string path, FileStat stat; fs.findFiles(baseDir, true, delegate bool(string path) {
-                return !matchFirst(path, `.*\.(gif|jpg|png)$`).empty;
-            })) {
-                if (stat.isFile)
-                    writefln("%s:\t%u bytes", path, stat.sizeInBytes);
+            foreach (entry; fs.findFiles(baseDir, true)
+                    .filter!(entry => entry.isFile)
+                    .filter!(entry => !matchFirst(entry.name, `.*\.(gif|jpg|png)$`).empty)) {
+                writefln("%s", entry.name);
             }
         }
         ---
     */
-    FileIterator findFiles(string baseDir, bool recursive, bool delegate(string path) filter);
-    /// ditto
-    int findFiles(string baseDir, bool recursive, bool delegate(string path) filter, int delegate(string path) dg);
+    InputRange!DirEntry findFiles(string baseDir, bool recursive);
 }
 
 // TODO: Use exceptions or not?

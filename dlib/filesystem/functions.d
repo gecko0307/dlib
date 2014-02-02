@@ -31,6 +31,8 @@ module dlib.filesystem.functions;
 
 import dlib.filesystem.filesystem;
 
+import std.range;
+
 private ReadOnlyFileSystem rofs;
 private FileSystem fs;
 
@@ -65,12 +67,8 @@ Directory openDir(string path) {
     return rofs.openDir(path);
 }
 
-FileIterator findFiles(string baseDir, bool recursive, bool delegate(string path) filter) {
-    return rofs.findFiles(baseDir, recursive, filter);
-}
-
-int findFiles(string baseDir, bool recursive, bool delegate(string path) filter, int delegate(string path) dg) {
-    return rofs.findFiles(baseDir, recursive, filter, dg);
+InputRange!DirEntry findFiles(string baseDir, bool recursive) {
+    return rofs.findFiles(baseDir, recursive);
 }
 
 // FileSystem
@@ -98,6 +96,7 @@ bool remove(string path, bool recursive) {
 unittest {
     // TODO: test >4GiB files
     
+    import std.algorithm;
     import std.conv;
     import std.regex;
     import std.stdio;
@@ -114,15 +113,15 @@ unittest {
         FileStat stat_;
         assert(stat(filename, stat_));
         
-        writef("'%s'\t", filename);
+        writef("  - '%s'\t", filename);
         
         if (stat_.isFile)
             writefln("%u", stat_.sizeInBytes);
         else if (stat_.isDirectory)
             writefln("DIR");
         
-        writefln("  created: %s", to!string(stat_.creationTimestamp));
-        writefln("  modified: %s", to!string(stat_.modificationTimestamp));
+        writefln("      created: %s", to!string(stat_.creationTimestamp));
+        writefln("      modified: %s", to!string(stat_.modificationTimestamp));
     }
     
     writeln("File stats:");
@@ -131,13 +130,15 @@ unittest {
     writeln();
     
     enum dir = "dlib/filesystem";
-    writefln("Listing contents of %s:", dir);
+    writefln("Listing files in %s:", dir);
     
     auto d = openDir(dir);
     
     try {
-        foreach (string path, FileStat stat_; d)
-            writefln("%s: %u bytes", path, stat_.sizeInBytes);
+        foreach (entry; d.contents) {
+            if (entry.isFile)
+                writeln("    ", entry.name);
+        }
     }
     finally {
         d.close();
@@ -145,12 +146,16 @@ unittest {
     
     writeln();
     
-    writeln("Listing dlib/core/*.d:");
+    writeln("Listing files mathing the pattern dlib/core/*.d:");
 
-    foreach (string path, FileStat stat_; findFiles("", true, delegate bool(string path) {
-            return !matchFirst(path, `^dlib/core/.*\.d$`).empty;
-        })) {
-        writefln("%s: %u bytes", path, stat_.sizeInBytes);
+    foreach (entry; findFiles("", true)
+            .filter!(entry => entry.isFile)
+            .filter!(entry => !matchFirst(entry.name, `^dlib/core/.*\.d$`).empty)
+        ) {
+        FileStat stat_;
+        assert(stat(entry.name, stat_));        // make sure we're getting the expected path
+        
+        writefln("    %s: %u bytes", entry.name, stat_.sizeInBytes);
     }
 
     writeln();
