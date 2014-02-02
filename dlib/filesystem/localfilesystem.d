@@ -50,6 +50,8 @@ else version (Windows) {
     import dlib.filesystem.windowsfile;
 }
 
+// TODO: Should probably check for FILE_ATTRIBUTE_REPARSE_POINT before recursing
+
 /// LocalFileSystem
 class LocalFileSystem : FileSystem {
     override InputStream openForInput(string filename) {

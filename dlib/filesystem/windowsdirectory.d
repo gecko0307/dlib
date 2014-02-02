@@ -30,10 +30,11 @@ module dlib.filesystem.windowsdirectory;
 
 version (Windows) {
 import dlib.filesystem.filesystem;
+import dlib.filesystem.inputrangefromdelegate;
 import dlib.filesystem.windowscommon;
 
 import std.conv;
-import std.datetime;
+import std.range;
 import std.string;
 
 class WindowsDirectory : Directory {
@@ -65,43 +66,31 @@ class WindowsDirectory : Directory {
         }
     }
 
-    FileIterator contents() {
-        class Iterator : FileIterator {
-            override bool next(out string path, FileStat* stat_out) {
-                for (;;) {
-                    WIN32_FIND_DATAW* entry = nextEntry();
+    InputRange!DirEntry contents() {
+        return new InputRangeFromDelegate!DirEntry(delegate bool(out DirEntry de) {
+            for (;;) {
+                WIN32_FIND_DATAW* entry = nextEntry();
+                
+                if (entry == null)
+                    return false;
+                else {
+                    size_t len = wcslen(entry.cFileName.ptr);
+                    string name = to!string(entry.cFileName[0..len]);
                     
-                    if (entry == null)
-                        return false;
-                    else {
-                        size_t len = wcslen(entry.cFileName.ptr);
-                        string name = to!string(entry.cFileName[0..len]);
-                        
-                        if (name == "." || name == "..")
-                            continue;
-                        
-                        path = prefix ~ name;
-                        
-                        if (stat_out != null) {
-                            if (entry.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-                                stat_out.isDirectory = true;
-                            else
-                                stat_out.isFile = true;
+                    if (name == "." || name == "..")
+                        continue;
+                    
+                    de.name = name;
 
-                            stat_out.sizeInBytes = (cast(FileSize) entry.nFileSizeHigh << 32) | entry.nFileSizeLow;
-                            stat_out.creationTimestamp = SysTime(FILETIMEToStdTime(&entry.ftCreationTime));
-                            stat_out.modificationTimestamp = SysTime(FILETIMEToStdTime(&entry.ftLastWriteTime));
-
-                            return true;
-                        }
-                        else
-                            return true;
-                    }
+                    if (entry.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+                        de.isDirectory = true;
+                    else
+                        de.isFile = true;
+                    
+                    return true;
                 }
             }
-        }
-        
-        return new Iterator;
+        });
     }
 
     private WIN32_FIND_DATAW* nextEntry() {
