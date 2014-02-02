@@ -42,6 +42,11 @@ struct LinkedList(T, bool ordered = false)
     LinkedListElement!(T)* tail = null;
 	size_t length = 0;
 
+    @property bool empty()
+    {
+        return length == 0;
+    }
+
     void traverse(void delegate(ref T v, LinkedListElement!(T)* elem) func)
     {
         LinkedListElement!(T)* element = head;
