@@ -38,6 +38,8 @@ private
 
     import dlib.core.stream;
     import dlib.core.filestream;
+    
+    import dlib.filesystem.functions;
 
     import dlib.math.utils;
 
@@ -113,10 +115,9 @@ class PNGLoadException : ImageLoadException
     }
 }
 
-SuperImage loadPNG(string fileName)
+SuperImage loadPNG(string filename)
 {
-    // TODO: Use new OpenFile when ready
-    InputStream input = new FileStream(new std.stream.File(fileName, FileMode.In));
+    InputStream input = openForInput(filename);
     
     try
     {
@@ -124,8 +125,8 @@ SuperImage loadPNG(string fileName)
     }
     catch (PNGLoadException ex)
     {
-        // Add fileName to exception message
-        throw new Exception("'" ~ fileName ~ "' :" ~ ex.msg, ex.file, ex.line, ex.next);
+        // Add filename to exception message
+        throw new Exception("'" ~ filename ~ "' :" ~ ex.msg, ex.file, ex.line, ex.next);
     }
     finally
     {
@@ -133,10 +134,9 @@ SuperImage loadPNG(string fileName)
     }
 }
 
-void savePNG(SuperImage img, string fileName)
+void savePNG(SuperImage img, string filename)
 {
-    // TODO: Use new OpenFile when ready
-    OutputStream output = new FileStream(new std.stream.File(fileName, FileMode.OutNew));
+    OutputStream output = openForOutput(filename);
     
     try
     {
@@ -144,8 +144,8 @@ void savePNG(SuperImage img, string fileName)
     }
     catch (PNGLoadException ex)
     {
-        // Add fileName to exception message
-        throw new Exception("'" ~ fileName ~ "' :" ~ ex.msg, ex.file, ex.line, ex.next);
+        // Add filename to exception message
+        throw new Exception("'" ~ filename ~ "' :" ~ ex.msg, ex.file, ex.line, ex.next);
     }
     finally
     {
@@ -581,4 +581,8 @@ unittest
     assert(img.channels == 3);
     assert(img.pixelSize == 3);
     assert(img.data == [0xff, 0x00, 0x00]);
+    
+    createDir("tests", false);
+    savePNG(img, "tests/minimal.png");
+    loadPNG("tests/minimal.png");
 }

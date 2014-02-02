@@ -60,7 +60,12 @@ bool stat(string filename, out FileStat stat) {
 }
 
 InputStream openForInput(string filename) {
-    return rofs.openForInput(filename);
+    InputStream ins = rofs.openForInput(filename);
+
+    if (ins is null)
+        throw new Exception("Failed to open '" ~ filename ~ "'");
+
+    return ins;
 }
 
 Directory openDir(string path) {
@@ -73,12 +78,22 @@ InputRange!DirEntry findFiles(string baseDir, bool recursive) {
 
 // FileSystem
 
-OutputStream openForOutput(string filename, uint creationFlags) {
-    return fs.openForOutput(filename, creationFlags);
+OutputStream openForOutput(string filename, uint creationFlags = FileSystem.create | FileSystem.truncate) {
+    OutputStream outs = fs.openForOutput(filename, creationFlags);
+
+    if (outs is null)
+        throw new Exception("Failed to open '" ~ filename ~ "' for writing");
+
+    return outs;
 }
 
 IOStream openForIO(string filename, uint creationFlags) {
-    return fs.openForIO(filename, creationFlags);
+    IOStream ios = fs.openForIO(filename, creationFlags);
+
+    if (ios is null)
+        throw new Exception("Failed to open '" ~ filename ~ "' for writing");
+
+    return ios;
 }
 
 bool createDir(string path, bool recursive) {
@@ -103,9 +118,8 @@ unittest {
     
     alias remove = dlib.filesystem.functions.remove;
     
-    remove("tests", true);
-    
-    assert(openDir("tests") is null);
+    remove("tests/test_data", true);
+    assert(openDir("tests/test_data") is null);
     
     assert(createDir("tests/test_data/main", true));
     

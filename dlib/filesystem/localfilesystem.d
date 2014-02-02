@@ -349,5 +349,7 @@ unittest {
         }
     }
     
-    listImagesInDirectory(new LocalFileSystem);
+    writeln("listImagesInDirectory (FileSystem example):");
+    listImagesInDirectory(new LocalFileSystem, "tests");
+    writeln();
 }
