@@ -89,8 +89,6 @@ class LocalFileSystem : FileSystem {
     }
     
     override Directory openDir(string path) {
-        // TODO: Windows implementation
-        
         version (Posix) {
             DIR* d = opendir(!path.empty ? toStringz(path) : ".");
             
@@ -102,8 +100,6 @@ class LocalFileSystem : FileSystem {
         else version (Windows) {
             string npath = !path.empty ? buildNormalizedPath(path) : ".";
             DWORD attributes = GetFileAttributesW(toUTF16z(npath));
-
-            enum DWORD INVALID_FILE_ATTRIBUTES = cast(DWORD)0xFFFFFFFF;
 
             if (attributes == INVALID_FILE_ATTRIBUTES)
                 return null;
@@ -154,12 +150,11 @@ class LocalFileSystem : FileSystem {
             throw new Exception("Not implemented.");
     }
     
-    override bool move(string path, string newPath) {
-        // TODO: Windows implementation
+    /*override bool move(string path, string newPath) {
         // TODO: should we allow newPath to actually be a directory?
         
         return rename(toStringz(path), toStringz(newPath)) == 0;
-    }
+    }*/
     
     override bool remove(string path, bool recursive) {
         FileStat stat;

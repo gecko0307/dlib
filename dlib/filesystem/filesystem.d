@@ -160,9 +160,10 @@ interface FileSystem: ReadOnlyFileSystem {
     */
     bool createDir(string path, bool recursive);
     
+    // BROKEN API. Must define semantics for non-atomic move cases (e.g. moving a file to a different drive)
     /** Rename or move a file.
     */
-    bool move(string path, string newPath);
+    //bool move(string path, string newPath);
     
     /** Permanently delete a file or directory.
     */

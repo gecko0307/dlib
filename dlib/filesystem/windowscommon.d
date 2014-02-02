@@ -35,6 +35,7 @@ version (Windows) {
     import std.windows.syserror;
 
     enum DWORD NO_ERROR = 0;
+    enum DWORD INVALID_FILE_ATTRIBUTES = cast(DWORD)0xFFFFFFFF;
 
     static T wenforce(T)(T cond, string str = null) {
     	import std.array;

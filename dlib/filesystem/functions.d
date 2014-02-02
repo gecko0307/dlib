@@ -100,9 +100,9 @@ bool createDir(string path, bool recursive) {
     return fs.createDir(path, recursive);
 }
 
-bool move(string path, string newPath) {
+/*bool move(string path, string newPath) {
     return fs.move(path, newPath);
-}
+}*/
 
 bool remove(string path, bool recursive) {
     return fs.remove(path, recursive);
