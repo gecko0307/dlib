@@ -48,7 +48,7 @@ void setFileSystem(FileSystem fs_) {
     fs = fs_;
 }
 
-void setReadOnlyFileSystem(ReadOnlyFileSystem rofs_) {
+void setFileSystemReadOnly(ReadOnlyFileSystem rofs_) {
     rofs = rofs_;
     fs = null;
 }

@@ -39,6 +39,8 @@ import std.range;
 import std.stdio;
 import std.string;
 
+import dlib.filesystem.inputrangefromdelegate;
+
 version (Posix) {
     import dlib.filesystem.posixcommon;
     import dlib.filesystem.posixdirectory;
@@ -169,15 +171,43 @@ class LocalFileSystem : FileSystem {
     }
     
     override InputRange!DirEntry findFiles(string baseDir, bool recursive) {
-        // TODO: lazy evaluation
-        DirEntry[] entries;
+        // Do some magic so that we don't have to keep our own stack
         
-        findFiles(baseDir, recursive, delegate int(ref DirEntry entry) {
-            entries ~= entry;
-            return 0;
+        import core.thread;
+
+        DirEntry entry;
+
+        // findFiles insists on calling us back (it's recursive), but we can trap it in a Fiber
+        auto search = new Fiber(delegate void() {
+            findFiles(baseDir, recursive, delegate int(ref DirEntry de) {
+                // save the data (D doesn't allow to yield it directly)
+                // and jump outside of the .call() (see below)
+                entry = de;
+                Fiber.yield();
+                
+                // after resuming, return to findFiles for another round
+                return 0;
+            });
+            
+            // state becomes TERM after we're resumed after returning the last entry
         });
         
-        return inputRangeObject(entries);
+        return new InputRangeFromDelegate!DirEntry(delegate bool(out DirEntry de) {
+            // terminated before?
+            if (search.state == Fiber.State.TERM)
+                return false;
+                
+            // jumps into our search delegate
+            search.call();
+            
+            // last entry had been returned last time?
+            // (even findFiles didn't know until we returned to it again)
+            if (search.state == Fiber.State.TERM)
+                return false;
+            
+            de = entry;
+            return true;
+        });
     }
     
     private int findFiles(string baseDir, bool recursive, int delegate(ref DirEntry entry) dg) {
