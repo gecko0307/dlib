@@ -174,11 +174,6 @@ interface IOStream : InputStream, OutputStream
 {
 }
 
-interface OpenFile
-{
-    IOStream openFile(string fileName, bool readOnly, bool create);
-}
-
 StreamSize copyFromTo(InputStream input, OutputStream output)
 {
     ubyte buffer[0x1000];

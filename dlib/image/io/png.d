@@ -37,7 +37,6 @@ private
     import std.zlib;
 
     import dlib.core.stream;
-    import dlib.core.filestream;
     
     import dlib.filesystem.functions;
 
