@@ -40,6 +40,12 @@ struct Queue(T)
     private LinkedList!(T) list;
 
     public:
+
+    @property bool empty()
+    {
+        return list.empty;
+    }
+
     void enqueue(T v)
     {
         list.append(v);
@@ -59,11 +65,16 @@ struct Queue(T)
 unittest
 {
     Queue!int q;
+
+    assert (q.empty);
+
     q.enqueue(50);
     q.enqueue(30);
     q.enqueue(900);
+
     assert (q.dequeue() == 50);
     assert (q.dequeue() == 30);
     assert (q.dequeue() == 900);
+    assert (q.empty);
 }
 
