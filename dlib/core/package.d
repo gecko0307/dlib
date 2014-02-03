@@ -33,7 +33,6 @@ public
     import dlib.core.aarray;
     import dlib.core.bst;
     import dlib.core.compound;
-    import dlib.core.filestream;
     import dlib.core.hash;
     import dlib.core.linkedlist;
     import dlib.core.method;
