@@ -260,32 +260,71 @@ body
  * Setup the matrix to perform a "Look At" transformation 
  * like a first person camera
  */
-Matrix!(T,4) lookAtMatrix(T) (Vector!(T,3) camPos, Vector!(T,3) target, Vector!(T,3) camUp)
+Matrix!(T,4) lookAtMatrix(T) (Vector!(T,3) eye, Vector!(T,3) center, Vector!(T,3) up)
 body
 {
-    auto rot = Matrix!(T,4).identity;
+    auto Result = Matrix!(T,4).identity;
 
-    Vector!(T,3) forward = (camPos - target).normalized;
-    Vector!(T,3) right = cross(camUp, forward).normalized;
-    Vector!(T,3) up = cross(forward, right).normalized;
-
-    rot.a11 = right.x;
-    rot.a21 = right.y;
-    rot.a31 = right.z;
-
-    rot.a12 = up.x;
-    rot.a22 = up.y;
-    rot.a32 = up.z;
-
-    rot.a13 = forward.x;
-    rot.a23 = forward.y;
-    rot.a33 = forward.z;
-
-    auto trans = translationMatrix(-camPos);
-    return (rot * trans);
+    auto f = (center - eye).normalized;
+    auto u = (up).normalized;
+    auto s = cross(f, u).normalized;
+    u = cross(s, f);
+    
+    Result[0,0] = s.x;
+    Result[0,1] = s.y;
+    Result[0,2] = s.z;
+    Result[1,0] = u.x;
+    Result[1,1] = u.y;
+    Result[1,2] = u.z;
+    Result[2,0] =-f.x;
+    Result[2,1] =-f.y;
+    Result[2,2] =-f.z;
+    Result[0,3] =-dot(s, eye);
+    Result[1,3] =-dot(u, eye);
+    Result[2,3] = dot(f, eye);
+    return Result;
 }
 
-// TODO: frustumMatrix
+/*
+ * Setup a frustum matrix given the left, right, bottom, top, near, and far
+ * values for the frustum boundaries.
+ */
+Matrix!(T,4) frustumMatrix(T) (T l, T r, T b, T t, T n, T f)
+in
+{
+    assert (n >= 0.0);
+    assert (f >= 0.0);
+}
+body
+{
+    auto res = Matrix!(T,4).identity;
+
+    T width  = r - l;
+    T height = t - b;
+    T depth  = f - n;
+
+    res.arrayof[0] = (2 * n) / width;
+    res.arrayof[1] = 0.0;
+    res.arrayof[2] = 0.0;
+    res.arrayof[3] = 0.0;
+
+    res.arrayof[4] = 0.0;
+    res.arrayof[5] = (2 * n) / height;
+    res.arrayof[6] = 0.0;
+    res.arrayof[7] = 0.0;
+
+    res.arrayof[8] = (r + l) / width;
+    res.arrayof[9] = (t + b) / height;
+    res.arrayof[10]= -(f + n) / depth;
+    res.arrayof[11]= -1.0;
+
+    res.arrayof[12]= 0.0;
+    res.arrayof[13]= 0.0;
+    res.arrayof[14]= -(2 * f * n) / depth;
+    res.arrayof[15]= 0.0;
+
+    return res;
+}
 
 /*
  * Setup a perspective matrix given the field-of-view in the Y direction
@@ -327,7 +366,41 @@ body
     return res;
 }
 
-// TODO: orthoMatrix
+/*
+ * Setup an orthographic Matrix4x4 given the left, right, bottom, top, near,
+ * and far values for the frustum boundaries.
+ */
+Matrix!(T,4) orthoMatrix(T) (T l, T r, T b, T t, T n, T f)
+body
+{
+    auto res = Matrix!(T,4).identity;
+
+    T width  = r - l;
+    T height = t - b;
+    T depth  = f - n;
+
+    res.arrayof[0] =  2.0 / width;
+    res.arrayof[1] =  0.0;
+    res.arrayof[2] =  0.0;
+    res.arrayof[3] =  0.0;
+
+    res.arrayof[4] =  0.0;
+    res.arrayof[5] =  2.0 / height;
+    res.arrayof[6] =  0.0;
+    res.arrayof[7] =  0.0;
+
+    res.arrayof[8] =  0.0;
+    res.arrayof[9] =  0.0;
+    res.arrayof[10]= -2.0 / depth;
+    res.arrayof[11]=  0.0;
+
+    res.arrayof[12]= -(r + l) / width;
+    res.arrayof[13]= -(t + b) / height;
+    res.arrayof[14]= -(f + n) / depth;
+    res.arrayof[15]=  1.0;
+
+    return res;
+}
 
 /*
  * Setup an orientation matrix using 3 basis normalized vectors
