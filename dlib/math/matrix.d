@@ -56,7 +56,18 @@ struct Matrix(T, size_t N)
    /*
     * Return zero matrix
     */
+/*
     static opCall()
+    body
+    {
+        Matrix!(T,N) res;
+        foreach (ref v; res.arrayof)
+            v = 0;
+        return res;
+    }
+*/
+
+    static zero()
     body
     {
         Matrix!(T,N) res;

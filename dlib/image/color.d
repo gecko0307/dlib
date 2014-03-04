@@ -87,8 +87,15 @@ struct Color4f
     {
         vec = Vector4f(cr, cg, cb, ca);
     }
-    
+
+/*
     static Color4f opCall()
+    {
+        return Color4f(0.0f, 0.0f, 0.0f, 0.0f);
+    }
+*/
+
+    static Color4f zero()
     {
         return Color4f(0.0f, 0.0f, 0.0f, 0.0f);
     }
