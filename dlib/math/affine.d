@@ -46,9 +46,64 @@ import dlib.math.matrix;
  * dlib uses 4x4 matrices to represent affine transformations.
  */
 
-// TODO: fromEuler
+/*
+ * Setup a rotation matrix, given Euler angles in radians
+ */
+Matrix!(T,4) fromEuler(T) (Vector!(T,3) v)
+{
+    auto res = Matrix!(T,4).identity;
 
-// TODO: toEuler
+    T cx = cos(v.x);
+    T sx = sin(v.x);
+    T cy = cos(v.y);
+    T sy = sin(v.y);
+    T cz = cos(v.z);
+    T sz = sin(v.z);
+
+    T sxsy = sx * sy;
+    T cxsy = cx * sy;
+
+    res.a11 =  (cy * cz);
+    res.a12 =  (sxsy * cz) + (cx * sz);
+    res.a13 = -(cxsy * cz) + (sx * sz);
+
+    res.a21 = -(cy * sz);
+    res.a22 = -(sxsy * sz) + (cx * cz);
+    res.a23 =  (cxsy * sz) + (sx * cz);
+
+    res.a31 =  (sy);
+    res.a32 = -(sx * cy);
+    res.a33 =  (cx * cy);
+
+    return res;
+}
+
+/*
+ * Setup the Euler angles in radians, given a rotation matrix
+ */
+Vector!(T,3) toEuler(T) (Matrix!(T,4) m)
+body
+{
+    Vector!(T,3) v;
+
+    v.y = asin(m.a31);
+
+    T cy = cos(v.y);
+    T oneOverCosY = 1.0 / cy;
+
+    if (fabs(cy) > 0.001)
+    {
+        v.x = atan2(-m.a32 * oneOverCosY, m.a33 * oneOverCosY);
+        v.z = atan2(-m.a21 * oneOverCosY, m.a11 * oneOverCosY);
+    }
+    else
+    {
+        v.x = 0.0;
+        v.z = atan2(m.a12, m.a22);
+    }
+
+    return v;
+}
 
 /*
  * Right vector of the matrix
