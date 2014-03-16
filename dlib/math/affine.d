@@ -307,9 +307,69 @@ body
     return res;
 }
 
-// TODO: reflectionMatrix
+/*
+ * Setup the matrix to perform a reflection about a plane parallel
+ * to a cardinal plane.
+ */
+Matrix!(T,4) reflectionMatrix(T) (Axis reflectionAxis, T k)
+body
+{
+    auto res = Matrix!(T,4).identity;
 
-// TODO: axisReflectionMatrix
+    switch (reflectionAxis)
+    {
+        case Axis.x:
+            res.a11 = -1.0; res.a21 =  0.0; res.a31 =  0.0; res.a41 = 2.0 * k;
+            res.a12 =  0.0; res.a22 =  1.0; res.a32 =  0.0; res.a42 = 0.0;
+            res.a13 =  0.0; res.a23 =  0.0; res.a33 =  1.0; res.a43 = 0.0;
+            break;
+
+        case Axis.y:
+            res.a11 =  1.0; res.a21 =  0.0; res.a31 =  0.0; res.a41 = 0.0;
+            res.a12 =  0.0; res.a22 = -1.0; res.a32 =  0.0; res.a42 = 2.0 * k;
+            res.a13 =  0.0; res.a23 =  0.0; res.a33 =  1.0; res.a43 = 0.0;
+            break;
+
+        case Axis.z:
+            res.a11 =  1.0; res.a21 =  0.0; res.a31 =  0.0; res.a41 = 0.0;
+            res.a12 =  0.0; res.a22 =  1.0; res.a32 =  0.0; res.a42 = 0.0;
+            res.a13 =  0.0; res.a23 =  0.0; res.a33 = -1.0; res.a43 = 2.0 * k;
+            break;
+
+        default:
+            assert(0);
+    }
+
+    return res;
+}
+
+/*
+ * Setup the matrix to perform a reflection about an arbitrary plane
+ * through the origin.  The unit vector n is perpendicular to the plane.
+ */
+Matrix!(T,4) axisReflectionMatrix(T) (Vector!(T,3) n)
+in
+{
+    assert (fabs(dot(n, n) - 1.0) < 0.001);
+}
+body
+{
+    auto res = Matrix!(T,4).identity;
+
+    T ax = -2.0 * n.x;
+    T ay = -2.0 * n.y;
+    T az = -2.0 * n.z;
+
+    res.a11 = 1.0 + (ax * n.x);
+    res.a22 = 1.0 + (ay * n.y);
+    res.a32 = 1.0 + (az * n.z);
+
+    res.a12 = res.a21 = (ax * n.y);
+    res.a13 = res.a31 = (ax * n.z);
+    res.a23 = res.a32 = (ay * n.z);
+
+    return res;
+}
 
 /*
  * Setup the matrix to perform a "Look At" transformation 
