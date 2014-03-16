@@ -65,19 +65,28 @@ abstract class SuperImage
     Color4f opIndexAssign(Color4f c, int x, int y);
 
     SuperImage createSameFormat(uint w, uint h);
-
-    @property float progress();
-    void updateProgress();
-    void resetProgress();
     
-    @property auto row()
+    final @property auto row()
     {
         return range!uint(0, width);
     }
     
-    @property auto col()
+    final @property auto col()
     {
         return range!uint(0, height);
+    }
+
+    float pixelCost = 0.0f;
+    shared float progress = 0.0f;
+    
+    final void updateProgress()
+    {
+        progress += pixelCost;
+    }
+    
+    final void resetProgress()
+    {
+        progress = 0.0f;
     }
 }
 
@@ -154,8 +163,8 @@ class Image(PixelFormat fmt): SuperImage
         _pixelSize = (_bitDepth / 8) * _channels;
         _data = new ubyte[_width * _height * _pixelSize];
         
-        _pixelCost = 1.0f / (_width * _height);
-        _progress = 0.0f;
+        pixelCost = 1.0f / (_width * _height);
+        progress = 0.0f;
     }
 
     private Color4 getPixel(int x, int y)
@@ -301,21 +310,6 @@ class Image(PixelFormat fmt): SuperImage
         setPixel(c.convert(_bitDepth), x, y);
         return c;
     }
-   
-    override @property float progress()
-    {
-        return _progress;
-    }
-    
-    override void updateProgress()
-    {
-        _progress += _pixelCost;
-    }
-    
-    override void resetProgress()
-    {
-        _progress = 0.0f;
-    }
 
     protected:
 
@@ -325,9 +319,6 @@ class Image(PixelFormat fmt): SuperImage
     uint _channels;
     uint _pixelSize;
     ubyte[] _data;
-    
-    float _pixelCost;
-    shared float _progress;
 }
 
 alias Image!(PixelFormat.L8) ImageL8;

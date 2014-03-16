@@ -35,8 +35,10 @@ private
     import dlib.image.color;
 }
 
-class FPImage: SuperImage
+final class FPImage: SuperImage
 {
+    public:
+
     override @property uint width()
     {
         return _width;
@@ -93,8 +95,8 @@ class FPImage: SuperImage
         _pixelSize = (_bitDepth / 8) * _channels;
         _data = new ubyte[_width * _height * _pixelSize];
 
-        _pixelCost = 1.0f / (_width * _height);
-        _progress = 0.0f;
+        pixelCost = 1.0f / (_width * _height);
+        progress = 0.0f;
     }
 
     override Color4f opIndex(int x, int y)
@@ -129,21 +131,6 @@ class FPImage: SuperImage
         return c;
     }
 
-    override @property float progress()
-    {
-        return _progress;
-    }
-    
-    override void updateProgress()
-    {
-        _progress += _pixelCost;
-    }
-    
-    override void resetProgress()
-    {
-        _progress = 0.0f;
-    }
-
     protected:
 
     uint _width;
@@ -152,9 +139,6 @@ class FPImage: SuperImage
     uint _channels;
     uint _pixelSize;
     ubyte[] _data;
-    
-    float _pixelCost;
-    shared float _progress;
 }
 
 SuperImage clamp(SuperImage img, float minv, float maxv)
