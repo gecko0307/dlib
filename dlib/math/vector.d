@@ -47,7 +47,11 @@ public:
 struct Vector(T, int size)
 {
     public:
-    
+
+   /* 
+    * Vector constructor
+    * Supports initializing from vector of arbitrary length
+    */
     this (int size2)(Vector!(T, size2) v)
     {           
         if (v.arrayof.length >= size)
@@ -58,7 +62,10 @@ struct Vector(T, int size)
                 arrayof[i] = v.arrayof[i];
     }
 
-    this (F)(F[] components...) if (isNumeric!F)
+   /* 
+    * Array constructor
+    */
+    this (A)(A components) if (isArray!A && !isSomeString!A)
     {        
         if (components.length >= size)
             foreach(i; 0..size)
@@ -68,17 +75,27 @@ struct Vector(T, int size)
                 arrayof[i] = components[i];
     }
 
-    this (F)(F[size] components) if (isNumeric!F)
+   /* 
+    * Tuple constructor
+    */
+    this (F...)(F components)
     {
-        foreach(i; 0..size)
-            arrayof[i] = components[i]; 
+        foreach(i, v; components)
+            static if (i < size)
+                arrayof[i] = v;
     }
 
+   /* 
+    * String constructor
+    */
     this (S)(S str) if (isSomeString!S)
     {
         arrayof = parse!(T[size])(str);
     }
 
+   /* 
+    * Vector!(T,size) = Vector!(T,size2)
+    */
     void opAssign(int size2)(Vector!(T,size2) v)
     {           
         if (v.arrayof.length >= size)

@@ -566,7 +566,43 @@ Matrix!(T,4) shadowMatrix(T) (Vector!(T,4) groundplane, Vector!(T,4) lightpos)
     return res;
 }
 
-// TODO: directionToMatrix
+/*
+ * Setup an orientation matrix using forward direction vector
+ */
+Matrix!(T,4) directionToMatrix(T) (Vector!(T,3) zdir)
+{
+    Vector!(T,3) xdir = Vector!(T,3)(0, 0, 1);
+    Vector!(T,3) ydir;
+    float d = zdir.z;
+
+    if (d > -0.999999999 && d < 0.999999999)
+    {
+        xdir = xdir - zdir * d;
+        xdir.normalize();
+        ydir = cross(zdir, xdir);
+    }
+    else
+    {
+        xdir = Vector!(T,3)(zdir.z, 0, -zdir.x);
+        ydir = Vector!(T,3)(0, 1, 0);
+    }
+
+    auto m = Matrix!(T,4).identity;
+
+    m.a13 = zdir.x;
+    m.a23 = zdir.y;
+    m.a33 = zdir.z;
+
+    m.a11 = xdir.x;
+    m.a21 = xdir.y;
+    m.a31 = xdir.z;
+
+    m.a12 = ydir.x;
+    m.a22 = ydir.y;
+    m.a32 = ydir.z;
+
+    return m;
+}
 
 // TODO: rotationBetweenVectors
 
