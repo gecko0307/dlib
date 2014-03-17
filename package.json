@@ -21,8 +21,6 @@
                 "dlib/math/matrix2x2.d",
                 "dlib/math/matrix3x3.d",
                 "dlib/math/matrix4x4.d",
-                "dlib/math/affine_old.d",
-                "dlib/math/matrix_old.d"
             ]
         },
         {
