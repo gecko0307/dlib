@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2014 Timur Gafarov 
+Copyright (c) 2013-2014 Timur Gafarov, Martin Cejp
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -533,7 +533,38 @@ body
     return res;
 }
 
-// TODO: shadowMatrix
+/*
+ * Setup a matrix that flattens geometry into a plane, 
+ * as if it were casting a shadow from a light
+ */
+Matrix!(T,4) shadowMatrix(T) (Vector!(T,4) groundplane, Vector!(T,4) lightpos)
+{
+    T d = dot(groundplane, lightpos);
+
+    auto res = Matrix!(T,4).identity;
+
+    res.a11 = d-lightpos.x * groundplane.x;
+    res.a12 =  -lightpos.x * groundplane.y;
+    res.a13 =  -lightpos.x * groundplane.z;
+    res.a14 =  -lightpos.x * groundplane.w;
+
+    res.a21 =  -lightpos.y * groundplane.x;
+    res.a22 = d-lightpos.y * groundplane.y;
+    res.a23 =  -lightpos.y * groundplane.z;
+    res.a24 =  -lightpos.y * groundplane.w;
+
+    res.a31 =  -lightpos.z * groundplane.x;
+    res.a32 =  -lightpos.z * groundplane.y;
+    res.a33 = d-lightpos.z * groundplane.z;
+    res.a34 =  -lightpos.z * groundplane.w;
+
+    res.a41 =  -lightpos.w * groundplane.x;
+    res.a42 =  -lightpos.w * groundplane.y;
+    res.a43 =  -lightpos.w * groundplane.z;
+    res.a44 = d-lightpos.w * groundplane.w;
+    
+    return res;
+}
 
 // TODO: directionToMatrix
 
