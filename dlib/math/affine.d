@@ -33,6 +33,7 @@ import std.math;
 import dlib.math.utils;
 import dlib.math.vector;
 import dlib.math.matrix;
+import dlib.math.quaternion;
 
 /*
  * Affine transformations
@@ -604,7 +605,17 @@ Matrix!(T,4) directionToMatrix(T) (Vector!(T,3) zdir)
     return m;
 }
 
-// TODO: rotationBetweenVectors
+/*
+ * Setup an orientation matrix that performs rotation
+ * between two vectors 
+ *
+ * NOTE: currently this is just a shortcut 
+ * for dlib.math.quaternion.rotationBetween
+ */
+Matrix!(T,4) rotationBetweenVectors(T) (Vector!(T,3) source, Vector!(T,3) target)
+{
+    return rotationBetween(source, target).toMatrix4x4;
+}
 
 /*
  * Transformations in 2D space

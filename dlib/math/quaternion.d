@@ -663,16 +663,37 @@ body
  * Setup a quaternion to represent rotation 
  * between two unit-length vectors
  */
-Quaternion!(T) rotationBetween(T) (Vector!(T,3) from, Vector!(T,3) to)
-{     
-    Quaternion!(T) result;     
-    Vector!(T,3) H = (from + to).normalized; 
+Quaternion!(T) rotationBetween(T) (Vector!(T,3) a, Vector!(T,3) b)
+{
+    Quaternion!(T) q;
 
-    result.w = dot(from, H);     
-    result.x = from.y*H.z - from.z*H.y;     
-    result.y = from.z*H.x - from.x*H.z;     
-    result.z = from.x*H.y - from.y*H.x;     
-    return result;
+    float d = dlib.math.vector.dot(a, b);
+    float angle = acos(d);
+    
+    Vector!(T,3) axis;
+    if (d < -0.9999)
+    {
+        Vector!(T,3) c;
+        if (a.y != 0.0 || a.z != 0.0)
+            c = Vector!(T,3)(1, 0, 0);
+        else
+            c = Vector!(T,3)(0, 1, 0);
+        axis = cross(a, c); 
+        axis.normalize();
+        q = rotation(axis, angle);
+    }
+    else if (d > 0.9999)
+    {
+        q = identityQuaternion!T;
+    }
+    else
+    {
+        axis = cross(a, b);
+        axis.normalize();
+        q = rotation(axis, angle);
+    }
+        
+    return q;
 }
 
 /*
