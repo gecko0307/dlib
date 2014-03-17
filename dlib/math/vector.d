@@ -887,6 +887,47 @@ enum AxisVector: Vector3f
 }
 */
 
+/*
+ * Vector factory function 
+ */
+auto vectorf(T...)(T t) if (t.length > 0)
+{
+    return Vector!(float, t.length)(t);
+}
+
+/*
+ * L-value pseudovector for assignment purposes.
+ *
+ * Usage example:
+ *
+ *  float a, b, c
+ *  lvector(a, b, c) = Vector3f(10, 4, 2);
+ */
+auto lvector(T...)(ref T x)
+{
+    struct Result(T, uint size)
+    {
+        T*[size] arrayof;
+
+        void opAssign(int size2)(Vector!(T,size2) v)
+        {
+            if (v.arrayof.length >= size)
+                foreach(i; 0..size)
+                    *arrayof[i] = v.arrayof[i];       
+            else
+                foreach(i; 0..v.arrayof.length)
+                    *arrayof[i] = v.arrayof[i];
+        }
+    }
+
+    auto res = Result!(typeof(x[0]), x.length)();
+
+    foreach(i, ref v; x)
+        res.arrayof[i] = &v;
+
+    return res;
+}
+
 unittest
 {
     const vec3 a = vec3(10.5f, 20.0f, 33.12345f);
