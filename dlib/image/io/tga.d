@@ -36,7 +36,11 @@ private
 
     import dlib.image.color;
     import dlib.image.image;
+    import dlib.image.io.io;
     import dlib.image.io.utils;
+
+    import dlib.core.stream;
+    import dlib.filesystem.functions;
 }
 
 // uncomment this to see debug messages:
@@ -58,22 +62,39 @@ struct TGAHeader
     ubyte descriptor;
 }
 
-ubyte readByte(File* f)
+class TGALoadException: ImageLoadException
 {
-    ubyte[1] b;
-    f.rawRead(b);
-    return b[0];
+    this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null)
+    {
+        super(msg, file, line, next);
+    }
 }
 
 SuperImage loadTGA(string filename)
 {
+    InputStream input = openForInput(filename);
+    
+    try
+    {
+        return loadTGA(input);
+    }
+    catch (TGALoadException ex)
+    {
+        throw new Exception("'" ~ filename ~ "' :" ~ ex.msg, ex.file, ex.line, ex.next);
+    }
+    finally
+    {
+        input.close();
+    }
+}
+
+SuperImage loadTGA(InputStream input)
+{
     SuperImage img;
-    
-    auto f = new File(filename, "r");
-    
+
     TGAHeader readHeader()
     {
-        TGAHeader hdr = readStruct!TGAHeader(f);
+        TGAHeader hdr = readStruct!TGAHeader(input);
         version(TGADebug)
         {
             writefln("idLength = %s", hdr.idLength);
@@ -107,7 +128,7 @@ SuperImage loadTGA(string filename)
     {
         uint channels = hdr.bpp / 8;
         auto res = image(hdr.width, hdr.height, channels);
-        f.rawRead(res.data);
+        input.fillArray(res.data);
         return res;
     }
 
@@ -125,8 +146,8 @@ SuperImage loadTGA(string filename)
             dataOffset += 768; 
 
         // Read compressed data
-        ubyte[] data = new ubyte[cast(uint)f.size - dataOffset];
-        f.rawRead(data);
+        ubyte[] data = new ubyte[cast(uint)input.size - dataOffset];
+        input.fillArray(data);
 
         uint ii = 0;
         uint i = 0;
@@ -170,14 +191,14 @@ SuperImage loadTGA(string filename)
 
         return res;
     }
- 
+
     auto hdr = readHeader();
 
     string id;
     if (hdr.idLength)
     {
         auto chars = new char[hdr.idLength];
-        f.rawRead(chars);
+        input.fillArray(chars);
         id = chars.to!string;
 
         version(TGADebug)
@@ -186,8 +207,8 @@ SuperImage loadTGA(string filename)
         }
     }
 
-    assert(hdr.encoding == 2 || hdr.encoding == 10, 
-        "TGA error: only RGB images are supported by decoder");
+    if (hdr.encoding != 2 && hdr.encoding != 10)
+        throw new TGALoadException("TGA error: only RGB images are supported by decoder");
 
     if (hdr.encoding == 2)
     {
@@ -200,9 +221,7 @@ SuperImage loadTGA(string filename)
 
     img.swapRGB();
 
-    f.close();
-
-    return img;   
+    return img;
 }
 
 void saveTGA(SuperImage img, string filename)

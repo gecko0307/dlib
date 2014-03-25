@@ -32,6 +32,8 @@ private
 {
     import std.stdio;
     import std.conv;
+
+    import dlib.core.stream;
 }
 
 T readStruct(T)(File* f, bool bigEndian = false)
@@ -54,3 +56,25 @@ T readStruct(T)(File* f, bool bigEndian = false)
     }
     return res;
 }
+
+T readStruct(T)(InputStream input, bool bigEndian = false)
+{
+    T res;
+    foreach(ref field; res.tupleof)
+    {
+        alias typeof(field) FieldType;
+
+        ubyte[FieldType.sizeof] bytes;
+        input.fillArray(bytes);
+
+        FieldType val = *cast(FieldType*)bytes.ptr;
+
+        // TODO:
+        //if (bigEndian)
+        //    val = val.bigEndianToNative;
+
+        field = val;
+    }
+    return res;
+}
+
