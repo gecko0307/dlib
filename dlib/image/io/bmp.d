@@ -35,7 +35,11 @@ private
 
     import dlib.image.image;
     import dlib.image.color;
+    import dlib.image.io.io;
     import dlib.image.io.utils;
+
+    import dlib.core.stream;
+    import dlib.filesystem.functions;
 }
 
 // uncomment this to see debug messages:
@@ -118,11 +122,35 @@ void setPos(File* f, int pos)
     fsetpos(f.getFP, &pos);
 }
 
+class BMPLoadException: ImageLoadException
+{
+    this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null)
+    {
+        super(msg, file, line, next);
+    }
+}
+
 SuperImage loadBMP(string filename)
 {
-    SuperImage img;
+    InputStream input = openForInput(filename);
+    
+    try
+    {
+        return loadBMP(input);
+    }
+    catch (BMPLoadException ex)
+    {
+        throw new Exception("'" ~ filename ~ "' :" ~ ex.msg, ex.file, ex.line, ex.next);
+    }
+    finally
+    {
+        input.close();
+    }
+}
 
-    auto f = new File(filename, "r");
+SuperImage loadBMP(InputStream input)
+{
+    SuperImage img;
 
     BMPFileHeader bmpfh;
     BMPInfoHeader bmpih;
@@ -133,14 +161,12 @@ SuperImage loadBMP(string filename)
     uint compression;
     uint bitsPerPixel;
 
-    int bmphPos;
-
     ubyte[] colormap;
     int colormapSize;
 
-    bmpfh = readStruct!BMPFileHeader(f);
-    
-    bmphPos = f.getPos();
+    bmpfh = readStruct!BMPFileHeader(input);
+
+    auto bmphPos = input.position;
 
     version(BMPDebug)
     { 
@@ -153,16 +179,12 @@ SuperImage loadBMP(string filename)
     }
 
     if (bmpfh.type != BMPMagic)
-    {
-        writefln("BMP error: file \"%s\" is not a BMP", filename);
-        f.close();
-        return img;
-    }
+        throw new BMPLoadException("BMP error: input data is not BMP");
 
     uint numChannels = 3;
     uint width, height;
 
-    bmpih = readStruct!BMPInfoHeader(f);
+    bmpih = readStruct!BMPInfoHeader(input);
 
     version(BMPDebug)
     { 
@@ -188,8 +210,8 @@ SuperImage loadBMP(string filename)
          */
 
         // We must go back to read bitmap core header
-        f.setPos(bmphPos);
-        bmpch = readStruct!BMPCoreHeader(f);
+        input.position = bmphPos;
+        bmpch = readStruct!BMPCoreHeader(input);
 
         osType = BMPOSType.OS2;
         compression = BMPCompressionType.RGB;
@@ -227,14 +249,17 @@ SuperImage loadBMP(string filename)
     }
 
     uint padding = pitch - (width * 3); // this is how many bytes of padding we need
-    version(BMPDebug) writefln("pitch = %s", pitch);
-    version(BMPDebug) writefln("padding = %s", padding);
+    version(BMPDebug)
+    {
+        writefln("pitch = %s", pitch);
+        writefln("padding = %s", padding);
+    }
 
-    assert(compression == BMPCompressionType.RGB,
-        "BMP error: only RGB images are supported by decoder");
+    if (compression != BMPCompressionType.RGB)
+        throw new BMPLoadException("BMP error: only RGB images are supported by decoder");
 
-    assert(bitsPerPixel == 24,
-        "BMP error: unsupported color depth");
+    if (bitsPerPixel != 24)
+        throw new BMPLoadException("BMP error: unsupported color depth");
 
     // Create image
     uint channels = bmpih.bitsPerPixel / 8;
@@ -246,11 +271,11 @@ SuperImage loadBMP(string filename)
         colormapSize = (1 << bitsPerPixel) * ((osType == BMPOSType.OS2)? 3 : 4);
         colormap = new ubyte[colormapSize];
 
-        f.rawRead(colormap);
+        input.fillArray(colormap);
     }
 
     // Go to begining of pixel data
-    f.seek(bmpfh.offset);
+    input.position = bmpfh.offset;
 
     // Read image data
     switch (compression)
@@ -271,7 +296,7 @@ SuperImage loadBMP(string filename)
                     break;
 
                 case 24:
-                    read24bitBMP(f, img, padding);
+                    read24bitBMP(input, img, padding);
                     break;
 
                 case 32:
@@ -297,44 +322,27 @@ SuperImage loadBMP(string filename)
 
         default:
             // Unsupported file types
-            writefln("BMP Error: unsupported bitmap compression type (%s)", compression);
+            throw new BMPLoadException("BMP error: unsupported bitmap compression type");
             break;
     }
-
-    f.close();
 
     return img;
 }
 
-void read24bitBMP(File* f, SuperImage img, uint padding)
+void read24bitBMP(InputStream input, SuperImage img, uint padding)
 {
     foreach(y; 0..img.height)
     {
         foreach(x; 0..img.width)
         {
             ubyte[3] bgr;
-            f.rawRead(bgr);
+            input.fillArray(bgr);
             img[x, y] = Color4f(ColorRGBA(bgr[2], bgr[1], bgr[0]));
         }
-        f.seek(padding, SEEK_CUR);
-    }
-}
 
-/*
-void read32bitBMP(File* f, SuperImage img, uint padding)
-{
-    foreach(y; 0..img.height)
-    {
-        foreach(x; 0..img.width)
-        {
-            ubyte[4] bgra;
-            f.rawRead(bgra);
-            img[x, y] = Color4f(ColorRGBA(bgra[2], bgra[1], bgra[0]));
-        }
-        f.seek(padding, SEEK_CUR);
+        input.seek(padding);
     }
 }
-*/
 
 void saveBMP(SuperImage img, string filename)
 {
