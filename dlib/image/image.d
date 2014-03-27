@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2013 Timur Gafarov 
+Copyright (c) 2011-2014 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -30,9 +30,11 @@ module dlib.image.image;
 
 private
 {
+    import std.math;
     import std.conv;
     import dlib.functional.range;
     import dlib.math.vector;
+    import dlib.math.interpolation;
     import dlib.image.color;
 }
 
@@ -388,4 +390,27 @@ T convert(T)(SuperImage img)
         res[x, y] = img[x, y];
     return res;
 }
+
+/*
+ * Get interpolated pixel value from an image
+ */
+Color4f bilinearPixel(SuperImage img, float x, float y)
+{
+    real intX;
+    real fracX = modf(x, intX);
+    real intY;
+    real fracY = modf(y, intY);
+
+    Color4f c1 = img[cast(int)intX, cast(int)intY];
+    Color4f c2 = img[cast(int)(intX + 1.0f), cast(int)intY];
+    Color4f c3 = img[cast(int)(intX + 1.0f), cast(int)(intY + 1.0f)];
+    Color4f c4 = img[cast(int)intX, cast(int)(intY + 1.0f)];
+
+    Color4f ic1 = lerp(c1, c2, fracX);
+    Color4f ic2 = lerp(c4, c3, fracX);
+    Color4f ic3 = lerp(ic1, ic2, fracY);
+
+    return ic3;
+}
+
 
