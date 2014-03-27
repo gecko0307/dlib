@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2013 Timur Gafarov 
+Copyright (c) 2011-2014 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -88,13 +88,6 @@ struct Color4f
         vec = Vector4f(cr, cg, cb, ca);
     }
 
-/*
-    static Color4f opCall()
-    {
-        return Color4f(0.0f, 0.0f, 0.0f, 0.0f);
-    }
-*/
-
     static Color4f zero()
     {
         return Color4f(0.0f, 0.0f, 0.0f, 0.0f);
@@ -104,6 +97,46 @@ struct Color4f
     {
         vec = v;
         return this;
+    }
+
+    Color4f opAdd(float x)
+    {
+        return Color4f(this.vec + x);
+    }
+
+    Color4f opSub(float x)
+    {
+        return Color4f(this.vec - x);
+    }
+
+    Color4f opMul(float x)
+    {
+        return Color4f(this.vec * x);
+    }
+
+    Color4f opDiv(float x)
+    {
+        return Color4f(this.vec / x);
+    }
+
+    Color4f opAdd(Vector4f v)
+    {
+        return Color4f(this.vec + v);
+    }
+
+    Color4f opSub(Vector4f v)
+    {
+        return Color4f(this.vec - v);
+    }
+
+    Color4f opMul(Vector4f v)
+    {
+        return Color4f(this.vec * v);
+    }
+
+    Color4f opDiv(Vector4f v)
+    {
+        return Color4f(this.vec / v);
     }
 
     Color4 convert(int bitDepth)
