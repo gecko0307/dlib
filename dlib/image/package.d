@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013 Timur Gafarov 
+Copyright (c) 2013-2014 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -44,6 +44,7 @@ public
     import dlib.image.filters.chromakey;
     import dlib.image.filters.convolution;
     import dlib.image.filters.edgedetect;
+    import dlib.image.filters.lens;
     import dlib.image.filters.morphology;
     import dlib.image.filters.normalmap;
     import dlib.image.filters.sharpen;
