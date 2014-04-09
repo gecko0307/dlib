@@ -67,7 +67,7 @@ class WindowsFile : IOStream {
     }
     
     override bool setPosition(StreamPos pos) {
-        LONG pos_high = pos >> 32;
+        LONG pos_high = cast(LONG)(pos >> 32);
 
         if (SetFilePointer(handle, cast(LONG) pos, &pos_high, FILE_BEGIN) == INVALID_SET_FILE_POINTER
             && GetLastError() != NO_ERROR)

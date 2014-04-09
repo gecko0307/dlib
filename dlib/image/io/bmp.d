@@ -323,7 +323,6 @@ SuperImage loadBMP(InputStream input)
         default:
             // Unsupported file types
             throw new BMPLoadException("BMP error: unsupported bitmap compression type");
-            break;
     }
 
     return img;
@@ -348,4 +347,3 @@ void saveBMP(SuperImage img, string filename)
 {
     assert(0, "Saving to BMP is not yet implemented");   
 }
-
