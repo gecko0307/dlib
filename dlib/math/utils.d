@@ -53,12 +53,12 @@ enum Axis
  * Convert degrees to radians
  * and vice-versa
  */
-T degtorad(T) (T angle)
+T degtorad(T) (T angle) nothrow
 {
     return (angle / 180.0) * PI;
 }
 
-T radtodeg(T) (T angle)
+T radtodeg(T) (T angle) nothrow
 {
     return (angle / PI) * 180.0;
 }
@@ -66,13 +66,13 @@ T radtodeg(T) (T angle)
 /*
  * Find maximum of three values
  */
-T max3(T) (T x, T y, T z)
+T max3(T) (T x, T y, T z) nothrow
 {
     T temp = (x > y)? x : y;
     return (temp > z) ? temp : z;
 }
 
-T min3(T) (T x, T y, T z)
+T min3(T) (T x, T y, T z) nothrow
 {
     T temp = (x < y)? x : y;
     return (temp < z) ? temp : z;
@@ -81,7 +81,7 @@ T min3(T) (T x, T y, T z)
 /*
  * Limit to given range
  */
-T clamp(T) (T v, T minimal, T maximal)
+T clamp(T) (T v, T minimal, T maximal) nothrow
 {
     if (v > minimal)
     {
@@ -94,7 +94,7 @@ T clamp(T) (T v, T minimal, T maximal)
 /*
  * Almost zero
  */
-bool isConsiderZero(T) (T f)
+bool isConsiderZero(T) (T f) nothrow
 {
     //enum ZERO = 1.0e-6;
     return (abs(f) < EPSILON);
@@ -103,12 +103,12 @@ bool isConsiderZero(T) (T f)
 /*
  * Powers
  */
-bool isPowerOfTwo(T)(T x)
+bool isPowerOfTwo(T)(T x) nothrow
 {
     return (x != 0) && ((x & (x - 1)) == 0);
 } 
 
-T nextPowerOfTwo(T) (T k) 
+T nextPowerOfTwo(T) (T k) nothrow
 {
     if (k == 0) 
         return 1;
@@ -118,7 +118,7 @@ T nextPowerOfTwo(T) (T k)
     return k + 1;
 }
 
-T nextPowerOfTen(T) (T k)
+T nextPowerOfTen(T) (T k) nothrow
 {
     return pow(10, cast(int)ceil(log10(k)));
 }
@@ -126,7 +126,7 @@ T nextPowerOfTen(T) (T k)
 /*
  * Array operations
  */
-T sum(T) (T[] array...)
+T sum(T) (T[] array...) nothrow
 {
     T result = 0;
     foreach(v; array) 
@@ -134,7 +134,7 @@ T sum(T) (T[] array...)
     return result;
 }
 
-T[] invertArray(T) (T[] array...)
+T[] invertArray(T) (T[] array...) nothrow
 {
     auto result = new T[array.length];
     foreach(i, v; array) 
@@ -142,14 +142,14 @@ T[] invertArray(T) (T[] array...)
     return result;
 }
 
-bool allIsZero(T) (T[] array...)
+bool allIsZero(T) (T[] array...) nothrow
 {
     foreach(i, v; array) 
         if (v != 0) return false;
     return true;
 }
 
-bool oneOfIsZero(T) (T[] array...)
+bool oneOfIsZero(T) (T[] array...) nothrow
 {
     foreach(i, v; array) 
         if (v == 0) return true;
@@ -161,12 +161,12 @@ bool oneOfIsZero(T) (T[] array...)
  */
 version (BigEndian)
 {
-    uint bigEndian(uint value)
+    uint bigEndian(uint value) nothrow
     {
         return value;
     }
 
-    uint networkByteOrder(uint value)
+    uint networkByteOrder(uint value) nothrow
     {
         return value;
     }
@@ -174,7 +174,7 @@ version (BigEndian)
 
 version (LittleEndian) 
 {
-    uint bigEndian(uint value) 
+    uint bigEndian(uint value) nothrow
     {
         return value << 24
             | (value & 0x0000FF00) << 8
@@ -182,13 +182,13 @@ version (LittleEndian)
             |  value >> 24;
     }
 
-    uint networkByteOrder(uint value)
+    uint networkByteOrder(uint value) nothrow
     {
         return bigEndian(value);
     }
 }
 
-uint bytesToUint(ubyte[4] src)
+uint bytesToUint(ubyte[4] src) nothrow
 {
     return (src[0] << 24 | src[1] << 16 | src[2] << 8 | src[3]); 
 }
@@ -196,14 +196,14 @@ uint bytesToUint(ubyte[4] src)
 /*
  * Field of view (FOV)
  */
-T fovYfromX(T) (T xfov, T aspectRatio)
+T fovYfromX(T) (T xfov, T aspectRatio) nothrow
 {
     xfov = degtorad(xfov);
     T yfov = 2.0 * atan(tan(xfov * 0.5)/aspectRatio);
     return radtodeg(yfov);
 }
 
-T fovXfromY(T) (T yfov, T aspectRatio) 
+T fovXfromY(T) (T yfov, T aspectRatio) nothrow
 {
     yfov = degtorad(yfov);
     T xfov = 2.0 * atan(tan(yfov * 0.5) * aspectRatio);
@@ -214,7 +214,7 @@ T fovXfromY(T) (T yfov, T aspectRatio)
  * Misc functions
  */
  
-int sign(T)(T x)
+int sign(T)(T x) nothrow
 {
     return (x > 0) - (x < 0);
 }
@@ -226,7 +226,7 @@ void swap(T)(T* a, T* b)
     *b = c;
 }
 
-bool isPerfectSquare(float n)
+bool isPerfectSquare(float n) nothrow
 {
     float r = sqrt(n);
     return(r * r == n);
