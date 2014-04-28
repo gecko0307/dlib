@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2013 Timur Gafarov 
+Copyright (c) 2011-2014 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -693,6 +693,23 @@ body
       + (a.z * b.x * c.y) - (a.z * b.y * c.x)
     );
 }
+
+/*
+ * Tensor product
+ */
+Matrix!(T,N) tensorProduct(T, size_t N) (Vector!(T,N) u, Vector!(T,N) v)
+body
+{
+    Matrix!(T,N) res;
+    foreach(i; 0..N)
+    foreach(j; 0..N)
+    {
+        res[i, j] = u[i] * v[j];
+    }
+    return res;
+}
+
+alias tensorProduct outerProduct;
 
 /*
  * Compute normal of a plane from three points

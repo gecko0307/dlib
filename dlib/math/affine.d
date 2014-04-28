@@ -631,21 +631,6 @@ body
     return res;
 }
 
-// TODO: generalize for arbitrary dimension
-// TODO: probably move to dlib.math.vector
-Matrix!(T,2) tensorProduct(T) (Vector!(T,2) u, Vector!(T,2) v)
-body
-{
-    Matrix!(T,2) res;
-    res[0] = u[0] * v[0];
-    res[1] = u[1] * v[0];
-    res[2] = u[0] * v[1];
-    res[3] = u[1] * v[1];
-    return res;
-}
-
-alias tensorProduct outerProduct;
-
 unittest
 {
     bool isAlmostZero(Vector4f v)

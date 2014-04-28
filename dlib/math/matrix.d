@@ -195,6 +195,36 @@ struct Matrix(T, size_t N)
     }
 
    /*
+    * Matrix + Matrix
+    */
+    Matrix!(T,N) opAdd (Matrix!(T,N) mat)
+    body
+    {
+        auto res = Matrix!(T,N)();
+        foreach (i; 0..N)
+        foreach (j; 0..N)
+        {
+            res[i, j] = this[i, j] + mat[i, j];
+        }
+        return res;
+    }
+
+   /*
+    * Matrix - Matrix
+    */
+    Matrix!(T,N) opSub (Matrix!(T,N) mat)
+    body
+    {
+        auto res = Matrix!(T,N)();
+        foreach (i; 0..N)
+        foreach (j; 0..N)
+        {
+            res[i, j] = this[i, j] + mat[i, j];
+        }
+        return res;
+    }
+
+   /*
     * Matrix * Matrix
     */
     Matrix!(T,N) opMul (Matrix!(T,N) mat)
@@ -224,6 +254,26 @@ struct Matrix(T, size_t N)
 
             return res;
         }
+    }
+
+   /*
+    * Matrix += Matrix
+    */
+    Matrix!(T,N) opAddAssign (Matrix!(T,N) mat)
+    body
+    {
+        this = this + mat;
+        return this;
+    }
+
+   /*
+    * Matrix -= Matrix
+    */
+    Matrix!(T,N) opSubAssign (Matrix!(T,N) mat)
+    body
+    {
+        this = this - mat;
+        return this;
     }
 
    /*
