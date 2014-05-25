@@ -191,3 +191,30 @@ Color4f packNormal(Vector3f n)
 
 alias Color4f ColorRGBAf;
 
+/*
+ * 32-bit color unpacking
+ */
+Color4f color3(int hex)
+{
+    ubyte r = (hex >> 16) & 255;
+    ubyte g = (hex >> 8) & 255;
+    ubyte b = hex & 255;
+    return Color4f(
+        cast(float)r / 255.0f, 
+        cast(float)g / 255.0f,
+        cast(float)b / 255.0f);
+}
+
+Color4f color4(int hex)
+{
+    ubyte r = (hex >> 24) & 255;
+    ubyte g = (hex >> 16) & 255;
+    ubyte b = (hex >> 8) & 255;
+    ubyte a = hex & 255;
+    return Color4f(
+        cast(float)r / 255.0f, 
+        cast(float)g / 255.0f,
+        cast(float)b / 255.0f,
+        cast(float)a / 255.0f);
+}
+
