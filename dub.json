@@ -1,7 +1,9 @@
 {
     "description": "D language utility library",
     "authors": [
-        "Timur Gafarov"
+        "Timur Gafarov",
+        "Martin Cejp",
+        "Andrey Penechko"
     ],
     "license": "Boost",
     "homepage": "http://github.com/gecko0307/dlib",
