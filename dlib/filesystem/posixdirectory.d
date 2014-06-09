@@ -29,12 +29,14 @@ DEALINGS IN THE SOFTWARE.
 module dlib.filesystem.posixdirectory;
 
 version (Posix) {
-import dlib.filesystem.filesystem;
-import dlib.filesystem.inputrangefromdelegate;
-import dlib.filesystem.posixcommon;
 
 import std.conv;
 import std.range;
+
+import dlib.filesystem.filesystem;
+//import dlib.filesystem.inputrangefromdelegate;
+import dlib.filesystem.dirrange;
+import dlib.filesystem.posixcommon;
 
 class PosixDirectory : Directory {
     FileSystem fs;
@@ -62,7 +64,7 @@ class PosixDirectory : Directory {
         if (dir == null)
             return null;        // FIXME: throw an error
         
-        return new InputRangeFromDelegate!DirEntry(delegate bool(out DirEntry de) {
+        return new DirRange(delegate bool(out DirEntry de) {
             dirent entry_buf;
             dirent* entry;
             

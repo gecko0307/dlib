@@ -29,10 +29,12 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.filesystem.filesystem;
 
-public import dlib.core.stream;
+import dlib.core.stream;
 
 import std.datetime;
 import std.range;
+
+import dlib.filesystem.dirrange;
 
 alias FileSize = StreamSize;
 

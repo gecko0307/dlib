@@ -29,6 +29,7 @@ DEALINGS IN THE SOFTWARE.
 module dlib.filesystem.posixfile;
 
 version (Posix) {
+import dlib.core.stream;
 import dlib.filesystem.filesystem;
 import dlib.filesystem.posixcommon;
 

@@ -28,9 +28,9 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.filesystem.inputrangefromdelegate;
 
-import std.range;
+private import std.range;
 
-final class InputRangeFromDelegate(T) : InputRange!T {
+class InputRangeFromDelegate(T) : InputRange!T {
     bool delegate(out T t) fetch;
     bool have = false;
     T front_;

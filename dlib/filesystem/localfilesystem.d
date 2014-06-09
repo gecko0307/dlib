@@ -39,7 +39,8 @@ import std.range;
 import std.stdio;
 import std.string;
 
-import dlib.filesystem.inputrangefromdelegate;
+//import dlib.filesystem.inputrangefromdelegate;
+import dlib.filesystem.dirrange;
 
 version (Posix) {
     import dlib.filesystem.posixcommon;
@@ -187,7 +188,7 @@ class LocalFileSystem : FileSystem {
             // state becomes TERM after we're resumed after returning the last entry
         });
         
-        return new InputRangeFromDelegate!DirEntry(delegate bool(out DirEntry de) {
+        return new DirRange(delegate bool(out DirEntry de) {
             // terminated before?
             if (search.state == Fiber.State.TERM)
                 return false;

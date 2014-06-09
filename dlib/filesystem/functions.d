@@ -30,6 +30,7 @@ DEALINGS IN THE SOFTWARE.
 module dlib.filesystem.functions;
 
 import dlib.filesystem.filesystem;
+import dlib.core.stream;
 
 import std.range;
 
