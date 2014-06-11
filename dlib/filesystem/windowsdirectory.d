@@ -30,7 +30,8 @@ module dlib.filesystem.windowsdirectory;
 
 version (Windows) {
 import dlib.filesystem.filesystem;
-import dlib.filesystem.inputrangefromdelegate;
+//import dlib.filesystem.inputrangefromdelegate;
+import dlib.filesystem.dirrange;
 import dlib.filesystem.windowscommon;
 
 import std.conv;
@@ -67,7 +68,7 @@ class WindowsDirectory : Directory {
     }
 
     InputRange!DirEntry contents() {
-        return new InputRangeFromDelegate!DirEntry(delegate bool(out DirEntry de) {
+        return new DirRange(delegate bool(out DirEntry de) {
             for (;;) {
                 WIN32_FIND_DATAW* entry = nextEntry();
                 

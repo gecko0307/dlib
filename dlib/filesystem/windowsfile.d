@@ -31,6 +31,7 @@ module dlib.filesystem.windowsfile;
 version (Windows) {
 import dlib.filesystem.filesystem;
 import dlib.filesystem.windowscommon;
+import dlib.core.stream;
 
 class WindowsFile : IOStream {
     HANDLE handle;
