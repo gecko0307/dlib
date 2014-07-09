@@ -470,10 +470,10 @@ struct Quaternion(T)
             T sy = sin(z * 0.5);
             T cy = cos(z * 0.5);
 
-            w =  (cy * cp * cr) + (sy * sp * sr);
-            x = -(sy * sp * cr) + (cy * cp * sr);
-            y =  (cy * sp * cr) + (sy * cp * sr);
-            z = -(cy * sp * sr) + (sy * cp * cr);
+            this.w =  (cy * cp * cr) + (sy * sp * sr);
+            this.x = -(sy * sp * cr) + (cy * cp * sr);
+            this.y =  (cy * sp * cr) + (sy * cp * sr);
+            this.z = -(cy * sp * sr) + (sy * cp * cr);
         }
 
        /* 
