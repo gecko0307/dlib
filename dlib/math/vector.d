@@ -529,8 +529,8 @@ struct Vector(T, int size)
 
         void clamp(T minv, T maxv)
         {
-            foreach (ref component; arrayof) 
-                component.clamp(minv, maxv);
+            foreach (ref v; arrayof) 
+                v = .clamp(v, minv, maxv);
         }
     }
 

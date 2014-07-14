@@ -83,7 +83,7 @@ abstract class SuperImage
     
     final void updateProgress()
     {
-        progress += pixelCost;
+        progress = progress + pixelCost;
     }
     
     final void resetProgress()
