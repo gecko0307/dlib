@@ -504,13 +504,13 @@ struct Quaternion(T)
         }
 
        /* 
-        * Return the rotation angle theta (in radians)
+        * Return the rotation angle (in radians)
         */
         T rotationAngle()
         body
         {
-            T thetaOver2 = acos(w);
-            return thetaOver2 * 2.0;
+            return 2.0 * acos(w);
+            //return 2.0f * atan2(s, w);
         }
 
        /* 
@@ -519,18 +519,34 @@ struct Quaternion(T)
         Vector!(T,3) rotationAxis()
         body
         {
-            T sinThetaOver2Sq = 1.0 - (w * w);
+            T s = sqrt(1.0 - (w * w));
 
-            if (sinThetaOver2Sq <= 0.0)
-                return Vector!(T,3)(1.0, 0.0, 0.0);
+            if (s <= 0.0f)
+                return Vector!(T,3)(x, y, z);
+            else
+                return Vector!(T,3)(x * s, y * s, z * s);
+        }
 
-            T oneOverSinThetaOver2 = 1.0 / sqrt(sinThetaOver2Sq);
-            return Vector!(T,3)
-            (
-                x * oneOverSinThetaOver2,
-                y * oneOverSinThetaOver2,
-                z * oneOverSinThetaOver2
-            );
+       /* 
+        * Quaternion as an angular velocity
+        * (rotation derivative as a pseudovector)
+        * TODO: tensor version
+        */
+        Vector!(T,3) generator()
+        body
+        {
+            T s = sqrt(1.0 - (w * w));
+
+            Vector!(T,3) axis;
+
+            if (s <= 0.0)
+                axis = Vector!(T,3)(x, y, z);
+            else
+                axis = Vector!(T,3)(x * s, y * s, z * s);
+
+            T angle = 2.0 * atan2(s, w);
+
+            return axis * angle;
         }
     }
 
