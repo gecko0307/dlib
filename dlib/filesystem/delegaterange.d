@@ -26,27 +26,62 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.filesystem.posixcommon;
+module dlib.filesystem.delegaterange;
 
-version (Posix) {
-public {
-    import core.sys.posix.dirent;
-    import core.sys.posix.fcntl;
-    import core.sys.posix.sys.stat;
-    import core.sys.posix.sys.types;
-    import core.sys.posix.unistd;
-}
+private import std.range;
 
-// Rename stat to stat_ because of method name collision
-version (Linux) {
-    alias off_t = off64_t;
-    alias stat_t = stat64_t;
+class DelegateInputRange(T) : InputRange!T {
+    bool delegate(out T t) fetch;
+    bool have = false;
+    T front_;
     
-    alias lseek = lseek64;
-    alias open = open64;
-    alias stat_ = stat64;
-}
-else {
-    alias stat_ = stat;
-}
+    this(bool delegate(out T t) fetch) {
+        this.fetch = fetch;
+    }
+    
+    override bool empty() {
+        if (!have)
+            have = fetch(front_);
+        
+        return !have;
+    }
+    
+    override T front() {
+        return front_;
+    }
+    
+    override void popFront() {
+        have = false;
+    }
+    
+    override T moveFront() {
+        have = false;
+        return front_;
+    }
+    
+    override int opApply(int delegate(T) dg) {
+        int result = 0;
+        
+        for (size_t i = 0; !empty; i++) {
+            result = dg(moveFront);
+            
+            if (result != 0)
+                break;
+        }
+        
+        return result;
+    }
+    
+    override int opApply(int delegate(size_t, T) dg) {
+        int result = 0;
+        
+        for (size_t i = 0; !empty; i++) {
+            result = dg(i, moveFront);
+            
+            if (result != 0)
+                break;
+        }
+        
+        return result;
+    }
 }

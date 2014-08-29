@@ -26,13 +26,12 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.filesystem.windowsdirectory;
+module dlib.filesystem.windows.directory;
 
 version (Windows) {
 import dlib.filesystem.filesystem;
-//import dlib.filesystem.inputrangefromdelegate;
 import dlib.filesystem.dirrange;
-import dlib.filesystem.windowscommon;
+import dlib.filesystem.windows.common;
 
 import std.conv;
 import std.range;

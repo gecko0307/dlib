@@ -26,7 +26,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.filesystem.posixdirectory;
+module dlib.filesystem.posix.directory;
 
 version (Posix) {
 
@@ -34,9 +34,8 @@ import std.conv;
 import std.range;
 
 import dlib.filesystem.filesystem;
-//import dlib.filesystem.inputrangefromdelegate;
 import dlib.filesystem.dirrange;
-import dlib.filesystem.posixcommon;
+import dlib.filesystem.posix.common;
 
 class PosixDirectory : Directory {
     FileSystem fs;

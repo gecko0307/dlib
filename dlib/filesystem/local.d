@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014 Martin Cejp 
+Copyright (c) 2014 Martin Cejp
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,10 +26,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.filesystem.localfilesystem;
-
-import dlib.core.stream;
-import dlib.filesystem.filesystem;
+module dlib.filesystem.local;
 
 import std.array;
 import std.conv;
@@ -39,18 +36,19 @@ import std.range;
 import std.stdio;
 import std.string;
 
-//import dlib.filesystem.inputrangefromdelegate;
+import dlib.core.stream;
+import dlib.filesystem.filesystem;
 import dlib.filesystem.dirrange;
 
 version (Posix) {
-    import dlib.filesystem.posixcommon;
-    import dlib.filesystem.posixdirectory;
-    import dlib.filesystem.posixfile;
+    import dlib.filesystem.posix.common;
+    import dlib.filesystem.posix.directory;
+    import dlib.filesystem.posix.file;
 }
 else version (Windows) {
-    import dlib.filesystem.windowscommon;
-    import dlib.filesystem.windowsdirectory;
-    import dlib.filesystem.windowsfile;
+    import dlib.filesystem.windows.common;
+    import dlib.filesystem.windows.directory;
+    import dlib.filesystem.windows.file;
 }
 
 // TODO: Should probably check for FILE_ATTRIBUTE_REPARSE_POINT before recursing
@@ -166,79 +164,6 @@ class LocalFileSystem : FileSystem {
         return remove(path, stat.isDirectory, recursive);
     }
     
-    override InputRange!DirEntry findFiles(string baseDir, bool recursive) {
-        // Do some magic so that we don't have to keep our own stack
-        
-        import core.thread;
-
-        DirEntry entry;
-
-        // findFiles insists on calling us back (it's recursive), but we can trap it in a Fiber
-        auto search = new Fiber(delegate void() {
-            findFiles(baseDir, recursive, delegate int(ref DirEntry de) {
-                // save the data (D doesn't allow to yield it directly)
-                // and jump outside of the .call() (see below)
-                entry = de;
-                Fiber.yield();
-                
-                // after resuming, return to findFiles for another round
-                return 0;
-            });
-            
-            // state becomes TERM after we're resumed after returning the last entry
-        });
-        
-        return new DirRange(delegate bool(out DirEntry de) {
-            // terminated before?
-            if (search.state == Fiber.State.TERM)
-                return false;
-                
-            // jumps into our search delegate
-            search.call();
-            
-            // last entry had been returned last time?
-            // (even findFiles didn't know until we returned to it again)
-            if (search.state == Fiber.State.TERM)
-                return false;
-            
-            de = entry;
-            return true;
-        });
-    }
-    
-    private int findFiles(string baseDir, bool recursive, int delegate(ref DirEntry entry) dg) {
-        Directory dir = openDir(baseDir);
-
-        if (dir is null)
-            return 0;
-        
-        int result = 0;
-        
-        try {
-            foreach (entry; dir.contents) {
-                if (!baseDir.empty)
-                    entry.name = baseDir ~ "/" ~ entry.name;
-                
-                result = dg(entry);
-                
-                if (result != 0)
-                    return result;
-
-                if (recursive && entry.isDirectory) {
-                    result = findFiles(entry.name, recursive, dg);
-                
-                    if (result != 0)
-                        return result;
-                }
-            }
-        }
-        finally {
-            dir.close();
-        }
-        
-        return result;
-    }
-    
 private:
     version (Posix) {
         enum access_0644 = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
@@ -334,6 +259,81 @@ private:
     }
 }
 
+private ReadOnlyFileSystem rofs;
+private FileSystem fs;
+
+static this() {
+    // decouple dependency from the rest of this module
+    import dlib.filesystem.local;
+    
+    setFileSystem(new LocalFileSystem);
+}
+
+void setFileSystem(FileSystem fs_) {
+    rofs = fs_;
+    fs = fs_;
+}
+
+void setFileSystemReadOnly(ReadOnlyFileSystem rofs_) {
+    rofs = rofs_;
+    fs = null;
+}
+
+// ReadOnlyFileSystem
+
+bool stat(string filename, out FileStat stat) {
+    return rofs.stat(filename, stat);
+}
+
+InputStream openForInput(string filename) {
+    InputStream ins = rofs.openForInput(filename);
+
+    if (ins is null)
+        throw new Exception("Failed to open '" ~ filename ~ "'");
+
+    return ins;
+}
+
+Directory openDir(string path) {
+    return rofs.openDir(path);
+}
+
+InputRange!DirEntry findFiles(string baseDir, bool recursive) {
+    return dlib.filesystem.filesystem.findFiles(rofs, baseDir, recursive);
+}
+
+// FileSystem
+
+OutputStream openForOutput(string filename, uint creationFlags = FileSystem.create | FileSystem.truncate) {
+    OutputStream outs = fs.openForOutput(filename, creationFlags);
+
+    if (outs is null)
+        throw new Exception("Failed to open '" ~ filename ~ "' for writing");
+
+    return outs;
+}
+
+IOStream openForIO(string filename, uint creationFlags) {
+    IOStream ios = fs.openForIO(filename, creationFlags);
+
+    if (ios is null)
+        throw new Exception("Failed to open '" ~ filename ~ "' for writing");
+
+    return ios;
+}
+
+bool createDir(string path, bool recursive) {
+    return fs.createDir(path, recursive);
+}
+
+/*bool move(string path, string newPath) {
+    return fs.move(path, newPath);
+}*/
+
+bool remove(string path, bool recursive) {
+    return fs.remove(path, recursive);
+}
+
 unittest {
     import std.regex;
     
@@ -347,5 +347,101 @@ unittest {
     
     writeln("listImagesInDirectory (FileSystem example):");
     listImagesInDirectory(new LocalFileSystem, "tests");
+    writeln();
+}
+
+unittest {
+    // TODO: test >4GiB files
+    
+    import std.algorithm;
+    import std.conv;
+    import std.regex;
+    import std.stdio;
+    
+    alias remove = dlib.filesystem.functions.remove;
+    
+    remove("tests/test_data", true);
+    assert(openDir("tests/test_data") is null);
+    
+    assert(createDir("tests/test_data/main", true));
+    
+    void printStat(string filename) {
+        FileStat stat_;
+        assert(stat(filename, stat_));
+        
+        writef("  - '%s'\t", filename);
+        
+        if (stat_.isFile)
+            writefln("%u", stat_.sizeInBytes);
+        else if (stat_.isDirectory)
+            writefln("DIR");
+        
+        writefln("      created: %s", to!string(stat_.creationTimestamp));
+        writefln("      modified: %s", to!string(stat_.modificationTimestamp));
+    }
+    
+    writeln("File stats:");
+    printStat("package.json");
+    printStat("dlib/core");     // make sure slashes work on Windows
+    writeln();
+    
+    enum dir = "dlib/filesystem";
+    writefln("Listing files in %s:", dir);
+    
+    auto d = openDir(dir);
+    
+    try {
+        foreach (entry; d.contents) {
+            if (entry.isFile)
+                writeln("    ", entry.name);
+        }
+    }
+    finally {
+        d.close();
+    }
+    
+    writeln();
+    
+    writeln("Listing files mathing the pattern dlib/core/*.d:");
+
+    foreach (entry; findFiles("", true)
+            .filter!(entry => entry.isFile)
+            .filter!(entry => !matchFirst(entry.name, `^dlib/core/.*\.d$`).empty)
+        ) {
+        FileStat stat_;
+        assert(stat(entry.name, stat_));        // make sure we're getting the expected path
+        
+        writefln("    %s: %u bytes", entry.name, stat_.sizeInBytes);
+    }
+
+    writeln();
+
+    //
+    OutputStream outp = openForOutput("tests/test_data/main/hello_world.txt", FileSystem.create | FileSystem.truncate);
+    assert(outp);
+    
+    try {
+        assert(outp.writeArray("Hello, World!\n"));
+    }
+    finally {
+        outp.close();
+    }
+    
+    //
+    InputStream inp = openForInput("tests/test_data/main/hello_world.txt");
+    assert(inp);
+    
+    try {
+        while (inp.readable) {
+            char buffer[1];
+            
+            auto have = inp.readBytes(buffer.ptr, buffer.length);
+            std.stdio.write(buffer[0..have]);
+        }
+    }
+    finally {
+        inp.close();
+    }
+
     writeln();
 }

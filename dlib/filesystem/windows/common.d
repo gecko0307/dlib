@@ -26,62 +26,25 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.filesystem.inputrangefromdelegate;
+module dlib.filesystem.windows.common;
 
-private import std.range;
+public {
+version (Windows) {
+    import core.sys.windows.windows;
+    import std.utf;
+    import std.windows.syserror;
 
-class InputRangeFromDelegate(T) : InputRange!T {
-    bool delegate(out T t) fetch;
-    bool have = false;
-    T front_;
-    
-    this(bool delegate(out T t) fetch) {
-        this.fetch = fetch;
+    enum DWORD NO_ERROR = 0;
+    enum DWORD INVALID_FILE_ATTRIBUTES = cast(DWORD)0xFFFFFFFF;
+
+    static T wenforce(T)(T cond, string str = null) {
+    	import std.array;
+
+        if (cond)
+        	return cond;
+
+        string err = sysErrorString(GetLastError());
+        throw new Exception(!str.empty ? (str ~ ": " ~ err) : err);
     }
-    
-    override bool empty() {
-        if (!have)
-            have = fetch(front_);
-        
-        return !have;
-    }
-    
-    override T front() {
-        return front_;
-    }
-    
-    override void popFront() {
-        have = false;
-    }
-    
-    override T moveFront() {
-        have = false;
-        return front_;
-    }
-    
-    override int opApply(int delegate(T) dg) {
-        int result = 0;
-        
-        for (size_t i = 0; !empty; i++) {
-            result = dg(moveFront);
-            
-            if (result != 0)
-                break;
-        }
-        
-        return result;
-    }
-    
-    override int opApply(int delegate(size_t, T) dg) {
-        int result = 0;
-        
-        for (size_t i = 0; !empty; i++) {
-            result = dg(i, moveFront);
-            
-            if (result != 0)
-                break;
-        }
-        
-        return result;
-    }
+}
 }

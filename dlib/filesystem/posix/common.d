@@ -26,25 +26,27 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.filesystem.windowscommon;
+module dlib.filesystem.posix.common;
 
+version (Posix) {
 public {
-version (Windows) {
-    import core.sys.windows.windows;
-    import std.utf;
-    import std.windows.syserror;
+    import core.sys.posix.dirent;
+    import core.sys.posix.fcntl;
+    import core.sys.posix.sys.stat;
+    import core.sys.posix.sys.types;
+    import core.sys.posix.unistd;
+}
 
-    enum DWORD NO_ERROR = 0;
-    enum DWORD INVALID_FILE_ATTRIBUTES = cast(DWORD)0xFFFFFFFF;
-
-    static T wenforce(T)(T cond, string str = null) {
-    	import std.array;
-
-        if (cond)
-        	return cond;
-
-        string err = sysErrorString(GetLastError());
-        throw new Exception(!str.empty ? (str ~ ": " ~ err) : err);
-    }
+// Rename stat to stat_ because of method name collision
+version (Linux) {
+    alias off_t = off64_t;
+    alias stat_t = stat64_t;
+    
+    alias lseek = lseek64;
+    alias open = open64;
+    alias stat_ = stat64;
+}
+else {
+    alias stat_ = stat;
 }
 }

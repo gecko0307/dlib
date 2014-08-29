@@ -37,9 +37,8 @@ private
     import dlib.image.color;
     import dlib.image.io.io;
     import dlib.image.io.utils;
-
     import dlib.core.stream;
-    import dlib.filesystem.functions;
+    import dlib.filesystem.local;
 }
 
 // uncomment this to see debug messages:

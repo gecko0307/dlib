@@ -37,11 +37,8 @@ private
     import std.zlib;
 
     import dlib.core.stream;
-    
-    import dlib.filesystem.functions;
-
+    import dlib.filesystem.local;
     import dlib.math.utils;
-
     import dlib.image.image;
     import dlib.image.io.io;
     import dlib.image.io.zstream;

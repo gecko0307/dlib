@@ -29,11 +29,13 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.filesystem.filesystem;
 
-import dlib.core.stream;
-
 import std.datetime;
 import std.range;
+import std.regex;
+import std.algorithm;
+import std.string;
 
+import dlib.core.stream;
 import dlib.filesystem.dirrange;
 
 alias FileSize = StreamSize;
@@ -101,26 +103,6 @@ interface ReadOnlyFileSystem {
     /** Open a directory.
     */
     Directory openDir(string path);
-    
-    /**
-        Find files in the specified directory, conforming to the specified filter. (if any)
-        Params:
-        baseDir = path to the base directory (if empty, defaults to current working directory)
-        recursive = if true, the search will recurse into subdirectories
-        filter = a delegate to be called for each entry found to decide whether it should be returned as part of the collection (optional)
-    
-        Examples:
-        ---
-        void listImagesInDirectory(ReadOnlyFileSystem fs, string baseDir = "") {
-            foreach (entry; fs.findFiles(baseDir, true)
-                    .filter!(entry => entry.isFile)
-                    .filter!(entry => !matchFirst(entry.name, `.*\.(gif|jpg|png)$`).empty)) {
-                writefln("%s", entry.name);
-            }
-        }
-        ---
-    */
-    InputRange!DirEntry findFiles(string baseDir, bool recursive);
 }
 
 // TODO: Use exceptions or not?
@@ -171,3 +153,98 @@ interface FileSystem: ReadOnlyFileSystem {
     */
     bool remove(string path, bool recursive);
 }
+
+/**
+    Find files in the specified directory, conforming to the specified filter. (if any)
+    Params:
+    baseDir = path to the base directory (if empty, defaults to current working directory)
+    recursive = if true, the search will recurse into subdirectories
+    filter = a delegate to be called for each entry found to decide whether it should be returned as part of the collection (optional)
+    
+    Examples:
+    ---
+    void listImagesInDirectory(ReadOnlyFileSystem fs, string baseDir = "") {
+        foreach (entry; fs.findFiles(baseDir, true)
+                .filter!(entry => entry.isFile)
+                .filter!(entry => !matchFirst(entry.name, `.*\.(gif|jpg|png)$`).empty)) {
+            writefln("%s", entry.name);
+        }
+    }
+    ---
+*/
+InputRange!DirEntry findFiles(ReadOnlyFileSystem rofs, string baseDir, bool recursive)
+{
+    // Do some magic so that we don't have to keep our own stack
+        
+    import core.thread;
+
+    //baseDir = normalizePath(baseDir);
+
+    DirEntry entry;
+
+    // findFiles insists on calling us back (it's recursive), but we can trap it in a Fiber
+    auto search = new Fiber(delegate void() {
+        findFiles(rofs, baseDir, recursive, delegate int(ref DirEntry de) {
+            // save the data (D doesn't allow to yield it directly)
+            // and jump outside of the .call() (see below)
+            entry = de;
+            Fiber.yield();
+                
+            // after resuming, return to findFiles for another round
+            return 0;
+        });
+            
+        // state becomes TERM after we're resumed after returning the last entry
+    });
+        
+    return new DirRange(delegate bool(out DirEntry de) {
+        // terminated before?
+        if (search.state == Fiber.State.TERM)
+            return false;
+                
+        // jumps into our search delegate
+        search.call();
+            
+        // last entry had been returned last time?
+        // (even findFiles didn't know until we returned to it again)
+        if (search.state == Fiber.State.TERM)
+            return false;
+            
+        de = entry;
+        return true;
+    });
+}
+
+private int findFiles(ReadOnlyFileSystem rofs, string baseDir, bool recursive, int delegate(ref DirEntry entry) dg) {
+    Directory dir = rofs.openDir(baseDir);
+
+    if (dir is null)
+        return 0;
+        
+    int result = 0;
+        
+    try {
+        foreach (entry; dir.contents) {
+            if (!baseDir.empty)
+                entry.name = baseDir ~ "/" ~ entry.name;
+                
+            result = dg(entry);
+                
+            if (result != 0)
+                return result;
+
+            if (recursive && entry.isDirectory) {
+                result = findFiles(rofs, entry.name, recursive, dg);
+                
+                if (result != 0)
+                    return result;
+            }
+        }
+    }
+    finally {
+        dir.close();
+    }
+        
+    return result;
+}
+
