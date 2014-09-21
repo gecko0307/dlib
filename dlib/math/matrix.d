@@ -613,6 +613,8 @@ struct Matrix(T, size_t N)
     }
     else
     {
+/+
+        // This is broken
         static if (N == 4)
         {
            /* 
@@ -649,19 +651,34 @@ struct Matrix(T, size_t N)
                 return res;
             }
         }
++/
 
         Matrix!(T,N) inverse() @property
         body
         {
+            Matrix!(T,N) res;
+
             // Analytical inversion
             enum inv = q{{
-                auto res = adjugate;
+                res = adjugate;
                 T oneOverDet = 1.0 / determinant;
                 foreach(ref v; res.arrayof)
                     v *= oneOverDet;
-                return res;
             }};
 
+            mixin(inv);
+
+            static if (N == 4)
+            {
+                if (affine)
+                {
+                    res.a41 = res.a42 = res.a43 = 0.0;
+                    res.a44 = 1.0;
+                }
+            }
+
+/*
+            // Affine version is broken
             static if (N == 4)
             {
                 if (affine)
@@ -671,6 +688,9 @@ struct Matrix(T, size_t N)
             }
             else
                 mixin(inv);
+*/
+
+            return res;
         }
     }
 
