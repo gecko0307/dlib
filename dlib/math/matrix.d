@@ -312,7 +312,6 @@ struct Matrix(T, size_t N)
    /*
     * Multiply column vector by the matrix
     */
-
     static if (N == 2)
     {
         Vector!(T,2) opBinaryRight(string op) (Vector!(T,2) v) if (op == "*")
@@ -825,8 +824,57 @@ struct Matrix(T, size_t N)
         return res;
     }
 
-    // TODO: access to row and column vectors
-    
+   /*
+    * Row/column manipulations 
+    */
+    Vector!(T,N) getRow(size_t i)
+    {
+        Vector!(T,N) res;
+        for (size_t j = 0; j < N; j++)
+            res.arrayof[j] = this[i, j];
+        return res;
+    }
+
+    void setRow(size_t i, Vector!(T,N) v)
+    {
+        for (size_t j = 0; j < N; j++)
+            this[i, j] = v.arrayof[j];
+    }
+
+    Vector!(T,N) getColumn(size_t j)
+    {
+        Vector!(T,N) res;
+        for (size_t i = 0; i < N; i++)
+            res.arrayof[i] = this[i, j];
+        return res;
+    }
+
+    void setColumn(size_t j, Vector!(T,N) v)
+    {
+        for (size_t i = 0; i < N; i++)
+            this[i, j] = v.arrayof[i];
+    }
+
+    void swapRows(size_t r1, size_t r2)
+    {
+        for (size_t j = 0; j < N; j++)
+        {
+            T t = this[r1, j];
+            this[r1, j] = this[r2, j];
+            this[r2, j] = t;
+        }
+    }
+
+    void swapColumns(size_t c1, size_t c2)
+    {
+        for (size_t i = 0; i < N; i++)
+        {
+            T t = this[i, c1];
+            this[i, c1] = this[i, c2];
+            this[i, c2] = t;
+        }
+    }
+
    /* 
     * Matrix elements
     */

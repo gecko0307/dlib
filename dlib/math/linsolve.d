@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013 Timur Gafarov 
+Copyright (c) 2013-2014 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,10 +26,14 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.math.linear;
+module dlib.math.linsolve;
 
 import dlib.math.matrix;
 import dlib.math.vector;
+
+/*
+ * This module implements different linear equation system solvers
+ */
 
 void solveGS(T, size_t N)(
       Matrix!(T,N) a, 
@@ -56,3 +60,34 @@ void solveGS(T, size_t N)(
         }
     }
 }
+
+// Solve LUx = b
+void solveLU(T, size_t N)(
+    Matrix!(T,N) L, 
+    Matrix!(T,N) U,
+ref Vector!(T,N) x, 
+    Vector!(T,N) b)
+{
+    int i = 0;
+    int j = 0;
+    Vector!(T,N) y;
+
+    // Forward solve Ly = b
+    for (i = 0; i < N; i++)
+    {
+        y[i] = b[i];
+        for (j = 0; j < i; j++)
+            y[i] -= L[i, j] * y[j];
+        y[i] /= L[i, i];
+    }
+
+    // Backward solve Ux = y
+    for (i = N - 1; i >= 0; i--)
+    {
+        x[i] = y[i];
+        for (j = i + 1; j < N; j++)
+            x[i] -= U[i, j] * x[j];
+        x[i] /= U[i, i];
+    }
+}
+
