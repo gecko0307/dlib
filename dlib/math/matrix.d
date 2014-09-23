@@ -35,6 +35,8 @@ import std.conv;
 
 import dlib.math.vector;
 import dlib.math.utils;
+import dlib.math.decomposition;
+import dlib.math.linsolve;
 
 /*
  * Square (NxN) matrix.
@@ -56,17 +58,6 @@ struct Matrix(T, size_t N)
    /*
     * Return zero matrix
     */
-/*
-    static opCall()
-    body
-    {
-        Matrix!(T,N) res;
-        foreach (ref v; res.arrayof)
-            v = 0;
-        return res;
-    }
-*/
-
     static zero()
     body
     {
@@ -613,7 +604,7 @@ struct Matrix(T, size_t N)
     else
     {
 /+
-        // This is broken
+        // FIXME: this is broken
         static if (N == 4)
         {
            /* 
@@ -656,13 +647,26 @@ struct Matrix(T, size_t N)
         body
         {
             Matrix!(T,N) res;
-
+/*
             // Analytical inversion
             enum inv = q{{
                 res = adjugate;
                 T oneOverDet = 1.0 / determinant;
                 foreach(ref v; res.arrayof)
                     v *= oneOverDet;
+            }};
+*/
+            // Inversion via LU decomposition
+            enum inv = q{{
+                Matrix!(T,N) l, u, p;
+                decomposeLUP(this, l, u, p);
+                foreach(j; 0..N)
+                {
+                    Vector!(T,N) b = p.getColumn(j);
+                    Vector!(T,N) x;
+                    solveLU(l, u, x, b);
+                    res.setColumn(j, x);
+                }
             }};
 
             mixin(inv);
@@ -671,23 +675,16 @@ struct Matrix(T, size_t N)
             {
                 if (affine)
                 {
-                    res.a41 = res.a42 = res.a43 = 0.0;
-                    res.a44 = 1.0;
+                    // TODO: reimplement optimized affine matrix inversion
+                    mixin(inv);
+                    res.a41 = res.a42 = res.a43 = 0;
+                    res.a44 = 1;
                 }
-            }
-
-/*
-            // Affine version is broken
-            static if (N == 4)
-            {
-                if (affine)
-                    return inverseAffine;
                 else
                     mixin(inv);
             }
             else
                 mixin(inv);
-*/
 
             return res;
         }
