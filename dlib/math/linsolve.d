@@ -35,6 +35,7 @@ import dlib.math.vector;
  * This module implements different linear equation system solvers
  */
 
+// Solve Ax = b iteratively
 void solveGS(T, size_t N)(
       Matrix!(T,N) a, 
   ref Vector!(T,N) x, 
@@ -61,7 +62,7 @@ void solveGS(T, size_t N)(
     }
 }
 
-// Solve LUx = b
+// Solve LUx = b directly
 void solveLU(T, size_t N)(
     Matrix!(T,N) L, 
     Matrix!(T,N) U,
