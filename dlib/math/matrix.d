@@ -603,46 +603,6 @@ struct Matrix(T, size_t N)
     }
     else
     {
-/+
-        // FIXME: this is broken
-        static if (N == 4)
-        {
-           /* 
-            * Inverse of a 4x4 affine matrix is a special case
-            */
-            Matrix!(T,N) inverseAffine() @property
-            body
-            {
-                T d = determinant3x3;
-                //assert (fabs(det) > 0.000001);
-
-                T oneOverDet = 1.0 / d;
-
-                auto res = Matrix!(T,N).identity;
-
-                res.a11 = ((a22 * a33) - (a32 * a23)) * oneOverDet;
-                res.a21 = ((a31 * a23) - (a21 * a33)) * oneOverDet;
-                res.a31 = ((a21 * a32) - (a31 * a22)) * oneOverDet;
-
-                res.a12 = ((a32 * a13) - (a21 * a33)) * oneOverDet;
-                res.a22 = ((a11 * a33) - (a31 * a13)) * oneOverDet;
-                res.a32 = ((a31 * a12) - (a11 * a32)) * oneOverDet;
-
-                res.a13 = ((a12 * a23) - (a22 * a13)) * oneOverDet;
-                res.a23 = ((a21 * a13) - (a11 * a23)) * oneOverDet;
-                res.a33 = ((a11 * a22) - (a21 * a12)) * oneOverDet;
-      
-                res.a14 = -((a14 * res.a11) + (a24 * res.a12) + (a34 * res.a13));
-                res.a24 = -((a14 * res.a21) + (a24 * res.a22) + (a34 * res.a23));
-                res.a34 = -((a14 * res.a31) + (a24 * res.a32) + (a34 * res.a33));
-
-                res.a44 = 1;
-
-                return res;
-            }
-        }
-+/
-
         Matrix!(T,N) inverse() @property
         body
         {
@@ -669,17 +629,18 @@ struct Matrix(T, size_t N)
                 }
             }};
 
-            mixin(inv);
+            // Inverse of a 4x4 affine matrix is a special case
+            enum affineInv = q{{
+                auto m3inv = matrix4x4to3x3(this).inverse;
+                res = matrix3x3to4x4(m3inv);
+                Vector!(T,3) t = -(getColumn(3).xyz * m3inv);
+                res.setColumn(3, Vector!(T,4)(t.x, t.y, t.z, 1.0f));
+            }};
 
             static if (N == 4)
             {
                 if (affine)
-                {
-                    // TODO: reimplement optimized affine matrix inversion
-                    mixin(inv);
-                    res.a41 = res.a42 = res.a43 = 0;
-                    res.a44 = 1;
-                }
+                    mixin(affineInv);
                 else
                     mixin(inv);
             }
