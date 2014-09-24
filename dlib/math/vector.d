@@ -506,27 +506,8 @@ struct Vector(T, int size)
         }
 
        /*
-        * Transform 3D vector by a matrix
+        * Clamp components to min/max value
         */
-        static if (size == 3 && isFloatingPoint!T)
-        {
-            deprecated("Vector!(T,size).transform is deprecated, use vector to matrix multiplication instead")
-            {
-                void transform(Matrix!(T,4) m)
-                {
-                    this = this * m;
-                }
-            }
-
-            deprecated("Vector!(T,size).transformed is deprecated, use vector to matrix multiplication instead")
-            {
-                @property auto transformed(Matrix!(T,4) m)
-                {
-                    return this * m;
-                }
-            }
-        }
-
         void clamp(T minv, T maxv)
         {
             foreach (ref v; arrayof) 

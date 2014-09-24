@@ -870,47 +870,11 @@ alias Matrix!(double, 3) Matrix3x3d, Matrix3d;
 alias Matrix!(double, 4) Matrix4x4d, Matrix4d;
 
 /*
- * Return identity matrix
- * (deprecated, use Matrix!(T,N).identity instead)
+ * Short aliases
  */
-deprecated("identityMatrix* functions are deprecated, use Matrix!(T,N).identity instead")
-{
-    Matrix!(T,2) identityMatrix2(T) ()
-    body
-    {
-        return Matrix!(T,2).identity;
-    }
-
-    Matrix!(T,3) identityMatrix3(T) ()
-    body
-    {
-        return Matrix!(T,3).identity;
-    }
-
-    Matrix!(T,4) identityMatrix4(T) ()
-    body
-    {
-        return Matrix!(T,4).identity;
-    }
-
-    alias identityMatrix2!(float) identityMatrix2f;
-    alias identityMatrix2!(double) identityMatrix2d;
-
-    alias identityMatrix3!(float) identityMatrix3f;
-    alias identityMatrix3!(double) identityMatrix3d;
-
-    alias identityMatrix4!(float) identityMatrix4f;
-    alias identityMatrix4!(double) identityMatrix4d;
-
-    alias identityMatrix2x2f = identityMatrix2f;
-    alias identityMatrix2x2d = identityMatrix2d;
-
-    alias identityMatrix3x3f = identityMatrix3f;
-    alias identityMatrix3x3d = identityMatrix3d;
-
-    alias identityMatrix4x4f = identityMatrix4f;
-    alias identityMatrix4x4d = identityMatrix4d;
-}
+alias Matrix2x2f mat2;
+alias Matrix3x3f mat3;
+alias Matrix4x4f mat4;
 
 /*
  * Matrix factory function
