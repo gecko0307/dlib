@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013 Timur Gafarov 
+Copyright (c) 2013-2014 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -30,14 +30,7 @@ module dlib.core;
 
 public
 {
-    import dlib.core.aarray;
-    import dlib.core.bst;
     import dlib.core.compound;
-    import dlib.core.hash;
-    import dlib.core.linkedlist;
-    import dlib.core.method;
-    import dlib.core.queue;
-    import dlib.core.stack;
     import dlib.core.stream;
     import dlib.core.tuple;
 }

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2013 Timur Gafarov 
+Copyright (c) 2011-2014 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,17 +26,57 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.core.hash;
+module dlib.container.aarray;
+
+private
+{
+    import dlib.container.bst;
+    import dlib.container.hash;
+}
 
 public:
 
-pure int stringHash(string key, int tableSize = 5381) 
+class AArray(T): BST!(T) 
 { 
-    int hashVal = 0; 
-    for (int x = 0; x < key.length; ++x) 
+    public: 
+
+    this() { } 
+
+    void opIndexAssign(T v, string i) 
     { 
-        hashVal ^= (hashVal << 5) + (hashVal >> 2) + key[x]; 
+        insert(stringHash(i), v); 
     } 
-    return hashVal % tableSize; 
+
+    T opIndex(string i) 
+    { 
+        auto node = find(stringHash(i)); 
+        assert (node !is null); 
+        return node.value; 
+    } 
+
+    T* opIn_r(string i) 
+    { 
+        auto node = find(stringHash(i)); 
+        if (node !is null) return &node.value; 
+        else return null; 
+    } 
+
+    void remove(string i) 
+    { 
+        super.remove(stringHash(i)); 
+    } 
+}
+
+unittest
+{
+    auto aa = new AArray!string;
+    aa["sysadmin"] = "Dmitry Egorov";
+    aa["programmer"] = "Ivan Petrov";
+
+    assert (aa["sysadmin"] == "Dmitry Egorov");
+
+    if ("programmer" in aa) 
+        aa.remove("programmer");
+    assert ("programmer" !in aa);
 }
 

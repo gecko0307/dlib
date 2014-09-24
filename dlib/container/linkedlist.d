@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2013 Timur Gafarov 
+Copyright (c) 2011-2014 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,7 +26,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.core.linkedlist;
+module dlib.container.linkedlist;
 
 public:
 
@@ -40,7 +40,7 @@ struct LinkedList(T, bool ordered = false)
 {
     LinkedListElement!(T)* head = null;
     LinkedListElement!(T)* tail = null;
-	size_t length = 0;
+    size_t length = 0;
 
     @property bool empty()
     {
@@ -52,15 +52,15 @@ struct LinkedList(T, bool ordered = false)
         LinkedListElement!(T)* element = head;
         while (element !is null)
         {
-     	    func(element.datum, element);
+            func(element.datum, element);
             element = element.next;
         }
     }
 
     LinkedListElement!(T)* append(T v)
     {
-		length++;
-		
+        length++;
+        
         if (tail is null)
         {
             tail = new LinkedListElement!(T);
@@ -74,13 +74,13 @@ struct LinkedList(T, bool ordered = false)
         }
 
         if (head is null) head = tail;
-		
+        
         return tail;
     }
 
     LinkedListElement!(T)* insertAfter(LinkedListElement!(T)* element, T v)
     {
-		length++;
+        length++;
         auto newElement = new LinkedListElement!(T);
         newElement.datum = v;
         newElement.next = element.next;
@@ -91,7 +91,7 @@ struct LinkedList(T, bool ordered = false)
 
     LinkedListElement!(T)* insertBeginning(T v)
     {
-		length++;
+        length++;
         auto newElement = new LinkedListElement!(T);
         newElement.datum = v;
         newElement.next = head;
@@ -101,7 +101,7 @@ struct LinkedList(T, bool ordered = false)
 
     void removeAfter(LinkedListElement!(T)* element)
     {
-		length--;
+        length--;
         auto obsolete = element.next;
         if (obsolete !is null)
         {
@@ -113,7 +113,7 @@ struct LinkedList(T, bool ordered = false)
 
     void removeBeginning()
     {
-		length--;
+        length--;
         auto obsolete = head;
         if (obsolete !is null)
         {
@@ -124,7 +124,7 @@ struct LinkedList(T, bool ordered = false)
 
     void appendList(LinkedList!(T) list)
     {
-		length += list.length;
+        length += list.length;
         tail.next = list.head;
         tail = list.tail;
     }

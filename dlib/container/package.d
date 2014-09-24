@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2013 Timur Gafarov 
+Copyright (c) 2013-2014 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,54 +26,15 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.core.stack;
+module dlib.container;
 
-private
-{ 
-    import dlib.core.linkedlist;
-}
-
-public:
-
-struct Stack(T)
+public
 {
-    private LinkedList!(T) list;
-    
-    public:
-    void push(T v)
-    {
-        list.insertBeginning(v);
-    }
-
-    T pop()
-    {
-        if (list.head is null)
-            throw new Exception("Stack!(T): underflow");
-
-        T res = list.head.datum;
-        list.removeBeginning();
-        return res;
-    }
-
-    T top()
-    {
-        return list.head.datum;
-    }
-
-    T* topPtr()
-    {
-        return &(list.head.datum);
-    }
-}
-
-unittest
-{
-    Stack!int s;
-    s.push(100);
-    s.push(3);
-    s.push(76);
-    assert(s.pop() == 76);
-    assert(s.pop() == 3);
-    assert(s.pop() == 100);
+    import dlib.container.aarray;
+    import dlib.container.bst;
+    import dlib.container.hash;
+    import dlib.container.linkedlist;
+    import dlib.container.queue;
+    import dlib.container.stack;
 }
 

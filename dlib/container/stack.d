@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2013 Timur Gafarov 
+Copyright (c) 2011-2014 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,58 +26,54 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.core.aarray;
+module dlib.container.stack;
 
 private
-{
-    import dlib.core.bst;
-    import dlib.core.hash;
+{ 
+    import dlib.container.linkedlist;
 }
 
 public:
 
-class AArray(T): BST!(T) 
-{ 
-    public: 
+struct Stack(T)
+{
+    private LinkedList!(T) list;
+    
+    public:
+    void push(T v)
+    {
+        list.insertBeginning(v);
+    }
 
-    this() { } 
+    T pop()
+    {
+        if (list.head is null)
+            throw new Exception("Stack!(T): underflow");
 
-    void opIndexAssign(T v, string i) 
-    { 
-        insert(stringHash(i), v); 
-    } 
+        T res = list.head.datum;
+        list.removeBeginning();
+        return res;
+    }
 
-    T opIndex(string i) 
-    { 
-        auto node = find(stringHash(i)); 
-        assert (node !is null); 
-        return node.value; 
-    } 
+    T top()
+    {
+        return list.head.datum;
+    }
 
-    T* opIn_r(string i) 
-    { 
-        auto node = find(stringHash(i)); 
-        if (node !is null) return &node.value; 
-        else return null; 
-    } 
-
-    void remove(string i) 
-    { 
-        super.remove(stringHash(i)); 
-    } 
+    T* topPtr()
+    {
+        return &(list.head.datum);
+    }
 }
 
 unittest
 {
-    auto aa = new AArray!string;
-    aa["sysadmin"] = "Dmitry Egorov";
-    aa["programmer"] = "Ivan Petrov";
-
-    assert (aa["sysadmin"] == "Dmitry Egorov");
-
-    if ("programmer" in aa) 
-        aa.remove("programmer");
-    assert ("programmer" !in aa);
+    Stack!int s;
+    s.push(100);
+    s.push(3);
+    s.push(76);
+    assert(s.pop() == 76);
+    assert(s.pop() == 3);
+    assert(s.pop() == 100);
 }
-
 

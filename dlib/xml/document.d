@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013 Timur Gafarov 
+Copyright (c) 2013-2014 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -35,7 +35,7 @@ private
     import std.conv;
     import std.utf;
 
-    import dlib.core.stack;
+    import dlib.container.stack;
     import dlib.xml.lexer;
     import dlib.xml.node;
 }
@@ -107,7 +107,7 @@ final class XmlDocument
         do
         {
             token = lex.getLexeme();
-            //writeln(token);
+
             if (token.length)
             {
                 switch(token)

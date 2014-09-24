@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2013 Timur Gafarov 
+Copyright (c) 2011-2014 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,35 +26,17 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.core.method;
+module dlib.container.hash;
 
 public:
 
-template Accessor(string name, string target) 
-{
-    mixin
-    ("
-        ref typeof("~target~") "~name~"() { return "~target~"; }
-    ");
-}
-
-template Mutator(string name, string target)
-{
-    mixin
-    ("
-        ref typeof("~target~") "~name~"(typeof("~target~") nval) { this."~target~"=nval; }
-    ");
-}
-
-template Pseudonym(string name, string target)
-{
-    mixin
-    ("
-    @property
-    {
-        ref typeof("~target~") "~name~"() { return "~target~"; }
-        ref typeof("~target~") "~name~"(typeof("~target~") nval) { "~target~"=nval; return "~target~"; }
-    }
-    ");
+pure int stringHash(string key, int tableSize = 5381) 
+{ 
+    int hashVal = 0; 
+    for (int x = 0; x < key.length; ++x) 
+    { 
+        hashVal ^= (hashVal << 5) + (hashVal >> 2) + key[x]; 
+    } 
+    return hashVal % tableSize; 
 }
 
