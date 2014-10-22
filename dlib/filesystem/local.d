@@ -433,7 +433,7 @@ unittest {
     
     try {
         while (inp.readable) {
-            char buffer[1];
+            char[1] buffer;
             
             auto have = inp.readBytes(buffer.ptr, buffer.length);
             std.stdio.write(buffer[0..have]);

@@ -8,7 +8,6 @@ public
     import dlib.math.vector;
     import dlib.math.complex;
     import dlib.math.fft;
-    import dlib.math.linear;
     import dlib.math.quaternion;
     import dlib.math.diff;
     import dlib.math.fixed;

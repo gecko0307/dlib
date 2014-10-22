@@ -205,7 +205,7 @@ struct Plane
 
     union
     {
-        float arrayof[4];// = [0, 0, 0, 0];
+        float[4] arrayof;// = [0, 0, 0, 0];
         
         Vector4f vectorof;
 

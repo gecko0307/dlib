@@ -176,7 +176,7 @@ interface IOStream : InputStream, OutputStream
 
 StreamSize copyFromTo(InputStream input, OutputStream output)
 {
-    ubyte buffer[0x1000];
+    ubyte[0x1000] buffer;
     StreamSize total = 0;
 
     while (input.readable)

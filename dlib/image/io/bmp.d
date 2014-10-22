@@ -31,7 +31,7 @@ module dlib.image.io.bmp;
 private
 {
     import std.stdio;
-    import std.c.stdio;
+    import core.stdc.stdio;
 
     import dlib.image.image;
     import dlib.image.color;
