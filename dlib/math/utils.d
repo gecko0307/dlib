@@ -30,8 +30,8 @@ module dlib.math.utils;
 
 private 
 {
+    import core.stdc.stdlib;
     import std.math;
-    import std.c.stdlib;
 }
 
 public:
@@ -81,14 +81,21 @@ T min3(T) (T x, T y, T z) nothrow
 /*
  * Limit to given range
  */
-T clamp(T) (T v, T minimal, T maximal) nothrow
+static if (__traits(compiles, (){import std.algorithm: clamp;}))
 {
-    if (v > minimal)
+    public import std.algorithm: clamp;
+}
+else
+{
+    T clamp(T) (T v, T minimal, T maximal) nothrow
     {
-        if (v < maximal) return v;
-            else return maximal;
+        if (v > minimal)
+        {
+            if (v < maximal) return v;
+                else return maximal;
+        }
+        else return minimal;
     }
-    else return minimal;
 }
 
 /*

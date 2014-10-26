@@ -31,5 +31,4 @@ module dlib.filesystem;
 
 public {
     import dlib.filesystem.filesystem;
-    import dlib.filesystem.functions;
 }

@@ -30,7 +30,7 @@ module dlib.image.hdri;
 
 private
 {
-    import std.c.string;
+    import core.stdc.string;
     import dlib.image.image;
     import dlib.image.color;
 }
