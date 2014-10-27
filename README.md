@@ -5,7 +5,9 @@ It is written in D2 and has no external dependencies aside D's standard library,
 
 Currently dlib contains the following packages:
 
-* dlib.core - standard algorithms, data structures, useful templates, etc.
+* dlib.core - basic functionality used by other modules
+
+* dlib.container - generic data structures
 
 * dlib.filesystem - abstract FS interface and its implementations for Windows and POSIX filesystems
 
@@ -17,4 +19,4 @@ Currently dlib contains the following packages:
 
 * dlib.image - image processing (filters, color correction, FFT, HDRI, graphics formats I/O, support for 8 and 16-bit RGBA buffers and floating point operations)
 
-* dlib.xml - lightweight XML parser (only reading, only Unicode)
+* dlib.xml - lightweight XML parser (UTF-8)
