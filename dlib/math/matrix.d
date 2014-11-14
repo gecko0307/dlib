@@ -750,7 +750,7 @@ struct Matrix(T, size_t N)
     string toString() @property
     body
     {
-	    return matrixToStr(this);
+        return matrixToStr(this);
     }
     
    /*
@@ -902,47 +902,47 @@ string matrixToStr(T, size_t N)(Matrix!(T, N) m)
     uint width = 8;
     string maxnum;
     foreach(x; m.arrayof)
-	{
-	    string num;
-	    real frac, integ;
-	    frac = modf(x, integ);
-		if (frac == 0.0f)
-		{
-		    num = format("% s", to!long(integ));
-			if (num.length > width)
-			    width = num.length;
-		}
+    {
+        string num;
+        real frac, integ;
+        frac = modf(x, integ);
+        if (frac == 0.0f)
+        {
+            num = format("% s", to!long(integ));
+            if (num.length > width)
+                width = num.length;
+        }
         else
-		{
-	        num = format("% .4f", x);
-		}
-	}
-	
+        {
+            num = format("% .4f", x);
+        }
+    }
+    
     auto writer = appender!string();
     foreach (x; 0..N)
     {
         foreach (y; 0..N)
         {
-		    string s = format("% -*.4f", width, m.arrayof[y * N + x]);
-			uint n = 0;
-			foreach(i, c; s)
-			{
-			    if (i < width)
-				{
-				    formattedWrite(writer, c.to!string);
-					n++;
-				}
-			}
-			
-			if (y < N-1)
+            string s = format("% -*.4f", width, m.arrayof[y * N + x]);
+            uint n = 0;
+            foreach(i, c; s)
+            {
+                if (i < width)
+                {
+                    formattedWrite(writer, c.to!string);
+                    n++;
+                }
+            }
+            
+            if (y < N-1)
                 formattedWrite(writer, "  ");
-		}
-		
-		if (x < N-1)
+        }
+        
+        if (x < N-1)
             formattedWrite(writer, "\n");
-	}
-	
-	return writer.data;
+    }
+    
+    return writer.data;
 }
 
 unittest
