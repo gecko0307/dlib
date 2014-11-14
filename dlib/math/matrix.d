@@ -32,6 +32,7 @@ import std.math;
 import std.range;
 import std.format;
 import std.conv;
+import std.string;
 
 import dlib.math.vector;
 import dlib.math.utils;
@@ -745,26 +746,11 @@ struct Matrix(T, size_t N)
     
    /*
     * Convert to string
-    * TODO: proper indentation/alignment?
     */
     string toString() @property
     body
     {
-        auto writer = appender!string();
-        foreach (x; 0..N)
-        {
-            formattedWrite(writer, "[");
-            foreach (y; 0..N)
-            {
-                formattedWrite(writer, "%s", arrayof[y * N + x]);
-                if (y < N-1)
-                    formattedWrite(writer, ", ");
-            }
-            formattedWrite(writer, "]");
-            if (x < N-1)
-                formattedWrite(writer, "\n");
-        }
-        return writer.data;
+	    return matrixToStr(this);
     }
     
    /*
@@ -906,6 +892,57 @@ Matrix!(T,3) matrix4x4to3x3(T) (Matrix!(T,4) m)
     res.a21 = m.a21; res.a22 = m.a22; res.a23 = m.a23;
     res.a31 = m.a31; res.a32 = m.a32; res.a33 = m.a33;
     return res;
+}
+
+/*
+ * Formatted matrix printer
+ */
+string matrixToStr(T, size_t N)(Matrix!(T, N) m)
+{
+    uint width = 8;
+    string maxnum;
+    foreach(x; m.arrayof)
+	{
+	    string num;
+	    real frac, integ;
+	    frac = modf(x, integ);
+		if (frac == 0.0f)
+		{
+		    num = format("% s", to!long(integ));
+			if (num.length > width)
+			    width = num.length;
+		}
+        else
+		{
+	        num = format("% .4f", x);
+		}
+	}
+	
+    auto writer = appender!string();
+    foreach (x; 0..N)
+    {
+        foreach (y; 0..N)
+        {
+		    string s = format("% -*.4f", width, m.arrayof[y * N + x]);
+			uint n = 0;
+			foreach(i, c; s)
+			{
+			    if (i < width)
+				{
+				    formattedWrite(writer, c.to!string);
+					n++;
+				}
+			}
+			
+			if (y < N-1)
+                formattedWrite(writer, "  ");
+		}
+		
+		if (x < N-1)
+            formattedWrite(writer, "\n");
+	}
+	
+	return writer.data;
 }
 
 unittest
