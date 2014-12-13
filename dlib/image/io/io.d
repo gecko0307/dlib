@@ -36,6 +36,7 @@ private
     import dlib.image.io.bmp;
     import dlib.image.io.png;
     import dlib.image.io.tga;
+    import dlib.image.io.jpeg;
 }
 
 class ImageLoadException : Exception
@@ -70,6 +71,8 @@ SuperImage loadImage(string filename)
     {
         case ".bmp", ".BMP":
             return loadBMP(filename);
+        case ".jpg", ".JPG", ".jpeg":
+            return loadJPEG(filename);
         case ".png", ".PNG":
             return loadPNG(filename);
         case ".tga", ".TGA":
