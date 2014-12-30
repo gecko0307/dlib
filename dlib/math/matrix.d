@@ -910,7 +910,7 @@ string matrixToStr(T, size_t N)(Matrix!(T, N) m)
         {
             num = format("% s", to!long(integ));
             if (num.length > width)
-                width = num.length;
+                width = cast(uint)num.length;
         }
         else
         {
