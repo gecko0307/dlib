@@ -197,7 +197,7 @@ ubyte[] encodeHuffman(ubyte[] data, out HuffmanTreeNode* tree)
     }
     else if (bitStr.length > 8)
     {
-        octetsLen = bitStr.length / 8;
+        octetsLen = cast(uint)bitStr.length / 8;
         lastBits = cast(ubyte)(bitStr.length % 8);
         if (lastBits != 0)
             octetsLen++;
