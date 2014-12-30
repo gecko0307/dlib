@@ -33,7 +33,7 @@ private
     import std.stdio;
     import std.algorithm;
     import std.array;
-    import bitio;
+    import dlib.image.io.bitio;
 }
 
 struct HuffmanTreeNode
