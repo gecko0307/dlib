@@ -73,7 +73,7 @@ if (is(T == ushort))
     { 
         ubyte[2] asBytes;
         ushort asUshort;
-    };
+    }
     U16 u16;
     istrm.readBytes(u16.asBytes.ptr, 2);
     version(LittleEndian)
@@ -256,7 +256,6 @@ JPEGMarkerType readMarker(InputStream istrm, JPEGImage jpg)
         case 0xFFC2:
             mt = JPEGMarkerType.SOF2;
             throw new Exception("Progressive JPEG is not supported");
-            break;
             
         case 0xFFC4:
             mt = JPEGMarkerType.DHT;
