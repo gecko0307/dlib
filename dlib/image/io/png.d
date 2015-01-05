@@ -237,6 +237,7 @@ SuperImage loadPNG(InputStream input)
     ubyte[] pdata; // temp data for palette substitution
 
     ubyte[] palette;
+    ubyte[] transparency;
     uint paletteSize = 0;
 
     PNGHeader hdr;
@@ -250,8 +251,9 @@ SuperImage loadPNG(InputStream input)
         {
             hdr = readHeader(chunk);
 
-            if (hdr.bitDepth != 8 && hdr.bitDepth != 16) 
-                throw new PNGLoadException("PNG error: unsupported bit depth"); 
+			bool supportedIndexed = (hdr.colorType == ColorType.Palette) && (hdr.bitDepth == 1 || hdr.bitDepth == 2 || hdr.bitDepth == 4 || hdr.bitDepth == 8);
+            if (hdr.bitDepth != 8 && hdr.bitDepth != 16 && !supportedIndexed) 
+                throw new PNGLoadException("PNG error: unsupported bit depth");
 
             if (hdr.compressionMethod != 0)
                 throw new PNGLoadException("PNG error: unknown compression method");
@@ -331,6 +333,10 @@ SuperImage loadPNG(InputStream input)
         {
             palette = chunk.data;
         }
+		else if (chunk.type == tRNS)
+		{
+			transparency = chunk.data;
+		}
     }
 
     assert(inflator.hasEnded);
@@ -352,16 +358,48 @@ SuperImage loadPNG(InputStream input)
         if (palette.length == 0)
             throw new PNGLoadException("PNG error: palette chunk not found"); 
 
-        img = new ImageRGB8(img.width, img.height);
+        img = transparency.length > 0 ? new ImageRGBA8(img.width, img.height) : new ImageRGB8(img.width, img.height);
         pdata = new ubyte[img.width * img.height * img.channels];
-        for (int i = 0; i < buffer.length; ++i)
-        {
-            //assert(buffer[i]+2 < cast(int)paletteSize); // over reading palette
-            assert(i*img.channels+2 < img.width * img.height * img.channels); // over reading final data
-            pdata[i*img.channels+0] = palette[buffer[i]*3+0];
-            pdata[i*img.channels+1] = palette[buffer[i]*3+1];
-            pdata[i*img.channels+2] = palette[buffer[i]*3+2];
-        }
+		if (hdr.bitDepth == 8) {
+			for (int i = 0; i < buffer.length; ++i)
+			{
+				//assert(buffer[i]+2 < cast(int)paletteSize); // over reading palette
+				assert(i*img.channels+2 < img.width * img.height * img.channels); // over reading final data
+				ubyte b = buffer[i];
+				pdata[i*img.channels+0] = palette[b*3+0];
+				pdata[i*img.channels+1] = palette[b*3+1];
+				pdata[i*img.channels+2] = palette[b*3+2];
+				if (transparency.length > 0)
+					pdata[i*img.channels+3] = b < transparency.length ? transparency[b] : 0;
+			}
+		}
+		else
+		{
+			// bit depths 1,2,4
+			int srcindex = 0;
+			int srcshift = 8 - hdr.bitDepth;
+			ubyte mask = cast(ubyte)((1 << hdr.bitDepth) - 1);
+			int sz = img.width * img.height;
+			for (int dstindex = 0; dstindex < sz; dstindex++) 
+			{
+				auto b = ((buffer[srcindex] >> srcshift) & mask);
+				pdata[dstindex*img.channels+0] = palette[b*3+0];
+				pdata[dstindex*img.channels+1] = palette[b*3+1];
+				pdata[dstindex*img.channels+2] = palette[b*3+2];
+				if (transparency.length > 0)
+					pdata[dstindex*img.channels+3] = b < transparency.length ? transparency[b] : 0;
+
+				if (srcshift <= 0)
+				{
+					srcshift = 8 - hdr.bitDepth;
+					srcindex++;
+				}
+				else
+				{
+					srcshift -= hdr.bitDepth;
+				}
+			}
+		}
         delete buffer;
         buffer = pdata;
     }
