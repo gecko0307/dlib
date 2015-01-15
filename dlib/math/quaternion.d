@@ -73,6 +73,40 @@ struct Quaternion(T)
     }
     
    /*
+    * Quaternion!(T) + Quaternion!(T)
+    */
+    Quaternion!(T) opAdd(Quaternion!(T) q)
+    {
+        return Quaternion!(T)(x + q.x, y + q.y, z + q.z, w + q.w);
+    }
+    
+   /*
+    * Quaternion!(T) += Quaternion!(T)
+    */
+    Quaternion!(T) opAddAssign(Quaternion!(T) q)
+    {
+        this = this + q;
+        return this;
+    }
+    
+   /*
+    * Quaternion!(T) - Quaternion!(T)
+    */
+    Quaternion!(T) opSub(Quaternion!(T) q)
+    {
+        return Quaternion!(T)(x - q.x, y - q.y, z - q.z, w - q.w);
+    }
+    
+   /*
+    * Quaternion!(T) -= Quaternion!(T)
+    */
+    Quaternion!(T) opSubAssign(Quaternion!(T) q)
+    {
+        this = this - q;
+        return this;
+    }
+    
+   /*
     * Quaternion!(T) * Quaternion!(T)
     */
     Quaternion!(T) opMul(Quaternion!(T) q)
