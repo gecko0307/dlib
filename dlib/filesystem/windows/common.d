@@ -30,6 +30,7 @@ module dlib.filesystem.windows.common;
 
 public {
 version (Windows) {
+    import core.stdc.wchar_;
     import core.sys.windows.windows;
     import std.utf;
     import std.windows.syserror;
