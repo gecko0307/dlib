@@ -140,7 +140,7 @@ struct Frustum
 
     bool intersectsAABB(AABB aabb)
     {
-        bool result;
+        bool result = true; // Inside
 
         foreach (ref plane; planes)
         {
@@ -158,7 +158,7 @@ struct Frustum
             if (d_p_r < -plane.d)
             {
                 result = false; // Outside
-		break;
+                break;
             }
             else if(d_m_r < -plane.d)
                 result = true; // Intersect
