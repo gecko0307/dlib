@@ -35,6 +35,7 @@ private
 
     import dlib.math.vector;
     import dlib.math.matrix;
+    import dlib.math.utils;
 }
 
 public:
