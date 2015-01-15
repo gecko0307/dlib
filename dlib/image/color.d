@@ -93,9 +93,16 @@ struct Color4f
         return Color4f(0.0f, 0.0f, 0.0f, 0.0f);
     }
 
+/*
     Color4f opAssign(Vector4f v)
     {
         vec = v;
+        return this;
+    }
+*/
+    Color4f opAssign(Color4f c)
+    {
+        vec = c.vec;
         return this;
     }
 
