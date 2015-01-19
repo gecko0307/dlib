@@ -35,7 +35,6 @@ import dlib.filesystem.windows.common;
 
 import std.conv;
 import std.range;
-import std.string;
 
 class WindowsDirectory : Directory {
     FileSystem fs;
