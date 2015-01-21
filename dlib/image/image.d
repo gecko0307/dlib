@@ -131,7 +131,7 @@ class Image(PixelFormat fmt): SuperImage
         return _data;
     }
 
-    override @property Image!(fmt) dup()
+    override @property SuperImage dup()
     {
         auto res = new Image!(fmt)(_width, _height);
         res.data = _data.dup;
@@ -163,13 +163,18 @@ class Image(PixelFormat fmt): SuperImage
         ][fmt];
 
         _pixelSize = (_bitDepth / 8) * _channels;
-        _data = new ubyte[_width * _height * _pixelSize];
+        allocateData();
         
         pixelCost = 1.0f / (_width * _height);
         progress = 0.0f;
     }
 
-    private Color4 getPixel(int x, int y)
+    protected void allocateData()
+    {
+        _data = new ubyte[_width * _height * _pixelSize];
+    }
+
+    protected Color4 getPixel(int x, int y)
     {
         while(x >= width) x = width-1;
         while(y >= height) y = height-1;
@@ -231,7 +236,7 @@ class Image(PixelFormat fmt): SuperImage
         }
     }
 
-    private Color4 setPixel(Color4 c, int x, int y)
+    protected Color4 setPixel(Color4 c, int x, int y)
     {
         while(x >= width) x = width-1;
         while(y >= height) y = height-1;
@@ -336,6 +341,19 @@ alias Image!(PixelFormat.RGBA16) ImageRGBA16;
 /*
  * All-in-one image factory
  */
+interface SuperImageFactory
+{
+    SuperImage createImage(uint w, uint h, uint channels, uint bitDepth);
+}
+
+class ImageFactory: SuperImageFactory
+{
+    SuperImage createImage(uint w, uint h, uint channels, uint bitDepth)
+    {
+        return image(w, h, channels, bitDepth);
+    }
+}
+
 SuperImage image(uint w, uint h, uint channels = 3, uint bitDepth = 8)
 in
 {
