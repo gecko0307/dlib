@@ -335,10 +335,11 @@ bool remove(string path, bool recursive) {
 }
 
 unittest {
+/*
     import std.regex;
     
     void listImagesInDirectory(ReadOnlyFileSystem fs, string baseDir = "") {
-        foreach (entry; fs.findFiles(baseDir, true)
+        foreach (entry; dlib.filesystem.filesystem.findFiles(fs, baseDir, true)
                 .filter!(entry => entry.isFile)
                 .filter!(entry => !matchFirst(entry.name, `.*\.(gif|jpg|png)$`).empty)) {
             writefln("%s", entry.name);
@@ -348,6 +349,7 @@ unittest {
     writeln("listImagesInDirectory (FileSystem example):");
     listImagesInDirectory(new LocalFileSystem, "tests");
     writeln();
+*/
 }
 
 unittest {
@@ -358,7 +360,7 @@ unittest {
     import std.regex;
     import std.stdio;
     
-    alias remove = dlib.filesystem.functions.remove;
+    alias remove = dlib.filesystem.local.remove;
     
     remove("tests/test_data", true);
     assert(openDir("tests/test_data") is null);
@@ -406,7 +408,7 @@ unittest {
 
     foreach (entry; findFiles("", true)
             .filter!(entry => entry.isFile)
-            .filter!(entry => !matchFirst(entry.name, `^dlib/core/.*\.d$`).empty)
+            .filter!(e => e.name.baseName.globMatch("*.d"))
         ) {
         FileStat stat_;
         assert(stat(entry.name, stat_));        // make sure we're getting the expected path
