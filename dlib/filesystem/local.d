@@ -335,13 +335,12 @@ bool remove(string path, bool recursive) {
 }
 
 unittest {
-/*
     import std.regex;
     
     void listImagesInDirectory(ReadOnlyFileSystem fs, string baseDir = "") {
         foreach (entry; dlib.filesystem.filesystem.findFiles(fs, baseDir, true)
                 .filter!(entry => entry.isFile)
-                .filter!(entry => !matchFirst(entry.name, `.*\.(gif|jpg|png)$`).empty)) {
+                .filter!(e => e.name.baseName.globMatch("*.(gif|jpg|png)"))) {
             writefln("%s", entry.name);
         }
     }
@@ -349,7 +348,6 @@ unittest {
     writeln("listImagesInDirectory (FileSystem example):");
     listImagesInDirectory(new LocalFileSystem, "tests");
     writeln();
-*/
 }
 
 unittest {
@@ -382,12 +380,7 @@ unittest {
         writefln("      modified: %s", to!string(stat_.modificationTimestamp));
     }
     
-    writeln("File stats:");
-    printStat("package.json");
-    printStat("dlib/core");     // make sure slashes work on Windows
-    writeln();
-    
-    enum dir = "dlib/filesystem";
+    enum dir = "tests";
     writefln("Listing files in %s:", dir);
     
     auto d = openDir(dir);
@@ -404,7 +397,7 @@ unittest {
     
     writeln();
     
-    writeln("Listing files mathing the pattern dlib/core/*.d:");
+    writeln("Listing files mathing the pattern *.d:");
 
     foreach (entry; findFiles("", true)
             .filter!(entry => entry.isFile)
