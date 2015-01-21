@@ -502,7 +502,10 @@ struct Vector(T, int size)
         @property bool isZero() const
         body
         {
-            return (arrayof[] == [0]);
+            foreach(i; RangeTuple!(0, size))
+                if (arrayof[i] != 0)
+                    return false;
+            return true;
         }
 
        /*
@@ -941,9 +944,9 @@ unittest
 
     assert(ab[0] == 75 && ab[1] == 135);
 
-    c.length();
-    c.lengthsqr();
-    distance(a, b);
+    auto len = c.length();
+    auto lensqr = c.lengthsqr();
+    auto dist = distance(a, b);
 
     auto xy = a[0..1];
     auto n = a[];
