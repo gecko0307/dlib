@@ -354,6 +354,15 @@ class ImageFactory: SuperImageFactory
     }
 }
 
+private SuperImageFactory _defaultImageFactory;
+
+SuperImageFactory defaultImageFactory()
+{
+    if (!_defaultImageFactory)
+        _defaultImageFactory = new ImageFactory();
+    return _defaultImageFactory;
+}
+
 SuperImage image(uint w, uint h, uint channels = 3, uint bitDepth = 8)
 in
 {
