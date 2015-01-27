@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013 Timur Gafarov 
+Copyright (c) 2013-2015 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -204,9 +204,9 @@ struct Dual(T)
 
     Dual!(T) pow(T k) const
     {
-        return Dual!(T)(re^^k, k * (re^^-k) * du);
+        return Dual!(T)(re^^k, k * (re^^(k-1)) * du);
     }
 }
 
 alias Dual!(float) Dualf;
-
+alias Dual!(double) Duald;
