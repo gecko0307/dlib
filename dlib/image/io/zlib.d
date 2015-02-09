@@ -97,7 +97,7 @@ struct ZlibEncoder
         return true;
     }
 
-    void reallocateBuffer(uint len)
+    void reallocateBuffer(size_t len)
     {
         ubyte[] buffer2 = New!(ubyte[])(len);
         for(uint i = 0; i < buffer2.length; i++)
@@ -173,7 +173,7 @@ struct ZlibDecoder
         return true;
     }
     
-    void reallocateBuffer(uint len)
+    void reallocateBuffer(size_t len)
     {
         ubyte[] buffer2 = New!(ubyte[])(len);
         for(uint i = 0; i < buffer2.length; i++)
