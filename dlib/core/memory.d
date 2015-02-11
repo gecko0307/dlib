@@ -28,6 +28,7 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.core.memory;
 
+import std.stdio;
 import std.conv;
 import std.traits;
 import core.stdc.stdlib;
@@ -37,13 +38,35 @@ import core.exception: onOutOfMemoryError;
  * Tools for manual memory management
  */
 
+//version = MemoryDebug;
+
+private static size_t _allocatedMemory = 0;
+
+size_t allocatedMemory()
+{
+    return _allocatedMemory;
+}
+
+interface ManuallyAllocatable
+{
+    void free();
+    void setManualMode(bool mode);
+}
+
 T allocate(T, A...) (A args) if (is(T == class))
 {
     enum size = __traits(classInstanceSize, T);
     auto memory = malloc(size)[0..size];
     if (!memory)
         onOutOfMemoryError();
-    return emplace!(T, A)(memory, args);
+    _allocatedMemory += size;
+    version(MemoryDebug) writefln("Allocated class (%s bytes)", size);
+    auto res = emplace!(T, A)(memory, args);
+    static if (isImplicitlyConvertible!(T, ManuallyAllocatable))
+    {
+        res.setManualMode(true);
+    }
+    return res;
 }
 
 T* allocate(T, A...) (A args) if (is(T == struct))
@@ -52,6 +75,8 @@ T* allocate(T, A...) (A args) if (is(T == struct))
     auto memory = malloc(size)[0..size];
     if (!memory)
         onOutOfMemoryError();
+    _allocatedMemory += size;
+    version(MemoryDebug) writefln("Allocated struct (%s bytes)", size);
     return emplace!(T, A)(memory, args);
 }
 
@@ -65,25 +90,37 @@ T allocate(T) (size_t length) if (isArray!T)
     T arr = cast(T)mem[0..size];
     foreach(ref v; arr)
         v = v.init;
+    _allocatedMemory += size;
+    version(MemoryDebug) writefln("Allocated array (%s bytes)", size);
     return arr;
 }
 
 void deallocate(T)(ref T obj) if (isArray!T)
 {
+    alias AT = ForeachType!T;
+    size_t size = obj.length * AT.sizeof;
     free(cast(void*)obj.ptr);
+    _allocatedMemory -= size;
+    version(MemoryDebug) writefln("Dellocated array (%s bytes)", size);
     obj.length = 0;
 }
 
 void deallocate(T)(T obj) if (is(T == class))
 {
+    enum size = __traits(classInstanceSize, T);
     destroy(obj);
     free(cast(void*)obj);
+    _allocatedMemory -= size;
+    version(MemoryDebug) writefln("Dellocated class (%s bytes)", size);
 }
 
 void deallocate(T)(T* obj)
 {
+    enum size = T.sizeof;
     destroy(obj);
     free(cast(void*)obj);
+    _allocatedMemory -= size;
+    version(MemoryDebug) writefln("Dellocated struct (%s bytes)", size);
 }
 
 alias allocate New;
