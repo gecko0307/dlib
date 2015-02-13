@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2014 Timur Gafarov 
+Copyright (c) 2013-2015 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -53,6 +53,7 @@ public
     import dlib.image.io.io;
     import dlib.image.io.png;
     import dlib.image.io.tga;
+    import dlib.image.io.jpeg;
 
     import dlib.image.render.cosplasma;
 
