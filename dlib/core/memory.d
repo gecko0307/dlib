@@ -53,6 +53,24 @@ interface ManuallyAllocatable
     void setManualMode(bool mode);
 }
 
+mixin template ManualModeImpl()
+{
+    protected bool manuallyAllocated = false;
+    void setManualMode(bool mode)
+    {
+        manuallyAllocated = mode;
+    }
+}
+
+mixin template FreeImpl()
+{
+    override void free()
+    {
+        if (manuallyAllocated)
+            Delete(this);
+    }
+}
+
 T allocate(T, A...) (A args) if (is(T == class))
 {
     enum size = __traits(classInstanceSize, T);
