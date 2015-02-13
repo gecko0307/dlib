@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2014 Timur Gafarov 
+Copyright (c) 2011-2015 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -32,6 +32,7 @@ private
 {
     import std.math;
     import std.conv;
+    import dlib.core.memory;
     import dlib.functional.range;
     import dlib.math.vector;
     import dlib.math.interpolation;
@@ -51,7 +52,7 @@ enum PixelFormat
     RGBA_FLOAT
 }
 
-abstract class SuperImage
+abstract class SuperImage: ManuallyAllocatable
 {
     @property uint width();
     @property uint height();
@@ -90,6 +91,9 @@ abstract class SuperImage
     {
         progress = 0.0f;
     }
+
+    mixin ManualModeImpl;
+    mixin FreeImpl;
 }
 
 class Image(PixelFormat fmt): SuperImage
