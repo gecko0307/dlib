@@ -1,5 +1,5 @@
-/*
-Copyright (c) 2011-2014 Timur Gafarov 
+﻿/*
+Copyright (c) 2015 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -30,53 +30,49 @@ module dlib.container.aarray;
 
 private
 {
+    import dlib.core.memory;
     import dlib.container.bst;
     import dlib.container.hash;
 }
 
-public:
+/*
+ * GC-free associative array implementation
+ */
 
-class AArray(T): BST!(T) 
-{ 
-    public: 
-
-    this() { } 
-
-    void opIndexAssign(T v, string i) 
-    { 
-        insert(stringHash(i), v); 
-    } 
-
-    T opIndex(string i) 
-    { 
-        auto node = find(stringHash(i)); 
-        assert (node !is null); 
-        return node.value; 
-    } 
-
-    T* opIn_r(string i) 
-    { 
-        auto node = find(stringHash(i)); 
-        if (node !is null) return &node.value; 
-        else return null; 
-    } 
-
-    void remove(string i) 
-    { 
-        super.remove(stringHash(i)); 
-    } 
-}
-
-unittest
+class AArray(T): BST!(T)
 {
-    auto aa = new AArray!string;
-    aa["sysadmin"] = "Dmitry Egorov";
-    aa["programmer"] = "Ivan Petrov";
+    this()
+    {
+        super();
+    }
+    
+    void opIndexAssign(T v, string i)
+    {
+        insert(stringHash(i), v);
+    }
+    
+    T opIndex(string i)
+    {
+        auto node = find(stringHash(i));
+        if (node is null)
+            return value.init;
+        else
+            return node.value;
+    }
+    
+    T* opIn_r(string i)
+    {
+        auto node = find(stringHash(i));
+        if (node !is null)
+            return &node.value;
+        else
+            return null;
+    }
+    
+    void remove(string i)
+    {
+        super.remove(stringHash(i));
+    }
 
-    assert (aa["sysadmin"] == "Dmitry Egorov");
-
-    if ("programmer" in aa) 
-        aa.remove("programmer");
-    assert ("programmer" !in aa);
+    mixin FreeImpl;
 }
-

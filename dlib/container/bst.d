@@ -1,5 +1,5 @@
-/*
-Copyright (c) 2011-2014 Timur Gafarov 
+﻿/*
+Copyright (c) 2015 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -28,41 +28,54 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.container.bst;
 
-public:
+import dlib.core.memory;
 
-class BST(T) 
-{ 
-    public this() { } 
+/*
+ * GC-free binary search tree implementation.
+ */
 
-    protected:
+class BST(T): ManuallyAllocatable
+{
+    bool root;
     BST left = null; 
     BST right = null; 
     int key = 0;
 
-    public T value; 
+    T value; 
+    
+    this()
+    {
+        root = true;
+    }
 
-    protected this(int k, T v) 
+    this(int k, T v) 
     { 
         key = k; 
         value = v; 
-    } 
+        root = false;
+    }
 
-    public void insert(int k, T v) 
+    ~this()
+    {
+        clear();
+    }
+
+    void insert(int k, T v) 
     { 
         if (k < key) 
         { 
-            if (left is null) left = new BST(k, v); 
+            if (left is null) left = allocate!(BST)(k, v); 
             else left.insert(k, v); 
         } 
         else if (k > key) 
         { 
-            if (right is null) right = new BST(k, v); 
+            if (right is null) right = allocate!(BST)(k, v); 
             else right.insert(k, v); 
         } 
         else value = v;		 
     }
 
-    public BST find(int k) 
+    BST find(int k) 
     { 
         if (k < key) 
         { 
@@ -83,7 +96,7 @@ class BST(T)
         else return left.findLeftMost(); 
     }
 
-    public void remove(int k, BST par = null) 
+    void remove(int k, BST par = null) 
     { 
         if (k < key) 
         { 
@@ -105,14 +118,72 @@ class BST(T)
                 right.remove(key, this); 
             } 
             else if (this == par.left) 
-            { 
-                par.left = (left !is null)? left : right; 
+            {
+                par.left = (left !is null)? left : right;
+                //deallocate(value);
             } 
             else if (this == par.right) 
             { 
-                par.right = (left !is null)? left : right; 
+                par.right = (left !is null)? left : right;
+                //deallocate(value);
             } 
         } 
     }
-}
+    
+    void traverse(void function(int, T) func)
+    {
+        if (left !is null)
+            left.traverse(func);
+        if (!root)
+            func(key, value);
+        if (right !is null)
+            right.traverse(func);
+    }
+    
+    int opApply(int delegate(int, ref T) dg)
+    {
+        int result = 0;
 
+        if (left !is null)
+        {
+            result = left.opApply(dg);
+            if (result)
+                return result;
+        }
+        
+        if (!root)
+            dg(key, value);
+            
+        if (right !is null)
+        {
+            result = right.opApply(dg);
+            if (result)
+                return result;
+        }
+
+        return result;
+    }
+    
+    void clear()
+    {
+        if (left !is null)
+        {
+            left.clear();
+            deallocate(left);
+            left = null;
+        }
+        if (right !is null)
+        {
+            right.clear();
+            deallocate(right);
+            right = null;
+        }
+        if (!root)
+        {
+            //deallocate(value);
+        }
+    }
+
+    mixin ManualModeImpl;
+    mixin FreeImpl;
+}
