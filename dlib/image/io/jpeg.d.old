@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015 Timur Gafarov
+Copyright (c) 2014 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -28,22 +28,22 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.image.io.jpeg;
 
-import std.stdio;
-import std.algorithm;
-import std.string;
-import std.traits;
+private
+{
+    import std.stdio;
+    import std.algorithm;
+    import std.math;
+    import std.string;
 
-import dlib.core.memory;
-import dlib.core.stream;
-import dlib.core.compound;
-import dlib.container.array;
-import dlib.filesystem.local;
-import dlib.image.color;
-import dlib.image.image;
-import dlib.image.io.idct;
+    import dlib.core.stream;
+    import dlib.filesystem.local;
+    import dlib.image.color;
+    import dlib.image.image;
 
-import dlib.core.bitio;
-import dlib.coding.huffman;
+    import dlib.image.io.bitio;
+    import dlib.image.io.huffman;
+    import dlib.image.io.idct;
+}
 
 /*
  * Simple JPEG decoder
@@ -56,7 +56,7 @@ import dlib.coding.huffman;
  */
 
 // Uncomment this to see debug messages
-//version = JPEGDebug;
+version = JPEGDebug;
 
 T readNumeric(T) (InputStream istrm, Endian endian = Endian.Little)
 if (is(T == ubyte))
@@ -99,97 +99,91 @@ char[size] readChars(size_t size) (InputStream istrm)
     return chars;
 }
 
-/*
- * JPEG-related Huffman coding
- */
-
-struct HuffmanCode
+//TODO: make this struct
+class JPEGImage
 {
-    ushort bits;
-    ushort length;
-    
-    auto bitString()
+    struct JFIF
     {
-        return .bitString(bits, length);
+        ubyte versionMajor;
+        ubyte versionMinor;
+        ubyte units;
+        ushort xdensity;
+        ushort ydensity;
+        ubyte thumbnailWidth;
+        ubyte thumbnailHeight;
+        ubyte[] thumbnail;
     }
-}
 
-struct HuffmanTableEntry
-{
-    HuffmanCode code;
-    ubyte value;
-}
-
-DynamicArray!char bitString(T)(T n, uint len = 1) if (isIntegral!T)
-{
-    DynamicArray!char arr;
-
-    const int size = T.sizeof * 8;
-    
-    bool s = 0;
-    for (int a = 0; a < size; a++)
+    struct DQT
     {
-        bool bit = n >> (size - 1);
-        if (bit)
-            s = 1;
-        if (s)
-        {
-            arr.append(bit + '0');
-        }
-        n <<= 1;
+        ubyte precision;
+        ubyte tableId;
+        ubyte[] table;
+    }
+
+    struct SOF0Component
+    {
+        ubyte hsubsamling;
+        ubyte vsubsamling;
+        ubyte dqtTableId;
+    }
+
+    struct SOF0
+    {
+        ubyte precision;
+        ushort height;
+        ushort width;
+        ubyte componentsNum;
+        SOF0Component[] components;
+    }
+
+    struct DHT
+    {
+        ubyte clas;
+        ubyte tableId;
+        ubyte[HuffmanCode] huffmanTable;
+        HuffmanTreeNode* huffmanTree;
+    }
+
+    struct SOSComponent
+    {
+        ubyte tableIdDC;
+        ubyte tableIdAC;
+    }
+
+    struct SOS
+    {
+        ubyte componentsNum;
+        SOSComponent[] components;
+        ubyte spectralSelectionStart;
+        ubyte spectralSelectionEnd;
+        ubyte successiveApproximationBitHigh;
+        ubyte successiveApproximationBitLow;
+        ubyte[] encodedData;
+    }
+
+    JFIF jfif;
+    DQT[] dqt;
+    SOF0 sof0;
+    DHT[] dht;
+    SOS sos;
+
+    DQT* getQuantizationTable(ubyte id)
+    {
+        foreach(ref t; dqt)
+            if (t.tableId == id)
+                return &t;
+        return null;
     }
     
-    while (arr.length < len)
-        arr.appendLeft('0');
-        
-    return arr;
-}
-
-HuffmanTreeNode* emptyNode()
-{
-    return New!HuffmanTreeNode(null, null, cast(ubyte)0, 0, false);
-}
-
-HuffmanTreeNode* treeFromTable(DynamicArray!(HuffmanTableEntry) table)
-{
-    HuffmanTreeNode* root = emptyNode();
-
-    foreach(i, v; table.data)
-        treeAddCode(root, v.code, v.value);
-
-    return root;
-}
-
-void treeAddCode(HuffmanTreeNode* root, HuffmanCode code, ubyte value)
-{
-    HuffmanTreeNode* node = root;
-    auto bs = code.bitString;
-    foreach(bit; bs.data)
+    DHT* getHuffmanTable(ubyte clas, ubyte id)
     {
-        if (bit == '0')
-        {
-            if (node.left is null)
-            {
-                node.left = emptyNode();
-                node.left.parent = node;
-            }
-
-            node = node.left;
-        }
-        else if (bit == '1')
-        {
-            if (node.right is null)
-            {
-                node.right = emptyNode();
-                node.right.parent = node;
-            }
-
-            node = node.right;
-        }
+        foreach(ref t; dht)
+            if (t.clas == clas &&
+                t.tableId == id)
+                return &t;
+        return null;
     }
-    assert (node !is null);
-    node.ch = value;
-    bs.free();
 }
 
 enum JPEGMarkerType
@@ -210,285 +204,96 @@ enum JPEGMarkerType
     EOI
 }
 
-struct JPEGImage
-{
-    struct JFIF
-    {
-        ubyte versionMajor;
-        ubyte versionMinor;
-        ubyte units;
-        ushort xDensity;
-        ushort yDensity;
-        ubyte thumbnailWidth;
-        ubyte thumbnailHeight;
-        ubyte[] thumbnail;
-
-        void free()
-        {
-            if (thumbnail.length)
-                Delete(thumbnail);
-        }
-    }
-
-    struct DQT
-    {
-        ubyte precision;
-        ubyte tableId;
-        ubyte[] table;
-
-        void free()
-        {
-            if (table.length)
-                Delete(table);
-        }
-    }
-
-    struct SOF0Component
-    {
-        ubyte hSubsamling;
-        ubyte vSubsamling;
-        ubyte dqtTableId;
-    }
-
-    struct SOF0
-    {
-        ubyte precision;
-        ushort height;
-        ushort width;
-        ubyte componentsNum;
-        SOF0Component[] components;
-
-        void free()
-        {
-            if (components.length)
-                Delete(components);
-        }
-    }
-
-    struct DHT
-    {
-        ubyte clas;
-        ubyte tableId;
-        DynamicArray!HuffmanTableEntry huffmanTable;
-        HuffmanTreeNode* huffmanTree;
-
-        void free()
-        {
-            huffmanTree.free();
-            Delete(huffmanTree);
-            huffmanTable.free();
-        }
-    }
-
-    struct SOSComponent
-    {
-        ubyte tableIdDC;
-        ubyte tableIdAC;
-    }
-
-    struct SOS
-    {
-        ubyte componentsNum;
-        SOSComponent[] components;
-        ubyte spectralSelectionStart;
-        ubyte spectralSelectionEnd;
-        ubyte successiveApproximationBitHigh;
-        ubyte successiveApproximationBitLow;
-
-        void free()
-        {
-            if (components.length)
-                Delete(components);
-        }
-    }
-
-    JFIF jfif;
-    DQT[] dqt;
-    SOF0 sof0;
-    DHT[] dht;
-    SOS sos;
-
-    DQT* addDQT()
-    {
-        if (dqt.length > 0)
-            reallocateArray(dqt, dqt.length+1);
-        else
-            dqt = New!(DQT[])(1);
-        return &dqt[$-1];
-    }
-
-    DHT* addDHT()
-    {
-        if (dht.length > 0)
-            reallocateArray(dht, dht.length+1);
-        else
-            dht = New!(DHT[])(1);
-        return &dht[$-1];
-    }
-
-    void free()
-    {
-        jfif.free();
-        foreach(ref t; dqt) t.free();
-        Delete(dqt);
-        sof0.free();
-        foreach(ref t; dht) t.free();
-        Delete(dht);
-        sos.free();
-    }
-
-    DQT* getQuantizationTable(ubyte id)
-    {
-        foreach(ref t; dqt)
-            if (t.tableId == id)
-                return &t;
-        return null;
-    }
-    
-    DHT* getHuffmanTable(ubyte clas, ubyte id)
-    {
-        foreach(ref t; dht)
-            if (t.clas == clas &&
-                t.tableId == id)
-                return &t;
-        return null;
-    }
-}
-
-/*
- * Load JPEG from file using local FileSystem.
- * Causes GC allocation
- */
 SuperImage loadJPEG(string filename)
 {
-    InputStream input = openForInput(filename);
-    auto img = loadJPEG(input);    input.close();
-    return img;
+    return loadJPEG(openForInput(filename));
 }
 
-/*
- * Load JPEG from stream using default image factory.
- * Causes GC allocation
- */
 SuperImage loadJPEG(InputStream istrm)
 {
-    Compound!(SuperImage, string) res = 
-        loadJPEG(istrm, defaultImageFactory);
-    if (res[0] is null)
-        throw new Exception(res[1]);
-    else
-        return res[0];
-}
-
-/*
- * Load JPEG from stream using specified image factory.
- * GC-free
- */
-Compound!(SuperImage, string) loadJPEG(
-    InputStream istrm, 
-    SuperImageFactory imgFac)
-{
-    JPEGImage jpg;
-    SuperImage img = null;
+    auto jpg = new JPEGImage();
     
     while (istrm.readable)
     {
-        JPEGMarkerType mt;
-        auto res = readMarker(&jpg, istrm, &mt);
-        if (res[0])
-        {
-            // TODO: add progressive JPEG support
-            if (mt == JPEGMarkerType.SOF2)
-            {
-                jpg.free();
-                return compound(img, "loadJPEG error: progressive JPEG is not supported");
-            }
-            else if (mt == JPEGMarkerType.SOS)
-                break;
-        }
-        else
-        {
-            jpg.free();
-            return compound(img, res[1]);
-        }
+        JPEGMarkerType mt = readMarker(istrm, jpg);
     }
-    auto res = decodeScanData(&jpg, istrm, imgFac);
-    jpg.free();
-    return res;
+
+    return decodeScanData(jpg);
 }
 
-/*
- *  Decode marker from JPEG stream
- */
-Compound!(bool, string) readMarker(
-    JPEGImage* jpg,
-    InputStream istrm,
-    JPEGMarkerType* mt)
+JPEGMarkerType readMarker(InputStream istrm, JPEGImage jpg)
 {
+    JPEGMarkerType mt;
     ushort magic = istrm.readNumeric!ushort(Endian.Big);
     
     switch (magic)
     {
         case 0xFFD8:
-            *mt = JPEGMarkerType.SOI;
+            mt = JPEGMarkerType.SOI;
             version(JPEGDebug) writeln("SOI");
             break;
             
         case 0xFFE0:
-            *mt = JPEGMarkerType.APP0;
-            return readJFIF(jpg, istrm);
+            mt = JPEGMarkerType.APP0;
+            readJFIF(istrm, jpg);
+            break;
 
         case 0xFFE1:
-            *mt = JPEGMarkerType.APP1;
-            return readEXIF(jpg, istrm);
+            mt = JPEGMarkerType.APP1;
+            readEXIF(istrm, jpg);
+            break;
             
         case 0xFFDB:
-            *mt = JPEGMarkerType.DQT;
-            return readDQT(jpg, istrm);
+            mt = JPEGMarkerType.DQT;
+            readDQT(istrm, jpg);
+            break;
             
         case 0xFFC0:
-            *mt = JPEGMarkerType.SOF0;
-            return readSOF0(jpg, istrm);
+            mt = JPEGMarkerType.SOF0;
+            readSOF0(istrm, jpg);
+            break;
 
         case 0xFFC2:
-            *mt = JPEGMarkerType.SOF2;            break;
+            mt = JPEGMarkerType.SOF2;
+            throw new Exception("Progressive JPEG is not supported");
             
         case 0xFFC4:
-            *mt = JPEGMarkerType.DHT;
-            return readDHT(jpg, istrm);
+            mt = JPEGMarkerType.DHT;
+            readDHT(istrm, jpg);
+            break;
             
         case 0xFFDA:
-            *mt = JPEGMarkerType.SOS;
-            return readSOS(jpg, istrm);
+            mt = JPEGMarkerType.SOS;
+            readSOS(istrm, jpg);
+            break;
             
         default:
-            *mt = JPEGMarkerType.Unknown;
             break;
     }
     
-    return compound(true, "");
+    return mt;
 }
 
-Compound!(bool, string) readJFIF(JPEGImage* jpg, InputStream istrm)
+void readJFIF(InputStream istrm, JPEGImage jpg)
 {
     ushort jfif_length = istrm.readNumeric!ushort(Endian.Big);
 
     char[5] jfif_id = istrm.readChars!5;
     if (jfif_id != "JFIF\0")
-        return compound(false, "loadJPEG error: illegal JFIF header");
+        throw new Exception("Illegal JFIF header");
 
     jpg.jfif.versionMajor = istrm.readNumeric!ubyte;
     jpg.jfif.versionMinor = istrm.readNumeric!ubyte;
     jpg.jfif.units = istrm.readNumeric!ubyte;
-    jpg.jfif.xDensity = istrm.readNumeric!ushort(Endian.Big);
-    jpg.jfif.yDensity = istrm.readNumeric!ushort(Endian.Big);
+    jpg.jfif.xdensity = istrm.readNumeric!ushort(Endian.Big);
+    jpg.jfif.ydensity = istrm.readNumeric!ushort(Endian.Big);
     jpg.jfif.thumbnailWidth = istrm.readNumeric!ubyte;
     jpg.jfif.thumbnailHeight = istrm.readNumeric!ubyte;
     
     uint jfif_thumb_length = jpg.jfif.thumbnailWidth * jpg.jfif.thumbnailHeight * 3;
     if (jfif_thumb_length > 0)
     {
-        jpg.jfif.thumbnail = New!(ubyte[])(jfif_thumb_length);
+        jpg.jfif.thumbnail = new ubyte[jfif_thumb_length];
         istrm.readBytes(jpg.jfif.thumbnail.ptr, jfif_thumb_length);
     }
 
@@ -499,33 +304,26 @@ Compound!(bool, string) readJFIF(JPEGImage* jpg, InputStream istrm)
         writefln("APP0/JFIF version major: %s", jpg.jfif.versionMajor);
         writefln("APP0/JFIF version minor: %s", jpg.jfif.versionMinor);
         writefln("APP0/JFIF units: %s", jpg.jfif.units);
-        writefln("APP0/JFIF xdensity: %s", jpg.jfif.xDensity);
-        writefln("APP0/JFIF ydensity: %s", jpg.jfif.yDensity);
+        writefln("APP0/JFIF xdensity: %s", jpg.jfif.xdensity);
+        writefln("APP0/JFIF ydensity: %s", jpg.jfif.ydensity);
         writefln("APP0/JFIF xthumbnail: %s", jpg.jfif.thumbnailWidth);
         writefln("APP0/JFIF ythumbnail: %s", jpg.jfif.thumbnailHeight);
     }
-
-    return compound(true, "");
 }
 
-Compound!(bool, string) readEXIF(JPEGImage* jpg, InputStream istrm)
+void readEXIF(InputStream istrm, JPEGImage jpg)
 {
     ushort exif_length = istrm.readNumeric!ushort(Endian.Big);
-    ubyte[] exif = New!(ubyte[])(exif_length-2);
-    istrm.readBytes(exif.ptr, exif_length-2);
-
     // TODO: interpret JFIF data
-    Delete(exif);
-
+    ubyte[] exif = new ubyte[exif_length-2];
+    istrm.readBytes(exif.ptr, exif_length-2);
     version(JPEGDebug)
     {
         writefln("APP1/EXIF length: %s", exif_length);
     }
-
-    return compound(true, "");
 }
 
-Compound!(bool, string) readDQT(JPEGImage* jpg, InputStream istrm)
+void readDQT(InputStream istrm, JPEGImage jpg)
 {   
     ushort dqt_length = istrm.readNumeric!ushort(Endian.Big);
     version(JPEGDebug)
@@ -537,39 +335,38 @@ Compound!(bool, string) readDQT(JPEGImage* jpg, InputStream istrm)
 
     while(dqt_length)
     {
-        JPEGImage.DQT* dqt = jpg.addDQT();
+        JPEGImage.DQT dqt;
+        jpg.dqt ~= dqt;
 
         ubyte bite = istrm.readNumeric!ubyte;
-        dqt.precision = bite.hiNibble;
-        dqt.tableId = bite.loNibble;
+        jpg.dqt[$-1].precision = bite.hiNibble;
+        jpg.dqt[$-1].tableId = bite.loNibble;
 
         dqt_length--;
 
-        if (dqt.precision == 0)
+        if (jpg.dqt[$-1].precision == 0)
         {
-            dqt.table = New!(ubyte[])(64);
+            jpg.dqt[$-1].table = new ubyte[64];
             dqt_length -= 64;
         }
-        else if (dqt.precision == 1)
+        else if (jpg.dqt[$-1].precision == 1)
         {
-            dqt.table = New!(ubyte[])(128);
+            jpg.dqt[$-1].table = new ubyte[64*2];
             dqt_length -= 128;
         }
 
-        istrm.readBytes(dqt.table.ptr, dqt.table.length);
+        istrm.readBytes(jpg.dqt[$-1].table.ptr, jpg.dqt[$-1].table.length);
 
         version(JPEGDebug)
         {
-            writefln("DQT precision: %s", dqt.precision);
-            writefln("DQT table id: %s", dqt.tableId);
-            writefln("DQT table: %s", dqt.table);
+            writefln("DQT precision: %s", jpg.dqt[$-1].precision);
+            writefln("DQT table id: %s", jpg.dqt[$-1].tableId);
+            writefln("DQT table: %s", jpg.dqt[$-1].table);
         }
     }
-
-    return compound(true, "");
 }
 
-Compound!(bool, string) readSOF0(JPEGImage* jpg, InputStream istrm)
+void readSOF0(InputStream istrm, JPEGImage jpg)
 {   
     ushort sof0_length = istrm.readNumeric!ushort(Endian.Big);
     jpg.sof0.precision = istrm.readNumeric!ubyte;
@@ -586,28 +383,26 @@ Compound!(bool, string) readSOF0(JPEGImage* jpg, InputStream istrm)
         writefln("SOF0 components: %s", jpg.sof0.componentsNum);
     }
     
-    jpg.sof0.components = New!(JPEGImage.SOF0Component[])(jpg.sof0.componentsNum);
+    jpg.sof0.components = new JPEGImage.SOF0Component[jpg.sof0.componentsNum];
     
     foreach(ref c; jpg.sof0.components)
     {
         ubyte c_id = istrm.readNumeric!ubyte;
         ubyte bite = istrm.readNumeric!ubyte;
-        c.hSubsamling = bite.hiNibble;
-        c.vSubsamling = bite.loNibble;
+        c.hsubsamling = bite.hiNibble;
+        c.vsubsamling = bite.loNibble;
         c.dqtTableId = istrm.readNumeric!ubyte;
         version(JPEGDebug)
         {
             writefln("SOF0 component id: %s", c_id);
-            writefln("SOF0 component %s hsubsamling: %s", c_id, c.hSubsamling);
-            writefln("SOF0 component %s vsubsamling: %s", c_id, c.vSubsamling);
+            writefln("SOF0 component %s hsubsamling: %s", c_id, c.hsubsamling);
+            writefln("SOF0 component %s vsubsamling: %s", c_id, c.vsubsamling);
             writefln("SOF0 component %s table id: %s", c_id, c.dqtTableId);
         }
     }
-
-    return compound(true, "");
 }
 
-Compound!(bool, string) readDHT(JPEGImage* jpg, InputStream istrm)
+void readDHT(InputStream istrm, JPEGImage jpg)
 {    
     ushort dht_length = istrm.readNumeric!ushort(Endian.Big);  
     version(JPEGDebug)
@@ -616,15 +411,16 @@ Compound!(bool, string) readDHT(JPEGImage* jpg, InputStream istrm)
     }
   
     dht_length -= 2;
-
+    
     while(dht_length > 0)
     {    
-        JPEGImage.DHT* dht = jpg.addDHT();
+        JPEGImage.DHT dht;
+        jpg.dht ~= dht;
     
         ubyte bite = istrm.readNumeric!ubyte;
         dht_length--;
-        dht.clas = bite.hiNibble;
-        dht.tableId = bite.loNibble;
+        jpg.dht[$-1].clas = bite.hiNibble;
+        jpg.dht[$-1].tableId = bite.loNibble;
 
         ubyte[16] dht_code_lengths;
         istrm.readBytes(dht_code_lengths.ptr, 16);
@@ -633,9 +429,9 @@ Compound!(bool, string) readDHT(JPEGImage* jpg, InputStream istrm)
         version(JPEGDebug)
         {
             writefln("DHT class: %s (%s)",
-                dht.clas,
-                dht.clas? "AC":"DC");
-            writefln("DHT tableId: %s", dht.tableId);
+                jpg.dht[$-1].clas,
+                jpg.dht[$-1].clas? "AC":"DC");
+            writefln("DHT tableId: %s", jpg.dht[$-1].tableId);
             writefln("DHT Huffman code lengths: %s", dht_code_lengths);
         }
     
@@ -657,11 +453,8 @@ Compound!(bool, string) readDHT(JPEGImage* jpg, InputStream istrm)
             if (treeLevel < 16)
             {
                 uint bitsNum = treeLevel + 1;
-                HuffmanCode code = HuffmanCode(bits, cast(ushort)bitsNum);
-
-                auto entry = HuffmanTableEntry(code, istrm.readNumeric!ubyte);
-                dht.huffmanTable.append(entry);
-
+                HuffmanCode code = HuffmanCode(bits, bitsNum);
+                jpg.dht[$-1].huffmanTable[code] = istrm.readNumeric!ubyte;
                 dht_length--;
             
                 storedCodes++;
@@ -672,30 +465,26 @@ Compound!(bool, string) readDHT(JPEGImage* jpg, InputStream istrm)
     
         version(JPEGDebug)
         {
-/*
-            writeln("DHT Huffman table:\n", dht.huffmanTable);
-            auto huffmanSymbols = dht.huffmanTable.values;
+            writeln("DHT Huffman table:\n", jpg.dht[$-1].huffmanTable);
+            auto huffmanSymbols = jpg.dht[$-1].huffmanTable.values;
             huffmanSymbols.sort();
             foreach(v; huffmanSymbols)
                 writef("%x ", v);
             writef("\n");
-*/
         }
 
-        dht.huffmanTree = treeFromTable(dht.huffmanTable);
+        jpg.dht[$-1].huffmanTree = treeFromTable(jpg.dht[$-1].huffmanTable);
+        string[ubyte] table;
+        jpg.dht[$-1].huffmanTree.getCodes(table);
 
         version(JPEGDebug)
         {
-            //string[ubyte] table;
-            //dht.huffmanTree.getCodes(table);
             //writeln(table);
         }
     }
-
-    return compound(true, "");
 }
 
-Compound!(bool, string) readSOS(JPEGImage* jpg, InputStream istrm)
+void readSOS(InputStream istrm, JPEGImage jpg)
 {   
     ushort sos_length = istrm.readNumeric!ushort(Endian.Big);
     jpg.sos.componentsNum = istrm.readNumeric!ubyte;
@@ -706,7 +495,7 @@ Compound!(bool, string) readSOS(JPEGImage* jpg, InputStream istrm)
         writefln("SOS components: %s", jpg.sos.componentsNum);
     }
     
-    jpg.sos.components = New!(JPEGImage.SOSComponent[])(jpg.sos.componentsNum);
+    jpg.sos.components = new JPEGImage.SOSComponent[jpg.sos.componentsNum];
     
     foreach(ref c; jpg.sos.components)
     {
@@ -735,66 +524,84 @@ Compound!(bool, string) readSOS(JPEGImage* jpg, InputStream istrm)
         writefln("SOS successive approximation bit: %s", jpg.sos.successiveApproximationBitHigh);
         writefln("SOS successive approximation bit low: %s", jpg.sos.successiveApproximationBitLow);
     }
-
-    return compound(true, "");
-}
-
-struct ScanBitStream
-{
-    InputStream istrm;
-
-    bool endMarkerFound = false;
+    
+    // TODO: don't copy scan data, just decode on the fly
     uint bytesRead = 0;
-    ubyte prevByte = 0x00;
-    ubyte curByte = 0x00;
-
-    ubyte readNextByte()
+    ubyte prev = 0x00;
+    bool endMarkerFound = false;
+    while (istrm.readable && !endMarkerFound)
     {
-        ubyte b = istrm.readNumeric!ubyte;
+        bite = istrm.readNumeric!ubyte;
         bytesRead++;
-        endMarkerFound = (prevByte == 0xFF && b == 0xD9);
-        assert(!endMarkerFound);
+
+        endMarkerFound = (prev == 0xFF && bite == 0xD9);
+            
         if (!endMarkerFound)
         {
-            prevByte = b;
-            curByte = b;
-            return b;
+/*
+            // TODO: is this needed?
+            if (bite != 0xFF)
+            {
+                ubyte datum = bite;
+
+                if (prev == 0xFF)
+                {                   
+                    if (bite == 0x00)
+                        datum = 0xFF;
+                    else
+                    {
+                        writefln("Found marker: %X, %X", prev, bite);
+                        prev = 0x00;
+                        continue;
+                    }
+                }
+
+                jpg.sos.encodedData ~= datum;
+            }
+            
+            prev = bite;
+*/
+            jpg.sos.encodedData ~= bite;
+            prev = bite;
         }
-        else
-        {
-            curByte = 0;
-        }
-        return curByte;
     }
 
-    bool readable()
+    version(JPEGDebug)
     {
-        return !istrm.readable || endMarkerFound;
+        writefln("Bytes read: %s", bytesRead);
+        writefln("SOS encoded data length: %s", jpg.sos.encodedData.length);
     }
+}
 
+/*
+ *  Decodes compressed data and creates RGB image from it
+ */
+SuperImage decodeScanData(JPEGImage jpg)
+{
+    if (jpg.sos.encodedData.length == 0)
+        throw new Exception("No data found");
+
+    uint bytePos = 0;
     uint bitPos = 0;
 
-    // Huffman decode a byte
-    Compound!(bool, string) decodeByte(HuffmanTreeNode* node, ubyte* result)
+    // Huffman decode a byte from SCAN bit stream 
+    ubyte decodeByte(HuffmanTreeNode* node)
     {
         while(!node.isLeaf)
         {
-            ubyte b = curByte;
+            ubyte b = jpg.sos.encodedData[bytePos];
         
             bool bit = getBit(b, 7-bitPos);
             bitPos++;
             if (bitPos == 8)
             {
                 bitPos = 0;
-                readNextByte();
-                
+                bytePos++;
                 if (b == 0xFF)
                 {
-                    b = curByte; 
+                    b = jpg.sos.encodedData[bytePos];
                     if (b == 0x00)
-                    {
-                        readNextByte();
-                    }
+                        bytePos++;
                 }
             }
             
@@ -804,11 +611,10 @@ struct ScanBitStream
                 node = node.left;
 
             if (node is null)
-                return compound(false, "loadJPEG error: no Huffman code found");
+                throw new Exception("No Huffman code found");
         }
 
-        *result = node.ch;
-        return compound(true, "");
+        return node.ch;
     }
 
     // Read len bits from stream to buffer
@@ -821,7 +627,7 @@ struct ScanBitStream
 
         while (i < len)
         {
-            ubyte b = curByte;
+            ubyte b = jpg.sos.encodedData[bytePos];
         
             bool bit = getBit(b, 7-bitPos);
             buffer = setBit(buffer, (by * 8 + bi), bit);
@@ -839,39 +645,17 @@ struct ScanBitStream
             if (bitPos == 8)
             {
                 bitPos = 0;
-                readNextByte();
-
+                bytePos++;
                 if (b == 0xFF)
                 {
-                    b = curByte;
+                    b = jpg.sos.encodedData[bytePos];
                     if (b == 0x00)
-                        readNextByte();
+                        bytePos++;
                 }
             }
         }
 
         return buffer;
-    }
-}
-
-/*
- *  Decodes compressed data and creates RGB image from it
- */
-Compound!(SuperImage, string) decodeScanData(
-    JPEGImage* jpg,
-    InputStream istrm,
-    SuperImageFactory imgFac)
-{
-    SuperImage img = imgFac.createImage(jpg.sof0.width, jpg.sof0.height, 3, 8);
-
-    Compound!(SuperImage, string) error(string errorMsg)
-    {
-        if (img)
-        {
-            Delete(img);
-            img = null;
-        }
-        return compound(img, errorMsg);
     }
 
     // Decode DCT coefficient from bit buffer
@@ -903,35 +687,26 @@ Compound!(SuperImage, string) decodeScanData(
         58, 59, 52, 45, 38, 31, 39, 46,
         53, 60, 61, 54, 47, 55, 62, 63
     ];
-
+    
     // Store previous DC coefficients    
     // TODO: support more channels?
     if (jpg.sos.componentsNum != 3)
-    {
-        return error(format(
-                "loadJPEG error: unsupported number of components: %s",
+        throw new Exception(
+            format("Unsupported number of components: %s",
                 jpg.sos.componentsNum));
-    }
     int[3] dcCoefPrev;
 
     int[8*8][4] y_matrix;
     int[8*8] cb_matrix;
     int[8*8] cr_matrix;
 
-    if (jpg.dqt.length == 0)
-        return error("loadJPEG error: no DQTs found");
-
-    ScanBitStream sbs;
-    sbs.endMarkerFound = false;
-    sbs.bytesRead = 0;
-    sbs.prevByte = 0x00;
-    sbs.curByte = 0x00;
-    sbs.istrm = istrm;
-    sbs.readNextByte();
-
     // TODO: support other subsampling types
     uint numMCUsH = jpg.sof0.width / 16 + ((jpg.sof0.width % 16) > 0);
     uint numMCUsV = jpg.sof0.height / 16 + ((jpg.sof0.height % 16) > 0);
+    auto img = new ImageRGB8(jpg.sof0.width, jpg.sof0.height);
+
+    if (jpg.dqt.length == 0)
+        throw new Exception("No DQTs found");
 
     // Read MCUs
     foreach(mcuY; 0..numMCUsV)
@@ -944,24 +719,26 @@ Compound!(SuperImage, string) decodeScanData(
             auto tableAC = jpg.getHuffmanTable(1, c.tableIdAC);
 
             if (tableDC is null)
-                return error("loadJPEG error: illegal DC table index in MCU component");
+                throw new Exception("Illegal DC table index in MCU component");
             if (tableAC is null)
-                return error("loadJPEG error: illegal AC table index in MCU component");
+                throw new Exception("Illegal AC table index in MCU component");
 
             auto component = jpg.sof0.components[ci];
-            auto hblocks = component.hSubsamling;
-            auto vblocks = component.vSubsamling;
+            auto hblocks = component.hsubsamling;
+            auto vblocks = component.vsubsamling;
             auto dqtTableId = component.dqtTableId;
-
+            
             if (ci == 0) // Y channel
             {
                 if (hblocks != 2 && vblocks != 2)
-                    return error("loadJPEG error: unsupported subsampling type, only 4:2:0 is supported");
+                    throw new Exception(
+                        "Unsupported subsampling type, only 4:2:0 is supported");
             }
             else if (ci == 1 || ci == 2) // Cb or Cr channel
             {
                 if (hblocks != 1 && vblocks != 1)
-                    return error("loadJPEG error: unsupported subsampling type, only 4:2:0 is supported");
+                    throw new Exception(
+                        "Unsupported subsampling type, only 4:2:0 is supported");
             }
 
             // Read 8x8 blocks
@@ -971,28 +748,24 @@ Compound!(SuperImage, string) decodeScanData(
                 int[8*8] block;
 
                 // Read DC coefficient
-                ubyte dcDiffLen;
-                auto res = sbs.decodeByte(tableDC.huffmanTree, &dcDiffLen);
-                if (!res[0]) return error(res[1]); 
-
+                ubyte dcDiffLen = decodeByte(tableDC.huffmanTree);
+  
                 if (dcDiffLen > 0)
                 {
-                    uint dcBuffer = sbs.readBits(dcDiffLen);
+                    uint dcBuffer = readBits(dcDiffLen);
                     dcCoefPrev[ci] += decodeCoef(dcBuffer, dcDiffLen);
                 }
 
                 block[0] = dcCoefPrev[ci];
-
+        
                 // Read AC coefficients
                 {
                     uint i = 1;
                     bool eob = false;
                     while (!eob && i < 64)
                     {
-                        ubyte code;
-                        res = sbs.decodeByte(tableAC.huffmanTree, &code);
-                        if (!res[0]) return error(res[1]);
-
+                        ubyte code = decodeByte(tableAC.huffmanTree);
+            
                         if (code == 0x00) // EOB, all next values are zero
                             eob = true;
                         else if (code == 0xF0) // ZRL, next 16 values are zero
@@ -1020,7 +793,7 @@ Compound!(SuperImage, string) decodeScanData(
                             int acCoef = 0;     
                             if (lo > 0)
                             {
-                                uint acBuffer = sbs.readBits(lo);
+                                uint acBuffer = readBits(lo);
                                 acCoef = decodeCoef(acBuffer, lo);
                             }
 
@@ -1044,7 +817,6 @@ Compound!(SuperImage, string) decodeScanData(
 
                 idct64(dctMatrix.ptr);
 
-                // Copy the matrix into corresponding channel
                 int* outMatrixPtr;
                 if (ci == 0)
                     outMatrixPtr = y_matrix[by * hblocks + bx].ptr;
@@ -1053,7 +825,7 @@ Compound!(SuperImage, string) decodeScanData(
                 else if (ci == 2)
                     outMatrixPtr = cr_matrix.ptr;
                 else
-                    return error("loadJPEG error: illegal component index");
+                    throw new Exception("Illegal component index");
 
                 for(uint i = 0; i < 64; i++)
                     outMatrixPtr[i] = dctMatrix[i];
@@ -1062,7 +834,7 @@ Compound!(SuperImage, string) decodeScanData(
 
         // Convert MCU from YCbCr to RGB
         // TODO: support other subsampling types
-
+        
         foreach(y; 0..16) // Pixel coordinates in MCU
         foreach(x; 0..16)
         {
@@ -1099,11 +871,6 @@ Compound!(SuperImage, string) decodeScanData(
         }
     }
 
-    version(JPEGDebug)
-    {
-        writefln("Bytes read: %s", sbs.bytesRead);
-    }
-
-    return compound(img, "");
+    return img;
 }
 
