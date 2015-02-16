@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014 Timur Gafarov, Martin Cejp
+Copyright (c) 2014-2015 Timur Gafarov, Martin Cejp
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -57,9 +57,6 @@ void saveImage(SuperImage img, string filename)
         case ".png", ".PNG":
             img.savePNG(filename);
             break;
-        case ".tga", ".TGA":
-            img.saveTGA(filename);
-            break;
         default:
             assert(0, "I/O error: unsupported image format or illegal extension");
     }
@@ -71,7 +68,7 @@ SuperImage loadImage(string filename)
     {
         case ".bmp", ".BMP":
             return loadBMP(filename);
-        case ".jpg", ".JPG", ".jpeg":
+        case ".jpg", ".JPG", ".jpeg", ".JPEG":
             return loadJPEG(filename);
         case ".png", ".PNG":
             return loadPNG(filename);

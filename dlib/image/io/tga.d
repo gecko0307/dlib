@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014 Timur Gafarov 
+Copyright (c) 2014-2015 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -34,11 +34,13 @@ private
     import std.file;
     import std.conv;
 
+    import dlib.core.memory;
+    import dlib.core.stream;
+    import dlib.core.compound;
     import dlib.image.color;
     import dlib.image.image;
     import dlib.image.io.io;
     import dlib.image.io.utils;
-    import dlib.core.stream;
     import dlib.filesystem.local;
 }
 
@@ -69,6 +71,10 @@ class TGALoadException: ImageLoadException
     }
 }
 
+/*
+ * Load PNG from file using local FileSystem.
+ * Causes GC allocation
+ */
 SuperImage loadTGA(string filename)
 {
     InputStream input = openForInput(filename);
@@ -87,13 +93,43 @@ SuperImage loadTGA(string filename)
     }
 }
 
-SuperImage loadTGA(InputStream input)
+/*
+ * Load TGA from stream using default image factory.
+ * Causes GC allocation
+ */
+SuperImage loadTGA(InputStream istrm)
 {
-    SuperImage img;
+    Compound!(SuperImage, string) res = 
+        loadTGA(istrm, defaultImageFactory);
+    if (res[0] is null)
+        throw new TGALoadException(res[1]);
+    else
+        return res[0];
+}
+
+/*
+ * Load TGA from stream using specified image factory.
+ * GC-free
+ */
+Compound!(SuperImage, string) loadTGA(
+    InputStream istrm, 
+    SuperImageFactory imgFac)
+{
+    SuperImage img = null;
+
+    Compound!(SuperImage, string) error(string errorMsg)
+    {
+        if (img)
+        {
+            img.free();
+            img = null;
+        }
+        return compound(img, errorMsg);
+    }
 
     TGAHeader readHeader()
     {
-        TGAHeader hdr = readStruct!TGAHeader(input);
+        TGAHeader hdr = readStruct!TGAHeader(istrm);
         version(TGADebug)
         {
             writefln("idLength = %s", hdr.idLength);
@@ -126,8 +162,8 @@ SuperImage loadTGA(InputStream input)
     SuperImage readRawRGB(ref TGAHeader hdr)
     {
         uint channels = hdr.bpp / 8;
-        auto res = image(hdr.width, hdr.height, channels);
-        input.fillArray(res.data);
+        SuperImage res = imgFac.createImage(hdr.width, hdr.height, channels, 8); 
+        istrm.fillArray(res.data);
         return res;
     }
 
@@ -135,7 +171,7 @@ SuperImage loadTGA(InputStream input)
     {
         uint channels = hdr.bpp / 8;
         uint imageSize = hdr.width * hdr.height * channels;
-        auto res = image(hdr.width, hdr.height, channels);
+        SuperImage res = imgFac.createImage(hdr.width, hdr.height, channels, 8); 
 
         // Calculate offset to image data
         uint dataOffset = 18 + hdr.idLength;
@@ -145,8 +181,8 @@ SuperImage loadTGA(InputStream input)
             dataOffset += 768; 
 
         // Read compressed data
-        ubyte[] data = new ubyte[cast(uint)input.size - dataOffset];
-        input.fillArray(data);
+        ubyte[] data = New!(ubyte[])(cast(uint)istrm.size - dataOffset); 
+        istrm.fillArray(data);
 
         uint ii = 0;
         uint i = 0;
@@ -188,26 +224,28 @@ SuperImage loadTGA(InputStream input)
             }
         }
 
+        Delete(data);
+
         return res;
     }
 
     auto hdr = readHeader();
 
-    string id;
     if (hdr.idLength)
     {
-        auto chars = new char[hdr.idLength];
-        input.fillArray(chars);
-        id = chars.to!string;
+        char[] id = New!(char[])(hdr.idLength);
+        istrm.fillArray(id);
 
         version(TGADebug)
         {
             writefln("id = %s", id);
         }
+
+        Delete(id);
     }
 
     if (hdr.encoding != 2 && hdr.encoding != 10)
-        throw new TGALoadException("TGA error: only RGB images are supported by decoder");
+        error("loadTGA error: only RGB images are supported");
 
     if (hdr.encoding == 2)
     {
@@ -220,12 +258,7 @@ SuperImage loadTGA(InputStream input)
 
     img.swapRGB();
 
-    return img;
-}
-
-void saveTGA(SuperImage img, string filename)
-{
-    assert(0, "Saving to TGA is not yet implemented");   
+    return compound(img, "");
 }
 
 void swapRGB(SuperImage img)
