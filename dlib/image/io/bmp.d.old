@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2015 Timur Gafarov 
+Copyright (c) 2014 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -31,13 +31,13 @@ module dlib.image.io.bmp;
 private
 {
     import std.stdio;
-    import dlib.core.stream;
-    import dlib.core.memory;
-    import dlib.core.compound;
+    import core.stdc.stdio;
+
     import dlib.image.image;
     import dlib.image.color;
     import dlib.image.io.io;
     import dlib.image.io.utils;
+    import dlib.core.stream;
     import dlib.filesystem.local;
 }
 
@@ -109,6 +109,18 @@ enum RLE
     Delta        = 2
 }
 
+int getPos(File* f)
+{
+    int pos;
+    fgetpos(f.getFP, &pos);
+    return pos;
+}
+
+void setPos(File* f, int pos)
+{
+    fsetpos(f.getFP, &pos);
+}
+
 class BMPLoadException: ImageLoadException
 {
     this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null)
@@ -117,10 +129,6 @@ class BMPLoadException: ImageLoadException
     }
 }
 
-/*
- * Load BMP from file using local FileSystem.
- * Causes GC allocation
- */
 SuperImage loadBMP(string filename)
 {
     InputStream input = openForInput(filename);
@@ -139,29 +147,9 @@ SuperImage loadBMP(string filename)
     }
 }
 
-/*
- * Load BMP from stream using default image factory.
- * Causes GC allocation
- */
-SuperImage loadBMP(InputStream istrm)
+SuperImage loadBMP(InputStream input)
 {
-    Compound!(SuperImage, string) res = 
-        loadBMP(istrm, defaultImageFactory);
-    if (res[0] is null)
-        throw new BMPLoadException(res[1]);
-    else
-        return res[0];
-}
-
-/*
- * Load BMP from stream using specified image factory.
- * GC-free
- */
-Compound!(SuperImage, string) loadBMP(
-    InputStream istrm, 
-    SuperImageFactory imgFac)
-{
-    SuperImage img = null;
+    SuperImage img;
 
     BMPFileHeader bmpfh;
     BMPInfoHeader bmpih;
@@ -175,21 +163,9 @@ Compound!(SuperImage, string) loadBMP(
     ubyte[] colormap;
     int colormapSize;
 
-    Compound!(SuperImage, string) error(string errorMsg)
-    {
-        if (img)
-        {
-            img.free();
-            img = null;
-        }
-        if (colormap.length)
-            Delete(colormap);
-        return compound(img, errorMsg);
-    }
+    bmpfh = readStruct!BMPFileHeader(input);
 
-    bmpfh = readStruct!BMPFileHeader(istrm);
-
-    auto bmphPos = istrm.position;
+    auto bmphPos = input.position;
 
     version(BMPDebug)
     { 
@@ -202,12 +178,12 @@ Compound!(SuperImage, string) loadBMP(
     }
 
     if (bmpfh.type != BMPMagic)
-        return error("loadBMP error: input data is not BMP");
+        throw new BMPLoadException("BMP error: input data is not BMP");
 
     uint numChannels = 3;
     uint width, height;
 
-    bmpih = readStruct!BMPInfoHeader(istrm);
+    bmpih = readStruct!BMPInfoHeader(input);
 
     version(BMPDebug)
     { 
@@ -233,8 +209,8 @@ Compound!(SuperImage, string) loadBMP(
          */
 
         // We must go back to read bitmap core header
-        istrm.position = bmphPos;
-        bmpch = readStruct!BMPCoreHeader(istrm);
+        input.position = bmphPos;
+        bmpch = readStruct!BMPCoreHeader(input);
 
         osType = BMPOSType.OS2;
         compression = BMPCompressionType.RGB;
@@ -279,26 +255,26 @@ Compound!(SuperImage, string) loadBMP(
     }
 
     if (compression != BMPCompressionType.RGB)
-        return error("loadBMP error: only RGB images are supported");
+        throw new BMPLoadException("BMP error: only RGB images are supported by decoder");
 
     if (bitsPerPixel != 24)
-        return error("loadBMP error: unsupported color depth");
+        throw new BMPLoadException("BMP error: unsupported color depth");
 
     // Create image
     uint channels = bmpih.bitsPerPixel / 8;
-    img = imgFac.createImage(width, height, channels, 8);
+    img = image(width, height, channels);
 
     // Look for palette data if present
     if (bitsPerPixel <= 8)
     {
         colormapSize = (1 << bitsPerPixel) * ((osType == BMPOSType.OS2)? 3 : 4);
-        colormap = New!(ubyte[])(colormapSize);
+        colormap = new ubyte[colormapSize];
 
-        istrm.fillArray(colormap);
+        input.fillArray(colormap);
     }
 
     // Go to begining of pixel data
-    istrm.position = bmpfh.offset;
+    input.position = bmpfh.offset;
 
     // Read image data
     switch (compression)
@@ -308,64 +284,65 @@ Compound!(SuperImage, string) loadBMP(
             {
                 case 1:
                     // TODO
-                    return error("loadBMP error: 1-bit images are not supported");
+                    break;
 
                 case 4:
                     // TODO
-                    return error("loadBMP error: 4-bit images are not supported");
+                    break;
 
                 case 8:
                     // TODO
-                    return error("loadBMP error: 8-bit images are not supported");
+                    break;
 
                 case 24:
-                    read24bitBMP(istrm, img, padding);
+                    read24bitBMP(input, img, padding);
                     break;
 
                 case 32:
                     // TODO
-                    return error("loadBMP error: 32-bit images are not supported");
+                    break;
 
                 default:
-                    return error("loadBMP error: unsupported number of bits per pixel");
                     break;
             }
             break;
 
         case BMPCompressionType.RLE8:
             // TODO
-            return error("loadBMP error: RLE8 compression is not supported");
+            break;
 
         case BMPCompressionType.RLE4:
             // TODO
-            return error("loadBMP error: RLE4 compression is not supported");
+            break;
 
         case BMPCompressionType.BitFields:
             // TODO
-            return error("loadBMP error: bitfields compression is not supported");
+            break;
 
         default:
-            return error("loadBMP error: unsupported bitmap compression type");
+            // Unsupported file types
+            throw new BMPLoadException("BMP error: unsupported bitmap compression type");
     }
 
-    if (colormap.length)
-        Delete(colormap);
-
-    return compound(img, "");
+    return img;
 }
 
-void read24bitBMP(InputStream istrm, SuperImage img, uint padding)
+void read24bitBMP(InputStream input, SuperImage img, uint padding)
 {
     foreach(y; 0..img.height)
     {
         foreach(x; 0..img.width)
         {
             ubyte[3] bgr;
-            istrm.fillArray(bgr);
+            input.fillArray(bgr);
             img[x, y] = Color4f(ColorRGBA(bgr[2], bgr[1], bgr[0]));
         }
 
-        istrm.seek(padding);
+        input.seek(padding);
     }
 }
 
+void saveBMP(SuperImage img, string filename)
+{
+    assert(0, "Saving to BMP is not yet implemented");   
+}

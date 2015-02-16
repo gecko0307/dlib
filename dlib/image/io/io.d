@@ -51,14 +51,11 @@ void saveImage(SuperImage img, string filename)
 {
     switch(filename.extension)
     {
-        case ".bmp", ".BMP":
-            img.saveBMP(filename);
-            break;
         case ".png", ".PNG":
             img.savePNG(filename);
             break;
         default:
-            assert(0, "I/O error: unsupported image format or illegal extension");
+            assert(0, "Image I/O error: unsupported image format or illegal extension");
     }
 }
 
@@ -75,7 +72,7 @@ SuperImage loadImage(string filename)
         case ".tga", ".TGA":
             return loadTGA(filename);
         default:
-            assert(0, "I/O error: unsupported image format or illegal extension");
+            assert(0, "Image I/O error: unsupported image format or illegal extension");
     }
 }
 
