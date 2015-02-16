@@ -82,6 +82,8 @@ struct HuffmanTreeNode
     }
     
 /*
+    // TODO: implement this without GC
+
     void getCodes(ref string[ubyte] table, string code = "")
     {
         if (isLeaf())
@@ -108,5 +110,196 @@ struct HuffmanTreeNode
     } 
 */
 }
+
+/*
+// TODO: implement this without GC
+
+HuffmanTreeNode* buildHuffmanTree(ubyte[] data)
+{
+    // Count frequencies
+    uint[ubyte] freqs;
+    foreach(s; data)
+    {
+        if (s in freqs)
+            freqs[s] += 1;
+        else
+            freqs[s] = 1;
+    }
+    
+    // Sort in descending order
+    ubyte[] symbols = freqs.keys;
+    sort!((a, b) => freqs[a] > freqs[b])(symbols);
+    
+    // Create node list
+    auto nodeList = new HuffmanTreeNode*[symbols.length];
+    foreach(i, s; symbols)
+        nodeList[i] = new HuffmanTreeNode(null, null, s, freqs[s], false);
+    
+    // Build tree
+    while (nodeList.length > 1)
+    {
+        // Pop two nodes with minimal frequencies
+        auto n1 = nodeList[$-1];
+        auto n2 = nodeList[$-2];
+        nodeList.popBack;
+        nodeList.popBack;
+        
+        // Insert a new parent node
+        uint fsum = n1.freq + n2.freq;
+        auto parent = new HuffmanTreeNode(n1, n2, 0, fsum, false);
+        nodeList ~= parent;
+        sort!((a, b) => a.freq > b.freq)(nodeList);
+    }
+
+    auto root = nodeList[0];
+
+    return root;
+}
+
+void packHuffmanTree(HuffmanTreeNode* node, BitWriter* bw)
+{
+    if (node.isLeaf)
+    {
+        bw.writeBit(true);
+        bw.writeByte(node.ch);
+    }
+    else
+    {
+        bw.writeBit(false);
+        packHuffmanTree(node.left, bw);
+        packHuffmanTree(node.right, bw);
+    }
+}
+
+HuffmanTreeNode* unpackHuffmanTree(BitReader* br)
+{
+    if (!br.end)
+    {
+        bool bit = br.readBit();
+        if (bit)
+        {
+            byte ch = br.readByte();
+            return new HuffmanTreeNode(null, null, ch, 0, false);
+        }
+        else
+        {
+            HuffmanTreeNode* left = unpackHuffmanTree(br);
+            HuffmanTreeNode* right = unpackHuffmanTree(br);
+            return new HuffmanTreeNode(left, right, 0, 0, false);
+        }
+    }
+    else return null;
+}
+
+ubyte[] encodeHuffman(ubyte[] data, out HuffmanTreeNode* tree)
+{   
+    // Build Huffman tree
+    tree = buildHuffmanTree(data);
+    
+    // Generate binary codes
+    string[ubyte] huffTable;
+    tree.getCodes(huffTable);
+    
+    // Encode data
+    string bitStr;
+    foreach(s; data)
+        bitStr ~= huffTable[s];
+
+    // Pack bits to byte array
+    uint octetsLen = 0;
+    ubyte lastBits = 0;
+    if (bitStr.length == 8)
+    {
+        octetsLen = 1;
+    }
+    else if (bitStr.length > 8)
+    {
+        octetsLen = cast(uint)bitStr.length / 8;
+        lastBits = cast(ubyte)(bitStr.length % 8);
+        if (lastBits != 0)
+            octetsLen++;
+    }
+    else
+    {
+        octetsLen = 1;
+        lastBits = cast(ubyte)(bitStr.length);
+    }
+    
+    octetsLen++;
+    auto octets = new ubyte[octetsLen];
+    octets[0] = lastBits;
+    
+    uint bitPos = 0;  
+    uint bytePos = 1;
+    
+    foreach(bit; bitStr)
+    {
+        bool state;
+        if (bit == '0')
+            state = false;
+        else
+            state = true;
+            
+        octets[bytePos] = setBit(octets[bytePos], bitPos, state);
+        bitPos++;
+        
+        if (bitPos == 8)
+        {
+            bitPos = 0;
+            bytePos++;
+        }
+    }
+    
+    return octets;
+}
+
+ubyte[] decodeHuffman(ubyte[] data, HuffmanTreeNode* tree)
+{
+    // Generate binary codes
+    string[ubyte] huffTable;
+    tree.getCodes(huffTable);
+    
+    //Unpack bits from array
+    ubyte[] result;
+    bool appendNext = true;
+    string code = "";
+    ubyte lastBits = data[0];
+    foreach(i, b; data[1..$])
+    {
+        uint len;
+        if ((lastBits != 0) && (i == data.length-1))
+            len = lastBits;
+        else
+            len = 8;
+
+        foreach(bp; 0..len)
+        {
+            char bitChr = getBit(b, bp)? '1':'0';
+            if (appendNext)
+            {
+                code ~= bitChr;
+                foreach(key, val; huffTable)
+                {
+                    if (code == val)
+                    {
+                        result ~= key;
+                        appendNext = false;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                code = "";
+                code ~= bitChr;
+                appendNext = true;
+            }
+        }
+    }
+    
+    return result;
+}
+
+*/
 
 
