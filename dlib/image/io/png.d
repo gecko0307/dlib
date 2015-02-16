@@ -171,7 +171,7 @@ Compound!(SuperImage, string) loadPNG(
     {
         if (img)
         {
-            Delete(img);
+            img.free();
             img = null;
         }
         return compound(img, errorMsg);
