@@ -245,7 +245,7 @@ Compound!(SuperImage, string) loadTGA(
     }
 
     if (hdr.encoding != 2 && hdr.encoding != 10)
-        error("loadTGA error: only RGB images are supported");
+        return error("loadTGA error: only RGB images are supported");
 
     if (hdr.encoding == 2)
     {
