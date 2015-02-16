@@ -67,7 +67,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
 
     void shiftRight()
     {
-        append(0);
+        append(T.init);
 
         for(uint i = pos-1; i > 0; i--)
         {
@@ -82,7 +82,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
             if (n + i < pos)
                 storage[i] = storage[n + i];
             else
-                storage[i] = 0;
+                storage[i] = T.init;
         }
     }
 
