@@ -40,9 +40,9 @@ private
     import dlib.core.compound;
     import dlib.filesystem.local;
     import dlib.math.utils;
+    import dlib.coding.zlib;
     import dlib.image.image;
     import dlib.image.io.io;
-    import dlib.image.io.zlib;
 }
 
 // uncomment this to see debug messages:
