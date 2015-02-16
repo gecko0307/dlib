@@ -1,7 +1,8 @@
 dlib
 ====
-dlib is a growing collection of native D language libraries useful for various higher-level projects - such as game engines, rendering pipelines and multimedia applications. 
-It is written in D2 and has no external dependencies aside D's standard library, Phobos.
+[![dlib-logo.png](/logo/dlib-logo.png)](/logo/dlib-logo.png)
+
+dlib is a growing collection of native D language libraries useful for various higher-level projects - such as game engines, rendering pipelines and multimedia applications. It is written in D2 and has no external dependencies aside D's standard library, Phobos.
 
 Currently dlib contains the following packages:
 
