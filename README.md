@@ -21,3 +21,7 @@ Currently dlib contains the following packages:
 * dlib.image - image processing (8 and 16-bits per channel, floating point operations, filtering, FFT, HDRI, graphics formats support including JPEG and PNG)
 
 * dlib.xml - lightweight XML parser (UTF-8)
+
+Documentation
+-------------
+Please, refer to [the wiki](https://github.com/gecko0307/dlib/wiki).
