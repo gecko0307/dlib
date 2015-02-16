@@ -171,18 +171,18 @@ unittest
     {
         int x = 100;
         int foo() { return 11; }
-    };
+    }
 
     struct Bar
     {
         int y = 99;
         int bar() { return 22; }
-    };
+    }
 
     struct TestObj
     {
         mixin Inherit!(Foo, Bar);
-    };
+    }
 
     TestObj obj;
 
