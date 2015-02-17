@@ -118,13 +118,13 @@ struct DynamicArray(T, size_t chunkSize = 32)
     void append(const(T)[] s)
     {
         foreach(c; s)
-            append(c);
+            append(cast(T)c);
     }
 
     void appendLeft(const(T)[] s)
     {
         foreach(c; s)
-            appendLeft(c);
+            appendLeft(cast(T)c);
     }
 
     auto opCatAssign(T c)
