@@ -19,12 +19,7 @@
         {
             "name": "library",
             "targetType": "library",
-            "sourcePaths": ["dlib"],
-            "excludedSourceFiles": [
-                "dlib/math/matrix2x2.d",
-                "dlib/math/matrix3x3.d",
-                "dlib/math/matrix4x4.d",
-            ]
+            "sourcePaths": ["dlib"]
         },
         {
             "name": "import",

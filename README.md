@@ -25,3 +25,8 @@ Currently dlib contains the following packages:
 Documentation
 -------------
 Please, refer to [the wiki](https://github.com/gecko0307/dlib/wiki).
+
+License
+-------
+Copyright (c) 2013-2014 Timur Gafarov, Martin Cejp, Andrey Penechko, Vadim Lopatin. Distributed under the Boost Software License, Version 1.0. (See accompanying file COPYING or at http://www.boost.org/LICENSE_1_0.txt)
+
