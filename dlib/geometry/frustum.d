@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014 Timur Gafarov 
+Copyright (c) 2014-2015 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,7 +26,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.geometry.frustum;
+module frustum;
 
 private
 {
@@ -65,36 +65,42 @@ struct Frustum
         leftPlane.c = mvp[11] + mvp[8];
         leftPlane.d = mvp[15] + mvp[12];
         leftPlane.normalize();
+        leftPlane.vectorof = -leftPlane.vectorof;
 
         rightPlane.a = mvp[3]  - mvp[0];
         rightPlane.b = mvp[7]  - mvp[4];
         rightPlane.c = mvp[11] - mvp[8];
         rightPlane.d = mvp[15] - mvp[12];
         rightPlane.normalize();
+        rightPlane.vectorof = -rightPlane.vectorof;
 
         bottomPlane.a = mvp[3]  + mvp[1];
         bottomPlane.b = mvp[7]  + mvp[5];
         bottomPlane.c = mvp[11] + mvp[9];
         bottomPlane.d = mvp[15] + mvp[13];
         bottomPlane.normalize();
+        bottomPlane.vectorof = -bottomPlane.vectorof;
 
         topPlane.a = mvp[3]  - mvp[1];
         topPlane.b = mvp[7]  - mvp[5];
         topPlane.c = mvp[11] - mvp[9];
         topPlane.d = mvp[15] - mvp[13];
         topPlane.normalize();
+        topPlane.vectorof = -topPlane.vectorof;
 
         farPlane.a = mvp[3]  - mvp[2];
         farPlane.b = mvp[7]  - mvp[6];
         farPlane.c = mvp[11] - mvp[10];
         farPlane.d = mvp[15] - mvp[14];
         farPlane.normalize();
+        farPlane.vectorof = -farPlane.vectorof;
 
         nearPlane.a = mvp[3]  + mvp[2];
         nearPlane.b = mvp[7]  + mvp[6];
         nearPlane.c = mvp[11] + mvp[10];
         nearPlane.d = mvp[15] + mvp[14];
         nearPlane.normalize();
+        nearPlane.vectorof = -nearPlane.vectorof;
     }
 
     bool containsPoint(Vector3f point, bool checkNearPlane = false)
@@ -106,47 +112,26 @@ struct Frustum
             if (i == 5 && !checkNearPlane)
                 break;
 
-            if (p.distance(point) >= 0.0f)
+            if (p.distance(point) <= 0.0f)
                 res++;
         }
 
         return (res == (checkNearPlane? 6 : 5));
     }
 
-    bool containsAABB(AABB aabb, bool checkNearPlane = false)
+    bool intersectsAABB(
+        AABB aabb, 
+        bool checkBoundariesOnly = false, 
+        bool checkNearPlane = true)
     {
-        Vector3f topFrontRight = aabb.center + Vector3f(+aabb.size.x, +aabb.size.y, +aabb.size.z);
-        Vector3f topFrontLeft  = aabb.center + Vector3f(-aabb.size.x, +aabb.size.y, +aabb.size.z);
-        Vector3f topBackRight  = aabb.center + Vector3f(+aabb.size.x, +aabb.size.y, -aabb.size.z);
-        Vector3f topBackLeft   = aabb.center + Vector3f(-aabb.size.x, +aabb.size.y, -aabb.size.z);
+        bool result = !checkBoundariesOnly; // Inside
 
-        Vector3f bottomFrontRight = aabb.center + Vector3f(+aabb.size.x, -aabb.size.y, +aabb.size.z);
-        Vector3f bottomFrontLeft  = aabb.center + Vector3f(-aabb.size.x, -aabb.size.y, +aabb.size.z);
-        Vector3f bottomBackRight  = aabb.center + Vector3f(+aabb.size.x, -aabb.size.y, -aabb.size.z);
-        Vector3f bottomBackLeft   = aabb.center + Vector3f(-aabb.size.x, -aabb.size.y, -aabb.size.z);
-
-        if (containsPoint(topFrontRight,    checkNearPlane)) return true;
-        if (containsPoint(topFrontLeft,     checkNearPlane)) return true;
-        if (containsPoint(topBackRight,     checkNearPlane)) return true;
-        if (containsPoint(topBackLeft,      checkNearPlane)) return true;
-
-        if (containsPoint(bottomFrontRight, checkNearPlane)) return true;
-        if (containsPoint(bottomFrontLeft,  checkNearPlane)) return true;
-        if (containsPoint(bottomBackRight,  checkNearPlane)) return true;
-        if (containsPoint(bottomBackLeft,   checkNearPlane)) return true;
-
-        return false;
-    }
-
-    bool intersectsAABB(AABB aabb)
-    {
-        bool result = true; // Inside
-
-        foreach (ref plane; planes)
+        foreach (i, ref plane; planes)
         {
-            float d = aabb.center.x * plane.normal.x + 
-                      aabb.center.y * plane.normal.y + 
-                      aabb.center.z * plane.normal.z;
+            if (i == 5 && !checkNearPlane)
+                break;
+        
+            float d = dot(aabb.center, -plane.normal);
 
             float r = aabb.size.x * abs(plane.normal.x) + 
                       aabb.size.y * abs(plane.normal.y) + 
@@ -155,12 +140,12 @@ struct Frustum
             float d_p_r = d + r;
             float d_m_r = d - r;
  
-            if (d_p_r < -plane.d)
+            if (d_p_r < plane.d)
             {
                 result = false; // Outside
                 break;
             }
-            else if(d_m_r < -plane.d)
+            else if(d_m_r < plane.d)
                 result = true; // Intersect
         }
 
