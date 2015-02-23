@@ -328,7 +328,6 @@ Compound!(SuperImage, string) loadBMP(
 
                 default:
                     return error("loadBMP error: unsupported number of bits per pixel");
-                    break;
             }
             break;
 
