@@ -50,16 +50,20 @@ struct Vector(T, int size)
 
    /* 
     * Vector constructor
-    * Supports initializing from vector of arbitrary length
+    * Supports initializing from vector of arbitrary length and type
     */
-    this (int size2)(Vector!(T, size2) v)
+    this (T2, int size2)(Vector!(T2, size2) v)
     {           
         if (v.arrayof.length >= size)
+        {
             foreach(i; 0..size)
-                arrayof[i] = v.arrayof[i];       
+                arrayof[i] = cast(T)v.arrayof[i];
+        }
         else
+        {
             foreach(i; 0..v.arrayof.length)
-                arrayof[i] = v.arrayof[i];
+                arrayof[i] = cast(T)v.arrayof[i];
+        }
     }
 
    /* 
@@ -68,11 +72,15 @@ struct Vector(T, int size)
     this (A)(A components) if (isArray!A && !isSomeString!A)
     {        
         if (components.length >= size)
+        {
             foreach(i; 0..size)
-                arrayof[i] = components[i];       
+                arrayof[i] = components[i];
+        }
         else
+        {
             foreach(i; 0..components.length)
                 arrayof[i] = components[i];
+        }
     }
 
    /* 
@@ -96,14 +104,18 @@ struct Vector(T, int size)
    /* 
     * Vector!(T,size) = Vector!(T,size2)
     */
-    void opAssign(int size2)(Vector!(T,size2) v)
+    void opAssign(T2, int size2)(Vector!(T2,size2) v)
     {           
         if (v.arrayof.length >= size)
+        {
             foreach(i; 0..size)
-                arrayof[i] = v.arrayof[i];       
+                arrayof[i] = cast(T)v.arrayof[i];
+        }
         else
+        {
             foreach(i; 0..v.arrayof.length)
-                arrayof[i] = v.arrayof[i];
+                arrayof[i] = cast(T)v.arrayof[i];
+        }
     }
 
    /* 
@@ -950,4 +962,8 @@ unittest
 
     auto xy = a[0..1];
     auto n = a[];
+    
+    vec3 v1 = vec3(2.0f, 0.0f, 1.0f);
+    ivec3 v2 = v1; 
+    assert(ivec3(v1) == ivec3(2, 0, 1));
 }
