@@ -142,8 +142,6 @@ struct Vector(T, int size)
     body
     {
         Vector!(T,size) res;
-
-        //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
             res.arrayof[i] = -arrayof[i]; 
         return res;
@@ -165,7 +163,6 @@ struct Vector(T, int size)
     body
     {
         Vector!(T,size) res;
-        //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
             res.arrayof[i] = cast(T)(arrayof[i] + v.arrayof[i]); 
         return res;
@@ -178,7 +175,6 @@ struct Vector(T, int size)
     body
     {
         Vector!(T,size) res;
-        //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
             res.arrayof[i] = cast(T)(arrayof[i] - v.arrayof[i]); 
         return res;
@@ -191,7 +187,6 @@ struct Vector(T, int size)
     body
     {
         Vector!(T,size) res;
-        //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
             res.arrayof[i] = cast(T)(arrayof[i] * v.arrayof[i]); 
         return res;
@@ -204,7 +199,6 @@ struct Vector(T, int size)
     body
     {
         Vector!(T,size) res;
-        //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
             res.arrayof[i] = cast(T)(arrayof[i] / v.arrayof[i]); 
         return res;
@@ -217,7 +211,6 @@ struct Vector(T, int size)
     body
     {
         Vector!(T,size) res;
-        //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
             res.arrayof[i] = cast(T)(arrayof[i] + t);
         return res;
@@ -230,7 +223,6 @@ struct Vector(T, int size)
     body
     {
         Vector!(T,size) res;
-        //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
             res.arrayof[i] = cast(T)(arrayof[i] - t);
         return res;
@@ -243,7 +235,6 @@ struct Vector(T, int size)
     body
     {
         Vector!(T,size) res;
-        //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
             res.arrayof[i] = cast(T)(arrayof[i] * t);
         return res;
@@ -256,7 +247,6 @@ struct Vector(T, int size)
     body
     {
         Vector!(T,size) res;
-        //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
             res.arrayof[i] = cast(T)(arrayof[i] * t);
         return res;
@@ -269,9 +259,20 @@ struct Vector(T, int size)
     body
     {
         Vector!(T,size) res;
-        //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
             res.arrayof[i] = cast(T)(arrayof[i] / t);
+        return res;
+    }
+    
+   /*
+    * Vector!(T,size) % T
+    */
+    Vector!(T,size) opBinary(string op, T2) (T2 t) const if (op == "%")
+    body
+    {
+        Vector!(T,size) res;
+        foreach(i; RangeTuple!(0, size))
+            res.arrayof[i] = cast(T)(arrayof[i] % t);
         return res;
     }
 
@@ -368,6 +369,18 @@ struct Vector(T, int size)
         //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
             arrayof[i] /= t;
+        return this;
+    }
+    
+   /*
+    * Vector!(T,size) %= T
+    */
+    Vector!(T,size) opModAssign(T2) (T2 t) // const if (op == "%=")
+    body
+    {
+        //foreach(i; 0..size)
+        foreach(i; RangeTuple!(0, size))
+            arrayof[i] %= t;
         return this;
     }
 
@@ -986,4 +999,8 @@ unittest
     
     vec3 v3 = [0, 2, 3.5];
     assert(v3 == vec3(0.0f, 2.0f, 3.5f));
+    
+    ivec3 v4 = [7, 8, 3];
+    v4 %= 2;
+    assert(v4 == ivec3(1, 0, 1));
 }
