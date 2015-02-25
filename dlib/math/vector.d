@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2014 Timur Gafarov 
+Copyright (c) 2011-2015 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -69,17 +69,34 @@ struct Vector(T, int size)
    /* 
     * Array constructor
     */
-    this (A)(A components) if (isArray!A && !isSomeString!A)
+    this (A)(A components) if (isDynamicArray!A && !isSomeString!A)
     {        
         if (components.length >= size)
         {
             foreach(i; 0..size)
-                arrayof[i] = components[i];
+                arrayof[i] = cast(T)components[i];
         }
         else
         {
             foreach(i; 0..components.length)
-                arrayof[i] = components[i];
+                arrayof[i] = cast(T)components[i];
+        }
+    }
+
+   /* 
+    * Static array constructor
+    */
+    this (T2, size_t arrSize)(T2[arrSize] components)
+    {        
+        if (components.length >= size)
+        {
+            foreach(i; 0..size)
+                arrayof[i] = cast(T)components[i];
+        }
+        else
+        {
+            foreach(i; 0..components.length)
+                arrayof[i] = cast(T)components[i];
         }
     }
 
@@ -90,7 +107,7 @@ struct Vector(T, int size)
     {
         foreach(i, v; components)
             static if (i < size)
-                arrayof[i] = v;
+                arrayof[i] = cast(T)v;
     }
 
    /* 
@@ -966,4 +983,7 @@ unittest
     vec3 v1 = vec3(2.0f, 0.0f, 1.0f);
     ivec3 v2 = v1; 
     assert(ivec3(v1) == ivec3(2, 0, 1));
+    
+    vec3 v3 = [0, 2, 3.5];
+    assert(v3 == vec3(0.0f, 2.0f, 3.5f));
 }
