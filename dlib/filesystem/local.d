@@ -336,6 +336,7 @@ bool remove(string path, bool recursive) {
 
 unittest {
     import std.regex;
+    import std.algorithm;
     
     void listImagesInDirectory(ReadOnlyFileSystem fs, string baseDir = "") {
         foreach (entry; dlib.filesystem.filesystem.findFiles(fs, baseDir, true)
