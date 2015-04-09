@@ -32,6 +32,7 @@ version (Windows) {
 import dlib.filesystem.filesystem;
 import dlib.filesystem.windows.common;
 import dlib.core.stream;
+import dlib.core.memory;
 
 class WindowsFile : IOStream {
     HANDLE handle;
@@ -118,6 +119,17 @@ class WindowsFile : IOStream {
     }
     
     override void flush() {
-    }    
+    }
+
+    void free()
+    {
+        if (manuallyAllocated)
+        {
+            close();
+            Delete(this);
+        }
+    }
+
+    mixin ManualModeImpl;
 }
 }

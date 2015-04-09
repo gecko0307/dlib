@@ -32,6 +32,8 @@ import std.bitmanip;
 import std.stdint;
 import std.conv;
 
+import dlib.core.memory;
+
 alias StreamPos = uint64_t;
 alias StreamSize = uint64_t;
 alias StreamOffset = int64_t;
@@ -45,7 +47,7 @@ class SeekException : Exception
 }
 
 /// Seekable
-interface Seekable
+interface Seekable: ManuallyAllocatable
 {
     // Won't throw on invalid position, may throw on a more serious error.
     
@@ -249,6 +251,9 @@ class ArrayStream : InputStream {
     override StreamSize size() {
         return size;
     }
+
+    mixin ManualModeImpl;
+    mixin FreeImpl;
     
     private:
     size_t pos = 0, size_ = 0;

@@ -30,6 +30,7 @@ module dlib.filesystem.posix.file;
 
 version (Posix) {
 import dlib.core.stream;
+import dlib.core.memory;
 import dlib.filesystem.filesystem;
 import dlib.filesystem.posix.common;
 
@@ -102,5 +103,16 @@ class PosixFile : IOStream {
     
     override void flush() {
     }
+
+    void free()
+    {
+        if (manuallyAllocated)
+        {
+            close();
+            Delete(this);
+        }
+    }
+
+    mixin ManualModeImpl;
 }
 }
