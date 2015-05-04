@@ -42,6 +42,7 @@ struct Triangle
     Vector3f[3] n;
     Vector2f[3] t1;
     Vector2f[3] t2;
+    Vector3f[3] tg;
 	
     Vector3f[3] edges;
     Vector3f normal;
