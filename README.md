@@ -22,6 +22,8 @@ Currently dlib contains the following packages:
 
 * dlib.xml - lightweight XML parser (UTF-8)
 
+* dlib.coding - various data compression and coding algorithms
+
 Documentation
 -------------
 Please, refer to [the wiki](https://github.com/gecko0307/dlib/wiki).

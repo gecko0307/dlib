@@ -26,12 +26,17 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.coding;
+module dlib;
 
 public
 {
-    import dlib.coding.huffman;
-    import dlib.coding.zlib;
-    import dlib.coding.varint;
+    import dlib.coding;
+    import dlib.container;
+    import dlib.core;
+    import dlib.filesystem;
+    import dlib.functional;
+    import dlib.geometry;
+    import dlib.image;
+    import dlib.math;
+    import dlib.xml;
 }
-
