@@ -517,6 +517,8 @@ Quaternion!(T) rotation(T)(Vector!(T,3) rotaxis, T theta)
     return res;
 }
 
+alias rotation rotationQuaternion;
+
 /*
  * Setup a quaternion to represent rotation 
  * between two unit-length vectors
