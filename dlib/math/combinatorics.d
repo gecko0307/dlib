@@ -9,6 +9,7 @@ module dlib.math.combinatorics;
 
 import std.functional : memoize;
 import std.algorithm : iota, reduce, map;
+import std.bigint;
 
 /// Returns the factorial of n
 ulong factorial(ulong n) @safe nothrow {
@@ -61,6 +62,19 @@ ulong doubleFactorial(ulong n) {
     alias mDoubleFac = memoize!doubleFactorial;
 
     return n * doubleFactorial(n - 2);
+}
+
+/// Computes the hyperfactorial of n: 1^1 * 2^2 * 3^3 * ... n^n
+BigInt hyperFactorial(ulong n) {
+    if(n <= 1) {
+        return BigInt("1");
+    }
+
+    alias mhfac = memoize!hyperFactorial;
+
+    return BigInt(n ^^ n) * hyperFactorial(n - 1); 
+
+
 }
 
 /++
@@ -119,5 +133,4 @@ unittest {
     auto lucasRange = iota(0, 12).map!(k => lucas(k)).array;
     
     assert(lucasRange == [2, 1, 3, 4, 7, 11, 18, 29, 47, 76, 123, 199]); 
-
 }
