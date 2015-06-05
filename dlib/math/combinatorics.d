@@ -8,7 +8,8 @@
 module dlib.math.combinatorics;
 
 import std.functional : memoize;
-import std.algorithm : iota, reduce, map;
+import std.algorithm : reduce, map;
+import std.range : iota;
 import std.bigint;
 
 /// Returns the factorial of n
