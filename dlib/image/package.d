@@ -39,6 +39,7 @@ public
     import dlib.image.image;
     import dlib.image.parallel;
     import dlib.image.signal2d;
+    import dlib.image.unmanaged;
 
     import dlib.image.filters.boxblur;
     import dlib.image.filters.chromakey;
