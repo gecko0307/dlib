@@ -32,6 +32,7 @@ public
 {
     import dlib.math.affine;
     import dlib.math.complex;
+    import dlib.math.combinatorics;
     import dlib.math.decomposition;
     import dlib.math.diff;
     import dlib.math.dual;
@@ -42,6 +43,7 @@ public
     import dlib.math.linsolve;
     import dlib.math.matrix;
     import dlib.math.quaternion;
+    import dlib.math.sse;
     import dlib.math.utils;
     import dlib.math.vector;
 }
