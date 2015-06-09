@@ -190,6 +190,17 @@ struct DynamicArray(T, size_t chunkSize = 32)
         return storage[0..pos];
     }
 
+    T opIndex(size_t index)
+    {
+        return data[index];
+    }
+
+    T opIndexAssign(T t, size_t index)
+    {
+        data[index] = t;
+        return t;
+    }
+
     void free()
     {
         if (dynamicStorage.length)
