@@ -112,7 +112,7 @@ body
 Vector!(T,3) right(T) (Matrix!(T,4) m)
 body
 {
-    return Vector!(T,3)(m.a11, m.a21, m.a31);
+    return Vector!(T,3)(m.a11, m.a12, m.a13);
 }
 
 /*
@@ -121,7 +121,16 @@ body
 Vector!(T,3) up(T) (Matrix!(T,4) m)
 body
 {
-    return Vector!(T,3)(m.a12, m.a22, m.a32);
+    return Vector!(T,3)(m.a21, m.a22, m.a23);
+}
+
+/*
+ * Backward vector of the matrix
+ */
+Vector!(T,3) backward(T) (Matrix!(T,4) m)
+body
+{
+    return Vector!(T,3)(m.a31, m.a32, m.a33);
 }
 
 /*
@@ -130,7 +139,7 @@ body
 Vector!(T,3) forward(T) (Matrix!(T,4) m)
 body
 {
-    return Vector!(T,3)(m.a13, m.a23, m.a33);
+    return -backward(m);
 }
 
 /*
@@ -166,21 +175,21 @@ body
     switch (rotaxis)
     {
         case Axis.x:
-            res.a11 = 1.0; res.a12 = 0.0; res.a13 = 0.0;
-            res.a21 = 0.0; res.a22 = c;   res.a23 =  s;
-            res.a31 = 0.0; res.a32 = -s;  res.a33 =  c;
+            res.a11 = 1.0; res.a21 = 0.0; res.a31 = 0.0;
+            res.a12 = 0.0; res.a22 = c;   res.a32 =  s;
+            res.a13 = 0.0; res.a23 = -s;  res.a33 =  c;
             break;
 
         case Axis.y:
-            res.a11 = c;   res.a12 = 0.0; res.a13 = -s;
-            res.a21 = 0.0; res.a22 = 1.0; res.a23 = 0.0;
-            res.a31 = s;   res.a32 = 0.0; res.a33 = c;
+            res.a11 = c;   res.a21 = 0.0; res.a31 = -s;
+            res.a12 = 0.0; res.a22 = 1.0; res.a32 = 0.0;
+            res.a13 = s;   res.a23 = 0.0; res.a33 = c;
             break;
 
         case Axis.z:
-            res.a11 = c;   res.a12 =  s;  res.a13 = 0.0;
-            res.a21 = -s;  res.a22 =  c;  res.a23 = 0.0;
-            res.a31 = 0.0; res.a32 = 0.0; res.a33 = 1.0;
+            res.a11 = c;   res.a21 =  s;  res.a31 = 0.0;
+            res.a12 = -s;  res.a22 =  c;  res.a32 = 0.0;
+            res.a13 = 0.0; res.a23 = 0.0; res.a33 = 1.0;
             break;
 
         default:
