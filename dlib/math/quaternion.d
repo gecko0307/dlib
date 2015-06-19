@@ -114,9 +114,9 @@ struct Quaternion(T)
     {
         return Quaternion!(T)
         (
-            (x * q.w) + (w * q.x) + (y * q.z) - (z * q.y),
-            (y * q.w) + (w * q.y) + (z * q.x) - (x * q.z),
-            (z * q.w) + (w * q.z) + (x * q.y) - (y * q.x),
+            (w * q.x) + (x * q.w) + (y * q.z) - (z * q.y),
+            (w * q.y) - (x * q.z) + (y * q.w) + (z * q.x),
+            (w * q.z) + (x * q.y) - (y * q.x) + (z * q.w),
             (w * q.w) - (x * q.x) - (y * q.y) - (z * q.z)
         );
     }
