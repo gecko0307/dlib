@@ -50,13 +50,12 @@ import dlib.coding.huffman;
  *
  * Limitations:
  *  - Doesn't support progressive JPEG
- *  - Supports only 4:2:0 subsampling
  *  - Doesn't perform chroma interpolation
  *  - Doesn't read EXIF metadata
  */
 
 // Uncomment this to see debug messages
-version = JPEGDebug;
+//version = JPEGDebug;
 
 T readNumeric(T) (InputStream istrm, Endian endian = Endian.Little)
 if (is(T == ubyte))
@@ -192,6 +191,10 @@ void treeAddCode(HuffmanTreeNode* root, HuffmanCode code, ubyte value)
     bs.free();
 }
 
+/*
+ * JPEG-related data types
+ */
+
 enum JPEGMarkerType
 {
     Unknown,
@@ -245,8 +248,8 @@ struct JPEGImage
 
     struct SOF0Component
     {
-        ubyte hSubsamling;
-        ubyte vSubsamling;
+        ubyte hSubsampling;
+        ubyte vSubsampling;
         ubyte dqtTableId;
     }
 
@@ -518,7 +521,8 @@ Compound!(bool, string) readEXIF(JPEGImage* jpg, InputStream istrm)
     ubyte[] exif = New!(ubyte[])(exif_length-2);
     istrm.readBytes(exif.ptr, exif_length-2);
 
-    // TODO: interpret JFIF data
+    // TODO: interpret JFIF data and save it somewhere.
+    // Maybe add a generic ImageInfo object for this?
     Delete(exif);
 
     version(JPEGDebug)
@@ -541,7 +545,8 @@ Compound!(bool, string) readCOM(JPEGImage* jpg, InputStream istrm)
         writefln("COM length: %s", com_length);
     }    
 
-    // TODO: save COM data
+    // TODO: save COM data somewhere.
+    // Maybe add a generic ImageInfo object for this?
     Delete(com);
 
     return compound(true, "");
@@ -614,14 +619,14 @@ Compound!(bool, string) readSOF0(JPEGImage* jpg, InputStream istrm)
     {
         ubyte c_id = istrm.readNumeric!ubyte;
         ubyte bite = istrm.readNumeric!ubyte;
-        c.hSubsamling = bite.hiNibble;
-        c.vSubsamling = bite.loNibble;
+        c.hSubsampling = bite.hiNibble;
+        c.vSubsampling = bite.loNibble;
         c.dqtTableId = istrm.readNumeric!ubyte;
         version(JPEGDebug)
         {
             writefln("SOF0 component id: %s", c_id);
-            writefln("SOF0 component %s hsubsamling: %s", c_id, c.hSubsamling);
-            writefln("SOF0 component %s vsubsamling: %s", c_id, c.vSubsamling);
+            writefln("SOF0 component %s hsubsampling: %s", c_id, c.hSubsampling);
+            writefln("SOF0 component %s vsubsampling: %s", c_id, c.vSubsampling);
             writefln("SOF0 component %s table id: %s", c_id, c.dqtTableId);
         }
     }
@@ -691,27 +696,8 @@ Compound!(bool, string) readDHT(JPEGImage* jpg, InputStream istrm)
                 dht_code_lengths[treeLevel]--;
             }
         }
-    
-        version(JPEGDebug)
-        {
-/*
-            writeln("DHT Huffman table:\n", dht.huffmanTable);
-            auto huffmanSymbols = dht.huffmanTable.values;
-            huffmanSymbols.sort();
-            foreach(v; huffmanSymbols)
-                writef("%x ", v);
-            writef("\n");
-*/
-        }
 
         dht.huffmanTree = treeFromTable(dht.huffmanTable);
-
-        version(JPEGDebug)
-        {
-            //string[ubyte] table;
-            //dht.huffmanTree.getCodes(table);
-            //writeln(table);
-        }
     }
 
     return compound(true, "");
@@ -886,8 +872,20 @@ Compound!(SuperImage, string) decodeScanData(
 {
     SuperImage img = imgFac.createImage(jpg.sof0.width, jpg.sof0.height, 3, 8);
 
+    MCU mcu;
+    foreach(ci, ref c; jpg.sof0.components)
+    {
+        if (ci == 0)
+            mcu.createYBlocks(c.hSubsampling, c.vSubsampling);
+        else if (ci == 1)
+            mcu.createCbBlocks(c.hSubsampling, c.vSubsampling);
+        else if (ci == 2)
+            mcu.createCrBlocks(c.hSubsampling, c.vSubsampling);
+    }
+
     Compound!(SuperImage, string) error(string errorMsg)
     {
+        mcu.free();
         if (img)
         {
             img.free();
@@ -926,19 +924,15 @@ Compound!(SuperImage, string) decodeScanData(
         53, 60, 61, 54, 47, 55, 62, 63
     ];
 
-    // Store previous DC coefficients    
-    // TODO: support more channels?
     if (jpg.sos.componentsNum != 3)
     {
         return error(format(
                 "loadJPEG error: unsupported number of components: %s",
                 jpg.sos.componentsNum));
     }
-    int[3] dcCoefPrev;
 
-    int[8*8][4] y_matrix;
-    int[8*8] cb_matrix;
-    int[8*8] cr_matrix;
+    // Store previous DC coefficients
+    int[3] dcCoefPrev;
 
     if (jpg.dqt.length == 0)
         return error("loadJPEG error: no DQTs found");
@@ -951,9 +945,8 @@ Compound!(SuperImage, string) decodeScanData(
     sbs.istrm = istrm;
     sbs.readNextByte();
 
-    // TODO: support other subsampling types
-    uint numMCUsH = jpg.sof0.width / 16 + ((jpg.sof0.width % 16) > 0);
-    uint numMCUsV = jpg.sof0.height / 16 + ((jpg.sof0.height % 16) > 0);
+    uint numMCUsH = jpg.sof0.width / mcu.width + ((jpg.sof0.width % mcu.width) > 0);
+    uint numMCUsV = jpg.sof0.height / mcu.height + ((jpg.sof0.height % mcu.height) > 0);
 
     // Read MCUs
     foreach(mcuY; 0..numMCUsV)
@@ -971,22 +964,11 @@ Compound!(SuperImage, string) decodeScanData(
                 return error("loadJPEG error: illegal AC table index in MCU component");
 
             auto component = jpg.sof0.components[ci];
-            auto hblocks = component.hSubsamling;
-            auto vblocks = component.vSubsamling;
+            auto hblocks = component.hSubsampling;
+            auto vblocks = component.vSubsampling;
             auto dqtTableId = component.dqtTableId;
             if (dqtTableId >= jpg.dqt.length)
                 return error("loadJPEG error: illegal DQT table index in MCU component");
-
-            if (ci == 0) // Y channel
-            {
-                if (hblocks != 2 && vblocks != 2)
-                    return error("loadJPEG error: unsupported subsampling type, only 4:2:0 is supported");
-            }
-            else if (ci == 1 || ci == 2) // Cb or Cr channel
-            {
-                if (hblocks != 1 && vblocks != 1)
-                    return error("loadJPEG error: unsupported subsampling type, only 4:2:0 is supported");
-            }
 
             // Read 8x8 blocks
             foreach(by; 0..vblocks)
@@ -1071,11 +1053,11 @@ Compound!(SuperImage, string) decodeScanData(
                 // Copy the matrix into corresponding channel
                 int* outMatrixPtr;
                 if (ci == 0)
-                    outMatrixPtr = y_matrix[by * hblocks + bx].ptr;
+                    outMatrixPtr = mcu.yBlocks[by * hblocks + bx].ptr;
                 else if (ci == 1)
-                    outMatrixPtr = cb_matrix.ptr;
+                    outMatrixPtr = mcu.cbBlocks[by * hblocks + bx].ptr;
                 else if (ci == 2)
-                    outMatrixPtr = cr_matrix.ptr;
+                    outMatrixPtr = mcu.crBlocks[by * hblocks + bx].ptr;
                 else
                     return error("loadJPEG error: illegal component index");
 
@@ -1085,39 +1067,15 @@ Compound!(SuperImage, string) decodeScanData(
         }
 
         // Convert MCU from YCbCr to RGB
-        // TODO: support other subsampling types
-
-        foreach(y; 0..16) // Pixel coordinates in MCU
-        foreach(x; 0..16)
+        foreach(y; 0..mcu.height) // Pixel coordinates in MCU
+        foreach(x; 0..mcu.width)
         {
-            // Y block coordinates
-            uint bx = x / 8;
-            uint by = y / 8;
-            uint y_block = by * 2 + bx;
+            Color4f col = mcu.getPixel(x, y);
 
-            // Pixel coordinates in Y block
-            uint i = y - by * 8;
-            uint j = x - bx * 8;
-
-            // Pixel coordinates in Cb/Cr block
-            uint yy = y / 2;
-            uint xx = x / 2;
-
-            float Y = cast(float)y_matrix[y_block][i * 8 + j] + 128.0f;
-            float Cb = cast(float)cb_matrix[yy * 8 + xx];
-            float Cr = cast(float)cr_matrix[yy * 8 + xx];
-
-            Color4f col;
-            col.r = Y + 1.402f * Cr;
-            col.g = Y - 0.34414f * Cb - 0.71414f * Cr;
-            col.b = Y + 1.772f * Cb;
-
-            col = col / 255.0f;
-            col.a = 1.0f;
-            
             // Pixel coordinates in image
-            uint ix = mcuX * 16 + x;
-            uint iy = mcuY * 16 + y;
+            uint ix = mcuX * mcu.width + x;
+            uint iy = mcuY * mcu.height + y;
+
             if (ix < img.width && iy < img.height)
                 img[ix, img.height - 1 - iy] = col;
         }
@@ -1128,6 +1086,123 @@ Compound!(SuperImage, string) decodeScanData(
         writefln("Bytes read: %s", sbs.bytesRead);
     }
 
+    mcu.free();
+
     return compound(img, "");
 }
+
+/*
+ * MCU struct keeps a storage for one Minimal Code Unit
+ * and provides a generalized interface for decoding
+ * images with different subsampling modes.
+ * Decoder should read 8x8 blocks one by one for each channel
+ * and fill corresponding arrays in MCU.
+ */
+struct MCU
+{
+    uint width;
+    uint height;
+
+    alias int[8*8] Block;
+    Block[] yBlocks;
+    Block[] cbBlocks;
+    Block[] crBlocks;
+
+    uint ySamplesH, ySamplesV;
+    uint cbSamplesH, cbSamplesV;
+    uint crSamplesH, crSamplesV;
+
+    uint yWidth, yHeight;
+    uint cbWidth, cbHeight;
+    uint crWidth, crHeight;
+
+    void createYBlocks(uint hsubsampling, uint vsubsampling)
+    {
+        yBlocks = New!(Block[])(hsubsampling * vsubsampling);
+
+        width = hsubsampling * 8;
+        height = vsubsampling * 8;
+
+        ySamplesH = hsubsampling;
+        ySamplesV = vsubsampling;
+
+        yWidth = width / ySamplesH;
+        yHeight = height / ySamplesV;
+    }
+
+    void createCbBlocks(uint hsubsampling, uint vsubsampling)
+    {
+        cbBlocks = New!(Block[])(hsubsampling * vsubsampling);
+
+        cbSamplesH = hsubsampling;
+        cbSamplesV = vsubsampling;
+
+        cbWidth = width / cbSamplesH;
+        cbHeight = height / cbSamplesV;
+    }
+
+    void createCrBlocks(uint hsubsampling, uint vsubsampling)
+    {
+        crBlocks = New!(Block[])(hsubsampling * vsubsampling);
+
+        crSamplesH = hsubsampling;
+        crSamplesV = vsubsampling;
+
+        crWidth = width / crSamplesH;
+        crHeight = height / crSamplesV;
+    }
+
+    void free()
+    {
+        if (yBlocks.length) Delete(yBlocks);
+        if (cbBlocks.length) Delete(cbBlocks);
+        if (crBlocks.length) Delete(crBlocks);
+    }
+
+    Color4f getPixel(uint x, uint y) // coordinates relative to upper-left MCU corner 
+    {
+        // Y block coordinates
+        uint ybx = x / yWidth;
+        uint yby = y / yHeight;
+        uint ybi = yby * ySamplesH + ybx;
+
+        // Pixel coordinates in Y block
+        uint ybpx = x - ybx * yWidth;
+        uint ybpy = y - yby * yHeight;
+
+        // Cb block coordinates
+        uint cbx = x / cbWidth;
+        uint cby = y / cbHeight;
+        uint cbi = cby * cbSamplesH + cbx;
+
+        // Pixel coordinates in Cb block
+        uint cbpx = (x - cbx * cbWidth)  / ySamplesH;
+        uint cbpy = (y - cby * cbHeight) / ySamplesV;
+
+        // Cr block coordinates
+        uint crx = x / crWidth;
+        uint cry = y / crHeight;
+        uint cri = cry * crSamplesH + crx;
+
+        // Pixel coordinates in Cr block
+        uint crpx = (x - crx * crWidth)  / ySamplesH;
+        uint crpy = (y - cry * crHeight) / ySamplesV;
+
+        // Get color components
+        float Y  = cast(float)yBlocks [ybi][ybpy * 8 + ybpx] + 128.0f;
+        float Cb = cast(float)cbBlocks[cbi][cbpy * 8 + cbpx];
+        float Cr = cast(float)crBlocks[cri][crpy * 8 + crpx];
+
+        // Convert from YCbCr to RGB
+        Color4f col;
+        col.r = Y + 1.402f * Cr;
+        col.g = Y - 0.34414f * Cb - 0.71414f * Cr;
+        col.b = Y + 1.772f * Cb;
+        col = col / 255.0f;
+        col.a = 1.0f;
+
+        return col;
+    }
+}
+
 
