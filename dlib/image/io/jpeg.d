@@ -56,7 +56,7 @@ import dlib.coding.huffman;
  */
 
 // Uncomment this to see debug messages
-//version = JPEGDebug;
+version = JPEGDebug;
 
 T readNumeric(T) (InputStream istrm, Endian endian = Endian.Little)
 if (is(T == ubyte))
@@ -460,6 +460,10 @@ Compound!(bool, string) readMarker(
         case 0xFFDA:
             *mt = JPEGMarkerType.SOS;
             return readSOS(jpg, istrm);
+
+        case 0xFFFE:
+            *mt = JPEGMarkerType.COM;
+            return readCOM(jpg, istrm);
             
         default:
             *mt = JPEGMarkerType.Unknown;
@@ -521,6 +525,24 @@ Compound!(bool, string) readEXIF(JPEGImage* jpg, InputStream istrm)
     {
         writefln("APP1/EXIF length: %s", exif_length);
     }
+
+    return compound(true, "");
+}
+
+Compound!(bool, string) readCOM(JPEGImage* jpg, InputStream istrm)
+{
+    ushort com_length = istrm.readNumeric!ushort(Endian.Big);
+    ubyte[] com = New!(ubyte[])(com_length-2);
+    istrm.readBytes(com.ptr, com_length-2);
+
+    version(JPEGDebug)
+    {
+        writefln("COM string: \"%s\"", cast(string)com);
+        writefln("COM length: %s", com_length);
+    }    
+
+    // TODO: save COM data
+    Delete(com);
 
     return compound(true, "");
 }
@@ -952,6 +974,8 @@ Compound!(SuperImage, string) decodeScanData(
             auto hblocks = component.hSubsamling;
             auto vblocks = component.vSubsamling;
             auto dqtTableId = component.dqtTableId;
+            if (dqtTableId >= jpg.dqt.length)
+                return error("loadJPEG error: illegal DQT table index in MCU component");
 
             if (ci == 0) // Y channel
             {
