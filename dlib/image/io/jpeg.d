@@ -208,7 +208,7 @@ enum JPEGMarkerType
     SOS,
     RSTn,
     APP0,
-    APP1,
+    APPn,
     COM,
     EOI
 }
@@ -442,8 +442,64 @@ Compound!(bool, string) readMarker(
             return readJFIF(jpg, istrm);
 
         case 0xFFE1:
-            *mt = JPEGMarkerType.APP1;
-            return readEXIF(jpg, istrm);
+            *mt = JPEGMarkerType.APPn;
+            return readAPPn(jpg, istrm, 1);
+            
+        case 0xFFE2:
+            *mt = JPEGMarkerType.APPn;
+            return readAPPn(jpg, istrm, 2);
+            
+        case 0xFFE3:
+            *mt = JPEGMarkerType.APPn;
+            return readAPPn(jpg, istrm, 3);
+            
+        case 0xFFE4:
+            *mt = JPEGMarkerType.APPn;
+            return readAPPn(jpg, istrm, 4);
+            
+        case 0xFFE5:
+            *mt = JPEGMarkerType.APPn;
+            return readAPPn(jpg, istrm, 5);
+            
+        case 0xFFE6:
+            *mt = JPEGMarkerType.APPn;
+            return readAPPn(jpg, istrm, 6);
+            
+        case 0xFFE7:
+            *mt = JPEGMarkerType.APPn;
+            return readAPPn(jpg, istrm, 7);
+            
+        case 0xFFE8:
+            *mt = JPEGMarkerType.APPn;
+            return readAPPn(jpg, istrm, 8);
+            
+         case 0xFFE9:
+            *mt = JPEGMarkerType.APPn;
+            return readAPPn(jpg, istrm, 9);
+            
+         case 0xFFEA:
+            *mt = JPEGMarkerType.APPn;
+            return readAPPn(jpg, istrm, 10);
+            
+         case 0xFFEB:
+            *mt = JPEGMarkerType.APPn;
+            return readAPPn(jpg, istrm, 11);
+            
+         case 0xFFEC:
+            *mt = JPEGMarkerType.APPn;
+            return readAPPn(jpg, istrm, 12);
+            
+         case 0xFFED:
+            *mt = JPEGMarkerType.APPn;
+            return readAPPn(jpg, istrm, 13);
+            
+         case 0xFFEE:
+            *mt = JPEGMarkerType.APPn;
+            return readAPPn(jpg, istrm, 14);
+            
+         case 0xFFEF:
+            *mt = JPEGMarkerType.APPn;
+            return readAPPn(jpg, istrm, 15);
             
         case 0xFFDB:
             *mt = JPEGMarkerType.DQT;
@@ -515,19 +571,36 @@ Compound!(bool, string) readJFIF(JPEGImage* jpg, InputStream istrm)
     return compound(true, "");
 }
 
-Compound!(bool, string) readEXIF(JPEGImage* jpg, InputStream istrm)
+/*
+ * APP1 - EXIF, XMP, ExtendedXMP, QVCI, FLIR
+ * APP2 - ICC, FPXR, MPF, PreviewImage
+ * APP3 - Kodak Meta, Stim, PreviewImage
+ * APP4 - Scalado, FPXR, PreviewImage
+ * APP5 - RMETA, PreviewImage
+ * APP6 - EPPIM, NITF, HP TDHD
+ * APP7 - Pentax, Qualcomm
+ * APP8 - SPIFF
+ * APP9 - MediaJukebox
+ * APP10 - PhotoStudio comment
+ * APP11 - JPEG-HDR
+ * APP12 - PictureInfo, Ducky
+ * APP13 - Photoshop, Adobe CM
+ * APP14 - Adobe
+ * APP15 - GraphicConverter
+ */
+Compound!(bool, string) readAPPn(JPEGImage* jpg, InputStream istrm, uint n)
 {
-    ushort exif_length = istrm.readNumeric!ushort(Endian.Big);
-    ubyte[] exif = New!(ubyte[])(exif_length-2);
-    istrm.readBytes(exif.ptr, exif_length-2);
+    ushort app_length = istrm.readNumeric!ushort(Endian.Big);
+    ubyte[] app = New!(ubyte[])(app_length-2);
+    istrm.readBytes(app.ptr, app_length-2);
 
-    // TODO: interpret JFIF data and save it somewhere.
+    // TODO: interpret APP data (EXIF etc.) and save it somewhere.
     // Maybe add a generic ImageInfo object for this?
-    Delete(exif);
+    Delete(app);
 
     version(JPEGDebug)
     {
-        writefln("APP1/EXIF length: %s", exif_length);
+        writefln("APP%s length: %s", n, app_length);
     }
 
     return compound(true, "");
