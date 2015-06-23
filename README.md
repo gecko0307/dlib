@@ -32,5 +32,5 @@ For support and overall discussions, use our [Gitter chat room](https://gitter.i
 
 License
 -------
-Copyright (c) 2011-2015 Timur Gafarov, Martin Cejp, Andrey Penechko, Vadim Lopatin. Distributed under the Boost Software License, Version 1.0. (See accompanying file COPYING or at http://www.boost.org/LICENSE_1_0.txt)
+Copyright (c) 2011-2015 Timur Gafarov, Martin Cejp, Andrey Penechko, Vadim Lopatin, Nick Papanastasiou. Distributed under the Boost Software License, Version 1.0. (See accompanying file COPYING or at http://www.boost.org/LICENSE_1_0.txt)
 
