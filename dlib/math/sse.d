@@ -49,6 +49,19 @@ Vector4f sseAdd4(Vector4f a, Vector4f b)
     return a;
 }
 
+Vector4f sseSub4(Vector4f a, Vector4f b)
+{
+    asm
+    {
+        movups XMM0, a;
+        movups XMM1, b;
+        subps XMM0, XMM1;
+        movups a, XMM0;
+    }
+
+    return a;
+}
+
 Vector4f sseMul4(Vector4f a, Vector4f b)
 {
     asm
@@ -56,6 +69,19 @@ Vector4f sseMul4(Vector4f a, Vector4f b)
         movups XMM0, a;
         movups XMM1, b;
         mulps XMM0, XMM1;
+        movups a, XMM0;
+    }
+
+    return a;
+}
+
+Vector4f sseDiv4(Vector4f a, Vector4f b)
+{
+    asm
+    {
+        movups XMM0, a;
+        movups XMM1, b;
+        divps XMM0, XMM1;
         movups a, XMM0;
     }
 
