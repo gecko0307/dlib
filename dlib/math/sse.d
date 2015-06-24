@@ -32,9 +32,8 @@ import dlib.math.vector;
 import dlib.math.matrix;
 
 /*
- * This module implements some frequently used vector operations
- * using SSE instructions.
- * Implementation is in WIP status.
+ * This module implements some frequently used vector and matrix operations
+ * using SSE instructions. Implementation is in WIP status.
  */
 
 Vector4f sseAdd4(Vector4f a, Vector4f b)
@@ -109,3 +108,57 @@ Vector4f sseCross3(Vector4f a, Vector4f b)
     return a;
 }
 
+Matrix4x4f sseMulMat4(Matrix4x4f a, Matrix4x4f b)
+{
+    Matrix4x4f r;
+    Vector4f a_line, b_line, r_line;
+    float _b;
+    uint i, j;
+    Vector4f* _rp;
+    for (i = 0; i < 16; i += 4)
+    {
+        a_line = *cast(Vector4f*)(a.arrayof.ptr);
+        _b = *(b.arrayof.ptr + i);
+        asm
+        {
+            movups XMM0, a_line;
+            
+            mov EAX, _b;
+            movd XMM1, EAX;
+            shufps XMM1, XMM1, 0;
+            
+            mulps XMM0, XMM1;
+            movups r_line, XMM0;
+        }
+        
+        for (j = 1; j < 4; j++)
+        {
+            a_line = *cast(Vector4f*)(a.arrayof.ptr + j * 4);
+            _b = *(b.arrayof.ptr + i + j); // i
+            asm
+            {
+                movups XMM0, a_line;
+                
+                mov EAX, _b;
+                movd XMM1, EAX;
+                shufps XMM1, XMM1, 0;
+                
+                mulps XMM0, XMM1;
+                
+                movups XMM2, r_line;
+                addps XMM0, XMM2;
+                
+                movups r_line, XMM0;
+            }
+        }
+
+        _rp = cast(Vector4f*)(r.arrayof.ptr + i);
+        asm
+        {
+            mov EAX, _rp;
+            movups [EAX], XMM0;
+        }
+    }
+    
+    return r;
+}
