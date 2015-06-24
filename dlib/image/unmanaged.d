@@ -63,8 +63,11 @@ class UnmanagedImage(PixelFormat fmt): Image!(fmt)
     {
         _data = New!(ubyte[])(_width * _height * _pixelSize);
     }
-
-    mixin FreeImpl;
+    
+    override void free()
+    {
+        Delete(this);
+    }
 }
 
 alias UnmanagedImage!(PixelFormat.L8) UnmanagedImageL8;

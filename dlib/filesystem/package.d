@@ -31,4 +31,6 @@ module dlib.filesystem;
 
 public {
     import dlib.filesystem.filesystem;
+    import dlib.filesystem.local;
+    import dlib.filesystem.stdfs;
 }

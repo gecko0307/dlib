@@ -47,52 +47,35 @@ size_t allocatedMemory()
     return _allocatedMemory;
 }
 
-interface ManuallyAllocatable
+interface Freeable
 {
     void free();
-    void setManualMode(bool mode);
 }
 
-mixin template ManualModeImpl()
-{
-    protected bool manuallyAllocated = false;
-    void setManualMode(bool mode)
-    {
-        manuallyAllocated = mode;
-    }
-}
-
-mixin template FreeImpl()
-{
-    override void free()
-    {
-        if (manuallyAllocated)
-            Delete(this);
-    }
-}
+enum psize = 8;
 
 T allocate(T, A...) (A args) if (is(T == class))
 {
     enum size = __traits(classInstanceSize, T);
-    auto memory = malloc(size)[0..size];
-    if (!memory)
+    void* p = malloc(size+psize);
+    if (!p)
         onOutOfMemoryError();
+    auto memory = p[psize..psize+size];
+    *cast(size_t*)p = size;
     _allocatedMemory += size;
     version(MemoryDebug) writefln("Allocated class (%s bytes)", size);
-    auto res = emplace!(T, A)(memory, args);
-    static if (isImplicitlyConvertible!(T, ManuallyAllocatable))
-    {
-        res.setManualMode(true);
-    }
+    auto res = emplace!(T, A)(memory, args);    
     return res;
 }
 
 T* allocate(T, A...) (A args) if (is(T == struct))
 {
     enum size = T.sizeof;
-    auto memory = malloc(size)[0..size];
-    if (!memory)
+    void* p = malloc(size+psize);
+    if (!p)
         onOutOfMemoryError();
+    auto memory = p[psize..psize+size];
+    *cast(size_t*)p = size;
     _allocatedMemory += size;
     version(MemoryDebug) writefln("Allocated struct (%s bytes)", size);
     return emplace!(T, A)(memory, args);
@@ -102,12 +85,13 @@ T allocate(T) (size_t length) if (isArray!T)
 {
     alias AT = ForeachType!T;
     size_t size = length * AT.sizeof;
-    auto mem = malloc(size);
+    auto mem = malloc(size+psize);
     if (!mem)
         onOutOfMemoryError();
-    T arr = cast(T)mem[0..size];
+    T arr = cast(T)mem[psize..psize+size];
     foreach(ref v; arr)
         v = v.init;
+    *cast(size_t*)mem = size;
     _allocatedMemory += size;
     version(MemoryDebug) writefln("Allocated array (%s bytes)", size);
     return arr;
@@ -115,28 +99,31 @@ T allocate(T) (size_t length) if (isArray!T)
 
 void deallocate(T)(ref T obj) if (isArray!T)
 {
-    alias AT = ForeachType!T;
-    size_t size = obj.length * AT.sizeof;
-    free(cast(void*)obj.ptr);
+    void* p = cast(void*)obj.ptr;
+    size_t size = *cast(size_t*)(p - psize);
+    free(p - psize);
     _allocatedMemory -= size;
     version(MemoryDebug) writefln("Dellocated array (%s bytes)", size);
     obj.length = 0;
 }
 
-void deallocate(T)(T obj) if (is(T == class))
+void deallocate(T)(T obj) if (is(T == class) || is(T == interface))
 {
-    enum size = __traits(classInstanceSize, T);
+    Object o = cast(Object)obj;
+    void* p = cast(void*)o;
+    size_t size = *cast(size_t*)(p - psize);
     destroy(obj);
-    free(cast(void*)obj);
+    free(p - psize);
     _allocatedMemory -= size;
     version(MemoryDebug) writefln("Dellocated class (%s bytes)", size);
 }
 
 void deallocate(T)(T* obj)
 {
-    enum size = T.sizeof;
+    void* p = cast(void*)obj;
+    size_t size = *cast(size_t*)(p - psize);
     destroy(obj);
-    free(cast(void*)obj);
+    free(p - psize);
     _allocatedMemory -= size;
     version(MemoryDebug) writefln("Dellocated struct (%s bytes)", size);
 }

@@ -130,6 +130,11 @@ final class FPImage: SuperImage
 
         return c;
     }
+    
+    void free()
+    {
+        // Do nothing, let GC delete the object
+    }
 
     protected:
 

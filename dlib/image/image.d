@@ -52,7 +52,7 @@ enum PixelFormat
     RGBA_FLOAT
 }
 
-abstract class SuperImage: ManuallyAllocatable
+abstract class SuperImage: Freeable
 {
     @property uint width();
     @property uint height();
@@ -92,8 +92,8 @@ abstract class SuperImage: ManuallyAllocatable
         progress = 0.0f;
     }
 
-    mixin ManualModeImpl;
-    mixin FreeImpl;
+    //mixin ManualModeImpl;
+    //mixin FreeImpl;
 }
 
 class Image(PixelFormat fmt): SuperImage
@@ -320,6 +320,11 @@ class Image(PixelFormat fmt): SuperImage
     {
         setPixel(c.convert(_bitDepth), x, y);
         return c;
+    }
+    
+    void free()
+    {
+        // Do nothing, let GC delete the object
     }
 
     protected:

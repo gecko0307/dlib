@@ -100,13 +100,14 @@ class StdInFileStream: InputStream
             eof = true;
         return bytesRead;
     }
-
+/*
     void free()
     {
         Delete(this);
     }
 
     mixin ManualModeImpl;
+*/
 }
 
 class StdOutFileStream: OutputStream 
@@ -167,13 +168,14 @@ class StdOutFileStream: OutputStream
             _writeable = false;
         return res;
     }
-
+/*
     void free()
     {
         Delete(this);
     }
 
     mixin ManualModeImpl;
+*/
 }
 
 class StdFileSystem: FileSystem

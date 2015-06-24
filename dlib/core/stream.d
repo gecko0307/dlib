@@ -47,7 +47,7 @@ class SeekException : Exception
 }
 
 /// Seekable
-interface Seekable: ManuallyAllocatable
+interface Seekable
 {
     // Won't throw on invalid position, may throw on a more serious error.
     
@@ -252,8 +252,8 @@ class ArrayStream : InputStream {
         return size;
     }
 
-    mixin ManualModeImpl;
-    mixin FreeImpl;
+    //mixin ManualModeImpl;
+    //mixin FreeImpl;
     
     private:
     size_t pos = 0, size_ = 0;

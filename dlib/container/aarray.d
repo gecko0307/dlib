@@ -74,5 +74,5 @@ class AArray(T): BST!(T)
         super.remove(stringHash(i));
     }
 
-    mixin FreeImpl;
+    //mixin FreeImpl;
 }

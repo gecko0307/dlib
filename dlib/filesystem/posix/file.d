@@ -103,16 +103,5 @@ class PosixFile : IOStream {
     
     override void flush() {
     }
-
-    void free()
-    {
-        if (manuallyAllocated)
-        {
-            close();
-            Delete(this);
-        }
-    }
-
-    mixin ManualModeImpl;
 }
 }

@@ -34,7 +34,7 @@ import dlib.core.memory;
  * GC-free binary search tree implementation.
  */
 
-class BST(T): ManuallyAllocatable
+class BST(T)
 {
     bool root;
     BST left = null; 
@@ -184,6 +184,6 @@ class BST(T): ManuallyAllocatable
         }
     }
 
-    mixin ManualModeImpl;
-    mixin FreeImpl;
+    //mixin ManualModeImpl;
+   // mixin FreeImpl;
 }
