@@ -96,7 +96,7 @@ version(MemoryDebug)
 }
 else
 {
-    void printRecords() {}
+    void printMemoryLog() {}
 }
 
 size_t allocatedMemory()
