@@ -38,7 +38,7 @@ import core.exception: onOutOfMemoryError;
  * Tools for manual memory management
  */
 
-version = MemoryDebug;
+//version = MemoryDebug;
 
 private static size_t _allocatedMemory = 0;
 
