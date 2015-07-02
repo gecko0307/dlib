@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2015 Timur Gafarov 
+Copyright (c) 2015 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -38,9 +38,66 @@ import core.exception: onOutOfMemoryError;
  * Tools for manual memory management
  */
 
-//version = MemoryDebug;
+version = MemoryDebug;
 
 private static size_t _allocatedMemory = 0;
+
+version(MemoryDebug)
+{
+    import std.datetime;
+    import std.algorithm;
+    
+    struct AllocationRecord
+    {
+        string type;
+        size_t size;
+        ulong id;
+        bool deleted;
+    }
+    
+    AllocationRecord[ulong] records;
+    ulong counter = 0;
+    
+    void addRecord(void* p, string type, size_t size)
+    {
+        records[cast(ulong)p] = AllocationRecord(type, size, counter, false);
+        counter++;
+        //writefln("Allocated %s (%s bytes)", type, size);
+    }
+    
+    void markDeleted(void* p)
+    {
+        ulong k = cast(ulong)p - psize;
+        //string type = records[k].type;
+        //size_t size = records[k].size;
+        records[k].deleted = true;
+        //writefln("Dellocated %s (%s bytes)", type, size);
+    }
+    
+    void printMemoryLog()
+    {
+        writeln("----------------------------------------------------");
+        writeln("               Memory allocation log                ");
+        writeln("----------------------------------------------------");
+        auto keys = records.keys;
+        sort!((a, b) => records[a].id < records[b].id)(keys);
+        foreach(k; keys)
+        {
+            AllocationRecord r = records[k];
+            if (r.deleted)
+                writefln("         %s - %s byte(s) at %X", r.type, r.size, k);
+            else
+                writefln("REMAINS: %s - %s byte(s) at %X", r.type, r.size, k);
+        }
+        writeln("----------------------------------------------------");
+        writefln("Total amount of allocated memory: %s", _allocatedMemory);
+        writeln("----------------------------------------------------");
+    }
+}
+else
+{
+    void printRecords() {}
+}
 
 size_t allocatedMemory()
 {
@@ -63,8 +120,11 @@ T allocate(T, A...) (A args) if (is(T == class))
     auto memory = p[psize..psize+size];
     *cast(size_t*)p = size;
     _allocatedMemory += size;
-    version(MemoryDebug) writefln("Allocated class (%s bytes)", size);
-    auto res = emplace!(T, A)(memory, args);    
+    version(MemoryDebug)
+    {
+        addRecord(p, T.stringof, size);
+    }
+    auto res = emplace!(T, A)(memory, args);
     return res;
 }
 
@@ -77,7 +137,10 @@ T* allocate(T, A...) (A args) if (is(T == struct))
     auto memory = p[psize..psize+size];
     *cast(size_t*)p = size;
     _allocatedMemory += size;
-    version(MemoryDebug) writefln("Allocated struct (%s bytes)", size);
+    version(MemoryDebug)
+    {
+        addRecord(p, T.stringof, size);
+    }
     return emplace!(T, A)(memory, args);
 }
 
@@ -93,7 +156,10 @@ T allocate(T) (size_t length) if (isArray!T)
         v = v.init;
     *cast(size_t*)mem = size;
     _allocatedMemory += size;
-    version(MemoryDebug) writefln("Allocated array (%s bytes)", size);
+    version(MemoryDebug)
+    {
+        addRecord(mem, T.stringof, size);
+    }
     return arr;
 }
 
@@ -103,7 +169,10 @@ void deallocate(T)(ref T obj) if (isArray!T)
     size_t size = *cast(size_t*)(p - psize);
     free(p - psize);
     _allocatedMemory -= size;
-    version(MemoryDebug) writefln("Dellocated array (%s bytes)", size);
+    version(MemoryDebug)
+    {
+        markDeleted(p);
+    }
     obj.length = 0;
 }
 
@@ -115,7 +184,10 @@ void deallocate(T)(T obj) if (is(T == class) || is(T == interface))
     destroy(obj);
     free(p - psize);
     _allocatedMemory -= size;
-    version(MemoryDebug) writefln("Dellocated class (%s bytes)", size);
+    version(MemoryDebug)
+    {
+        markDeleted(p);
+    }
 }
 
 void deallocate(T)(T* obj)
@@ -125,9 +197,11 @@ void deallocate(T)(T* obj)
     destroy(obj);
     free(p - psize);
     _allocatedMemory -= size;
-    version(MemoryDebug) writefln("Dellocated struct (%s bytes)", size);
+    version(MemoryDebug)
+    {
+        markDeleted(p);
+    }
 }
 
 alias allocate New;
 alias deallocate Delete;
-
