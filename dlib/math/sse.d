@@ -151,6 +151,7 @@ Matrix4x4f sseMulMat4(Matrix4x4f a, Matrix4x4f b)
             
             mov EAX, _b;
             movd XMM1, EAX;
+            
             shufps XMM1, XMM1, 0;
             
             mulps XMM0, XMM1;
@@ -179,10 +180,15 @@ Matrix4x4f sseMulMat4(Matrix4x4f a, Matrix4x4f b)
         }
 
         _rp = cast(Vector4f*)(r.arrayof.ptr + i);
-        asm
+        version(X86) asm
         {
             mov EAX, _rp;
             movups [EAX], XMM0;
+        }
+        version(X86_64) asm
+        {
+            mov RAX, _rp;
+            movups [RAX], XMM0;
         }
     }
     
