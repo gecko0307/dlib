@@ -361,7 +361,7 @@ void read24bitBMP(InputStream istrm, SuperImage img, uint padding)
         {
             ubyte[3] bgr;
             istrm.fillArray(bgr);
-            img[x, y] = Color4f(ColorRGBA(bgr[2], bgr[1], bgr[0]));
+            img[x, img.height-y-1] = Color4f(ColorRGBA(bgr[2], bgr[1], bgr[0]));
         }
 
         istrm.seek(padding);

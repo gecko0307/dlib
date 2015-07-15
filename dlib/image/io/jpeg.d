@@ -1150,7 +1150,7 @@ Compound!(SuperImage, string) decodeScanData(
             uint iy = mcuY * mcu.height + y;
 
             if (ix < img.width && iy < img.height)
-                img[ix, img.height - 1 - iy] = col;
+                img[ix, iy] = col;
         }
     }
 

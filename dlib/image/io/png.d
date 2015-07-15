@@ -46,7 +46,7 @@ private
 }
 
 // uncomment this to see debug messages:
-//version = PNGDebug;
+version = PNGDebug;
 
 static const ubyte[8] PNGSignature = [137, 80, 78, 71, 13, 10, 26, 10];
 static const ubyte[4] IHDR = ['I', 'H', 'D', 'R'];
@@ -210,8 +210,8 @@ Compound!(SuperImage, string) loadPNG(
         
         version(PNGDebug) 
         {
-            writefln("Chunk CRC = %s", chunk.crc);
-            writefln("Calculated CRC = %s", calculatedCRC);
+            writefln("Chunk CRC = %X", chunk.crc);
+            writefln("Calculated CRC = %X", calculatedCRC);
             writeln("-------------------");
         }
 
@@ -555,7 +555,7 @@ body
     ubyte[] raw = New!(ubyte[])(img.width * img.height * img.channels + img.height);
     foreach(y; 0..img.height)
     {
-        auto rowStart = (img.height - y - 1) * (img.width * img.channels + 1);
+        auto rowStart = y * (img.width * img.channels + 1);
         raw[rowStart] = 0; // No filter
 
         foreach(x; 0..img.width)
@@ -568,6 +568,7 @@ body
         }
     }
 
+    // FIXME: break data into 64K blocks instead of writing one large IDAT
     ubyte[] buffer = New!(ubyte[])(1024 * 32);
     ZlibEncoder zlibEncoder = ZlibEncoder(buffer);
     if (!zlibEncoder.encode(raw))
@@ -656,7 +657,7 @@ bool filter(PNGHeader* hdr,
             for (int j = 1; j < scanlineSize; ++j)
             {
                 ubyte b = ibuffer[(i * scanlineSize) + j];
-                obuffer[((hdr.height-i-1) * (scanlineSize-1) + j - 1)] = b;
+                obuffer[(i * (scanlineSize-1) + j - 1)] = b;
             }
             continue;
         }
@@ -666,11 +667,11 @@ bool filter(PNGHeader* hdr,
             for (int k = 0; k < channels; ++k)
             {
                 if (i == 0)    pup = 0;
-                else pup = obuffer[((hdr.height-(i-1)-1) * hdr.width + j) * channels + k];
+                else pup = obuffer[((i-1) * hdr.width + j) * channels + k]; // (hdr.height-(i-1)-1)
                 if (j == 0)    pback = 0;
-                else pback = obuffer[((hdr.height-i-1) * hdr.width + j-1) * channels + k];
+                else pback = obuffer[(i * hdr.width + j-1) * channels + k];
                 if (i == 0 || j == 0) pupback = 0;
-                else pupback = obuffer[((hdr.height-(i-1)-1) * hdr.width + j - 1) * channels + k];
+                else pupback = obuffer[((i-1) * hdr.width + j - 1) * channels + k];
                 
                 // get the current byte from ibuffer
                 cbyte = ibuffer[i * (hdr.width * channels + 1) + j * channels + k + 1];
@@ -679,19 +680,19 @@ bool filter(PNGHeader* hdr,
                 switch (scanFilter)
                 {
                     case FilterMethod.None:
-                        obuffer[((hdr.height-i-1) * hdr.width + j) * channels + k] = cbyte;
+                        obuffer[(i * hdr.width + j) * channels + k] = cbyte;
                         break;
                     case FilterMethod.Sub:
-                        obuffer[((hdr.height-i-1) * hdr.width + j) * channels + k] = cast(ubyte)(cbyte + pback);
+                        obuffer[(i * hdr.width + j) * channels + k] = cast(ubyte)(cbyte + pback);
                         break;
                     case FilterMethod.Up:
-                        obuffer[((hdr.height-i-1) * hdr.width + j) * channels + k] = cast(ubyte)(cbyte + pup);
+                        obuffer[(i * hdr.width + j) * channels + k] = cast(ubyte)(cbyte + pup);
                         break;
                     case FilterMethod.Average:
-                        obuffer[((hdr.height-i-1) * hdr.width + j) * channels + k] = cast(ubyte)(cbyte + (pback + pup) / 2);
+                        obuffer[(i * hdr.width + j) * channels + k] = cast(ubyte)(cbyte + (pback + pup) / 2);
                         break;
                     case FilterMethod.Paeth:
-                        obuffer[((hdr.height-i-1) * hdr.width + j) * channels + k] = cast(ubyte)(cbyte + paeth(pback, pup, pupback));
+                        obuffer[(i * hdr.width + j) * channels + k] = cast(ubyte)(cbyte + paeth(pback, pup, pupback));
                         break;
                     default:
                         errorMsg = format("loadPNG error: unknown scanline filter (%s)", scanFilter);

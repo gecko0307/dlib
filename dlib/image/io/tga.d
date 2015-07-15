@@ -181,6 +181,7 @@ Compound!(SuperImage, string) loadTGA(
             dataOffset += 768; 
 
         // Read compressed data
+        // TODO: take scanline order into account (bottom-up or top-down)
         ubyte[] data = New!(ubyte[])(cast(uint)istrm.size - dataOffset); 
         istrm.fillArray(data);
 
