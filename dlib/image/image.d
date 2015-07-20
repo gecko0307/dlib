@@ -91,9 +91,6 @@ abstract class SuperImage: Freeable
     {
         progress = 0.0f;
     }
-
-    //mixin ManualModeImpl;
-    //mixin FreeImpl;
 }
 
 class Image(PixelFormat fmt): SuperImage
@@ -180,10 +177,11 @@ class Image(PixelFormat fmt): SuperImage
 
     protected Color4 getPixel(int x, int y)
     {
-        while(x >= width) x = width-1;
-        while(y >= height) y = height-1;
-        while(x < 0) x = 0;
-        while(y < 0) y = 0;
+        if (x >= width) x = width-1;
+        else if (x < 0) x = 0;
+        
+        if (y >= height) y = height-1;
+        else if (y < 0) y = 0;
 
         auto index = (y * _width + x) * _pixelSize;
 
@@ -242,10 +240,8 @@ class Image(PixelFormat fmt): SuperImage
 
     protected Color4 setPixel(Color4 c, int x, int y)
     {
-        while(x >= width) x = width-1;
-        while(y >= height) y = height-1;
-        while(x < 0) x = 0;
-        while(y < 0) y = 0;
+        if(x >= width || y >= height || x < 0 || y < 0)
+            return c;
 
         size_t index = (y * _width + x) * _pixelSize;
 
