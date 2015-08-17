@@ -70,7 +70,8 @@ class StdInFileStream: InputStream
 
     bool setPosition(StreamPos p)
     {
-        return !fseek(file, cast(fpos_t)p, SEEK_SET);
+        import core.stdc.config : c_long;
+        return !fseek(file, cast(c_long)p, SEEK_SET);
     }
 
     StreamSize size()
