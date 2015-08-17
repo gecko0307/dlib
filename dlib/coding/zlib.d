@@ -34,82 +34,55 @@ private
     import dlib.core.memory;
 }
 
-struct ZlibEncoder
+struct ZlibBufferedEncoder
 {
     z_stream zlibStream;
     ubyte[] buffer;
-    int msg = 0;
-
-    bool isInitialized = false;
-    bool hasEnded = false;
-
-    this(ubyte[] buf)
+    ubyte[] input;
+    bool ended = true;
+    
+    this(ubyte[] buf, ubyte[] inp)
     {
         buffer = buf;
+        input = inp;
         zlibStream.next_out = buffer.ptr;
         zlibStream.avail_out = cast(uint)buffer.length;
         zlibStream.data_type = Z_BINARY;
         zlibStream.zalloc = null;
         zlibStream.zfree = null;
         zlibStream.opaque = null;
+        
+        zlibStream.next_in = inp.ptr;
+        zlibStream.avail_in = cast(uint)inp.length;
+        
+        deflateInit(&zlibStream, Z_BEST_COMPRESSION);
+        ended = false;
     }
-
-    bool encode(ubyte[] input)
+    
+    uint encode()
     {
-        zlibStream.next_in = input.ptr;
-        zlibStream.avail_in = cast(uint)input.length;
-
-        if (!isInitialized)
+        zlibStream.next_out = buffer.ptr;
+        zlibStream.avail_out = cast(uint)buffer.length;
+        zlibStream.total_out = 0;
+        
+        while (zlibStream.avail_out > 0)
         {
-            isInitialized = true;
-            msg = deflateInit(&zlibStream, Z_BEST_COMPRESSION);
-            if (msg)
-            {
-                inflateEnd(&zlibStream);
-                return false;
-            }
-        }
-
-        while (zlibStream.avail_in > 0)
-        {
-            msg = deflate(&zlibStream, Z_FINISH);
-
+            int msg = deflate(&zlibStream, Z_FINISH);
+            
             if (msg == Z_STREAM_END)
             {
-                hasEnded = true;
                 deflateEnd(&zlibStream);
-                reallocateBuffer(zlibStream.total_out);
-                return true;
+                ended = true;
+                return zlibStream.total_out;
             }
             else if (msg != Z_OK)
             {
                 deflateEnd(&zlibStream);
-                return false;
-            }
-            else if (zlibStream.avail_out == 0)
-            {
-                reallocateBuffer(buffer.length * 2);
-                zlibStream.next_out = &buffer[buffer.length / 2];
-                zlibStream.avail_out = cast(uint)(buffer.length / 2);
+                return 0;
             }
         }
-
-        return true;
-    }
-
-    void reallocateBuffer(size_t len)
-    {
-        ubyte[] buffer2 = New!(ubyte[])(len);
-        for(uint i = 0; i < buffer2.length; i++)
-            if (i < buffer.length)
-                buffer2[i] = buffer[i];
-        Delete(buffer);
-        buffer = buffer2;
-    }
-    
-    void free()
-    {
-        Delete(buffer);
+        
+        return zlibStream.total_out;
     }
 }
 

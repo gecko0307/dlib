@@ -568,16 +568,18 @@ body
         }
     }
 
-    // FIXME: break data into 64K blocks instead of writing one large IDAT
-    ubyte[] buffer = New!(ubyte[])(1024 * 32);
-    ZlibEncoder zlibEncoder = ZlibEncoder(buffer);
-    if (!zlibEncoder.encode(raw))
-        return error("savePNG error: zlib encoding failed");
-    //writeChunk(IDAT, cast(ubyte[])compress(raw));
-    writeChunk(IDAT, zlibEncoder.buffer);
+    ubyte[] buffer = New!(ubyte[])(32);
+    ZlibBufferedEncoder zlibEncoder = ZlibBufferedEncoder(buffer, raw);
+    while (!zlibEncoder.ended)
+    {
+        uint len = zlibEncoder.encode();
+        if (len > 0)
+            writeChunk(IDAT, zlibEncoder.buffer[0..len]);
+    }
+    
     writeChunk(IEND, []);
 
-    zlibEncoder.free();
+    Delete(buffer);
     Delete(raw);
 
     return compound(true, "");
