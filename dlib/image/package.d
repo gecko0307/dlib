@@ -57,6 +57,7 @@ public
     import dlib.image.io.jpeg;
 
     import dlib.image.render.cosplasma;
+    import dlib.image.render.shapes;
 
     import dlib.image.resampling.nearest;
     import dlib.image.resampling.bilinear;
