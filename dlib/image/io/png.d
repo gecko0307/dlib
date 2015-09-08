@@ -572,7 +572,7 @@ body
     ZlibBufferedEncoder zlibEncoder = ZlibBufferedEncoder(buffer, raw);
     while (!zlibEncoder.ended)
     {
-        uint len = zlibEncoder.encode();
+        auto len = zlibEncoder.encode();
         if (len > 0)
             writeChunk(IDAT, zlibEncoder.buffer[0..len]);
     }
