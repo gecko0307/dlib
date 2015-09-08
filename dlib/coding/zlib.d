@@ -59,7 +59,7 @@ struct ZlibBufferedEncoder
         ended = false;
     }
     
-    uint encode()
+    size_t encode()
     {
         zlibStream.next_out = buffer.ptr;
         zlibStream.avail_out = cast(uint)buffer.length;
