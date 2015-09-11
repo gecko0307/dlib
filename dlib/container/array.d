@@ -201,6 +201,26 @@ struct DynamicArray(T, size_t chunkSize = 32)
         return t;
     }
 
+    int opApply(int delegate(size_t i, ref T) dg)
+    {
+        foreach(i, ref v; data)
+        {
+            dg(i, v);
+        }
+
+        return 0;
+    }
+
+    int opApply(int delegate(ref T) dg)
+    {
+        foreach(i, ref v; data)
+        {
+            dg(v);
+        }
+
+        return 0;
+    }
+
     void free()
     {
         if (dynamicStorage.length)

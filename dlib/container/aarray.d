@@ -35,6 +35,8 @@ private
     import dlib.container.hash;
 }
 
+pragma(msg, "dlib.container.aarray is deprecated, use dlib.container.dict instead");
+
 /*
  * GC-free associative array implementation
  */
@@ -76,3 +78,4 @@ class AArray(T): BST!(T)
 
     //mixin FreeImpl;
 }
+

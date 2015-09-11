@@ -33,6 +33,7 @@ public
     import dlib.container.aarray;
     import dlib.container.array;
     import dlib.container.bst;
+    import dlib.container.dict;
     import dlib.container.hash;
     import dlib.container.linkedlist;
     import dlib.container.queue;
