@@ -253,6 +253,6 @@ alias Trie Dict;
 
 Dict!(T, K) dict(T, K)()
 {
-    return New!(Dict!(string, int))();
+    return New!(Dict!(T, K))();
 }
 
