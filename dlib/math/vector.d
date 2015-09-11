@@ -522,7 +522,7 @@ struct Vector(T, int size)
                 {
                     float coef = 1.0 / sqrt(cast(float)lensqr);
                     foreach (ref component; arrayof) 
-                        component = cast(T)(component * coef);
+                        component *= coef;
                 }
             }
         }
@@ -576,6 +576,7 @@ struct Vector(T, int size)
     */
     template opDispatch(string s) if (valid(s))
     {
+    /*
         static if (s.length == 1)
         {
             enum i = ["x":0, "y":1, "z":2, "w":3,
@@ -592,7 +593,8 @@ struct Vector(T, int size)
                 return arrayof[i] = v;
             }
         }
-        else static if (s.length <= 4)
+        else*/
+        static if (s.length <= 4)
         { 
             @property auto ref opDispatch(this X)()
             {
@@ -624,6 +626,9 @@ struct Vector(T, int size)
 
     private static bool valid(string s) 
     {
+        if (s.length < 2)
+            return false;
+
         foreach(c; s)
         {
             switch(c)
@@ -646,11 +651,31 @@ struct Vector(T, int size)
         }
         return true;
     }
+    
+   /*
+    * Symbolic element access
+    */
+    private static string elements(string[4] letters) @property
+    body
+    {
+        string res;
+        foreach (i; 0..size)
+        {
+            res ~= "T " ~ letters[i] ~ "; ";
+        }
+        return res;
+    }
 
    /*
     * Vector components
     */
-    T[size] arrayof;
+    union
+    {
+        T[size] arrayof;
+        struct { mixin(elements(["x", "y", "z", "w"])); }
+        struct { mixin(elements(["r", "g", "b", "a"])); }
+        struct { mixin(elements(["s", "t", "p", "q"])); }
+    }
 }
 
 /*
