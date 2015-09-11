@@ -28,7 +28,9 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.container.dict;
 
+import std.stdio;
 import std.traits;
+import std.format;
 import dlib.core.memory;
 import dlib.container.array;
 
@@ -65,7 +67,10 @@ auto byteRange(T)(T v)
 
         @property ubyte front()
         {
-            return (cast(ubyte*)&value)[offset];
+            ubyte* ptr;
+            static if (isArray!T) { ptr = (cast(ubyte[])value).ptr;}
+            else { ptr = cast(ubyte*)&value; }
+            return ptr[offset];
         }
 
         void popFront()
@@ -123,6 +128,7 @@ class Trie(T, K)
         {
             current.value = v;
             current.key = k;
+            
             if (!current.active)
             {
                 current.active = true;
@@ -200,7 +206,7 @@ class Trie(T, K)
         if (v !is null)
             return *v;
         else
-            assert(0, "Non-existing key in Trie.opIndex");
+            assert(0, format("Non-existing key in Trie.opIndex: %s", k));
     }
 
     T opIndexAssign(T v, K k)
