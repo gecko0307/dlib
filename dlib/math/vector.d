@@ -522,7 +522,7 @@ struct Vector(T, int size)
                 {
                     float coef = 1.0 / sqrt(cast(float)lensqr);
                     foreach (ref component; arrayof) 
-                        component *= coef;
+                        component = cast(T)(component * coef);
                 }
             }
         }
