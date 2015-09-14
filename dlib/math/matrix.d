@@ -684,8 +684,6 @@ struct Matrix(T, size_t N)
                 Vector!(T,3) t = -(getColumn(3).xyz * m3inv);
                 res.setColumn(3, Vector!(T,4)(t.x, t.y, t.z, 1.0f));
             }};
-            
-            assert(affine, toString);
 
             static if (N == 4)
             {
