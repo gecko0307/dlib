@@ -225,10 +225,57 @@ struct Matrix(T, size_t N)
         static if (N == 2)
         {
             Matrix!(T,N) res;
+            
             res.a11 = (a11 * mat.a11) + (a12 * mat.a21);
             res.a12 = (a11 * mat.a12) + (a12 * mat.a22);
+            
             res.a21 = (a21 * mat.a11) + (a22 * mat.a21);
             res.a22 = (a21 * mat.a12) + (a22 * mat.a22);
+            
+            return res;
+        }
+        else static if (N == 3)
+        {
+            Matrix!(T,N) res;
+            
+            res.a11 = (a11 * mat.a11) + (a12 * mat.a21) + (a13 * mat.a31);
+            res.a12 = (a11 * mat.a12) + (a12 * mat.a22) + (a13 * mat.a32);
+            res.a13 = (a11 * mat.a13) + (a12 * mat.a23) + (a13 * mat.a33);
+            
+            res.a21 = (a21 * mat.a11) + (a22 * mat.a21) + (a23 * mat.a31);
+            res.a22 = (a21 * mat.a12) + (a22 * mat.a22) + (a23 * mat.a32);
+            res.a23 = (a21 * mat.a13) + (a22 * mat.a23) + (a23 * mat.a33);
+            
+            res.a31 = (a31 * mat.a11) + (a32 * mat.a21) + (a33 * mat.a31);
+            res.a32 = (a31 * mat.a12) + (a32 * mat.a22) + (a33 * mat.a32);
+            res.a33 = (a31 * mat.a13) + (a32 * mat.a23) + (a33 * mat.a33);
+            
+            return res;
+        }
+        else static if (N == 4)
+        {
+            Matrix!(T,N) res;
+            
+            res.a11 = (a11 * mat.a11) + (a12 * mat.a21) + (a13 * mat.a31) + (a14 * mat.a41);
+            res.a12 = (a11 * mat.a12) + (a12 * mat.a22) + (a13 * mat.a32) + (a14 * mat.a42);
+            res.a13 = (a11 * mat.a13) + (a12 * mat.a23) + (a13 * mat.a33) + (a14 * mat.a43);
+            res.a14 = (a11 * mat.a14) + (a12 * mat.a24) + (a13 * mat.a34) + (a14 * mat.a44);
+            
+            res.a21 = (a21 * mat.a11) + (a22 * mat.a21) + (a23 * mat.a31) + (a24 * mat.a41);
+            res.a22 = (a21 * mat.a12) + (a22 * mat.a22) + (a23 * mat.a32) + (a24 * mat.a42);
+            res.a23 = (a21 * mat.a13) + (a22 * mat.a23) + (a23 * mat.a33) + (a24 * mat.a43);
+            res.a24 = (a21 * mat.a14) + (a22 * mat.a24) + (a23 * mat.a34) + (a24 * mat.a44);
+            
+            res.a31 = (a31 * mat.a11) + (a32 * mat.a21) + (a33 * mat.a31) + (a34 * mat.a41);
+            res.a32 = (a31 * mat.a12) + (a32 * mat.a22) + (a33 * mat.a32) + (a34 * mat.a42);
+            res.a33 = (a31 * mat.a13) + (a32 * mat.a23) + (a33 * mat.a33) + (a34 * mat.a43);
+            res.a34 = (a31 * mat.a14) + (a32 * mat.a24) + (a33 * mat.a34) + (a34 * mat.a44);
+            
+            res.a41 = (a41 * mat.a11) + (a42 * mat.a21) + (a43 * mat.a31) + (a44 * mat.a41);
+            res.a42 = (a41 * mat.a12) + (a42 * mat.a22) + (a43 * mat.a32) + (a44 * mat.a42);
+            res.a43 = (a41 * mat.a13) + (a42 * mat.a23) + (a43 * mat.a33) + (a44 * mat.a43);
+            res.a44 = (a41 * mat.a14) + (a42 * mat.a24) + (a43 * mat.a34) + (a44 * mat.a44);
+            
             return res;
         }
         else
@@ -637,6 +684,8 @@ struct Matrix(T, size_t N)
                 Vector!(T,3) t = -(getColumn(3).xyz * m3inv);
                 res.setColumn(3, Vector!(T,4)(t.x, t.y, t.z, 1.0f));
             }};
+            
+            assert(affine, toString);
 
             static if (N == 4)
             {
