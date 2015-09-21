@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2014 Timur Gafarov 
+Copyright (c) 2011-2015 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -37,7 +37,7 @@ public:
 
 struct Queue(T)
 {
-    private LinkedList!(T) list;
+    private LinkedList!(T, true) list;
 
     public:
 
@@ -53,12 +53,17 @@ struct Queue(T)
 
     T dequeue()
     {
-        if (list.head is null)
+        if (empty)
             throw new Exception("Queue!(T): queue is empty");
 
         T res = list.head.datum;
         list.removeBeginning();
         return res;
+    }
+        
+    void free()
+    {
+        list.free();
     }
 }
 
@@ -76,5 +81,6 @@ unittest
     assert (q.dequeue() == 30);
     assert (q.dequeue() == 900);
     assert (q.empty);
+    
+    q.free();
 }
-

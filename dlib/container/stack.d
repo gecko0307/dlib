@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2014 Timur Gafarov 
+Copyright (c) 2011-2015 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -37,7 +37,7 @@ public:
 
 struct Stack(T)
 {
-    private LinkedList!(T) list;
+    private LinkedList!(T, true) list;
     
     public:
     void push(T v)
@@ -47,7 +47,7 @@ struct Stack(T)
 
     T pop()
     {
-        if (list.head is null)
+        if (empty)
             throw new Exception("Stack!(T): underflow");
 
         T res = list.head.datum;
@@ -64,6 +64,16 @@ struct Stack(T)
     {
         return &(list.head.datum);
     }
+    
+    @property bool empty()
+    {
+        return (list.head is null);
+    }
+    
+    void free()
+    {
+        list.free();
+    }
 }
 
 unittest
@@ -75,5 +85,6 @@ unittest
     assert(s.pop() == 76);
     assert(s.pop() == 3);
     assert(s.pop() == 100);
+    s.free();
 }
 

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2014 Timur Gafarov 
+Copyright (c) 2011-2015 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -28,15 +28,23 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.container.linkedlist;
 
+import dlib.core.memory;
+
 public:
 
 struct LinkedListElement(T)
 {
     LinkedListElement!(T)* next = null;
     T datum;
+
+    this(LinkedListElement!(T)* n)
+    {
+        next = n;
+        datum = T.init;
+    }
 }
 
-struct LinkedList(T, bool ordered = false)
+struct LinkedList(T, bool ordered = true)
 {
     LinkedListElement!(T)* head = null;
     LinkedListElement!(T)* tail = null;
@@ -47,14 +55,52 @@ struct LinkedList(T, bool ordered = false)
         return length == 0;
     }
 
-    void traverse(void delegate(ref T v, LinkedListElement!(T)* elem) func)
+    void free()
     {
         LinkedListElement!(T)* element = head;
         while (element !is null)
         {
-            func(element.datum, element);
+            auto e = element;
+            element = element.next;
+            Delete(e);
+        }
+        head = null;
+        tail = null;
+        length = 0;
+    }
+
+    int opApply(int delegate(size_t, ref T) dg)
+    {
+        int result = 0;
+        uint index = 0;
+
+        LinkedListElement!(T)* element = head;
+        while (element !is null)
+        {
+            result = dg(index, element.datum);
+            if (result)
+                break;
+            element = element.next;
+            index++;
+        }
+
+        return result;
+    }
+
+    int opApply(int delegate(ref T) dg)
+    {
+        int result = 0;
+
+        LinkedListElement!(T)* element = head;
+        while (element !is null)
+        {
+            result = dg(element.datum);
+            if (result)
+                break;
             element = element.next;
         }
+
+        return result;
     }
 
     LinkedListElement!(T)* append(T v)
@@ -63,12 +109,12 @@ struct LinkedList(T, bool ordered = false)
         
         if (tail is null)
         {
-            tail = new LinkedListElement!(T);
+            tail = New!(LinkedListElement!(T))(null);
             tail.datum = v;
         }
         else
         {
-            tail.next = new LinkedListElement!(T);
+            tail.next = New!(LinkedListElement!(T))(null);
             tail.next.datum = v;
             tail = tail.next;
         }
@@ -81,7 +127,7 @@ struct LinkedList(T, bool ordered = false)
     LinkedListElement!(T)* insertAfter(LinkedListElement!(T)* element, T v)
     {
         length++;
-        auto newElement = new LinkedListElement!(T);
+        auto newElement = New!(LinkedListElement!(T))(null);
         newElement.datum = v;
         newElement.next = element.next;
         element.next = newElement;
@@ -92,7 +138,7 @@ struct LinkedList(T, bool ordered = false)
     LinkedListElement!(T)* insertBeginning(T v)
     {
         length++;
-        auto newElement = new LinkedListElement!(T);
+        auto newElement = New!(LinkedListElement!(T))(null);
         newElement.datum = v;
         newElement.next = head;
         head = newElement;
@@ -107,7 +153,7 @@ struct LinkedList(T, bool ordered = false)
         {
             if (obsolete is tail) tail = element;
             element.next = obsolete.next;
-            delete obsolete;
+            Delete(obsolete);
         }
     }
 
@@ -118,7 +164,7 @@ struct LinkedList(T, bool ordered = false)
         if (obsolete !is null)
         {
             head = obsolete.next;
-            delete obsolete;
+            Delete(obsolete);
         }
     }
 
@@ -158,6 +204,14 @@ struct LinkedList(T, bool ordered = false)
         }
 
         return null;
+    }
+
+    T[] toArray()
+    {
+        T[] arr = New!(T[])(length);
+        foreach(i, v; this)
+            arr[i] = v;
+        return arr;
     }
 }
 
