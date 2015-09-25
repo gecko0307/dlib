@@ -447,6 +447,7 @@ Compound!(SuperImage, string) loadPNG(
             for (int dstindex = 0; dstindex < sz; dstindex++) 
             {
                 auto b = ((buffer[srcindex] >> srcshift) & mask);
+                //assert(b * 3 + 2 < palette.length);
                 pdata[dstindex * img.channels + 0] = palette[b * 3 + 0];
                 pdata[dstindex * img.channels + 1] = palette[b * 3 + 1];
                 pdata[dstindex * img.channels + 2] = palette[b * 3 + 2];
@@ -466,12 +467,14 @@ Compound!(SuperImage, string) loadPNG(
                 }
             }
         }
-        
+       
         Delete(buffer);
         buffer = pdata;
         
         Delete(palette);
-        Delete(transparency);
+
+        if (transparency.length > 0)
+            Delete(transparency);
     }
 
     if (img.data.length != buffer.length)
@@ -568,7 +571,7 @@ body
         }
     }
 
-    ubyte[] buffer = New!(ubyte[])(32);
+    ubyte[] buffer = New!(ubyte[])(64 * 1024);
     ZlibBufferedEncoder zlibEncoder = ZlibBufferedEncoder(buffer, raw);
     while (!zlibEncoder.ended)
     {
