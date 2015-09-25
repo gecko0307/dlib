@@ -672,9 +672,12 @@ struct Vector(T, int size)
     union
     {
         T[size] arrayof;
-        struct { mixin(elements(["x", "y", "z", "w"])); }
-        struct { mixin(elements(["r", "g", "b", "a"])); }
-        struct { mixin(elements(["s", "t", "p", "q"])); }
+        static if (size < 5)
+        {
+            struct { mixin(elements(["x", "y", "z", "w"])); }
+            struct { mixin(elements(["r", "g", "b", "a"])); }
+            struct { mixin(elements(["s", "t", "p", "q"])); }
+        }
     }
 }
 
