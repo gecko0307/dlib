@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013 Timur Gafarov 
+Copyright (c) 2015 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -28,21 +28,22 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.xml.node;
 
-private
-{
-    import std.stdio;
-}
+import std.stdio;
+import std.conv;
+import dlib.core.memory;
+import dlib.container.array;
+import dlib.container.dict;
+import dlib.text.lexer;
 
-final class XmlNode
+class XmlNode
 {
     XmlNode parent;
-    XmlNode[] children;
-    dstring text = ""d;
-
-    dstring name;   
-    dstring[dstring] properties;
+    DynamicArray!XmlNode children;
+    dchar[] name;
+    dchar[] text;
+    Dict!(dchar[], dchar[]) properties;
     
-    this(dstring name, XmlNode parent = null)
+    this(dchar[] name, XmlNode parent = null)
     {
         this.name = name;
         this.parent = parent;
@@ -50,41 +51,72 @@ final class XmlNode
         {
             parent.addChild(this);
         }
+        this.properties = New!(Dict!(dchar[], dchar[]));
     }
-
-    XmlNode[] getChildByName(dstring name)
+    
+    ~this()
     {
-        XmlNode[] res;
-        foreach(n; children)
+        if (text.length)
+            Delete(text);
+        if (name.length)
+            Delete(name);
+        foreach(k, v; properties)
         {
-            if (n.name == name)
-                res ~= n;
+            Delete(k);
+            Delete(v);
         }
-        return res;
+        Delete(properties);
+        foreach(c; children)
+        {
+            Delete(c);
+        }
+        children.free();
     }
     
     void addChild(XmlNode node)
     {
-        children ~= node;
-    }
-    
-    void addProperty(dstring name, dstring value)
-    {
-        properties[name] = value;
-    }
-    
-    dstring getText()
-    {
-        dstring res = text;
-        foreach(n; children)
-        {
-            dstring txt = n.getText();
-            res ~= txt;
-        }
-        return res;
+        children.append(node);
     }
 
-    private void printProperties(dstring indent = "")
+    void appendText(dchar c)
+    {
+        dchar[] newText = New!(dchar[])(text.length+1);
+        foreach(i, v; text)
+            newText[i] = v;
+        newText[$-1] = c;
+        if (text.length)
+            Delete(text);
+        text = newText;
+    }
+
+    dchar[] getTextUnmanaged()
+    {
+        DynamicArray!dchar res;
+        res.append(text);
+        foreach(n; children)
+        {
+            dchar[] t = n.getTextUnmanaged();
+            if (t.length)
+            {
+                res.append(t);
+                Delete(t);
+            }
+        }
+        dchar[] output = copyBuffer(res.data);
+        res.free();
+        return output;
+    }
+
+    // Warning! Causes GC allocation!
+    string getText()
+    {
+        dchar[] t = getTextUnmanaged();
+        string s = to!string(t);
+        Delete(t);
+        return s;
+    }
+
+    void printProperties(dstring indent = "")
     {
         if (properties.length)
         {
@@ -92,22 +124,26 @@ final class XmlNode
                 writeln(indent, k, " = ", v);
         }
     }
-    
+
+    // Warning! Causes GC allocation!
     void print(dstring indent = "")
     {
         printProperties(indent);
         
         foreach(n; children)
         {
-            dstring nm = n.name;
+            auto nm = n.name;
             if (nm.length)
                 writeln(indent, "tag: ", nm);
             else
                 writeln(indent, "tag: <anonymous>");
                 
-            dstring txt = n.getText;
+            dchar[] txt = n.getTextUnmanaged();
             if (txt.length)
-                writeln(indent, "text: ", n.getText);
+            {
+                writeln(indent, "text: ", txt);
+                Delete(txt);
+            }
                 
             n.print(indent ~ " ");
         }
