@@ -31,9 +31,6 @@ module dlib.core.thread;
 /*
  * GC-free, Phobos-independent thread module.
  * Inspired by core.thread, with an additional support for thread termination.
- *
- * TODO:
- * - Posix support
  */
 
 version(Windows)
@@ -83,15 +80,26 @@ version(Windows)
     enum STILL_ACTIVE = 259;
 }
 
+version(Posix)
+{
+    import core.sys.posix.pthread;
+}
+
 class Thread
 {
     private void function() func;
     private void delegate() dlgt;
-    bool callFunc;
+    private bool callFunc;
     
     version(Windows)
     {
-        void* threadHandle;
+        private void* winThread;
+    }
+
+    version(Posix)
+    {
+        private pthread_t posixThread;
+        private bool running = false;
     }
     
     this(void function() func)
@@ -110,8 +118,13 @@ class Thread
     {
         version(Windows)
         {
-            if (threadHandle)
-                CloseHandle(threadHandle);
+            if (winThread)
+                CloseHandle(winThread);
+        }
+
+        version(Posix)
+        {
+            pthread_detach(posixThread);
         }
     }
     
@@ -119,11 +132,18 @@ class Thread
     {
         version(Windows)
         {
-            if (threadHandle)
-                CloseHandle(threadHandle);
+            if (winThread)
+                CloseHandle(winThread);
             uint threadId;
-            threadHandle = CreateThread(null, cast(size_t)0, &winThreadFunc, cast(void*)this, cast(uint)0, &threadId);
-            assert(threadHandle !is null);
+            winThread = CreateThread(null, cast(size_t)0, &winThreadFunc, cast(void*)this, cast(uint)0, &threadId);
+            assert(winThread !is null);
+        }
+
+        version(Posix)
+        {
+            running = true;
+            pthread_create(&posixThread, null, &posixThreadFunc, cast(void*)this);
+            // TODO: validate thread creation
         }
     }
     
@@ -131,7 +151,12 @@ class Thread
     {
         version(Windows)
         {
-            WaitForMultipleObjects(1, &threadHandle, 1, INFINITE);
+            WaitForMultipleObjects(1, &winThread, 1, INFINITE);
+        }
+
+        version(Posix)
+        {
+            pthread_join(posixThread, null);
         }
     }
     
@@ -140,8 +165,13 @@ class Thread
         version(Windows)
         {
             uint c = 0;
-            GetExitCodeThread(threadHandle, &c);
+            GetExitCodeThread(winThread, &c);
             return (c == STILL_ACTIVE);
+        }
+
+        version(Posix)
+        {
+            return running;
         }
     }
     
@@ -149,7 +179,13 @@ class Thread
     {
         version(Windows)
         {
-            TerminateThread(threadHandle, 1);
+            TerminateThread(winThread, 1);
+        }
+
+        version(Posix)
+        {
+            pthread_cancel(posixThread);
+            running = false;
         }
     }
     
@@ -163,6 +199,20 @@ class Thread
             else
                 t.dlgt();
             return 0;
+        }
+    }
+
+    version(Posix)
+    {
+        extern(C) static void* posixThreadFunc(void* arg)
+        {
+            Thread t = cast(Thread)arg;
+            if (t.callFunc)
+                t.func();
+            else
+                t.dlgt();
+            t.running = false;
+            return null;
         }
     }
 }
