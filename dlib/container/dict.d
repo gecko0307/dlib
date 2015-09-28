@@ -31,6 +31,7 @@ module dlib.container.dict;
 import std.stdio;
 import std.traits;
 import std.format;
+import std.string;
 import dlib.core.memory;
 import dlib.container.array;
 
