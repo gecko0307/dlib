@@ -1,1 +1,36 @@
+sudo: false
+
+os:
+ - linux
+ - osx
+
 language: d
+
+d:
+ - dmd-2.068.2
+ - dmd-2.067.1
+ - dmd-2.066.1
+ - ldc-0.16.0-beta1
+ - ldc-0.15.2-beta2
+ - ldc-0.15.1
+ - gdc
+
+matrix:
+  allow_failures:
+   - os: osx
+     d: gdc
+   - os: linux
+     d: ldc-0.15.2-beta2
+
+env: 
+  matrix:
+    - ARCH=x86
+    - ARCH=x86_64
+
+addons:
+  apt:
+    packages:
+     - gcc-multilib
+
+script:
+ - dub test --arch=$ARCH
