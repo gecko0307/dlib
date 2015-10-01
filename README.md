@@ -20,6 +20,8 @@ Currently dlib contains the following packages:
 
 * dlib.image - image processing (8 and 16-bits per channel, floating point operations, filtering, FFT, HDRI, graphics formats support including JPEG and PNG)
 
+* dlib.text - text processing
+
 * dlib.xml - lightweight XML parser (UTF-8)
 
 * dlib.coding - various data compression and coding algorithms
