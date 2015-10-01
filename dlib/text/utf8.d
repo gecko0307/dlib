@@ -39,7 +39,6 @@ struct UTF8Decoder
 {
     size_t index = 0;
     int character = 0;
-    int b = 0;
     string input;
 
     int get()
@@ -61,7 +60,6 @@ struct UTF8Decoder
     {
         index = 0;
         character = 0;
-        b = 0;
         input = str;
     }
 
@@ -73,7 +71,6 @@ struct UTF8Decoder
         if (index >= input.length)
             return index == input.length ? UTF8_END : UTF8_ERROR;
 
-        b = index;
         character++;
         c = get();
 
