@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/gecko0307/dlib.svg?branch=master)](https://travis-ci.org/gecko0307/dlib)
 dlib
 ====
 [![dlib-logo.png](/logo/dlib-logo.png)](/logo/dlib-logo.png)
