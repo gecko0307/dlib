@@ -78,7 +78,7 @@ auto byteRange(T)(T v)
         {
             offset++;
         }
-    };
+    }
 
     return R(v);
 }
