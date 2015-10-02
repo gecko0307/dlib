@@ -16,16 +16,9 @@ d:
 
 matrix:
   allow_failures:
-   - os: osx
-     d: 
-      - ldc-0.15.2-beta2
-      - gdc-4.9.2
-      - gdc-5.2.0
-   - os: linux
-     d: 
-      - ldc-0.15.2-beta2
-      - gdc-4.9.2
-      - gdc-5.2.0
+   - d: ldc-0.15.2-beta2
+   - d: gdc-4.9.2
+   - d: gdc-5.2.0
 
 env: 
   matrix:
