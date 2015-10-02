@@ -11,13 +11,17 @@ d:
  - dmd-2.067.1
  - ldc-0.16.0-beta1
  - ldc-0.15.2-beta2
+ - gdc-5.2.0
+ - gdc-4.9.2
 
 matrix:
   allow_failures:
    - os: osx
      d: ldc-0.15.2-beta2
+     d: gdc-4.9.2
    - os: linux
      d: ldc-0.15.2-beta2
+     d: gdc-4.9.2
 
 env: 
   matrix:
