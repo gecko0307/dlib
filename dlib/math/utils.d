@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2013 Timur Gafarov 
+Copyright (c) 2011-2015 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -120,7 +120,7 @@ T nextPowerOfTwo(T) (T k) nothrow
     if (k == 0) 
         return 1;
     k--;
-    for (int i = 1; i < T.sizeof * char.sizeof; i <<= 1) 
+    for (T i = 1; i < T.sizeof * 8; i <<= 1)
         k = k | k >> i;
     return k + 1;
 }
