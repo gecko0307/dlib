@@ -468,7 +468,7 @@ struct Quaternion(T)
  * Setup a quaternion to rotate about the specified axis.
  * Theta must be in radians
  */
-Quaternion!(T) rotation(T)(uint rotaxis, T theta)
+Quaternion!(T) rotationQuaternion(T)(uint rotaxis, T theta)
 {
     Quaternion!(T) res = Quaternion!(T).identity;
     T thetaOver2 = theta * 0.5;
@@ -503,7 +503,7 @@ Quaternion!(T) rotation(T)(uint rotaxis, T theta)
     return res;
 }
 
-Quaternion!(T) rotation(T)(Vector!(T,3) rotaxis, T theta)
+Quaternion!(T) rotationQuaternion(T)(Vector!(T,3) rotaxis, T theta)
 {
     Quaternion!(T) res;
 
@@ -516,8 +516,6 @@ Quaternion!(T) rotation(T)(Vector!(T,3) rotaxis, T theta)
     res.z = rotaxis.z * sinThetaOver2;
     return res;
 }
-
-alias rotation rotationQuaternion;
 
 /*
  * Setup a quaternion to represent rotation 
@@ -540,7 +538,7 @@ Quaternion!(T) rotationBetween(T)(Vector!(T,3) a, Vector!(T,3) b)
             c = Vector!(T,3)(0, 1, 0);
         axis = cross(a, c); 
         axis.normalize();
-        q = rotation(axis, angle);
+        q = rotationQuaternion(axis, angle);
     }
     else if (d > 0.9999)
     {
@@ -550,7 +548,7 @@ Quaternion!(T) rotationBetween(T)(Vector!(T,3) a, Vector!(T,3) b)
     {
         axis = cross(a, b);
         axis.normalize();
-        q = rotation(axis, angle);
+        q = rotationQuaternion(axis, angle);
     }
         
     return q;

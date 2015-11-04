@@ -620,7 +620,7 @@ Matrix!(T,4) rotationBetweenVectors(T) (Vector!(T,3) source, Vector!(T,3) target
 /*
  * Transformations in 2D space
  */
-Matrix!(T,2) rotation(T) (T theta)
+Matrix!(T,2) rotation2D(T) (T theta)
 body
 {
     Matrix!(T,2) res;
