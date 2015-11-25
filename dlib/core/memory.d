@@ -40,7 +40,7 @@ import core.exception: onOutOfMemoryError;
 
 //version = MemoryDebug;
 
-private static size_t _allocatedMemory = 0;
+private __gshared static size_t _allocatedMemory = 0;
 
 version(MemoryDebug)
 {
