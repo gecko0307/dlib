@@ -19,6 +19,7 @@ matrix:
    - d: ldc-0.15.2-beta2
    - d: gdc-4.9.2
    - d: gdc-5.2.0
+   - d: dmd-2.067.1
 
 env: 
   matrix:
