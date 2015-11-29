@@ -866,6 +866,11 @@ struct Matrix(T, size_t N)
         }
     }
 
+    auto flatten()
+    {
+        return transposed.arrayof;
+    }
+
    /* 
     * Matrix elements
     */
