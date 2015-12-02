@@ -227,8 +227,7 @@ class Trie(T, K)
         {
             if (c.active)
                 dg(c.key, c.value);
-            else
-                c.opApply(dg);
+            c.opApply(dg);
         }
 
         return 0;
