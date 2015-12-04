@@ -26,7 +26,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module audio.sound;
+module dlib.audio.sound;
 
 import std.math;
 import dlib.audio.sample;
