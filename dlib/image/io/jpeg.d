@@ -333,10 +333,12 @@ struct JPEGImage
     {
         jfif.free();
         foreach(ref t; dqt) t.free();
-        Delete(dqt);
+        if (dqt.length)
+            Delete(dqt);
         sof0.free();
         foreach(ref t; dht) t.free();
-        Delete(dht);
+        if (dht.length)
+            Delete(dht);
         sos.free();
     }
 
