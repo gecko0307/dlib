@@ -33,7 +33,7 @@ Currently dlib contains the following packages:
 
 Documentation
 -------------
-Please, refer to [the wiki](https://github.com/gecko0307/dlib/wiki). Also HTML documentation can be generated from wiki pages using [this](/gendoc) set of tools. Be aware that documentation is currently incomplete.
+Please, refer to [the wiki](https://github.com/gecko0307/dlib/wiki). Also HTML documentation can be generated from wiki pages using [this](https://github.com/gecko0307/dlib/tree/master/gendoc) set of tools. Be aware that documentation is currently incomplete.
 
 For support and overall discussions, use our [Gitter chat room](https://gitter.im/gecko0307/dlib).
 
