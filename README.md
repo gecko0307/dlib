@@ -5,6 +5,8 @@ dlib
 
 dlib is a growing collection of native D language libraries useful for various higher-level projects - such as game engines, rendering pipelines and multimedia applications. It is written in D2 and has no external dependencies aside D's standard library, Phobos.
 
+Read more [here](https://github.com/gecko0307/dlib/wiki).
+
 Currently dlib contains the following packages:
 
 * dlib.core - basic functionality used by other modules (manual memory management, streams, OOP for structs, etc.)
@@ -21,6 +23,8 @@ Currently dlib contains the following packages:
 
 * dlib.image - image processing (8 and 16-bits per channel, floating point operations, filtering, FFT, HDRI, graphics formats support including JPEG and PNG)
 
+* dlib.audio - sound processing
+
 * dlib.text - text processing
 
 * dlib.xml - lightweight XML parser (UTF-8)
@@ -29,11 +33,11 @@ Currently dlib contains the following packages:
 
 Documentation
 -------------
-Please, refer to [the wiki](https://github.com/gecko0307/dlib/wiki).
+Please, refer to [the wiki](https://github.com/gecko0307/dlib/wiki). Also HTML documentation can be generated from wiki pages using [this](/gendoc) set of tools. Be aware that documentation is currently incomplete.
 
 For support and overall discussions, use our [Gitter chat room](https://gitter.im/gecko0307/dlib).
 
 License
 -------
-Copyright (c) 2011-2015 Timur Gafarov, Martin Cejp, Andrey Penechko, Vadim Lopatin, Nick Papanastasiou. Distributed under the Boost Software License, Version 1.0. (See accompanying file COPYING or at http://www.boost.org/LICENSE_1_0.txt)
+Copyright (c) 2011-2015 Timur Gafarov, Martin Cejp, Andrey Penechko, Vadim Lopatin, Nick Papanastasiou, Oleg Baharev. Distributed under the Boost Software License, Version 1.0. (See accompanying file COPYING or at http://www.boost.org/LICENSE_1_0.txt)
 
