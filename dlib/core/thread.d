@@ -90,6 +90,7 @@ class Thread
     private void function() func;
     private void delegate() dlgt;
     private bool callFunc;
+    private bool initialized = false;
     
     version(Windows)
     {
@@ -124,7 +125,8 @@ class Thread
 
         version(Posix)
         {
-            pthread_detach(posixThread);
+            if (initialized)
+                pthread_detach(posixThread);
         }
     }
     
@@ -137,6 +139,7 @@ class Thread
             uint threadId;
             winThread = CreateThread(null, cast(size_t)0, &winThreadFunc, cast(void*)this, cast(uint)0, &threadId);
             assert(winThread !is null);
+            initialized = true;
         }
 
         version(Posix)
@@ -144,6 +147,7 @@ class Thread
             running = true;
             pthread_create(&posixThread, null, &posixThreadFunc, cast(void*)this);
             // TODO: validate thread creation
+            initialized = true;
         }
     }
     
