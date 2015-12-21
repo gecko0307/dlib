@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2014 Timur Gafarov 
+Copyright (c) 2011-2015 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -162,7 +162,20 @@ struct Color4f
         return cast(int)((luminance() - c.luminance()) * 100);
     }
 
-    float luminance() const
+    alias luminance709 luminance;
+
+    // ITU-R Rec. BT.709
+    float luminance709() const
+    {
+        return (
+            vec.arrayof[0] * 0.2126f + 
+            vec.arrayof[1] * 0.7152f + 
+            vec.arrayof[2] * 0.0722f
+        );
+    }
+
+    // ITU-R Rec. BT.601
+    float luminance601() const
     {
         return (
             vec.arrayof[0] * 0.3f + 

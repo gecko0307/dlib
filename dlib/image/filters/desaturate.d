@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2015 Timur Gafarov 
+Copyright (c) 2015 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,45 +26,43 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.image;
+module dlib.image.filters.desaturate;
 
-public
+import dlib.image.image;
+import dlib.image.color;
+
+// Default desaturate filter
+alias desaturate709 desaturate;
+
+// ITU-R recommendation BT.709
+SuperImage desaturate709(SuperImage img)
 {
-    import dlib.image.arithmetics;
-    import dlib.image.color;
-    import dlib.image.compleximage;
-    import dlib.image.fthread;
-    import dlib.image.hdri;
-    import dlib.image.hsv;
-    import dlib.image.image;
-    import dlib.image.parallel;
-    import dlib.image.signal2d;
-    import dlib.image.unmanaged;
+    auto res = img.dup;
 
-    import dlib.image.filters.boxblur;
-    import dlib.image.filters.chromakey;
-    import dlib.image.filters.convolution;
-    import dlib.image.filters.desaturate;
-    import dlib.image.filters.edgedetect;
-    import dlib.image.filters.lens;
-    import dlib.image.filters.morphology;
-    import dlib.image.filters.normalmap;
-    import dlib.image.filters.sharpen;
+    foreach(y; 0..img.height)
+    foreach(x; 0..img.width)
+    {
+        auto color = img[x, y];
+        float l = color.luminance709;
+        res[x, y] = Color4f(l, l, l, color.a);
+    }
 
-    import dlib.image.io.bmp;
-    import dlib.image.io.io;
-    import dlib.image.io.png;
-    import dlib.image.io.tga;
-    import dlib.image.io.jpeg;
+    return res;
+}
 
-    import dlib.image.render.cosplasma;
-    import dlib.image.render.shapes;
+// ITU-R recommendation BT.601
+SuperImage desaturate601(SuperImage img)
+{
+    auto res = img.dup;
 
-    import dlib.image.resampling.nearest;
-    import dlib.image.resampling.bilinear;
-    import dlib.image.resampling.bicubic;
-    import dlib.image.resampling.lanczos;
+    foreach(y; 0..img.height)
+    foreach(x; 0..img.width)
+    {
+        auto color = img[x, y];
+        float l = color.luminance601;
+        res[x, y] = Color4f(l, l, l, color.a);
+    }
 
-    import dlib.image.tone.contrast;
+    return res;
 }
 
