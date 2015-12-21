@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013 Timur Gafarov 
+Copyright (c) 2013-2015 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -34,6 +34,33 @@ private
     import dlib.image.image;
     import dlib.image.color;
     import dlib.image.hsv;
+
+    import dlib.math.vector;
+    import dlib.math.utils;
+}
+
+SuperImage chromaKeyEuclidean(
+    SuperImage img, 
+    Color4f keyColor, 
+    float minDist,
+    float maxDist)
+{
+    auto res = new ImageRGBA8(img.width, img.height);
+   
+    foreach(y; img.col)
+    foreach(x; img.row)
+    {       
+        Color4f col = img[x, y];
+        
+        Color4f delta = col - keyColor;
+        float distSqr = dot(delta, delta);
+        col.a = clamp(
+            (distSqr - minDist) / (maxDist - minDist), 
+            0.0f, 1.0f);
+        res[x, y] = col;
+    }
+    
+    return res;
 }
 
 /*
