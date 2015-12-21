@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2013 Timur Gafarov 
+Copyright (c) 2011-2015 Timur Gafarov, Oleg Baharev
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -35,9 +35,10 @@ private
     import dlib.image.arithmetics;
     import dlib.image.tone.contrast;
     import dlib.image.filters.boxblur;
+    import dlib.image.filters.morphology;
 }
 
-SuperImage edgeDetect(SuperImage src, int radius1, int radius2, float amount, bool inv = true)
+SuperImage edgeDetectDoG(SuperImage src, int radius1, int radius2, float amount, bool inv = true)
 {
     auto blurred1 = boxBlur(src, radius1, radius1);
     auto blurred2 = boxBlur(src, radius2, radius2);
@@ -48,3 +49,9 @@ SuperImage edgeDetect(SuperImage src, int radius1, int radius2, float amount, bo
     else
         return highcon;
 }
+
+SuperImage edgeDetectGradient(SuperImage src)
+{
+    return subtract(gradient(src), src);
+}
+

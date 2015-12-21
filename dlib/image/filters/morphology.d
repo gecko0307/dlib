@@ -113,11 +113,11 @@ body
 alias morph!(MorphOperation.Dilate) dilate;
 alias morph!(MorphOperation.Erode) erode;
 
-enum open = (SuperImage img) => img.erode.dilate;
-enum close = (SuperImage img) => img.dilate.erode;
+auto open = (SuperImage img) => img.erode.dilate;
+auto close = (SuperImage img) => img.dilate.erode;
 
-enum gradient = (SuperImage img) => subtract(img.dilate, img.erode);
+auto gradient = (SuperImage img) => subtract(img.dilate, img.erode);
 
-enum topHatWhite = (SuperImage img) => subtract(img, img.open);
-enum topHatBlack = (SuperImage img) => subtract(img, img.close);
+auto topHatWhite = (SuperImage img) => subtract(img, img.open);
+auto topHatBlack = (SuperImage img) => subtract(img, img.close);
 
