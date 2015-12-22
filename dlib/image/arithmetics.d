@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2013 Timur Gafarov 
+Copyright (c) 2011-2015 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -35,6 +35,11 @@ private
 }
 
 SuperImage add(SuperImage a, SuperImage b, float t = 1.0f)
+{
+    return add(a, b, null, 1.0f);
+}
+
+SuperImage add(SuperImage a, SuperImage b, SuperImage outp, float t = 1.0f)
 in
 {
     assert(a.width == b.width);
@@ -42,7 +47,11 @@ in
 }
 body
 {
-    auto img = a.dup;
+    SuperImage img;
+    if (outp)
+        img = outp;
+    else
+        img = a.dup;
 
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
@@ -62,6 +71,11 @@ body
 }
 
 SuperImage subtract(SuperImage a, SuperImage b, float t = 1.0f)
+{
+    return subtract(a, b, null, 1.0f);
+}
+
+SuperImage subtract(SuperImage a, SuperImage b, SuperImage outp, float t = 1.0f)
 in
 {
     assert(a.width == b.width);
@@ -69,7 +83,11 @@ in
 }
 body
 {
-    auto img = a.dup;
+    SuperImage img;
+    if (outp)
+        img = outp;
+    else
+        img = a.dup;
 
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
@@ -89,6 +107,11 @@ body
 }
 
 SuperImage multiply(SuperImage a, SuperImage b, float t = 1.0f)
+{
+    return multiply(a, b, null, 1.0f);
+}
+
+SuperImage multiply(SuperImage a, SuperImage b, SuperImage outp, float t = 1.0f)
 in
 {
     assert(a.width == b.width);
@@ -96,7 +119,11 @@ in
 }
 body
 {
-    auto img = a.dup;
+    SuperImage img;
+    if (outp)
+        img = outp;
+    else
+        img = a.dup;
 
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
@@ -116,6 +143,11 @@ body
 }
 
 SuperImage divide(SuperImage a, SuperImage b, float t = 1.0f)
+{
+    return divide(a, b, null, 1.0f);
+}
+
+SuperImage divide(SuperImage a, SuperImage b, SuperImage outp, float t = 1.0f)
 in
 {
     assert(a.width == b.width);
@@ -123,7 +155,11 @@ in
 }
 body
 {
-    auto img = a.dup;
+    SuperImage img;
+    if (outp)
+        img = outp;
+    else
+        img = a.dup;
 
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
@@ -144,7 +180,16 @@ body
 
 SuperImage invert(SuperImage a)
 {
-    auto img = a.dup;
+    return invert(a, null);
+}
+
+SuperImage invert(SuperImage a, SuperImage outp)
+{
+    SuperImage img;
+    if (outp)
+        img = outp;
+    else
+        img = a.dup;
 
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
@@ -157,4 +202,3 @@ SuperImage invert(SuperImage a)
 
     return img;
 }
-
