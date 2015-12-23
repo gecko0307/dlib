@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2013 Timur Gafarov 
+Copyright (c) 2011-2015 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -39,7 +39,7 @@ private
 
 SuperImage sharpen(SuperImage src, int radius, float amount)
 {
-    auto blurred = boxBlur(src, radius, radius);
+    auto blurred = boxBlur(src, radius);
     auto mask = subtract(src, blurred, 1.0f);
     auto highcon = contrast(mask, amount, ContrastMethod.AverageImage);
     return add(src, highcon, 0.25f);

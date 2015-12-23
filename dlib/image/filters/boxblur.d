@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2013 Timur Gafarov 
+Copyright (c) 2011-2015 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -34,51 +34,44 @@ private
     import dlib.image.image;
 }
 
-private SuperImage boxBlurHorizontal(SuperImage src, int radius) 
-body
+SuperImage boxBlur(SuperImage img, int radius) 
 {
-    auto dest = src.dup;
-    foreach (y; 0..src.height) 
-    foreach (x; 0..src.width)
+    return boxBlur(img, null, radius);
+}
+
+SuperImage boxBlur(SuperImage img, SuperImage outp, int radius) 
+{
+    SuperImage res;
+    if (outp)
+        res = outp;
+    else
+        res = img.dup;
+    
+    int r2 = radius * 2;
+    
+    foreach(y; 0..img.height)
+    foreach(x; 0..img.width)
     {
-        Color4f total = Color4f(0.0f, 0.0f, 0.0f, 1.0f);
-        for (int kx = -radius; kx <= radius; ++kx)
-             total += src[x + kx, y];
-        total /= (radius * 2.0f + 1.0f);
-        dest[x, y] = total;
-        src.updateProgress();
+        float alpha = Color4f(img[x, y]).a;
+        
+        Color4f total = Color4f(0, 0, 0);
+        
+        foreach(ky; 0..r2)
+        foreach(kx; 0..r2)
+        {
+            int iy = y + (ky - radius);
+            int ix = x + (kx - radius);
+            
+            total += img[ix, iy];
+        }
+
+        total /= radius * radius * 4.0f;
+        total.a = alpha;
+        
+        res[x,y] = total;
+        img.updateProgress();
     }
-    src.resetProgress();
-    return dest;
+    
+    img.resetProgress();
+    return res;
 }
-
-private SuperImage boxBlurVertical(SuperImage src, int radius) 
-body
-{
-    auto dest = src.dup;
-    foreach (y; 0..src.height) 
-    foreach (x; 0..src.width)
-    {
-        Color4f total = Color4f(0.0f, 0.0f, 0.0f, 1.0f);
-        for (int ky = -radius; ky <= radius; ++ky)
-             total += src[x, y + ky];
-        total /= (radius * 2.0f + 1.0f);
-        dest[x, y] = total;
-        src.updateProgress();
-    }
-    src.resetProgress();
-    return dest;
-}
-
-SuperImage boxBlur(SuperImage src, int hradius, int vradius)
-body
-{
-    auto output = src.dup;
-    auto temp = src.dup;
-
-    temp = src.boxBlurHorizontal(hradius);
-    output = temp.boxBlurVertical(vradius);
-
-    return output;
-}
-

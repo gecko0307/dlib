@@ -40,8 +40,9 @@ private
 
 SuperImage edgeDetectDoG(SuperImage src, int radius1, int radius2, float amount, bool inv = true)
 {
-    auto blurred1 = boxBlur(src, radius1, radius1);
-    auto blurred2 = boxBlur(src, radius2, radius2);
+    auto blurred1 = boxBlur(src, radius1);
+    auto blurred2 = boxBlur(src, radius2);
+    
     auto mask = subtract(blurred1, blurred2, 1.0f);
     auto highcon = contrast(mask, amount, ContrastMethod.AverageImage);
     if (inv)
