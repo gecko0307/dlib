@@ -44,14 +44,18 @@ enum MorphOperation
 // TODO:
 // add support for other structuring elements
 // other than box (disk, diamond, etc)
-SuperImage morph(MorphOperation op) (SuperImage img)
+SuperImage morphOp(MorphOperation op) (SuperImage img, SuperImage outp)
 in
 {
     assert (img.data.length);
 }
 body
 {
-    SuperImage res = img.dup;
+    SuperImage res;
+    if (outp)
+        res = outp;
+    else
+        res = img.dup;
 
     uint kw = 3, kh = 3;
 
@@ -110,14 +114,37 @@ body
     return res;
 }
 
+SuperImage morph(MorphOperation op) (SuperImage img) 
+{
+    return morphOp!(op)(img, null);
+}
+
 alias morph!(MorphOperation.Dilate) dilate;
 alias morph!(MorphOperation.Erode) erode;
 
-auto open = (SuperImage img) => img.erode.dilate;
-auto close = (SuperImage img) => img.dilate.erode;
+// TODO: make GC-free overloads of these
 
-auto gradient = (SuperImage img) => subtract(img.dilate, img.erode);
+SuperImage open(SuperImage img)
+{
+    return dilate(erode(img));
+}
 
-auto topHatWhite = (SuperImage img) => subtract(img, img.open);
-auto topHatBlack = (SuperImage img) => subtract(img, img.close);
+SuperImage close(SuperImage img)
+{
+    return erode(dilate(img));
+}
 
+SuperImage gradient(SuperImage img)
+{
+    return subtract(dilate(img), erode(img));
+}
+
+SuperImage topHatWhite(SuperImage img)
+{
+    return subtract(img, open(img));
+}
+
+SuperImage topHatBlack(SuperImage img)
+{
+    return subtract(img, close(img));
+}
