@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2013 Timur Gafarov 
+Copyright (c) 2011-2015 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -41,8 +41,18 @@ private
  *
  * TODO: optionally transfer height data to alpha channel
  */
+
 SuperImage heightToNormal(
     SuperImage img,
+    Channel channel = Channel.R, 
+    float strength = 2.0f)
+{
+    return heightToNormal(img, null, channel, strength);
+} 
+ 
+SuperImage heightToNormal(
+    SuperImage img,
+    SuperImage outp,
     Channel channel = Channel.R, 
     float strength = 2.0f)
 in
@@ -51,7 +61,11 @@ in
 }
 body
 {
-    auto res = img.dup;
+    SuperImage res;
+    if (outp)
+        res = outp;
+    else
+        res = img.dup;
 
     if (img.channels == 1)
         channel = Channel.R;
