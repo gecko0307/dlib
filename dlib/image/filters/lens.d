@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014 Timur Gafarov 
+Copyright (c) 2014-2015 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -37,7 +37,21 @@ SuperImage lensDistortion(
     float zoom, 
     bool interpolation = true)
 {
-    auto res = img.dup;
+    return lensDistortion(img, null, strength, zoom, interpolation);
+}
+
+SuperImage lensDistortion(
+    SuperImage img, 
+    SuperImage outp,
+    float strength, 
+    float zoom, 
+    bool interpolation = true)
+{
+    SuperImage res;
+    if (outp)
+        res = outp;
+    else
+        res = img.dup;
 
     float halfWidth = cast(float)img.width / 2.0f;
     float halfHeight = cast(float)img.height / 2.0f;
