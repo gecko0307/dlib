@@ -45,7 +45,21 @@ SuperImage chromaKeyEuclidean(
     float minDist,
     float maxDist)
 {
-    auto res = new ImageRGBA8(img.width, img.height);
+    return chromaKeyEuclidean(img, null, keyColor, minDist, maxDist);
+}
+
+SuperImage chromaKeyEuclidean(
+    SuperImage img, 
+    SuperImage outp,
+    Color4f keyColor, 
+    float minDist,
+    float maxDist)
+{
+    SuperImage res;
+    if (outp)
+        res = outp;
+    else
+        res = img.dup;
    
     foreach(y; img.col)
     foreach(x; img.row)
@@ -58,23 +72,40 @@ SuperImage chromaKeyEuclidean(
             (distSqr - minDist) / (maxDist - minDist), 
             0.0f, 1.0f);
         res[x, y] = col;
+        
+        img.updateProgress();
     }
+    
+    img.resetProgress();
     
     return res;
 }
 
-/*
- * Get alpha from color
- */
 SuperImage chromaKey(
-    SuperImage img,
+    SuperImage img, 
     float hue,
     float hueToleranceMin = -20.0f, 
     float hueToleranceMax = 20.0f, 
     float satThres = 0.2f,
     float valThres = 0.3f)
 {
-    auto res = img.dup;
+    return chromaKey(img, null, hue, hueToleranceMin, hueToleranceMax, satThres, valThres);
+}
+
+SuperImage chromaKey(
+    SuperImage img,
+    SuperImage outp,
+    float hue,
+    float hueToleranceMin = -20.0f, 
+    float hueToleranceMax = 20.0f, 
+    float satThres = 0.2f,
+    float valThres = 0.3f)
+{
+    SuperImage res;
+    if (outp)
+        res = outp;
+    else
+        res = img.dup;
 
     foreach(x; 0..img.width)
     foreach(y; 0..img.height)
@@ -106,7 +137,19 @@ SuperImage chromaKey(
  * Turns image into b&w where only one color left
  */
 SuperImage colorPass(
+    SuperImage img, 
+    float hue,
+    float hueToleranceMin = -20.0f, 
+    float hueToleranceMax = 20.0f, 
+    float satThres = 0.2f,
+    float valThres = 0.3f)
+{
+    return colorPass(img, null, hue, hueToleranceMin, hueToleranceMax, satThres, valThres);
+}
+ 
+SuperImage colorPass(
     SuperImage img,
+    SuperImage outp,
     float hue,
     float hueToleranceMin = -20.0f, 
     float hueToleranceMax = 20.0f, 
@@ -118,9 +161,11 @@ in
 }
 body
 {
-    auto res = img.dup;
-    
-    float[8] sobelTaps;
+    SuperImage res;
+    if (outp)
+        res = outp;
+    else
+        res = img.dup;
     
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
