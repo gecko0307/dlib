@@ -35,9 +35,13 @@ import dlib.image.color;
 alias desaturate709 desaturate;
 
 // ITU-R recommendation BT.709
-SuperImage desaturate709(SuperImage img)
+SuperImage desaturate709(SuperImage img, SuperImage outp = null)
 {
-    auto res = img.dup;
+    SuperImage res;
+    if (outp)
+        res = outp;
+    else
+        res = img.dup;
 
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
@@ -51,9 +55,13 @@ SuperImage desaturate709(SuperImage img)
 }
 
 // ITU-R recommendation BT.601
-SuperImage desaturate601(SuperImage img)
+SuperImage desaturate601(SuperImage img, SuperImage outp = null)
 {
-    auto res = img.dup;
+    SuperImage res;
+    if (outp)
+        res = outp;
+    else
+        res = img.dup;
 
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
