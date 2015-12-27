@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2013 Timur Gafarov 
+Copyright (c) 2011-2015 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -42,7 +42,17 @@ enum ContrastMethod
 
 SuperImage contrast(SuperImage a, float k, ContrastMethod method = ContrastMethod.AverageGray)
 {
-    SuperImage img = a.dup;
+    return contrast(a, null, k, method);
+}
+
+SuperImage contrast(SuperImage img, SuperImage outp, float k, ContrastMethod method = ContrastMethod.AverageGray)
+{
+    SuperImage res;
+    if (outp)
+        res = outp;
+    else
+        res = img.dup;
+
     Color4f aver = Color4f(0.0f, 0.0f, 0.0f);
 
     if (method == ContrastMethod.AverageGray)
@@ -51,29 +61,29 @@ SuperImage contrast(SuperImage a, float k, ContrastMethod method = ContrastMetho
     }
     else if (method == ContrastMethod.AverageImage)
     {
-        foreach(y; 0..img.height)
-        foreach(x; 0..img.width)
+        foreach(y; 0..res.height)
+        foreach(x; 0..res.width)
         {
-            aver += Color4f(a[x, y]);
-            a.updateProgress();
+            aver += img[x, y];
+            img.updateProgress();
         }
 
-        aver /= (img.height * img.width);
+        aver /= (res.height * res.width);
         
-        a.resetProgress();
+        img.resetProgress();
     }
 
-    foreach(y; 0..img.height)
-    foreach(x; 0..img.width)
+    foreach(y; 0..res.height)
+    foreach(x; 0..res.width)
     {
-        auto col = Color4f(a[x, y]);
+        auto col = img[x, y];
         col = ((col - aver) * k + aver);
-        img[x, y] = col;
-        a.updateProgress();
+        res[x, y] = col;
+        img.updateProgress();
     }
     
-    a.resetProgress();
+    img.resetProgress();
 
-    return img;
+    return res;
 }
 

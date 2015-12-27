@@ -122,8 +122,6 @@ SuperImage morph(MorphOperation op) (SuperImage img)
 alias morph!(MorphOperation.Dilate) dilate;
 alias morph!(MorphOperation.Erode) erode;
 
-// TODO: make GC-free overloads of these
-
 SuperImage open(SuperImage img)
 {
     return dilate(erode(img));
@@ -148,3 +146,60 @@ SuperImage topHatBlack(SuperImage img)
 {
     return subtract(img, close(img));
 }
+
+// GC-free overloads:
+SuperImage open(SuperImage img, SuperImage outp)
+{
+    if (outp is null)
+        outp = img.dup;
+    auto outp2 = outp.dup;
+
+    auto e = morphOp!(MorphOperation.Erode)(img, outp2);
+    auto d = morphOp!(MorphOperation.Dilate)(outp2, outp);
+    outp2.free();
+    return d;
+}
+
+SuperImage close(SuperImage img, SuperImage outp)
+{
+    if (outp is null)
+        outp = img.dup;
+    auto outp2 = outp.dup;
+
+    auto d = morphOp!(MorphOperation.Dilate)(img, outp2);
+    auto e = morphOp!(MorphOperation.Erode)(outp2, outp);
+    outp2.free();
+    return e;
+}
+
+SuperImage gradient(SuperImage img, SuperImage outp)
+{
+    if (outp is null)
+        outp = img.dup;
+    auto outp2 = outp.dup;
+
+    auto d = morphOp!(MorphOperation.Dilate)(img, outp2);
+    auto e = morphOp!(MorphOperation.Erode)(img, outp);
+    auto s = subtract(d, e, outp);
+    outp2.free();
+    return s;
+}
+
+SuperImage topHatWhite(SuperImage img, SuperImage outp)
+{
+    if (outp is null)
+        outp = img.dup;
+    auto o = open(img, outp);
+    auto s = subtract(img, o, outp);
+    return s;
+}
+
+SuperImage topHatBlack(SuperImage img, SuperImage outp)
+{
+    if (outp is null)
+        outp = img.dup;
+    auto o = close(img, outp);
+    auto s = subtract(img, o, outp);
+    return s;
+}
+

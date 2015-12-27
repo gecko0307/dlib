@@ -40,13 +40,24 @@ private
 
 SuperImage edgeDetectDoG(SuperImage src, int radius1, int radius2, float amount, bool inv = true)
 {
-    auto blurred1 = boxBlur(src, radius1);
-    auto blurred2 = boxBlur(src, radius2);
+    return edgeDetectDoG(src, null, radius1, radius2, amount, inv);
+}
+
+SuperImage edgeDetectDoG(SuperImage src, SuperImage outp, int radius1, int radius2, float amount, bool inv = true)
+{
+    if (outp is null)
+        outp = src.dup;
+
+    auto blurred1 = boxBlur(src, outp, radius1);
+    SuperImage outp2 = outp.dup;
+    auto blurred2 = boxBlur(src, outp2, radius2);
     
-    auto mask = subtract(blurred1, blurred2, 1.0f);
-    auto highcon = contrast(mask, amount, ContrastMethod.AverageImage);
+    auto mask = subtract(blurred1, blurred2, outp, 1.0f);
+    outp2.free();
+    auto highcon = contrast(mask, mask, amount, ContrastMethod.AverageImage);
+
     if (inv)
-        return invert(highcon);
+        return invert(highcon, highcon);
     else
         return highcon;
 }
@@ -55,4 +66,15 @@ SuperImage edgeDetectGradient(SuperImage src)
 {
     return subtract(gradient(src), src);
 }
+
+SuperImage edgeDetectGradient(SuperImage src, SuperImage outp)
+{
+    if (outp is null)
+        outp = src.dup;
+
+    auto g = gradient(src, outp);
+
+    return subtract(g, src, outp);
+}
+
 
