@@ -39,8 +39,17 @@ private
 
 SuperImage sharpen(SuperImage src, int radius, float amount)
 {
-    auto blurred = boxBlur(src, radius);
-    auto mask = subtract(src, blurred, 1.0f);
-    auto highcon = contrast(mask, amount, ContrastMethod.AverageImage);
-    return add(src, highcon, 0.25f);
+    return sharpen(src, null, radius, amount);
 }
+
+SuperImage sharpen(SuperImage src, SuperImage outp, int radius, float amount)
+{
+    if (outp is null)
+        outp = src.dup;
+
+    auto blurred = boxBlur(src, outp, radius);
+    auto mask = subtract(src, blurred, outp, 1.0f);
+    auto highcon = contrast(mask, outp, amount, ContrastMethod.AverageImage);
+    return add(src, highcon, outp, 0.25f);
+}
+
