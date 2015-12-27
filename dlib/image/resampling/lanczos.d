@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2013 Timur Gafarov 
+Copyright (c) 2011-2015 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -70,7 +70,7 @@ body
             int oy1 = cast(int)oy;
             float dy = oy - oy1;
 
-            Color4f colSum;
+            Color4f colSum = Color4f(0, 0, 0);
             float kSum;
 
             foreach(kx; -3..4)
@@ -87,7 +87,7 @@ body
                     if (iy < 0) iy = 0;
                     if (iy >= img.height) iy = img.height - 1;
 
-                    auto col = Color4f(img[ix, iy]);
+                    auto col = img[ix, iy];
 
                     float k1 = lanczos((cast(float)ky - dy), 3);
                     float k2 = k1 * lanczos((cast(float)kx - dx), 3);

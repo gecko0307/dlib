@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2013 Timur Gafarov 
+Copyright (c) 2011-2015 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -54,7 +54,7 @@ T bicubic(T) (T x)
            ( a - ( 4.0 * b ) + ( 6.0 * c ) - ( 4.0 * d ) ) );
 }
 
-SuperImage resampleBicubic(SuperImage img, in uint newWidth, in uint newHeight)
+SuperImage resampleBicubic(SuperImage img, uint newWidth, uint newHeight)
 in
 {
     assert (img.data.length);
@@ -78,7 +78,7 @@ body
             int oy1 = cast(int)oy;
             float dy = oy - oy1;
 
-            Color4f colSum;
+            Color4f colSum = Color4f(0, 0, 0);
 
             foreach(kx; -1..3)
             {
