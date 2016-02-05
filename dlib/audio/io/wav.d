@@ -158,7 +158,7 @@ void saveWAV(GenericSound snd, OutputStream ostrm)
     string magic = "RIFF";
     ostrm.writeBytes(magic.ptr, 4);
 
-    int chunkSize = 36 + snd.data.length; // total file size - 8
+    int chunkSize = 36 + cast(int)snd.data.length; // total file size - 8
     ostrm.writeLE(chunkSize);
 
     string format = "WAVE";
@@ -196,7 +196,7 @@ void saveWAV(GenericSound snd, OutputStream ostrm)
     string dataID = "data";
     ostrm.writeBytes(dataID.ptr, 4);
 
-    int dataSubchunkSize = snd.data.length;
+    int dataSubchunkSize = cast(int)snd.data.length;
     ostrm.writeArray(snd.data);
 }
 
