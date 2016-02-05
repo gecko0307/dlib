@@ -197,6 +197,7 @@ void saveWAV(GenericSound snd, OutputStream ostrm)
     ostrm.writeBytes(dataID.ptr, 4);
 
     int dataSubchunkSize = cast(int)snd.data.length;
+    ostrm.writeLE(dataSubchunkSize);
     ostrm.writeArray(snd.data);
 }
 
