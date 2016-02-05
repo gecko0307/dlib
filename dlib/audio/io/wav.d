@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015 Timur Gafarov 
+Copyright (c) 2015-2016 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -35,7 +35,7 @@ import dlib.audio.sample;
 import dlib.audio.sound;
 
 /*
- * Simple RIFF/WAV decoder
+ * Simple RIFF/WAV decoder and encoder
  */
 
 // Uncomment to see debug messages
@@ -144,5 +144,59 @@ GenericSound loadWAV(InputStream istrm, GenericSoundFactory gsf)
     istrm.fillArray(gs.data);
 
     return gs;
+}
+
+void saveWAV(GenericSound snd, string filename)
+{
+    auto ostrm = openForOutput(filename);
+    saveWAV(snd, ostrm);
+    ostrm.close();
+}
+
+void saveWAV(GenericSound snd, OutputStream ostrm)
+{
+    string magic = "RIFF";
+    ostrm.writeBytes(magic.ptr, 4);
+
+    int chunkSize = 36 + snd.data.length; // total file size - 8
+    ostrm.writeLE(chunkSize);
+
+    string format = "WAVE";
+    ostrm.writeBytes(format.ptr, 4);
+
+    string fmt = "fmt ";
+    ostrm.writeBytes(fmt.ptr, 4);
+
+    int fmtSubchunkSize = 16;
+    ostrm.writeLE(fmtSubchunkSize);
+
+    short audioFormat = 1;
+    short numChannels = cast(short)snd.channels;
+    assert(numChannels == 1 || numChannels == 2);
+    int sampleRate = snd.sampleRate; // samples per second
+    int byteRate = snd.sampleRate * snd.sampleSize; // bytes per second
+    short blockAlign = cast(short)snd.sampleSize; // bytes per sample
+    short bitsPerSample;
+    if (snd.sampleFormat == SampleFormat.U8)
+        bitsPerSample = 8;
+    else if (snd.sampleFormat == SampleFormat.S16)
+        bitsPerSample = 16;
+    else
+    {
+        assert(0, "Illegal sample format to use with RIFF/WAV");
+    }
+
+    ostrm.writeLE(audioFormat);
+    ostrm.writeLE(numChannels);
+    ostrm.writeLE(sampleRate);
+    ostrm.writeLE(byteRate);
+    ostrm.writeLE(blockAlign);
+    ostrm.writeLE(bitsPerSample);
+
+    string dataID = "data";
+    ostrm.writeBytes(dataID.ptr, 4);
+
+    int dataSubchunkSize = snd.data.length;
+    ostrm.writeArray(snd.data);
 }
 

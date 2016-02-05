@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015 Timur Gafarov 
+Copyright (c) 2015-2016 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -31,6 +31,12 @@ module dlib.audio.synth;
 import std.math;
 import dlib.audio.sound;
 
+/*
+ * Fill the sound with simple sinewave tone.
+ * snd - sound
+ * ch - channel to fill (beginning from 0)
+ * freq - frequency in Hz. For example, a dial tone in Europe is usually 425 Hz
+ */
 void sineWave(Sound snd, uint ch, float freq)
 {
     float time = 0.0f;

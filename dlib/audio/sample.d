@@ -28,6 +28,14 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.audio.sample;
 
+/*
+ * dlib.audio defines four integer sample formats:
+ * S8  - signed 8-bit
+ * S16 - signed 16-bit
+ * U8  - unsigned 8-bit
+ * U16 - unsigned 16-bit
+ */
+
 enum SampleFormat
 {
     S8,
@@ -35,6 +43,12 @@ enum SampleFormat
     U8,
     U16
 }
+
+/*
+ * Integer formats are for storage only: all sound processing and sample I/O
+ * should be done in floating point numbers. Floating point sample is signed and
+ * ranges from -1.0f to 1.0f.
+ */
 
 // Convert integer sample to floating point
 float toFloatSample(ubyte* ptr, SampleFormat format)
@@ -53,10 +67,12 @@ float toFloatSample(ubyte* ptr, SampleFormat format)
         case SampleFormat.U8: 
             res = *ptr;
             res /= ubyte.max;
+            res = res * 2.0f - 1.0f; // normalize to range -1..1
             break;
         case SampleFormat.U16:
             res = *cast(ushort*)ptr;
             res /= ushort.max;
+            res = res * 2.0f - 1.0f; // normalize to range -1..1
             break;
         default:
             break;
@@ -76,10 +92,10 @@ void fromFloatSample(ubyte* ptr, SampleFormat format, float s)
             *cast(short*)ptr = cast(short)(s * short.max);
             break;
         case SampleFormat.U8: 
-            *cast(ubyte*)ptr = cast(ubyte)(s * ubyte.max);
+            *cast(ubyte*)ptr = cast(ubyte)((s + 1.0f) * 0.5f * ubyte.max);
             break;
         case SampleFormat.U16:
-            *cast(ushort*)ptr = cast(ushort)(s * ushort.max);
+            *cast(ushort*)ptr = cast(ushort)((s + 1.0f) * 0.5f * ushort.max);
             break;
         default:
             break;
