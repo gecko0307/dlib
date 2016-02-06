@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015 Timur Gafarov 
+Copyright (c) 2016 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -28,18 +28,25 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.filesystem.stdfs;
 
+import std.c.stdio;
 import std.file;
 import std.string;
-import std.datetime;
-import std.c.stdio;
-
 import dlib.core.memory;
 import dlib.core.stream;
+import dlib.container.dict;
 import dlib.filesystem.filesystem;
 
-/*
- * A simple GC-free FileSystem based on standard C file I/O
- */
+version(Posix)
+{
+    import dlib.filesystem.stdposixdir;
+}
+version(Windows)
+{
+    import dlib.filesystem.stdwindowsdir;
+}
+
+import dlib.text.utils;
+import dlib.text.utf16;
 
 class StdInFileStream: InputStream
 {
@@ -101,14 +108,6 @@ class StdInFileStream: InputStream
             eof = true;
         return bytesRead;
     }
-/*
-    void free()
-    {
-        Delete(this);
-    }
-
-    mixin ManualModeImpl;
-*/
 }
 
 class StdOutFileStream: OutputStream 
@@ -169,20 +168,22 @@ class StdOutFileStream: OutputStream
             _writeable = false;
         return res;
     }
-/*
-    void free()
-    {
-        Delete(this);
-    }
-
-    mixin ManualModeImpl;
-*/
 }
 
 class StdFileSystem: FileSystem
 {
+    Dict!(Directory, string) openedDirs;
+
     this()
     {
+        openedDirs = New!(Dict!(Directory, string));
+    }
+    
+    ~this()
+    {
+        foreach(k, v; openedDirs)
+            Delete(v);
+        Delete(openedDirs);
     }
 
     bool stat(string filename, out FileStat stat)
@@ -206,13 +207,13 @@ class StdFileSystem: FileSystem
 
     StdInFileStream openForInput(string filename)
     {
-        FILE* file = fopen(filename.toStringz, "rb");
+        FILE* file = fopen(filename.toStringz, "rb"); // TODO: GC-free toStringz replacement
         return New!StdInFileStream(file);
     }
     
     StdOutFileStream openForOutput(string filename, uint creationFlags)
     {
-        FILE* file = fopen(filename.toStringz, "wb");
+        FILE* file = fopen(filename.toStringz, "wb"); // TODO: GC-free toStringz replacement
         return New!StdOutFileStream(file);
     }
     
@@ -221,11 +222,38 @@ class StdFileSystem: FileSystem
     {
         return null;
     }
-    
-    // TODO
+
     Directory openDir(string path)
     {
-        return null;
+        version(Posix)
+        {
+            if (path in openedDirs)
+            {
+                return openedDirs[path];
+            }
+            else
+            {
+                auto dir = New!StdPosixDirectory(path);
+                openedDirs[path] = dir;
+                return dir;
+            }
+        }
+        version(Windows)
+        {
+            if (path in openedDirs)
+            {
+                return openedDirs[path];
+            }
+            else
+            {
+                string s = catStr(path, "\\*.*");
+                wchar[] ws = convertUTF8toUTF16(s, true);
+                Delete(s);
+                auto dir = New!StdWindowsDirectory(ws.ptr);
+                openedDirs[path] = dir;
+                return dir;
+            }
+        }
     }
     
     // TODO
@@ -255,4 +283,3 @@ T readStruct(T)(InputStream istrm) if (is(T == struct))
     istrm.readBytes(res.ptr, T.sizeof);
     return res;
 }
-
