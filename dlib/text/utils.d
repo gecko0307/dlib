@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2016 Timur Gafarov 
+Copyright (c) 2016 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,13 +26,31 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.text;
+module dlib.text.utils;
 
-public
+import dlib.core.memory;
+
+// Make an unmanaged copy of a string
+T[] copy(T)(T[] b)
 {
-    import dlib.text.utils;
-    import dlib.text.utf8;
-    import dlib.text.utf16;
-    import dlib.text.lexer;
+    auto res = New!(T[])(b.length);
+    foreach(i, c; b)
+        res[i] = c;
+    return res;
 }
 
+// Concatenates two strings to a new unmanaged string
+string catStr(string s1, string s2)
+{
+    char[] buffer = New!(char[])(s1.length + s2.length);
+    size_t i, j;
+    for(i = 0; i < s1.length; i++)
+    {
+        buffer[i] = s1[i];
+    }
+    for(j = 0; j < s2.length; j++)
+    {
+        buffer[i+j] = s2[j];
+    }
+    return cast(string)buffer;
+}
