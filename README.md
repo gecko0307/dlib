@@ -21,9 +21,9 @@ Currently dlib contains the following packages:
 
 * dlib.geometry - computational geometry (ray casting, primitives, intersection, etc.)
 
-* dlib.image - image processing (8 and 16-bits per channel, floating point operations, filtering, FFT, HDRI, graphics formats support including JPEG and PNG)
+* dlib.image - image processing (8 and 16 bits per channel, floating point operations, filtering, FFT, HDRI, graphics formats support including JPEG and PNG)
 
-* dlib.audio - sound processing
+* dlib.audio - sound processing (8 and 16 bits per sample, synthesizers, WAV export and import)
 
 * dlib.text - text processing
 
@@ -39,5 +39,5 @@ For support and overall discussions, use our [Gitter chat room](https://gitter.i
 
 License
 -------
-Copyright (c) 2011-2015 Timur Gafarov, Martin Cejp, Andrey Penechko, Vadim Lopatin, Nick Papanastasiou, Oleg Baharev. Distributed under the Boost Software License, Version 1.0. (See accompanying file COPYING or at http://www.boost.org/LICENSE_1_0.txt)
+Copyright (c) 2011-2016 Timur Gafarov, Martin Cejp, Andrey Penechko, Vadim Lopatin, Nick Papanastasiou, Oleg Baharev. Distributed under the Boost Software License, Version 1.0. (See accompanying file COPYING or at http://www.boost.org/LICENSE_1_0.txt)
 
