@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016 Timur Gafarov 
+Copyright (c) 2015-2016 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -42,11 +42,19 @@ version(Posix)
 }
 version(Windows)
 {
+    import std.stdio;
     import dlib.filesystem.stdwindowsdir;
 }
 
 import dlib.text.utils;
 import dlib.text.utf16;
+
+/*
+version(Windows)
+{
+   extern(Windows) int _wfopen_s(FILE** pFile, const wchar_t *filename, const wchar_t *mode);
+}
+*/
 
 class StdInFileStream: InputStream
 {
@@ -170,6 +178,88 @@ class StdOutFileStream: OutputStream
     }
 }
 
+class StdIOStream: IOStream
+{
+    FILE* file;
+    StreamSize _size;
+    bool _eof;
+    bool _writeable;
+
+    this(FILE* file)
+    {
+        this.file = file;
+        this._writeable = true;
+        
+        fseek(file, 0, SEEK_END);
+        this._size = ftell(file);
+        fseek(file, 0, SEEK_SET);
+        
+        this._eof = false;
+    }
+    
+    ~this()
+    {
+        fclose(file);
+    }
+    
+    StreamPos getPosition() @property
+    { 
+        return ftell(file);
+    }
+
+    bool setPosition(StreamPos p)
+    {
+        import core.stdc.config : c_long;
+        return !fseek(file, cast(c_long)p, SEEK_SET);
+    }
+
+    StreamSize size()
+    {
+        return _size;
+    }
+
+    void close()
+    {
+        fclose(file);
+    }
+
+    bool seekable()
+    {
+        return true;
+    }
+
+    bool readable()
+    {
+        return !_eof;
+    }
+
+    size_t readBytes(void* buffer, size_t count)
+    {
+        auto bytesRead = fread(buffer, 1, count, file);
+        if (count > bytesRead)
+            _eof = true;
+        return bytesRead;
+    }
+    
+    void flush()
+    {
+        fflush(file); 
+    }
+    
+    bool writeable()
+    {
+        return _writeable;
+    }
+    
+    size_t writeBytes(const void* buffer, size_t count)
+    {
+        size_t res = fwrite(buffer, 1, count, file);
+        if (res != count)
+            _writeable = false;
+        return res;
+    }
+}
+
 class StdFileSystem: FileSystem
 {
     Dict!(Directory, string) openedDirs;
@@ -207,20 +297,53 @@ class StdFileSystem: FileSystem
 
     StdInFileStream openForInput(string filename)
     {
-        FILE* file = fopen(filename.toStringz, "rb"); // TODO: GC-free toStringz replacement
+        version(Posix)
+        {
+            FILE* file = fopen(filename.toStringz, "rb"); // TODO: GC-free toStringz replacement
+        }
+        version(Windows)
+        {
+            wchar[] filename_utf16 = convertUTF8toUTF16(filename, true);
+            wchar[] mode_utf16 = convertUTF8toUTF16("rb", true);
+            FILE* file = _wfopen(filename_utf16.ptr, mode_utf16.ptr);
+            Delete(filename_utf16);
+            Delete(mode_utf16);
+        }
         return New!StdInFileStream(file);
     }
     
-    StdOutFileStream openForOutput(string filename, uint creationFlags)
+    StdOutFileStream openForOutput(string filename, uint creationFlags = FileSystem.create)
     {
-        FILE* file = fopen(filename.toStringz, "wb"); // TODO: GC-free toStringz replacement
+        version(Posix)
+        {
+            FILE* file = fopen(filename.toStringz, "wb"); // TODO: GC-free toStringz replacement
+        }
+        version(Windows)
+        {
+            wchar[] filename_utf16 = convertUTF8toUTF16(filename, true);
+            wchar[] mode_utf16 = convertUTF8toUTF16("wb", true);
+            FILE* file = _wfopen(filename_utf16.ptr, mode_utf16.ptr);
+            Delete(filename_utf16);
+            Delete(mode_utf16);
+        }
         return New!StdOutFileStream(file);
     }
     
-    // TODO
-    IOStream openForIO(string filename, uint creationFlags)
-    {
-        return null;
+    StdIOStream openForIO(string filename, uint creationFlags = FileSystem.create)
+    {        
+        version(Posix)
+        {
+            FILE* file = fopen(filename.toStringz, "rb+"); // TODO: GC-free toStringz replacement
+        }
+        version(Windows)
+        {
+            wchar[] filename_utf16 = convertUTF8toUTF16(filename, true);
+            wchar[] mode_utf16 = convertUTF8toUTF16("rb+", true);
+            FILE* file = _wfopen(filename_utf16.ptr, mode_utf16.ptr);
+            Delete(filename_utf16);
+            Delete(mode_utf16);
+        }
+        return New!StdIOStream(file);
     }
 
     Directory openDir(string path)
