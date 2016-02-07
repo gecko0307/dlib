@@ -38,6 +38,7 @@ import dlib.filesystem.filesystem;
 
 version(Posix)
 {
+    import core.sys.posix.sys.stat;
     import dlib.filesystem.stdposixdir;
 }
 version(Windows)
@@ -49,12 +50,12 @@ version(Windows)
 import dlib.text.utils;
 import dlib.text.utf16;
 
-/*
+// TODO: where is these definitions in druntime?
 version(Windows)
 {
-   extern(Windows) int _wfopen_s(FILE** pFile, const wchar_t *filename, const wchar_t *mode);
+   extern(C) int _wmkdir(const wchar*);
+   extern(C) int _wremove(const wchar*);
 }
-*/
 
 class StdInFileStream: InputStream
 {
@@ -378,17 +379,38 @@ class StdFileSystem: FileSystem
             }
         }
     }
-    
-    // TODO
-    bool createDir(string path, bool recursive)
+
+    bool createDir(string path, bool recursive = true)
     {
-        return false;
+        version(Posix)
+        {
+            int res = mkdir(path.toStringz, 777); // TODO: GC-free toStringz replacement
+            return (res == 0);
+        }
+        version(Windows)
+        {
+            wchar[] wp = convertUTF8toUTF16(path, true);
+            int res = _wmkdir(wp.ptr);
+            Delete(wp);
+            return (res == 0);
+        }
     }
-    
-    // TODO
-    bool remove(string path, bool recursive)
+
+    // FIXME: delete directories under Windows
+    bool remove(string path, bool recursive = true)
     {
-        return false;
+        version(Posix)
+        {
+            int res = std.c.stdio.remove(path.toStringz); // TODO: GC-free toStringz replacement
+            return (res == 0);
+        }
+        version(Windows)
+        {
+            wchar[] wp = convertUTF8toUTF16(path, true);
+            int res = _wremove(wp.ptr);
+            Delete(wp);
+            return (res == 0);
+        }
     }
 }
 
