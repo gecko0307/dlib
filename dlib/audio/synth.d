@@ -29,7 +29,21 @@ DEALINGS IN THE SOFTWARE.
 module dlib.audio.synth;
 
 import std.math;
+import std.random;
 import dlib.audio.sound;
+
+/* 
+ * Generate random audio signal
+ * snd - sound
+ * ch - channel to fill (beginning from 0)
+ */
+void whiteNoise(Sound snd, uint ch)
+{
+    foreach(i; 0..snd.size)
+    {
+        snd[ch, i] = uniform(-1.0f, 1.0f);
+    }
+}
 
 /*
  * Fill the sound with simple sinewave tone.
