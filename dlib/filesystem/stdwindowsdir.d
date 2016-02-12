@@ -73,6 +73,8 @@ class StdWindowsDirEntryRange: InputRange!(DirEntry)
         close();
     }
     
+    import std.stdio;
+    
     bool advance()
     {
         bool success = false;
@@ -123,6 +125,12 @@ class StdWindowsDirEntryRange: InputRange!(DirEntry)
                 bool isDir = false;
                 frontEntry = DirEntry(name, isFile, isDir);
             }
+        }
+        
+        if (!success)
+        {
+            FindClose(hFind);
+            hFind = INVALID_HANDLE_VALUE;
         }
 
         return success;
@@ -191,7 +199,12 @@ class StdWindowsDirEntryRange: InputRange!(DirEntry)
     void close()
     {
         if (hFind != INVALID_HANDLE_VALUE)
+        {
             FindClose(hFind);
+            hFind = INVALID_HANDLE_VALUE;
+        }
+        initialized = false;
+        _empty = false;
     }
 }
 

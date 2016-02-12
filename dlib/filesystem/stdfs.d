@@ -55,6 +55,8 @@ version(Windows)
 {
    extern(C) int _wmkdir(const wchar*);
    extern(C) int _wremove(const wchar*);
+   
+   extern(Windows) int RemoveDirectoryW(const wchar*);
 }
 
 class StdInFileStream: InputStream
@@ -353,7 +355,9 @@ class StdFileSystem: FileSystem
         {
             if (path in openedDirs)
             {
-                return openedDirs[path];
+                auto d = openedDirs[path];
+                //d.reset();
+                return d;
             }
             else
             {
@@ -396,7 +400,6 @@ class StdFileSystem: FileSystem
         }
     }
 
-    // FIXME: delete directories under Windows
     bool remove(string path, bool recursive = true)
     {
         version(Posix)
@@ -406,10 +409,32 @@ class StdFileSystem: FileSystem
         }
         version(Windows)
         {
-            wchar[] wp = convertUTF8toUTF16(path, true);
-            int res = _wremove(wp.ptr);
-            Delete(wp);
-            return (res == 0);
+            import std.stdio;
+            bool res;
+            if (std.file.isDir(path))
+            {
+                if (recursive)
+                foreach(e; openDir(path).contents)
+                {
+                    string path2 = catStr(path, "\\");
+                    string path3 = catStr(path2, e.name);
+                    Delete(path2);
+                    writeln(path3);
+                    this.remove(path3, recursive);
+                    Delete(path3);
+                }
+
+                wchar[] wp = convertUTF8toUTF16(path, true);
+                res = RemoveDirectoryW(wp.ptr) != 0;
+                Delete(wp);
+            }
+            else
+            {
+                wchar[] wp = convertUTF8toUTF16(path, true);
+                res = _wremove(wp.ptr) == 0;
+                Delete(wp);
+            }  
+            return res;
         }
     }
 }
