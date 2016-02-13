@@ -146,14 +146,14 @@ GenericSound loadWAV(InputStream istrm, GenericSoundFactory gsf)
     return gs;
 }
 
-void saveWAV(GenericSound snd, string filename)
+void saveWAV(Sound snd, string filename)
 {
     auto ostrm = openForOutput(filename);
     saveWAV(snd, ostrm);
     ostrm.close();
 }
 
-void saveWAV(GenericSound snd, OutputStream ostrm)
+void saveWAV(Sound snd, OutputStream ostrm)
 {
     string magic = "RIFF";
     ostrm.writeBytes(magic.ptr, 4);
