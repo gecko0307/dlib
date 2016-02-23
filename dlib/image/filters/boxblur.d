@@ -47,7 +47,8 @@ SuperImage boxBlur(SuperImage img, SuperImage outp, int radius)
     else
         res = img.dup;
     
-    int r2 = radius * 2;
+    immutable int boxSide = radius * 2 + 1;
+    immutable int boxSide2 = boxSide * boxSide;
     
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
@@ -56,8 +57,8 @@ SuperImage boxBlur(SuperImage img, SuperImage outp, int radius)
         
         Color4f total = Color4f(0, 0, 0);
         
-        foreach(ky; 0..r2)
-        foreach(kx; 0..r2)
+        foreach(ky; 0..boxSide)
+        foreach(kx; 0..boxSide)
         {
             int iy = y + (ky - radius);
             int ix = x + (kx - radius);
@@ -65,7 +66,7 @@ SuperImage boxBlur(SuperImage img, SuperImage outp, int radius)
             total += img[ix, iy];
         }
 
-        total /= radius * radius * 4.0f;
+        total /= boxSide2;
         total.a = alpha;
         
         res[x,y] = total;
