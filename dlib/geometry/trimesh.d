@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013 Timur Gafarov 
+Copyright (c) 2013-2016 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -40,7 +40,7 @@ struct TriMesh
 {
     Vector3f[] vertices;
     Vector3f[] normals;
-    Vector3f[] tangents;
+    Vector4f[] tangents;
     Vector2f[] texcoords1;
     Vector2f[] texcoords2;
     uint numTexCoords = 0;
@@ -181,7 +181,7 @@ struct TriMesh
 	        tTan[i2] += tDir;
         }
 
-        tangents = new Vector3f[vertices.length];
+        tangents = new Vector4f[vertices.length];
 
         // Calculate vertex tangent
         foreach(i, v; tangents)
@@ -190,12 +190,18 @@ struct TriMesh
             Vector3f t = sTan[i];
 
             // Gram-Schmidt orthogonalize
-            tangents[i] = (t - n * dot(n, t));
-            tangents[i].normalize();
+            Vector3f tangent = (t - n * dot(n, t));
+            tangent.normalize();
+            
+            tangent[i].x = tangent.x;
+            tangent[i].y = tangent.y;
+            tangent[i].z = tangent.z;
 
             // Calculate handedness
             if (dot(cross(n, t), tTan[i]) < 0.0f)
-	        tangents[i] = -tangents[i];
+	            tangents[i].w = -1.0f;
+            else
+                tangents[i].w = 1.0f;
         }
     }
 }
