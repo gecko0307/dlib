@@ -193,9 +193,9 @@ struct TriMesh
             Vector3f tangent = (t - n * dot(n, t));
             tangent.normalize();
             
-            tangent[i].x = tangent.x;
-            tangent[i].y = tangent.y;
-            tangent[i].z = tangent.z;
+            tangents[i].x = tangent.x;
+            tangents[i].y = tangent.y;
+            tangents[i].z = tangent.z;
 
             // Calculate handedness
             if (dot(cross(n, t), tTan[i]) < 0.0f)
