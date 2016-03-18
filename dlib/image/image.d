@@ -91,6 +91,29 @@ abstract class SuperImage: Freeable
     {
         progress = 0.0f;
     }
+    
+    final int opApply(int delegate(ref Color4f p, uint x, uint y) dg)
+    {
+        int result = 0;
+
+        foreach(uint y; col)
+        {
+            foreach(uint x; row)
+            {
+                Color4f col = opIndex(x, y);
+                result = dg(col, x, y);
+                opIndexAssign(col, x, y);
+
+                if (result)
+                    break;
+            }
+
+            if (result)
+                break;
+        }
+
+        return result;
+    }
 }
 
 class Image(PixelFormat fmt): SuperImage
