@@ -198,7 +198,7 @@ class Image(PixelFormat fmt): SuperImage
         _data = new ubyte[_width * _height * _pixelSize];
     }
 
-    protected Color4 getPixel(int x, int y)
+    public Color4 getPixel(int x, int y)
     {
         if (x >= width) x = width-1;
         else if (x < 0) x = 0;
@@ -261,7 +261,7 @@ class Image(PixelFormat fmt): SuperImage
         }
     }
 
-    protected Color4 setPixel(Color4 c, int x, int y)
+    public Color4 setPixel(Color4 c, int x, int y)
     {
         if(x >= width || y >= height || x < 0 || y < 0)
             return c;
