@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2015 Timur Gafarov 
+Copyright (c) 2011-2016 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -468,4 +468,141 @@ Color4f bilinearPixel(SuperImage img, float x, float y)
     return ic3;
 }
 
+/*
+ * Rectangular region of an image that can be iterated with foreach
+ */
+struct ImageRegion
+{
+    SuperImage img;
+    uint xstart;
+    uint ystart;
+    uint width;
+    uint height;
 
+    final int opApply(int delegate(ref Color4f p, uint x, uint y) dg)
+    {
+        int result = 0;
+        uint x1, y1;
+
+        foreach(uint y; 0..height)
+        {
+            y1 = ystart + y;
+            foreach(uint x; 0..width)
+            {
+                x1 = xstart + x;
+                Color4f col = img[x1, y1];
+                result = dg(col, x, y);
+                img[x1, y1] = col;
+
+                if (result)
+                    break;
+            }
+
+            if (result)
+                break;
+        }
+
+        return result;
+    }
+}
+
+ImageRegion region(SuperImage img, uint x, uint y, uint width, uint height)
+{
+    return ImageRegion(img, x, y, width, height);
+}
+
+/*
+ * An InputRange of windows (regions around pixels) of an image that can be iterated with foreach
+ */
+struct ImageWindowRange
+{
+    SuperImage img;
+    uint width;
+    uint height;
+    
+    private uint halfWidth;
+    private uint halfHeight;
+    private uint wx = 0;
+    private uint wy = 0;
+    
+    this(SuperImage img, uint w, uint h)
+    {
+        this.img = img;
+        this.width = w;
+        this.height = h;
+        
+        this.halfWidth = this.width / 2;
+        this.halfHeight = this.height / 2;
+    }
+
+    final int opApply(int delegate(ImageRegion w, uint x, uint y) dg)
+    {
+        int result = 0;
+
+        foreach(uint y; img.col)
+        {
+            uint ystart = y - halfWidth;
+            foreach(uint x; img.row)
+            {
+                uint xstart = x - halfHeight;
+
+                auto window = region(img, xstart, ystart, width, height);
+                result = dg(window, x, y);
+
+                if (result)
+                    break;
+            }
+
+            if (result)
+                break;
+        }        
+
+        return result;
+    }
+    
+    bool empty = false;
+    
+    void popFront()
+    {
+        wx++;
+        if (wx == img.width)
+        {
+            wx = 0;
+            wy++;
+            
+            if (wy == img.height)
+            {
+                wy = 0;
+                empty = true;
+            }
+        }
+    }
+    
+    @property ImageRegion front()
+    {
+        return region(img, wx - halfWidth, wy - halfHeight, width, height);
+    }
+}
+
+ImageWindowRange windows(SuperImage img, uint width, uint height)
+{
+    return ImageWindowRange(img, width, height);
+}
+
+/*
+    ImageWindowRange usage example (convolution with emboss kernel):
+  
+    float[3][3] kernel = [
+        [-1, -1,  0], 
+        [-1,  0,  1], 
+        [ 0,  1,  1],
+    ];
+
+    foreach(window, x, y; inputImage.windows(3, 3))
+    {
+        Color4f sum = Color4f(0, 0, 0);
+        foreach(ref Color4f pixel, x, y; window)
+            sum += pixel * kernel[y][x];
+        outputImage[x, y] = sum / 4.0f + 0.5f;
+    }
+*/
