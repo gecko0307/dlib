@@ -58,7 +58,7 @@ template NTypeTuple(T, int n)
         alias Tuple!(NTypeTuple!(T, n-1), T) NTypeTuple;
 }
 
-enum MaxStaticTensorSize = float.sizeof * 16;
+enum MaxStaticTensorSize = double.sizeof * 16; // fit 4x4 matrix of doubles
 
 /*
  * Generic multi-dimensional array template.
@@ -67,7 +67,7 @@ enum MaxStaticTensorSize = float.sizeof * 16;
  * Think of Tensor as a backend for e.g. Vector and Matrix.
  *
  * T - element type, usually numeric (float or double)
- * order - number of dimensions:
+ * dim - number of dimensions (tensor order):
  *    0 - scalar
  *    1 - vector
  *    2 - matrix
@@ -88,14 +88,15 @@ enum MaxStaticTensorSize = float.sizeof * 16;
 // - External storage
 // - Component-wise addition, subtraction
 
-template Tensor(T, size_t order, sizes...)
+template Tensor(T, size_t dim, sizes...)
 {
     struct Tensor
     {
         private enum size_t _dataLen = calcLen(sizes);
 
         alias T ElementType;
-        enum size_t dimensions = order;
+        enum size_t dimensions = dim;
+        enum size_t order = dim;
         alias sizes Sizes;
         enum bool isTensor = true;
         enum bool isScalar = (order == 0 && _dataLen == 1);
@@ -176,7 +177,7 @@ template Tensor(T, size_t order, sizes...)
        /* 
         * Tuple constructor
         */
-        this(F...)(F components)
+        this(F...)(F components) if (F.length > 1)
         {
             static if (dynamic)
             {
@@ -391,7 +392,7 @@ auto tensorProduct(T1, T2)(T1 t1, T2 t2)
 
     alias T1.ElementType T;
     enum order = T1.dimensions + T2.dimensions;
-    alias Tuple!(T1.Sizes, T2.Sizes) sizes;
+    alias Tuple!(T2.Sizes, T1.Sizes) sizes;
     alias Tensor!(T, order, sizes) TensorType;
 
     TensorType t;
@@ -406,8 +407,8 @@ auto tensorProduct(T1, T2)(T1 t1, T2 t2)
     while(index < t.data.length)
     {   
         t.data[index] = 
-            t1[ind.tuple[0..$/2]] * 
-            t2[ind.tuple[$/2..$]];
+            t2[ind.tuple[0..$/2]] * 
+            t1[ind.tuple[$/2..$]];
                 
         ind[0]++;
             
