@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2016 Timur Gafarov 
+Copyright (c) 2016 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,46 +26,45 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.image;
+module dlib.image.transform;
 
-public
+import dlib.math.vector;
+import dlib.math.matrix;
+import dlib.math.affine;
+import dlib.math.utils;
+
+import dlib.image.image;
+import dlib.image.color;
+
+/*
+ * Rotates an image clockwise around its center.
+ * angle is in degrees.
+ */
+SuperImage rotateAroundCenter(SuperImage img, float angle)
 {
-    import dlib.image.arithmetics;
-    import dlib.image.color;
-    import dlib.image.compleximage;
-    import dlib.image.fthread;
-    import dlib.image.hdri;
-    import dlib.image.hsv;
-    import dlib.image.image;
-    import dlib.image.parallel;
-    import dlib.image.signal2d;
-    import dlib.image.unmanaged;
-    import dlib.image.transform;
+    return rotateAroundCenter(img, null, angle);
+}
+ 
+SuperImage rotateAroundCenter(SuperImage img, SuperImage outp, float angle)
+{
+    SuperImage res;
+    if (outp)
+        res = outp;
+    else
+        res = img.createSameFormat(img.width, img.height);
 
-    import dlib.image.filters.boxblur;
-    import dlib.image.filters.chromakey;
-    import dlib.image.filters.convolution;
-    import dlib.image.filters.desaturate;
-    import dlib.image.filters.edgedetect;
-    import dlib.image.filters.lens;
-    import dlib.image.filters.morphology;
-    import dlib.image.filters.normalmap;
-    import dlib.image.filters.sharpen;
+    Vector2f center = Vector2f(res.width, res.height) * 0.5f;
+    Matrix2x2f m = rotation2D(degtorad(angle));
+    foreach(y; 0..res.height)
+    foreach(x; 0..res.width)
+    {
+        Vector2f v1 = (Vector2f(x, y) - center) * m + center;
+        res[x, y] = bilinearPixel(img, v1.x, v1.y);
+    }
 
-    import dlib.image.io.bmp;
-    import dlib.image.io.io;
-    import dlib.image.io.png;
-    import dlib.image.io.tga;
-    import dlib.image.io.jpeg;
-
-    import dlib.image.render.cosplasma;
-    import dlib.image.render.shapes;
-
-    import dlib.image.resampling.nearest;
-    import dlib.image.resampling.bilinear;
-    import dlib.image.resampling.bicubic;
-    import dlib.image.resampling.lanczos;
-
-    import dlib.image.tone.contrast;
+    return res;
 }
 
+// TODO: translate image
+// TODO: scale image
+// TODO: transform image by affine matrix
