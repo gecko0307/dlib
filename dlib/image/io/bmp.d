@@ -109,12 +109,41 @@ enum RLE
     Delta        = 2
 }
 
+enum BMPInfoSize
+{
+    OLD  = 12,
+    WIN  = 40,
+    OS2  = 64,
+    WIN4 = 108,
+    WIN5 = 124,
+}
+
 class BMPLoadException: ImageLoadException
 {
     this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null)
     {
         super(msg, file, line, next);
     }
+}
+
+private ubyte calculateShift(uint mask) nothrow pure
+{
+    ubyte result = 0;
+    while (mask && !(mask & 1)) {
+        result++;
+        mask >>= 1;
+    }
+    return result;
+}
+
+private ubyte applyMask(uint value, uint mask, ubyte shift, ubyte scale) nothrow pure
+{
+    return cast(ubyte) (((value & mask) >> shift) * scale);
+}
+
+private ubyte calculateScale(uint mask, ubyte shift) nothrow pure
+{
+    return cast(ubyte) (256 / ((mask >> shift) + 1));
 }
 
 /*
@@ -171,6 +200,8 @@ Compound!(SuperImage, string) loadBMP(
 
     uint compression;
     uint bitsPerPixel;
+    
+    uint redMask, greenMask, blueMask, alphaMask;
 
     ubyte[] colormap;
     int colormapSize;
@@ -263,88 +294,207 @@ Compound!(SuperImage, string) loadBMP(
         writefln("compression = %s", compression);
         writeln("-------------------"); 
     }
-
-    // get the padding at the end of the bitmap
-    uint pitch = width * 3; // 3 since it's 24 bits, or 3 bytes per pixel
-    if (pitch % 4 != 0)
-    {
-        pitch += 4 - (pitch % 4);
+    
+    if (bmpih.size >= BMPInfoSize.WIN4 || (compression == BMPCompressionType.BitFields && (bitsPerPixel == 16 || bitsPerPixel == 32))) {
+        bool ok = true;
+        ok = ok && istrm.readLE(&redMask);
+        ok = ok && istrm.readLE(&greenMask);
+        ok = ok && istrm.readLE(&blueMask);
+        
+        version(BMPDebug) {
+            writeln("File has bitfields masks");
+            writefln("redMask = %s", redMask);
+            writefln("greenMask = %s", greenMask);
+            writefln("blueMask = %s", blueMask);
+            writeln("-------------------");
+        }
+        
+        if (ok && bmpih.size >= BMPInfoSize.WIN4) {
+            version(BMPDebug) {
+                writeln("File is at least version 4");
+            }
+            
+            int CSType;
+            int[9] coords;
+            int gammaRed;
+            int gammaGreen;
+            int gammaBlue;
+            
+            ok = ok && istrm.readLE(&alphaMask);
+            ok = ok && istrm.readLE(&CSType);
+            istrm.fillArray(coords);
+            ok = ok && istrm.readLE(&gammaRed);
+            ok = ok && istrm.readLE(&gammaGreen);
+            ok = ok && istrm.readLE(&gammaBlue);
+            
+            if (ok && bmpih.size >= BMPInfoSize.WIN5) {
+                version(BMPDebug) {
+                    writeln("File is at least version 5");
+                }
+                
+                int intent;
+                int profileData;
+                int profileSize;
+                int reserved;
+                
+                ok = ok && istrm.readLE(&intent);
+                ok = ok && istrm.readLE(&profileData);
+                ok = ok && istrm.readLE(&profileSize);
+                ok = ok && istrm.readLE(&reserved);
+            }
+        }
+        if (!ok) {
+            return error("loadBMP error: failed to read data of size specified in bmp info structure");
+        }
+    }
+    
+    if (compression != BMPCompressionType.RGB && compression != BMPCompressionType.BitFields) {
+        return error("loadBMP error: unsupported compression type (RLE is not supported yet)");
     }
 
-    uint padding = pitch - (width * 3); // this is how many bytes of padding we need
-    version(BMPDebug)
-    {
-        writefln("pitch = %s", pitch);
-        writefln("padding = %s", padding);
-    }
-
-    if (compression != BMPCompressionType.RGB)
-        return error("loadBMP error: only RGB images are supported");
-
-    if (bitsPerPixel != 24)
-        return error("loadBMP error: unsupported color depth");
-
-    // Create image
-    uint channels = bmpih.bitsPerPixel / 8;
-    img = imgFac.createImage(width, height, channels, 8);
-
-    // Look for palette data if present
+    uint numberOfColors;
+    ubyte colormapEntrySize = (osType == BMPOSType.OS2)? 3 : 4;
+    
+    ubyte blueShift, greenShift, redShift, alphaShift;
+    ubyte blueScale = 1, greenScale = 1, redScale = 1, alphaScale;
+    
     if (bitsPerPixel <= 8)
     {
-        colormapSize = (1 << bitsPerPixel) * ((osType == BMPOSType.OS2)? 3 : 4);
+        numberOfColors = bmpih.colorsUsed ? bmpih.colorsUsed : (1 << bitsPerPixel);
+        if (numberOfColors == 0 || numberOfColors > 256) {
+            return error("loadBMP error: strange number of used colors");
+        }
+    } else if (compression == BMPCompressionType.BitFields && (bitsPerPixel == 16 || bitsPerPixel == 32)) {
+        redShift = calculateShift(redMask);
+        greenShift = calculateShift(greenMask);
+        blueShift = calculateShift(blueMask);
+        alphaShift = calculateShift(alphaMask);
+        
+        //scales are used to get equivalent weights for every color channel fit in byte
+        redScale = calculateScale(redMask, redShift);
+        greenScale = calculateScale(greenMask, greenShift);
+        blueScale = calculateScale(blueMask, blueShift);
+        alphaScale = calculateScale(alphaMask, alphaShift);
+    } else if (compression == BMPCompressionType.RGB && (bitsPerPixel == 24 || bitsPerPixel == 32)) {
+        blueMask = 0x000000ff;
+        greenMask = 0x0000ff00;
+        redMask = 0x00ff0000;
+        blueShift = 0;
+        greenShift = 8;
+        redShift = 16;
+    } else if (compression == BMPCompressionType.RGB && bitsPerPixel == 16) {
+        blueMask = 0x001f;
+        greenMask = 0x03e0;
+        redMask = 0x7c00;
+        blueShift = 0;
+        greenShift = 2;
+        redShift = 7;
+        
+        blueScale = 8;
+    }
+    
+    // Look for palette data if present
+    if (numberOfColors) {
+        colormapSize = numberOfColors * colormapEntrySize;
         colormap = New!(ubyte[])(colormapSize);
-
         istrm.fillArray(colormap);
     }
 
     // Go to begining of pixel data
     istrm.position = bmpfh.offset;
-
-    // Read image data
-    switch (compression)
-    {
-        case BMPCompressionType.RGB:
-            switch (bitsPerPixel)
+    
+    const bool transparent = alphaMask != 0 && compression == BMPCompressionType.BitFields;
+    
+    // Create image
+    img = imgFac.createImage(width, height, transparent ? 4 : 3, 8);
+    
+    if (bitsPerPixel == 4 && compression == BMPCompressionType.RGB) {
+        foreach(y; 0..img.height)
+        {
+            //4 bits per pixel, so width/2 iterations
+            foreach(x; 0..img.width/2)
             {
-                case 1:
-                    // TODO
-                    return error("loadBMP error: 1-bit images are not supported");
-
-                case 4:
-                    // TODO
-                    return error("loadBMP error: 4-bit images are not supported");
-
-                case 8:
-                    // TODO
-                    return error("loadBMP error: 8-bit images are not supported");
-
-                case 24:
-                    read24bitBMP(istrm, img, padding);
-                    break;
-
-                case 32:
-                    // TODO
-                    return error("loadBMP error: 32-bit images are not supported");
-
-                default:
-                    return error("loadBMP error: unsupported number of bits per pixel");
+                ubyte[1] buf;
+                istrm.fillArray(buf);
+                const uint first = (buf[0] >> 4)*colormapEntrySize;
+                const uint second = (buf[0] & 0x0f)*colormapEntrySize;
+                img[x*2, img.height-y-1] = Color4f(ColorRGBA(colormap[first+2], colormap[first+1], colormap[first]));
+                img[x*2 + 1, img.height-y-1] = Color4f(ColorRGBA(colormap[second+2], colormap[second+1], colormap[second]));
             }
-            break;
+            //for odd widths
+            if (img.width & 1) {
+                ubyte[1] buf;
+                istrm.fillArray(buf);
+                const uint index = (buf[0] >> 4)*colormapEntrySize;
+                img[img.width-1, img.height-y-1] = Color4f(ColorRGBA(colormap[index+2], colormap[index+1], colormap[index]));
+            }
+        }
+    } else if (bitsPerPixel == 8 && compression == BMPCompressionType.RGB) {
+        foreach(y; 0..img.height)
+        {
+            foreach(x; 0..img.width)
+            {
+                ubyte[1] buf;
+                istrm.fillArray(buf);
+                const uint index = buf[0]*colormapEntrySize;
+                img[x, img.height-y-1] = Color4f(ColorRGBA(colormap[index+2], colormap[index+1], colormap[index]));
+            }
+        }
+    } else if (bitsPerPixel == 16 || bitsPerPixel == 24 || bitsPerPixel == 32) {
+        const bytesPerPixel = bitsPerPixel / 8;
+        const bytesPerRow = ((bitsPerPixel*width+31)/32)*4; //round to multiple of 4
+        const bytesPerLine = bytesPerPixel * width;
+        const padding = bytesPerRow - bytesPerLine;
+        
+        if (bitsPerPixel == 24) {
+            foreach(y; 0..img.height)
+            {
+                foreach(x; 0..img.width)
+                {
+                    ubyte[3] bgr;
+                    istrm.fillArray(bgr);
+                    img[x, img.height-y-1] = Color4f(ColorRGBA(bgr[2], bgr[1], bgr[0]));
+                }
 
-        case BMPCompressionType.RLE8:
-            // TODO
-            return error("loadBMP error: RLE8 compression is not supported");
+                istrm.seek(padding);
+            }
+        } else if (bitsPerPixel == 16) {
+            foreach(y; 0..img.height)
+            {
+                foreach(x; 0..img.width)
+                {
+                    ubyte[2] bgr;
+                    istrm.fillArray(bgr);
+                    const uint p = bgr[0] | ((cast(uint)bgr[1]) << 8);
+                    const ubyte r = applyMask(p, redMask, redShift, redScale);
+                    const ubyte g = applyMask(p, greenMask, greenShift, greenScale);
+                    const ubyte b = applyMask(p, blueMask, blueShift, blueScale);
+                    
+                    img[x, img.height-y-1] = Color4f(ColorRGBA(r,g,b));
+                }
 
-        case BMPCompressionType.RLE4:
-            // TODO
-            return error("loadBMP error: RLE4 compression is not supported");
+                istrm.seek(padding);
+            }
+        } else if (bitsPerPixel == 32) {
+            foreach(y; 0..img.height)
+            {
+                foreach(x; 0..img.width)
+                {
+                    ubyte[4] bgr;
+                    istrm.fillArray(bgr);
+                    
+                    const uint p = bgr[0] | ((cast(uint)bgr[1]) << 8) | ((cast(uint)bgr[2]) << 16) | ((cast(uint)bgr[3]) << 24);
+                    
+                    const ubyte r = applyMask(p, redMask, redShift, redScale);
+                    const ubyte g = applyMask(p, greenMask, greenShift, greenScale);
+                    const ubyte b = applyMask(p, blueMask, blueShift, blueScale);
+                    
+                    img[x, img.height-y-1] = Color4f(ColorRGBA(bgr[2], bgr[1], bgr[0], transparent ? applyMask(p, alphaMask, alphaShift, alphaScale) : 0xff));
+                }
 
-        case BMPCompressionType.BitFields:
-            // TODO
-            return error("loadBMP error: bitfields compression is not supported");
-
-        default:
-            return error("loadBMP error: unsupported bitmap compression type");
+                istrm.seek(padding);
+            }
+        }
     }
 
     if (colormap.length)
@@ -352,19 +502,3 @@ Compound!(SuperImage, string) loadBMP(
 
     return compound(img, "");
 }
-
-void read24bitBMP(InputStream istrm, SuperImage img, uint padding)
-{
-    foreach(y; 0..img.height)
-    {
-        foreach(x; 0..img.width)
-        {
-            ubyte[3] bgr;
-            istrm.fillArray(bgr);
-            img[x, img.height-y-1] = Color4f(ColorRGBA(bgr[2], bgr[1], bgr[0]));
-        }
-
-        istrm.seek(padding);
-    }
-}
-
