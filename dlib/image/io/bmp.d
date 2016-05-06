@@ -351,6 +351,10 @@ Compound!(SuperImage, string) loadBMP(
     if (compression != BMPCompressionType.RGB && compression != BMPCompressionType.BitFields) {
         return error("loadBMP error: unsupported compression type (RLE is not supported yet)");
     }
+    
+    if (bitsPerPixel != 4 && bitsPerPixel != 8 && bitsPerPixel != 16 && bitsPerPixel != 24 && bitsPerPixel != 32) {
+        return error("loadBMP error: unsupported color depth");
+    }
 
     uint numberOfColors;
     ubyte colormapEntrySize = (osType == BMPOSType.OS2)? 3 : 4;
@@ -391,6 +395,8 @@ Compound!(SuperImage, string) loadBMP(
         redShift = 7;
         
         blueScale = 8;
+    } else {
+        return error("loadBMP error: unknown compression type / color depth combination");
     }
     
     // Look for palette data if present
