@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2014 Timur Gafarov, Martin Cejp
+Copyright (c) 2013-2016 Timur Gafarov, Martin Cejp
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -618,16 +618,46 @@ Matrix!(T,4) rotationBetweenVectors(T) (Vector!(T,3) source, Vector!(T,3) target
 }
 
 /*
- * Transformations in 2D space
+ * Affine transformations in 2D space
  */
-Matrix!(T,2) rotation2D(T) (T theta)
+ Vector!(T,2) affineTransform2D(T)(Vector!(T,2) v, Matrix!(T,3) m)
+{
+    return Vector!(T,2) 
+    (
+        (v.x * m.a11) + (v.y * m.a12) + m.a13,
+        (v.x * m.a21) + (v.y * m.a22) + m.a23
+    );
+}
+
+Matrix!(T,3) translationMatrix2D(T) (Vector!(T,2) t)
 body
 {
-    Matrix!(T,2) res;
+    Matrix!(T,3) res;
+    res.a11 = 1; res.a12 = 0; res.a13 = t.x;
+    res.a21 = 0; res.a22 = 1; res.a23 = t.y;
+    res.a31 = 0; res.a32 = 0; res.a33 = 1;
+    return res;
+}
+
+Matrix!(T,3) rotationMatrix2D(T) (T theta)
+body
+{
+    Matrix!(T,3) res;
     T s = sin(theta);
     T c = cos(theta);
-    res.a11 = c;  res.a12 = s;
-    res.a21 = -s; res.a22 = c;
+    res.a11 = c;  res.a12 = s; res.a13 = 0;
+    res.a21 = -s; res.a22 = c; res.a23 = 0;
+    res.a31 = 0;  res.a32 = 0; res.a33 = 1;
+    return res;
+}
+
+Matrix!(T,3) scaleMatrix2D(T) (Vector!(T,2) s)
+body
+{
+    Matrix!(T,3) res;
+    res.a11 = s.x; res.a12 = 0;   res.a13 = 0;
+    res.a21 = 0;   res.a22 = s.y; res.a23 = 0;
+    res.a31 = 0;   res.a32 = 0;   res.a33 = 1;
     return res;
 }
 

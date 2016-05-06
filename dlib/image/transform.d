@@ -37,15 +37,14 @@ import dlib.image.image;
 import dlib.image.color;
 
 /*
- * Rotates an image clockwise around its center.
- * angle is in degrees.
+ * Tranforms an image with affine 3x3 matrix
  */
-SuperImage rotateAroundCenter(SuperImage img, float angle)
+SuperImage affineTransformImage(SuperImage img, Matrix3x3f m)
 {
-    return rotateAroundCenter(img, null, angle);
+    return affineTransformImage(img, null, m);
 }
  
-SuperImage rotateAroundCenter(SuperImage img, SuperImage outp, float angle)
+SuperImage affineTransformImage(SuperImage img, SuperImage outp, Matrix3x3f m)
 {
     SuperImage res;
     if (outp)
@@ -53,18 +52,74 @@ SuperImage rotateAroundCenter(SuperImage img, SuperImage outp, float angle)
     else
         res = img.createSameFormat(img.width, img.height);
 
-    Vector2f center = Vector2f(res.width, res.height) * 0.5f;
-    Matrix2x2f m = rotation2D(degtorad(angle));
     foreach(y; 0..res.height)
     foreach(x; 0..res.width)
     {
-        Vector2f v1 = (Vector2f(x, y) - center) * m + center;
+        Vector2f v1 = Vector2f(x, y).affineTransform2D(m);
         res[x, y] = bilinearPixel(img, v1.x, v1.y);
     }
 
     return res;
 }
 
-// TODO: translate image
-// TODO: scale image
-// TODO: transform image by affine matrix
+/*
+ * Translates an image (positive x goes right, positive y goes down)
+ */
+SuperImage translateImage(SuperImage img, Vector2f t)
+{
+    return translateImage(img, null, t);
+}
+ 
+SuperImage translateImage(SuperImage img, SuperImage outp, Vector2f t)
+{
+    Matrix3x3f m = translationMatrix2D(-t);
+    return affineTransformImage(img, outp, m);
+}
+
+/*
+ * Rotates an image clockwise around its center.
+ * angle is in degrees.
+ */
+SuperImage rotateImage(SuperImage img, float angle)
+{
+    return rotateImage(img, null, angle);
+}
+ 
+SuperImage rotateImage(SuperImage img, SuperImage outp, float angle)
+{
+    Vector2f center = Vector2f(img.width, img.height) * 0.5f;
+    Matrix3x3f m = 
+      translationMatrix2D(center) *
+      rotationMatrix2D(degtorad(angle)) *
+      translationMatrix2D(-center);
+    return affineTransformImage(img, outp, m);
+}
+
+/*
+ * Scales an image
+ */
+SuperImage scaleImage(SuperImage img, Vector2f s)
+{
+    return scaleImage(img, null, s);
+}
+ 
+SuperImage scaleImage(SuperImage img, SuperImage outp, Vector2f s)
+{
+    Matrix3x3f m = scaleMatrix2D(Vector2f(1, 1) / s);
+    return affineTransformImage(img, outp, m);
+}
+
+/*
+ * Uniformly scales an image
+ */
+SuperImage scaleImage(SuperImage img, float s)
+{
+    return scaleImage(img, null, s);
+}
+ 
+SuperImage scaleImage(SuperImage img, SuperImage outp, float s)
+{
+    float sinv = 1.0f / s;
+    Matrix3x3f m = scaleMatrix2D(Vector2f(sinv, sinv));
+    return affineTransformImage(img, outp, m);
+}
