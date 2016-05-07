@@ -34,6 +34,8 @@ import dlib.core.memory;
 import dlib.filesystem.filesystem;
 import dlib.filesystem.posix.common;
 
+static import core.sys.posix.unistd;
+
 class PosixFile : IOStream {
     int fd;
     uint accessFlags;

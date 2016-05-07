@@ -28,7 +28,7 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.text.utf16;
 
-import std.c.stdio;
+import core.stdc.stdio;
 import dlib.core.memory;
 import dlib.container.array;
 import dlib.text.utf8;

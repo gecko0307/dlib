@@ -28,7 +28,7 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.filesystem.stdfs;
 
-import std.c.stdio;
+import core.stdc.stdio;
 import std.file;
 import std.string;
 import dlib.core.memory;
@@ -404,7 +404,7 @@ class StdFileSystem: FileSystem
     {
         version(Posix)
         {
-            int res = std.c.stdio.remove(path.toStringz); // TODO: GC-free toStringz replacement
+            int res = core.stdc.stdio.remove(path.toStringz); // TODO: GC-free toStringz replacement
             return (res == 0);
         }
         version(Windows)
