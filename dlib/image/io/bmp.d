@@ -143,7 +143,16 @@ private ubyte applyMask(uint value, uint mask, ubyte shift, ubyte scale) nothrow
 
 private ubyte calculateScale(uint mask, ubyte shift) nothrow pure
 {
-    return cast(ubyte) (256 / ((mask >> shift) + 1));
+    return cast(ubyte) (256 / calculateDivisor(mask, shift));
+}
+
+private uint calculateDivisor(uint mask, ubyte shift) nothrow pure
+{
+    return (mask >> shift) + 1;
+}
+
+private bool checkIndex(uint index, ubyte[] colormap) nothrow pure {
+    return index + 2 < colormap.length;
 }
 
 /*
@@ -348,8 +357,8 @@ Compound!(SuperImage, string) loadBMP(
         }
     }
     
-    if (compression != BMPCompressionType.RGB && compression != BMPCompressionType.BitFields) {
-        return error("loadBMP error: unsupported compression type (RLE is not supported yet)");
+    if (compression != BMPCompressionType.RGB && compression != BMPCompressionType.BitFields && compression != BMPCompressionType.RLE8) {
+        return error("loadBMP error: unsupported compression type (RLE4 is not supported yet)");
     }
     
     if (bitsPerPixel != 4 && bitsPerPixel != 8 && bitsPerPixel != 16 && bitsPerPixel != 24 && bitsPerPixel != 32) {
@@ -362,7 +371,7 @@ Compound!(SuperImage, string) loadBMP(
     ubyte blueShift, greenShift, redShift, alphaShift;
     ubyte blueScale = 1, greenScale = 1, redScale = 1, alphaScale;
     
-    if (bitsPerPixel <= 8)
+    if (bitsPerPixel == 8 || bitsPerPixel == 4)
     {
         numberOfColors = bmpih.colorsUsed ? bmpih.colorsUsed : (1 << bitsPerPixel);
         if (numberOfColors == 0 || numberOfColors > 256) {
@@ -375,6 +384,13 @@ Compound!(SuperImage, string) loadBMP(
         alphaShift = calculateShift(alphaMask);
         
         //scales are used to get equivalent weights for every color channel fit in byte
+        
+        if (calculateDivisor(redMask, redShift) == 0 || calculateDivisor(greenMask, greenShift) == 0
+            || calculateDivisor(blueMask, blueShift) == 0 || calculateDivisor(alphaMask, alphaShift) == 0
+        ) {
+            return error("loadBMP error: division by zero when calculating scale");
+        }
+        
         redScale = calculateScale(redMask, redShift);
         greenScale = calculateScale(greenMask, greenShift);
         blueScale = calculateScale(blueMask, blueShift);
@@ -414,6 +430,8 @@ Compound!(SuperImage, string) loadBMP(
     // Create image
     img = imgFac.createImage(width, height, transparent ? 4 : 3, 8);
     
+    enum wrongIndexError = "wrong index for colormap";
+    
     if (bitsPerPixel == 4 && compression == BMPCompressionType.RGB) {
         foreach(y; 0..img.height)
         {
@@ -424,6 +442,10 @@ Compound!(SuperImage, string) loadBMP(
                 istrm.fillArray(buf);
                 const uint first = (buf[0] >> 4)*colormapEntrySize;
                 const uint second = (buf[0] & 0x0f)*colormapEntrySize;
+                
+                if (!checkIndex(first, colormap) || !checkIndex(second, colormap)) {
+                    return error(wrongIndexError);
+                }
                 img[x*2, img.height-y-1] = Color4f(ColorRGBA(colormap[first+2], colormap[first+1], colormap[first]));
                 img[x*2 + 1, img.height-y-1] = Color4f(ColorRGBA(colormap[second+2], colormap[second+1], colormap[second]));
             }
@@ -432,6 +454,9 @@ Compound!(SuperImage, string) loadBMP(
                 ubyte[1] buf;
                 istrm.fillArray(buf);
                 const uint index = (buf[0] >> 4)*colormapEntrySize;
+                if (!checkIndex(index, colormap)) {
+                    return error(wrongIndexError);
+                }
                 img[img.width-1, img.height-y-1] = Color4f(ColorRGBA(colormap[index+2], colormap[index+1], colormap[index]));
             }
         }
@@ -443,7 +468,66 @@ Compound!(SuperImage, string) loadBMP(
                 ubyte[1] buf;
                 istrm.fillArray(buf);
                 const uint index = buf[0]*colormapEntrySize;
+                if (!checkIndex(index, colormap)) {
+                    return error(wrongIndexError);
+                }
                 img[x, img.height-y-1] = Color4f(ColorRGBA(colormap[index+2], colormap[index+1], colormap[index]));
+            }
+        }
+    } else if (bitsPerPixel == 8 && compression == BMPCompressionType.RLE8) {
+        int x, y;
+        
+        while(y < img.height) {
+            ubyte value;
+            if (!istrm.readLE(&value)) {
+                break;
+            }
+            if (value == 0) {
+                if (!istrm.readLE(&value) || value == 1) {
+                    break;
+                } else {
+                    if (value == 0) {
+                        x = 0;
+                        y++;
+                    } else if (value == 2) {
+                        version(BMPDebug) {
+                            writeln("in delta");
+                        }
+                        
+                        ubyte xdelta, ydelta;
+                        istrm.readLE(&xdelta);
+                        istrm.readLE(&ydelta);
+                        x += xdelta;
+                        y += ydelta;
+                    } else {
+                        version(BMPDebug) {
+                            writeln("in absolute mode");
+                        }
+                        foreach(i; 0..value) {
+                            ubyte j;
+                            istrm.readLE(&j);
+                            const uint index = j*colormapEntrySize;
+                            if (!checkIndex(index, colormap)) {
+                                return error(wrongIndexError);
+                            }
+                            img[x++, img.height-y-1] = Color4f(ColorRGBA(colormap[index+2], colormap[index+1], colormap[index]));
+                        }
+                        if (value & 1) {
+                            ubyte padding;
+                            istrm.readLE(&padding);
+                        }
+                    }
+                }
+            } else {
+                ubyte j;
+                istrm.readLE(&j);
+                const uint index = j*colormapEntrySize;
+                if (!checkIndex(index, colormap)) {
+                    return error(wrongIndexError);
+                }
+                foreach(i; 0..value) {
+                    img[x++, img.height-y-1] = Color4f(ColorRGBA(colormap[index+2], colormap[index+1], colormap[index]));
+                }
             }
         }
     } else if (bitsPerPixel == 16 || bitsPerPixel == 24 || bitsPerPixel == 32) {
@@ -501,10 +585,12 @@ Compound!(SuperImage, string) loadBMP(
                 istrm.seek(padding);
             }
         }
+    } else {
+        return error("loadBMP error: unknown or unsupported compression type / color depth combination");
     }
 
     if (colormap.length)
         Delete(colormap);
-
+    
     return compound(img, "");
 }
