@@ -151,7 +151,7 @@ private uint calculateDivisor(uint mask, ubyte shift) nothrow pure
     return (mask >> shift) + 1;
 }
 
-private bool checkIndex(uint index, ubyte[] colormap) nothrow pure {
+private bool checkIndex(uint index, const(ubyte)[] colormap) nothrow pure {
     return index + 2 < colormap.length;
 }
 
@@ -594,3 +594,62 @@ Compound!(SuperImage, string) loadBMP(
     
     return compound(img, "");
 }
+
+void saveBMP(SuperImage img, string filename)
+{
+    OutputStream output = openForOutput(filename);
+    Compound!(bool, string) res = 
+        saveBMP(img, output);
+    output.close();
+
+    if (!res[0])
+        throw new BMPLoadException(res[1]);
+}
+
+Compound!(bool, string) saveBMP(SuperImage img, OutputStream output)
+{
+    Compound!(bool, string) error(string errorMsg)
+    {
+        return compound(false, errorMsg);
+    }
+    
+    uint bytesPerRow = (img.width * 24 + 31) / 32 * 4;
+    uint dataOffset = 12 + BMPInfoSize.WIN;
+    uint fileSize = dataOffset + img.height * bytesPerRow;
+    
+    output.writeArray(BMPMagic);
+    output.writeLE(fileSize);
+    output.writeLE(cast(ushort)0);
+    output.writeLE(cast(ushort)0);
+    output.writeLE(dataOffset);
+    
+    output.writeLE(BMPInfoSize.WIN);
+    output.writeLE(img.width);
+    output.writeLE(img.height);
+    output.writeLE(cast(ushort)1);
+    output.writeLE(cast(ushort)24);
+    output.writeLE(BMPCompressionType.RGB);
+    output.writeLE(bytesPerRow * img.height);
+    output.writeLE(2834);
+    output.writeLE(2834);
+    output.writeLE(0);
+    output.writeLE(0);
+    
+    foreach_reverse(y; 0..img.height) {
+        foreach(x; 0..img.width) {
+            ubyte[3] rgb;
+            ColorRGBA color = img[x, y].convert(8);
+            rgb[0] = cast(ubyte)color[2];
+            rgb[1] = cast(ubyte)color[1];
+            rgb[2] = cast(ubyte)color[0];
+            output.writeArray(rgb);
+        }
+        //padding
+        for(uint i=0; i<(bytesPerRow-img.width*3); ++i) {
+            output.writeLE(cast(ubyte)0);
+        }
+    }
+    
+    return compound(true, "");
+}
+
