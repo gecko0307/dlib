@@ -32,6 +32,9 @@ import dlib.core.memory;
 
 public:
 
+/**
+ * Element of single linked list.
+ */
 struct LinkedListElement(T)
 {
     LinkedListElement!(T)* next = null;
@@ -44,17 +47,36 @@ struct LinkedListElement(T)
     }
 }
 
+/**
+ * GC-free single linked list implementation.
+ */
 struct LinkedList(T, bool ordered = true)
 {
+    ///Head of the list.
     LinkedListElement!(T)* head = null;
+    ///Tail of the list.
     LinkedListElement!(T)* tail = null;
+    ///Number of elements in the list.
     size_t length = 0;
 
+    /**
+     * Check if list has no elements.
+     */
     @property bool empty()
     {
         return length == 0;
     }
+    
+    ///
+    unittest
+    {
+        LinkedList!int list;
+        assert(list.empty);
+    }
 
+    /**
+     * Remove all elements.
+     */
     void free()
     {
         LinkedListElement!(T)* element = head;
@@ -69,6 +91,9 @@ struct LinkedList(T, bool ordered = true)
         length = 0;
     }
 
+    /**
+     * Iterating over list via foreach.
+     */
     int opApply(int delegate(size_t, ref T) dg)
     {
         int result = 0;
@@ -86,7 +111,30 @@ struct LinkedList(T, bool ordered = true)
 
         return result;
     }
+    
+    ///
+    unittest
+    {
+        LinkedList!int list;
+        scope(exit) list.free();
+        
+        list.append(1);
+        list.append(2);
+        list.append(3);
+        list.append(4);
+        
+        int[4] values;
+        
+        foreach(size_t i, ref int val; list) {
+            values[i] = val;
+        }
+        
+        assert(values[] == [1,2,3,4]);
+    }
 
+    /**
+     * Iterating over list via foreach.
+     */
     int opApply(int delegate(ref T) dg)
     {
         int result = 0;
@@ -102,7 +150,31 @@ struct LinkedList(T, bool ordered = true)
 
         return result;
     }
+    
+    ///
+    unittest
+    {
+        LinkedList!int list;
+        scope(exit) list.free();
+        
+        list.append(1);
+        list.append(2);
+        list.append(3);
+        list.append(4);
+        
+        int[] values;
+        
+        foreach(ref int val; list) {
+            values ~= val;
+        }
+        
+        assert(values[] == [1,2,3,4]);
+    }
 
+    /**
+     * Appen value v to the end.
+     * Returns: Pointer to added list element.
+     */
     LinkedListElement!(T)* append(T v)
     {
         length++;
@@ -123,7 +195,26 @@ struct LinkedList(T, bool ordered = true)
         
         return tail;
     }
+    
+    ///
+    unittest
+    {
+        LinkedList!int list;
+        scope(exit) list.free();
+        
+        auto element = list.append(13);
+        assert(element.datum == 13);
+        assert(list.length == 1);
+        element = list.append(42);
+        assert(element.datum == 42);
+        assert(list.length == 2);
+    }
 
+    /**
+     * Insert value v after element.
+     * Returns: Pointer to inserted element.
+     * Note: element must be not null.
+     */
     LinkedListElement!(T)* insertAfter(LinkedListElement!(T)* element, T v)
     {
         length++;
@@ -134,7 +225,26 @@ struct LinkedList(T, bool ordered = true)
         if (element is tail) tail = newElement;
         return newElement;
     }
+    
+    ///
+    unittest
+    {
+        LinkedList!int list;
+        scope(exit) list.free();
+        
+        auto first = list.append(1);
+        auto last = list.append(2);
+        list.insertAfter(first, 3);
+        
+        assert(list.length == 3);
+        auto arr = list.toArray();
+        assert(arr == [1,3,2]);
+        Delete(arr);
+    }
 
+    /**
+     * Insert value v at the beginning.
+     */
     LinkedListElement!(T)* insertBeginning(T v)
     {
         length++;
@@ -142,9 +252,30 @@ struct LinkedList(T, bool ordered = true)
         newElement.datum = v;
         newElement.next = head;
         head = newElement;
+        if (tail is null) {
+            tail = head;
+        }
         return newElement;
     }
+    
+    ///
+    unittest
+    {
+        LinkedList!int list;
+        scope(exit) list.free();
+        
+        list.insertBeginning(1);
+        list.append(2);
+        list.insertBeginning(0);
+        
+        import std.algorithm : equal;
+        assert(equal(list.byElement(), [0,1,2]));
+    }
 
+    /**
+     * Remove value after element.
+     * Note: element must be not null.
+     */
     void removeAfter(LinkedListElement!(T)* element)
     {
         length--;
@@ -156,7 +287,26 @@ struct LinkedList(T, bool ordered = true)
             Delete(obsolete);
         }
     }
+    
+    ///
+    unittest
+    {
+        LinkedList!int list;
+        scope(exit) list.free();
+        
+        auto first = list.append(1);
+        auto second = list.append(2);
+        auto third = list.append(3);
+        list.removeAfter(first);
+        
+        import std.algorithm : equal;
+        assert(equal(list.byElement(), [1,3]));
+    }
 
+    /**
+     * Remove the first element.
+     * Note: list must be non-empty.
+     */
     void removeBeginning()
     {
         length--;
@@ -167,14 +317,69 @@ struct LinkedList(T, bool ordered = true)
             Delete(obsolete);
         }
     }
+    
+    ///
+    unittest
+    {
+        LinkedList!int list;
+        scope(exit) list.free();
+        
+        list.append(0);
+        list.removeBeginning();
+        assert(list.length == 0);
+        
+        list.append(1);
+        list.append(2);
+        list.append(3);
+        list.removeBeginning();
+        assert(list.length == 2);
+        import std.algorithm : equal;
+        assert(equal(list.byElement(), [2,3]));
+    }
 
+    /**
+     * Append other list.
+     * Note: Appended list should not be freed. It becomes part of this list.
+     */
     void appendList(LinkedList!(T) list)
     {
         length += list.length;
-        tail.next = list.head;
+        if (tail !is null) {
+            tail.next = list.head;
+        }
+        if (head is null) {
+            head = list.head;
+        }
         tail = list.tail;
     }
+    
+    ///
+    unittest
+    {
+        LinkedList!int list1;
+        scope(exit) list1.free();
+        LinkedList!int list2;
+        LinkedList!int list3;
+        
+        list2.append(1);
+        list2.append(2);
+        
+        list1.appendList(list2);
+        
+        import std.algorithm : equal;
+        assert(equal(list1.byElement(), [1,2]));
+        
+        list3.append(3);
+        list3.append(4);
+        list1.appendList(list3);
+        
+        assert(equal(list1.byElement(), [1,2,3,4]));
+    }
 
+    /**
+     * Search for element with value v.
+     * Returns: Found element or null if could not find.
+     */
     LinkedListElement!(T)* search(T v)
     {
         LinkedListElement!(T)* element = head;
@@ -205,13 +410,105 @@ struct LinkedList(T, bool ordered = true)
 
         return null;
     }
+    
+    ///
+    unittest
+    {
+        LinkedList!int list;
+        scope(exit) list.free();
+        
+        assert(list.search(42) is null);
+        
+        list.append(13);
+        list.append(42);
+        
+        auto first = list.search(13);
+        assert(first && first.datum == 13);
+        
+        auto second = list.search(42);
+        assert(second && second.datum == 42);
+        
+        assert(list.search(0) is null);
+    }
 
+    /**
+     * Convert to array.
+     */
     T[] toArray()
     {
         T[] arr = New!(T[])(length);
         foreach(i, v; this)
             arr[i] = v;
         return arr;
+    }
+    
+    ///
+    unittest
+    {
+        LinkedList!int list;
+        scope(exit) list.free();
+        
+        list.append(1);
+        list.append(2);
+        list.append(3);
+        
+        auto arr = list.toArray();
+        assert(arr == [1,2,3]);
+        Delete(arr);
+    }
+    
+    auto byElement()
+    {
+        struct ByElement
+        {
+        private:
+            LinkedListElement!(T)* _first;
+            
+        public:
+            @property bool empty() {
+                return _first is null;
+            }
+            
+            @property T front() {
+                return _first.datum;
+            }
+            
+            void popFront() {
+                _first = _first.next;
+            }
+            
+            auto save() {
+                return this;
+            }
+        }
+        
+        return ByElement(head);
+    }
+    
+    ///
+    unittest
+    {
+        LinkedList!int list;
+        scope(exit) list.free();
+        
+        assert(list.byElement().empty);
+        
+        list.append(1);
+        list.append(2);
+        list.append(3);
+        
+        auto range = list.byElement();
+        import std.range : isForwardRange;
+        import std.algorithm : equal;
+        static assert(isForwardRange!(typeof(range)));
+        
+        assert(equal(range, [1,2,3]));
+        
+        range = list.byElement();
+        auto saved = range.save();
+        range.popFront();
+        assert(equal(range,[2,3]));
+        assert(equal(saved,[1,2,3]));
     }
 }
 
