@@ -35,16 +35,27 @@ private
 
 public:
 
+/**
+ * Stack implementation based on LinkedList.
+ */
 struct Stack(T)
 {
     private LinkedList!(T, true) list;
     
     public:
+    /**
+     * Push element to stack.
+     */
     void push(T v)
     {
         list.insertBeginning(v);
     }
 
+    /**
+     * Pop top element out.
+     * Returns: Removed element.
+     * Throws: Exception on underflow.
+     */
     T pop()
     {
         if (empty)
@@ -55,6 +66,10 @@ struct Stack(T)
         return res;
     }
 
+    /**
+     * Top stack element.
+     * Note: Stack must be non-empty.
+     */
     T top()
     {
         return list.head.datum;
@@ -65,23 +80,34 @@ struct Stack(T)
         return &(list.head.datum);
     }
     
+    /**
+     * Check if stack has no elements.
+     */
     @property bool empty()
     {
         return (list.head is null);
     }
     
+    /**
+     * Free memory allocated by Stack.
+     */
     void free()
     {
         list.free();
     }
 }
 
+///
 unittest
 {
+    import std.exception : assertThrown;
+    
     Stack!int s;
+    assertThrown(s.pop());
     s.push(100);
     s.push(3);
     s.push(76);
+    assert(s.top() == 76);
     assert(s.pop() == 76);
     assert(s.pop() == 3);
     assert(s.pop() == 100);

@@ -35,22 +35,35 @@ private
 
 public:
 
+/**
+ * Queue implementation based on LinkedList.
+ */
 struct Queue(T)
 {
-    private LinkedList!(T, true) list;
-
-    public:
-
+private:
+    LinkedList!(T, true) list;
+public:
+    /**
+     * Check if stack has no elements.
+     */
     @property bool empty()
     {
         return list.empty;
     }
 
+    /**
+     * Add element to queue.
+     */
     void enqueue(T v)
     {
         list.append(v);
     }
 
+    /**
+     * Remove element from queue.
+     * Returns: Removed element.
+     * Throws: Exception if queue is empty.
+     */
     T dequeue()
     {
         if (empty)
@@ -60,17 +73,23 @@ struct Queue(T)
         list.removeBeginning();
         return res;
     }
-        
+    
+    /**
+     * Free memory allocated by Queue.
+     */
     void free()
     {
         list.free();
     }
 }
 
+///
 unittest
 {
+    import std.exception : assertThrown;
+    
     Queue!int q;
-
+    assertThrown(q.dequeue());
     assert (q.empty);
 
     q.enqueue(50);
