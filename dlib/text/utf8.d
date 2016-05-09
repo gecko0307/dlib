@@ -28,13 +28,14 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.text.utf8;
 
-/*
- * Simple and pretty fast UTF-8 decoder
- */
-
+///Constant to return from UTF8Decoder on the ned of string.
 enum UTF8_END = -1;
+///Constant to return from UTF8Decoder when error occurs.
 enum UTF8_ERROR = -2;
 
+/**
+ * Simple and pretty fast UTF-8 decoder
+ */
 struct UTF8Decoder
 {
     size_t index = 0;
@@ -56,6 +57,7 @@ struct UTF8Decoder
         return ((c & 0xC0) == 0x80) ? (c & 0x3F): UTF8_ERROR;
     }
 
+    ///
     this(string str)
     {
         index = 0;
@@ -63,6 +65,10 @@ struct UTF8Decoder
         input = str;
     }
 
+    /**
+     * Decode next character.
+     * Returns: decoded code point, or UTF8_ERROR if error occured, or UTF8_END if input has no more characters.
+     */
     int decodeNext()
     {
         int c;  // the first byte of the character
@@ -107,16 +113,51 @@ struct UTF8Decoder
             int c3 = cont();
             if ((c1 | c2 | c3) >= 0)
             {
-                return (((c & 0x0F) << 18) | (c1 << 12) | (c2 << 6) | c3) + 65536;
+                return (((c & 0x0F) << 18) | (c1 << 12) | (c2 << 6) | c3);
             }
         }
 
         return UTF8_ERROR;
     }
 
+    /**
+     * Check if decoder is in the end of input.
+     */
     bool eos()
     {
         return (index >= input.length);
+    }
+}
+
+///
+unittest
+{
+    {
+        auto decoder = UTF8Decoder("Eng 日本語 Кир ©€\xF0\x90\x8D\x88");
+        assert(decoder.decodeNext() == 'E');
+        assert(decoder.decodeNext() == 'n');
+        assert(decoder.decodeNext() == 'g');
+        assert(decoder.decodeNext() == ' ');
+        assert(decoder.decodeNext() == '日');
+        assert(decoder.decodeNext() == '本');
+        assert(decoder.decodeNext() == '語');
+        assert(decoder.decodeNext() == ' ');
+        assert(decoder.decodeNext() == 'К');
+        assert(decoder.decodeNext() == 'и');
+        assert(decoder.decodeNext() == 'р');
+        assert(decoder.decodeNext() == ' ');
+        assert(decoder.decodeNext() == '©');
+        assert(decoder.decodeNext() == '€');
+        assert(decoder.decodeNext() == 0x10348);
+        assert(decoder.decodeNext() == UTF8_END);
+        assert(decoder.get() == UTF8_END);
+        assert(decoder.eos());
+    }
+    {
+        auto decoder = UTF8Decoder("日本語"[0..$-1]);
+        assert(decoder.decodeNext() == '日');
+        assert(decoder.decodeNext() == '本');
+        assert(decoder.decodeNext() == UTF8_ERROR);
     }
 }
 
