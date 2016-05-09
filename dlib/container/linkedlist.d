@@ -75,7 +75,7 @@ struct LinkedList(T, bool ordered = true)
     }
 
     /**
-     * Remove all elements.
+     * Remove all elements and free used memory.
      */
     void free()
     {
