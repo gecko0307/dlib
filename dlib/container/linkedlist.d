@@ -498,9 +498,9 @@ struct LinkedList(T, bool ordered = true)
         list.append(3);
         
         auto range = list.byElement();
-        import std.range : isForwardRange;
+        import std.range : isInputRange;
         import std.algorithm : equal;
-        static assert(isForwardRange!(typeof(range)));
+        static assert(isInputRange!(typeof(range)));
         
         assert(equal(range, [1,2,3]));
         
