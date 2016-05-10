@@ -30,7 +30,7 @@ module dlib.text.utils;
 
 import dlib.core.memory;
 
-// Make an unmanaged copy of a string
+/// Make an unmanaged copy of a string
 T[] copy(T)(T[] b)
 {
     auto res = New!(T[])(b.length);
@@ -39,7 +39,16 @@ T[] copy(T)(T[] b)
     return res;
 }
 
-// Concatenates two strings to a new unmanaged string
+///
+unittest
+{
+    auto str = "hello".dup;
+    auto c = copy(str);
+    assert(c == str);
+    Delete(c);
+}
+
+/// Concatenates two strings to a new unmanaged string
 string catStr(string s1, string s2)
 {
     char[] buffer = New!(char[])(s1.length + s2.length);
@@ -53,4 +62,15 @@ string catStr(string s1, string s2)
         buffer[i+j] = s2[j];
     }
     return cast(string)buffer;
+}
+
+///
+unittest
+{
+    auto str1 = "hello";
+    auto str2 = " world";
+    
+    auto cat = catStr(str1, str2);
+    assert(cat == "hello world");
+    Delete(cat);
 }

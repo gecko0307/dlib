@@ -54,7 +54,7 @@ bool buffEq(dchar[] b1, dchar[] b2)
     return true;
 }
 
-/*
+/**
  * General-purpose lexical analyzer.
  * Breaks the input string to a stream of lexemes according to a given dictionary.
  * Assumes UTF-8 input.
@@ -249,5 +249,30 @@ class Lexer
 
         return output;
     }
+}
+
+///
+unittest
+{
+    string[] delims = ["(", ")", ";", " ", "{", "}", ".", "\n", "\r", "=", "++", "<"];
+    auto input = "for (int i=0; i<arr.length; ++i)\r\n{doThing();}\n";
+    auto lexer = new Lexer(input, delims);
+    
+    import std.utf : toUTF8;
+    
+    string[] arr;
+    while(true) {
+        auto lexeme = lexer.getLexeme();
+        if(lexeme.length == 0) {
+            break;
+        }
+        arr ~= lexeme.toUTF8;
+        Delete(lexeme);
+    }
+    assert(arr == ["for", " ", "(", "int", " ", "i", "=", "0", ";", " ", "i", "<", "arr", ".", "length", ";", " ", "++", "i", ")", "\n", "{", "doThing", "(", ")", ";", "}", "\n" ]);
+    
+    input = "";
+    lexer = new Lexer(input, delims);
+    assert(lexer.getLexeme().length == 0);
 }
 
