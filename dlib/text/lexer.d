@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015 Timur Gafarov 
+Copyright (c) 2016 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -31,6 +31,7 @@ module dlib.text.lexer;
 import std.stdio;
 import std.algorithm;
 import std.ascii;
+import std.range.interfaces;
 
 import dlib.core.memory;
 import dlib.container.array;
@@ -60,7 +61,7 @@ bool buffEq(dchar[] b1, dchar[] b2)
  * Assumes UTF-8 input.
  * Treats \r\n as a single \n.
  */
-class Lexer
+class Lexer: InputRange!(dchar[])
 {
     string input;
     string[] delims;
@@ -125,7 +126,6 @@ class Lexer
     DynamicArray!dchar tmp;
     DynamicArray!dchar buffer;
     bool fillTmp = true;
-    //bool returnBuffer = false;
 
     dchar[] getLexeme()
     {
@@ -144,7 +144,6 @@ class Lexer
                 if (buffer.length)
                 {
                     output = copyBuffer(buffer.data);
-                    //writeln("  out (eos): ", output);
                     buffer.free();
                     ready = true;
                 }
@@ -155,7 +154,6 @@ class Lexer
 
             if (fillTmp)
             {
-                //writeln(" filling ", maxDelimLength, " (", maxDelimLength-tmp.length, ")");
                 foreach(i; 0..maxDelimLength-tmp.length)
                 {
                     int c = getNextChar();
@@ -203,51 +201,97 @@ class Lexer
                         delim = d;
                     }
                 }
-                /*
-                if (newPos > pos)
-                {
-                    pos = newPos;
-                    delimLen = co;
-                    delim = d;
-                }
-                */
             }
-
-            //writeln(" tmp: ", tmp.data);
-            
-            //writeln(" pos: ", pos, " delimLen: ", delimLen, " delim: ", delim);
             
             if (pos && pos == delimLen)
             {
                 if (buffer.length)
                 {
                     output = copyBuffer(buffer.data);
-                    //writeln("  out (delimited): ", output);
                     buffer.free();
                     ready = true;
                 }
                 else
                 {
                     output = copyBuffer(tmp.data[0..pos]);
-                    //writeln("  out (delim): ", output);
                     tmp.removeLeft(pos);
                     fillTmp = true;
                     ready = true;
                 }
             }
             else
-            {
-                //buffer.append(tmp.data);
-                //tmp.free();
-                        
+            {                        
                 buffer.append(tmp.data[0]);
-                //writeln(" buffer: ", buffer.data);
                 tmp.removeLeft(1);
                 fillTmp = true;
             }
         }
 
         return output;
+    }
+
+    dchar[] _front;
+
+    bool empty()
+    {
+        return _front.length == 0;
+    }
+
+    dchar[] front()
+    {
+        return _front;
+    }
+
+    void popFront()
+    {
+        _front = getLexeme();
+    }
+
+    dchar[] moveFront()
+    {
+        _front = getLexeme();
+        return _front;
+    }
+
+    final int opApply(int delegate(dchar[]) dg)
+    {
+        int result = 0;
+
+        while(true)
+        {
+            dchar[] lexeme = getLexeme();
+
+            if (!lexeme.length)
+                break;
+
+            result = dg(lexeme);
+            if (result)
+                break;
+        }
+
+        return result;
+    }
+
+    final int opApply(int delegate(size_t, dchar[]) dg)
+    {
+        int result = 0;
+        size_t i = 0;
+
+        while(true)
+        {
+            dchar[] lexeme = getLexeme();
+
+            if (!lexeme.length)
+                break;
+
+            result = dg(i, lexeme);
+            if (result)
+                break;
+
+            i++;
+        }
+
+        return result;
     }
 }
 
