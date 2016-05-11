@@ -45,7 +45,7 @@ private
 }
 
 // uncomment this to see debug messages:
-//version = TGADebug;
+version = TGADebug;
 
 struct TGAHeader
 {
@@ -61,6 +61,23 @@ struct TGAHeader
     short height;
     ubyte bpp;
     ubyte descriptor;
+}
+
+enum TGAEncoding : ubyte {
+    Indexed = 1,
+    RGB = 2,
+    Grey = 3,
+    RLE_Indexed = 9,
+    RLE_RGB = 10,
+    RLE_Grey = 11
+};
+
+enum TgaOrigin : ubyte
+{
+    Left = 0x00,
+    Right = 0x10,
+    Lower = 0x00,
+    Upper = 0x20
 }
 
 class TGALoadException: ImageLoadException
@@ -139,7 +156,8 @@ Compound!(SuperImage, string) loadTGA(
             * 1 = Raw indexed image
             * 2 = Raw RGB
             * 3 = Raw greyscale
-            * 9 = RLE indexed            * 10 = RLE RGB
+            * 9 = RLE indexed
+            * 10 = RLE RGB
             * 11 = RLE greyscale
             * 32 & 33 = Other compression, indexed
             */
@@ -162,8 +180,28 @@ Compound!(SuperImage, string) loadTGA(
     SuperImage readRawRGB(ref TGAHeader hdr)
     {
         uint channels = hdr.bpp / 8;
-        SuperImage res = imgFac.createImage(hdr.width, hdr.height, channels, 8); 
-        istrm.fillArray(res.data);
+        SuperImage res = imgFac.createImage(hdr.width, hdr.height, channels, 8);
+        
+        if (hdr.descriptor & TgaOrigin.Upper) {
+            istrm.fillArray(res.data);
+        } else {
+            foreach(i; 0..hdr.height) {
+                istrm.fillArray(res.data[channels * hdr.width * (hdr.height-i-1)..channels * hdr.width * (hdr.height-i)]);
+            }
+        }
+        
+        const ubyte alphaBits = cast(ubyte)(hdr.descriptor & 0xf);
+        version(TGADebug) {
+            writefln("Alpha bits: %s", alphaBits);
+        }
+        
+        if (channels == 4) {
+            for (size_t i=0; i<res.data.length; i += channels) {
+                auto alphaIndex = i+3;
+                res.data[alphaIndex] = cast(ubyte)((res.data[alphaIndex] & ((1 << alphaBits)-1 )) << (8 - alphaBits));
+            }
+        }
+        
         return res;
     }
 
@@ -243,18 +281,14 @@ Compound!(SuperImage, string) loadTGA(
         }
 
         Delete(id);
-    }
+    }  
 
-    if (hdr.encoding != 2 && hdr.encoding != 10)
-        return error("loadTGA error: only RGB images are supported");
-
-    if (hdr.encoding == 2)
-    {
+    if (hdr.encoding == TGAEncoding.RGB) {
         img = readRawRGB(hdr);
-    }
-    else if (hdr.encoding == 10)
-    {
+    } else if (hdr.encoding == TGAEncoding.RLE_RGB) {
         img = readRLERGB(hdr);
+    } else {
+        return error("loadTGA error: only RGB images are supported");
     }
 
     img.swapRGB();
@@ -264,10 +298,64 @@ Compound!(SuperImage, string) loadTGA(
 
 void swapRGB(SuperImage img)
 {
-    foreach(x; 0..img.width)
-    foreach(y; 0..img.height)
-    {
-        img[x, y] = Color4f(img[x, y].bgr);
+    foreach(x; 0..img.width) {
+        foreach(y; 0..img.height)
+        {
+            img[x, y] = Color4f(img[x, y].bgra);
+        }
     }
 }
 
+void saveTGA(SuperImage img, string filename)
+{
+    OutputStream output = openForOutput(filename);
+    Compound!(bool, string) res = saveTGA(img, output);
+    output.close();
+
+    if (!res[0])
+        throw new TGALoadException(res[1]);
+}
+
+Compound!(bool, string) saveTGA(SuperImage img, OutputStream output)
+{
+    Compound!(bool, string) error(string errorMsg)
+    {
+        return compound(false, errorMsg);
+    }
+    
+    enum ubyte[12] tgaStart = [0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    output.writeArray(tgaStart);
+    output.writeLE(cast(ushort)img.width);
+    output.writeLE(cast(ushort)img.height);
+    
+    const bool hasAlpha = img.channels == 4;
+    
+    if (img.channels == 3) {
+        output.writeLE(cast(ubyte)24);
+        output.writeLE(cast(ubyte)TgaOrigin.Upper);
+    } else if (img.channels == 4) {
+        output.writeLE(cast(ubyte)32);
+        output.writeLE(cast(ubyte)0x28);
+    } else {
+        return error("saveTGA error: unsupported number of channels");
+    }
+    
+    foreach(y; 0..img.height) {
+        foreach(x; 0..img.width) {
+            ubyte[4] rgb;
+            ColorRGBA color = img[x, y].convert(8);
+            rgb[0] = cast(ubyte)color[2];
+            rgb[1] = cast(ubyte)color[1];
+            rgb[2] = cast(ubyte)color[0];
+            
+            if (hasAlpha) {
+                rgb[3] = cast(ubyte)(color[3]);
+                output.writeArray(rgb[]);
+            } else {
+                output.writeArray(rgb[0..3]);
+            }
+        }
+    }
+    
+    return compound(true, "");
+}

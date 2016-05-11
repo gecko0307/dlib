@@ -57,6 +57,8 @@ void saveImage(SuperImage img, string filename)
         case ".bmp", ".BMP":
             img.saveBMP(filename);
             break;
+        case ".tga", ".TGA":
+            img.saveTGA(filename);
         default:
             assert(0, "Image I/O error: unsupported image format or illegal extension");
     }
