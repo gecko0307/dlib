@@ -1015,7 +1015,7 @@ private:
         {
             ulong uPort;
 
-            uPort = strtoul(cast(char *)cPort, null, 10);
+            uPort = atoi(cPort.ptr); //strtoul(cast(char *)cPort, null, 10);
             if (uPort > ushort.max)
             {
                 return false;
