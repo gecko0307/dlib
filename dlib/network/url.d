@@ -816,22 +816,22 @@ struct URL {
                          c != '~' &&
                          !(c >= '$' && c <= '.'))
                 {
-                    if (scheme != "")
+                    if (scheme !is null)
                     {
-                        scheme = "";
+                        scheme = null;
                     }
-                    if (user != "")
+                    if (user !is null)
                     {
-                        user = "";
+                        user = null;
                     }
-                    if (pass != "")
+                    if (pass !is null)
                     {
-                        pass = "";
+                        pass = null;
                     }
                     throw new URIException("Restricted characters in user information");
                 }
             }
-            if (user == "")
+            if (user is null)
             {
                 user = value[start..pos];
             }
@@ -851,17 +851,17 @@ struct URL {
                     pos = i;
                     if  (port == 0 && !parsePort(value[i..endPos]))
                     {
-                        if (scheme != "")
+                        if (scheme !is null)
                         {
-                            scheme = "";
+                            scheme = null;
                         }
-                        if (user != "")
+                        if (user !is null)
                         {
-                            user = "";
+                            user = null;
                         }
-                        if (pass != "")
+                        if (pass !is null)
                         {
-                            pass = "";
+                            pass = null;
                         }
                         throw new URIException("Invalid port");
                     }
@@ -873,17 +873,17 @@ struct URL {
         // Check if we have a valid host, if we don't reject the string as url
         if (pos <= start)
         {
-            if (scheme != "")
+            if (scheme !is null)
             {
-                scheme = "";
+                scheme = null;
             }
-            if (user != "")
+            if (user !is null)
             {
-                user = "";
+                user = null;
             }
-            if (pass != "")
+            if (pass !is null)
             {
-                pass = "";
+                pass = null;
             }
             throw new URIException("Invalid host");
         }
@@ -933,33 +933,33 @@ struct URL {
 
     ~this()
     {
-        if (scheme != "")
+        if (scheme !is null)
         {
-            scheme = "";
+            scheme = null;
         }
-        if (user != "")
+        if (user !is null)
         {
-            user = "";
+            user = null;
         }
-        if (pass != "")
+        if (pass !is null)
         {
-            pass = "";
+            pass = null;
         }
-        if (host != "")
+        if (host !is null)
         {
-            host = "";
+            host = null;
         }
-        if (path != "")
+        if (path !is null)
         {
-            path = "";
+            path = null;
         }
-        if (query != "")
+        if (query !is null)
         {
-            query = "";
+            query = null;
         }
-        if (fragment != "")
+        if (fragment !is null)
         {
-            fragment = "";
+            fragment = null;
         }
     }
 
