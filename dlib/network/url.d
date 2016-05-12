@@ -38,9 +38,6 @@ import std.ascii : isAlphaNum, isDigit;
 import std.uni : isAlpha, isNumber;
 import core.stdc.stdlib;
 
-import dlib.core.memory;
-import dlib.text.utils;
-
 version (unittest) private
 {
     import std.typecons;
@@ -682,25 +679,20 @@ struct URL {
 
     /**
      * Attempts to parse an URL from a string.
+     * Output string data (scheme, user, etc.) are just slices of input string (e.g., no memory allocation and copying).
      *
      * Params:
      *  source = The string containing the URL.
      *
      * Throws: $(D_PSYMBOL URIException) if the URL is malformed.
      */
-    this(in string source)
+    this(string source)
     {
-        char[] value = New!(char[])(source.length);
+        auto value = source;
         ptrdiff_t pos = -1, endPos = value.length, start;
-
-        scope (exit)
-        {
-            Delete(value);
-        }
 
         foreach (i, ref c; source)
         {
-            value[i] = c;
             if (pos == -1 && c == ':')
             {
                 pos = i;
@@ -739,12 +731,12 @@ struct URL {
 
             if (value.length == pos + 1) // only scheme is available
             {
-                scheme = cast(string)copy(value[0 .. $ - 1]);
+                scheme = value[0 .. $ - 1];
                 return;
             }
             else if (value.length > pos + 1 && value[pos + 1] == '/')
             {
-                scheme = cast(string)copy(value[0..pos]);
+                scheme = value[0..pos];
 
                 if (value.length > pos + 2 && value[pos + 2] == '/')
                 {
@@ -770,7 +762,7 @@ struct URL {
                 
                 if (!parsePort(value[pos..$]))
                 {
-                    scheme = cast(string)copy(value[0..pos]);
+                    scheme = value[0..pos];
                     start = pos + 1;
                     goto ParsePath;
                 }
@@ -811,8 +803,8 @@ struct URL {
                 {
                     if (user is null)
                     {
-                        user = cast(string)copy(value[start .. start + i]);
-                        pass = cast(string)copy(value[start + i + 1 .. pos]);
+                        user = value[start .. start + i];
+                        pass = value[start + i + 1 .. pos]; 
                     }
                 }
                 else if (!c.isAlpha &&
@@ -824,27 +816,24 @@ struct URL {
                          c != '~' &&
                          !(c >= '$' && c <= '.'))
                 {
-                    if (scheme !is null)
+                    if (scheme != "")
                     {
-                        Delete(scheme);
-                        scheme = null;
+                        scheme = "";
                     }
-                    if (user !is null)
+                    if (user != "")
                     {
-                        Delete(user);
-                        user = null;
+                        user = "";
                     }
-                    if (pass !is null)
+                    if (pass != "")
                     {
-                        Delete(pass);
-                        pass = null;
+                        pass = "";
                     }
                     throw new URIException("Restricted characters in user information");
                 }
             }
-            if (user is null)
+            if (user == "")
             {
-                user = cast(string)copy(value[start..pos]);
+                user = value[start..pos];
             }
 
             start = ++pos;
@@ -862,20 +851,17 @@ struct URL {
                     pos = i;
                     if  (port == 0 && !parsePort(value[i..endPos]))
                     {
-                        if (scheme !is null)
+                        if (scheme != "")
                         {
-                            Delete(scheme);
-                            scheme = null;
+                            scheme = "";
                         }
-                        if (user !is null)
+                        if (user != "")
                         {
-                            Delete(user);
-                            user = null;
+                            user = "";
                         }
-                        if (pass !is null)
+                        if (pass != "")
                         {
-                            Delete(pass);
-                            pass = null;
+                            pass = "";
                         }
                         throw new URIException("Invalid port");
                     }
@@ -887,25 +873,22 @@ struct URL {
         // Check if we have a valid host, if we don't reject the string as url
         if (pos <= start)
         {
-            if (scheme !is null)
+            if (scheme != "")
             {
-                Delete(scheme);
-                scheme = null;
+                scheme = "";
             }
-            if (user !is null)
+            if (user != "")
             {
-                Delete(user);
-                user = null;
+                user = "";
             }
-            if (pass !is null)
+            if (pass != "")
             {
-                Delete(pass);
-                pass = null;
+                pass = "";
             }
             throw new URIException("Invalid host");
         }
 
-        host = cast(string)copy(value[start..pos]);
+        host = value[start..pos];
 
         if (endPos == value.length)
         {
@@ -936,54 +919,47 @@ struct URL {
 
         if (pos > start)
         {
-            path = cast(string)copy(value[start..pos]);
+            path = value[start..pos];
         }
         if (endPos >= ++pos)
         {
-            query = cast(string)copy(value[pos..endPos]);
+            query = value[pos..endPos];
         }
         if (++endPos <= value.length)
         {
-            fragment = cast(string)copy(value[endPos..$]);
+            fragment = value[endPos..$];
         }
     }
 
     ~this()
     {
-        if (scheme !is null)
+        if (scheme != "")
         {
-            Delete(scheme);
-            scheme = null;
+            scheme = "";
         }
-        if (user !is null)
+        if (user != "")
         {
-            Delete(user);
-            user = null;
+            user = "";
         }
-        if (pass !is null)
+        if (pass != "")
         {
-            Delete(pass);
-            pass = null;
+            pass = "";
         }
-        if (host !is null)
+        if (host != "")
         {
-            Delete(host);
-            host = null;
+            host = "";
         }
-        if (path !is null)
+        if (path != "")
         {
-            Delete(path);
-            path = null;
+            path = "";
         }
-        if (query !is null)
+        if (query != "")
         {
-            Delete(query);
-            query = null;
+            query = "";
         }
-        if (fragment !is null)
+        if (fragment != "")
         {
-            Delete(fragment);
-            fragment = null;
+            fragment = "";
         }
     }
 
@@ -998,7 +974,7 @@ private:
      *
      * Returns: Whether the port could found.
      */
-    bool parsePort(in char[] port) nothrow @nogc
+    bool parsePort(string port) nothrow @nogc
     {
         ptrdiff_t i = 1;
         char[6] cPort = "\0\0\0\0\0\0";
