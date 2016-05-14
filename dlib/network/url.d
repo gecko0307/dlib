@@ -36,7 +36,6 @@ module dlib.network.url;
 import std.uri;
 import std.ascii : isAlphaNum, isDigit;
 import std.uni : isAlpha, isNumber;
-import core.stdc.stdlib;
 
 import dlib.core.memory;
 import dlib.text.utils;
@@ -998,14 +997,14 @@ private:
      *
      * Returns: Whether the port could found.
      */
-    bool parsePort(in char[] port) nothrow @nogc
+    bool parsePort(in char[] port) pure nothrow @safe @nogc
     {
         ptrdiff_t i = 1;
-        char[6] cPort = "\0\0\0\0\0\0";
+		double lPort = 0;
 
         for (; i < port.length && port[i].isDigit() && i <= 6; ++i)
         {
-            cPort[i - 1] = port[i];
+			lPort += (port[i] - '0') / cast(double)(10 ^^ (i - 1));
         }
         if (i == 1 && (i == port.length || port[i] == '/'))
         {
@@ -1013,14 +1012,12 @@ private:
         }
         else if (i == port.length || port[i] == '/')
         {
-            ulong uPort;
-
-            uPort = strtoul(cast(char *)cPort, null, 10);
-            if (uPort > ushort.max)
+			lPort *= 10 ^^ (i - 2);
+            if (lPort > ushort.max)
             {
                 return false;
             }
-            this.port = cast(ushort)uPort;
+            this.port = cast(ushort)lPort;
             return true;
         }
         return false;
