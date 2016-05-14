@@ -1000,11 +1000,11 @@ private:
     bool parsePort(in char[] port) pure nothrow @safe @nogc
     {
         ptrdiff_t i = 1;
-		double lPort = 0;
+		float lPort = 0;
 
         for (; i < port.length && port[i].isDigit() && i <= 6; ++i)
         {
-			lPort += (port[i] - '0') / cast(double)(10 ^^ (i - 1));
+			lPort += (port[i] - '0') / cast(float)(10 ^^ (i - 1));
         }
         if (i == 1 && (i == port.length || port[i] == '/'))
         {
