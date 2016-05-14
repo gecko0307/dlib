@@ -973,7 +973,7 @@ private:
      *
      * Returns: Whether the port could found.
      */
-    bool parsePort(in char[] port) pure nothrow @safe @nogc
+    bool parsePort(string port) pure nothrow @safe @nogc
     {
         ptrdiff_t i = 1;
         float lPort = 0;
