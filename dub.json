@@ -5,7 +5,10 @@
         "Martin Cejp",
         "Andrey Penechko",
         "Vadim Lopatin",
-        "Nick Papanastasiou"
+        "Nick Papanastasiou",
+        "Oleg Baharev", 
+        "Roman Chistokhodov", 
+        "Eugene Wissner"
     ],
     "license": "Boost",
     "homepage": "http://github.com/gecko0307/dlib",

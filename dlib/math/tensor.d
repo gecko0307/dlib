@@ -335,6 +335,104 @@ template Tensor(T, size_t dim, sizes...)
             }
         }
 
+        @property size_t length()
+        {
+            return data.length;
+        }
+
+        @property bool initialized()
+        {
+            return (data.length > 0);
+        }
+
+        static if (isVector)
+        {
+           /*
+            * NOTE: unfortunately, the following cannot be
+            * moved to Vector struct because of conflicting
+            * opDispatch with alias this.
+            */
+
+            private static bool valid(string s) 
+            {
+                if (s.length < 2)
+                    return false;
+
+                foreach(c; s)
+                {
+                    switch(c)
+                    {
+                        case 'w', 'a', 'q': 
+                            if (size < 4) return false;
+                            else break;
+                        case 'z', 'b', 'p': 
+                            if (size < 3) return false;
+                            else break;
+                        case 'y', 'g', 't': 
+                            if (size < 2) return false;
+                            else break;
+                        case 'x', 'r', 's': 
+                            if (size < 1) return false;
+                            else break;
+                        default:
+                            return false;
+                    }
+                }
+                return true;
+            }
+
+            static if (size < 5)
+            {
+               /*
+                * Symbolic element access for vector
+                */
+                private static string vecElements(string[4] letters) @property
+                {
+                    string res;
+                    foreach (i; 0..size)
+                    {
+                        res ~= "T " ~ letters[i] ~ "; ";
+                    }
+                    return res;
+                }
+            }
+
+           /*
+            * Swizzling
+            */
+            template opDispatch(string s) if (valid(s))
+            {
+                static if (s.length <= 4)
+                { 
+                    @property auto ref opDispatch(this X)()
+                    {
+                        auto extend(string s) 
+                        {
+                            while (s.length < 4) 
+                                s ~= s[$-1];
+                            return s;
+                        }
+
+                        enum p = extend(s);
+                        enum i = (char c) => ['x':0, 'y':1, 'z':2, 'w':3,
+                                              'r':0, 'g':1, 'b':2, 'a':3,
+                                              's':0, 't':1, 'p':2, 'q':3][c];
+                        enum i0 = i(p[0]), 
+                             i1 = i(p[1]), 
+                             i2 = i(p[2]), 
+                             i3 = i(p[3]);
+
+                        static if (s.length == 4)
+                            return Tensor!(T,1,4)(arrayof[i0], arrayof[i1], arrayof[i2], arrayof[i3]);
+                        else static if (s.length == 3)
+                            return Tensor!(T,1,3)(arrayof[i0], arrayof[i1], arrayof[i2]);
+                        else static if (s.length == 2)
+                            return Tensor!(T,1,2)(arrayof[i0], arrayof[i1]);
+                    }
+                }
+            }
+        }
+
         static if (dynamic)
         {
             T[] data;
@@ -355,6 +453,16 @@ template Tensor(T, size_t dim, sizes...)
                 {
                     T x;
                 }
+
+                static if (isVector)
+                {
+                    static if (size < 5)
+                    {
+                        struct { mixin(vecElements(["x", "y", "z", "w"])); }
+                        struct { mixin(vecElements(["r", "g", "b", "a"])); }
+                        struct { mixin(vecElements(["s", "t", "p", "q"])); }
+                    }
+                }
             }
 
             static if (isScalar)
@@ -365,15 +473,6 @@ template Tensor(T, size_t dim, sizes...)
 
         alias data arrayof;
 
-        @property size_t length()
-        {
-            return data.length;
-        }
-
-        @property bool initialized()
-        {
-            return (data.length > 0);
-        }
     }
 }
 
