@@ -25,6 +25,8 @@ Currently dlib contains the following packages:
 
 * dlib.audio - sound processing (8 and 16 bits per sample, synthesizers, WAV export and import)
 
+* dlib.network - networking and web functionality
+
 * dlib.text - text processing
 
 * dlib.xml - lightweight XML parser (UTF-8)
