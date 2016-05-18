@@ -42,7 +42,7 @@ private
 }
 
 // uncomment this to see debug messages:
-version = BMPDebug;
+//version = BMPDebug;
 
 static const ubyte[2] BMPMagic = ['B', 'M'];
 
@@ -762,7 +762,6 @@ unittest
     ];
     auto bmpStream16_5_6_5 = new ArrayStream(bmpData16_5_6_5);
     img = loadBMP(bmpStream16_5_6_5);
-    writeln(img[0,0].convert(8));
     
     /*TODO: pixel comparisons
      * GIMP shows slightly different pixel values on the same images.

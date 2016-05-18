@@ -45,7 +45,7 @@ private
 }
 
 // uncomment this to see debug messages:
-version = TGADebug;
+//version = TGADebug;
 
 struct TGAHeader
 {
