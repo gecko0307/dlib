@@ -136,6 +136,14 @@ private ubyte calculateShift(uint mask) nothrow pure
     return result;
 }
 
+unittest
+{
+    assert(calculateShift(0xff) == 0);
+    assert(calculateShift(0xff00) == 8);
+    assert(calculateShift(0xff0000) == 16);
+    assert(calculateShift(0xff000000) == 24);
+}
+
 private ubyte applyMask(uint value, uint mask, ubyte shift, ubyte scale) nothrow pure
 {
     return cast(ubyte) (((value & mask) >> shift) * scale);
@@ -312,9 +320,9 @@ Compound!(SuperImage, string) loadBMP(
         
         version(BMPDebug) {
             writeln("File has bitfields masks");
-            writefln("redMask = %s", redMask);
-            writefln("greenMask = %s", greenMask);
-            writefln("blueMask = %s", blueMask);
+            writefln("redMask = %#x", redMask);
+            writefln("greenMask = %#x", greenMask);
+            writefln("blueMask = %#x", blueMask);
             writeln("-------------------");
         }
         
@@ -383,6 +391,13 @@ Compound!(SuperImage, string) loadBMP(
         blueShift = calculateShift(blueMask);
         alphaShift = calculateShift(alphaMask);
         
+        version(BMPDebug) {
+            writefln("redShift = %#x", redShift);
+            writefln("greenShift = %#x", greenShift);
+            writefln("blueShift = %#x", blueShift);
+            writefln("alphaShift = %#x", alphaShift);
+        }
+        
         //scales are used to get equivalent weights for every color channel fit in byte
         
         if (calculateDivisor(redMask, redShift) == 0 || calculateDivisor(greenMask, greenShift) == 0
@@ -395,6 +410,14 @@ Compound!(SuperImage, string) loadBMP(
         greenScale = calculateScale(greenMask, greenShift);
         blueScale = calculateScale(blueMask, blueShift);
         alphaScale = calculateScale(alphaMask, alphaShift);
+        
+        version(BMPDebug) {
+            writefln("redScale = %#x", redScale);
+            writefln("greenScale = %#x", greenScale);
+            writefln("blueScale = %#x", blueScale);
+            writefln("alphaScale = %#x", alphaScale);
+        }
+        
     } else if (compression == BMPCompressionType.RGB && (bitsPerPixel == 24 || bitsPerPixel == 32)) {
         blueMask = 0x000000ff;
         greenMask = 0x0000ff00;
@@ -553,9 +576,9 @@ Compound!(SuperImage, string) loadBMP(
             {
                 foreach(x; 0..img.width)
                 {
-                    ubyte[2] bgr;
-                    istrm.fillArray(bgr);
-                    const uint p = bgr[0] | ((cast(uint)bgr[1]) << 8);
+                    ushort bgr;
+                    istrm.readLE(&bgr);
+                    const uint p = bgr;
                     const ubyte r = applyMask(p, redMask, redShift, redScale);
                     const ubyte g = applyMask(p, greenMask, greenShift, greenScale);
                     const ubyte b = applyMask(p, blueMask, blueShift, blueScale);
@@ -570,16 +593,14 @@ Compound!(SuperImage, string) loadBMP(
             {
                 foreach(x; 0..img.width)
                 {
-                    ubyte[4] bgr;
-                    istrm.fillArray(bgr);
-                    
-                    const uint p = bgr[0] | ((cast(uint)bgr[1]) << 8) | ((cast(uint)bgr[2]) << 16) | ((cast(uint)bgr[3]) << 24);
+                    uint p;
+                    istrm.readLE(&p);
                     
                     const ubyte r = applyMask(p, redMask, redShift, redScale);
                     const ubyte g = applyMask(p, greenMask, greenShift, greenScale);
                     const ubyte b = applyMask(p, blueMask, blueShift, blueScale);
                     
-                    img[x, img.height-y-1] = Color4f(ColorRGBA(bgr[2], bgr[1], bgr[0], transparent ? applyMask(p, alphaMask, alphaShift, alphaScale) : 0xff));
+                    img[x, img.height-y-1] = Color4f(ColorRGBA(r, g, b, transparent ? applyMask(p, alphaMask, alphaShift, alphaScale) : 0xff));
                 }
 
                 istrm.seek(padding);
@@ -593,6 +614,175 @@ Compound!(SuperImage, string) loadBMP(
         Delete(colormap);
     
     return compound(img, "");
+}
+
+
+unittest
+{
+    import dlib.core.stream;
+    import std.stdio;
+    
+    SuperImage img;
+    
+    //32 bit with bitfield masks
+    ubyte[] bmpData32 = [
+        66, 77, 72, 1, 0, 0, 0, 0, 0, 0, 70, 0, 0, 0, 56, 0, 0, 0, 8, 0, 0, 0, 8, 0, 
+        0, 0, 1, 0, 32, 0, 3, 0, 0, 0, 2, 1, 0, 0, 18, 11, 0, 0, 18, 11, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 255, 0, 0, 255, 0, 0, 255, 0, 0, 0, 0, 0, 0, 0, 255, 
+        255, 255, 0, 245, 235, 224, 0, 229, 199, 154, 0, 248, 227, 185, 0, 255, 229, 
+        181, 0, 236, 203, 152, 0, 244, 234, 223, 0, 255, 255, 255, 0, 244, 234, 224, 0, 
+        202, 139, 76, 0, 242, 199, 126, 0, 202, 217, 187, 0, 117, 190, 218, 0, 167, 
+        177, 160, 0, 209, 140, 72, 0, 243, 231, 221, 0, 196, 149, 107, 0, 166, 97, 16, 
+        0, 208, 143, 34, 0, 161, 188, 160, 0, 59, 207, 255, 0, 52, 168, 228, 0, 182, 
+        115, 42, 0, 196, 144, 97, 0, 196, 151, 116, 0, 192, 136, 51, 0, 226, 169, 71, 
+        0, 231, 202, 160, 0, 170, 199, 178, 0, 101, 178, 172, 0, 176, 156, 116, 0, 201, 
+        153, 112, 0, 204, 162, 127, 0, 185, 156, 134, 0, 136, 155, 170, 0, 153, 201, 
+        201, 0, 161, 211, 186, 0, 69, 179, 136, 0, 123, 151, 103, 0, 210, 164, 133, 0, 
+        215, 183, 153, 0, 201, 174, 166, 0, 34, 94, 208, 0, 29, 132, 228, 0, 125, 188, 
+        190, 0, 112, 178, 134, 0, 120, 144, 104, 0, 213, 181, 154, 0, 246, 240, 233, 0, 
+        221, 193, 168, 0, 167, 168, 213, 0, 127, 147, 220, 0, 220, 224, 236, 0, 255, 
+        239, 232, 0, 220, 191, 169, 0, 245, 238, 230, 0, 255, 255, 255, 0, 247, 240, 
+        233, 0, 235, 213, 186, 0, 252, 237, 216, 0, 245, 231, 217, 0, 231, 212, 193, 0, 
+        246, 239, 230, 0, 255, 255, 255, 0, 0
+    ];
+    auto bmpStream32 = new ArrayStream(bmpData32);
+    img = loadBMP(bmpStream32);
+    assert(img[2,2].convert(8) == Color4(208, 94, 34, 255));
+    assert(img[5,2].convert(8) == Color4(134, 178, 112, 255));
+    assert(img[2,5].convert(8) == Color4(34, 143, 208, 255));
+    assert(img[5,5].convert(8) == Color4(228, 168, 52, 255));
+    
+    //32 bit with transparency
+    ubyte[] bmpData32_alpha = [
+        66, 77, 122, 1, 0, 0, 0, 0, 0, 0, 122, 0, 0, 0, 108, 0, 0, 0, 8, 0, 0, 0, 8, 
+        0, 0, 0, 1, 0, 32, 0, 3, 0, 0, 0, 0, 1, 0, 0, 109, 11, 0, 0, 109, 11, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 0, 0, 255, 0, 0, 255, 0, 0, 0, 0, 0, 0, 255, 1, 
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 
+        249, 173, 0, 206, 142, 67, 52, 231, 194, 127, 176, 248, 229, 183, 239, 249, 
+        229, 182, 240, 235, 196, 126, 179, 207, 143, 68, 55, 255, 255, 238, 0, 168, 86, 
+        17, 50, 198, 128, 57, 207, 230, 188, 116, 255, 200, 211, 179, 255, 131, 192, 
+        209, 255, 164, 172, 153, 255, 199, 131, 60, 211, 171, 88, 18, 55, 162, 88, 23, 
+        171, 171, 103, 22, 255, 203, 147, 48, 255, 165, 188, 159, 255, 78, 202, 251, 
+        255, 71, 168, 211, 255, 174, 119, 55, 255, 166, 89, 21, 179, 190, 142, 100, 
+        233, 191, 137, 58, 255, 215, 167, 81, 255, 216, 198, 158, 255, 162, 198, 181, 
+        255, 106, 177, 169, 255, 171, 153, 111, 255, 193, 142, 98, 239, 198, 155, 120, 
+        232, 184, 154, 130, 255, 140, 155, 166, 255, 149, 194, 197, 255, 153, 206, 185, 
+        255, 84, 180, 141, 255, 129, 151, 106, 255, 198, 154, 121, 238, 196, 152, 117, 
+        168, 191, 166, 157, 255, 59, 109, 202, 255, 51, 140, 222, 255, 127, 188, 190, 
+        255, 119, 179, 141, 255, 129, 146, 106, 255, 188, 149, 117, 175, 193, 147, 111, 
+        47, 213, 186, 167, 203, 164, 163, 201, 255, 138, 156, 216, 255, 212, 216, 226, 
+        255, 237, 225, 212, 255, 213, 189, 168, 207, 190, 148, 112, 52, 255, 255, 255, 
+        0, 212, 179, 149, 47, 236, 218, 201, 169, 247, 237, 227, 233, 246, 237, 229, 
+        234, 233, 217, 203, 172, 214, 182, 154, 50, 255, 255, 255, 0
+    ];
+    auto bmpStream32_alpha = new ArrayStream(bmpData32_alpha);
+    img = loadBMP(bmpStream32_alpha);
+    assert(img[1,1].convert(8) == Color4(167, 186, 213, 203));
+    assert(img[1,6].convert(8) == Color4(57, 128, 198, 207));
+    assert(img[2,2].convert(8) == Color4(202, 109, 59, 255));
+    assert(img[5,5].convert(8) == Color4(211, 168, 71, 255));
+    
+    //24 bit
+    ubyte[] bmpData24 = [
+        66, 77, 248, 0, 0, 0, 0, 0, 0, 0, 54, 0, 0, 0, 40, 0, 0, 0, 8, 0, 0, 0, 8, 0, 
+        0, 0, 1, 0, 24, 0, 0, 0, 0, 0, 194, 0, 0, 0, 18, 11, 0, 0, 18, 11, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 255, 255, 255, 245, 235, 224, 229, 199, 154, 248, 227, 185, 
+        255, 229, 181, 236, 203, 152, 244, 234, 223, 255, 255, 255, 244, 234, 224, 202, 
+        139, 76, 242, 199, 126, 202, 217, 187, 117, 190, 218, 167, 177, 160, 209, 140, 
+        72, 243, 231, 221, 196, 149, 107, 166, 97, 16, 208, 143, 34, 161, 188, 160, 59, 
+        207, 255, 52, 168, 228, 182, 115, 42, 196, 144, 97, 196, 151, 116, 192, 136, 
+        51, 226, 169, 71, 231, 202, 160, 170, 199, 178, 101, 178, 172, 176, 156, 116, 
+        201, 153, 112, 204, 162, 127, 185, 156, 134, 136, 155, 170, 153, 201, 201, 161, 
+        211, 186, 69, 179, 136, 123, 151, 103, 210, 164, 133, 215, 183, 153, 201, 174, 
+        166, 34, 94, 208, 29, 132, 228, 125, 188, 190, 112, 178, 134, 120, 144, 104, 
+        213, 181, 154, 246, 240, 233, 221, 193, 168, 167, 168, 213, 127, 147, 220, 220, 
+        224, 236, 255, 239, 232, 220, 191, 169, 245, 238, 230, 255, 255, 255, 247, 240, 
+        233, 235, 213, 186, 252, 237, 216, 245, 231, 217, 231, 212, 193, 246, 239, 230, 
+        255, 255, 255, 0, 0
+    ];
+    auto bmpStream24 = new ArrayStream(bmpData24);
+    img = loadBMP(bmpStream24);
+    assert(img[2,2].convert(8) == Color4(208, 94, 34, 255));
+    assert(img[5,5].convert(8) == Color4(228, 168, 52, 255));
+    
+    //16 bit X1 R5 G5 B5
+    ubyte[] bmpData16_1_5_5_5 = [
+        66, 77, 184, 0, 0, 0, 0, 0, 0, 0, 54, 0, 0, 0, 40, 0, 0, 0, 8, 0, 0, 0, 8, 0, 
+        0, 0, 1, 0, 16, 0, 0, 0, 0, 0, 130, 0, 0, 0, 18, 11, 0, 0, 18, 11, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 255, 127, 190, 111, 28, 79, 158, 91, 159, 91, 61, 75, 158, 
+        111, 255, 127, 158, 111, 57, 38, 29, 63, 89, 95, 238, 110, 212, 78, 57, 38, 
+        158, 111, 88, 54, 148, 9, 57, 18, 244, 78, 39, 127, 134, 114, 214, 21, 88, 50, 
+        88, 58, 55, 26, 187, 38, 60, 79, 21, 91, 204, 86, 117, 58, 120, 58, 153, 62, 
+        118, 66, 113, 86, 19, 99, 84, 95, 200, 70, 79, 54, 154, 66, 218, 78, 184, 82, 
+        100, 101, 4, 114, 239, 94, 206, 66, 79, 54, 218, 78, 190, 115, 251, 82, 148, 
+        106, 79, 110, 123, 119, 191, 115, 251, 86, 190, 115, 255, 127, 190, 115, 93, 
+        95, 191, 107, 158, 107, 92, 95, 190, 115, 255, 127, 0, 0
+    ];
+    auto bmpStream16_1_5_5_5 = new ArrayStream(bmpData16_1_5_5_5);
+    img = loadBMP(bmpStream16_1_5_5_5);
+    
+    /*TODO: pixel comparisons
+     * GIMP shows slightly different pixel values on the same images.
+     */
+    
+    //16 bit X4 R4 G4 B4
+    ubyte[] bmpData16_4_4_4_4 = [
+        66, 77, 200, 0, 0, 0, 0, 0, 0, 0, 70, 0, 0, 0, 56, 0, 0, 0, 8, 0, 0, 0, 8, 0, 
+        0, 0, 1, 0, 16, 0, 3, 0, 0, 0, 130, 0, 0, 0, 18, 11, 0, 0, 18, 11, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 15, 0, 0, 240, 0, 0, 0, 15, 0, 0, 0, 0, 0, 0, 0, 255, 15, 
+        238, 13, 205, 9, 223, 11, 223, 11, 206, 9, 238, 13, 255, 15, 238, 13, 140, 4, 
+        206, 7, 220, 11, 183, 13, 170, 9, 140, 4, 238, 13, 156, 6, 106, 1, 140, 2, 185, 
+        9, 195, 15, 163, 13, 123, 2, 140, 6, 156, 7, 139, 3, 173, 4, 206, 9, 202, 10, 
+        166, 10, 154, 7, 156, 7, 172, 7, 155, 8, 152, 10, 201, 12, 201, 11, 180, 8, 
+        151, 6, 172, 8, 189, 9, 172, 10, 98, 12, 130, 13, 183, 11, 167, 8, 135, 6, 189, 
+        9, 238, 14, 189, 10, 170, 13, 151, 13, 221, 14, 239, 14, 189, 10, 238, 14, 255, 
+        15, 239, 14, 222, 11, 239, 13, 238, 13, 206, 11, 238, 14, 255, 15, 0, 0
+    ];
+    auto bmpStream16_4_4_4_4 = new ArrayStream(bmpData16_4_4_4_4);
+    img = loadBMP(bmpStream16_4_4_4_4);
+    
+    /*TODO: pixel comparisons
+     * GIMP shows slightly different pixel values on the same images.
+     */
+    
+    //16 bit R5 G6 B5
+    ubyte[] bmpData16_5_6_5 = [
+        66, 77, 200, 0, 0, 0, 0, 0, 0, 0, 70, 0, 0, 0, 56, 0, 0, 0, 8, 0, 0, 0, 8, 0, 
+        0, 0, 1, 0, 16, 0, 3, 0, 0, 0, 130, 0, 0, 0, 18, 11, 0, 0, 18, 11, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 248, 0, 0, 224, 7, 0, 0, 31, 0, 0, 0, 0, 0, 0, 0, 255, 
+        255, 94, 223, 60, 158, 30, 183, 63, 183, 93, 150, 94, 223, 255, 255, 94, 223, 
+        89, 76, 61, 126, 217, 190, 238, 221, 148, 157, 121, 76, 62, 223, 184, 108, 20, 
+        19, 121, 36, 212, 157, 103, 254, 70, 229, 150, 43, 152, 100, 184, 116, 87, 52, 
+        91, 77, 92, 158, 53, 182, 140, 173, 245, 116, 216, 116, 25, 125, 246, 132, 209, 
+        172, 83, 198, 148, 190, 136, 141, 175, 108, 58, 133, 186, 157, 120, 165, 228, 
+        202, 36, 228, 207, 189, 142, 133, 143, 108, 186, 157, 126, 231, 27, 166, 84, 
+        213, 143, 220, 251, 238, 127, 231, 251, 173, 126, 231, 255, 255, 126, 231, 189, 
+        190, 127, 215, 62, 215, 156, 190, 126, 231, 255, 255, 0, 0
+    ];
+    auto bmpStream16_5_6_5 = new ArrayStream(bmpData16_5_6_5);
+    img = loadBMP(bmpStream16_5_6_5);
+    
+    /*TODO: pixel comparisons
+     * GIMP shows slightly different pixel values on the same images.
+     */
+    
+    //4 bit
+    ubyte[] bmpData4 = [
+        66, 77, 150, 0, 0, 0, 0, 0, 0, 0, 118, 0, 0, 0, 40, 0, 0, 0, 8, 0, 0, 0, 8, 0, 
+        0, 0, 1, 0, 4, 0, 0, 0, 0, 0, 32, 0, 0, 0, 196, 14, 0, 0, 196, 14, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 0, 0, 128, 0, 0, 0, 128, 128, 0, 128, 
+        0, 0, 0, 128, 0, 128, 0, 128, 128, 0, 0, 128, 128, 128, 0, 192, 192, 192, 0, 0, 
+        0, 255, 0, 0, 255, 0, 0, 0, 255, 255, 0, 255, 0, 0, 0, 255, 0, 255, 0, 255, 
+        255, 0, 0, 255, 255, 255, 0, 255, 136, 136, 255, 246, 136, 136, 111, 116, 103, 
+        187, 103, 118, 104, 131, 119, 119, 120, 131, 119, 136, 147, 135, 40, 248, 135, 
+        255, 143, 255, 255, 255, 255
+    ];
+    auto bmpStream4 = new ArrayStream(bmpData4);
+    img = loadBMP(bmpStream4);
+    assert(img[2,2].convert(8) == Color4(255,0,0,255));
+    assert(img[1,1].convert(8) == Color4(192,192,192,255));
+    assert(img[6,2].convert(8) == Color4(0,128,0,255));
 }
 
 void saveBMP(SuperImage img, string filename)
