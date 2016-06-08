@@ -122,6 +122,9 @@ class Trie(T, K)
                 auto n = New!(Trie!(T, K))(s);
                 current.children.append(n);
                 current = n;
+                
+                //current.children.append(n);
+                //current = n;
             }
         }
 
@@ -134,7 +137,7 @@ class Trie(T, K)
             {
                 current.active = true;
                 length++;
-            }
+            } 
         }
     }
 
@@ -223,14 +226,23 @@ class Trie(T, K)
 
     int opApply(int delegate(K, ref T) dg)
     {
+        int result = 0;
+
         foreach(c; children)
         {
             if (c.active)
-                dg(c.key, c.value);
-            c.opApply(dg);
+                result = dg(c.key, c.value);
+
+            if (result)
+                break;
+
+            result = c.opApply(dg);
+
+            if (result)
+                break;
         }
 
-        return 0;
+        return result;
     }
 
     void clear()
