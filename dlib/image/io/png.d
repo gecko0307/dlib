@@ -597,9 +597,9 @@ body
 pure ubyte paeth(ubyte a, ubyte b, ubyte c)
 {
     int p = a + b - c;
-    int pa = abs(p - a);
-    int pb = abs(p - b);
-    int pc = abs(p - c);
+    int pa = std.math.abs(p - a);
+    int pb = std.math.abs(p - b);
+    int pc = std.math.abs(p - c);
     if (pa <= pb && pa <= pc) return a;
     else if (pb <= pc) return b;
     else return c;

@@ -43,7 +43,7 @@ struct Ray
     Vector3f p1;
     float t;
 
-    this(Vector3f begin = Vector3f(), Vector3f end = Vector3f())
+    this(Vector3f begin, Vector3f end)
     {
         p0 = begin;
         p1 = end;
