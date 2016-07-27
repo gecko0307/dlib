@@ -34,6 +34,7 @@ private
 
     import dlib.image.image;
     import dlib.image.io.bmp;
+    import dlib.image.io.hdr;
     import dlib.image.io.png;
     import dlib.image.io.tga;
     import dlib.image.io.jpeg;
@@ -70,6 +71,8 @@ SuperImage loadImage(string filename)
     {
         case ".bmp", ".BMP":
             return loadBMP(filename);
+        case ".hdr", ".HDR":
+            return loadHDR(filename);
         case ".jpg", ".JPG", ".jpeg", ".JPEG":
             return loadJPEG(filename);
         case ".png", ".PNG":

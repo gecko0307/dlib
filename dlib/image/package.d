@@ -57,6 +57,7 @@ public
     import dlib.image.io.png;
     import dlib.image.io.tga;
     import dlib.image.io.jpeg;
+    import dlib.image.io.hdr;
 
     import dlib.image.render.cosplasma;
     import dlib.image.render.shapes;
