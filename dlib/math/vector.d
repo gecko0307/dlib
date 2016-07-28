@@ -768,7 +768,7 @@ alias tensorProduct outerProduct;
 /*
  * Compute normal of a plane from three points
  */
-Vector!(T,3) normal(T) (Vector!(T,3) p1, Vector!(T,3) p2, Vector!(T,3) p3)
+Vector!(T,3) planeNormal(T) (Vector!(T,3) p1, Vector!(T,3) p2, Vector!(T,3) p3)
 body
 {
     Vector!(T,3) vec1 = Vector!(T,3)(p1 - p2);
