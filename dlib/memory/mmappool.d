@@ -427,14 +427,14 @@ class MmapPool : Allocator
 
     private static MmapPool instance_;
 
-    private shared static immutable long pageSize;
+    private shared static immutable size_t pageSize;
 
     private struct RegionEntry
     {
         Region prev;
         Region next;
         uint blocks;
-        ulong size;
+        size_t size;
     }
     private alias Region = RegionEntry*;
     private enum regionEntrySize = 32;
@@ -446,7 +446,7 @@ class MmapPool : Allocator
         Block prev;
         Block next;
         bool free;
-        ulong size;
+        size_t size;
         Region region;
     }
     private alias Block = BlockEntry*;
