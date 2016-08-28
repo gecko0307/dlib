@@ -9,18 +9,15 @@ language: d
 d:
  - dmd-2.071.0
  - dmd-2.068.2
- - dmd-2.067.1
- - ldc-0.16.0-beta1
- - ldc-0.15.2-beta2
+ - ldc-1.0.0
  - gdc-5.2.0
  - gdc-4.9.2
 
 matrix:
   allow_failures:
-   - d: ldc-0.15.2-beta2
    - d: gdc-4.9.2
    - d: gdc-5.2.0
-   - d: dmd-2.067.1
+   - d: dmd-2.068.2
 
 env: 
   matrix:
