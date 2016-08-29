@@ -42,11 +42,11 @@ interface Allocator
      * Allocates $(D_PARAM size) bytes of memory.
      *
      * Params:
-     *     s = Amount of memory to allocate.
+     *     size = Amount of memory to allocate.
      *
      * Returns: The pointer to the new allocated memory.
      */
-    void[] allocate(size_t size);
+    void[] allocate(size_t size) shared;
 
     /**
      * Deallocates a memory block.
@@ -56,7 +56,7 @@ interface Allocator
      *
      * Returns: Whether the deallocation was successful.
      */
-    bool deallocate(void[] p);
+    bool deallocate(void[] p) shared;
 
     /**
      * Increases or decreases the size of a memory block.
@@ -67,10 +67,10 @@ interface Allocator
      *
      * Returns: Whether the reallocation was successful.
      */
-    bool reallocate(ref void[] p, size_t s);
+    bool reallocate(ref void[] p, size_t size) shared;
 
     /**
      * Returns: The alignment offered.
      */
-    @property immutable(uint) alignment() const @safe pure nothrow;
+    @property immutable(uint) alignment() shared const @safe pure nothrow;
 }
