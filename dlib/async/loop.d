@@ -31,8 +31,12 @@ DEALINGS IN THE SOFTWARE.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Eugene Wissner
  *
+ * If you changed the the default allocator please use $(D_PSYMBOL MmapPool)
+ * to allocate watchers.
+ *
  * ---
  * import dlib.memory;
+ * import dlib.memory.mmappool;
  * import dlib.async;
  * import std.exception;
  * import core.sys.posix.netinet.in_;
@@ -62,7 +66,6 @@ DEALINGS IN THE SOFTWARE.
  * {
  *     sockaddr_in addr;
  *     int s = socket(AF_INET, SOCK_STREAM, 0);
- *     auto loop = getDefaultLoop();
  *
  *     addr.sin_family = AF_INET;
  *     addr.sin_port = htons(cast(ushort)8192);
@@ -70,18 +73,18 @@ DEALINGS IN THE SOFTWARE.
  *
  *     if (bind(s, cast(sockaddr *)&addr, addr.sizeof) != 0)
  *     {
- *         throw defaultAllocator.make!Exception("bind");
+ *         throw MmapPool.instance.make!Exception("bind");
  *     }
  *
  *     fcntl(s, F_SETFL, fcntl(s, F_GETFL, 0) | O_NONBLOCK); 
  *     listen(s, 5);
  *
- *     auto io = defaultAllocator.make!ConnectionWatcher(s);
+ *     auto io = MmapPool.instance.make!ConnectionWatcher(s);
  *     io.setProtocol!EchoProtocol;
  *
- *     loop.start(io);
+ *     defaultLoop.start(io);
  *
- *     loop.run();
+ *     defaultLoop.run();
  *
  *     shutdown(s, SHUT_RDWR);
  *     close(s);
@@ -324,24 +327,24 @@ class BadLoopException : Exception
 
 /**
  * Returns the event loop used by default. If an event loop wasn't set with
- * $(D_PSYMBOL defaultLoop) before, $(D_PSYMBOL getDefaultLoop()) will try to
+ * $(D_PSYMBOL defaultLoop) before, $(D_PSYMBOL defaultLoop) will try to
  * choose an event loop supported on the system.
  *
  * Returns: The default event loop.
  */
-Loop getDefaultLoop()
+@property Loop defaultLoop()
 {
-    if (_defaultLoop !is null)
+    if (defaultLoop_ !is null)
     {
-        return _defaultLoop;
+        return defaultLoop_;
     }
 
     static if (UseEpoll)
     {
-        _defaultLoop = make!EpollLoop(MmapPool.instance);
+        defaultLoop_ = MmapPool.instance.make!EpollLoop;
     }
 
-    return _defaultLoop;
+    return defaultLoop_;
 }
 
 /**
@@ -362,10 +365,10 @@ in
 }
 body
 {
-    _defaultLoop = loop;
+    defaultLoop_ = loop;
 }
 
-private Loop _defaultLoop;
+private Loop defaultLoop_;
 
 /**
  * Queue.
