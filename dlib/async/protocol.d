@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015 Timur Gafarov 
+Copyright (c) 2016 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,21 +26,43 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib;
+/**
+ * Copyright: Eugene Wissner 2016-.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Eugene Wissner
+ */
+module dlib.async.protocol;
 
-public
+import dlib.async.transport;
+
+/**
+ * Common protocol interface.
+ */
+interface Protocol
 {
-    import dlib.async;
-    import dlib.coding;
-    import dlib.container;
-    import dlib.core;
-    import dlib.filesystem;
-    import dlib.functional;
-    import dlib.geometry;
-    import dlib.image;
-    import dlib.math;
-    import dlib.memory;
-    import dlib.xml;
-    import dlib.text;
-    import dlib.network;
+    /**
+     * Params:
+     *     data = Read data.
+     */
+    void received(ubyte[] data);
+
+    /**
+     * Called when a connection is made.
+     *
+     * Params:
+     *     transport = Protocol transport.
+     */
+    void connected(DuplexTransport transport);
+
+    /**
+     * Called when a connection is lost.
+     */
+    void disconnected();
+}
+
+/**
+ * Interface for TCP.
+ */
+interface TransmissionControlProtocol  : Protocol
+{
 }

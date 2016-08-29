@@ -33,6 +33,14 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.memory.allocator;
 
+import std.experimental.allocator;
+import std.traits;
+
+version (unittest)
+{
+    import dlib.memory : defaultAllocator;
+}
+
 /**
  * Allocator interface.
  */
@@ -42,11 +50,11 @@ interface Allocator
      * Allocates $(D_PARAM size) bytes of memory.
      *
      * Params:
-     *     s = Amount of memory to allocate.
+     *     size = Amount of memory to allocate.
      *
      * Returns: The pointer to the new allocated memory.
      */
-    void[] allocate(size_t size);
+    void[] allocate(size_t size) shared;
 
     /**
      * Deallocates a memory block.
@@ -56,7 +64,7 @@ interface Allocator
      *
      * Returns: Whether the deallocation was successful.
      */
-    bool deallocate(void[] p);
+    bool deallocate(void[] p) shared;
 
     /**
      * Increases or decreases the size of a memory block.
@@ -67,10 +75,56 @@ interface Allocator
      *
      * Returns: Whether the reallocation was successful.
      */
-    bool reallocate(ref void[] p, size_t s);
+    bool reallocate(ref void[] p, size_t size) shared;
 
     /**
      * Returns: The alignment offered.
      */
-    @property immutable(uint) alignment() const @safe pure nothrow;
+    @property immutable(uint) alignment() shared const @safe pure nothrow;
 }
+
+/**
+ * Params:
+ *     T         = Element type of the array being created.
+ *     allocator = The allocator used for getting memory.
+ *     array     = A reference to the array being changed.
+ *     length    = New array length.
+ *
+ * Returns: $(D_KEYWORD true) upon success, $(D_KEYWORD false) if memory could
+ *          not be reallocated. In the latter
+ */
+bool resizeArray(T)(shared Allocator allocator,
+                    ref T[] array,
+                    in size_t length)
+{
+    void[] buf = array;
+
+    if (!allocator.reallocate(buf, length * T.sizeof))
+    {
+        return false;
+    }
+    array = cast(T[]) buf;
+
+    return true;
+}
+
+///
+unittest
+{
+    int[] p;
+
+    defaultAllocator.resizeArray(p, 20);
+    assert(p.length == 20);
+
+    defaultAllocator.resizeArray(p, 30);
+    assert(p.length == 30);
+
+    defaultAllocator.resizeArray(p, 10);
+    assert(p.length == 10);
+
+    defaultAllocator.resizeArray(p, 0);
+    assert(p is null);
+}
+
+enum bool isFinalizable(T) = is(T == class) || is(T == interface)
+                           || hasElaborateDestructor!T || isDynamicArray!T;

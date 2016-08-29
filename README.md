@@ -9,6 +9,8 @@ Read more [here](https://github.com/gecko0307/dlib/wiki).
 
 Currently dlib contains the following packages:
 
+* dlib.async - event loop and asynchronous programming capabilities
+
 * dlib.core - basic functionality used by other modules (manual memory management, streams, OOP for structs, etc.)
 
 * dlib.container - generic data structures (GC-free dynamic and associative arrays and more)
@@ -26,6 +28,8 @@ Currently dlib contains the following packages:
 * dlib.audio - sound processing (8 and 16 bits per sample, synthesizers, WAV export and import)
 
 * dlib.network - networking and web functionality
+
+* dlib.memory - allocators and memory management functions
 
 * dlib.text - text processing
 

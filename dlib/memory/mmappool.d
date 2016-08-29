@@ -34,9 +34,12 @@ DEALINGS IN THE SOFTWARE.
 module dlib.memory.mmappool;
 
 import dlib.memory.allocator;
+import core.atomic;
+import core.exception;
 
 version (Posix):
 
+import core.stdc.errno;
 import core.sys.posix.sys.mman;
 import core.sys.posix.unistd;
 
@@ -46,10 +49,10 @@ import core.sys.posix.unistd;
  * This allocator allocates memory in regions (multiple of 4 KB for example).
  * Each region is then splitted in blocks. So it doesn't request the memory
  * from the operating system on each call, but only if there are no large
- * enought free blocks in the available regions.
+ * enough free blocks in the available regions.
  * Deallocation works in the same way. Deallocation doesn't immediately
  * gives the memory back to the operating system, but marks the appropriate
- * block as free and only if all blocks in the region are free, the complet
+ * block as free and only if all blocks in the region are free, the complete
  * region is deallocated.
  *
  * ----------------------------------------------------------------------------
@@ -66,16 +69,18 @@ import core.sys.posix.unistd;
  *
  * TODO:
  *     $(UL
- *         $(LI Thread safety)
+ *         $(LI Thread safety (core.atomic.cas))
  *         $(LI If two neighbour blocks are free, they can be merged)
+ *         $(LI Reallocation shoud check if there is enough free space in the
+ *              next block instead of always moving the memory)
+ *         $(LI Windows compatibility)
  *     )
  */
 class MmapPool : Allocator
 {
-@nogc:
     @disable this();
 
-    shared static this() @safe nothrow
+    shared static this() @nogc @safe nothrow
     {
         pageSize = sysconf(_SC_PAGE_SIZE);
     }
@@ -88,8 +93,12 @@ class MmapPool : Allocator
      *
      * Returns: The pointer to the new allocated memory.
      */
-    void[] allocate(size_t size) @trusted nothrow
+    void[] allocate(size_t size) shared @nogc @trusted nothrow
     {
+        if (!size)
+        {
+            return null;
+        }
         immutable dataSize = addAlignment(size);
 
         void* data = findBlock(dataSize);
@@ -102,7 +111,7 @@ class MmapPool : Allocator
     }
 
     ///
-    unittest
+    @nogc @safe nothrow unittest
     {
         auto p = MmapPool.instance.allocate(20);
 
@@ -120,7 +129,7 @@ class MmapPool : Allocator
      *
      * Returns: Data the block points to or $(D_KEYWORD null).
      */
-    private void* findBlock(size_t size) nothrow
+    private void* findBlock(size_t size) shared @nogc nothrow
     {
         Block block1;
         RegionLoop: for (auto r = head; r !is null; r = r.next)
@@ -160,12 +169,12 @@ class MmapPool : Allocator
             block1.size = size;
 
             block2.region = block1.region;
-            ++block1.region.blocks;
+            atomicOp!"+="(block1.region.blocks, 1);
         }
         else
         {
             block1.free = false;
-            ++block1.region.blocks;
+            atomicOp!"+="(block1.region.blocks, 1);
         }
         return cast(void*) block1 + blockEntrySize;
     }
@@ -178,7 +187,7 @@ class MmapPool : Allocator
      *
      * Returns: Whether the deallocation was successful.
      */
-    bool deallocate(void[] p) @trusted nothrow
+    bool deallocate(void[] p) shared @nogc @trusted nothrow
     {
         if (p is null)
         {
@@ -200,18 +209,18 @@ class MmapPool : Allocator
             {
                 block.region.next.prev = block.region.prev;
             }
-            return munmap(block.region, block.region.size) == 0;
+            return munmap(cast(void*) block.region, block.region.size) == 0;
         }
         else
         {
             block.free = true;
-            --block.region.blocks;
+            atomicOp!"-="(block.region.blocks, 1);
             return true;
         }
     }
 
     ///
-    unittest
+    @nogc @safe nothrow unittest
     {
         auto p = MmapPool.instance.allocate(20);
 
@@ -227,17 +236,21 @@ class MmapPool : Allocator
      *
      * Returns: Whether the reallocation was successful.
      */
-    bool reallocate(ref void[] p, size_t size) @trusted nothrow
+    bool reallocate(ref void[] p, size_t size) shared @nogc @trusted nothrow
     {
+        void[] reallocP;
+
         if (size == p.length)
         {
             return true;
         }
-
-        auto reallocP = allocate(size);
-        if (reallocP is null)
+        else if (size > 0)
         {
-            return false;
+            reallocP = allocate(size);
+            if (reallocP is null)
+            {
+                return false;
+            }
         }
 
         if (p !is null)
@@ -246,7 +259,7 @@ class MmapPool : Allocator
             {
                 reallocP[0..p.length] = p[0..$];
             }
-            else
+            else if (size > 0)
             {
                 reallocP[0..size] = p[0..size];
             }
@@ -258,7 +271,7 @@ class MmapPool : Allocator
     }
 
     ///
-    unittest
+    @nogc @safe nothrow unittest
     {
         void[] p;
         MmapPool.instance.reallocate(p, 10 * int.sizeof);
@@ -289,9 +302,9 @@ class MmapPool : Allocator
     /**
      * Static allocator instance and initializer.
      *
-     * Returns: The global $(D_PSYMBOL Allocator) instance.
+     * Returns: Global $(D_PSYMBOL MmapPool) instance.
      */
-    static @property MmapPool instance() @trusted nothrow
+    static @property ref shared(MmapPool) instance() @nogc @trusted nothrow
     {
         if (instance_ is null)
         {
@@ -299,20 +312,18 @@ class MmapPool : Allocator
 
             Region head; // Will become soon our region list head
             void* data = initializeRegion(instanceSize, head);
-
-            if (data is null)
+            if (data !is null)
             {
-                return null;
+                data[0..instanceSize] = typeid(MmapPool).initializer[];
+                instance_ = cast(shared MmapPool) data;
+                instance_.head = head;
             }
-            data[0..instanceSize] = typeid(MmapPool).initializer[];
-            instance_ = cast(MmapPool) data;
-            instance_.head = head;
         }
         return instance_;
     }
 
     ///
-    unittest
+    @nogc @safe nothrow unittest
     {
         assert(instance is instance);
     }
@@ -322,13 +333,13 @@ class MmapPool : Allocator
      *
      * Params:
      *     size = Aligned size of the first data block in the region.
-     *  head = Region list head.
+     *     head = Region list head.
      *
      * Returns: A pointer to the data.
      */
     pragma(inline)
     private static void* initializeRegion(size_t size,
-                                          ref Region head) nothrow
+                                          ref Region head) @nogc nothrow
     {
         immutable regionSize = calculateRegionSize(size);
         void* p = mmap(null,
@@ -339,6 +350,10 @@ class MmapPool : Allocator
                        0);
         if (p is MAP_FAILED)
         {
+            if (errno == ENOMEM)
+            {
+                onOutOfMemoryError();
+            }
             return null;
         }
 
@@ -378,7 +393,7 @@ class MmapPool : Allocator
     }
 
     /// Ditto.
-    private void* initializeRegion(size_t size) nothrow
+    private void* initializeRegion(size_t size) shared @nogc nothrow
     {
         return initializeRegion(size, head);
     }
@@ -390,7 +405,8 @@ class MmapPool : Allocator
      * Returns: Aligned size of $(D_PARAM x).
      */
     pragma(inline)
-    private static immutable(size_t) addAlignment(size_t x) @safe pure nothrow
+    private static immutable(size_t) addAlignment(size_t x)
+    @nogc @safe pure nothrow
     out (result)
     {
         assert(result > 0);
@@ -408,7 +424,7 @@ class MmapPool : Allocator
      */
     pragma(inline)
     private static immutable(size_t) calculateRegionSize(size_t x)
-    @safe pure nothrow
+    @nogc @safe pure nothrow
     out (result)
     {
         assert(result > 0);
@@ -419,29 +435,29 @@ class MmapPool : Allocator
         return x / pageSize * pageSize + pageSize;
     }
 
-    @property immutable(uint) alignment() const @safe pure nothrow
+    @property immutable(uint) alignment() shared const @nogc @safe pure nothrow
     {
         return alignment_;
     }
     private enum alignment_ = 8;
 
-    private static MmapPool instance_;
+    private shared static MmapPool instance_;
 
     private shared static immutable size_t pageSize;
 
-    private struct RegionEntry
+    private shared struct RegionEntry
     {
         Region prev;
         Region next;
         uint blocks;
         size_t size;
     }
-    private alias Region = RegionEntry*;
+    private alias Region = shared RegionEntry*;
     private enum regionEntrySize = 32;
 
-    private Region head;
+    private shared Region head;
 
-    private struct BlockEntry
+    private shared struct BlockEntry
     {
         Block prev;
         Block next;
@@ -449,6 +465,6 @@ class MmapPool : Allocator
         size_t size;
         Region region;
     }
-    private alias Block = BlockEntry*;
+    private alias Block = shared BlockEntry*;
     private enum blockEntrySize = 40;
 }
