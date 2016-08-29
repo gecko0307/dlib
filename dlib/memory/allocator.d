@@ -33,6 +33,13 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.memory.allocator;
 
+import std.experimental.allocator;
+
+version (unittest)
+{
+    import dlib.memory : defaultAllocator;
+}
+
 /**
  * Allocator interface.
  */
@@ -73,4 +80,47 @@ interface Allocator
      * Returns: The alignment offered.
      */
     @property immutable(uint) alignment() shared const @safe pure nothrow;
+}
+
+/**
+ * Params:
+ *     T         = Element type of the array being created.
+ *     allocator = the allocator used for getting memory.
+ *     array     = a reference to the array being changed.
+ *     length    = New array length.
+ *
+ * Returns: $(D_KEYWORD true) upon success, $(D_KEYWORD false) if memory could
+ *          not be reallocated. In the latter
+ */
+bool resizeArray(T)(ref shared Allocator allocator,
+                    ref T[] array,
+                    in size_t length)
+{
+    void[] buf = array;
+
+    if (!allocator.reallocate(buf, length * T.sizeof))
+    {
+        return false;
+    }
+    array = cast(T[]) buf;
+
+    return true;
+}
+
+///
+unittest
+{
+    int[] p;
+
+    defaultAllocator.resizeArray(p, 20);
+    assert(p.length == 20);
+
+    defaultAllocator.resizeArray(p, 30);
+    assert(p.length == 30);
+
+    defaultAllocator.resizeArray(p, 10);
+    assert(p.length == 10);
+
+    defaultAllocator.resizeArray(p, 0);
+    assert(p is null);
 }

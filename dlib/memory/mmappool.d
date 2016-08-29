@@ -238,15 +238,19 @@ class MmapPool : Allocator
      */
     bool reallocate(ref void[] p, size_t size) shared @nogc @trusted nothrow
     {
+        void[] reallocP;
+
         if (size == p.length)
         {
             return true;
         }
-
-        auto reallocP = allocate(size);
-        if (reallocP is null)
+        else if (size > 0)
         {
-            return false;
+            reallocP = allocate(size);
+            if (reallocP is null)
+            {
+                return false;
+            }
         }
 
         if (p !is null)
@@ -255,7 +259,7 @@ class MmapPool : Allocator
             {
                 reallocP[0..p.length] = p[0..$];
             }
-            else
+            else if (size > 0)
             {
                 reallocP[0..size] = p[0..size];
             }
