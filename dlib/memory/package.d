@@ -36,5 +36,17 @@ module dlib.memory;
 public
 {
     import dlib.memory.allocator;
+    import dlib.memory.mallocator;
     import dlib.memory.mmappool;
+}
+
+shared Allocator allocator;
+
+@property shared(Allocator) defaultAllocator()
+{
+	if (allocator is null)
+	{
+		allocator = Mallocator.instance;
+	}
+	return allocator;
 }
