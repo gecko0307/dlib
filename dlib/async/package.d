@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015 Timur Gafarov 
+Copyright (c) 2016 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,21 +26,17 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib;
+/**
+ * Copyright: Eugene Wissner 2016-.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Eugene Wissner
+ */
+module dlib.async;
 
 public
 {
-    import dlib.async;
-    import dlib.coding;
-    import dlib.container;
-    import dlib.core;
-    import dlib.filesystem;
-    import dlib.functional;
-    import dlib.geometry;
-    import dlib.image;
-    import dlib.math;
-    import dlib.memory;
-    import dlib.xml;
-    import dlib.text;
-    import dlib.network;
+    import dlib.async.loop;
+    import dlib.async.protocol;
+    import dlib.async.transport;
+    import dlib.async.watcher;
 }

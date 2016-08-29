@@ -34,6 +34,7 @@ DEALINGS IN THE SOFTWARE.
 module dlib.memory.allocator;
 
 import std.experimental.allocator;
+import std.traits;
 
 version (unittest)
 {
@@ -85,14 +86,14 @@ interface Allocator
 /**
  * Params:
  *     T         = Element type of the array being created.
- *     allocator = the allocator used for getting memory.
- *     array     = a reference to the array being changed.
+ *     allocator = The allocator used for getting memory.
+ *     array     = A reference to the array being changed.
  *     length    = New array length.
  *
  * Returns: $(D_KEYWORD true) upon success, $(D_KEYWORD false) if memory could
  *          not be reallocated. In the latter
  */
-bool resizeArray(T)(ref shared Allocator allocator,
+bool resizeArray(T)(shared Allocator allocator,
                     ref T[] array,
                     in size_t length)
 {
@@ -124,3 +125,6 @@ unittest
     defaultAllocator.resizeArray(p, 0);
     assert(p is null);
 }
+
+enum bool isFinalizable(T) = is(T == class) || is(T == interface)
+                           || hasElaborateDestructor!T || isDynamicArray!T;

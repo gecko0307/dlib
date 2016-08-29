@@ -95,10 +95,10 @@ interface Buffer
 class ReadBuffer : Buffer
 {
     /// Internal buffer.
-    protected ubyte[] _buffer;
+    protected ubyte[] buffer_;
 
     /// Filled buffer length.
-    protected size_t _length;
+    protected size_t length_;
 
     /// Available space.
     protected immutable size_t minAvailable;
@@ -108,7 +108,7 @@ class ReadBuffer : Buffer
 
     invariant
     {
-        assert(_length <= _buffer.length);
+        assert(length_ <= buffer_.length);
         assert(blockSize > 0);
         assert(minAvailable > 0);
     }
@@ -127,7 +127,7 @@ class ReadBuffer : Buffer
     {
         this.minAvailable = minAvailable;
         this.blockSize = size;
-        defaultAllocator.resizeArray!ubyte(_buffer, size);
+        defaultAllocator.resizeArray!ubyte(buffer_, size);
     }
 
     /**
@@ -135,7 +135,7 @@ class ReadBuffer : Buffer
      */
     ~this()
     {
-        defaultAllocator.dispose(_buffer);
+        defaultAllocator.dispose(buffer_);
     }
 
     ///
@@ -153,7 +153,7 @@ class ReadBuffer : Buffer
      */
     @property size_t capacity() const @nogc @safe pure nothrow
     {
-        return _buffer.length;
+        return buffer_.length;
     }
 
     /**
@@ -161,7 +161,7 @@ class ReadBuffer : Buffer
      */
     @property size_t length() const @nogc @safe pure nothrow
     {
-        return _length;
+        return length_;
     }
 
     /**
@@ -206,9 +206,9 @@ class ReadBuffer : Buffer
     {
         if (capacity - length < minAvailable)
         {
-            defaultAllocator.resizeArray!ubyte( _buffer, capacity + blockSize);
+            defaultAllocator.resizeArray!ubyte(buffer_, capacity + blockSize);
         }
-        return _buffer[_length..$].ptr;
+        return buffer_[length_..$].ptr;
     }
 
     /**
@@ -221,7 +221,7 @@ class ReadBuffer : Buffer
     ReadBuffer opOpAssign(string op)(void[] buffer)
         if (op == "~")
     {
-        _length += buffer.length;
+        length_ += buffer.length;
         return this;
     }
 
@@ -270,8 +270,8 @@ class ReadBuffer : Buffer
      */
     @property ubyte[] opIndex()
     {
-        auto ret = _buffer[0.._length];
-        _length = 0;
+        auto ret = buffer_[0..length_];
+        length_ = 0;
         return ret;
     }
 
@@ -310,7 +310,7 @@ class ReadBuffer : Buffer
 class WriteBuffer : Buffer
 {
     /// Internal buffer.
-    protected ubyte[] _buffer;
+    protected ubyte[] buffer_;
 
     /// Buffer start position.
     protected size_t start;
@@ -328,7 +328,7 @@ class WriteBuffer : Buffer
     {
         assert(blockSize > 0);
         // position can refer to an element outside the buffer if the buffer is full.
-        assert(position <= _buffer.length);
+        assert(position <= buffer_.length);
     }
 
     /**
@@ -340,7 +340,7 @@ class WriteBuffer : Buffer
     {
         blockSize = size;
         ring = size - 1;
-        defaultAllocator.resizeArray!ubyte(_buffer, size);
+        defaultAllocator.resizeArray!ubyte(buffer_, size);
     }
 
     /**
@@ -348,7 +348,7 @@ class WriteBuffer : Buffer
      */
     ~this()
     {
-        defaultAllocator.dispose(_buffer);
+        defaultAllocator.dispose(buffer_);
     }
 
     /**
@@ -356,7 +356,7 @@ class WriteBuffer : Buffer
      */
     @property size_t capacity() const @nogc @safe pure nothrow
     {
-        return _buffer.length;
+        return buffer_.length;
     }
 
     /**
@@ -432,7 +432,7 @@ class WriteBuffer : Buffer
                 end = afterRing;
             }
             start = end - position;
-            _buffer[position..end] = buffer[0..start];
+            buffer_[position..end] = buffer[0..start];
             if (end == afterRing)
             {
                 position = this.start == 0 ? afterRing : 0;
@@ -452,7 +452,7 @@ class WriteBuffer : Buffer
                 end = this.start;
             }
             auto areaEnd = end - position + start;
-            _buffer[position..end] = buffer[start..areaEnd];
+            buffer_[position..end] = buffer[start..areaEnd];
             position = end == this.start ? ring + 1 : end - position;
             start = areaEnd;
         }
@@ -465,9 +465,9 @@ class WriteBuffer : Buffer
             {
                 auto newSize = end / blockSize * blockSize + blockSize;
 
-                defaultAllocator.resizeArray!ubyte(_buffer, newSize);
+                defaultAllocator.resizeArray!ubyte(buffer_, newSize);
             }
-            _buffer[position..end] = buffer[start..$];
+            buffer_[position..end] = buffer[start..$];
             position = end;
             if (this.start == 0)
             {
@@ -486,19 +486,19 @@ class WriteBuffer : Buffer
 
         b ~= buf;
         assert(b.capacity == 4);
-        assert(b._buffer[0] == 48 && b._buffer[1] == 23 && b._buffer[2] == 255);
+        assert(b.buffer_[0] == 48 && b.buffer_[1] == 23 && b.buffer_[2] == 255);
 
         b.written = 2;
         b ~= buf;
         assert(b.capacity == 4);
-        assert(b._buffer[0] == 23 && b._buffer[1] == 255
-            && b._buffer[2] == 255 && b._buffer[3] == 48);
+        assert(b.buffer_[0] == 23 && b.buffer_[1] == 255
+            && b.buffer_[2] == 255 && b.buffer_[3] == 48);
 
         b.written = 2;
         b ~= buf;
         assert(b.capacity == 8);
-        assert(b._buffer[0] == 23 && b._buffer[1] == 255
-            && b._buffer[2] == 48 && b._buffer[3] == 23 && b._buffer[4] == 255);
+        assert(b.buffer_[0] == 23 && b.buffer_[1] == 255
+            && b.buffer_[2] == 48 && b.buffer_[3] == 23 && b.buffer_[4] == 255);
 
         defaultAllocator.dispose(b);
 
@@ -548,18 +548,18 @@ class WriteBuffer : Buffer
             auto overflow = position - afterRing;
 
             if (overflow > length) {
-                _buffer[start.. start + length] = _buffer[afterRing.. afterRing + length];
-                _buffer[afterRing.. afterRing + length] = _buffer[afterRing + length ..position];
+                buffer_[start.. start + length] = buffer_[afterRing.. afterRing + length];
+                buffer_[afterRing.. afterRing + length] = buffer_[afterRing + length ..position];
                 position -= length;
             }
             else if (overflow == length)
             {
-                _buffer[start.. start + overflow] = _buffer[afterRing..position];
+                buffer_[start.. start + overflow] = buffer_[afterRing..position];
                 position -= overflow;
             }
             else
             {
-                _buffer[start.. start + overflow] = _buffer[afterRing..position];
+                buffer_[start.. start + overflow] = buffer_[afterRing..position];
                 position = overflow;
             }
             start += length;
@@ -614,11 +614,11 @@ class WriteBuffer : Buffer
     {
         if (position > ring || position < start) // Buffer overflowed
         {
-            return _buffer[start.. ring + 1].ptr;
+            return buffer_[start.. ring + 1].ptr;
         }
         else
         {
-            return _buffer[start..position].ptr;
+            return buffer_[start..position].ptr;
         }
     }
 

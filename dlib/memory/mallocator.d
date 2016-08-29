@@ -167,7 +167,7 @@ class Mallocator : Allocator
      *
      * Returns: The global $(D_PSYMBOL Allocator) instance.
      */
-    static @property shared(Mallocator) instance() @nogc nothrow
+    static @property ref shared(Mallocator) instance() @nogc nothrow
     {
         if (instance_ is null)
         {

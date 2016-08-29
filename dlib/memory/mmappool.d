@@ -304,7 +304,7 @@ class MmapPool : Allocator
      *
      * Returns: Global $(D_PSYMBOL MmapPool) instance.
      */
-    static @property shared(MmapPool) instance() @nogc @trusted nothrow
+    static @property ref shared(MmapPool) instance() @nogc @trusted nothrow
     {
         if (instance_ is null)
         {
@@ -312,14 +312,12 @@ class MmapPool : Allocator
 
             Region head; // Will become soon our region list head
             void* data = initializeRegion(instanceSize, head);
-
-            if (data is null)
+            if (data !is null)
             {
-                return null;
+                data[0..instanceSize] = typeid(MmapPool).initializer[];
+                instance_ = cast(shared MmapPool) data;
+                instance_.head = head;
             }
-            data[0..instanceSize] = typeid(MmapPool).initializer[];
-            instance_ = cast(shared MmapPool) data;
-            instance_.head = head;
         }
         return instance_;
     }
