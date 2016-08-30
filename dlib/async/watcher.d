@@ -40,6 +40,8 @@ import dlib.memory.mmappool;
 import std.experimental.allocator;
 import std.functional;
 
+version (Posix):
+
 /**
  * A watcher is an opaque structure that you allocate and register to record
  * your interest in some event. 

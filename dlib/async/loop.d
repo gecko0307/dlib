@@ -93,6 +93,8 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.async.loop;
 
+version (Posix):
+
 import dlib.async.config;
 import dlib.async.protocol;
 import dlib.async.transport;
