@@ -469,9 +469,13 @@ struct DynamicArray(T, size_t chunkSize = 32)
      */
     int opApply(int delegate(ref T) dg)
     {
+        int result = 0;
+    
         foreach(i, ref v; data)
         {
-            dg(v);
+            result = dg(v);
+            if (result)
+                break;
         }
 
         return 0;

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015 Timur Gafarov 
+Copyright (c) 2015-2016 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -28,124 +28,10 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.xml.node;
 
-import std.stdio;
-import std.conv;
-import dlib.core.memory;
-import dlib.container.array;
-import dlib.container.dict;
-import dlib.text.lexer;
+pragma(msg, "dlib.xml package is deprecated, import dlib.serialization.xml instead");
 
-class XmlNode
+public
 {
-    XmlNode parent;
-    DynamicArray!XmlNode children;
-    dchar[] name;
-    dchar[] text;
-    Dict!(dchar[], dchar[]) properties;
-    
-    this(dchar[] name, XmlNode parent = null)
-    {
-        this.name = name;
-        this.parent = parent;
-        if (parent !is null)
-        {
-            parent.addChild(this);
-        }
-        this.properties = New!(Dict!(dchar[], dchar[]));
-    }
-    
-    ~this()
-    {
-        if (text.length)
-            Delete(text);
-        if (name.length)
-            Delete(name);
-        foreach(k, v; properties)
-        {
-            Delete(k);
-            Delete(v);
-        }
-        Delete(properties);
-        foreach(c; children)
-        {
-            Delete(c);
-        }
-        children.free();
-    }
-    
-    void addChild(XmlNode node)
-    {
-        children.append(node);
-    }
-
-    void appendText(dchar c)
-    {
-        dchar[] newText = New!(dchar[])(text.length+1);
-        foreach(i, v; text)
-            newText[i] = v;
-        newText[$-1] = c;
-        if (text.length)
-            Delete(text);
-        text = newText;
-    }
-
-    dchar[] getTextUnmanaged()
-    {
-        DynamicArray!dchar res;
-        res.append(text);
-        foreach(n; children)
-        {
-            dchar[] t = n.getTextUnmanaged();
-            if (t.length)
-            {
-                res.append(t);
-                Delete(t);
-            }
-        }
-        dchar[] output = copyBuffer(res.data);
-        res.free();
-        return output;
-    }
-
-    // Warning! Causes GC allocation!
-    string getText()
-    {
-        dchar[] t = getTextUnmanaged();
-        string s = to!string(t);
-        Delete(t);
-        return s;
-    }
-
-    void printProperties(dstring indent = "")
-    {
-        if (properties.length)
-        {
-            foreach(k, v; properties)
-                writeln(indent, k, " = ", v);
-        }
-    }
-
-    // Warning! Causes GC allocation!
-    void print(dstring indent = "")
-    {
-        printProperties(indent);
-        
-        foreach(n; children)
-        {
-            auto nm = n.name;
-            if (nm.length)
-                writeln(indent, "tag: ", nm);
-            else
-                writeln(indent, "tag: <anonymous>");
-                
-            dchar[] txt = n.getTextUnmanaged();
-            if (txt.length)
-            {
-                writeln(indent, "text: ", txt);
-                Delete(txt);
-            }
-                
-            n.print(indent ~ " ");
-        }
-    }
+    import dlib.serialization.xml;
 }
+

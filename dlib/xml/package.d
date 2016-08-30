@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013 Timur Gafarov 
+Copyright (c) 2013-2016 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -28,9 +28,10 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.xml;
 
+pragma(msg, "dlib.xml package is deprecated, import dlib.serialization.xml instead");
+
 public
 {
-    import dlib.xml.document;
-    import dlib.xml.node;
+    import dlib.serialization.xml;
 }
 
