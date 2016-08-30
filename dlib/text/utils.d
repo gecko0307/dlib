@@ -39,6 +39,14 @@ T[] copy(T)(T[] b)
     return res;
 }
 
+immutable(T)[] immutableCopy(T)(immutable(T)[] b)
+{
+    auto res = New!(T[])(b.length);
+    foreach(i, c; b)
+        res[i] = c;
+    return cast(immutable(T)[])res;
+}
+
 ///
 unittest
 {

@@ -193,32 +193,34 @@ class SliceLexer: InputRange!string
         }
         else // read delimiter
         {
-            size_t n = dec.forwardLookup(maxDelimSize-1);
-            string lookup = input[startPos..n];
-
-            if (isDelim(lookup))
+            string bestStr = "";
+            LexerDecoder decCopy = dec;
+            while(true)
             {
-                dec.forwardJump(maxDelimSize);
-                return lookup;
-            }
-            else
-            {
-                string str = "";
-                while(true)
+                dec.advance();
+                c = dec.current;
+   
+                string str = input[startPos..dec.index];
+                
+                if (isDelim(str))
                 {
-                    dec.advance();
-                    c = dec.current;
-                    if (c == UTF8_END || c == UTF8_ERROR)
-                        break;
-
-                    str = input[startPos..dec.index];
-
-                    if (isDelim(str))
-                       break;
+                    if (str.length > bestStr.length)
+                    {
+                        bestStr = str;
+                    }
                 }
-
-                return str;
+                
+                if (c == UTF8_END || c == UTF8_ERROR)
+                    break;
+                
+                if (str.length == maxDelimSize)
+                    break;
             }
+            
+            dec = decCopy;
+            dec.forwardJump(count(bestStr));
+            
+            return bestStr;
         }
     }
 
