@@ -42,6 +42,8 @@ import core.stdc.errno;
 import core.sys.posix.netinet.in_;
 import core.sys.posix.unistd;
 
+version (Posix):
+
 /**
  * Transport for stream sockets.
  */
