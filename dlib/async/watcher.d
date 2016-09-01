@@ -37,10 +37,9 @@ import dlib.async.protocol;
 import dlib.async.transport;
 import dlib.memory.allocator;
 import dlib.memory.mmappool;
+import dlib.network.socket;
 import std.experimental.allocator;
 import std.functional;
-
-version (Posix):
 
 /**
  * A watcher is an opaque structure that you allocate and register to record
@@ -60,25 +59,20 @@ abstract class Watcher
 class ConnectionWatcher : Watcher
 {
     /// Watched file descriptor.
-    private int socket_;
+    private Socket socket_;
 
     /// Protocol factory.
     protected Protocol delegate() protocolFactory;
 
     /// Callback.
     package void delegate(Protocol delegate() protocolFactory,
-                          int socket) accept;
-
-    invariant
-    {
-        assert(socket_ >= 0, "Called with negative file descriptor.");
-    }
+                          Socket socket) accept;
 
     /**
      * Params:
      *     socket = Socket.
      */
-    this(int socket)
+    this(Socket socket)
     {
         socket_ = socket;
     }
@@ -100,7 +94,7 @@ class ConnectionWatcher : Watcher
     /**
      * Returns: Socket.
      */
-    @property inout(int) socket() inout @safe pure nothrow
+    @property inout(Socket) socket() inout @safe pure nothrow
     {
         return socket_;
     }
@@ -191,7 +185,7 @@ class IOWatcher : ConnectionWatcher
     /**
      * Returns: Socket.
      */
-    override @property inout(int) socket() inout @safe pure nothrow
+    override @property inout(Socket) socket() inout @safe pure nothrow
     {
         return transport.socket;
     }

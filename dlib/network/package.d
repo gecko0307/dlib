@@ -30,5 +30,6 @@ module dlib.network;
 
 public
 {
+    import dlib.network.socket;
     import dlib.network.url;
 }
