@@ -37,15 +37,19 @@ import dlib.memory.allocator;
 import core.atomic;
 import core.exception;
 
-version (Posix):
-
-import core.stdc.errno;
-import core.sys.posix.sys.mman;
-import core.sys.posix.unistd;
+version (Posix)
+{
+	import core.stdc.errno;
+	import core.sys.posix.sys.mman;
+	import core.sys.posix.unistd;
+}
+else version (Windows)
+{
+	import core.sys.windows.winbase;
+	import core.sys.windows.windows;
+}
 
 /**
- * Allocator for Posix systems with mmap/munmap support.
- *
  * This allocator allocates memory in regions (multiple of 4 KB for example).
  * Each region is then splitted in blocks. So it doesn't request the memory
  * from the operating system on each call, but only if there are no large
@@ -73,16 +77,24 @@ import core.sys.posix.unistd;
  *         $(LI If two neighbour blocks are free, they can be merged)
  *         $(LI Reallocation shoud check if there is enough free space in the
  *              next block instead of always moving the memory)
- *         $(LI Windows compatibility)
  *     )
  */
 class MmapPool : Allocator
 {
     @disable this();
 
-    shared static this() @nogc @safe nothrow
+    shared static this()
     {
-        pageSize = sysconf(_SC_PAGE_SIZE);
+    	version (Posix)
+    	{
+    		pageSize = sysconf(_SC_PAGE_SIZE);
+    	}
+    	else version (Windows)
+    	{
+    		SYSTEM_INFO si;
+    		GetSystemInfo(&si);
+    		pageSize = si.dwPageSize;
+    	}
     }
 
     /**
@@ -209,7 +221,14 @@ class MmapPool : Allocator
             {
                 block.region.next.prev = block.region.prev;
             }
-            return munmap(cast(void*) block.region, block.region.size) == 0;
+            version (Posix)
+            {
+            	return munmap(cast(void*) block.region, block.region.size) == 0;
+            }
+            version (Windows)
+            {
+            	return VirtualFree(cast(void*) block.region, 0, MEM_RELEASE) == 0;
+            }
         }
         else
         {
@@ -342,20 +361,39 @@ class MmapPool : Allocator
                                           ref Region head) @nogc nothrow
     {
         immutable regionSize = calculateRegionSize(size);
-        void* p = mmap(null,
-                       regionSize,
-                       PROT_READ | PROT_WRITE,
-                       MAP_PRIVATE | MAP_ANON,
-                       -1,
-                       0);
-        if (p is MAP_FAILED)
+        
+        version (Posix)
         {
-            if (errno == ENOMEM)
-            {
-                onOutOfMemoryError();
-            }
-            return null;
-        }
+			void* p = mmap(null,
+						   regionSize,
+						   PROT_READ | PROT_WRITE,
+						   MAP_PRIVATE | MAP_ANON,
+						   -1,
+						   0);
+			if (p is MAP_FAILED)
+			{
+				if (errno == ENOMEM)
+				{
+					onOutOfMemoryError();
+				}
+				return null;
+			}
+		}
+		else version (Windows)
+		{
+			void* p = VirtualAlloc(null,
+			                       regionSize,
+			                       MEM_COMMIT,
+			                       PAGE_READWRITE);
+			if (p is null)
+			{
+				if (GetLastError() == ERROR_NOT_ENOUGH_MEMORY)
+				{
+					onOutOfMemoryError();
+				}
+				return null;
+			}
+		}
 
         Region region = cast(Region) p;
         region.blocks = 1;
