@@ -31,34 +31,22 @@ DEALINGS IN THE SOFTWARE.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Eugene Wissner
  */
-module dlib.async.internal.epoll;
+module dlib.async.epoll;
 
-import dlib.async.config;
-
-static if (UseEpoll):
+version (linux):
 
 public import core.sys.linux.epoll;
-import dlib.async.internal.selector;
 import dlib.async.protocol;
 import dlib.async.transport;
 import dlib.async.watcher;
 import dlib.async.loop;
 import dlib.memory;
+import dlib.network.socket;
 import core.stdc.errno;
 import core.sys.posix.fcntl;
 import core.sys.posix.netinet.in_;
 import core.time;
 import std.algorithm.comparison;
-
-extern (C) nothrow @nogc
-{ // TODO: Make a pull request for Phobos to mark this extern functions as @nogc.
-    int epoll_create1(int __flags);
-    int epoll_ctl(int __epfd, int __op, int __fd, epoll_event *__event);
-    int epoll_wait(int __epfd, epoll_event *__events, int __maxevents, int __timeout);
-    int accept4(int, sockaddr*, socklen_t*, int flags);
-}
-
-private enum maxEvents = 128;
 
 class EpollLoop : Loop
 {
@@ -77,7 +65,7 @@ class EpollLoop : Loop
     }
 
     /**
-     * Frees loop internals.
+     * Free loop internals.
      */
     ~this()
     {
@@ -94,7 +82,7 @@ class EpollLoop : Loop
      *
      * Returns: $(D_KEYWORD true) if the operation was successful.
      */
-    protected override bool modify(int socket, EventMask oldEvents, EventMask events)
+    protected override bool modify(Socket socket, EventMask oldEvents, EventMask events)
     {
         int op = EPOLL_CTL_DEL;
         epoll_event ev;
@@ -112,12 +100,12 @@ class EpollLoop : Loop
             op = EPOLL_CTL_ADD;
         }
 
-        ev.data.fd = socket;
+        ev.data.fd = cast(int) socket;
         ev.events = (events & (Event.read | Event.accept) ? EPOLLIN | EPOLLPRI : 0)
                   | (events & Event.write ? EPOLLOUT : 0)
                   | EPOLLET;
 
-        return epoll_ctl(fd, op, socket, &ev) == 0;
+        return epoll_ctl(fd, op, cast(int) socket, &ev) == 0;
     }
 
     /**
@@ -128,32 +116,38 @@ class EpollLoop : Loop
      *     socket          = Socket.
      */
     protected override void acceptConnection(Protocol delegate() protocolFactory,
-                                             int socket)
+                                             Socket socket)
     {
-        sockaddr_in client_addr;
-        socklen_t client_len = client_addr.sizeof;
-        int client = accept4(socket,
-                             cast(sockaddr *)&client_addr,
-                             &client_len,
-                             O_NONBLOCK);
-        while (client >= 0)
+		while (true)
         {
+			Socket client;
+
+			try
+			{
+				client = socket.accept();
+			}
+			catch (SocketException e)
+			{
+				defaultAllocator.dispose(e);
+				break;
+			}
+
             auto transport = make!SocketTransport(defaultAllocator, this, client);
             IOWatcher connection;
 
             if (connections.length > client)
             {
-                connection = cast(IOWatcher) connections[client];
+                connection = cast(IOWatcher) connections[cast(int) client];
                 // If it is a ConnectionWatcher
-                if (connection is null && connections[client] !is null)
+                if (connection is null && connections[cast(int) client] !is null)
                 {
-                    defaultAllocator.dispose(connections[client]);
-                    connections[client] = null;
+                    defaultAllocator.dispose(connections[cast(int) client]);
+                    connections[cast(int) client] = null;
                 }
             }
             else
             {
-                defaultAllocator.resizeArray(connections, client + 1);
+                defaultAllocator.expandArray(connections, maxEvents / 2);
             }
             if (connection !is null)
             {
@@ -161,19 +155,14 @@ class EpollLoop : Loop
             }
             else
             {
-                connections[client] = make!IOWatcher(defaultAllocator,
+                connections[cast(int) client] = make!IOWatcher(defaultAllocator,
                                                      protocolFactory,
                                                      transport);
             }
 
             modify(client, EventMask(Event.none), EventMask(Event.read, Event.write));
 
-            swapPendings.insertBack(connections[client]);
-
-            client = accept4(socket,
-                             cast(sockaddr *)&client_addr,
-                             &client_len,
-                             O_NONBLOCK);
+            swapPendings.insertBack(connections[cast(int) client]);
         }
     }
 
@@ -192,7 +181,6 @@ class EpollLoop : Loop
             {
                 throw make!BadLoopException(defaultAllocator);
             }
-
             return;
         }
 

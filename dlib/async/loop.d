@@ -93,21 +93,26 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.async.loop;
 
-version (Posix):
-
-import dlib.async.config;
 import dlib.async.protocol;
 import dlib.async.transport;
 import dlib.async.watcher;
 import dlib.container.buffer;
-import dlib.memory : allocator;
-import dlib.memory.allocator;
+import dlib.memory;
 import dlib.memory.mmappool;
+import dlib.network.socket;
 import core.time;
 import std.algorithm.iteration;
 import std.algorithm.mutation;
-import std.experimental.allocator;
 import std.typecons;
+
+version (DisableBackends)
+{
+}
+else version (linux)
+{
+	import dlib.async.epoll;
+	version = Epoll;
+}
 
 shared static this()
 {
@@ -115,11 +120,6 @@ shared static this()
     {
         allocator = MmapPool.instance;
     }
-}
-
-static if (UseEpoll)
-{
-    import dlib.async.internal.epoll;
 }
 
 /**
@@ -145,6 +145,9 @@ abstract class Loop
 
     protected PendingQueue swapPendings;
 
+	/// Max events can be got at a time (should be supported by the backend).
+	protected enum maxEvents = 128;
+
     /// Pending connections.
     protected ConnectionWatcher[] connections;
 
@@ -153,7 +156,7 @@ abstract class Loop
      */
     this()
     {
-        connections = MmapPool.instance.makeArray!ConnectionWatcher(128);
+        connections = MmapPool.instance.makeArray!ConnectionWatcher(maxEvents);
         pendings = MmapPool.instance.make!(PendingQueue);
         swapPendings = MmapPool.instance.make!(PendingQueue);
     }
@@ -163,6 +166,17 @@ abstract class Loop
      */
     ~this()
     {
+		foreach (ref connection; connections)
+		{
+			// We want to free only IOWatchers. ConnectionWatcher are created by the
+			// user and should be freed by himself.
+			auto io = cast(IOWatcher) connection;
+			if (io !is null)
+			{
+				MmapPool.instance.dispose(io);
+				connection = null;
+			}
+		}
         MmapPool.instance.dispose(connections);
         MmapPool.instance.dispose(pendings);
         MmapPool.instance.dispose(swapPendings);
@@ -210,9 +224,9 @@ abstract class Loop
         watcher.accept = &acceptConnection;
         if (connections.length <= watcher.socket)
         {
-            MmapPool.instance.resizeArray(connections, watcher.socket + 1);
+            MmapPool.instance.expandArray(connections, maxEvents / 2);
         }
-        connections[watcher.socket] = watcher;
+        connections[cast(int) watcher.socket] = watcher;
 
         modify(watcher.socket, EventMask(Event.none), EventMask(Event.accept));
     }
@@ -243,7 +257,7 @@ abstract class Loop
      */
     void feed(DuplexTransport transport)
     {
-        pendings.insertBack(connections[transport.socket]);
+        pendings.insertBack(connections[cast(int) transport.socket]);
     }
 
     /**
@@ -256,7 +270,9 @@ abstract class Loop
      *
      * Returns: $(D_KEYWORD true) if the operation was successful.
      */
-    protected bool modify(int socket, EventMask oldEvents, EventMask events);
+    abstract protected bool modify(Socket socket,
+	                               EventMask oldEvents,
+	                               EventMask events);
 
     /**
      * Returns: The blocking time.
@@ -289,7 +305,7 @@ abstract class Loop
     /**
      * Does the actual polling.
      */
-    protected void poll();
+    abstract protected void poll();
 
     /**
      * Accept incoming connections.
@@ -299,7 +315,7 @@ abstract class Loop
      *     socket          = Socket.
      */
     protected void acceptConnection(Protocol delegate() protocolFactory,
-                                    int socket);
+                                    Socket socket);
 
     /// Whether the event loop should be stopped.
     private bool done_;
@@ -340,12 +356,10 @@ class BadLoopException : Exception
     {
         return defaultLoop_;
     }
-
-    static if (UseEpoll)
+    version (Epoll)
     {
         defaultLoop_ = MmapPool.instance.make!EpollLoop;
     }
-
     return defaultLoop_;
 }
 
