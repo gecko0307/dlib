@@ -1,7 +1,10 @@
 module dlib.network.socket;
 
 import dlib.memory;
-public import std.socket : SocketException, AddressException, socket_t;
+import core.stdc.errno;
+import std.algorithm.searching;
+public import std.socket : AddressException, socket_t;
+import std.traits;
 
 version (Posix)
 {
@@ -9,6 +12,8 @@ version (Posix)
     import core.sys.posix.netinet.in_;
     import core.sys.posix.sys.socket;
     import core.sys.posix.unistd;
+
+	private enum SOCKET_ERROR = -1;
 }
 else version (Windows)
 {
@@ -19,6 +24,89 @@ version (linux)
 {
 	enum SOCK_NONBLOCK = O_NONBLOCK;
     extern(C) int accept4(int, sockaddr*, socklen_t*, int flags) @nogc nothrow;
+}
+
+/**
+ * Error codes for $(D_PSYMBOL Socket).
+ */
+enum SocketError : int
+{
+	/// Unknown error
+	unknown                = 0,
+	/// Firewall rules forbid connection
+	accessDenied           = EPERM,
+	/// A socket operation was attempted on a non-socket
+	notSocket              = EBADF,
+	/// The network is not available
+	networkDown            = ECONNABORTED,
+	/// An invalid pointer address was detected by the underlying socket provider
+	fault                  = EFAULT,
+	/// An invalid argument was supplied to a $(D_PSYMBOL Socket) member
+	invalidArgument        = EINVAL,
+	/// The limit on the number of open sockets has been reached
+	tooManyOpenSockets     = ENFILE,
+	/// No free buffer space is available for a Socket operation
+	noBufferSpaceAvailable = ENOBUFS,
+	/// The address family is not supported by the protocol family
+	operationNotSupported  = EOPNOTSUPP,
+	/// The protocol is not implemented or has not been configured
+	protocolNotSupported   = EPROTONOSUPPORT,
+	/// Protocol error
+	protocolError          = EPROTO,
+	/// The connection attempt timed out, or the connected host has failed to respond
+	timedOut               = ETIMEDOUT,
+	/// The support for the specified socket type does not exist in this address family
+	socketNotSupported     = ESOCKTNOSUPPORT,
+}
+
+/**
+ * $(D_PSYMBOL SocketException) should be thrown only if one of the socket functions
+ * returns -1 or $(D_PSYMBOL SOCKET_ERROR) and sets $(D_PSYMBOL errno),
+ * because $(D_PSYMBOL SocketException) relies on the $(D_PSYMBOL errno) value.
+ */
+class SocketException : Exception
+{
+	immutable SocketError error;
+
+    /**
+     * Params:
+     *     msg  = The message for the exception.
+     *     file = The file where the exception occurred.
+     *     line = The line number where the exception occurred.
+     *     next = The previous exception in the chain of exceptions, if any.
+     */
+    this(string msg,
+         string file = __FILE__,
+		 size_t line = __LINE__,
+         Throwable next = null) @nogc @safe nothrow
+    {
+        super(msg, file, line, next);
+
+		foreach (member; EnumMembers!SocketError)
+		{
+			if (member == errno)
+			{
+				error = member;
+				return;
+			}
+		}
+		if (errno == ENOMEM)
+		{
+			error = SocketError.noBufferSpaceAvailable;
+		}
+		else if (errno == ENOSR)
+		{
+			error = SocketError.networkDown;
+		}
+		else if (errno == EMFILE)
+		{
+			error = SocketError.tooManyOpenSockets;
+		}
+		else
+		{
+			error = SocketError.unknown;
+		}
+	}
 }
 
 /**
@@ -85,8 +173,6 @@ class Socket
 			send    = SHUT_WR,   /// Socket sends are disallowed
 			both    = SHUT_RDWR, /// Both receive and send
 		}
-
-		private enum SOCKET_ERROR = -1;
 	}
 	else version (Windows)
 	{
@@ -120,6 +206,21 @@ class Socket
 	private const Socket self;
 
 	private AddressFamily family;
+
+	/**
+	 * $(D_KEYWORD true) if the stream socket peer has performed an orderly
+	 * shutdown.
+	 */
+	protected bool disconnected_;
+
+	/**
+	 * Returns: $(D_KEYWORD true) if the stream socket peer has performed an
+	 *          orderly shutdown.
+	 */
+	@property inout(bool) disconnected() inout const pure nothrow @safe @nogc
+	{
+		return disconnected_;
+	}
 
 	private @property handle(socket_t sock)
 	in
@@ -339,6 +440,12 @@ class Socket
      * Accept an incoming connection. If the socket is blocking,
 	 * $(D_PSYMBOL accept) waits for a connection request.
 	 *
+	 * $(D_PSYMBOL EAGAIN) and $(D_PSYMBOL EWOULDBLOCK) are not treated as
+	 * erros.
+	 *
+	 * Returns: $(D_PSYMBOL Socket) for the accepted connection or
+	 *          $(D_KEYWORD null) if the call would block.
+	 *
 	 * Throws: $(D_PSYMBOL SocketException) if unable to accept.
      */
 	Socket accept() const @trusted
@@ -361,7 +468,11 @@ class Socket
 
         if (sock == socket_t.init)
 		{
-            throw defaultAllocator.make!SocketException("Unable to accept socket connection.");
+			if (errno == EAGAIN || errno == EWOULDBLOCK)
+			{
+				return null;
+			}
+            throw defaultAllocator.make!SocketException("Unable to accept socket connection");
 		}
 
         Socket newSocket = defaultAllocator.make!Socket(sock, family);
@@ -402,39 +513,60 @@ class Socket
 	 *    buf   = Buffer to save the received data.
 	 *    flags = Flags.
 	 *
-     * Returns: The number of bytes actually received, $(D 0) if the remote side
-     * has closed the connection, or $(D_PSYMBOL error) on failure.
+     * Returns: The number of bytes actually received, 0 if the call would
+     *          block.
+	 *
+	 * Throws: $(D_PSYMBOL SocketException) if unable to receive.
      */
-    ptrdiff_t receive(ubyte[] buf, Flags flags) const nothrow @nogc @trusted
+    ptrdiff_t receive(ubyte[] buf, Flags flags) @trusted
     {
-        version(Windows)         // Does not use size_t
-        {
-            return buf.length
-                 ? .recv(handle_, buf.ptr, capToInt(buf.length), cast(int)flags)
-                 : 0;
-        }
-        else
-        {
-            return buf.length
-                 ? .recv(handle_, buf.ptr, buf.length, cast(int)flags)
-                 : 0;
-        }
+		ptrdiff_t ret;
+
+		if (!buf.length)
+		{
+			return 0;
+		}
+		version(Windows) // Does not use size_t
+		{
+			ret = .recv(handle_, buf.ptr, capToInt(buf.length), cast(int)flags);
+		}
+		else
+		{
+			ret = .recv(handle_, buf.ptr, buf.length, cast(int)flags);
+		}
+
+		if (ret == 0)
+		{
+			disconnected_ = true;
+		}
+		if (ret == -1)
+		{
+			if (errno == EAGAIN || errno == EWOULDBLOCK)
+			{
+				return 0;
+			}
+			throw defaultAllocator.make!SocketException("Unable to receive");
+		}
+		return ret;
 	}
 
     /**
      * Send data on the connection. If the socket is blocking and there is no
-     * buffer space left, $(D_PSYMBOL send) waits.
+     * buffer space left, $(D_PSYMBOL send) waits, non-blocking socket returns
+	 * 0 in this case.
 	 *
 	 * Params:
 	 *    buf   = Data to be sent.
 	 *    flags = Flags.
 	 *
-     * Returns: The number of bytes actually sent, or $(D_PSYMBOL error) on
-     * failure.
+     * Returns: The number of bytes actually sent.
+	 *
+	 * Throws: $(D_PSYMBOL SocketException) if unable to receive.
      */
-    ptrdiff_t send(const(ubyte)[] buf, Flags flags) const nothrow @nogc @trusted
+    ptrdiff_t send(const(ubyte)[] buf, Flags flags) const @trusted
     {
 		int sendFlags = cast(int) flags;
+		ptrdiff_t sent;
 
         static if (is(typeof(MSG_NOSIGNAL)))
         {
@@ -442,13 +574,21 @@ class Socket
         }
         version (Windows)
 		{
-            auto sent = .send(handle_, buf.ptr, capToInt(buf.length), sendFlags);
+            sent = .send(handle_, buf.ptr, capToInt(buf.length), sendFlags);
 		}
         else
 		{
-            auto sent = .send(handle_, buf.ptr, buf.length, sendFlags);
+            sent = .send(handle_, buf.ptr, buf.length, sendFlags);
 		}
-        return sent;
+		if (sent != SOCKET_ERROR)
+		{
+			return sent;
+		}
+		if (errno == EAGAIN || errno == EWOULDBLOCK)
+		{
+			return 0;
+		}
+		throw defaultAllocator.make!SocketException("Unable to send");
 	}
 
 	/**
@@ -459,7 +599,7 @@ class Socket
 	 *
 	 * Returns: Handle.
 	 */
-	T opCast(T)()
+	T opCast(T)() const pure nothrow @safe @nogc
 		if (is(T == int))
 	{
 		return handle_;
@@ -473,7 +613,7 @@ class Socket
 	 *
 	 * Returns: Void pointer.
 	 */
-	T opCast(T)() const
+	T opCast(T)() const pure nothrow @nogc
 		if (is(T == void*))
 	{
 		return *cast(void**) &self;
