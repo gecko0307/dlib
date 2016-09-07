@@ -238,7 +238,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
      */
     void appendLeft(const(T)[] s)
     {
-        foreach(c; s)
+        foreach_reverse(c; s)
             appendLeft(cast(T)c);
     }
     
