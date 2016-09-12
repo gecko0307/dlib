@@ -40,6 +40,7 @@ import dlib.async.protocol;
 import dlib.async.transport;
 import dlib.async.watcher;
 import dlib.async.loop;
+import dlib.async.event.selector;
 import dlib.memory;
 import dlib.network.socket;
 import core.stdc.errno;
@@ -48,7 +49,7 @@ import core.sys.posix.netinet.in_;
 import core.time;
 import std.algorithm.comparison;
 
-class EpollLoop : Loop
+class EpollLoop : SelectorLoop
 {
     /**
      * Initializes the loop.
@@ -132,7 +133,7 @@ class EpollLoop : Loop
 				break;
 			}
 
-            auto transport = make!SocketTransport(defaultAllocator, this, client);
+            auto transport = make!SelectorStreamTransport(defaultAllocator, this, client);
             IOWatcher connection;
 
             if (connections.length > client)
@@ -195,7 +196,7 @@ class EpollLoop : Loop
             }
             else
             {
-                auto transport = cast(SocketTransport) connection.transport;
+                auto transport = cast(SelectorStreamTransport) connection.transport;
                 assert(transport !is null);
 
                 if (ev.events & (EPOLLIN | EPOLLPRI | EPOLLERR | EPOLLHUP))

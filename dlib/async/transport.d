@@ -33,12 +33,7 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.async.transport;
 
-import dlib.async.protocol;
-import dlib.container.buffer;
 import dlib.network.socket;
-import dlib.async.loop;
-import dlib.memory;
-import dlib.memory.mmappool;
 import std.exception;
 
 /**
@@ -46,7 +41,7 @@ import std.exception;
  */
 class TransportException : Exception
 {
-	mixin basicExceptionCtors;
+    mixin basicExceptionCtors;
 }
 
 /**
@@ -94,7 +89,7 @@ interface DuplexTransport : ReadTransport, WriteTransport
  */
 interface SocketTransport : Transport
 {
-	@property inout(Socket) socket() inout pure nothrow @safe @nogc;
+    @property inout(Socket) socket() inout pure nothrow @safe @nogc;
 }
 
 /**
@@ -102,212 +97,4 @@ interface SocketTransport : Transport
  */
 package interface StreamTransport : DuplexTransport, SocketTransport
 {
-}
-
-version (Posix)
-{
-	import core.sys.posix.netinet.in_;
-	import core.stdc.errno;
-
-	/**
-	 * Transport for stream sockets.
-	 */
-	class SocketTransport : DuplexTransport
-	{
-		private Socket socket_;
-
-		private Protocol protocol_;
-
-		/// Input buffer.
-		private WriteBuffer input_;
-
-		/// Output buffer.
-		private ReadBuffer output_;
-
-		private Loop loop;
-
-		private bool disconnected_;
-
-		package bool writeReady;
-
-		/**
-		 * Params:
-		 *     loop     = Event loop.
-		 *     socket   = Socket.
-		 *     protocol = Protocol.
-		 */
-		this(Loop loop, Socket socket, Protocol protocol = null)
-		{
-			socket_ = socket;
-			protocol_ = protocol;
-			this.loop = loop;
-			input_ = defaultAllocator.make!WriteBuffer;
-			output_ = defaultAllocator.make!ReadBuffer;
-		}
-
-		/**
-		 * Close the transport and deallocate the data buffers.
-		 */
-		~this()
-		{
-			defaultAllocator.dispose(socket_);
-			defaultAllocator.dispose(input_);
-			defaultAllocator.dispose(output_);
-			defaultAllocator.dispose(protocol_);
-		}
-
-		/**
-		 * Returns: Transport socket.
-		 */
-		inout(Socket) socket() inout pure nothrow @safe @nogc
-		{
-			return socket_;
-		}
-
-		/**
-		 * Returns: Protocol.
-		 */
-		@property Protocol protocol() @safe pure nothrow
-		{
-			return protocol_;
-		}
-
-		/**
-		 *  Returns: $(D_KEYWORD true) if the remote peer closed the connection,
-		 *           $(D_KEYWORD false) otherwise.
-		 */
-		@property immutable(bool) disconnected() const @safe pure nothrow
-		{
-			return disconnected_;
-		}
-
-		/**
-		 * Params:
-		 *     protocol = Application protocol.
-		 */
-		@property void protocol(Protocol protocol) @safe pure nothrow
-		{
-			protocol_ = protocol;
-		}
-
-		/**
-		 * Returns: Application protocol.
-		 */
-		@property inout(Protocol) protocol() inout @safe pure nothrow
-		{
-			return protocol_;
-		}
-
-		/**
-		 * Write some data to the transport.
-		 *
-		 * Params:
-		 *     data = Data to send.
-		 */
-		void write(ubyte[] data)
-		{
-			// If the buffer wasn't empty the transport should be already there.
-			if (!input.length && data.length)
-			{
-				loop.feed(this);
-			}
-			input ~= data;
-		}
-
-		/**
-		 * Returns: Input buffer.
-		 */
-		@property WriteBuffer input() @safe pure nothrow
-		{
-			return input_;
-		}
-
-		/**
-		 * Returns: Output buffer.
-		 */
-		@property ReadBuffer output() @safe pure nothrow
-		{
-			return output_;
-		}
-
-		/**
-		 * Read data from the socket. Returns $(D_KEYWORD true) if the reading
-		 * is completed. In the case that the peer closed the connection, returns
-		 * $(D_KEYWORD true) aswell.
-		 *
-		 * Returns: Whether the reading is completed.
-		 *
-		 * Throws: $(D_PSYMBOL TransportException) if a read error is occured.
-		 */
-		bool receive()
-		{
-			auto readCount = recv(cast(int) socket, output.buffer, output.free, 0);
-
-			if (readCount > 0)
-			{
-				output_ ~= output.buffer[0..readCount];
-				return false;
-			}
-			else if (readCount == 0)
-			{
-				disconnected_ = true;
-				return true;
-			}
-			else if (errno == EAGAIN || errno == EWOULDBLOCK)
-			{
-				return true;
-			}
-			else
-			{
-				disconnected_ = true;
-				throw make!TransportException(defaultAllocator,
-											  "Read from the socket failed.");
-			}
-		}
-
-		/**
-		 * Returns: Whether the writing is completed.
-		 *
-		 * Throws: $(D_PSYMBOL TransportException) if a read error is occured.
-		 */
-		bool send()
-		in
-		{
-			assert(input.length);
-			assert(!disconnected);
-		}
-		body
-		{
-			auto sentCount = core.sys.posix.netinet.in_.send(cast(int) socket,
-															 input.buffer,
-															 input.length,
-															 0);
-
-			input.written = sentCount;
-			if (input.length == 0)
-			{
-				return true;
-			}
-			else if (sentCount >= 0)
-			{
-				loop.feed(this);
-
-				return false;
-			}
-			else if (errno == EAGAIN || errno == EWOULDBLOCK)
-			{
-				writeReady = false;
-				loop.feed(this);
-
-				return false;
-			}
-			else
-			{
-				disconnected_ = true;
-				loop.feed(this);
-				throw make!TransportException(defaultAllocator,
-											  "Write to the socket failed.");
-			}
-		}
-	}
 }

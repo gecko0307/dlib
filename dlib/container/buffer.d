@@ -37,7 +37,7 @@ import dlib.memory;
 
 version (unittest)
 {
-    private int fillBuffer(void* buffer,
+    private int fillBuffer(ubyte[] buffer,
                            in size_t size,
                            int start = 0,
                            int end = 10) @nogc pure nothrow
@@ -47,12 +47,10 @@ version (unittest)
     }
     body
     {
-        ubyte[] buf = cast(ubyte[]) buffer[0..size];
         auto numberRead = end - start;
-
         for (ubyte i; i < numberRead; ++i)
         {
-            buf[i] = cast(ubyte) (start + i);
+            buffer[i] = cast(ubyte) (start + i);
         }
         return numberRead;
     }
@@ -78,29 +76,29 @@ interface Buffer
      */
     @property size_t free() const @nogc @safe pure nothrow;
 
-	/**
-	 * Params:
-	 *     start = Start position.
-	 *     end   = End position.
-	 *
-	 * Returns: Array between $(D_PARAM start) and $(D_PARAM end).
-	 */
-	@property ubyte[] opSlice(size_t start, size_t end)
-	in
-	{
-		assert(start <= end);
-		assert(end <= length);
-	}
+    /**
+     * Params:
+     *     start = Start position.
+     *     end   = End position.
+     *
+     * Returns: Array between $(D_PARAM start) and $(D_PARAM end).
+     */
+    @property ubyte[] opSlice(size_t start, size_t end)
+    in
+    {
+        assert(start <= end);
+        assert(end <= length);
+    }
 
-	/**
-	* Returns: Length of available data.
-	*/
-	@property size_t opDollar() const pure nothrow @safe @nogc;
+    /**
+    * Returns: Length of available data.
+    */
+    @property size_t opDollar() const pure nothrow @safe @nogc;
 
-	/**
-	 * Returns: Data chunk.
-	 */
-	@property ubyte[] opIndex();
+    /**
+     * Returns: Data chunk.
+     */
+    @property ubyte[] opIndex();
 }
 
 /**
@@ -121,8 +119,8 @@ class ReadBuffer : Buffer
     /// Filled buffer length.
     protected size_t length_;
 
-	/// Last position returned with $(D_KEYWORD []).
-	protected size_t start;
+    /// Last position returned with $(D_KEYWORD []).
+    protected size_t start;
 
     /// Available space.
     protected immutable size_t minAvailable;
@@ -138,8 +136,8 @@ class ReadBuffer : Buffer
     }
 
     /**
-	 * Creates a new read buffer.
-	 *
+     * Creates a new read buffer.
+     *
      * Params:
      *     size         = Initial buffer size and the size by which the buffer
      *                    will grow.
@@ -190,16 +188,16 @@ class ReadBuffer : Buffer
         return length_;
     }
 
-	/**
-	 * Clears the buffer.
-	 *
-	 * Returns: $(D_KEYWORD this).
-	 */
-	ReadBuffer clear() pure nothrow @safe @nogc
-	{
-		start = length_ = 0;
-		return this;
-	}
+    /**
+     * Clears the buffer.
+     *
+     * Returns: $(D_KEYWORD this).
+     */
+    ReadBuffer clear() pure nothrow @safe @nogc
+    {
+        start = length_ = 0;
+        return this;
+    }
 
     /**
      * Returns: Available space.
@@ -214,13 +212,12 @@ class ReadBuffer : Buffer
     {
         auto b = defaultAllocator.make!ReadBuffer;
         size_t numberRead;
-        void* buf;
 
         // Fills the buffer with values 0..10
         assert(b.free == b.blockSize);
-        buf =  b.buffer;
-        numberRead = fillBuffer(buf, b.free, 0, 10);
-        b ~= buf[0..numberRead];
+
+        numberRead = fillBuffer(b[], b.free, 0, 10);
+        b ~= b[0..numberRead];
         assert(b.free == b.blockSize - numberRead);
         b[];
         assert(b.free == b.blockSize);
@@ -234,36 +231,34 @@ class ReadBuffer : Buffer
      *
      * Params:
      *     buffer = Buffer chunk got with $(D_KEYWORD []).
-	 *
-	 * Returns: $(D_KEYWORD this).
+     *
+     * Returns: $(D_KEYWORD this).
      */
     ReadBuffer opOpAssign(string op)(ubyte[] buffer)
         if (op == "~")
     {
-	    length_ = start + buffer.length;
+        length_ = start + buffer.length;
         return this;
     }
 
-	/// Ditto.
-	ReadBuffer opOpAssign(string op)(size_t length)
-		if (op == "+")
-	{
-		length_ = start + length;
-		return this;
-	}
+    /// Ditto.
+    ReadBuffer opOpAssign(string op)(size_t length)
+        if (op == "+")
+    {
+        length_ = start + length;
+        return this;
+    }
 
     ///
     unittest
     {
         auto b = defaultAllocator.make!ReadBuffer;
         size_t numberRead;
-        void* buf;
         ubyte[] result;
 
         // Fills the buffer with values 0..10
-        buf =  b.buffer;
-        numberRead = fillBuffer(buf, b.free, 0, 10);
-        b ~= buf[0..numberRead];
+        numberRead = fillBuffer(b[], b.free, 0, 10);
+        b ~= b[0..numberRead];
 
         result = b[];
         assert(result[0] == 0);
@@ -271,13 +266,11 @@ class ReadBuffer : Buffer
         assert(result[9] == 9);
 
         // It shouldn't overwrite, but append another 5 bytes to the buffer
-        buf =  b.buffer;
-        numberRead = fillBuffer(buf, b.free, 0, 10);
-        b ~= buf[0..numberRead];
+        numberRead = fillBuffer(b[], b.free, 0, 10);
+        b ~= b[0..numberRead];
 
-        buf =  b.buffer;
-        numberRead = fillBuffer(buf, b.free, 20, 25);
-        b ~= buf[0..numberRead];
+        numberRead = fillBuffer(b[], b.free, 20, 25);
+        b ~= b[0..numberRead];
 
         result = b[];
         assert(result[0] == 0);
@@ -289,65 +282,65 @@ class ReadBuffer : Buffer
         defaultAllocator.dispose(b);
     }
 
-	/**
-	 * Returns: Length of available data.
-	 */
-	@property size_t opDollar() const pure nothrow @safe @nogc
-	{
-		return length;
-	}
-
-	/**
-	 * Params:
-	 *     start = Start position.
-	 *     end   = End position.
-	 *
-	 * Returns: Array between $(D_PARAM start) and $(D_PARAM end).
-	 */
-	@property ubyte[] opSlice(size_t start, size_t end)
-	{
-		return buffer_[this.start + start .. this.start + end];
-	}
-
-	/**
-	 * Paarms:
-	 *     value = Array.
-	 *     start = Start position.
-	 *     end   = End position.
-	 *
-	 * Returns: $(D_KEYWORD this).
+    /**
+     * Returns: Length of available data.
      */
-	ReadBuffer opSliceAssign(ubyte[] value, size_t start, size_t end)
-	{
-		buffer_[this.start + start .. this.start + end] = value;
-		return this;
-	}
+    @property size_t opDollar() const pure nothrow @safe @nogc
+    {
+        return length;
+    }
 
     /**
-	 * Returns a free chunk of the buffer.
-	 *
-	 * Set the buffer again after reading something into it. Append
-	 * $(D_KEYWORD ~=) a slice from the beginning of the buffer you got and
-	 * till the number of the read bytes. The data will be appended to the
-	 * existing buffer.
-	 *
+     * Params:
+     *     start = Start position.
+     *     end   = End position.
+     *
+     * Returns: Array between $(D_PARAM start) and $(D_PARAM end).
+     */
+    @property ubyte[] opSlice(size_t start, size_t end)
+    {
+        return buffer_[this.start + start .. this.start + end];
+    }
+
+    /**
+     * Paarms:
+     *     value = Array.
+     *     start = Start position.
+     *     end   = End position.
+     *
+     * Returns: $(D_KEYWORD this).
+     */
+    ReadBuffer opSliceAssign(ubyte[] value, size_t start, size_t end)
+    {
+        buffer_[this.start + start .. this.start + end] = value;
+        return this;
+    }
+
+    /**
+     * Returns a free chunk of the buffer.
+     *
+     * Set the buffer again after reading something into it. Append
+     * $(D_KEYWORD ~=) a slice from the beginning of the buffer you got and
+     * till the number of the read bytes. The data will be appended to the
+     * existing buffer.
+     *
      * Returns: A free chunk of the buffer.
      */
     ubyte[] opIndex()
     {
-		if (start > 0)
-		{
-			return buffer_[0..start];
-		}
+        if (start > 0)
+        {
+            return buffer_[0..start];
+        }
         else
-		{
-			if (capacity - length < minAvailable)
-	        {
-		        defaultAllocator.resizeArray!ubyte(buffer_, capacity + blockSize);
-	        }
-			start = length_;
-			return buffer_[length_..$];
-		}
+        {
+            if (capacity - length < minAvailable)
+            {
+                defaultAllocator.resizeArray!ubyte(buffer_, capacity + blockSize);
+            }
+            start = length_;
+            return buffer_[length_..$];
+        }
     }
 
     ///
@@ -355,13 +348,11 @@ class ReadBuffer : Buffer
     {
         auto b = defaultAllocator.make!ReadBuffer;
         size_t numberRead;
-        void* buf;
         ubyte[] result;
 
         // Fills the buffer with values 0..10
-        buf =  b.buffer;
-        numberRead = fillBuffer(buf, b.free, 0, 10);
-        b ~= buf[0..numberRead];
+        numberRead = fillBuffer(b[], b.free, 0, 10);
+        b ~= b[0..numberRead];
 
         assert(b.length == 10);
         result = b[];
@@ -454,13 +445,13 @@ class WriteBuffer : Buffer
         }
     }
 
-	/**
-	* Returns: Length of available data.
-	*/
-	@property size_t opDollar() const pure nothrow @safe @nogc
-	{
-		return length;
-	}
+    /**
+    * Returns: Length of available data.
+    */
+    @property size_t opDollar() const pure nothrow @safe @nogc
+    {
+        return length;
+    }
 
     ///
     unittest
@@ -603,11 +594,11 @@ class WriteBuffer : Buffer
      *
      * Params:
      *     length = Length of the written data.
-	 *
-	 * Returns: $(D_KEYWORD this).
+     *
+     * Returns: $(D_KEYWORD this).
      */
     @property WriteBuffer opOpAssign(string op)(size_t length) @safe pure nothrow
-		if (op == "+")
+        if (op == "+")
     in
     {
         assert(length <= this.length);
@@ -664,7 +655,7 @@ class WriteBuffer : Buffer
         {
             start = 0;
         }
-		return this;
+        return this;
     }
 
     ///
@@ -698,8 +689,8 @@ class WriteBuffer : Buffer
      */
     @property ubyte[] opSlice(size_t start, size_t end) @safe pure nothrow
     {
-		auto internStart = this.start + start;
-		size_t rest = length - end;
+        auto internStart = this.start + start;
+        size_t rest = length - end;
         if (position > ring || position < start) // Buffer overflowed
         {
             return buffer_[this.start.. ring + 1 - rest];
@@ -715,41 +706,36 @@ class WriteBuffer : Buffer
     {
         auto b = defaultAllocator.make!WriteBuffer(6);
         ubyte[6] buf = [23, 23, 255, 128, 127, 9];
-        void* returnedBuf;
 
         b ~= buf;
-        returnedBuf = b.buffer;
-        assert(returnedBuf[0..b.length] == buf[0..6]);
+        assert(b[0..$] == buf[0..6]);
         b += 2;
 
-        returnedBuf = b.buffer;
-        assert(returnedBuf[0..b.length] == buf[2..6]);
+        assert(b[0..$] == buf[2..6]);
 
         b ~= buf;
-        returnedBuf = b.buffer;
-        assert(returnedBuf[0..b.length] == buf[2..6]);
+        assert(b[0..$] == buf[2..6]);
         b += b.length;
 
-        returnedBuf = b.buffer;
-        assert(returnedBuf[0..b.length] == buf[0..6]);
+        assert(b[0..$] == buf[0..6]);
         b += b.length;
 
         defaultAllocator.dispose(b);
     }
 
     /**
-	 * After calling it, set $(D_KEYWORD +=) to the length could be
-	 * written.
-	 *
-	 * $(D_PSYMBOL buffer) may return only part of the data. You may need
-	 * to call it (and set $(D_KEYWORD +=) several times until
-	 * $(D_PSYMBOL length) is 0. If all the data can be written,
-	 * maximally 3 calls are required.
-	 *
-	 * Returns: A chunk of data buffer.
-	 */
+     * After calling it, set $(D_KEYWORD +=) to the length could be
+     * written.
+     *
+     * $(D_PSYMBOL buffer) may return only part of the data. You may need
+     * to call it (and set $(D_KEYWORD +=) several times until
+     * $(D_PSYMBOL length) is 0. If all the data can be written,
+     * maximally 3 calls are required.
+     *
+     * Returns: A chunk of data buffer.
+     */
     @property ubyte[] opIndex()
     {
-		return opSlice(0, length);
+        return opSlice(0, length);
     }
 }

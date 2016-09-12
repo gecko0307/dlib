@@ -118,6 +118,26 @@ else version (Windows)
 	import dlib.async.event.iocp;
 	version = IOCP;
 }
+else version (OSX)
+{
+    version = Kqueue;
+}
+else version (iOS)
+{
+    version = Kqueue;
+}
+else version (FreeBSD)
+{
+    version = Kqueue;
+}
+else version (OpenBSD)
+{
+    version = Kqueue;
+}
+else version (DragonFlyBSD)
+{
+    version = Kqueue;
+}
 
 /**
  * Events.
@@ -146,15 +166,11 @@ abstract class Loop
 	/// Max events can be got at a time (should be supported by the backend).
 	protected enum maxEvents = 128;
 
-    /// Pending connections.
-    protected ConnectionWatcher[] connections;
-
     /**
      * Initializes the loop.
      */
     this()
     {
-        connections = MmapPool.instance.makeArray!ConnectionWatcher(maxEvents);
         pendings = MmapPool.instance.make!(PendingQueue!Watcher);
         swapPendings = MmapPool.instance.make!(PendingQueue!Watcher);
     }
@@ -164,18 +180,6 @@ abstract class Loop
      */
     ~this()
     {
-		foreach (ref connection; connections)
-		{
-			// We want to free only IOWatchers. ConnectionWatcher are created by the
-			// user and should be freed by himself.
-			auto io = cast(IOWatcher) connection;
-			if (io !is null)
-			{
-				MmapPool.instance.dispose(io);
-				connection = null;
-			}
-		}
-        MmapPool.instance.dispose(connections);
         MmapPool.instance.dispose(pendings);
         MmapPool.instance.dispose(swapPendings);
     }
@@ -219,12 +223,6 @@ abstract class Loop
             return;
         }
         watcher.active = true;
-        if (connections.length <= watcher.socket)
-        {
-            MmapPool.instance.resizeArray(connections, watcher.socket.handle + maxEvents / 2);
-        }
-        connections[watcher.socket.handle] = watcher;
-
         reify(watcher, EventMask(Event.none), EventMask(Event.accept));
     }
 
@@ -338,6 +336,11 @@ class BadLoopException : Exception
     else version (IOCP)
     {
     	defaultLoop_ = MmapPool.instance.make!IOCPLoop;
+    }
+    else version (Kqueue)
+    {
+        import dlib.async.event.kqueue;
+        defaultLoop_ = MmapPool.instance.make!KqueueLoop;
     }
     return defaultLoop_;
 }
