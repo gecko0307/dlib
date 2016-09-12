@@ -33,13 +33,24 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.async.watcher;
 
+import dlib.async.loop;
 import dlib.async.protocol;
 import dlib.async.transport;
-import dlib.memory.allocator;
+import dlib.container.buffer;
+import dlib.memory;
 import dlib.memory.mmappool;
 import dlib.network.socket;
-import std.experimental.allocator;
 import std.functional;
+import std.exception;
+
+version (Windows)
+{
+	import core.sys.windows.basetyps;
+	import core.sys.windows.mswsock;
+	import core.sys.windows.winbase;
+	import core.sys.windows.windef;
+	import core.sys.windows.winsock2;
+}
 
 /**
  * A watcher is an opaque structure that you allocate and register to record
@@ -58,15 +69,13 @@ abstract class Watcher
 
 class ConnectionWatcher : Watcher
 {
-    /// Watched file descriptor.
+    /// Watched socket.
     private Socket socket_;
 
     /// Protocol factory.
     protected Protocol delegate() protocolFactory;
 
-    /// Callback.
-    package void delegate(Protocol delegate() protocolFactory,
-                          Socket socket) accept;
+	package PendingQueue!IOWatcher incoming;
 
     /**
      * Params:
@@ -75,12 +84,18 @@ class ConnectionWatcher : Watcher
     this(Socket socket)
     {
         socket_ = socket;
+		incoming = MmapPool.instance.make!(PendingQueue!IOWatcher);
     }
 
     /// Ditto.
     protected this()
     {
     }
+
+	~this()
+	{
+		MmapPool.instance.dispose(incoming);
+	}
 
     /*
      * Params:
@@ -94,27 +109,33 @@ class ConnectionWatcher : Watcher
     /**
      * Returns: Socket.
      */
-    @property inout(Socket) socket() inout @safe pure nothrow
+    @property inout(Socket) socket() inout pure nothrow
     {
         return socket_;
     }
 
     /**
-     * Returns: Application protocol factory.
-     */
-    @property inout(Protocol delegate()) protocol() inout
-    in
-    {
-        assert(protocolFactory !is null, "Protocol isn't set.");
-    }
-    body
-    {
-        return protocolFactory;
-    }
+	 * Returns: New protocol instance.
+	 */
+    @property Protocol protocol()
+	in
+	{
+		assert(protocolFactory !is null, "Protocol isn't set.");
+	}
+	body
+	{
+		return protocolFactory();
+	}
 
+    /**
+	 * Invokes new connection callback.
+	 */
     override void invoke()
     {
-        accept(protocol, socket);
+		foreach (io; incoming)
+		{
+			io.protocol.connected(cast(DuplexTransport) io.transport);
+		}
     }
 }
 
@@ -124,104 +145,121 @@ class ConnectionWatcher : Watcher
  */
 class IOWatcher : ConnectionWatcher
 {
-    /// References a watcher or a transport.
-    DuplexTransport transport_;
+    /// If an exception was thrown the transport should be already invalid.
+	private union
+	{
+		StreamTransport transport_;
+		SocketException exception_;
+	}
+
+	private Protocol protocol_;
+
+	/**
+	 * Returns: Underlying output buffer.
+	 */
+	package ReadBuffer output;
 
     /**
      * Params:
-     *     protocolFactory = Function returning application specific protocol.
-     *     transport       = Transport.
+     *     transport = Transport.
+	 *     protocol  = New instance of the application protocol.
      */
-    this(Protocol delegate() protocolFactory,
-         DuplexTransport transport)
+    this(StreamTransport transport, Protocol protocol)
     in
     {
         assert(transport !is null);
-        assert(protocolFactory !is null);
+		assert(protocol !is null);
     }
     body
     {
         super();
-        this.protocolFactory = protocolFactory;
-        this.transport_ = transport;
+        transport_ = transport;
+		protocol_ = protocol;
+		output = MmapPool.instance.make!ReadBuffer();
+		active = true;
     }
 
-    ~this()
+	/**
+	 * Destroys the watcher.
+	 */
+    protected ~this()
     {
-        MmapPool.instance.dispose(transport_);
+		MmapPool.instance.dispose(output);
+		MmapPool.instance.dispose(protocol_);
     }
 
     /**
      * Assigns a transport.
      *
      * Params:
-     *     protocolFactory = Function returning application specific protocol.
-     *     transport       = Transport.
+     *     transport = Transport.
+	 *     protocol  = Application protocol.
      *
      * Returns: $(D_KEYWORD this).
      */
-    IOWatcher opCall(Protocol delegate() protocolFactory,
-                     DuplexTransport transport) @safe pure nothrow
+    IOWatcher opCall(StreamTransport transport, Protocol protocol) pure nothrow @safe @nogc
     in
     {
         assert(transport !is null);
-        assert(protocolFactory !is null);
+		assert(protocol !is null);
     }
     body
     {
-        this.protocolFactory = protocolFactory;
-        this.transport_ = transport;
+        transport_ = transport;
+		protocol_ = protocol;
+		active = true;
         return this;
     }
 
     /**
      * Returns: Transport used by this watcher.
      */
-    @property inout(DuplexTransport) transport() inout @safe pure nothrow
+    @property inout(StreamTransport) transport() inout pure nothrow @nogc
     {
         return transport_;
     }
 
     /**
-     * Returns: Socket.
-     */
-    override @property inout(Socket) socket() inout @safe pure nothrow
+	 * Sets an exception occurred during a read/write operation.
+	 *
+	 * Params:
+	 *     exception = Thrown exception.
+	 */
+    @property void exception(SocketException exception) pure nothrow @nogc
+    {
+		exception_ = exception;
+    }
+
+	/**
+	 * Returns: Application protocol.
+	 */
+    override @property Protocol protocol() pure nothrow @safe @nogc
+	{
+		return protocol_;
+	}
+
+    /**
+	 * Returns: Socket.
+	 */
+    override @property inout(Socket) socket() inout pure nothrow
     {
         return transport.socket;
     }
 
     /**
      * Invokes the watcher callback.
-     *
-     * Finalizes the transport on disconnect.
      */
     override void invoke()
     {
-        if (transport.protocol is null)
+		if (output.length)
         {
-            transport.protocol = protocolFactory();
-            transport.protocol.connected(transport);
+            protocol.received(output[0..$]);
+			output.clear();
         }
-        else if (transport.disconnected)
-        {
-            transport.protocol.disconnected();
-            MmapPool.instance.dispose(transport_);
-            protocolFactory = null;
-        }
-        else if (transport.output.length)
-        {
-            transport.protocol.received(transport.output[]);
-        }
-        else if (transport.input.length)
-        {
-            try
-            {
-                transport.send();
-            }
-            catch (TransportException e)
-            {
-                MmapPool.instance.dispose(e);
-            }
-        }
+		else
+		{
+			protocol.disconnected(exception_);
+			active = false;
+		}
     }
 }

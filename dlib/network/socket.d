@@ -2,9 +2,13 @@ module dlib.network.socket;
 
 import dlib.memory;
 import core.stdc.errno;
+import core.time;
+import std.algorithm.comparison;
 import std.algorithm.searching;
-public import std.socket : AddressException, socket_t;
+public import std.socket : AddressException, socket_t, Linger, SocketOptionLevel,
+	                       ProtocolType, SocketType, AddressFamily, AddressInfo;
 import std.traits;
+import std.typecons;
 
 version (Posix)
 {
@@ -14,16 +18,484 @@ version (Posix)
     import core.sys.posix.unistd;
 
 	private enum SOCKET_ERROR = -1;
+	private enum SO_UPDATE_ACCEPT_CONTEXT = 0;
 }
 else version (Windows)
 {
+	import dlib.async.iocp;
+	import core.sys.windows.basetyps;
+	import core.sys.windows.mswsock;
+	import core.sys.windows.winbase;
+	import core.sys.windows.windef;
 	import core.sys.windows.winsock2;
+
+	enum : uint
+	{
+		IOC_UNIX     = 0x00000000,
+		IOC_WS2      = 0x08000000,
+		IOC_PROTOCOL = 0x10000000,
+		IOC_VOID     = 0x20000000,         /// No parameters.
+		IOC_OUT      = 0x40000000,         /// Copy parameters back.
+		IOC_IN       = 0x80000000,         /// Copy parameters into.
+		IOC_VENDOR   = 0x18000000,
+		IOC_INOUT    = (IOC_IN | IOC_OUT), /// Copy parameter into and get back.
+	}
+
+	template _WSAIO(int x, int y)
+	{
+		enum _WSAIO = IOC_VOID | x | y;
+	}
+	template _WSAIOR(int x, int y)
+	{
+		enum _WSAIOR = IOC_OUT | x | y;
+	}
+	template _WSAIOW(int x, int y)
+	{
+		enum _WSAIOW = IOC_IN | x | y;
+	}
+	template _WSAIORW(int x, int y)
+	{
+		enum _WSAIORW = IOC_INOUT | x | y;
+	}
+
+	alias SIO_ASSOCIATE_HANDLE               = _WSAIOW!(IOC_WS2, 1);
+	alias SIO_ENABLE_CIRCULAR_QUEUEING       = _WSAIO!(IOC_WS2, 2);
+	alias SIO_FIND_ROUTE                     = _WSAIOR!(IOC_WS2, 3);
+	alias SIO_FLUSH                          = _WSAIO!(IOC_WS2, 4);
+	alias SIO_GET_BROADCAST_ADDRESS          = _WSAIOR!(IOC_WS2, 5);
+	alias SIO_GET_EXTENSION_FUNCTION_POINTER = _WSAIORW!(IOC_WS2, 6);
+	alias SIO_GET_QOS                        = _WSAIORW!(IOC_WS2, 7);
+	alias SIO_GET_GROUP_QOS                  = _WSAIORW!(IOC_WS2, 8);
+	alias SIO_MULTIPOINT_LOOPBACK            = _WSAIOW!(IOC_WS2, 9);
+	alias SIO_MULTICAST_SCOPE                = _WSAIOW!(IOC_WS2, 10);
+	alias SIO_SET_QOS                        = _WSAIOW!(IOC_WS2, 11);
+	alias SIO_SET_GROUP_QOS                  = _WSAIOW!(IOC_WS2, 12);
+	alias SIO_TRANSLATE_HANDLE               = _WSAIORW!(IOC_WS2, 13);
+	alias SIO_ROUTING_INTERFACE_QUERY        = _WSAIORW!(IOC_WS2, 20);
+	alias SIO_ROUTING_INTERFACE_CHANGE       = _WSAIOW!(IOC_WS2, 21);
+	alias SIO_ADDRESS_LIST_QUERY             = _WSAIOR!(IOC_WS2, 22);
+	alias SIO_ADDRESS_LIST_CHANGE            = _WSAIO!(IOC_WS2, 23);
+	alias SIO_QUERY_TARGET_PNP_HANDLE        = _WSAIOR!(IOC_WS2, 24);
+	alias SIO_NSP_NOTIFY_CHANGE              = _WSAIOW!(IOC_WS2, 25);
+
+	private alias GROUP = uint;
+
+	enum
+	{
+		WSA_FLAG_OVERLAPPED = 0x01,
+		MAX_PROTOCOL_CHAIN = 7,
+		WSAPROTOCOL_LEN = 255,
+	}
+
+	struct WSAPROTOCOLCHAIN
+	{
+		int                       ChainLen;
+		DWORD[MAX_PROTOCOL_CHAIN] ChainEntries;
+	}
+	alias LPWSAPROTOCOLCHAIN = WSAPROTOCOLCHAIN*;
+
+	struct WSAPROTOCOL_INFO
+	{
+		DWORD                      dwServiceFlags1;
+		DWORD                      dwServiceFlags2;
+		DWORD                      dwServiceFlags3;
+		DWORD                      dwServiceFlags4;
+		DWORD                      dwProviderFlags;
+		GUID                       ProviderId;
+		DWORD                      dwCatalogEntryId;
+		WSAPROTOCOLCHAIN           ProtocolChain;
+		int                        iVersion;
+		int                        iAddressFamily;
+		int                        iMaxSockAddr;
+		int                        iMinSockAddr;
+		int                        iSocketType;
+		int                        iProtocol;
+		int                        iProtocolMaxOffset;
+		int                        iNetworkByteOrder;
+		int                        iSecurityScheme;
+		DWORD                      dwMessageSize;
+		DWORD                      dwProviderReserved;
+		TCHAR[WSAPROTOCOL_LEN + 1] szProtocol;
+	}
+	alias LPWSAPROTOCOL_INFO = WSAPROTOCOL_INFO*;
+
+	extern (Windows) @nogc nothrow
+	{
+		private SOCKET WSASocketW(int af,
+						          int type,
+						          int protocol,
+						          LPWSAPROTOCOL_INFO lpProtocolInfo,
+						          GROUP g,
+						          DWORD dwFlags);
+		int WSARecv(SOCKET s,
+					LPWSABUF lpBuffers,
+					DWORD dwBufferCount,
+					LPDWORD lpNumberOfBytesRecvd,
+					LPDWORD lpFlags,
+					LPOVERLAPPED lpOverlapped,
+					LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+		int WSASend(SOCKET s,
+					LPWSABUF lpBuffers,
+					DWORD dwBufferCount,
+					LPDWORD lpNumberOfBytesRecvd,
+					DWORD lpFlags,
+					LPOVERLAPPED lpOverlapped,
+					LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine);
+	}
+	alias WSASocket = WSASocketW;
+
+	alias LPFN_GETACCEPTEXSOCKADDRS = VOID function(PVOID,
+													DWORD,
+													DWORD,
+													DWORD,
+													SOCKADDR**,
+													LPINT,
+													SOCKADDR**,
+													LPINT);
+	const GUID WSAID_GETACCEPTEXSOCKADDRS = {0xb5367df2,0xcbac,0x11cf,[0x95,0xca,0x00,0x80,0x5f,0x48,0xa1,0x92]};
+
+	struct WSABUF {
+        ULONG len;
+        CHAR* buf;
+    }
+	alias WSABUF* LPWSABUF;
+
+	struct WSAOVERLAPPED {
+		ULONG_PTR Internal;
+		ULONG_PTR InternalHigh;
+		union {
+			struct {
+				DWORD Offset;
+				DWORD OffsetHigh;
+			}
+			PVOID  Pointer;
+		}
+		HANDLE hEvent;
+	}
+	alias LPWSAOVERLAPPED = WSAOVERLAPPED*;
+
+	enum SO_UPDATE_ACCEPT_CONTEXT = 0x700B;
+
+	enum OverlappedSocketEvent
+	{
+		accept = 1,
+		read = 2,
+		write = 3,
+	}
+
+	class SocketState : State
+	{
+		private WSABUF buffer;
+	}
+
+	/**
+	 * Socket returned if a connection has been established.
+	 */
+	class OverlappedConnectedSocket : ConnectedSocket
+	{
+		/**
+		 * Create a socket. If a single protocol type exists to support
+		 * this socket type within the address family, the $(D_PSYMBOL
+		 * ProtocolType) may be omitted.
+		 *
+		 * Params:
+		 *     handle   = Socket handle.
+		 *     af       = Address family.
+		 *     protocol = Protocol type.
+		 */
+		this(socket_t handle, AddressFamily af, ProtocolType protocol)
+		{
+			super(handle, af, protocol);
+		}
+
+		/**
+		 * Begins to asynchronously receive data from a connected socket.
+		 *
+		 * Params:
+		 *     buffer     = Storage location for the received data.
+		 *     flags      = Flags.
+		 *     overlapped = Unique operation identifier.
+		 *
+		 * Returns: $(D_KEYWORD true) if the operation could be finished synchronously.
+		 *          $(D_KEYWORD false) otherwise.
+		 *
+		 * Throws: $(D_PSYMBOL SocketException) if unable to receive.
+		 */
+		bool beginReceive(ubyte[] buffer,
+						  SocketState overlapped,
+						  Flags flags = Flags(Flag.none)) @trusted
+		{
+			auto receiveFlags = cast(DWORD) flags;
+
+			overlapped.handle = cast(HANDLE) handle_;
+			overlapped.event = OverlappedSocketEvent.read;
+			overlapped.buffer.len = buffer.length;
+			overlapped.buffer.buf = cast(char*) buffer.ptr;
+
+			auto result = WSARecv(handle_,
+								  &overlapped.buffer,
+						          1u,
+						          NULL,
+								  &receiveFlags,
+						          &overlapped.overlapped,
+						          NULL);
+
+			if (result == SOCKET_ERROR && !wouldHaveBlocked)
+			{
+				throw defaultAllocator.make!SocketException("Unable to receive");
+			}
+			return result == 0;
+		}
+
+		/**
+		 * Ends a pending asynchronous read.
+		 *
+		 * Params
+		 *     overlapped = Unique operation identifier.
+		 *
+		 * Returns: Number of bytes received.
+		 *
+		 * Throws: $(D_PSYMBOL SocketException) if unable to receive.
+		 */
+		int endReceive(SocketState overlapped) @trusted
+		out (count)
+		{
+			assert(count >= 0);
+		}
+		body
+		{
+			DWORD lpNumber;
+			BOOL result = GetOverlappedResult(overlapped.handle,
+											  &overlapped.overlapped,
+											  &lpNumber,
+											  FALSE);
+			if (result == FALSE && !wouldHaveBlocked)
+			{
+				disconnected_ = true;
+				throw defaultAllocator.make!SocketException("Unable to receive");
+			}
+			if (lpNumber == 0)
+			{
+				disconnected_ = true;
+			}
+			return lpNumber;
+		}
+
+		/**
+		 * Sends data asynchronously to a connected socket.
+		 *
+		 * Params:
+		 *     buffer     = Data to be sent.
+		 *     flags      = Flags.
+		 *     overlapped = Unique operation identifier.
+		 *
+		 * Returns: $(D_KEYWORD true) if the operation could be finished synchronously.
+		 *          $(D_KEYWORD false) otherwise.
+		 *
+		 * Throws: $(D_PSYMBOL SocketException) if unable to send.
+		 */
+		bool beginSend(ubyte[] buffer,
+					   SocketState overlapped,
+					   Flags flags = Flags(Flag.none)) @trusted
+		{
+			overlapped.handle = cast(HANDLE) handle_;
+			overlapped.event = OverlappedSocketEvent.write;
+			overlapped.buffer.len = buffer.length;
+			overlapped.buffer.buf = cast(char*) buffer.ptr;
+
+			auto result = WSASend(handle_,
+								  &overlapped.buffer,
+						          1u,
+						          NULL,
+								  cast(DWORD) flags,
+						          &overlapped.overlapped,
+						          NULL);
+
+			if (result == SOCKET_ERROR && !wouldHaveBlocked)
+			{
+				disconnected_ = true;
+				throw defaultAllocator.make!SocketException("Unable to send");
+			}
+			return result == 0;
+		}
+
+		/**
+		 * Ends a pending asynchronous send.
+		 *
+		 * Params
+		 *     overlapped = Unique operation identifier.
+		 *
+		 * Returns: Number of bytes sent.
+		 *
+		 * Throws: $(D_PSYMBOL SocketException) if unable to receive.
+		*/
+		int endSend(SocketState overlapped) @trusted
+		out (count)
+		{
+			assert(count >= 0);
+		}
+		body
+		{
+			DWORD lpNumber;
+			BOOL result = GetOverlappedResult(overlapped.handle,
+											  &overlapped.overlapped,
+											  &lpNumber,
+											  FALSE);
+			if (result == FALSE && !wouldHaveBlocked)
+			{
+				disconnected_ = true;
+				throw defaultAllocator.make!SocketException("Unable to receive");
+			}
+			return lpNumber;
+		}
+	}
+
+	class OverlappedStreamSocket : StreamSocket
+	{
+		/// Accept extension function pointer.
+		package LPFN_ACCEPTEX acceptExtension;
+
+		/**
+		 * Create a socket. If a single protocol type exists to support
+		 * this socket type within the address family, the $(D_PSYMBOL
+		 * ProtocolType) may be omitted.
+		 *
+		 * Params:
+		 *     af       = Address family.
+		 *
+		 * Throws: $(D_PSYMBOL SocketException) on errors.
+		 */
+		this(AddressFamily af) @trusted
+		{
+			super(af);
+			scope (failure)
+			{
+				this.close();
+			}
+			blocking = false;
+
+			GUID guidAcceptEx = WSAID_ACCEPTEX;
+			DWORD dwBytes;
+
+			auto result = WSAIoctl(handle_,
+								   SIO_GET_EXTENSION_FUNCTION_POINTER,
+								   &guidAcceptEx,
+								   guidAcceptEx.sizeof,
+								   &acceptExtension,
+								   acceptExtension.sizeof,
+								   &dwBytes,
+								   NULL,
+								   NULL);
+			if (!result == SOCKET_ERROR)
+			{
+				throw defaultAllocator.make!SocketException("Unable to retrieve an accept extension function pointer");
+			}
+		}
+
+		/**
+		 * Begins an asynchronous operation to accept an incoming connection attempt.
+		 *
+		 * Params:
+		 *     overlapped = Unique operation identifier.
+		 *
+		 * Returns: $(D_KEYWORD true) if the operation could be finished synchronously.
+		 *          $(D_KEYWORD false) otherwise.
+		 *
+		 * Throws: $(D_PSYMBOL SocketException) on accept errors.
+		 */
+		bool beginAccept(SocketState overlapped) @trusted
+		{
+			auto socket = cast(socket_t) socket(addressFamily, SOCK_STREAM, protocolType);
+			if (socket == socket_t.init)
+			{
+				throw defaultAllocator.make!SocketException("Unable to create socket");
+			}
+			scope (failure)
+			{
+				closesocket(socket);
+			}
+			DWORD dwBytes;
+			overlapped.handle = cast(HANDLE) socket;
+			overlapped.event = OverlappedSocketEvent.accept;
+			overlapped.buffer.len = (sockaddr_in.sizeof + 16) * 2;
+			overlapped.buffer.buf = defaultAllocator.makeArray!char(overlapped.buffer.len).ptr;
+
+			// We don't want to get any data now, but only start to accept the connections
+			BOOL result = acceptExtension(handle_,
+										  socket,
+										  overlapped.buffer.buf,
+										  0u,
+										  sockaddr_in.sizeof + 16,
+										  sockaddr_in.sizeof + 16,
+										  &dwBytes,
+										  &overlapped.overlapped);
+			if (result == FALSE && !wouldHaveBlocked)
+			{
+				throw defaultAllocator.make!SocketException("Unable to accept socket connection");
+			}
+			return result == TRUE;
+		}
+
+		/**
+		 * Asynchronously accepts an incoming connection attempt and creates a
+		 * new socket to handle remote host communication.
+		 *
+		 * Params:
+		 *     overlapped = Unique operation identifier.
+		 *
+		 * Returns: Connected socket.
+         *
+		 * Throws: $(D_PSYMBOL SocketException) if unable to accept.
+		 */
+		OverlappedConnectedSocket endAccept(SocketState overlapped) @trusted
+		{
+			scope (exit)
+			{
+				defaultAllocator.dispose(overlapped.buffer.buf[0..overlapped.buffer.len]);
+			}
+			auto socket = defaultAllocator.make!OverlappedConnectedSocket(cast(socket_t) overlapped.handle,
+																		  addressFamily,
+																		  protocolType);
+			scope (failure)
+			{
+				defaultAllocator.dispose(socket);
+			}
+			socket.setOption(SocketOptionLevel.SOCKET,
+						     Option.updateAcceptContext,
+						     cast(size_t) handle);
+			return socket;
+		}
+	}
 }
 
 version (linux)
 {
 	enum SOCK_NONBLOCK = O_NONBLOCK;
     extern(C) int accept4(int, sockaddr*, socklen_t*, int flags) @nogc nothrow;
+}
+
+private immutable
+{
+    typeof(&getaddrinfo) getaddrinfoPointer;
+    typeof(&freeaddrinfo) freeaddrinfoPointer;
+}
+
+shared static this()
+{
+	version (Windows)
+	{
+		auto ws2Lib = GetModuleHandle("ws2_32.dll");
+
+		getaddrinfoPointer = cast(typeof(getaddrinfoPointer))
+                             GetProcAddress(ws2Lib, "getaddrinfo");
+		freeaddrinfoPointer = cast(typeof(freeaddrinfoPointer))
+                              GetProcAddress(ws2Lib, "freeaddrinfo");
+	}
+	else version (Posix)
+	{
+        getaddrinfoPointer = &getaddrinfo;
+		freeaddrinfoPointer = &freeaddrinfo;
+	}
 }
 
 /**
@@ -33,29 +505,29 @@ enum SocketError : int
 {
 	/// Unknown error
 	unknown                = 0,
-	/// Firewall rules forbid connection
+	/// Firewall rules forbid connection.
 	accessDenied           = EPERM,
-	/// A socket operation was attempted on a non-socket
+	/// A socket operation was attempted on a non-socket.
 	notSocket              = EBADF,
-	/// The network is not available
+	/// The network is not available.
 	networkDown            = ECONNABORTED,
-	/// An invalid pointer address was detected by the underlying socket provider
+	/// An invalid pointer address was detected by the underlying socket provider.
 	fault                  = EFAULT,
-	/// An invalid argument was supplied to a $(D_PSYMBOL Socket) member
+	/// An invalid argument was supplied to a $(D_PSYMBOL Socket) member.
 	invalidArgument        = EINVAL,
-	/// The limit on the number of open sockets has been reached
+	/// The limit on the number of open sockets has been reached.
 	tooManyOpenSockets     = ENFILE,
-	/// No free buffer space is available for a Socket operation
+	/// No free buffer space is available for a Socket operation.
 	noBufferSpaceAvailable = ENOBUFS,
-	/// The address family is not supported by the protocol family
+	/// The address family is not supported by the protocol family.
 	operationNotSupported  = EOPNOTSUPP,
-	/// The protocol is not implemented or has not been configured
+	/// The protocol is not implemented or has not been configured.
 	protocolNotSupported   = EPROTONOSUPPORT,
-	/// Protocol error
-	protocolError          = EPROTO,
-	/// The connection attempt timed out, or the connected host has failed to respond
+	/// Protocol error.
+	protocolError          = EPROTOTYPE,
+	/// The connection attempt timed out, or the connected host has failed to respond.
 	timedOut               = ETIMEDOUT,
-	/// The support for the specified socket type does not exist in this address family
+	/// The support for the specified socket type does not exist in this address family.
 	socketNotSupported     = ESOCKTNOSUPPORT,
 }
 
@@ -66,7 +538,7 @@ enum SocketError : int
  */
 class SocketException : Exception
 {
-	immutable SocketError error;
+	immutable SocketError error = SocketError.unknown;
 
     /**
      * Params:
@@ -84,83 +556,39 @@ class SocketException : Exception
 
 		foreach (member; EnumMembers!SocketError)
 		{
-			if (member == errno)
+			if (member == lastError)
 			{
 				error = member;
 				return;
 			}
 		}
-		if (errno == ENOMEM)
+		if (lastError == ENOMEM)
 		{
 			error = SocketError.noBufferSpaceAvailable;
 		}
-		else if (errno == ENOSR)
-		{
-			error = SocketError.networkDown;
-		}
-		else if (errno == EMFILE)
+		else if (lastError == EMFILE)
 		{
 			error = SocketError.tooManyOpenSockets;
 		}
-		else
+		else version (Posix)
 		{
-			error = SocketError.unknown;
+			if (lastError == ENOSR)
+			{
+				error = SocketError.networkDown;
+			}
+			else if (lastError == EPROTO)
+			{
+				error = SocketError.networkDown;
+			}
 		}
 	}
 }
 
 /**
- * The communication domain used to resolve an address.
+ * Class for creating a network communication endpoint using the Berkeley
+ * sockets interfaces of different types.
  */
-enum AddressFamily : int
-{
-    unspecified = AF_UNSPEC,    /// Unspecified address family
-    unix        = AF_UNIX,      /// Local communication
-    inet        = AF_INET,      /// Internet Protocol version 4
-    ipx         = AF_IPX,       /// Novell IPX
-    appletalk   = AF_APPLETALK, /// AppleTalk
-    inet6       = AF_INET6,     /// Internet Protocol version 6
-}
-/**
- * Protocol
- */
-enum ProtocolType : int
-{
-	unspecified = 0,
-    ip          = IPPROTO_IP,   /// Internet Protocol version 4
-    icmp        = IPPROTO_ICMP, /// Internet Control Message Protocol
-    igmp        = IPPROTO_IGMP, /// Internet Group Management Protocol
-    ggp         = IPPROTO_GGP,  /// Gateway to Gateway Protocol
-    tcp         = IPPROTO_TCP,  /// Transmission Control Protocol
-    pup         = IPPROTO_PUP,  /// PARC Universal Packet Protocol
-    udp         = IPPROTO_UDP,  /// User Datagram Protocol
-    idp         = IPPROTO_IDP,  /// Xerox NS protocol
-    raw         = IPPROTO_RAW,  /// Raw IP packets
-    ipv6        = IPPROTO_IPV6, /// Internet Protocol version 6
-}
-
-/**
- * Communication semantics.
- */
-enum SocketType: int
-{
-	/// Sequenced, reliable, two-way communication-based byte streams
-    stream    = SOCK_STREAM,
-    /// Connectionless, unreliable datagrams with a fixed maximum length; data may be lost or arrive out of order
-    datagram  = SOCK_DGRAM,
-    /// Raw protocol access
-    raw       = SOCK_RAW,
-    /// Reliably-delivered message datagrams
-    rdm       = SOCK_RDM,
-    /// Sequenced, reliable, two-way connection-based datagrams with a fixed maximum length
-    seqpacket = SOCK_SEQPACKET,
-}
-
-/**
- * Class that creates a network communication endpoint using the Berkeley
- * sockets interface.
- */
-class Socket
+abstract class Socket
 {
 	version (Posix)
 	{
@@ -177,65 +605,250 @@ class Socket
 	else version (Windows)
 	{
 		/// Property to get or set whether the socket is blocking or nonblocking.
-		private bool blocking_;
+		private bool blocking_ = true;
 
 		/**
 		 * How a socket is shutdown.
 		 */
 		enum Shutdown : int
 		{
-			receive = SD_RECEIVE, /// Socket receives are disallowed
-			send    = SD_SEND,    /// Socket sends are disallowed
-			both    = SD_BOTH,    /// Both receive and send
+			receive = SD_RECEIVE, /// Socket receives are disallowed.
+			send    = SD_SEND,    /// Socket sends are disallowed.
+			both    = SD_BOTH,    /// Both receive and send.
 		}
+
+		// The WinSock timeouts seem to be effectively skewed by a constant
+		// offset of about half a second (in milliseconds).
+		private enum WINSOCK_TIMEOUT_SKEW = 500;
 	}
 
 	/**
-	 * Flags may be OR'ed together.
+	 * Specifies a socket option.
 	 */
-	enum Flags : int
+	enum Option : int
 	{
-		none      = 0,             /// No flags specified
-		oob       = MSG_OOB,       /// Out-of-band stream data
-		peek      = MSG_PEEK,      /// Peek at incoming data without removing it from the queue, only for receiving
-		dontRoute = MSG_DONTROUTE, /// Data should not be subject to routing; this flag may be ignored. Only for sending
+		acceptConnection =   SO_ACCEPTCONN,       /// Listen.
+		broadcast =          SO_BROADCAST,        /// Allow transmission of broadcast messages.
+		debugging =          SO_DEBUG,            /// Record debugging information.
+		reuseAddress =       SO_REUSEADDR,        /// Allow local reuse of address.
+		linger =             SO_LINGER,           /// Linger on close if unsent data is present.
+		outOfBandInline =    SO_OOBINLINE,        /// Receive out-of-band data in band.
+		sendBuffer =         SO_SNDBUF,           /// Send buffer size.
+		receiveBuffer =      SO_RCVBUF,           /// Receive buffer size.
+		dontRoute =          SO_DONTROUTE,        /// Do not route.
+		sendTimeout =        SO_SNDTIMEO,         /// Send timeout.
+		receiveTimeout =     SO_RCVTIMEO,         /// Receive timeout.
+		error =              SO_ERROR,            /// Retrieve and clear error status.
+		keepAlive =          SO_KEEPALIVE,        /// Enable keep-alive packets.
+		receiveLowWater =    SO_RCVLOWAT,         /// Minimum number of input bytes to process.
+		sendLowWater =       SO_SNDLOWAT,         /// Minimum number of output bytes to process.
+		type =               SO_TYPE,             /// Socket type.
+
+		// TCP option level
+		noDelay =            TCP_NODELAY,         /// Disable the Nagle algorithm for send coalescing.
+
+		// IPv6 option level
+		hopLimit =           IPV6_UNICAST_HOPS,   /// IP unicast hop limit.
+		multicastInterface = IPV6_MULTICAST_IF,   /// IP multicast interface.
+		multicastLoopback =  IPV6_MULTICAST_LOOP, /// IP multicast loopback.
+		multicastHops =      IPV6_MULTICAST_HOPS, /// IP multicast hops.
+		addMembership =      IPV6_JOIN_GROUP,     /// Add an IP group membership.
+		dropMembership =     IPV6_LEAVE_GROUP,    /// Drop an IP group membership.
+		ipv6Only =           IPV6_V6ONLY,         /// Treat wildcard bind as $(D_PSYMBOL AddressFamily.inet6)-only.
+
+		// Windows only
+		updateAcceptContext = SO_UPDATE_ACCEPT_CONTEXT, /// SO_UPDATE_ACCEPT_CONTEXT.
 	}
 
-	private socket_t handle_;
+	/// Socket handle.
+	protected socket_t handle_;
 
-	private const Socket self;
+	/// Address family.
+	protected AddressFamily family;
 
-	private AddressFamily family;
+	/// Protocol.
+	protected ProtocolType protocol;
 
-	/**
-	 * $(D_KEYWORD true) if the stream socket peer has performed an orderly
-	 * shutdown.
-	 */
-	protected bool disconnected_;
-
-	/**
-	 * Returns: $(D_KEYWORD true) if the stream socket peer has performed an
-	 *          orderly shutdown.
-	 */
-	@property inout(bool) disconnected() inout const pure nothrow @safe @nogc
-	{
-		return disconnected_;
-	}
-
-	private @property handle(socket_t sock)
+	private @property void handle(socket_t handle) pure
 	in
 	{
-       assert(sock != socket_t.init);
+		assert(handle != socket_t.init);
+		assert(handle_ == socket_t.init, "Socket handle cannot be changed");
 	}
 	body
 	{
-        handle_ = sock;
+        handle_ = handle;
+
+        // Set the option to disable SIGPIPE on send() if the platform
+        // has it (e.g. on OS X).
+        static if (is(typeof(SO_NOSIGPIPE)))
+        {
+            setOption(SocketOptionLevel.SOCKET, cast(Option)SO_NOSIGPIPE, true);
+		}
+	}
+
+	@property inout(socket_t) handle() inout const pure nothrow @safe @nogc
+	{
+		return handle_;
+	}
+
+    /**
+	 * Create a socket. If a single protocol type exists to support
+	 * this socket type within the address family, the $(D_PSYMBOL
+	 * ProtocolType) may be omitted.
+	 *
+	 * Params:
+	 *     handle   = Socket.
+	 *     af       = Address family.
+	 *     protocol = Protocol type.
+	 */
+	this(socket_t handle, AddressFamily af, ProtocolType protocol)
+	in
+	{
+		assert(handle != socket_t.init);
+	}
+	body
+	{
+		scope (failure)
+		{
+			this.close();
+		}
+		this.handle = handle;
+		family = af;
+		this.protocol = protocol;
+	}
+
+	/**
+	 * Closes the socket and calls the destructor on itself.
+	 */
+	~this() nothrow @trusted @nogc
+	{
+		this.close();
+	}
+
+	/**
+	 * Get a socket option.
+	 *
+	 * Params:
+	 *     level  = Protocol level at that the option exists. To get options at
+	 *              the sockets API level, pass $(D_PSYMBOL ProtocolType.unspecified).
+	 *     option = Option.
+	 *     result = Buffer to save the result.
+	 *
+     * Returns: The number of bytes written to $(D_PARAM result).
+	 *
+	 * Throws: $(D_PSYMBOL SocketException) on error.
+     */
+	protected int getOption(SocketOptionLevel level, Option option, void[] result) const @trusted
+	{
+		auto length = cast(socklen_t) result.length;
+		if (getsockopt(handle_,
+					   cast(int) level,
+					   cast(int) option,
+					   result.ptr,
+					   &length) == SOCKET_ERROR)
+		{
+			throw defaultAllocator.make!SocketException("Unable to get socket option");
+		}
+		return length;
+	}
+
+	/// Ditto.
+    int getOption(SocketOptionLevel level, Option option, out size_t result) const @trusted
+    {
+        return getOption(level, option, (&result)[0..1]);
+    }
+
+	/// Ditto.
+    int getOption(SocketOptionLevel level, Option option, out Linger result) const @trusted
+    {
+        return getOption(level, option, (&result.clinger)[0..1]);
+    }
+
+	/// Ditto.
+    int getOption(SocketOptionLevel level, Option option, out Duration result) const @trusted
+    {
+        // WinSock returns the timeout values as a milliseconds DWORD,
+        // while Linux and BSD return a timeval struct.
+        version (Posix)
+        {
+            TimeVal tv;
+            auto ret = getOption(level, option, (&tv.ctimeval)[0..1]);
+            result = dur!"seconds"(tv.seconds) + dur!"usecs"(tv.microseconds);
+        }
+		else version (Windows)
+        {
+            int msecs;
+            auto ret = getOption(level, option, (&msecs)[0 .. 1]);
+            if (option == Option.receiveTimeout)
+			{
+                msecs += WINSOCK_TIMEOUT_SKEW;
+			}
+            result = dur!"msecs"(msecs);
+        }
+		return ret;
+    }
+
+    /**
+	 * Set a socket option.
+	 *
+	 * Params:
+	 *     level  = Protocol level at that the option exists. To manipulate options at
+	 *              the sockets API level, pass $(D_PSYMBOL ProtocolType.unspecified).
+	 *     option = Option.
+	 *     result = Option value.
+	 *
+	 * Throws: $(D_PSYMBOL SocketException) on error.
+	 */
+    protected void setOption(SocketOptionLevel level, Option option, void[] value)
+	const @trusted
+    {
+        if (setsockopt(handle_,
+					   cast(int)level,
+					   cast(int)option,
+					   value.ptr,
+					   cast(uint) value.length) == SOCKET_ERROR)
+		{
+            throw defaultAllocator.make!SocketException("Unable to set socket option");
+		}
+	}
+
+    /// Ditto.
+    void setOption(SocketOptionLevel level, Option option, size_t value) const @trusted
+    {
+        setOption(level, option, (&value)[0..1]);
+    }
+
+    /// Ditto.
+    void setOption(SocketOptionLevel level, Option option, Linger value) const @trusted
+    {
+        setOption(level, option, (&value.clinger)[0..1]);
+	}
+
+	/// Ditto.
+	void setOption(SocketOptionLevel level, Option option, Duration value) const @trusted
+    {
+		version (Posix)
+		{
+			_ctimeval tv;
+			value.split!("seconds", "usecs")(tv.tv_sec, tv.tv_usec);
+			setOption(level, option, (&tv)[0 .. 1]);
+		}
+        else version (Windows)
+        {
+			auto msecs = cast(int) value.total!"msecs";
+            if (msecs > 0 && option == Option.receiveTimeout)
+			{
+                msecs = max(1, msecs - WINSOCK_TIMEOUT_SKEW);
+			}
+            setOption(level, option, msecs);
+        }
 	}
 
     /**
      * Returns: Socket's blocking flag.
      */
-	@property bool blocking() const nothrow @nogc
+	@property inout(bool) blocking() inout const nothrow @nogc
 	{
 		version (Posix)
 		{
@@ -249,9 +862,9 @@ class Socket
 
     /**
      * Params:
-	 *     byes = Socket's blocking flag.
+	 *     yes = Socket's blocking flag.
      */
-	@property void blocking(bool byes)
+	@property void blocking(bool yes)
 	{
 		version (Posix)
 		{
@@ -259,7 +872,7 @@ class Socket
 
             if (fl != SOCKET_ERROR)
 			{
-				fl = byes ? fl & ~O_NONBLOCK : fl | O_NONBLOCK;
+				fl = yes ? fl & ~O_NONBLOCK : fl | O_NONBLOCK;
 				fl = fcntl(handle_, F_SETFL, fl);
 			}
             if (fl == SOCKET_ERROR)
@@ -269,90 +882,13 @@ class Socket
 		}
 		else version (Windows)
 		{
-			uint num = !byes;
+			uint num = !yes;
 			if (ioctlsocket(handle_, FIONBIO, &num) == SOCKET_ERROR)
 			{
 				throw defaultAllocator.make!SocketException("Unable to set socket blocking");
 			}
-			blocking_ = byes;
+			blocking_ = yes;
 		}
-	}
-
-	private this() pure nothrow @nogc @safe
-	{
-		self = this;
-	}
-
-    /**
-     * Create a socket. If a single protocol type exists to support
-     * this socket type within the address family, the $(D_PSYMBOL
-     * ProtocolType) may be omitted.
-	 *
-	 * Params:
-	 *     af       = Address family.
-	 *     type     = Socket type.
-	 *     protocol = Protocol.
-	 *     blocking = Whether it is a blocking socket.
-     */
-    this(AddressFamily af,
-	     SocketType type,
-	     ProtocolType protocol = ProtocolType.unspecified,
-		 bool blocking = false) @trusted
-    {
-        auto handle = cast(socket_t) socket(af, type, protocol);
-
-		this();
-
-        if (handle == socket_t.init)
-		{
-			throw defaultAllocator.make!SocketException("Unable to create socket");
-		}
-		family = af;
-        this.handle = handle;
-
-		version (Posix)
-		{
-			if (!blocking)
-			{
-				this.blocking = false;
-			}
-		}
-		else version (Windows)
-		{
-			if (blocking)
-			{
-				this.blocking = true;
-			}
-		}
-	}
-
-	/// Ditto.
-    this(AddressFamily af,
-	     SocketType type,
-		 bool blocking) @trusted
-    {
-        this(af, type, ProtocolType.unspecified, blocking);
-	}
-
-    /**
-     * Create a socket. If a single protocol type exists to support
-     * this socket type within the address family, the $(D_PSYMBOL
-     * ProtocolType) may be omitted.
-	 *
-	 * Params:
-	 *     sock = Socket.
-	 *     af   = Address family.
-     */
-	this(socket_t sock, AddressFamily af) pure nothrow @nogc
-	{
-		this();
-		handle = sock;
-		family = af;
-	}
-
-	~this() @nogc @trusted nothrow
-	{
-		this.close();
 	}
 
     /**
@@ -361,6 +897,14 @@ class Socket
     @property AddressFamily addressFamily() const @nogc @safe pure nothrow
     {
         return family;
+	}
+
+	/**
+	  * Returns: The socket's protocol.
+	  */
+	@property ProtocolType protocolType() const pure nothrow @safe @nogc
+	{
+		return protocol;
 	}
 
     /**
@@ -379,7 +923,7 @@ class Socket
 	 * Params:
 	 *     address = Local address.
 	 */
-    void bind(Address address) @trusted const
+    void bind(AddressStorage address) @trusted const
     {
         if (.bind(handle_, address.name, address.length) == SOCKET_ERROR)
 		{
@@ -407,11 +951,11 @@ class Socket
      * for connection-oriented sockets. The $(D_PSYMBOL Socket) object is no
      * longer usable after $(D_PSYMBOL close).
      */
-	void close() @nogc @trusted nothrow
+	void close() nothrow @trusted @nogc
 	{
         version(Windows)
         {
-            .closesocket(handle_);
+			.closesocket(handle_);
         }
         else version(Posix)
         {
@@ -436,19 +980,72 @@ class Socket
 		}
 	}
 
-    /**
-     * Accept an incoming connection. If the socket is blocking,
-	 * $(D_PSYMBOL accept) waits for a connection request.
+	/**
+	 * Compare handles.
 	 *
-	 * $(D_PSYMBOL EAGAIN) and $(D_PSYMBOL EWOULDBLOCK) are not treated as
-	 * erros.
+	 * Params:
+	 *     that = Another handle.
+	 *
+	 * Returns: Comparision result.
+	 */
+	int opCmp(size_t that) const pure nothrow @safe @nogc
+	{
+		return handle_ < that ? -1 : handle_ > that ? 1 : 0;
+	}
+}
+
+/**
+ * Interface with common fileds for stream and connected sockets.
+ */
+interface ConnectionOrientedSocket
+{
+	/**
+	 * Flags may be OR'ed together.
+	 */
+	enum Flag : int
+	{
+		none      = 0,             /// No flags specified
+		outOfBand = MSG_OOB,       /// Out-of-band stream data
+		peek      = MSG_PEEK,      /// Peek at incoming data without removing it from the queue, only for receiving
+		dontRoute = MSG_DONTROUTE, /// Data should not be subject to routing; this flag may be ignored. Only for sending
+	}
+
+	alias Flags = BitFlags!Flag;
+}
+
+class StreamSocket : Socket, ConnectionOrientedSocket
+{
+	/**
+	* Create a socket. If a single protocol type exists to support
+	* this socket type within the address family, the $(D_PSYMBOL
+	* ProtocolType) may be omitted.
+	*
+	* Params:
+	*     af       = Address family.
+	*     protocol = Protocol.
+	*/
+    this(AddressFamily af) @trusted
+	{
+		auto handle = cast(socket_t) socket(af, SOCK_STREAM, protocol);
+		if (handle == socket_t.init)
+		{
+			throw defaultAllocator.make!SocketException("Unable to create socket");
+		}
+		super(handle, af, protocol);	
+	}
+
+    /**
+	 * Accept an incoming connection.
+	 *
+	 * The blocking mode is always inherited.
 	 *
 	 * Returns: $(D_PSYMBOL Socket) for the accepted connection or
-	 *          $(D_KEYWORD null) if the call would block.
+	 *          $(D_KEYWORD null) if the call would block on a
+	 *          non-blocking socket.
 	 *
 	 * Throws: $(D_PSYMBOL SocketException) if unable to accept.
-     */
-	Socket accept() const @trusted
+	 */
+	ConnectedSocket accept() @trusted
 	{
 		socket_t sock;
 
@@ -466,325 +1063,295 @@ class Socket
 			sock = cast(socket_t).accept(handle_, null, null);
 		}
 
-        if (sock == socket_t.init)
+		if (sock == socket_t.init)
 		{
-			if (errno == EAGAIN || errno == EWOULDBLOCK)
+			if (wouldHaveBlocked())
 			{
 				return null;
 			}
-            throw defaultAllocator.make!SocketException("Unable to accept socket connection");
+			throw defaultAllocator.make!SocketException("Unable to accept socket connection");
 		}
 
-        Socket newSocket = defaultAllocator.make!Socket(sock, family);
-        try
-        {
-			// Inherits blocking mode
-            version (Windows)
+		auto newSocket = defaultAllocator.make!ConnectedSocket(sock, addressFamily, protocolType);
+
+		version (linux)
+		{ // Blocking mode already set
+		}
+		else version (Posix)
+		{
+			if (!blocking)
 			{
-                newSocket.blocking_ = blocking;
+				try
+				{
+					newSocket.blocking = blocking;
+				}
+				catch (SocketException e)
+				{
+					defaultAllocator.dispose(newSocket);
+					throw e;
+				}
 			}
-			else
-			{
-				newSocket.blocking = blocking;
-			}
-        }
-        catch (Exception e)
-        {
-			defaultAllocator.dispose(newSocket);
-            throw e;
-        }
+		}
+		else version (Windows)
+		{ // Inherits blocking mode
+			newSocket.blocking_ = blocking;
+		}
 		return newSocket;
 	}
+}
 
-    private static int capToInt(size_t size) nothrow @nogc
-    {
-        // Windows uses int instead of size_t for length arguments.
-        // Luckily, the send/recv functions make no guarantee that
-        // all the data is sent, so we use that to send at most
-        // int.max bytes.
-        return size > size_t(int.max) ? int.max : cast(int)size;
+/**
+ * Socket returned if a connection has been established.
+ */
+class ConnectedSocket : Socket, ConnectionOrientedSocket
+{
+	/**
+	 * $(D_KEYWORD true) if the stream socket peer has performed an orderly
+	 * shutdown.
+	 */
+	protected bool disconnected_;
+
+	/**
+	 * Returns: $(D_KEYWORD true) if the stream socket peer has performed an orderly
+	 *          shutdown.
+	 */
+	@property inout(bool) disconnected() inout const pure nothrow @safe @nogc
+	{
+		return disconnected_;
 	}
 
     /**
-     * Receive data on the connection. If the socket is blocking,
-	 * $(D_PSYMBOL receive) waits until there is data to be received.
+	 * Create a socket. If a single protocol type exists to support
+	 * this socket type within the address family, the $(D_PSYMBOL
+	 * ProtocolType) may be omitted.
 	 *
 	 * Params:
-	 *    buf   = Buffer to save the received data.
-	 *    flags = Flags.
+	 *     handle   = Socket.
+	 *     af       = Address family.
+	 *     protocol = Protocol type.
+	 */
+	this(socket_t handle, AddressFamily af, ProtocolType protocol)
+	{
+		super(handle, af, protocol);
+	}
+
+	version (Windows)
+	{
+		private static int capToMaxBuffer(size_t size) pure nothrow @safe @nogc
+		{
+			// Windows uses int instead of size_t for length arguments.
+			// Luckily, the send/recv functions make no guarantee that
+			// all the data is sent, so we use that to send at most
+			// int.max bytes.
+			return size > size_t (int.max) ? int.max : cast(int) size;
+		}
+	}
+	else
+	{
+		private static size_t capToMaxBuffer(size_t size) pure nothrow @safe @nogc
+		{
+			return size;
+		}
+	}
+
+	/**
+	 * Receive data on the connection.
 	 *
-     * Returns: The number of bytes actually received, 0 if the call would
-     *          block.
+	 * Params:
+	 *     buf =   Buffer to save received data.
+	 *     flags = Flags.
+	 *
+	 * Returns: The number of bytes received or 0 if nothing received
+	 *          because the call would block.
 	 *
 	 * Throws: $(D_PSYMBOL SocketException) if unable to receive.
-     */
-    ptrdiff_t receive(ubyte[] buf, Flags flags) @trusted
-    {
+	 */
+	ptrdiff_t receive(ubyte[] buf, Flags flags) @trusted
+	{
 		ptrdiff_t ret;
-
 		if (!buf.length)
 		{
 			return 0;
 		}
-		version(Windows) // Does not use size_t
-		{
-			ret = .recv(handle_, buf.ptr, capToInt(buf.length), cast(int)flags);
-		}
-		else
-		{
-			ret = .recv(handle_, buf.ptr, buf.length, cast(int)flags);
-		}
 
+		ret = recv(handle_, buf.ptr, capToMaxBuffer(buf.length), cast(int) flags);
 		if (ret == 0)
 		{
 			disconnected_ = true;
 		}
-		if (ret == -1)
+		else if (ret == SOCKET_ERROR)
 		{
-			if (errno == EAGAIN || errno == EWOULDBLOCK)
+			if (wouldHaveBlocked())
 			{
 				return 0;
 			}
+			disconnected_ = true;
 			throw defaultAllocator.make!SocketException("Unable to receive");
 		}
 		return ret;
 	}
 
-    /**
-     * Send data on the connection. If the socket is blocking and there is no
-     * buffer space left, $(D_PSYMBOL send) waits, non-blocking socket returns
+	/**
+	 * Send data on the connection. If the socket is blocking and there is no
+	 * buffer space left, $(D_PSYMBOL send) waits, non-blocking socket returns
 	 * 0 in this case.
 	 *
 	 * Params:
-	 *    buf   = Data to be sent.
-	 *    flags = Flags.
+	 *     buf   = Data to be sent.
+	 *     flags = Flags.
 	 *
-     * Returns: The number of bytes actually sent.
+	 * Returns: The number of bytes actually sent.
 	 *
-	 * Throws: $(D_PSYMBOL SocketException) if unable to receive.
-     */
-    ptrdiff_t send(const(ubyte)[] buf, Flags flags) const @trusted
-    {
+	 * Throws: $(D_PSYMBOL SocketException) if unable to send.
+	 */
+	ptrdiff_t send(const(ubyte)[] buf, Flags flags) const @trusted
+	{
 		int sendFlags = cast(int) flags;
 		ptrdiff_t sent;
 
-        static if (is(typeof(MSG_NOSIGNAL)))
-        {
-            sendFlags = MSG_NOSIGNAL;
-        }
-        version (Windows)
+		static if (is(typeof(MSG_NOSIGNAL)))
 		{
-            sent = .send(handle_, buf.ptr, capToInt(buf.length), sendFlags);
+			sendFlags |= MSG_NOSIGNAL;
 		}
-        else
-		{
-            sent = .send(handle_, buf.ptr, buf.length, sendFlags);
-		}
+
+		sent = .send(handle_, buf.ptr, capToMaxBuffer(buf.length), sendFlags);
 		if (sent != SOCKET_ERROR)
 		{
 			return sent;
 		}
-		if (errno == EAGAIN || errno == EWOULDBLOCK)
+		if (wouldHaveBlocked())
 		{
 			return 0;
 		}
 		throw defaultAllocator.make!SocketException("Unable to send");
 	}
-
-	/**
-	 * Cast the socket to the handle number.
-	 *
-	 * Params:
-	 *     T = Cast type.
-	 *
-	 * Returns: Handle.
-	 */
-	T opCast(T)() const pure nothrow @safe @nogc
-		if (is(T == int))
-	{
-		return handle_;
-	}
-
-	/**
-	 * Cast the socket to a void pointer.
-	 *
-	 * Params:
-	 *     T = Cast type.
-	 *
-	 * Returns: Void pointer.
-	 */
-	T opCast(T)() const pure nothrow @nogc
-		if (is(T == void*))
-	{
-		return *cast(void**) &self;
-	}
-
-	/**
-	 * Compare handles.
-	 *
-	 * Params:
-	 *     that = Another handle.
-	 *
-	 * Returns: Comparision result.
-	 */
-	int opCmp(size_t that) const
-	{
-		return handle_ < that ? -1 : handle_ > that ? 1 : 0;
-	}
 }
 
 /**
- * Socket addresses representation.
+ * Socket address representation.
  */
-abstract class Address
+class AddressStorage
 {
+	version (Windows)
+	{
+		/// Internal internet address representation.
+		protected SOCKADDR_STORAGE storage;
+	}
+	else version (Posix)
+	{
+		/// Internal internet address representation.
+		protected sockaddr_storage storage;
+	}
+
+	this(in string host, ushort port)
+	{
+		if (getaddrinfoPointer is null || freeaddrinfoPointer is null)
+		{
+			throw defaultAllocator.make!AddressException("Address info lookup is not available on this system");
+		}
+		addrinfo* ai_res;
+
+		// Make C-string from host.
+		char[] node = defaultAllocator.makeArray!char(host.length + 1);
+		node[0.. $ - 1] = host;
+		node[$ - 1] = '\0';
+		scope (exit)
+		{
+			defaultAllocator.dispose(node);
+		}
+
+		// Convert port to a C-string.
+		char[6] service = [0, 0, 0, 0, 0, 0];
+		const(char)* servicePointer;
+		if (port)
+		{
+			ushort start;
+			for (ushort j = 10, i = 4; i > 0; j *= 10, --i)
+			{
+				ushort rest = port % 10;
+				if (rest != 0)
+				{
+					service[i] = cast(char) (rest + '0');
+					start = i;
+				}
+				port /= 10;
+			}
+			servicePointer = service[start..$].ptr;
+		}
+
+		auto ret = getaddrinfoPointer(node.ptr, servicePointer, null, &ai_res);
+		if (ret)
+		{
+			throw defaultAllocator.make!AddressException("Address info lookup failed");
+		}
+		
+		ubyte* dp = cast(ubyte*) &storage, sp = cast(ubyte*) ai_res.ai_addr;
+		for (auto i = ai_res.ai_addrlen; i > 0; --i, *dp++, *sp++)
+		{
+			*dp = *sp;
+		}
+
+		freeaddrinfoPointer(ai_res);
+	}
+
     /**
-     * Returns: Pointer to underlying $(D_PSYMBOL sockaddr) structure.
+	 * Returns: Pointer to underlying $(D_PSYMBOL sockaddr) structure.
 	 */
-    abstract @property inout(sockaddr)* name() inout @nogc pure nothrow;
+    @property inout(sockaddr)* name() inout pure nothrow @nogc
+    {
+		return cast(sockaddr*) &storage;
+    }
 
     /**
 	 * Returns: Actual size of underlying $(D_PSYMBOL sockaddr) structure.
 	 */
-    abstract @property socklen_t length() const @nogc pure nothrow;
+    @property inout(socklen_t) length() inout const pure nothrow @nogc
+    {
+		return cast(socklen_t) storage.sizeof;
+	}
 
     /**
 	 * Returns: Family of this address.
 	 */
-    @property AddressFamily addressFamily() const @nogc pure nothrow
+    @property inout(AddressFamily) family() inout const pure nothrow @nogc
     {
-        return cast(AddressFamily) name.sa_family;
+        return cast(AddressFamily) storage.ss_family;
     }
 }
 
 /**
- * Internet Protocol version 4 socket address.
+ * Checks if the last error is a serious error or just a special
+ * behaviour error of non-blocking sockets (for example an error
+ * returned because the socket would block or because the
+ * asynchronous operation was successfully started but not finished yet).
+ *
+ * Returns: $(D_KEYWORD false) if a serious error happened, $(D_KEYWORD true)
+ *          otherwise.
  */
-class InternetAddress : Address
+bool wouldHaveBlocked() nothrow @trusted @nogc
 {
-	protected sockaddr_in sin;
-
-	enum : uint
+	version (Posix)
 	{
-    	any = INADDR_ANY,   /// Any IPv4 host address.
-    	none = INADDR_NONE, /// An invalid IPv4 host address.
+		return errno == EAGAIN || errno == EWOULDBLOCK;
 	}
-
-    /// Any IPv4 port number.
-    enum ushort portAny = 0;
-
-    /**
-     * Construct a new $(D_PSYMBOL InternetAddress).
-	 *
-     * Params:
-     *   address = An IPv4 address string in the dotted-decimal form a.b.c.d,
-     *   port    = Port number, may be $(D_PSYMBOL portAny).
-     */
-    this(in char[] address, ushort port)
-    {
-        uint uiaddr = parse(address);
-
-        if (none == uiaddr)
-		{
-			throw defaultAllocator.make!AddressException("Invalid internet address");
-        }
-        sin.sin_family = AddressFamily.inet;
-        sin.sin_addr.s_addr = htonl(uiaddr);
-        sin.sin_port = htons(port);
-    }
-
-    /**
-     * Construct a new $(D_PSYMBOL InternetAddress).
-     *
-     * Params:
-     *     address = An IPv4 address in host byte order, may be
-	 *               $(D_PSYMBOL ADDR_ANY).
-     *     port    = Port number, may be $(D_PSYMBOL portAny).
-     */
-    this(uint address, ushort port) @nogc pure nothrow
-    {
-        sin.sin_family = AddressFamily.inet;
-        sin.sin_addr.s_addr = htonl(address);
-        sin.sin_port = htons(port);
-    }
-
-    /// Ditto.
-    this(ushort port) @nogc pure nothrow
-    {
-        sin.sin_family = AddressFamily.inet;
-        sin.sin_addr.s_addr = any;
-        sin.sin_port = htons(port);
-    }
-
-    /**
-     * Returns: Pointer to underlying $(D_PSYMBOL sockaddr) structure.
-	 */
-    override @property inout(sockaddr)* name() inout @nogc pure nothrow
-    {
-        return cast(sockaddr*)&sin;
-    }
-
-    /**
-	 * Returns: Actual size of underlying $(D_PSYMBOL sockaddr) structure.
-	 */
-    override @property socklen_t length() const @nogc pure nothrow
-    {
-        return cast(socklen_t) sin.sizeof;
+	else version (Windows)
+	{
+		return WSAGetLastError() == ERROR_IO_PENDING || WSAGetLastError() == EWOULDBLOCK
+			|| WSAGetLastError() == ERROR_IO_INCOMPLETE;
 	}
+}
 
-	/**
-	 * Returns: The IPv4 port number (in host byte order).
-	 */
-    @property ushort port() const @nogc pure nothrow
-    {
-        return ntohs(sin.sin_port);
-    }
-
-    /**
-	 * Returns: The IPv4 address number (in host byte order).
-	 */
-    @property uint address() const @nogc pure nothrow
-    {
-        return ntohl(sin.sin_addr.s_addr);
-    }
-
-    /**
-     * Compares with another $(D_PSYMBOL InternetAddress) of same type for
-     * equality.
-	 *
-	 * Params:
-	 * 	o = Another $(D_PSYMBOL InternetAddress).
-	 *
-	 * Returns: $(D_KEYWORD true) if the $(D_PSYMBOL InternetAddresses) share
-     * the same address and port number.
-     */
-    override bool opEquals(Object o) const
-    {
-        auto other = cast(InternetAddress) o;
-        return other
-		    && sin.sin_addr.s_addr == other.sin.sin_addr.s_addr
-            && sin.sin_port == other.sin.sin_port;
+/**
+ * Returns: Platform specific error code.
+ */
+private @property int lastError() nothrow @safe @nogc
+{
+	version (Windows)
+	{
+		return WSAGetLastError();
 	}
-
-    /**
-     * Parse an IPv4 address string in the dotted-decimal form $(I a.b.c.d)
-     * and return the number.
-	 *
-	 * Params:
-	 * 	addr = IPv4 address string.
-	 *
-     * Returns: If the string is not a legitimate IPv4 address,
-     *          $(D_PSYMBOL ADDR_NONE) is returned.
-     */
-    static uint parse(in char[] addr) @trusted
-    {
-		char[] tmpStr = defaultAllocator.makeArray!char(addr.length + 1);
-		tmpStr[0.. $ - 1] = addr;
-		tmpStr[$ - 1] = '\0';
-
-        auto ret = ntohl(inet_addr(tmpStr.ptr));
-		defaultAllocator.dispose(tmpStr);
-
-		return ret;
+	else
+	{
+		return errno;
 	}
 }

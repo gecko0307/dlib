@@ -27,16 +27,27 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
- * Copyright: Eugene Wissner 2016-.
- * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
- * Authors: Eugene Wissner
- */
-module dlib.async;
+* Copyright: Eugene Wissner 2016-.
+* License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+* Authors: Eugene Wissner
+*/
+module dlib.async.iocp;
 
-public
+import core.sys.windows.winbase;
+import core.sys.windows.windef;
+
+/**
+ * Provides an extendable representation of a Win32 $(D_PSYMBOL OVERLAPPED)
+ * structure.
+ */
+class State
 {
-    import dlib.async.loop;
-    import dlib.async.protocol;
-    import dlib.async.transport;
-    import dlib.async.watcher;
+	/// For internal use by Windows API.
+	align(1) OVERLAPPED overlapped;
+
+	/// File/socket handle.
+	HANDLE handle;
+
+	/// For keeping events or event masks.
+	int event;
 }

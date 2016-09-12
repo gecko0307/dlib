@@ -113,13 +113,10 @@ else version (linux)
 	import dlib.async.epoll;
 	version = Epoll;
 }
-
-shared static this()
+else version (Windows)
 {
-    if (allocator is null)
-    {
-        allocator = MmapPool.instance;
-    }
+	import dlib.async.event.iocp;
+	version = IOCP;
 }
 
 /**
@@ -127,10 +124,11 @@ shared static this()
  */
 enum Event : uint
 {
-    none   = 0x00, /// No events.
-    read   = 0x01, /// Non-blocking read call.
-    write  = 0x02, /// Non-blocking write call.
-    accept = 0x04, /// Connection made.
+    none   = 0x00,       /// No events.
+    read   = 0x01,       /// Non-blocking read call.
+    write  = 0x02,       /// Non-blocking write call.
+    accept = 0x04,       /// Connection made.
+    error  = 0x80000000, /// Sent when an error occurs.
 }
 
 alias EventMask = BitFlags!Event;
@@ -141,9 +139,9 @@ alias EventMask = BitFlags!Event;
 abstract class Loop
 {
     /// Pending watchers.
-    protected PendingQueue pendings;
+    protected PendingQueue!Watcher pendings;
 
-    protected PendingQueue swapPendings;
+    protected PendingQueue!Watcher swapPendings;
 
 	/// Max events can be got at a time (should be supported by the backend).
 	protected enum maxEvents = 128;
@@ -157,8 +155,8 @@ abstract class Loop
     this()
     {
         connections = MmapPool.instance.makeArray!ConnectionWatcher(maxEvents);
-        pendings = MmapPool.instance.make!(PendingQueue);
-        swapPendings = MmapPool.instance.make!(PendingQueue);
+        pendings = MmapPool.instance.make!(PendingQueue!Watcher);
+        swapPendings = MmapPool.instance.make!(PendingQueue!Watcher);
     }
 
     /**
@@ -221,14 +219,13 @@ abstract class Loop
             return;
         }
         watcher.active = true;
-        watcher.accept = &acceptConnection;
         if (connections.length <= watcher.socket)
         {
-            MmapPool.instance.expandArray(connections, maxEvents / 2);
+            MmapPool.instance.resizeArray(connections, watcher.socket.handle + maxEvents / 2);
         }
-        connections[cast(int) watcher.socket] = watcher;
+        connections[watcher.socket.handle] = watcher;
 
-        modify(watcher.socket, EventMask(Event.none), EventMask(Event.accept));
+        reify(watcher, EventMask(Event.none), EventMask(Event.accept));
     }
 
     /**
@@ -245,34 +242,22 @@ abstract class Loop
         }
         watcher.active = false;
 
-        modify(watcher.socket, EventMask(Event.accept), EventMask(Event.none));
-    }
-
-    /**
-     * Feeds the given event set into the event loop, as if the specified event
-     * had happened for the specified watcher.
-     *
-     * Params:
-     *     transport = Affected transport.
-     */
-    void feed(DuplexTransport transport)
-    {
-        pendings.insertBack(connections[cast(int) transport.socket]);
+        reify(watcher, EventMask(Event.accept), EventMask(Event.none));
     }
 
     /**
      * Should be called if the backend configuration changes.
      *
      * Params:
-     *     socket    = Socket.
+     *     watcher   = Watcher.
      *     oldEvents = The events were already set.
      *     events    = The events should be set.
      *
      * Returns: $(D_KEYWORD true) if the operation was successful.
      */
-    abstract protected bool modify(Socket socket,
-	                               EventMask oldEvents,
-	                               EventMask events);
+    abstract protected bool reify(ConnectionWatcher watcher,
+	                              EventMask oldEvents,
+	                              EventMask events);
 
     /**
      * Returns: The blocking time.
@@ -306,16 +291,6 @@ abstract class Loop
      * Does the actual polling.
      */
     abstract protected void poll();
-
-    /**
-     * Accept incoming connections.
-     *
-     * Params:
-     *     protocolFactory = Protocol factory.
-     *     socket          = Socket.
-     */
-    protected void acceptConnection(Protocol delegate() protocolFactory,
-                                    Socket socket);
 
     /// Whether the event loop should be stopped.
     private bool done_;
@@ -360,6 +335,10 @@ class BadLoopException : Exception
     {
         defaultLoop_ = MmapPool.instance.make!EpollLoop;
     }
+    else version (IOCP)
+    {
+    	defaultLoop_ = MmapPool.instance.make!IOCPLoop;
+    }
     return defaultLoop_;
 }
 
@@ -392,7 +371,7 @@ private Loop defaultLoop_;
  * Params:
  *     T = Content type.
  */
-class PendingQueue
+class PendingQueue(T)
 {
     /**
      * Creates a new $(D_PSYMBOL Queue).
@@ -415,7 +394,7 @@ class PendingQueue
     /**
      * Returns: First element.
      */
-    @property ref Watcher front()
+    @property ref T front()
     in
     {
         assert(!empty);
@@ -433,7 +412,7 @@ class PendingQueue
      *
      * Returns: $(D_KEYWORD this).
      */
-    typeof(this) insertBack(Watcher x)
+    typeof(this) insertBack(T x)
     {
         Entry* temp = MmapPool.instance.make!Entry;
         
@@ -502,7 +481,7 @@ class PendingQueue
     protected struct Entry
     {
         /// Queue item content.
-        Watcher content;
+        T content;
 
         /// Next list item.
         Entry* next;

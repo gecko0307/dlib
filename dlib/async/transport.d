@@ -38,26 +38,15 @@ import dlib.container.buffer;
 import dlib.network.socket;
 import dlib.async.loop;
 import dlib.memory;
+import dlib.memory.mmappool;
+import std.exception;
 
 /**
  * Exception thrown on read/write errors.
  */
 class TransportException : Exception
 {
-    /**
-     * Params:
-     *     msg  = Message to output.
-     *     file = The file where the exception occurred.
-     *     line = The line number where the exception occurred.
-     *     next = The previous exception in the chain of exceptions, if any.
-     */
-    this(string msg,
-         string file = __FILE__,
-         size_t line = __LINE__,
-         Throwable next = null) pure @safe nothrow const
-    {
-        super(msg, file, line, next);
-    }
+	mixin basicExceptionCtors;
 }
 
 /**
@@ -66,35 +55,10 @@ class TransportException : Exception
 interface Transport
 {
     /**
-     * Returns: Protocol.
-     */
-    @property Protocol protocol() @safe pure nothrow;
-
-    /**
      * Returns: $(D_KEYWORD true) if the peer closed the connection,
      *          $(D_KEYWORD false) otherwise.
      */
-    @property immutable(bool) disconnected() const @safe pure nothrow;
-
-    /**
-     * Params:
-     *     protocol = Application protocol.
-     */
-    @property void protocol(Protocol protocol) @safe pure nothrow
-    in
-    {
-        assert(protocol !is null, "protocolConnected cannot be unset.");
-    }
-
-    /**
-     * Returns: Application protocol.
-     */
-    @property inout(Protocol) protocol() inout @safe pure nothrow;
-
-    /**
-     * Returns: Transport socket.
-     */
-    inout(Socket) socket() inout @safe pure nothrow;
+    @property immutable(bool) disconnected() const pure nothrow @safe @nogc;
 }
 
 /**
@@ -102,23 +66,6 @@ interface Transport
  */
 interface ReadTransport : Transport
 {
-    /**
-     * Returns: Underlying output buffer.
-     */
-    @property ReadBuffer output();
-
-    /**
-     * Reads data into the buffer.
-     *
-     * Returns: Whether the reading is completed.
-     *
-     * Throws: $(D_PSYMBOL TransportException) if a read error is occured.
-     */
-    bool receive()
-    in
-    {
-        assert(!disconnected);
-    }
 }
 
 /**
@@ -127,35 +74,33 @@ interface ReadTransport : Transport
 interface WriteTransport : Transport
 {
     /**
-     * Returns: Underlying input buffer.
-     */
-    @property WriteBuffer input();
-
-    /**
      * Write some data to the transport.
      *
      * Params:
      *     data = Data to send.
      */
     void write(ubyte[] data);
-
-    /**
-     * Returns: Whether the writing is completed.
-     *
-     * Throws: $(D_PSYMBOL TransportException) if a read error is occured.
-     */
-    bool send()
-    in
-    {
-        assert(input.length);
-        assert(!disconnected);
-    }
 }
 
 /**
  * Represents a bidirectional transport.
  */
-abstract class DuplexTransport : ReadTransport, WriteTransport
+interface DuplexTransport : ReadTransport, WriteTransport
+{
+}
+
+/**
+ * Represents a socket transport.
+ */
+interface SocketTransport : Transport
+{
+	@property inout(Socket) socket() inout pure nothrow @safe @nogc;
+}
+
+/**
+ * Represents a connection-oriented socket transport.
+ */
+package interface StreamTransport : DuplexTransport, SocketTransport
 {
 }
 
@@ -326,6 +271,12 @@ version (Posix)
 		 * Throws: $(D_PSYMBOL TransportException) if a read error is occured.
 		 */
 		bool send()
+		in
+		{
+			assert(input.length);
+			assert(!disconnected);
+		}
+		body
 		{
 			auto sentCount = core.sys.posix.netinet.in_.send(cast(int) socket,
 															 input.buffer,
