@@ -78,19 +78,40 @@ interface Buffer
      */
     @property size_t free() const @nogc @safe pure nothrow;
 
-    /**
-     * Appends some data to the buffer.
-     *
-     * Params:
-     *     buffer = Buffer chunk got with $(D_PSYMBOL buffer).
-     */
-    Buffer opOpAssign(string op)(void[] buffer)
-        if (op == "~");
+	/**
+	 * Params:
+	 *     start = Start position.
+	 *     end   = End position.
+	 *
+	 * Returns: Array between $(D_PARAM start) and $(D_PARAM end).
+	 */
+	@property ubyte[] opSlice(size_t start, size_t end)
+	in
+	{
+		assert(start <= end);
+		assert(end <= length);
+	}
+
+	/**
+	* Returns: Length of available data.
+	*/
+	@property size_t opDollar() const pure nothrow @safe @nogc;
+
+	/**
+	 * Returns: Data chunk.
+	 */
+	@property ubyte[] opIndex();
 }
 
 /**
- * Buffer that can be used with C functions accepting void pointer and
- * returning the number of the read bytes.
+ * Self-expanding buffer, that can be used with
+ * functions returning the number of the read bytes.
+ *
+ * This buffer supports asynchronous reading. It means you can pass a new chunk
+ * to an asynchronous read function during you are working with already
+ * available data. But only one asynchronous call is supported. Be sure to call
+ * $(D_PSYMBOL ReadBuffer.clear()) before you appends the result of the
+ * asynchronous call.
  */
 class ReadBuffer : Buffer
 {
@@ -99,6 +120,9 @@ class ReadBuffer : Buffer
 
     /// Filled buffer length.
     protected size_t length_;
+
+	/// Last position returned with $(D_KEYWORD []).
+	protected size_t start;
 
     /// Available space.
     protected immutable size_t minAvailable;
@@ -114,8 +138,10 @@ class ReadBuffer : Buffer
     }
 
     /**
+	 * Creates a new read buffer.
+	 *
      * Params:
-     *  size         = Initial buffer size and the size by which the buffer
+     *     size         = Initial buffer size and the size by which the buffer
      *                    will grow.
      *     minAvailable = minimal size should be always  available to fill.
      *                    So it will reallocate if $(D_INLINECODE 
@@ -164,6 +190,17 @@ class ReadBuffer : Buffer
         return length_;
     }
 
+	/**
+	 * Clears the buffer.
+	 *
+	 * Returns: $(D_KEYWORD this).
+	 */
+	ReadBuffer clear() pure nothrow @safe @nogc
+	{
+		start = length_ = 0;
+		return this;
+	}
+
     /**
      * Returns: Available space.
      */
@@ -192,38 +229,28 @@ class ReadBuffer : Buffer
     }
 
     /**
-     * Returns a pointer to a chunk of the internal buffer. You can pass it to
-     * a function that requires such a buffer.
-     *
-     * Set the buffer again after reading something into it. Append
-     * $(D_KEYWORD ~=) a slice from the beginning of the buffer you got and
-     * till the number of the read bytes. The data will be appended to the
-     * existing buffer.
-     *
-     * Returns: A chunk of available buffer.
-     */
-    @property void* buffer()
-    {
-        if (capacity - length < minAvailable)
-        {
-            defaultAllocator.resizeArray!ubyte(buffer_, capacity + blockSize);
-        }
-        return buffer_[length_..$].ptr;
-    }
-
-    /**
      * Appends some data to the buffer. Use only the buffer you got
-     * with $(D_PSYMBOL buffer)!
+     * with $(D_KEYWORD [])!
      *
      * Params:
-     *     buffer = Buffer chunk got with $(D_PSYMBOL buffer).
+     *     buffer = Buffer chunk got with $(D_KEYWORD []).
+	 *
+	 * Returns: $(D_KEYWORD this).
      */
-    ReadBuffer opOpAssign(string op)(void[] buffer)
+    ReadBuffer opOpAssign(string op)(ubyte[] buffer)
         if (op == "~")
     {
-        length_ += buffer.length;
+	    length_ = start + buffer.length;
         return this;
     }
+
+	/// Ditto.
+	ReadBuffer opOpAssign(string op)(size_t length)
+		if (op == "+")
+	{
+		length_ = start + length;
+		return this;
+	}
 
     ///
     unittest
@@ -262,17 +289,65 @@ class ReadBuffer : Buffer
         defaultAllocator.dispose(b);
     }
 
-    /**
-     * Returns the buffer. The buffer is cleared after that. So you can get it
-     * only one time.
-     *
-     * Returns: The buffer as array.
+	/**
+	 * Returns: Length of available data.
+	 */
+	@property size_t opDollar() const pure nothrow @safe @nogc
+	{
+		return length;
+	}
+
+	/**
+	 * Params:
+	 *     start = Start position.
+	 *     end   = End position.
+	 *
+	 * Returns: Array between $(D_PARAM start) and $(D_PARAM end).
+	 */
+	@property ubyte[] opSlice(size_t start, size_t end)
+	{
+		return buffer_[this.start + start .. this.start + end];
+	}
+
+	/**
+	 * Paarms:
+	 *     value = Array.
+	 *     start = Start position.
+	 *     end   = End position.
+	 *
+	 * Returns: $(D_KEYWORD this).
      */
-    @property ubyte[] opIndex()
+	ReadBuffer opSliceAssign(ubyte[] value, size_t start, size_t end)
+	{
+		buffer_[this.start + start .. this.start + end] = value;
+		return this;
+	}
+
+    /**
+	 * Returns a free chunk of the buffer.
+	 *
+	 * Set the buffer again after reading something into it. Append
+	 * $(D_KEYWORD ~=) a slice from the beginning of the buffer you got and
+	 * till the number of the read bytes. The data will be appended to the
+	 * existing buffer.
+	 *
+     * Returns: A free chunk of the buffer.
+     */
+    ubyte[] opIndex()
     {
-        auto ret = buffer_[0..length_];
-        length_ = 0;
-        return ret;
+		if (start > 0)
+		{
+			return buffer_[0..start];
+		}
+        else
+		{
+			if (capacity - length < minAvailable)
+	        {
+		        defaultAllocator.resizeArray!ubyte(buffer_, capacity + blockSize);
+	        }
+			start = length_;
+			return buffer_[length_..$];
+		}
     }
 
     ///
@@ -299,8 +374,8 @@ class ReadBuffer : Buffer
 }
 
 /**
- * Circular, self-expanding buffer that can be used with C functions accepting
- * void pointer and returning the number of the read bytes.
+ * Circular, self-expanding buffer with overflow support. Can be used with
+ * functions returning returning the number of the transferred bytes.
  *
  * The buffer is optimized for situations where you read all the data from it
  * at once (without writing to it occasionally). It can become ineffective if
@@ -362,7 +437,7 @@ class WriteBuffer : Buffer
     /**
      * Note that $(D_PSYMBOL length) doesn't return the real length of the data,
      * but only the array length that will be returned with $(D_PSYMBOL buffer)
-     * next time. Be sure to call $(D_PSYMBOL buffer) and set $(D_PSYMBOL written)
+     * next time. Be sure to call $(D_PSYMBOL buffer) and set $(D_KEYWORD +=)
      * until $(D_PSYMBOL length) returns 0.
      *
      * Returns: Data size.
@@ -379,6 +454,14 @@ class WriteBuffer : Buffer
         }
     }
 
+	/**
+	* Returns: Length of available data.
+	*/
+	@property size_t opDollar() const pure nothrow @safe @nogc
+	{
+		return length;
+	}
+
     ///
     unittest
     {
@@ -387,17 +470,17 @@ class WriteBuffer : Buffer
 
         b ~= buf;
         assert(b.length == 3);
-        b.written = 2;
+        b += 2;
         assert(b.length == 1);
 
         b ~= buf;
         assert(b.length == 2);
-        b.written = 2;
+        b += 2;
         assert(b.length == 2);
 
         b ~= buf;
         assert(b.length == 5);
-        b.written = b.length;
+        b += b.length;
         assert(b.length == 0);
 
         defaultAllocator.dispose(b);
@@ -488,13 +571,13 @@ class WriteBuffer : Buffer
         assert(b.capacity == 4);
         assert(b.buffer_[0] == 48 && b.buffer_[1] == 23 && b.buffer_[2] == 255);
 
-        b.written = 2;
+        b += 2;
         b ~= buf;
         assert(b.capacity == 4);
         assert(b.buffer_[0] == 23 && b.buffer_[1] == 255
             && b.buffer_[2] == 255 && b.buffer_[3] == 48);
 
-        b.written = 2;
+        b += 2;
         b ~= buf;
         assert(b.capacity == 8);
         assert(b.buffer_[0] == 23 && b.buffer_[1] == 255
@@ -520,8 +603,11 @@ class WriteBuffer : Buffer
      *
      * Params:
      *     length = Length of the written data.
+	 *
+	 * Returns: $(D_KEYWORD this).
      */
-    @property void written(size_t length) @safe pure nothrow
+    @property WriteBuffer opOpAssign(string op)(size_t length) @safe pure nothrow
+		if (op == "+")
     in
     {
         assert(length <= this.length);
@@ -533,7 +619,7 @@ class WriteBuffer : Buffer
 
         if (length <= 0)
         {
-            return;
+            return this;
         }
         else if (position <= afterRing)
         {
@@ -578,6 +664,7 @@ class WriteBuffer : Buffer
         {
             start = 0;
         }
+		return this;
     }
 
     ///
@@ -588,37 +675,38 @@ class WriteBuffer : Buffer
 
         b ~= buf;
         assert(b.length == 6);
-        b.written = 2;
+        b += 2;
         assert(b.length == 4);
-        b.written = 4;
+        b += 4;
         assert(b.length == 0);
 
         defaultAllocator.dispose(b);
     }
 
     /**
-     * Returns a pointer to a buffer chunk with data. You can pass it to
-     * a function that requires such a buffer.
+     * Returns a chunk with data.
      *
-     * After calling it, set $(D_PSYMBOL written) to the length could be
+     * After calling it, set $(D_KEYWORD +=) to the length could be
      * written.
      *
      * $(D_PSYMBOL buffer) may return only part of the data. You may need
-     * to call it (and set $(D_PSYMBOL written) several times until
+     * to call it (and set $(D_KEYWORD +=) several times until
      * $(D_PSYMBOL length) is 0. If all the data can be written,
      * maximally 3 calls are required.
      *
      * Returns: A chunk of data buffer.
      */
-    @property void* buffer() @safe pure nothrow
+    @property ubyte[] opSlice(size_t start, size_t end) @safe pure nothrow
     {
+		auto internStart = this.start + start;
+		size_t rest = length - end;
         if (position > ring || position < start) // Buffer overflowed
         {
-            return buffer_[start.. ring + 1].ptr;
+            return buffer_[this.start.. ring + 1 - rest];
         }
         else
         {
-            return buffer_[start..position].ptr;
+            return buffer_[this.start..position - rest];
         }
     }
 
@@ -632,7 +720,7 @@ class WriteBuffer : Buffer
         b ~= buf;
         returnedBuf = b.buffer;
         assert(returnedBuf[0..b.length] == buf[0..6]);
-        b.written = 2;
+        b += 2;
 
         returnedBuf = b.buffer;
         assert(returnedBuf[0..b.length] == buf[2..6]);
@@ -640,12 +728,28 @@ class WriteBuffer : Buffer
         b ~= buf;
         returnedBuf = b.buffer;
         assert(returnedBuf[0..b.length] == buf[2..6]);
-        b.written = b.length;
+        b += b.length;
 
         returnedBuf = b.buffer;
         assert(returnedBuf[0..b.length] == buf[0..6]);
-        b.written = b.length;
+        b += b.length;
 
         defaultAllocator.dispose(b);
+    }
+
+    /**
+	 * After calling it, set $(D_KEYWORD +=) to the length could be
+	 * written.
+	 *
+	 * $(D_PSYMBOL buffer) may return only part of the data. You may need
+	 * to call it (and set $(D_KEYWORD +=) several times until
+	 * $(D_PSYMBOL length) is 0. If all the data can be written,
+	 * maximally 3 calls are required.
+	 *
+	 * Returns: A chunk of data buffer.
+	 */
+    @property ubyte[] opIndex()
+    {
+		return opSlice(0, length);
     }
 }
