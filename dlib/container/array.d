@@ -238,7 +238,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
      */
     void appendLeft(const(T)[] s)
     {
-        foreach(c; s)
+        foreach_reverse(c; s)
             appendLeft(cast(T)c);
     }
     
@@ -248,10 +248,10 @@ struct DynamicArray(T, size_t chunkSize = 32)
         DynamicArray!int arr;
         scope(exit) arr.free();
         
-        arr.appendLeft([1,2,3,4]);
-        assert(arr.data == [4,3,2,1]);
         arr.appendLeft([5,6,7,8]);
-        assert(arr.data == [8,7,6,5,4,3,2,1]);
+        assert(arr.data == [5,6,7,8]);
+        arr.appendLeft([1,2,3,4]);
+        assert(arr.data == [1,2,3,4,5,6,7,8]);
     }
 
     /**
