@@ -39,7 +39,7 @@ import core.time;
 import std.algorithm.comparison;
 import std.algorithm.searching;
 public import std.socket : AddressException, socket_t, Linger, SocketOptionLevel,
-                           ProtocolType, SocketType, AddressFamily, AddressInfo,
+                           SocketType, AddressFamily, AddressInfo,
                            SocketOption;
 import std.traits;
 import std.typecons;
@@ -231,18 +231,15 @@ else version (Windows)
     class OverlappedConnectedSocket : ConnectedSocket
     {
         /**
-         * Create a socket. If a single protocol type exists to support
-         * this socket type within the address family, the $(D_PSYMBOL
-         * ProtocolType) may be omitted.
+         * Create a socket.
          *
          * Params:
          *     handle   = Socket handle.
          *     af       = Address family.
-         *     protocol = Protocol type.
          */
-        this(socket_t handle, AddressFamily af, ProtocolType protocol)
+        this(socket_t handle, AddressFamily af)
         {
-            super(handle, af, protocol);
+            super(handle, af);
         }
 
         /**
@@ -393,9 +390,7 @@ else version (Windows)
         package LPFN_ACCEPTEX acceptExtension;
 
         /**
-         * Create a socket. If a single protocol type exists to support
-         * this socket type within the address family, the $(D_PSYMBOL
-         * ProtocolType) may be omitted.
+         * Create a socket.
          *
          * Params:
          *     af       = Address family.
@@ -693,9 +688,6 @@ abstract class Socket
     /// Address family.
     protected AddressFamily family;
 
-    /// Protocol.
-    protected ProtocolType protocol;
-
     private @property void handle(socket_t handle)
     in
     {
@@ -720,16 +712,13 @@ abstract class Socket
     }
 
     /**
-     * Create a socket. If a single protocol type exists to support
-     * this socket type within the address family, the $(D_PSYMBOL
-     * ProtocolType) may be omitted.
+     * Create a socket.
      *
      * Params:
      *     handle   = Socket.
      *     af       = Address family.
-     *     protocol = Protocol type.
      */
-    this(socket_t handle, AddressFamily af, ProtocolType protocol)
+    this(socket_t handle, AddressFamily af)
     in
     {
         assert(handle != socket_t.init);
@@ -742,7 +731,6 @@ abstract class Socket
         }
         this.handle = handle;
         family = af;
-        this.protocol = protocol;
     }
 
     /**
@@ -757,8 +745,7 @@ abstract class Socket
      * Get a socket option.
      *
      * Params:
-     *     level  = Protocol level at that the option exists. To get options at
-     *              the sockets API level, pass $(D_PSYMBOL ProtocolType.unspecified).
+     *     level  = Protocol level at that the option exists.
      *     option = Option.
      *     result = Buffer to save the result.
      *
@@ -820,8 +807,7 @@ abstract class Socket
      * Set a socket option.
      *
      * Params:
-     *     level  = Protocol level at that the option exists. To manipulate options at
-     *              the sockets API level, pass $(D_PSYMBOL ProtocolType.unspecified).
+     *     level  = Protocol level at that the option exists.
      *     option = Option.
      *     result = Option value.
      *
@@ -927,14 +913,6 @@ abstract class Socket
     }
 
     /**
-      * Returns: The socket's protocol.
-      */
-    @property ProtocolType protocolType() const pure nothrow @safe @nogc
-    {
-        return protocol;
-    }
-
-    /**
      * Returns: $(D_KEYWORD true) if this is a valid, alive socket.
      */
     @property bool isAlive() @trusted const nothrow @nogc
@@ -942,20 +920,6 @@ abstract class Socket
         int type;
         socklen_t typesize = cast(socklen_t) type.sizeof;
         return !getsockopt(handle_, SOL_SOCKET, SO_TYPE, cast(char*)&type, &typesize);
-    }
-
-    /**
-     * Associate a local address with this socket.
-     *
-     * Params:
-     *     address = Local address.
-     */
-    void bind(AddressStorage address) @trusted const
-    {
-        if (.bind(handle_, address.name, address.length) == SOCKET_ERROR)
-        {
-            throw defaultAllocator.make!SocketException("Unable to bind socket");
-        }
     }
 
     /**
@@ -1043,22 +1007,35 @@ interface ConnectionOrientedSocket
 class StreamSocket : Socket, ConnectionOrientedSocket
 {
     /**
-    * Create a socket. If a single protocol type exists to support
-    * this socket type within the address family, the $(D_PSYMBOL
-    * ProtocolType) may be omitted.
+    * Create a socket.
     *
     * Params:
     *     af       = Address family.
-    *     protocol = Protocol.
     */
     this(AddressFamily af) @trusted
     {
-        auto handle = cast(socket_t) socket(af, SOCK_STREAM, protocol);
+        auto handle = cast(socket_t) socket(af, SOCK_STREAM, 0);
         if (handle == socket_t.init)
         {
             throw defaultAllocator.make!SocketException("Unable to create socket");
         }
-        super(handle, af, protocol);    
+        super(handle, af);
+    }
+
+    /**
+     * Associate a local address with this socket.
+     *
+     * Params:
+     *     address = Local address.
+     *
+     * Throws: $(D_PSYMBOL SocketException) if unable to bind.
+     */
+    void bind(Address address) @trusted const
+    {
+        if (.bind(handle_, address.name, address.length) == SOCKET_ERROR)
+        {
+            throw defaultAllocator.make!SocketException("Unable to bind socket");
+        }
     }
 
     /**
@@ -1099,7 +1076,7 @@ class StreamSocket : Socket, ConnectionOrientedSocket
             throw defaultAllocator.make!SocketException("Unable to accept socket connection");
         }
 
-        auto newSocket = defaultAllocator.make!ConnectedSocket(sock, addressFamily, protocolType);
+        auto newSocket = defaultAllocator.make!ConnectedSocket(sock, addressFamily);
 
         version (linux)
         { // Blocking mode already set
@@ -1148,18 +1125,15 @@ class ConnectedSocket : Socket, ConnectionOrientedSocket
     }
 
     /**
-     * Create a socket. If a single protocol type exists to support
-     * this socket type within the address family, the $(D_PSYMBOL
-     * ProtocolType) may be omitted.
+     * Create a socket.
      *
      * Params:
      *     handle   = Socket.
      *     af       = Address family.
-     *     protocol = Protocol type.
      */
-    this(socket_t handle, AddressFamily af, ProtocolType protocol)
+    this(socket_t handle, AddressFamily af)
     {
-        super(handle, af, protocol);
+        super(handle, af);
     }
 
     version (Windows)
@@ -1257,7 +1231,20 @@ class ConnectedSocket : Socket, ConnectionOrientedSocket
 /**
  * Socket address representation.
  */
-class AddressStorage
+abstract class Address
+{
+    /**
+     * Returns: Pointer to underlying $(D_PSYMBOL sockaddr) structure.
+     */
+    abstract @property inout(sockaddr)* name() inout pure nothrow @nogc;
+
+    /**
+     * Returns: Actual size of underlying $(D_PSYMBOL sockaddr) structure.
+     */
+    abstract @property inout(socklen_t) length() inout const pure nothrow @nogc;
+}
+
+class InternetAddress : Address
 {
     version (Windows)
     {
@@ -1269,14 +1256,21 @@ class AddressStorage
         /// Internal internet address representation.
         protected sockaddr_storage storage;
     }
+    immutable ushort port_;
 
-    this(in string host, ushort port)
+    enum
+    {
+        anyPort = 0,
+    }
+
+    this(in string host, ushort port = anyPort)
     {
         if (getaddrinfoPointer is null || freeaddrinfoPointer is null)
         {
             throw defaultAllocator.make!AddressException("Address info lookup is not available on this system");
         }
         addrinfo* ai_res;
+        port_ = port;
 
         // Make C-string from host.
         char[] node = defaultAllocator.makeArray!char(host.length + 1);
@@ -1311,20 +1305,26 @@ class AddressStorage
         {
             throw defaultAllocator.make!AddressException("Address info lookup failed");
         }
+        scope (exit)
+        {
+            freeaddrinfoPointer(ai_res);
+        }
         
         ubyte* dp = cast(ubyte*) &storage, sp = cast(ubyte*) ai_res.ai_addr;
         for (auto i = ai_res.ai_addrlen; i > 0; --i, *dp++, *sp++)
         {
             *dp = *sp;
         }
-
-        freeaddrinfoPointer(ai_res);
+        if (ai_res.ai_family != AddressFamily.INET && ai_res.ai_family != AddressFamily.INET6)
+        {
+            throw defaultAllocator.make!AddressException("Wrong address family");
+        }
     }
 
     /**
      * Returns: Pointer to underlying $(D_PSYMBOL sockaddr) structure.
      */
-    @property inout(sockaddr)* name() inout pure nothrow @nogc
+    override @property inout(sockaddr)* name() inout pure nothrow @nogc
     {
         return cast(sockaddr*) &storage;
     }
@@ -1332,9 +1332,18 @@ class AddressStorage
     /**
      * Returns: Actual size of underlying $(D_PSYMBOL sockaddr) structure.
      */
-    @property inout(socklen_t) length() inout const pure nothrow @nogc
+    override @property inout(socklen_t) length() inout const pure nothrow @nogc
     {
-        return cast(socklen_t) storage.sizeof;
+        // FreeBSD wants to know the exact length of the address on bind.
+        switch (family)
+        {
+            case AddressFamily.INET:
+                return sockaddr_in.sizeof;
+            case AddressFamily.INET6:
+                return sockaddr_in6.sizeof;
+            default:
+                assert(false);
+        }
     }
 
     /**
@@ -1343,6 +1352,11 @@ class AddressStorage
     @property inout(AddressFamily) family() inout const pure nothrow @nogc
     {
         return cast(AddressFamily) storage.ss_family;
+    }
+
+    @property inout(ushort) port() inout const pure nothrow @nogc
+    {
+        return port_;
     }
 }
 

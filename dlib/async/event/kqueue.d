@@ -57,7 +57,32 @@ else version (DragonFlyBSD)
 version (MacBSD):
 
 import dlib.async.event.selector;
+import dlib.async.loop;
+import dlib.async.watcher;
 
 class KqueueLoop : SelectorLoop
 {
+    /**
+     * Should be called if the backend configuration changes.
+     *
+     * Params:
+     *     watcher   = Watcher.
+     *     oldEvents = The events were already set.
+     *     events    = The events should be set.
+     *
+     * Returns: $(D_KEYWORD true) if the operation was successful.
+     */
+    override protected bool reify(ConnectionWatcher watcher,
+	                              EventMask oldEvents,
+	                              EventMask events)
+    {
+        return true;
+    }
+
+    /**
+     * Does the actual polling.
+     */
+    protected override void poll()
+    {
+    }
 }
