@@ -36,27 +36,27 @@ module dlib.async.event.kqueue;
 version (OSX)
 {
     version = MacBSD;
-    import core.sys.darwin.sys.event;
+    public import core.sys.darwin.sys.event;
 }
 else version (iOS)
 {
     version = MacBSD;
-    import core.sys.darwin.sys.event;
+    public import core.sys.darwin.sys.event;
 }
 else version (FreeBSD)
 {
     version = MacBSD;
-    import core.sys.freebsd.sys.event;
+    public import core.sys.freebsd.sys.event;
 }
 else version (OpenBSD)
 {
     version = MacBSD;
-    import core.sys.freebsd.sys.event;
+    public import core.sys.freebsd.sys.event;
 }
 else version (DragonFlyBSD)
 {
     version = MacBSD;
-    import core.sys.freebsd.sys.event;
+    public import core.sys.freebsd.sys.event;
 }
 
 version (MacBSD):
@@ -64,14 +64,17 @@ version (MacBSD):
 import dlib.async.event.selector;
 import dlib.async.loop;
 import dlib.async.watcher;
-import core.sys.posix.unistd;
 import dlib.memory;
 import dlib.memory.mmappool;
+import core.sys.posix.unistd;
+import dlib.network.socket;
 
 class KqueueLoop : SelectorLoop
 {
-    private int fd;
+    protected int fd;
     private kevent_t[] events;
+    private kevent_t[] changes;
+    private size_t changeCount;
 
     this()
     {
@@ -81,7 +84,8 @@ class KqueueLoop : SelectorLoop
         {
             throw MmapPool.instance.make!BadLoopException("epoll initialization failed");
         }
-        events = makeArray!kevent_t(defaultAllocator, maxEvents);
+        events = MmapPool.instance.makeArray!kevent_t(maxEvents);
+        changes = MmapPool.instance.makeArray!kevent_t(maxEvents);
     }
 
     /**
@@ -89,7 +93,21 @@ class KqueueLoop : SelectorLoop
      */
     ~this()
     {
+        MmapPool.instance.dispose(events);
+        MmapPool.instance.dispose(changes);
         close(fd);
+    }
+
+    private void set(socket_t socket, short filter, ushort flags)
+    {
+        EV_SET(&changes[changeCount],
+               cast(ulong) socket,
+               filter,
+               flags,
+               0U,
+               0L,
+               null);
+        ++changeCount;
     }
 
     /**
@@ -106,22 +124,24 @@ class KqueueLoop : SelectorLoop
 	                              EventMask oldEvents,
 	                              EventMask events)
     {
-        kevent_t event;
-
-        if (events == oldEvents)
+        if (events != oldEvents)
         {
-            return true;
+            if (oldEvents & Event.read)
+            {
+                set(watcher.socket.handle, EVFILT_READ, EV_DELETE);
+            }
+            if (oldEvents & Event.write)
+            {
+                set(watcher.socket.handle, EVFILT_WRITE, EV_DELETE);
+            }
         }
-        short kevents = (events & (Event.read | Event.accept) ? EVFILT_READ : 0)
-                    | (events & Event.write ? EVFILT_WRITE : 0);
-
-        if (events && !oldEvents)
+        if (events & Event.read)
         {
-            EV_SET(&event, cast(ulong) watcher.socket.handle, kevents, EV_ADD | EV_ENABLE, 0U, 0L, null);
+            set(watcher.socket.handle, EVFILT_READ, EV_ADD | EV_ENABLE);
         }
-        else if (events && !oldEvents)
+        if (events & Event.write)
         {
-            EV_SET(&event, cast(ulong) watcher.socket.handle, kevents, EV_DELETE, 0U, 0L, null);
+            set(watcher.socket.handle, EVFILT_WRITE, EV_ADD | EV_ENABLE);
         }
         return true;
     }

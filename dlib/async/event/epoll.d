@@ -52,6 +52,9 @@ import std.algorithm.comparison;
 
 class EpollLoop : SelectorLoop
 {
+    protected int fd;
+    private epoll_event[] epollEvents;
+
     /**
      * Initializes the loop.
      */
@@ -62,7 +65,7 @@ class EpollLoop : SelectorLoop
             throw MmapPool.instance.make!BadLoopException("epoll initialization failed");
         }
         super();
-        epollEvents = makeArray!epoll_event(defaultAllocator, maxEvents);
+        epollEvents = MmapPool.instance.makeArray!epoll_event(maxEvents);
     }
 
     /**
@@ -70,7 +73,7 @@ class EpollLoop : SelectorLoop
      */
     ~this()
     {
-        defaultAllocator.dispose(epollEvents);
+        MmapPool.instance.dispose(epollEvents);
         close(fd);
     }
 
@@ -134,7 +137,7 @@ class EpollLoop : SelectorLoop
 				break;
 			}
 
-            auto transport = make!SelectorStreamTransport(defaultAllocator, this, client);
+            auto transport = MmapPool.instance.make!SelectorStreamTransport(this, client);
             IOWatcher connection;
 
             if (connections.length > client)
@@ -143,13 +146,13 @@ class EpollLoop : SelectorLoop
                 // If it is a ConnectionWatcher
                 if (connection is null && connections[cast(int) client] !is null)
                 {
-                    defaultAllocator.dispose(connections[cast(int) client]);
+                    MmapPool.instance.dispose(connections[cast(int) client]);
                     connections[cast(int) client] = null;
                 }
             }
             else
             {
-                defaultAllocator.expandArray(connections, maxEvents / 2);
+                MmapPool.instance.expandArray(connections, maxEvents / 2);
             }
             if (connection !is null)
             {
@@ -157,9 +160,9 @@ class EpollLoop : SelectorLoop
             }
             else
             {
-                connections[cast(int) client] = make!IOWatcher(defaultAllocator,
-                                                     protocolFactory,
-                                                     transport);
+                connections[cast(int) client] = make!IOWatcher(MmapPool.instance,
+                                                               protocolFactory,
+                                                               transport);
             }
 
             modify(client, EventMask(Event.none), EventMask(Event.read, Event.write));
@@ -181,7 +184,7 @@ class EpollLoop : SelectorLoop
         {
             if (errno != EINTR)
             {
-                throw make!BadLoopException(defaultAllocator);
+                throw defaultAllocator.make!BadLoopException();
             }
             return;
         }
@@ -231,7 +234,4 @@ class EpollLoop : SelectorLoop
     {
         return min(super.blockTime, 1.dur!"seconds");
     }
-
-    private int fd;
-    private epoll_event[] epollEvents;
 }
