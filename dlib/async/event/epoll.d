@@ -46,6 +46,7 @@ import dlib.network.socket;
 import core.stdc.errno;
 import core.sys.posix.fcntl;
 import core.sys.posix.netinet.in_;
+import core.sys.posix.unistd;
 import core.time;
 import std.algorithm.comparison;
 
@@ -56,13 +57,12 @@ class EpollLoop : SelectorLoop
      */
     this()
     {
-        super();
-
         if ((fd = epoll_create1(EPOLL_CLOEXEC)) < 0)
         {
-            return;
+            throw MmapPool.instance.make!BadLoopException("epoll initialization failed");
         }
-        epollEvents = makeArray!epoll_event(defaultAllocator, maxEvents).ptr;
+        super();
+        epollEvents = makeArray!epoll_event(defaultAllocator, maxEvents);
     }
 
     /**
@@ -71,6 +71,7 @@ class EpollLoop : SelectorLoop
     ~this()
     {
         defaultAllocator.dispose(epollEvents);
+        close(fd);
     }
 
     /**
@@ -174,7 +175,7 @@ class EpollLoop : SelectorLoop
     {
         // Don't block
         immutable timeout = cast(immutable int) blockTime.total!"msecs";
-        auto eventCount = epoll_wait(fd, epollEvents, maxEvents, timeout);
+        auto eventCount = epoll_wait(fd, epollEvents.ptr, maxEvents, timeout);
 
         if (eventCount < 0)
         {
@@ -187,7 +188,7 @@ class EpollLoop : SelectorLoop
 
         for (auto i = 0; i < eventCount; ++i)
         {
-            epoll_event *ev = epollEvents + i;
+            epoll_event *ev = epollEvents[i];
             auto connection = cast(IOWatcher) connections[ev.data.fd];
 
             if (connection is null)
@@ -232,5 +233,5 @@ class EpollLoop : SelectorLoop
     }
 
     private int fd;
-    private epoll_event* epollEvents;
+    private epoll_event[] epollEvents;
 }
