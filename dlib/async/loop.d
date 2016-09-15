@@ -110,13 +110,13 @@ version (DisableBackends)
 }
 else version (linux)
 {
-	import dlib.async.epoll;
-	version = Epoll;
+    import dlib.async.event.epoll;
+    version = Epoll;
 }
 else version (Windows)
 {
-	import dlib.async.event.iocp;
-	version = IOCP;
+    import dlib.async.event.iocp;
+    version = IOCP;
 }
 else version (OSX)
 {
@@ -163,8 +163,14 @@ abstract class Loop
 
     protected PendingQueue!Watcher swapPendings;
 
-	/// Max events can be got at a time (should be supported by the backend).
-	protected enum maxEvents = 128;
+    /**
+     * Returns: Maximal event count can be got at a time
+     *          (should be supported by the backend).
+     */
+    protected @property inout(uint) maxEvents() inout const pure nothrow @safe @nogc
+    {
+        return 128U;
+    }
 
     /**
      * Initializes the loop.
@@ -254,8 +260,8 @@ abstract class Loop
      * Returns: $(D_KEYWORD true) if the operation was successful.
      */
     abstract protected bool reify(ConnectionWatcher watcher,
-	                              EventMask oldEvents,
-	                              EventMask events);
+                                  EventMask oldEvents,
+                                  EventMask events);
 
     /**
      * Returns: The blocking time.
@@ -335,7 +341,7 @@ class BadLoopException : Exception
     }
     else version (IOCP)
     {
-    	defaultLoop_ = MmapPool.instance.make!IOCPLoop;
+        defaultLoop_ = MmapPool.instance.make!IOCPLoop;
     }
     else version (Kqueue)
     {

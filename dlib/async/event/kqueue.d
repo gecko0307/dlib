@@ -63,11 +63,16 @@ version (MacBSD):
 
 import dlib.async.event.selector;
 import dlib.async.loop;
+import dlib.async.transport;
 import dlib.async.watcher;
 import dlib.memory;
 import dlib.memory.mmappool;
-import core.sys.posix.unistd;
 import dlib.network.socket;
+import core.stdc.errno;
+import core.sys.posix.unistd;
+import core.sys.posix.sys.time;
+import core.time;
+import std.algorithm.comparison;
 
 class KqueueLoop : SelectorLoop
 {
@@ -75,6 +80,15 @@ class KqueueLoop : SelectorLoop
     private kevent_t[] events;
     private kevent_t[] changes;
     private size_t changeCount;
+
+    /**
+     * Returns: Maximal event count can be got at a time
+     *          (should be supported by the backend).
+     */
+    override protected @property inout(uint) maxEvents() inout const pure nothrow @safe @nogc
+    {
+        return cast(uint) events.length;
+    }
 
     this()
     {
@@ -84,8 +98,8 @@ class KqueueLoop : SelectorLoop
         {
             throw MmapPool.instance.make!BadLoopException("epoll initialization failed");
         }
-        events = MmapPool.instance.makeArray!kevent_t(maxEvents);
-        changes = MmapPool.instance.makeArray!kevent_t(maxEvents);
+        events = MmapPool.instance.makeArray!kevent_t(64);
+        changes = MmapPool.instance.makeArray!kevent_t(64);
     }
 
     /**
@@ -100,6 +114,10 @@ class KqueueLoop : SelectorLoop
 
     private void set(socket_t socket, short filter, ushort flags)
     {
+        if (changes.length <= changeCount)
+        {
+            MmapPool.instance.resizeArray(changes, changeCount + maxEvents);
+        }
         EV_SET(&changes[changeCount],
                cast(ulong) socket,
                filter,
@@ -121,12 +139,12 @@ class KqueueLoop : SelectorLoop
      * Returns: $(D_KEYWORD true) if the operation was successful.
      */
     override protected bool reify(ConnectionWatcher watcher,
-	                              EventMask oldEvents,
-	                              EventMask events)
+                                  EventMask oldEvents,
+                                  EventMask events)
     {
         if (events != oldEvents)
         {
-            if (oldEvents & Event.read)
+            if (oldEvents & Event.read || oldEvents & Event.accept)
             {
                 set(watcher.socket.handle, EVFILT_READ, EV_DELETE);
             }
@@ -135,7 +153,7 @@ class KqueueLoop : SelectorLoop
                 set(watcher.socket.handle, EVFILT_WRITE, EV_DELETE);
             }
         }
-        if (events & Event.read)
+        if (events & Event.read || events & Event.accept)
         {
             set(watcher.socket.handle, EVFILT_READ, EV_ADD | EV_ENABLE);
         }
@@ -151,5 +169,125 @@ class KqueueLoop : SelectorLoop
      */
     protected override void poll()
     {
+        timespec ts;
+        blockTime.split!("seconds", "nsecs")(ts.tv_sec, ts.tv_nsec);
+
+        if (changeCount > maxEvents) 
+        {
+            MmapPool.instance.resizeArray(events, changes.length);
+        }
+
+        auto eventCount = kevent(fd, changes.ptr, cast(int) changeCount, events.ptr, maxEvents, &ts);
+        changeCount = 0;
+
+        if (eventCount < 0)
+        {
+            if (errno != EINTR)
+            {
+                throw defaultAllocator.make!BadLoopException();
+            }
+            return;
+        }
+
+        for (int i; i < eventCount; ++i)
+        {
+            assert(connections.length > events[i].ident);
+
+            IOWatcher io = cast(IOWatcher) connections[events[i].ident];
+            // If it is a ConnectionWatcher. Accept connections.
+            if (io is null)
+            {
+                auto socket = cast(StreamSocket) connections[events[i].ident].socket;
+                assert(socket !is null);
+
+                while (true)
+                {
+                    ConnectedSocket client;
+                    try
+                    {
+                        client = socket.accept();
+                    }
+                    catch (SocketException e)
+                    {
+                        defaultAllocator.dispose(e);
+                        client = null;
+                    }
+                    if (client is null)
+                    {
+                        break;
+                    }
+                    else if (client.handle >= connections.length)
+                    {
+                        MmapPool.instance.resizeArray(connections, client.handle + maxEvents / 2);
+                    }
+
+                    io = cast(IOWatcher) connections[client.handle];
+                    auto transport = MmapPool.instance.make!SelectorStreamTransport(this, client);
+                    if (io is null)
+                    {
+                        io = MmapPool.instance.make!IOWatcher(transport, connections[events[i].ident].protocol);
+                        connections[client.handle] = io;
+                    }
+                    else
+                    {
+                        io(transport, connections[client.handle].protocol);
+                    }
+                    connections[events[i].ident].incoming.insertBack(io);
+                    reify(io, EventMask(Event.none), EventMask(Event.read, Event.write));
+                }
+                if (!connections[events[i].ident].incoming.empty)
+                {
+                    swapPendings.insertBack(connections[events[i].ident]);
+                }
+            }
+            else if (events[i].filter == EVFILT_READ)
+            {
+                auto transport = cast(SelectorStreamTransport) io.transport;
+                assert(transport !is null);
+
+                SocketException exception;
+                try
+                {
+                    ptrdiff_t received;
+                    do
+                    {
+                        received = transport.socket.receive(io.output[]);
+                        io.output += received;
+                    }
+                    while (received);
+                }
+                catch (SocketException e)
+                {
+                    exception = e;
+                }
+                if (transport.socket.disconnected)
+                {
+                    transport.socket.shutdown();
+                    defaultAllocator.dispose(transport.socket);
+                    MmapPool.instance.dispose(transport);
+                    io.exception = exception;
+                    swapPendings.insertBack(io);
+                }
+                else if (io.output.length)
+                {
+                    swapPendings.insertBack(io);
+                }
+            }
+            else if (events[i].filter == EVFILT_WRITE)
+            {
+                auto transport = cast(SelectorStreamTransport) io.transport;
+                assert(transport !is null);
+                transport.writeReady = true;
+            }
+        }
+    }
+
+    /**
+     * Returns: The blocking time.
+     */
+    override protected @property inout(Duration) blockTime()
+    inout @safe pure nothrow
+    {
+        return min(super.blockTime, 1.dur!"seconds");
     }
 }

@@ -119,8 +119,11 @@ class ReadBuffer : Buffer
     /// Filled buffer length.
     protected size_t length_;
 
-    /// Last position returned with $(D_KEYWORD []).
+    /// Start of available data.
     protected size_t start;
+
+    /// Last position returned with $(D_KEYWORD []).
+    protected size_t ring;
 
     /// Available space.
     protected immutable size_t minAvailable;
@@ -185,7 +188,7 @@ class ReadBuffer : Buffer
      */
     @property size_t length() const @nogc @safe pure nothrow
     {
-        return length_;
+        return length_ - start;
     }
 
     /**
@@ -195,16 +198,16 @@ class ReadBuffer : Buffer
      */
     ReadBuffer clear() pure nothrow @safe @nogc
     {
-        start = length_ = 0;
+        start = length_ = ring;
         return this;
     }
 
     /**
      * Returns: Available space.
      */
-    @property size_t free() const @nogc @safe pure nothrow
+    @property size_t free() const pure nothrow @safe @nogc
     {
-        return capacity - length;
+        return length > ring ? capacity - length : capacity - ring;
     }
 
     ///
@@ -237,15 +240,15 @@ class ReadBuffer : Buffer
     ReadBuffer opOpAssign(string op)(ubyte[] buffer)
         if (op == "~")
     {
-        length_ = start + buffer.length;
-        return this;
+        return opOpAssign!"+"(buffer.length);
     }
 
     /// Ditto.
     ReadBuffer opOpAssign(string op)(size_t length)
         if (op == "+")
     {
-        length_ = start + length;
+        length_ += length;
+        ring = start;
         return this;
     }
 
@@ -303,20 +306,6 @@ class ReadBuffer : Buffer
     }
 
     /**
-     * Paarms:
-     *     value = Array.
-     *     start = Start position.
-     *     end   = End position.
-     *
-     * Returns: $(D_KEYWORD this).
-     */
-    ReadBuffer opSliceAssign(ubyte[] value, size_t start, size_t end)
-    {
-        buffer_[this.start + start .. this.start + end] = value;
-        return this;
-    }
-
-    /**
      * Returns a free chunk of the buffer.
      *
      * Set the buffer again after reading something into it. Append
@@ -330,7 +319,9 @@ class ReadBuffer : Buffer
     {
         if (start > 0)
         {
-            return buffer_[0..start];
+            auto ret = buffer_[0..start];
+            ring = 0;
+            return ret;
         }
         else
         {
@@ -338,7 +329,7 @@ class ReadBuffer : Buffer
             {
                 defaultAllocator.resizeArray!ubyte(buffer_, capacity + blockSize);
             }
-            start = length_;
+            ring = length_;
             return buffer_[length_..$];
         }
     }

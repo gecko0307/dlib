@@ -49,11 +49,6 @@ class TransportException : Exception
  */
 interface Transport
 {
-    /**
-     * Returns: $(D_KEYWORD true) if the peer closed the connection,
-     *          $(D_KEYWORD false) otherwise.
-     */
-    @property immutable(bool) disconnected() const pure nothrow @safe @nogc;
 }
 
 /**

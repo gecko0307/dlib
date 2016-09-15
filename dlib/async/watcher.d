@@ -45,11 +45,11 @@ import std.exception;
 
 version (Windows)
 {
-	import core.sys.windows.basetyps;
-	import core.sys.windows.mswsock;
-	import core.sys.windows.winbase;
-	import core.sys.windows.windef;
-	import core.sys.windows.winsock2;
+    import core.sys.windows.basetyps;
+    import core.sys.windows.mswsock;
+    import core.sys.windows.winbase;
+    import core.sys.windows.windef;
+    import core.sys.windows.winsock2;
 }
 
 /**
@@ -75,7 +75,7 @@ class ConnectionWatcher : Watcher
     /// Protocol factory.
     protected Protocol delegate() protocolFactory;
 
-	package PendingQueue!IOWatcher incoming;
+    package PendingQueue!IOWatcher incoming;
 
     /**
      * Params:
@@ -84,7 +84,7 @@ class ConnectionWatcher : Watcher
     this(Socket socket)
     {
         socket_ = socket;
-		incoming = MmapPool.instance.make!(PendingQueue!IOWatcher);
+        incoming = MmapPool.instance.make!(PendingQueue!IOWatcher);
     }
 
     /// Ditto.
@@ -92,10 +92,10 @@ class ConnectionWatcher : Watcher
     {
     }
 
-	~this()
-	{
-		MmapPool.instance.dispose(incoming);
-	}
+    ~this()
+    {
+        MmapPool.instance.dispose(incoming);
+    }
 
     /*
      * Params:
@@ -115,27 +115,27 @@ class ConnectionWatcher : Watcher
     }
 
     /**
-	 * Returns: New protocol instance.
-	 */
+     * Returns: New protocol instance.
+     */
     @property Protocol protocol()
-	in
-	{
-		assert(protocolFactory !is null, "Protocol isn't set.");
-	}
-	body
-	{
-		return protocolFactory();
-	}
+    in
+    {
+        assert(protocolFactory !is null, "Protocol isn't set.");
+    }
+    body
+    {
+        return protocolFactory();
+    }
 
     /**
-	 * Invokes new connection callback.
-	 */
+     * Invokes new connection callback.
+     */
     override void invoke()
     {
-		foreach (io; incoming)
-		{
-			io.protocol.connected(cast(DuplexTransport) io.transport);
-		}
+        foreach (io; incoming)
+        {
+            io.protocol.connected(cast(DuplexTransport) io.transport);
+        }
     }
 }
 
@@ -146,46 +146,46 @@ class ConnectionWatcher : Watcher
 class IOWatcher : ConnectionWatcher
 {
     /// If an exception was thrown the transport should be already invalid.
-	private union
-	{
-		StreamTransport transport_;
-		SocketException exception_;
-	}
+    private union
+    {
+        StreamTransport transport_;
+        SocketException exception_;
+    }
 
-	private Protocol protocol_;
+    private Protocol protocol_;
 
-	/**
-	 * Returns: Underlying output buffer.
-	 */
-	package ReadBuffer output;
+    /**
+     * Returns: Underlying output buffer.
+     */
+    package ReadBuffer output;
 
     /**
      * Params:
      *     transport = Transport.
-	 *     protocol  = New instance of the application protocol.
+     *     protocol  = New instance of the application protocol.
      */
     this(StreamTransport transport, Protocol protocol)
     in
     {
         assert(transport !is null);
-		assert(protocol !is null);
+        assert(protocol !is null);
     }
     body
     {
         super();
         transport_ = transport;
-		protocol_ = protocol;
-		output = MmapPool.instance.make!ReadBuffer();
-		active = true;
+        protocol_ = protocol;
+        output = MmapPool.instance.make!ReadBuffer();
+        active = true;
     }
 
-	/**
-	 * Destroys the watcher.
-	 */
+    /**
+     * Destroys the watcher.
+     */
     protected ~this()
     {
-		MmapPool.instance.dispose(output);
-		MmapPool.instance.dispose(protocol_);
+        MmapPool.instance.dispose(output);
+        MmapPool.instance.dispose(protocol_);
     }
 
     /**
@@ -193,7 +193,7 @@ class IOWatcher : ConnectionWatcher
      *
      * Params:
      *     transport = Transport.
-	 *     protocol  = Application protocol.
+     *     protocol  = Application protocol.
      *
      * Returns: $(D_KEYWORD this).
      */
@@ -201,13 +201,13 @@ class IOWatcher : ConnectionWatcher
     in
     {
         assert(transport !is null);
-		assert(protocol !is null);
+        assert(protocol !is null);
     }
     body
     {
         transport_ = transport;
-		protocol_ = protocol;
-		active = true;
+        protocol_ = protocol;
+        active = true;
         return this;
     }
 
@@ -220,27 +220,27 @@ class IOWatcher : ConnectionWatcher
     }
 
     /**
-	 * Sets an exception occurred during a read/write operation.
-	 *
-	 * Params:
-	 *     exception = Thrown exception.
-	 */
+     * Sets an exception occurred during a read/write operation.
+     *
+     * Params:
+     *     exception = Thrown exception.
+     */
     @property void exception(SocketException exception) pure nothrow @nogc
     {
-		exception_ = exception;
+        exception_ = exception;
     }
 
-	/**
-	 * Returns: Application protocol.
-	 */
+    /**
+     * Returns: Application protocol.
+     */
     override @property Protocol protocol() pure nothrow @safe @nogc
-	{
-		return protocol_;
-	}
+    {
+        return protocol_;
+    }
 
     /**
-	 * Returns: Socket.
-	 */
+     * Returns: Socket.
+     */
     override @property inout(Socket) socket() inout pure nothrow
     {
         return transport.socket;
@@ -251,15 +251,15 @@ class IOWatcher : ConnectionWatcher
      */
     override void invoke()
     {
-		if (output.length)
+        if (output.length)
         {
             protocol.received(output[0..$]);
-			output.clear();
+            output.clear();
         }
-		else
-		{
-			protocol.disconnected(exception_);
-			active = false;
-		}
+        else
+        {
+            protocol.disconnected(exception_);
+            active = false;
+        }
     }
 }

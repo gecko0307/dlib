@@ -55,7 +55,6 @@ version (Posix)
     import core.sys.posix.unistd;
 
     private enum SOCKET_ERROR = -1;
-    private enum SO_UPDATE_ACCEPT_CONTEXT = 0;
 }
 else version (Windows)
 {
@@ -437,7 +436,7 @@ else version (Windows)
          */
         bool beginAccept(SocketState overlapped) @trusted
         {
-            auto socket = cast(socket_t) socket(addressFamily, SOCK_STREAM, protocolType);
+            auto socket = cast(socket_t) socket(addressFamily, SOCK_STREAM, 0);
             if (socket == socket_t.init)
             {
                 throw defaultAllocator.make!SocketException("Unable to create socket");
@@ -486,14 +485,13 @@ else version (Windows)
                 defaultAllocator.dispose(overlapped.buffer.buf[0..overlapped.buffer.len]);
             }
             auto socket = defaultAllocator.make!OverlappedConnectedSocket(cast(socket_t) overlapped.handle,
-                                                                          addressFamily,
-                                                                          protocolType);
+                                                                          addressFamily);
             scope (failure)
             {
                 defaultAllocator.dispose(socket);
             }
             socket.setOption(SocketOptionLevel.SOCKET,
-                             Option.updateAcceptContext,
+                             cast(SocketOption) SO_UPDATE_ACCEPT_CONTEXT,
                              cast(size_t) handle);
             return socket;
         }
@@ -794,7 +792,7 @@ abstract class Socket
         {
             int msecs;
             auto ret = getOption(level, option, (&msecs)[0 .. 1]);
-            if (option == SocketOption.SO_RCVTIMEO)
+            if (option == SocketOption.RCVTIMEO)
             {
                 msecs += WINSOCK_TIMEOUT_SKEW;
             }
@@ -850,7 +848,7 @@ abstract class Socket
         else version (Windows)
         {
             auto msecs = cast(int) value.total!"msecs";
-            if (msecs > 0 && option == SocketOption.SO_RCVTIMEO)
+            if (msecs > 0 && option == SocketOption.RCVTIMEO)
             {
                 msecs = max(1, msecs - WINSOCK_TIMEOUT_SKEW);
             }
@@ -1167,7 +1165,7 @@ class ConnectedSocket : Socket, ConnectionOrientedSocket
      *
      * Throws: $(D_PSYMBOL SocketException) if unable to receive.
      */
-    ptrdiff_t receive(ubyte[] buf, Flags flags) @trusted
+    ptrdiff_t receive(ubyte[] buf, Flags flags = Flag.none) @trusted
     {
         ptrdiff_t ret;
         if (!buf.length)
@@ -1205,7 +1203,7 @@ class ConnectedSocket : Socket, ConnectionOrientedSocket
      *
      * Throws: $(D_PSYMBOL SocketException) if unable to send.
      */
-    ptrdiff_t send(const(ubyte)[] buf, Flags flags) const @trusted
+    ptrdiff_t send(const(ubyte)[] buf, Flags flags = Flag.none) const @trusted
     {
         int sendFlags = cast(int) flags;
         ptrdiff_t sent;

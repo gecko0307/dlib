@@ -31,7 +31,7 @@ DEALINGS IN THE SOFTWARE.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Eugene Wissner
  */
-module dlib.async.epoll;
+module dlib.async.event.epoll;
 
 version (linux):
 
@@ -42,6 +42,7 @@ import dlib.async.watcher;
 import dlib.async.loop;
 import dlib.async.event.selector;
 import dlib.memory;
+import dlib.memory.mmappool;
 import dlib.network.socket;
 import core.stdc.errno;
 import core.sys.posix.fcntl;
@@ -53,7 +54,7 @@ import std.algorithm.comparison;
 class EpollLoop : SelectorLoop
 {
     protected int fd;
-    private epoll_event[] epollEvents;
+    private epoll_event[] events;
 
     /**
      * Initializes the loop.
@@ -65,7 +66,7 @@ class EpollLoop : SelectorLoop
             throw MmapPool.instance.make!BadLoopException("epoll initialization failed");
         }
         super();
-        epollEvents = MmapPool.instance.makeArray!epoll_event(maxEvents);
+        events = MmapPool.instance.makeArray!epoll_event(maxEvents);
     }
 
     /**
@@ -73,7 +74,7 @@ class EpollLoop : SelectorLoop
      */
     ~this()
     {
-        MmapPool.instance.dispose(epollEvents);
+        MmapPool.instance.dispose(events);
         close(fd);
     }
 
@@ -81,13 +82,13 @@ class EpollLoop : SelectorLoop
      * Should be called if the backend configuration changes.
      *
      * Params:
-     *     socket    = Socket.
+     *     watcher   = Watcher.
      *     oldEvents = The events were already set.
      *     events    = The events should be set.
      *
      * Returns: $(D_KEYWORD true) if the operation was successful.
      */
-    protected override bool modify(Socket socket, EventMask oldEvents, EventMask events)
+    protected override bool reify(ConnectionWatcher watcher, EventMask oldEvents, EventMask events)
     {
         int op = EPOLL_CTL_DEL;
         epoll_event ev;
@@ -105,12 +106,12 @@ class EpollLoop : SelectorLoop
             op = EPOLL_CTL_ADD;
         }
 
-        ev.data.fd = cast(int) socket;
+        ev.data.fd = cast(int) watcher.socket.handle;
         ev.events = (events & (Event.read | Event.accept) ? EPOLLIN | EPOLLPRI : 0)
                   | (events & Event.write ? EPOLLOUT : 0)
                   | EPOLLET;
 
-        return epoll_ctl(fd, op, cast(int) socket, &ev) == 0;
+        return epoll_ctl(fd, op, cast(int) watcher.socket.handle, &ev) == 0;
     }
 
     /**
@@ -120,8 +121,8 @@ class EpollLoop : SelectorLoop
      *     protocolFactory = Protocol factory.
      *     socket          = Socket.
      */
-    protected override void acceptConnection(Protocol delegate() protocolFactory,
-                                             Socket socket)
+    protected void acceptConnection(Protocol delegate() protocolFactory,
+                                             StreamSocket socket)
     {
 		while (true)
         {
@@ -142,12 +143,12 @@ class EpollLoop : SelectorLoop
 
             if (connections.length > client)
             {
-                connection = cast(IOWatcher) connections[cast(int) client];
+                connection = cast(IOWatcher) connections[client.handle];
                 // If it is a ConnectionWatcher
-                if (connection is null && connections[cast(int) client] !is null)
+                if (connection is null && connections[client.handle] !is null)
                 {
-                    MmapPool.instance.dispose(connections[cast(int) client]);
-                    connections[cast(int) client] = null;
+                    MmapPool.instance.dispose(connections[client.handle]);
+                    connections[client.handle] = null;
                 }
             }
             else
@@ -156,18 +157,18 @@ class EpollLoop : SelectorLoop
             }
             if (connection !is null)
             {
-                connection(protocolFactory, transport);
+                connection(transport, protocolFactory());
             }
             else
             {
-                connections[cast(int) client] = make!IOWatcher(MmapPool.instance,
-                                                               protocolFactory,
-                                                               transport);
+                connections[client.handle] = make!IOWatcher(MmapPool.instance,
+                                                            transport,
+                                                            protocolFactory());
             }
 
-            modify(client, EventMask(Event.none), EventMask(Event.read, Event.write));
+            reify(connection, EventMask(Event.none), EventMask(Event.read, Event.write));
 
-            swapPendings.insertBack(connections[cast(int) client]);
+            swapPendings.insertBack(connections[client.handle]);
         }
     }
 
@@ -178,7 +179,7 @@ class EpollLoop : SelectorLoop
     {
         // Don't block
         immutable timeout = cast(immutable int) blockTime.total!"msecs";
-        auto eventCount = epoll_wait(fd, epollEvents.ptr, maxEvents, timeout);
+        auto eventCount = epoll_wait(fd, events.ptr, maxEvents, timeout);
 
         if (eventCount < 0)
         {
@@ -191,19 +192,18 @@ class EpollLoop : SelectorLoop
 
         for (auto i = 0; i < eventCount; ++i)
         {
-            epoll_event *ev = epollEvents[i];
-            auto connection = cast(IOWatcher) connections[ev.data.fd];
+            auto connection = cast(IOWatcher) connections[events[i].data.fd];
 
             if (connection is null)
             {
-                swapPendings.insertBack(connections[ev.data.fd]);
+                swapPendings.insertBack(connections[events[i].data.fd]);
             }
             else
             {
                 auto transport = cast(SelectorStreamTransport) connection.transport;
                 assert(transport !is null);
 
-                if (ev.events & (EPOLLIN | EPOLLPRI | EPOLLERR | EPOLLHUP))
+                if (events[i].events & (EPOLLIN | EPOLLPRI | EPOLLERR | EPOLLHUP))
                 {
                     try
                     {
@@ -218,7 +218,7 @@ class EpollLoop : SelectorLoop
                         defaultAllocator.dispose(e);
                     }
                 }
-                else if (ev.events & (EPOLLOUT | EPOLLERR | EPOLLHUP))
+                else if (events[i].events & (EPOLLOUT | EPOLLERR | EPOLLHUP))
                 {
                     transport.writeReady = true;
                 }
