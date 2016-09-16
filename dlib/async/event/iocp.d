@@ -278,10 +278,7 @@ class IOCPLoop : Loop
                 {
                     // We want to get one last notification to destroy the watcher
                     transport.socket.beginReceive(io.output[], overlapped);
-                    transport.socket.shutdown();
-                    defaultAllocator.dispose(transport.socket);
-                    MmapPool.instance.dispose(transport);
-                    io.exception = exception;
+                    kill(io, exception);
                 }
                 else if (received > 0)
                 {
@@ -293,8 +290,8 @@ class IOCPLoop : Loop
                     {
                         transport.socket.beginReceive(io.output[], overlapped);
                     }
+                    swapPendings.insertBack(io);
                 }
-                swapPendings.insertBack(io);
                 break;
             case OverlappedSocketEvent.write:
                 auto io = cast(IOWatcher) (cast(void*) key);

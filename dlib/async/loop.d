@@ -292,6 +292,18 @@ abstract class Loop
     }
 
     /**
+     * Kills the watcher and closes the connection.
+     */
+    void kill(IOWatcher watcher, SocketException exception)
+    {
+        watcher.socket.shutdown();
+        defaultAllocator.dispose(watcher.socket);
+        MmapPool.instance.dispose(watcher.transport);
+        watcher.exception = exception;
+        swapPendings.insertBack(watcher);
+    }
+
+    /**
      * Does the actual polling.
      */
     abstract protected void poll();

@@ -53,22 +53,23 @@ class SelectorStreamTransport : StreamTransport
     private ConnectedSocket socket_;
 
     /// Input buffer.
-    private WriteBuffer input_;
+    package WriteBuffer input;
 
-    private Loop loop;
+    private SelectorLoop loop;
 
-    bool writeReady;
+    /// Received notification that the underlying socket is write-ready.
+    package bool writeReady;
 
     /**
      * Params:
      *     loop     = Event loop.
      *     socket   = Socket.
      */
-    this(Loop loop, ConnectedSocket socket)
+    this(SelectorLoop loop, ConnectedSocket socket)
     {
         socket_ = socket;
         this.loop = loop;
-        input_ = MmapPool.instance.make!WriteBuffer();
+        input = MmapPool.instance.make!WriteBuffer();
     }
 
     /**
@@ -76,7 +77,7 @@ class SelectorStreamTransport : StreamTransport
      */
     ~this()
     {
-        MmapPool.instance.dispose(input_);
+        MmapPool.instance.dispose(input);
     }
 
     /**
@@ -95,20 +96,38 @@ class SelectorStreamTransport : StreamTransport
      */
     void write(ubyte[] data)
     {
-        // If the buffer wasn't empty the transport should be already there.
-        //if (!input.length && data.length)
-        //{
-            //loop.feed(this);
-        //}
-        //input ~= data;
-    }
-
-    /**
-     * Returns: Input buffer.
-     */
-    @property WriteBuffer input() @safe pure nothrow
-    {
-        return input_;
+        if (!data.length)
+        {
+            return;
+        }
+        // Try to write if the socket is write ready.
+        if (writeReady)
+        {
+            ptrdiff_t sent;
+            SocketException exception;
+            try
+            {
+                sent = socket.send(data);
+                if (sent == 0)
+                {
+                    writeReady = false;
+                }
+            }
+            catch (SocketException e)
+            {
+                writeReady = false;
+                exception = e;
+            }
+            if (sent < data.length)
+            {
+                input ~= data[sent..$];
+                loop.feed(this, exception);
+            }
+        }
+        else
+        {
+            input ~= data;
+        }
     }
 }
 
@@ -137,6 +156,51 @@ abstract class SelectorLoop : Loop
 			}
 		}
         MmapPool.instance.dispose(connections);
+    }
+
+    /**
+     * If the transport couldn't send the data, the further sending should
+     * be handled by the event loop.
+     *
+     * Params:
+     *     transport = Transport.
+     *     exception = Exception thrown on sending.
+     *
+     * Returns: $(D_KEYWORD true) if the operation could be successfully
+     *          completed or scheduled, $(D_KEYWORD false) otherwise (the
+     *          transport will be destroyed then).
+     */
+    protected bool feed(SelectorStreamTransport transport, SocketException exception = null)
+    {
+        while (transport.input.length && transport.writeReady)
+        {
+            try
+            {
+                ptrdiff_t sent = transport.socket.send(transport.input[]);
+                if (sent == 0)
+                {
+                    transport.writeReady = false;
+                }
+                else
+                {
+                    transport.input += sent;
+                }
+            }
+            catch (SocketException e)
+            {
+                exception = e;
+                transport.writeReady = false;
+            }
+        }
+        if (exception !is null)
+        {
+            auto watcher = cast(IOWatcher) connections[transport.socket.handle];
+            assert(watcher !is null);
+
+            kill(watcher, exception);
+            return false;
+        }
+        return true;
     }
 
     /**

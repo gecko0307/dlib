@@ -1218,7 +1218,7 @@ class ConnectedSocket : Socket, ConnectionOrientedSocket
         {
             return sent;
         }
-        if (wouldHaveBlocked())
+        else if (wouldHaveBlocked())
         {
             return 0;
         }

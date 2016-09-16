@@ -159,7 +159,7 @@ class KqueueLoop : SelectorLoop
         }
         if (events & Event.write)
         {
-            set(watcher.socket.handle, EVFILT_WRITE, EV_ADD | EV_ENABLE);
+            set(watcher.socket.handle, EVFILT_WRITE, EV_ADD | EV_DISPATCH);
         }
         return true;
     }
@@ -240,6 +240,10 @@ class KqueueLoop : SelectorLoop
                     swapPendings.insertBack(connections[events[i].ident]);
                 }
             }
+            else if (events[i].flags & EV_ERROR)
+            {
+                kill(io, null);
+            }
             else if (events[i].filter == EVFILT_READ)
             {
                 auto transport = cast(SelectorStreamTransport) io.transport;
@@ -262,11 +266,7 @@ class KqueueLoop : SelectorLoop
                 }
                 if (transport.socket.disconnected)
                 {
-                    transport.socket.shutdown();
-                    defaultAllocator.dispose(transport.socket);
-                    MmapPool.instance.dispose(transport);
-                    io.exception = exception;
-                    swapPendings.insertBack(io);
+                    kill(io, exception);
                 }
                 else if (io.output.length)
                 {
@@ -277,7 +277,12 @@ class KqueueLoop : SelectorLoop
             {
                 auto transport = cast(SelectorStreamTransport) io.transport;
                 assert(transport !is null);
+
                 transport.writeReady = true;
+                if (transport.input.length)
+                {
+                    feed(transport);
+                }
             }
         }
     }
@@ -289,5 +294,31 @@ class KqueueLoop : SelectorLoop
     inout @safe pure nothrow
     {
         return min(super.blockTime, 1.dur!"seconds");
+    }
+
+    /**
+     * If the transport couldn't send the data, the further sending should
+     * be handled by the event loop.
+     *
+     * Params:
+     *     transport = Transport.
+     *     exception = Exception thrown on sending.
+     *
+     * Returns: $(D_KEYWORD true) if the operation could be successfully
+     *          completed or scheduled, $(D_KEYWORD false) otherwise (the
+     *          transport is be destroyed then).
+     */
+    protected override bool feed(SelectorStreamTransport transport, SocketException exception = null)
+    {
+        if (!super.feed(transport, exception))
+        {
+            return false;
+        }
+        if (!transport.writeReady)
+        {
+            set(transport.socket.handle, EVFILT_WRITE, EV_DISPATCH);
+            return true;
+        }
+        return false;
     }
 }
