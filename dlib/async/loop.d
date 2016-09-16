@@ -279,7 +279,7 @@ abstract class Loop
     /**
      * Kills the watcher and closes the connection.
      */
-    void kill(IOWatcher watcher, SocketException exception)
+    protected void kill(IOWatcher watcher, SocketException exception)
     {
         watcher.socket.shutdown();
         defaultAllocator.dispose(watcher.socket);
