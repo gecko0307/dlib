@@ -143,7 +143,11 @@ class EpollLoop : SelectorLoop
             {
                 acceptConnections(connections[events[i].data.fd]);
             }
-            else if (events[i].events & (EPOLLIN | EPOLLPRI | EPOLLERR | EPOLLHUP))
+            else if (events[i].events & EPOLLERR)
+            {
+                kill(io, null);
+            }
+            else if (events[i].events & (EPOLLIN | EPOLLPRI | EPOLLHUP))
             {
                 auto transport = cast(SelectorStreamTransport) io.transport;
                 assert(transport !is null);
@@ -172,7 +176,7 @@ class EpollLoop : SelectorLoop
                     swapPendings.insertBack(io);
                 }
             }
-            else if (events[i].events & (EPOLLOUT | EPOLLERR | EPOLLHUP))
+            else if (events[i].events & EPOLLOUT)
             {
                 auto transport = cast(SelectorStreamTransport) io.transport;
                 assert(transport !is null);
