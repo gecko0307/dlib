@@ -31,17 +31,11 @@ DEALINGS IN THE SOFTWARE.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Eugene Wissner
  *
- * If you changed the the default allocator please use $(D_PSYMBOL MmapPool)
- * to allocate watchers.
+ * On Windows you would use `OverlappedStreamSocket` instead of `Socket`.
  *
  * ---
- * import dlib.memory;
- * import dlib.memory.mmappool;
  * import dlib.async;
- * import std.exception;
- * import core.sys.posix.netinet.in_;
- * import core.sys.posix.fcntl;
- * import core.sys.posix.unistd;
+ * import dlib.network.socket;
  *
  * class EchoProtocol : TransmissionControlProtocol
  * {
@@ -64,30 +58,21 @@ DEALINGS IN THE SOFTWARE.
  *
  * void main()
  * {
- *     sockaddr_in addr;
- *     int s = socket(AF_INET, SOCK_STREAM, 0);
- *
- *     addr.sin_family = AF_INET;
- *     addr.sin_port = htons(cast(ushort)8192);
- *     addr.sin_addr.s_addr = INADDR_ANY;
- *
- *     if (bind(s, cast(sockaddr *)&addr, addr.sizeof) != 0)
- *     {
- *         throw MmapPool.instance.make!Exception("bind");
- *     }
- *
- *     fcntl(s, F_SETFL, fcntl(s, F_GETFL, 0) | O_NONBLOCK); 
- *     listen(s, 5);
- *
- *     auto io = MmapPool.instance.make!ConnectionWatcher(s);
+ *     auto sock = new StreamSocket(AddressFamily.INET);
+ *     auto address = new InternetAddress("127.0.0.1", cast(ushort) 8192);
+
+ *     sock.blocking = false;
+
+ *     sock.bind(address);
+ *     sock.listen(5);
+
+ *     auto io = new ConnectionWatcher(sock);
  *     io.setProtocol!EchoProtocol;
- *
+
  *     defaultLoop.start(io);
- *
  *     defaultLoop.run();
  *
- *     shutdown(s, SHUT_RDWR);
- *     close(s);
+ *     sock.shutdown();
  * }
  * ---
  */

@@ -37,16 +37,14 @@ version (linux):
 
 public import core.sys.linux.epoll;
 import dlib.async.protocol;
+import dlib.async.event.selector;
+import dlib.async.loop;
 import dlib.async.transport;
 import dlib.async.watcher;
-import dlib.async.loop;
-import dlib.async.event.selector;
 import dlib.memory;
 import dlib.memory.mmappool;
 import dlib.network.socket;
 import core.stdc.errno;
-import core.sys.posix.fcntl;
-import core.sys.posix.netinet.in_;
 import core.sys.posix.unistd;
 import core.time;
 import std.algorithm.comparison;
@@ -89,6 +87,11 @@ class EpollLoop : SelectorLoop
      * Returns: $(D_KEYWORD true) if the operation was successful.
      */
     protected override bool reify(ConnectionWatcher watcher, EventMask oldEvents, EventMask events)
+    in
+    {
+        assert(watcher !is null);
+    }
+    body
     {
         int op = EPOLL_CTL_DEL;
         epoll_event ev;
@@ -106,70 +109,12 @@ class EpollLoop : SelectorLoop
             op = EPOLL_CTL_ADD;
         }
 
-        ev.data.fd = cast(int) watcher.socket.handle;
+        ev.data.fd = watcher.socket.handle;
         ev.events = (events & (Event.read | Event.accept) ? EPOLLIN | EPOLLPRI : 0)
                   | (events & Event.write ? EPOLLOUT : 0)
                   | EPOLLET;
 
-        return epoll_ctl(fd, op, cast(int) watcher.socket.handle, &ev) == 0;
-    }
-
-    /**
-     * Accept incoming connections.
-     *
-     * Params:
-     *     protocolFactory = Protocol factory.
-     *     socket          = Socket.
-     */
-    protected void acceptConnection(Protocol delegate() protocolFactory,
-                                             StreamSocket socket)
-    {
-		while (true)
-        {
-			Socket client;
-
-			try
-			{
-				client = socket.accept();
-			}
-			catch (SocketException e)
-			{
-				defaultAllocator.dispose(e);
-				break;
-			}
-
-            auto transport = MmapPool.instance.make!SelectorStreamTransport(this, client);
-            IOWatcher connection;
-
-            if (connections.length > client)
-            {
-                connection = cast(IOWatcher) connections[client.handle];
-                // If it is a ConnectionWatcher
-                if (connection is null && connections[client.handle] !is null)
-                {
-                    MmapPool.instance.dispose(connections[client.handle]);
-                    connections[client.handle] = null;
-                }
-            }
-            else
-            {
-                MmapPool.instance.expandArray(connections, maxEvents / 2);
-            }
-            if (connection !is null)
-            {
-                connection(transport, protocolFactory());
-            }
-            else
-            {
-                connections[client.handle] = make!IOWatcher(MmapPool.instance,
-                                                            transport,
-                                                            protocolFactory());
-            }
-
-            reify(connection, EventMask(Event.none), EventMask(Event.read, Event.write));
-
-            swapPendings.insertBack(connections[client.handle]);
-        }
+        return epoll_ctl(fd, op, watcher.socket.handle, &ev) == 0;
     }
 
     /**
@@ -192,35 +137,50 @@ class EpollLoop : SelectorLoop
 
         for (auto i = 0; i < eventCount; ++i)
         {
-            auto connection = cast(IOWatcher) connections[events[i].data.fd];
+            auto io = cast(IOWatcher) connections[events[i].data.fd];
 
-            if (connection is null)
+            if (io is null)
             {
-                swapPendings.insertBack(connections[events[i].data.fd]);
+                acceptConnections(connections[events[i].data.fd]);
             }
-            else
+            else if (events[i].events & (EPOLLIN | EPOLLPRI | EPOLLERR | EPOLLHUP))
             {
-                auto transport = cast(SelectorStreamTransport) connection.transport;
+                auto transport = cast(SelectorStreamTransport) io.transport;
                 assert(transport !is null);
 
-                if (events[i].events & (EPOLLIN | EPOLLPRI | EPOLLERR | EPOLLHUP))
+                SocketException exception;
+                try
                 {
-                    try
+                    ptrdiff_t received;
+                    do
                     {
-                        while (!transport.receive())
-                        {
-                        }
-                        swapPendings.insertBack(connection);
+                        received = transport.socket.receive(io.output[]);
+                        io.output += received;
                     }
-                    catch (TransportException e)
-                    {
-                        swapPendings.insertBack(connection);
-                        defaultAllocator.dispose(e);
-                    }
+                    while (received);
                 }
-                else if (events[i].events & (EPOLLOUT | EPOLLERR | EPOLLHUP))
+                catch (SocketException e)
                 {
-                    transport.writeReady = true;
+                    exception = e;
+                }
+                if (transport.socket.disconnected)
+                {
+                    kill(io, exception);
+                }
+                else if (io.output.length)
+                {
+                    swapPendings.insertBack(io);
+                }
+            }
+            else if (events[i].events & (EPOLLOUT | EPOLLERR | EPOLLHUP))
+            {
+                auto transport = cast(SelectorStreamTransport) io.transport;
+                assert(transport !is null);
+
+                transport.writeReady = true;
+                if (transport.input.length)
+                {
+                    feed(transport);
                 }
             }
         }

@@ -57,10 +57,10 @@ interface Protocol
 
     /**
      * Called when a connection is lost.
-	 *
-	 * Params:
-	 *     exception = $(D_PSYMBOL Exception) if an error caused
-	 *                 the disconnect, $(D_KEYWORD null) otherwise.
+     *
+     * Params:
+     *     exception = $(D_PSYMBOL Exception) if an error caused
+     *                 the disconnect, $(D_KEYWORD null) otherwise.
      */
     void disconnected(SocketException exception = null);
 }

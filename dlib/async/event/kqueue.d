@@ -153,7 +153,7 @@ class KqueueLoop : SelectorLoop
                 set(watcher.socket.handle, EVFILT_WRITE, EV_DELETE);
             }
         }
-        if (events & Event.read || events & Event.accept)
+        if (events & (Event.read | events & Event.accept))
         {
             set(watcher.socket.handle, EVFILT_READ, EV_ADD | EV_ENABLE);
         }
@@ -197,48 +197,7 @@ class KqueueLoop : SelectorLoop
             // If it is a ConnectionWatcher. Accept connections.
             if (io is null)
             {
-                auto socket = cast(StreamSocket) connections[events[i].ident].socket;
-                assert(socket !is null);
-
-                while (true)
-                {
-                    ConnectedSocket client;
-                    try
-                    {
-                        client = socket.accept();
-                    }
-                    catch (SocketException e)
-                    {
-                        defaultAllocator.dispose(e);
-                        client = null;
-                    }
-                    if (client is null)
-                    {
-                        break;
-                    }
-                    else if (client.handle >= connections.length)
-                    {
-                        MmapPool.instance.resizeArray(connections, client.handle + maxEvents / 2);
-                    }
-
-                    io = cast(IOWatcher) connections[client.handle];
-                    auto transport = MmapPool.instance.make!SelectorStreamTransport(this, client);
-                    if (io is null)
-                    {
-                        io = MmapPool.instance.make!IOWatcher(transport, connections[events[i].ident].protocol);
-                        connections[client.handle] = io;
-                    }
-                    else
-                    {
-                        io(transport, connections[client.handle].protocol);
-                    }
-                    connections[events[i].ident].incoming.insertBack(io);
-                    reify(io, EventMask(Event.none), EventMask(Event.read, Event.write));
-                }
-                if (!connections[events[i].ident].incoming.empty)
-                {
-                    swapPendings.insertBack(connections[events[i].ident]);
-                }
+				acceptConnections(io);
             }
             else if (events[i].flags & EV_ERROR)
             {

@@ -109,7 +109,7 @@ class ConnectionWatcher : Watcher
     /**
      * Returns: Socket.
      */
-    @property inout(Socket) socket() inout pure nothrow
+    @property inout(Socket) socket() inout pure nothrow @nogc
     {
         return socket_;
     }
@@ -241,7 +241,7 @@ class IOWatcher : ConnectionWatcher
     /**
      * Returns: Socket.
      */
-    override @property inout(Socket) socket() inout pure nothrow
+    override @property inout(Socket) socket() inout pure nothrow @nogc
     {
         return transport.socket;
     }

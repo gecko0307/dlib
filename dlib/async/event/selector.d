@@ -144,17 +144,17 @@ abstract class SelectorLoop : Loop
 
     ~this()
     {
-		foreach (ref connection; connections)
-		{
-			// We want to free only IOWatchers. ConnectionWatcher are created by the
-			// user and should be freed by himself.
-			auto io = cast(IOWatcher) connection;
-			if (io !is null)
-			{
-				MmapPool.instance.dispose(io);
-				connection = null;
-			}
-		}
+        foreach (ref connection; connections)
+        {
+            // We want to free only IOWatchers. ConnectionWatcher are created by the
+            // user and should be freed by himself.
+            auto io = cast(IOWatcher) connection;
+            if (io !is null)
+            {
+                MmapPool.instance.dispose(io);
+                connection = null;
+            }
+        }
         MmapPool.instance.dispose(connections);
     }
 
@@ -223,5 +223,67 @@ abstract class SelectorLoop : Loop
         connections[watcher.socket.handle] = watcher;
 
         super.start(watcher);
+    }
+
+    /**
+     * Accept incoming connections.
+     *
+     * Params:
+     *     connection = Connection watcher ready to accept.
+     */
+    package void acceptConnections(ConnectionWatcher connection)
+    in
+    {
+        assert(connection !is null);
+    }
+    body
+    {
+        while (true)
+        {
+            ConnectedSocket client;
+            try
+            {
+                client = (cast(StreamSocket) connection.socket).accept();
+            }
+            catch (SocketException e)
+            {
+                defaultAllocator.dispose(e);
+                break;
+            }
+            if (client is null)
+            {
+                break;
+            }
+
+            IOWatcher io;
+            auto transport = MmapPool.instance.make!SelectorStreamTransport(this, client);
+
+            if (connections.length >= client.handle)
+            {
+                io = cast(IOWatcher) connections[client.handle];
+            }
+            else
+            {
+                MmapPool.instance.resizeArray(connections, client.handle + maxEvents / 2);
+            }
+            if (io is null)
+            {
+                io = MmapPool.instance.make!IOWatcher(transport,
+                                                      connection.protocol);
+                connections[client.handle] = io;
+            }
+            else
+            {
+                io(transport, connection.protocol);
+            }
+
+            reify(io, EventMask(Event.none), EventMask(Event.read, Event.write));
+            connection.incoming.insertBack(io);
+        }
+
+        if (!connection.incoming.empty)
+        {
+            swapPendings.insertBack(connection);
+        }
     }
 }
