@@ -280,7 +280,7 @@ class KqueueLoop : SelectorLoop
             // If it is a ConnectionWatcher. Accept connections.
             if (io is null)
             {
-                acceptConnections(io);
+                acceptConnections(connections[events[i].ident]);
             }
             else if (events[i].flags & EV_ERROR)
             {
