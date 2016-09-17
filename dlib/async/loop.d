@@ -31,17 +31,11 @@ DEALINGS IN THE SOFTWARE.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Eugene Wissner
  *
- * If you changed the the default allocator please use $(D_PSYMBOL MmapPool)
- * to allocate watchers.
+ * On Windows you would use `OverlappedStreamSocket` instead of `Socket`.
  *
  * ---
- * import dlib.memory;
- * import dlib.memory.mmappool;
  * import dlib.async;
- * import std.exception;
- * import core.sys.posix.netinet.in_;
- * import core.sys.posix.fcntl;
- * import core.sys.posix.unistd;
+ * import dlib.network.socket;
  *
  * class EchoProtocol : TransmissionControlProtocol
  * {
@@ -64,30 +58,21 @@ DEALINGS IN THE SOFTWARE.
  *
  * void main()
  * {
- *     sockaddr_in addr;
- *     int s = socket(AF_INET, SOCK_STREAM, 0);
- *
- *     addr.sin_family = AF_INET;
- *     addr.sin_port = htons(cast(ushort)8192);
- *     addr.sin_addr.s_addr = INADDR_ANY;
- *
- *     if (bind(s, cast(sockaddr *)&addr, addr.sizeof) != 0)
- *     {
- *         throw MmapPool.instance.make!Exception("bind");
- *     }
- *
- *     fcntl(s, F_SETFL, fcntl(s, F_GETFL, 0) | O_NONBLOCK); 
- *     listen(s, 5);
- *
- *     auto io = MmapPool.instance.make!ConnectionWatcher(s);
+ *     auto sock = new StreamSocket(AddressFamily.INET);
+ *     auto address = new InternetAddress("127.0.0.1", cast(ushort) 8192);
+
+ *     sock.blocking = false;
+
+ *     sock.bind(address);
+ *     sock.listen(5);
+
+ *     auto io = new ConnectionWatcher(sock);
  *     io.setProtocol!EchoProtocol;
- *
+
  *     defaultLoop.start(io);
- *
  *     defaultLoop.run();
  *
- *     shutdown(s, SHUT_RDWR);
- *     close(s);
+ *     sock.shutdown();
  * }
  * ---
  */
@@ -110,10 +95,52 @@ version (DisableBackends)
 }
 else version (linux)
 {
-	import dlib.async.epoll;
-	version = Epoll;
+    import dlib.async.event.epoll;
+    version = Epoll;
+}
+else version (Windows)
+{
+    import dlib.async.event.iocp;
+    version = IOCP;
+}
+else version (OSX)
+{
+    version = Kqueue;
+}
+else version (iOS)
+{
+    version = Kqueue;
+}
+else version (FreeBSD)
+{
+    version = Kqueue;
+}
+else version (OpenBSD)
+{
+    version = Kqueue;
+}
+else version (DragonFlyBSD)
+{
+    version = Kqueue;
 }
 
+/**
+ * Events.
+ */
+enum Event : uint
+{
+    none   = 0x00,       /// No events.
+    read   = 0x01,       /// Non-blocking read call.
+    write  = 0x02,       /// Non-blocking write call.
+    accept = 0x04,       /// Connection made.
+    error  = 0x80000000, /// Sent when an error occurs.
+}
+
+alias EventMask = BitFlags!Event;
+
+/**
+ * Tries to set $(D_PSYMBOL MmapPool) to the default allocator.
+ */
 shared static this()
 {
     if (allocator is null)
@@ -123,42 +150,31 @@ shared static this()
 }
 
 /**
- * Events.
- */
-enum Event : uint
-{
-    none   = 0x00, /// No events.
-    read   = 0x01, /// Non-blocking read call.
-    write  = 0x02, /// Non-blocking write call.
-    accept = 0x04, /// Connection made.
-}
-
-alias EventMask = BitFlags!Event;
-
-/**
  * Event loop.
  */
 abstract class Loop
 {
     /// Pending watchers.
-    protected PendingQueue pendings;
+    protected PendingQueue!Watcher pendings;
 
-    protected PendingQueue swapPendings;
+    protected PendingQueue!Watcher swapPendings;
 
-	/// Max events can be got at a time (should be supported by the backend).
-	protected enum maxEvents = 128;
-
-    /// Pending connections.
-    protected ConnectionWatcher[] connections;
+    /**
+     * Returns: Maximal event count can be got at a time
+     *          (should be supported by the backend).
+     */
+    protected @property inout(uint) maxEvents() inout const pure nothrow @safe @nogc
+    {
+        return 128U;
+    }
 
     /**
      * Initializes the loop.
      */
     this()
     {
-        connections = MmapPool.instance.makeArray!ConnectionWatcher(maxEvents);
-        pendings = MmapPool.instance.make!(PendingQueue);
-        swapPendings = MmapPool.instance.make!(PendingQueue);
+        pendings = MmapPool.instance.make!(PendingQueue!Watcher);
+        swapPendings = MmapPool.instance.make!(PendingQueue!Watcher);
     }
 
     /**
@@ -166,18 +182,6 @@ abstract class Loop
      */
     ~this()
     {
-		foreach (ref connection; connections)
-		{
-			// We want to free only IOWatchers. ConnectionWatcher are created by the
-			// user and should be freed by himself.
-			auto io = cast(IOWatcher) connection;
-			if (io !is null)
-			{
-				MmapPool.instance.dispose(io);
-				connection = null;
-			}
-		}
-        MmapPool.instance.dispose(connections);
         MmapPool.instance.dispose(pendings);
         MmapPool.instance.dispose(swapPendings);
     }
@@ -221,14 +225,7 @@ abstract class Loop
             return;
         }
         watcher.active = true;
-        watcher.accept = &acceptConnection;
-        if (connections.length <= watcher.socket)
-        {
-            MmapPool.instance.expandArray(connections, maxEvents / 2);
-        }
-        connections[cast(int) watcher.socket] = watcher;
-
-        modify(watcher.socket, EventMask(Event.none), EventMask(Event.accept));
+        reify(watcher, EventMask(Event.none), EventMask(Event.accept));
     }
 
     /**
@@ -245,34 +242,22 @@ abstract class Loop
         }
         watcher.active = false;
 
-        modify(watcher.socket, EventMask(Event.accept), EventMask(Event.none));
-    }
-
-    /**
-     * Feeds the given event set into the event loop, as if the specified event
-     * had happened for the specified watcher.
-     *
-     * Params:
-     *     transport = Affected transport.
-     */
-    void feed(DuplexTransport transport)
-    {
-        pendings.insertBack(connections[cast(int) transport.socket]);
+        reify(watcher, EventMask(Event.accept), EventMask(Event.none));
     }
 
     /**
      * Should be called if the backend configuration changes.
      *
      * Params:
-     *     socket    = Socket.
+     *     watcher   = Watcher.
      *     oldEvents = The events were already set.
      *     events    = The events should be set.
      *
      * Returns: $(D_KEYWORD true) if the operation was successful.
      */
-    abstract protected bool modify(Socket socket,
-	                               EventMask oldEvents,
-	                               EventMask events);
+    abstract protected bool reify(ConnectionWatcher watcher,
+                                  EventMask oldEvents,
+                                  EventMask events);
 
     /**
      * Returns: The blocking time.
@@ -303,19 +288,21 @@ abstract class Loop
     }
 
     /**
+     * Kills the watcher and closes the connection.
+     */
+    protected void kill(IOWatcher watcher, SocketException exception)
+    {
+        watcher.socket.shutdown();
+        defaultAllocator.dispose(watcher.socket);
+        MmapPool.instance.dispose(watcher.transport);
+        watcher.exception = exception;
+        swapPendings.insertBack(watcher);
+    }
+
+    /**
      * Does the actual polling.
      */
     abstract protected void poll();
-
-    /**
-     * Accept incoming connections.
-     *
-     * Params:
-     *     protocolFactory = Protocol factory.
-     *     socket          = Socket.
-     */
-    protected void acceptConnection(Protocol delegate() protocolFactory,
-                                    Socket socket);
 
     /// Whether the event loop should be stopped.
     private bool done_;
@@ -360,6 +347,15 @@ class BadLoopException : Exception
     {
         defaultLoop_ = MmapPool.instance.make!EpollLoop;
     }
+    else version (IOCP)
+    {
+        defaultLoop_ = MmapPool.instance.make!IOCPLoop;
+    }
+    else version (Kqueue)
+    {
+        import dlib.async.event.kqueue;
+        defaultLoop_ = MmapPool.instance.make!KqueueLoop;
+    }
     return defaultLoop_;
 }
 
@@ -392,7 +388,7 @@ private Loop defaultLoop_;
  * Params:
  *     T = Content type.
  */
-class PendingQueue
+class PendingQueue(T)
 {
     /**
      * Creates a new $(D_PSYMBOL Queue).
@@ -415,7 +411,7 @@ class PendingQueue
     /**
      * Returns: First element.
      */
-    @property ref Watcher front()
+    @property ref T front()
     in
     {
         assert(!empty);
@@ -433,7 +429,7 @@ class PendingQueue
      *
      * Returns: $(D_KEYWORD this).
      */
-    typeof(this) insertBack(Watcher x)
+    typeof(this) insertBack(T x)
     {
         Entry* temp = MmapPool.instance.make!Entry;
         
@@ -502,7 +498,7 @@ class PendingQueue
     protected struct Entry
     {
         /// Queue item content.
-        Watcher content;
+        T content;
 
         /// Next list item.
         Entry* next;

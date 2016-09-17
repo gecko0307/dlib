@@ -51,22 +51,22 @@ class Mallocator : Allocator
      *
      * Returns: The pointer to the new allocated memory.
      */
-	void[] allocate(size_t size) shared @nogc nothrow
-	{
-		if (!size)
-		{
-			return null;
-		}
-		auto p = malloc(size + psize);
+    void[] allocate(size_t size) shared @nogc nothrow
+    {
+        if (!size)
+        {
+            return null;
+        }
+        auto p = malloc(size + psize);
 
-		if (!p)
-		{
-			onOutOfMemoryError();
-		}
-		return p[psize.. psize + size];
-	}
+        if (!p)
+        {
+            onOutOfMemoryError();
+        }
+        return p[psize.. psize + size];
+    }
 
-	///
+    ///
     @nogc nothrow unittest
     {
         auto p = Mallocator.instance.allocate(20);
@@ -84,19 +84,19 @@ class Mallocator : Allocator
      *
      * Returns: Whether the deallocation was successful.
      */
-	bool deallocate(void[] p) shared @nogc nothrow
-	{
-		if (p !is null)
-		{
-			free(p.ptr - psize);
-		}
-		return true;
-	}
+    bool deallocate(void[] p) shared @nogc nothrow
+    {
+        if (p !is null)
+        {
+            free(p.ptr - psize);
+        }
+        return true;
+    }
 
-	///
+    ///
     @nogc nothrow unittest
     {
-		void[] p;
+        void[] p;
         assert(Mallocator.instance.deallocate(p));
 
         p = Mallocator.instance.allocate(10);
@@ -112,34 +112,34 @@ class Mallocator : Allocator
      *
      * Returns: Whether the reallocation was successful.
      */
-	bool reallocate(ref void[] p, size_t size) shared @nogc nothrow
-	{
+    bool reallocate(ref void[] p, size_t size) shared @nogc nothrow
+    {
         if (!size)
         {
             deallocate(p);
             p = null;
             return true;
         }
-		else if (p is null)
-		{
-			p = allocate(size);
-			return true;
-		}
+        else if (p is null)
+        {
+            p = allocate(size);
+            return true;
+        }
         auto r = realloc(p.ptr - psize, size + psize);
 
         if (!r)
-		{
-			onOutOfMemoryError();
-		}
+        {
+            onOutOfMemoryError();
+        }
         p = r[psize.. psize + size];
 
-		return true;
-	}
+        return true;
+    }
 
-	///
+    ///
     @nogc nothrow unittest
     {
-		void[] p;
+        void[] p;
 
         Mallocator.instance.reallocate(p, 20);
         assert(p.length == 20);
@@ -157,10 +157,10 @@ class Mallocator : Allocator
     /**
      * Returns: The alignment offered.
      */
-	@property immutable(uint) alignment() shared const @safe pure nothrow
-	{
-		return cast(uint) max(double.alignof, real.alignof);
-	}
+    @property immutable(uint) alignment() shared const @safe pure nothrow
+    {
+        return cast(uint) max(double.alignof, real.alignof);
+    }
 
     /**
      * Static allocator instance and initializer.
@@ -176,7 +176,7 @@ class Mallocator : Allocator
 
             if (p is null)
             {
-				onOutOfMemoryError();
+                onOutOfMemoryError();
             }
             p[psize..size] = typeid(Mallocator).initializer[];
             instance_ = cast(shared Mallocator) p[psize..size].ptr;
@@ -184,13 +184,13 @@ class Mallocator : Allocator
         return instance_;
     }
 
-	///
+    ///
     @nogc nothrow unittest
     {
         assert(instance is instance);
     }
 
-	private enum psize = 8;
+    private enum psize = 8;
 
     private shared static Mallocator instance_;
 }

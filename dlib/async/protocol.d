@@ -33,6 +33,7 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.async.protocol;
 
+import dlib.network.socket;
 import dlib.async.transport;
 
 /**
@@ -56,8 +57,12 @@ interface Protocol
 
     /**
      * Called when a connection is lost.
+     *
+     * Params:
+     *     exception = $(D_PSYMBOL Exception) if an error caused
+     *                 the disconnect, $(D_KEYWORD null) otherwise.
      */
-    void disconnected();
+    void disconnected(SocketException exception = null);
 }
 
 /**
