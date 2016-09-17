@@ -39,14 +39,14 @@ import core.exception;
 
 version (Posix)
 {
-	import core.stdc.errno;
-	import core.sys.posix.sys.mman;
-	import core.sys.posix.unistd;
+    import core.stdc.errno;
+    import core.sys.posix.sys.mman;
+    import core.sys.posix.unistd;
 }
 else version (Windows)
 {
-	import core.sys.windows.winbase;
-	import core.sys.windows.windows;
+    import core.sys.windows.winbase;
+    import core.sys.windows.windows;
 }
 
 /**
@@ -77,6 +77,7 @@ else version (Windows)
  *         $(LI If two neighbour blocks are free, they can be merged)
  *         $(LI Reallocation shoud check if there is enough free space in the
  *              next block instead of always moving the memory)
+ *         $(LI Make 64 KB regions mininmal region size on Linux)
  *     )
  */
 class MmapPool : Allocator
@@ -85,16 +86,16 @@ class MmapPool : Allocator
 
     shared static this()
     {
-    	version (Posix)
-    	{
-    		pageSize = sysconf(_SC_PAGE_SIZE);
-    	}
-    	else version (Windows)
-    	{
-    		SYSTEM_INFO si;
-    		GetSystemInfo(&si);
-    		pageSize = si.dwPageSize;
-    	}
+        version (Posix)
+        {
+            pageSize = sysconf(_SC_PAGE_SIZE);
+        }
+        else version (Windows)
+        {
+            SYSTEM_INFO si;
+            GetSystemInfo(&si);
+            pageSize = si.dwPageSize;
+        }
     }
 
     /**
@@ -223,11 +224,11 @@ class MmapPool : Allocator
             }
             version (Posix)
             {
-            	return munmap(cast(void*) block.region, block.region.size) == 0;
+                return munmap(cast(void*) block.region, block.region.size) == 0;
             }
             version (Windows)
             {
-            	return VirtualFree(cast(void*) block.region, 0, MEM_RELEASE) == 0;
+                return VirtualFree(cast(void*) block.region, 0, MEM_RELEASE) == 0;
             }
         }
         else
@@ -364,36 +365,36 @@ class MmapPool : Allocator
         
         version (Posix)
         {
-			void* p = mmap(null,
-						   regionSize,
-						   PROT_READ | PROT_WRITE,
-						   MAP_PRIVATE | MAP_ANON,
-						   -1,
-						   0);
-			if (p is MAP_FAILED)
-			{
-				if (errno == ENOMEM)
-				{
-					onOutOfMemoryError();
-				}
-				return null;
-			}
-		}
-		else version (Windows)
-		{
-			void* p = VirtualAlloc(null,
-			                       regionSize,
-			                       MEM_COMMIT,
-			                       PAGE_READWRITE);
-			if (p is null)
-			{
-				if (GetLastError() == ERROR_NOT_ENOUGH_MEMORY)
-				{
-					onOutOfMemoryError();
-				}
-				return null;
-			}
-		}
+            void* p = mmap(null,
+                           regionSize,
+                           PROT_READ | PROT_WRITE,
+                           MAP_PRIVATE | MAP_ANON,
+                           -1,
+                           0);
+            if (p is MAP_FAILED)
+            {
+                if (errno == ENOMEM)
+                {
+                    onOutOfMemoryError();
+                }
+                return null;
+            }
+        }
+        else version (Windows)
+        {
+            void* p = VirtualAlloc(null,
+                                   regionSize,
+                                   MEM_COMMIT,
+                                   PAGE_READWRITE);
+            if (p is null)
+            {
+                if (GetLastError() == ERROR_NOT_ENOUGH_MEMORY)
+                {
+                    onOutOfMemoryError();
+                }
+                return null;
+            }
+        }
 
         Region region = cast(Region) p;
         region.blocks = 1;

@@ -139,6 +139,17 @@ enum Event : uint
 alias EventMask = BitFlags!Event;
 
 /**
+ * Tries to set $(D_PSYMBOL MmapPool) to the default allocator.
+ */
+shared static this()
+{
+    if (allocator is null)
+    {
+        allocator = MmapPool.instance;
+    }
+}
+
+/**
  * Event loop.
  */
 abstract class Loop

@@ -102,14 +102,14 @@ interface Buffer
 }
 
 /**
- * Self-expanding buffer, that can be used with
- * functions returning the number of the read bytes.
+ * Self-expanding buffer, that can be used with functions returning the number
+ * of the read bytes.
  *
  * This buffer supports asynchronous reading. It means you can pass a new chunk
  * to an asynchronous read function during you are working with already
- * available data. But only one asynchronous call is supported. Be sure to call
- * $(D_PSYMBOL ReadBuffer.clear()) before you appends the result of the
- * asynchronous call.
+ * available data. But only one asynchronous call at a time is supported. Be
+ * sure to call $(D_PSYMBOL ReadBuffer.clear()) before you append the result
+ * of the pended asynchronous call.
  */
 class ReadBuffer : Buffer
 {
@@ -220,30 +220,22 @@ class ReadBuffer : Buffer
         assert(b.free == b.blockSize);
 
         numberRead = fillBuffer(b[], b.free, 0, 10);
-        b ~= b[0..numberRead];
+        b += numberRead;
         assert(b.free == b.blockSize - numberRead);
-        b[];
+        b.clear();
         assert(b.free == b.blockSize);
 
         defaultAllocator.dispose(b);
     }
 
     /**
-     * Appends some data to the buffer. Use only the buffer you got
-     * with $(D_KEYWORD [])!
+     * Appends some data to the buffer.
      *
      * Params:
-     *     buffer = Buffer chunk got with $(D_KEYWORD []).
+     *     length = Number of the bytes read.
      *
      * Returns: $(D_KEYWORD this).
      */
-    ReadBuffer opOpAssign(string op)(ubyte[] buffer)
-        if (op == "~")
-    {
-        return opOpAssign!"+"(buffer.length);
-    }
-
-    /// Ditto.
     ReadBuffer opOpAssign(string op)(size_t length)
         if (op == "+")
     {
@@ -261,21 +253,22 @@ class ReadBuffer : Buffer
 
         // Fills the buffer with values 0..10
         numberRead = fillBuffer(b[], b.free, 0, 10);
-        b ~= b[0..numberRead];
+        b += numberRead;
 
-        result = b[];
+        result = b[0..$];
         assert(result[0] == 0);
         assert(result[1] == 1);
         assert(result[9] == 9);
+        b.clear();
 
         // It shouldn't overwrite, but append another 5 bytes to the buffer
         numberRead = fillBuffer(b[], b.free, 0, 10);
-        b ~= b[0..numberRead];
+        b += numberRead;
 
         numberRead = fillBuffer(b[], b.free, 20, 25);
-        b ~= b[0..numberRead];
+        b += numberRead;
 
-        result = b[];
+        result = b[0..$];
         assert(result[0] == 0);
         assert(result[1] == 1);
         assert(result[9] == 9);
@@ -300,7 +293,7 @@ class ReadBuffer : Buffer
      *
      * Returns: Array between $(D_PARAM start) and $(D_PARAM end).
      */
-    @property ubyte[] opSlice(size_t start, size_t end)
+    @property ubyte[] opSlice(size_t start, size_t end) pure nothrow @safe @nogc
     {
         return buffer_[this.start + start .. this.start + end];
     }
@@ -308,10 +301,7 @@ class ReadBuffer : Buffer
     /**
      * Returns a free chunk of the buffer.
      *
-     * Set the buffer again after reading something into it. Append
-     * $(D_KEYWORD ~=) a slice from the beginning of the buffer you got and
-     * till the number of the read bytes. The data will be appended to the
-     * existing buffer.
+     * Add ($(D_KEYWORD +=)) the number of the read bytes after using it.
      *
      * Returns: A free chunk of the buffer.
      */
@@ -343,12 +333,13 @@ class ReadBuffer : Buffer
 
         // Fills the buffer with values 0..10
         numberRead = fillBuffer(b[], b.free, 0, 10);
-        b ~= b[0..numberRead];
+        b += numberRead;
 
         assert(b.length == 10);
-        result = b[];
+        result = b[0..$];
         assert(result[0] == 0);
         assert(result[9] == 9);
+        b.clear();
         assert(b.length == 0);
 
         defaultAllocator.dispose(b);
@@ -588,7 +579,7 @@ class WriteBuffer : Buffer
      *
      * Returns: $(D_KEYWORD this).
      */
-    @property WriteBuffer opOpAssign(string op)(size_t length) @safe pure nothrow
+    @property WriteBuffer opOpAssign(string op)(size_t length) pure nothrow @safe @nogc
         if (op == "+")
     in
     {
@@ -678,17 +669,17 @@ class WriteBuffer : Buffer
      *
      * Returns: A chunk of data buffer.
      */
-    @property ubyte[] opSlice(size_t start, size_t end) @safe pure nothrow
+    @property ubyte[] opSlice(size_t start, size_t end) pure nothrow @safe @nogc
     {
-        auto internStart = this.start + start;
-        size_t rest = length - end;
+        immutable internStart = this.start + start;
+
         if (position > ring || position < start) // Buffer overflowed
         {
-            return buffer_[this.start.. ring + 1 - rest];
+            return buffer_[this.start.. ring + 1 - length + end];
         }
         else
         {
-            return buffer_[this.start..position - rest];
+            return buffer_[this.start.. this.start + end];
         }
     }
 
@@ -725,7 +716,7 @@ class WriteBuffer : Buffer
      *
      * Returns: A chunk of data buffer.
      */
-    @property ubyte[] opIndex()
+    @property ubyte[] opIndex() pure nothrow @safe @nogc
     {
         return opSlice(0, length);
     }
