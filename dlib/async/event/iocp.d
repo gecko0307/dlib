@@ -193,7 +193,7 @@ class IOCPLoop : Loop
                     overlapped = MmapPool.instance.make!SocketState;
                     transport.socket.beginReceive(io.output[], overlapped);
                 }
-                catch (TransportException e)
+                catch (SocketException e)
                 {
                     MmapPool.instance.dispose(overlapped);
                     defaultAllocator.dispose(e);

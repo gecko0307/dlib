@@ -34,15 +34,6 @@ DEALINGS IN THE SOFTWARE.
 module dlib.async.transport;
 
 import dlib.network.socket;
-import std.exception;
-
-/**
- * Exception thrown on read/write errors.
- */
-class TransportException : Exception
-{
-    mixin basicExceptionCtors;
-}
 
 /**
  * Base transport interface.
