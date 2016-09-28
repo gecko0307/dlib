@@ -35,22 +35,30 @@ module dlib.async.event.kqueue;
 
 version (OSX)
 {
-    version = Darwin;
+    version = MissingKevent;
 }
 else version (iOS)
 {
-    version = Darwin;
+    version = MissingKevent;
 }
 else version (TVOS)
 {
-    version = Darwin;
+    version = MissingKevent;
 }
 else version (WatchOS)
 {
-    version = Darwin;
+    version = MissingKevent;
+}
+else version (OpenBSD)
+{
+    version = MissingKevent;
+}
+else version (DragonFlyBSD)
+{
+    version = MissingKevent;
 }
 
-version (Darwin)
+version (MissingKevent)
 {
     extern (C):
     nothrow:
@@ -134,12 +142,10 @@ else version (FreeBSD)
 else version (OpenBSD)
 {
     version = MacBSD;
-    public import core.sys.freebsd.sys.event;
 }
 else version (DragonFlyBSD)
 {
     version = MacBSD;
-    public import core.sys.freebsd.sys.event;
 }
 
 version (MacBSD):
