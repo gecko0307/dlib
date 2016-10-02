@@ -59,7 +59,7 @@ class DelegateInputRange(T) : InputRange!T {
         return front_;
     }
     
-    override int opApply(int delegate(T) dg) {
+    override int opApply(scope int delegate(T) dg) {
         int result = 0;
         
         for (size_t i = 0; !empty; i++) {
@@ -72,7 +72,7 @@ class DelegateInputRange(T) : InputRange!T {
         return result;
     }
     
-    override int opApply(int delegate(size_t, T) dg) {
+    override int opApply(scope int delegate(size_t, T) dg) {
         int result = 0;
         
         for (size_t i = 0; !empty; i++) {
