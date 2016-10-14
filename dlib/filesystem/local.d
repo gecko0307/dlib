@@ -353,7 +353,7 @@ unittest {
     try
     {
         chdir(dir);
-        auto expected = dirEntries("", SpanMode.depth)
+        auto expected = dirEntries("", SpanMode.shallow)
                                   .filter!(e => e.isFile)
                                   .array;
         size_t i;
@@ -414,6 +414,7 @@ unittest
     auto expected = dirEntries("", SpanMode.depth)
                               .filter!(e => e.isFile)
                               .filter!(e => e.name.baseName.endsWith(".d"))
+                              .map!(e => e.name.replace("\\", "/"))
                               .array;
     size_t i;
 
