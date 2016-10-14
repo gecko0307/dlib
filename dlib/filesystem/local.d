@@ -335,29 +335,10 @@ bool remove(string path, bool recursive) {
 }
 
 unittest {
-    import std.regex;
-    import std.algorithm;
-    
-    void listImagesInDirectory(ReadOnlyFileSystem fs, string baseDir = "") {
-        foreach (entry; dlib.filesystem.filesystem.findFiles(fs, baseDir, true)
-                .filter!(entry => entry.isFile)
-                .filter!(e => e.name.baseName.globMatch("*.(gif|jpg|png)"))) {
-            writefln("%s", entry.name);
-        }
-    }
-    
-    writeln("listImagesInDirectory (FileSystem example):");
-    listImagesInDirectory(new LocalFileSystem, "tests");
-    writeln();
-}
-
-unittest {
     // TODO: test >4GiB files
     
     import std.algorithm;
-    import std.conv;
-    import std.regex;
-    import std.stdio;
+    import std.file;
     
     alias remove = dlib.filesystem.local.remove;
     
@@ -366,58 +347,39 @@ unittest {
     
     assert(createDir("tests/test_data/main", true));
     
-    void printStat(string filename) {
-        FileStat stat_;
-        assert(stat(filename, stat_));
-        
-        writef("  - '%s'\t", filename);
-        
-        if (stat_.isFile)
-            writefln("%u", stat_.sizeInBytes);
-        else if (stat_.isDirectory)
-            writefln("DIR");
-        
-        writefln("      created: %s", to!string(stat_.creationTimestamp));
-        writefln("      modified: %s", to!string(stat_.modificationTimestamp));
-    }
-    
     enum dir = "tests";
-    writefln("Listing files in %s:", dir);
-    
     auto d = openDir(dir);
     
-    try {
+    try
+    {
+        chdir(dir);
+        auto expected = dirEntries("", SpanMode.shallow)
+                                  .filter!(e => e.isFile)
+                                  .array;
+        size_t i;
+        chdir("..");
+
         foreach (entry; d.contents) {
             if (entry.isFile)
-                writeln("    ", entry.name);
+            {
+                assert(expected[i] == entry.name);
+                ++i;
+            }
         }
     }
-    finally {
+    finally
+    {
         d.close();
     }
-    
-    writeln();
-    
-    writeln("Listing files mathing the pattern *.d:");
-
-    foreach (entry; findFiles("", true)
-            .filter!(entry => entry.isFile)
-            .filter!(e => e.name.baseName.globMatch("*.d"))
-        ) {
-        FileStat stat_;
-        assert(stat(entry.name, stat_));        // make sure we're getting the expected path
-        
-        writefln("    %s: %u bytes", entry.name, stat_.sizeInBytes);
-    }
-
-    writeln();
 
     //
     OutputStream outp = openForOutput("tests/test_data/main/hello_world.txt", FileSystem.create | FileSystem.truncate);
+    string expected = "Hello, World!\n";
     assert(outp);
     
-    try {
-        assert(outp.writeArray("Hello, World!\n"));
+    try
+    {
+        assert(outp.writeArray(expected));
     }
     finally {
         outp.close();
@@ -427,17 +389,48 @@ unittest {
     InputStream inp = openForInput("tests/test_data/main/hello_world.txt");
     assert(inp);
     
-    try {
-        while (inp.readable) {
+    try
+    {
+        while (inp.readable)
+        {
             char[1] buffer;
             
             auto have = inp.readBytes(buffer.ptr, buffer.length);
-            std.stdio.write(buffer[0..have]);
+            assert(buffer[0..have] == expected[0..have]);
+            expected.popFrontN(have);
         }
     }
-    finally {
+    finally
+    {
         inp.close();
     }
+}
 
-    writeln();
+unittest
+{
+    import std.algorithm;
+    import std.file;
+
+    auto expected = dirEntries("", SpanMode.depth)
+                              .filter!(e => e.isFile)
+                              .filter!(e => e.name.baseName.endsWith(".d"))
+                              .map!(e => e.name.replace("\\", "/"))
+                              .array;
+    size_t i;
+
+    foreach (entry; findFiles("", true)
+            .filter!(entry => entry.isFile)
+            .filter!(e => e.name.baseName.globMatch("*.d"))
+        ) {
+        FileStat stat_;
+        assert(stat(entry.name, stat_));        // make sure we're getting the expected path
+        assert(expected[i] == entry.name);
+        assert(stat_.sizeInBytes == expected[i].getSize());
+
+        SysTime modificationTime, accessTime;
+        expected[i].getTimes(accessTime, modificationTime);
+        assert(modificationTime ==  stat_.modificationTimestamp);
+
+        ++i;
+    }
 }
