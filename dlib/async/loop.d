@@ -31,8 +31,6 @@ DEALINGS IN THE SOFTWARE.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Eugene Wissner
  *
- * On Windows you would use `OverlappedStreamSocket` instead of `Socket`.
- *
  * ---
  * import dlib.async;
  * import dlib.network.socket;
@@ -51,24 +49,31 @@ DEALINGS IN THE SOFTWARE.
  *         this.transport = transport;
  *     }
  *
- *     void disconnected()
+ *     void disconnected(SocketException e = null)
  *     {
  *     }
  * }
  *
  * void main()
  * {
- *     auto sock = new StreamSocket(AddressFamily.INET);
  *     auto address = new InternetAddress("127.0.0.1", cast(ushort) 8192);
-
- *     sock.blocking = false;
-
+ *
+ *     version (Windows)
+ *     {
+ *         auto sock = new OverlappedStreamSocket(AddressFamily.INET);
+ *     }
+ *     else
+ *     {
+ *         auto sock = new StreamSocket(AddressFamily.INET);
+ *         sock.blocking = false;
+ *     }
+ *
  *     sock.bind(address);
  *     sock.listen(5);
-
+ *
  *     auto io = new ConnectionWatcher(sock);
  *     io.setProtocol!EchoProtocol;
-
+ *
  *     defaultLoop.start(io);
  *     defaultLoop.run();
  *
