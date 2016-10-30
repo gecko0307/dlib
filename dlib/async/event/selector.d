@@ -258,7 +258,7 @@ abstract class SelectorLoop : Loop
             IOWatcher io;
             auto transport = MmapPool.instance.make!SelectorStreamTransport(this, client);
 
-            if (connections.length >= client.handle)
+            if (connections.length > client.handle)
             {
                 io = cast(IOWatcher) connections[client.handle];
             }
