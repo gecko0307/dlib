@@ -33,9 +33,10 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.network.url;
 
-import std.uri;
 import std.ascii : isAlphaNum, isDigit;
+import std.traits : isSomeString;
 import std.uni : isAlpha, isNumber;
+import std.uri;
 
 version (unittest) private
 {
@@ -651,30 +652,32 @@ static this()
 /**
  * A Unique Resource Locator.
  */
-struct URL {
+struct URL(U = string)
+    if (isSomeString!U)
+{
     /** The URL scheme. */
-    string scheme;
+    U scheme;
 
     /** The username. */
-    string user;
+    U user;
 
     /** The password. */
-    string pass;
+    U pass;
 
     /** The hostname. */
-    string host;
+    U host;
 
     /** The port number. */
     ushort port;
 
     /** The path. */
-    string path;
+    U path;
 
     /** The query string. */
-    string query;
+    U query;
 
     /** The anchor. */
-    string fragment;
+    U fragment;
 
     /**
      * Attempts to parse an URL from a string.
@@ -685,7 +688,7 @@ struct URL {
      *
      * Throws: $(D_PSYMBOL URIException) if the URL is malformed.
      */
-    this(string source)
+    this(U source)
     {
         auto value = source;
         ptrdiff_t pos = -1, endPos = value.length, start;
@@ -962,7 +965,6 @@ struct URL {
         }
     }
 
-private:
     /**
      * Attempts to parse and set the port.
      *
@@ -973,7 +975,7 @@ private:
      *
      * Returns: Whether the port could found.
      */
-    bool parsePort(string port) pure nothrow @safe @nogc
+    private bool parsePort(U port) pure nothrow @safe @nogc
     {
         ptrdiff_t i = 1;
         float lPort = 0;
@@ -1002,14 +1004,14 @@ private:
 
 unittest
 {
-    auto u = URL("example.org");
+    auto u = URL!()("example.org");
     assert(u.path == "example.org"); 
 
-    u = URL("relative/path");
+    u = URL!()("relative/path");
     assert(u.path == "relative/path"); 
 
     // Host and scheme
-    u = URL("https://example.org");
+    u = URL!()("https://example.org");
     assert(u.scheme == "https");
     assert(u.host == "example.org");
     assert(u.path is null);
@@ -1017,7 +1019,7 @@ unittest
     assert(u.fragment is null);
 
     // With user and port and path
-    u = URL("https://hilary:putnam@example.org:443/foo/bar");
+    u = URL!()("https://hilary:putnam@example.org:443/foo/bar");
     assert(u.scheme == "https");
     assert(u.host == "example.org");
     assert(u.path == "/foo/bar");
@@ -1027,7 +1029,7 @@ unittest
     assert(u.fragment is null);
 
     // With query string
-    u = URL("https://example.org/?login=true");
+    u = URL!()("https://example.org/?login=true");
     assert(u.scheme == "https");
     assert(u.host == "example.org");
     assert(u.path == "/");
@@ -1035,14 +1037,14 @@ unittest
     assert(u.fragment is null);
 
     // With query string and fragment
-    u = URL("https://example.org/?login=false#label");
+    u = URL!()("https://example.org/?login=false#label");
     assert(u.scheme == "https");
     assert(u.host == "example.org");
     assert(u.path == "/");
     assert(u.query == "login=false");
     assert(u.fragment == "label");
 
-    u = URL("redis://root:password@localhost:2201/path?query=value#fragment");
+    u = URL!()("redis://root:password@localhost:2201/path?query=value#fragment");
     assert(u.scheme == "redis");
     assert(u.user == "root");
     assert(u.pass == "password");
@@ -1061,7 +1063,7 @@ private unittest
         {
             try
             {
-                URL(t[0]);
+                URL!()(t[0]);
                 assert(0);
             }
             catch (URIException e)
@@ -1071,7 +1073,7 @@ private unittest
         }
         else
         {
-            auto u = URL(t[0]);
+            auto u = URL!()(t[0]);
             assert("scheme" in t[1] ? u.scheme == t[1]["scheme"] : u.scheme is null,
                    t[0]);
             assert("user" in t[1] ? u.user == t[1]["user"] : u.user is null, t[0]);
@@ -1114,34 +1116,35 @@ enum Component : string
  * Params:
  *     T      = $(D_SYMBOL Component) member or $(D_KEYWORD null) for a
  *              struct with all components.
- *  source = The string containing the URL.
+ *     source = The string containing the URL.
  *
  * Returns: Requested URL components.
  */
-URL parseURL(in string source)
+URL parseURL(U)(in U source)
+    if (isSomeString!U)
 {
-    return URL(source);
+    return URL!U(source);
 }
 
 /** ditto */
-string parseURL(string T)(in string source)
-    if (T == "scheme" ||
-        T =="host" ||
-        T == "user" ||
-        T == "pass" ||
-        T == "path" ||
-        T == "query" ||
-        T == "fragment")
+string parseURL(string T, U)(in U source)
+    if ((T == "scheme"
+      || T =="host"
+      || T == "user"
+      || T == "pass"
+      || T == "path"
+      || T == "query"
+      || T == "fragment") && isSomeString!U)
 {
-    URL ret = URL(source);
+    auto ret = URL!U(source);
     return mixin("ret." ~ T);
 }
 
 /** ditto */
-ushort parseURL(string T)(in string source)
-    if (T == "port")
+ushort parseURL(string T, U)(in U source)
+    if (T == "port" && isSomeString!U)
 {
-    URL ret = URL(source);
+    auto ret = URL!U(source);
     return ret.port;
 }
 
