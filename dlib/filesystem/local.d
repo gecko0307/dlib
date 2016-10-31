@@ -429,6 +429,7 @@ unittest
 
         SysTime modificationTime, accessTime;
         expected[i].getTimes(accessTime, modificationTime);
+        modificationTime.fracSecs = Duration.zero;
         assert(modificationTime ==  stat_.modificationTimestamp);
 
         ++i;

@@ -105,7 +105,7 @@ class StdPosixDirEntryRange: InputRange!(DirEntry)
         return _empty;
     }
 
-    int opApply(int delegate(DirEntry) dg)
+    int opApply(scope int delegate(DirEntry) dg)
     {
         while(!_empty)
         {
@@ -116,7 +116,7 @@ class StdPosixDirEntryRange: InputRange!(DirEntry)
         return 0;
     }
     
-    int opApply(int delegate(size_t, DirEntry) dg)
+    int opApply(scope int delegate(size_t, DirEntry) dg)
     {
         size_t i = 0;
         while(!_empty)
