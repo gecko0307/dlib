@@ -56,6 +56,19 @@ import dlib.math.linsolve;
  */
 struct Matrix(T, size_t N)
 {
+    /**
+     * Compare two matrices.
+     *
+     * Params:
+     *     that = The matrix to compare with.
+     *
+     * Returns: $(D_KEYWORD true) if dimensions are equal, $(D_KEYWORD false) otherwise.
+     */
+    bool opEquals(Matrix!(T, N) that)
+    {
+        return arrayof == that.arrayof;
+    }
+
    /*
     * Return zero matrix
     */

@@ -197,7 +197,7 @@ class IOWatcher : ConnectionWatcher
      *
      * Returns: $(D_KEYWORD this).
      */
-    IOWatcher opCall(StreamTransport transport, Protocol protocol) pure nothrow @safe @nogc
+    IOWatcher opCall(StreamTransport transport, Protocol protocol) pure nothrow @nogc
     in
     {
         assert(transport !is null);

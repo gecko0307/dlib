@@ -253,7 +253,7 @@ class Lexer: InputRange!(dchar[])
         return _front;
     }
 
-    final int opApply(int delegate(dchar[]) dg)
+    final int opApply(scope int delegate(dchar[]) dg)
     {
         int result = 0;
 
@@ -272,7 +272,7 @@ class Lexer: InputRange!(dchar[])
         return result;
     }
 
-    final int opApply(int delegate(size_t, dchar[]) dg)
+    final int opApply(scope int delegate(size_t, dchar[]) dg)
     {
         int result = 0;
         size_t i = 0;
