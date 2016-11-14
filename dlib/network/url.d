@@ -651,6 +651,9 @@ static this()
 
 /**
  * A Unique Resource Locator.
+ *
+ * Params:
+ *     U = URL string type.
  */
 struct URL(U = string)
     if (isSomeString!U)
@@ -1116,18 +1119,12 @@ enum Component : string
  * Params:
  *     T      = $(D_SYMBOL Component) member or $(D_KEYWORD null) for a
  *              struct with all components.
+ *     U      = URL string type.
  *     source = The string containing the URL.
  *
- * Returns: Requested URL components.
+ * Returns: Requested URL component(s).
  */
-URL parseURL(U)(in U source)
-    if (isSomeString!U)
-{
-    return URL!U(source);
-}
-
-/** ditto */
-string parseURL(string T, U)(in U source)
+U parseURL(string T, U)(in U source)
     if ((T == "scheme"
       || T =="host"
       || T == "user"
@@ -1141,6 +1138,13 @@ string parseURL(string T, U)(in U source)
 }
 
 /** ditto */
+auto parseURL(U)(in U source)
+    if (isSomeString!U)
+{
+    return URL!U(source);
+}
+
+/** ditto */
 ushort parseURL(string T, U)(in U source)
     if (T == "port" && isSomeString!U)
 {
@@ -1151,6 +1155,9 @@ ushort parseURL(string T, U)(in U source)
 unittest
 {
     assert(parseURL!(Component.port)("http://example.org:5326") == 5326);
+
+    immutable dstring url = "http://example.org:5326";
+    static assert(is(typeof(parseURL(url)) == URL!dstring));
 }
 
 private unittest
