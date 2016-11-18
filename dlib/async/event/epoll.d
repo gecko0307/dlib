@@ -146,6 +146,7 @@ class EpollLoop : SelectorLoop
             else if (events[i].events & EPOLLERR)
             {
                 kill(io, null);
+                continue;
             }
             else if (events[i].events & (EPOLLIN | EPOLLPRI | EPOLLHUP))
             {
@@ -170,13 +171,14 @@ class EpollLoop : SelectorLoop
                 if (transport.socket.disconnected)
                 {
                     kill(io, exception);
+                    continue;
                 }
                 else if (io.output.length)
                 {
                     swapPendings.insertBack(io);
                 }
             }
-            else if (events[i].events & EPOLLOUT)
+            if (events[i].events & EPOLLOUT)
             {
                 auto transport = cast(SelectorStreamTransport) io.transport;
                 assert(transport !is null);
