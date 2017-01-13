@@ -262,7 +262,7 @@ else version (Windows)
 
             overlapped.handle = cast(HANDLE) handle_;
             overlapped.event = OverlappedSocketEvent.read;
-            overlapped.buffer.len = buffer.length;
+            overlapped.buffer.len = cast(uint) buffer.length;
             overlapped.buffer.buf = cast(char*) buffer.ptr;
 
             auto result = WSARecv(handle_,
@@ -333,7 +333,7 @@ else version (Windows)
         {
             overlapped.handle = cast(HANDLE) handle_;
             overlapped.event = OverlappedSocketEvent.write;
-            overlapped.buffer.len = buffer.length;
+            overlapped.buffer.len = cast(uint) buffer.length;
             overlapped.buffer.buf = cast(char*) buffer.ptr;
 
             auto result = WSASend(handle_,
