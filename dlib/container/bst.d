@@ -140,7 +140,7 @@ class BST(T)
             right.traverse(func);
     }
     
-    int opApply(int delegate(int, ref T) dg)
+    int opApply(scope int delegate(int, ref T) dg)
     {
         int result = 0;
 

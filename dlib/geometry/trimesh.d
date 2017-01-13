@@ -104,7 +104,7 @@ struct TriMesh
     
     // Read-only triangle aggregate:
     // foreach(tri; mesh) ...
-    int opApply(int delegate(ref Triangle) dg)
+    int opApply(scope int delegate(ref Triangle) dg)
     {
         int result = 0;
         for (uint fgi = 0; fgi < facegroups.length; fgi++)

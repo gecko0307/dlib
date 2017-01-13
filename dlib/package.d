@@ -40,7 +40,7 @@ public
     import dlib.image;
     import dlib.math;
     import dlib.memory;
-    import dlib.xml;
+    import dlib.serialization.xml;
     import dlib.text;
     import dlib.network;
 }

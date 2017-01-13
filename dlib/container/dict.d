@@ -224,7 +224,7 @@ class Trie(T, K)
         return get(k);
     }
 
-    int opApply(int delegate(K, ref T) dg)
+    int opApply(scope int delegate(K, ref T) dg)
     {
         int result = 0;
 

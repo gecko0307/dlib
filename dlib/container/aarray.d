@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2015 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
@@ -35,12 +35,11 @@ private
     import dlib.container.hash;
 }
 
-pragma(msg, "dlib.container.aarray is deprecated, use dlib.container.dict instead");
-
 /*
  * GC-free associative array implementation
  */
 
+deprecated("dlib.container.aarray is deprecated, use dlib.container.dict instead")
 class AArray(T): BST!(T)
 {
     this()

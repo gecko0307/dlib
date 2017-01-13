@@ -289,7 +289,7 @@ template Tensor(T, size_t dim, sizes...)
         
         alias NTypeTuple!(size_t, order) Indices;
 
-        int opApply(int delegate(ref T v, Indices indices) dg)
+        int opApply(scope int delegate(ref T v, Indices indices) dg)
         {
             int result = 0;
             Compound!(Indices) ind;
