@@ -26,9 +26,8 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+deprecated("dlib.xml package is deprecated, import dlib.serialization.xml instead")
 module dlib.xml.document;
-
-pragma(msg, "dlib.xml package is deprecated, import dlib.serialization.xml instead");
 
 public
 {
