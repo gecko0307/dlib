@@ -92,7 +92,7 @@ abstract class SuperImage: Freeable
         progress = 0.0f;
     }
     
-    final int opApply(int delegate(ref Color4f p, uint x, uint y) dg)
+    final int opApply(scope int delegate(ref Color4f p, uint x, uint y) dg)
     {
         int result = 0;
 
@@ -479,7 +479,7 @@ struct ImageRegion
     uint width;
     uint height;
 
-    final int opApply(int delegate(ref Color4f p, uint x, uint y) dg)
+    final int opApply(scope int delegate(ref Color4f p, uint x, uint y) dg)
     {
         int result = 0;
         uint x1, y1;
@@ -535,7 +535,7 @@ struct ImageWindowRange
         this.halfHeight = this.height / 2;
     }
 
-    final int opApply(int delegate(ImageRegion w, uint x, uint y) dg)
+    final int opApply(scope int delegate(ImageRegion w, uint x, uint y) dg)
     {
         int result = 0;
 

@@ -157,7 +157,7 @@ class StdWindowsDirEntryRange: InputRange!(DirEntry)
         return _empty;
     }
     
-    int opApply(int delegate(DirEntry) dg)
+    int opApply(scope int delegate(DirEntry) dg)
     {
         int result = 0;
        
@@ -174,7 +174,7 @@ class StdWindowsDirEntryRange: InputRange!(DirEntry)
         return result;
     }
     
-    int opApply(int delegate(size_t, DirEntry) dg)
+    int opApply(scope int delegate(size_t, DirEntry) dg)
     {
         int result = 0;
        

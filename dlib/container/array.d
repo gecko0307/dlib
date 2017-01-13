@@ -436,7 +436,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     /**
      * Iterating over array via foreach.
      */
-    int opApply(int delegate(size_t i, ref T) dg)
+    int opApply(scope int delegate(size_t i, ref T) dg)
     {
         int result = 0;
 
@@ -467,7 +467,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     /**
      * Iterating over array via foreach.
      */
-    int opApply(int delegate(ref T) dg)
+    int opApply(scope int delegate(ref T) dg)
     {
         int result = 0;
     

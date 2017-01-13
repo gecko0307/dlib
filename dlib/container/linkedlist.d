@@ -94,7 +94,7 @@ struct LinkedList(T, bool ordered = true)
     /**
      * Iterating over list via foreach.
      */
-    int opApply(int delegate(size_t, ref T) dg)
+    int opApply(scope int delegate(size_t, ref T) dg)
     {
         int result = 0;
         uint index = 0;
@@ -135,7 +135,7 @@ struct LinkedList(T, bool ordered = true)
     /**
      * Iterating over list via foreach.
      */
-    int opApply(int delegate(ref T) dg)
+    int opApply(scope int delegate(ref T) dg)
     {
         int result = 0;
 
