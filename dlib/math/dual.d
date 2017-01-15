@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2017 Timur Gafarov 
+Copyright (c) 2013-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -60,34 +60,34 @@ struct Dual(T)
     {
         return Dual!(T)(x, 0.0);
     }
-    
+
     Dual!(T) opAssign(in T x)
     {
         re = x;
         du = 0.0;
         return this;
     }
-    
+
     Dual!(T) opAdd(in T x) const
     {
         return this + Dual!(T)(x);
     }
-    
+
     Dual!(T) opSub(in T x) const
     {
         return this - Dual!(T)(x);
     }
-    
+
     Dual!(T) opMul(in T x) const
     {
         return this * Dual!(T)(x);
     }
-    
+
     Dual!(T) opDiv(in T x) const
     {
         return this / Dual!(T)(x);
     }
-    
+
     Dual!(T) opUnary (string s)() const if (s == "-")
     {
         return Dual!(T)(-re, -du);
@@ -176,17 +176,17 @@ struct Dual(T)
     {
         return Dual!(T)(v) * this;
     }
-    
+
     Dual!(T) opBinaryRight(string op)(in T v) const if (op == "/")
     {
         return Dual!(T)(v) / this;
     }
-    
+
     int opCmp(in double s) const
     {
         return cast(int)((re - s) * 100);
     }
-    
+
     Dual!(T) sin() const
     {
         return Dual!(T)(.sin(re), du * .cos(re));

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2017 Timur Gafarov 
+Copyright (c) 2013-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -41,7 +41,7 @@ abstract class FilteringThread: Thread
         super(&run);
         image = img;
     }
-    
+
     SuperImage filtered()
     {
         start();
@@ -50,7 +50,7 @@ abstract class FilteringThread: Thread
         onFinished();
         return output;
     }
-    
+
     // override these:
     void run();
     void onRunning();

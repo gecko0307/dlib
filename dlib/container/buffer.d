@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2017 Eugene Wissner 
+Copyright (c) 2016-2017 Eugene Wissner
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -145,7 +145,7 @@ class ReadBuffer : Buffer
      *     size         = Initial buffer size and the size by which the buffer
      *                    will grow.
      *     minAvailable = minimal size should be always  available to fill.
-     *                    So it will reallocate if $(D_INLINECODE 
+     *                    So it will reallocate if $(D_INLINECODE
      *                    $(D_PSYMBOL free) < $(D_PARAM minAvailable)
      *                    ).
      */

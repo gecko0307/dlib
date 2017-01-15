@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2017 Timur Gafarov 
+Copyright (c) 2016-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -31,9 +31,9 @@ module dlib.audio.sound;
 import std.math;
 import dlib.audio.sample;
 
-/* 
+/*
  * Generalized sound stream class.
- * This can be used to implement any type of sound, 
+ * This can be used to implement any type of sound,
  * including compressed audio streams.
  */
 abstract class StreamedSound
@@ -87,10 +87,10 @@ abstract class Sound: SeekableSound
 {
     // Raw byte data
     @property ref ubyte[] data();
-    
+
     // Make exact copy of the sound
     @property Sound dup();
-    
+
     // Make empty sound of the same format
     Sound createSameFormat(uint ch, double dur);
 }
@@ -108,7 +108,7 @@ class GenericSound: Sound
     uint _sampleRate;
     uint _bitDepth;
     SampleFormat _format;
-    
+
     public:
     this(Sound ras)
     {
@@ -183,17 +183,17 @@ class GenericSound: Sound
     {
         return _bitDepth;
     }
-    
+
     override @property SampleFormat sampleFormat()
     {
         return _format;
     }
-    
+
     override @property ref ubyte[] data()
     {
         return _data;
     }
-    
+
     protected:
     size_t position; // sample position
 
@@ -201,26 +201,26 @@ class GenericSound: Sound
     {
         _data = new ubyte[size];
     }
-    
+
     public:
     override ulong stream(ubyte[] buffer)
     {
         size_t ssize = sampleSize();
         size_t bytePos = position * ssize;
         size_t sizeInBytes = cast(size_t)_size * ssize;
-        
+
         size_t bytesWritten = buffer.length;
         if (bytePos + buffer.length >= sizeInBytes)
             bytesWritten = sizeInBytes - bytePos;
-        
+
         for(size_t i = bytePos; i < bytePos + bytesWritten; i++)
         {
             buffer[i] = _data[i];
         }
-        
+
         return bytesWritten;
     }
-    
+
     override void reset()
     {
         position = 0;

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -34,45 +34,45 @@ private
     import dlib.image.image;
 }
 
-SuperImage boxBlur(SuperImage img, int radius) 
+SuperImage boxBlur(SuperImage img, int radius)
 {
     return boxBlur(img, null, radius);
 }
 
-SuperImage boxBlur(SuperImage img, SuperImage outp, int radius) 
+SuperImage boxBlur(SuperImage img, SuperImage outp, int radius)
 {
     SuperImage res;
     if (outp)
         res = outp;
     else
         res = img.dup;
-    
+
     immutable int boxSide = radius * 2 + 1;
     immutable int boxSide2 = boxSide * boxSide;
-    
+
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
     {
         float alpha = Color4f(img[x, y]).a;
-        
+
         Color4f total = Color4f(0, 0, 0);
-        
+
         foreach(ky; 0..boxSide)
         foreach(kx; 0..boxSide)
         {
             int iy = y + (ky - radius);
             int ix = x + (kx - radius);
-            
+
             total += img[ix, iy];
         }
 
         total /= boxSide2;
         total.a = alpha;
-        
+
         res[x,y] = total;
         img.updateProgress();
     }
-    
+
     img.resetProgress();
     return res;
 }

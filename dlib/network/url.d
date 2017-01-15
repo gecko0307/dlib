@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2017 Eugene Wissner 
+Copyright (c) 2016-2017 Eugene Wissner
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -764,7 +764,7 @@ struct URL(U = string)
             }
             else // certain schemas like mailto: and zlib: may not have any / after them
             {
-                
+
                 if (!parsePort(value[pos..$]))
                 {
                     scheme = value[0..pos];
@@ -809,7 +809,7 @@ struct URL(U = string)
                     if (user is null)
                     {
                         user = value[start .. start + i];
-                        pass = value[start + i + 1 .. pos]; 
+                        pass = value[start + i + 1 .. pos];
                     }
                 }
                 else if (!c.isAlpha &&
@@ -1008,10 +1008,10 @@ struct URL(U = string)
 unittest
 {
     auto u = URL!()("example.org");
-    assert(u.path == "example.org"); 
+    assert(u.path == "example.org");
 
     u = URL!()("relative/path");
-    assert(u.path == "relative/path"); 
+    assert(u.path == "relative/path");
 
     // Host and scheme
     u = URL!()("https://example.org");

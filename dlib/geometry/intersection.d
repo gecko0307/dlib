@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -71,9 +71,9 @@ Intersection intrSphereVsPlane(ref Sphere sphere, ref Plane plane)
 {
     Intersection res;
     res.fact = false;
-    
+
     float q = plane.normal.dot(sphere.center - plane.d).abs;
-    
+
     if (q <= sphere.radius)
     {
         res.penetrationDepth = sphere.radius - q;
@@ -81,18 +81,18 @@ Intersection intrSphereVsPlane(ref Sphere sphere, ref Plane plane)
         res.point = sphere.center - res.normal * sphere.radius;
         res.fact = true;
     }
-    
+
     return res;
 }
 
 private void measureSphereAndTriVert(
-        Vector3f center, 
-        float radius, 
-        ref Intersection result, 
-        Triangle tri, 
+        Vector3f center,
+        float radius,
+        ref Intersection result,
+        Triangle tri,
         int whichVert)
 {
-    Vector3f diff = center - tri.v[whichVert];    
+    Vector3f diff = center - tri.v[whichVert];
     float len = diff.length;
     float penetrate = radius - len;
     if (penetrate > 0.0f)
@@ -105,10 +105,10 @@ private void measureSphereAndTriVert(
 }
 
 void measureSphereAndTriEdge(
-        Vector3f center, 
-        float radius, 
-        ref Intersection result, 
-        Triangle tri, 
+        Vector3f center,
+        float radius,
+        ref Intersection result,
+        Triangle tri,
         int whichEdge)
 {
     static int[] nextDim1 = [1, 2, 0];
@@ -212,12 +212,12 @@ Intersection intrSphereVsOBB(ref Sphere s, ref OBB b)
 
     Vector3f relativeCenter = s.center - b.transform.translation;
     relativeCenter = b.transform.invRotate(relativeCenter);
-    
+
     if (abs(relativeCenter.x) - s.radius > b.extent.x ||
         abs(relativeCenter.y) - s.radius > b.extent.y ||
         abs(relativeCenter.z) - s.radius > b.extent.z)
         return intr;
-        
+
     Vector3f closestPt = Vector3f(0.0f, 0.0f, 0.0f);
     float distance;
 
@@ -225,27 +225,27 @@ Intersection intrSphereVsOBB(ref Sphere s, ref OBB b)
     if (distance >  b.extent.x) distance =  b.extent.x;
     if (distance < -b.extent.x) distance = -b.extent.x;
     closestPt.x = distance;
-    
+
     distance = relativeCenter.y;
     if (distance >  b.extent.y) distance =  b.extent.y;
     if (distance < -b.extent.y) distance = -b.extent.y;
     closestPt.y = distance;
-    
+
     distance = relativeCenter.z;
     if (distance >  b.extent.z) distance =  b.extent.z;
     if (distance < -b.extent.z) distance = -b.extent.z;
     closestPt.z = distance;
-    
+
     float distanceSqr = (closestPt - relativeCenter).lengthsqr;
-    if (distanceSqr > s.radius * s.radius) 
+    if (distanceSqr > s.radius * s.radius)
     return intr;
-        
+
     Vector3f closestPointWorld = closestPt * b.transform;
-    
+
     intr.fact = true;
     intr.normal = -(closestPointWorld - s.center).normalized;
     intr.point = closestPointWorld;
     intr.penetrationDepth = s.radius - sqrt(distanceSqr);
-    
+
     return intr;
 }

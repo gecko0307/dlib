@@ -86,7 +86,7 @@ SuperHDRImage loadHDR(string filename)
  */
 SuperHDRImage loadHDR(InputStream istrm)
 {
-    Compound!(SuperHDRImage, string) res = 
+    Compound!(SuperHDRImage, string) res =
         loadHDR(istrm, defaultHDRImageFactory);
     if (res[0] is null)
         throw new HDRLoadException(res[1]);
@@ -103,7 +103,7 @@ Compound!(SuperHDRImage, string) loadHDR(
     SuperHDRImageFactory imgFac)
 {
     SuperHDRImage img = null;
-    
+
     Compound!(SuperHDRImage, string) error(string errorMsg)
     {
         if (img)
@@ -115,7 +115,7 @@ Compound!(SuperHDRImage, string) loadHDR(
     }
 
     char[11] magic;
-    istrm.fillArray(magic); 
+    istrm.fillArray(magic);
     if (magic != "#?RADIANCE\n")
         return error("loadHDR error: signature check failed");
 
@@ -132,10 +132,10 @@ Compound!(SuperHDRImage, string) loadHDR(
     // Read resolution line
     line.free();
     readLineFromStream(istrm, line);
-    
+
     char xsign, ysign;
     uint width, height;
-    int count = sscanf(line.data.ptr, "%cY %u %cX %u", &ysign, &height, &xsign, &width); 
+    int count = sscanf(line.data.ptr, "%cY %u %cX %u", &ysign, &height, &xsign, &width);
     if (count != 4)
         return error("loadHDR error: invalid resolution line");
 

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2017 Eugene Wissner 
+Copyright (c) 2016-2017 Eugene Wissner
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -437,7 +437,7 @@ class PendingQueue(T)
     typeof(this) insertBack(T x)
     {
         Entry* temp = MmapPool.instance.make!Entry;
-        
+
         temp.content = x;
 
         if (empty)

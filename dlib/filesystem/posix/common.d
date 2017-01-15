@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2017 Martin Cejp 
+Copyright (c) 2014-2017 Martin Cejp
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -41,7 +41,7 @@ public {
 version (Linux) {
     alias off_t = off64_t;
     alias stat_t = stat64_t;
-    
+
     alias lseek = lseek64;
     alias open = open64;
     alias stat_ = stat64;

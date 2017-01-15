@@ -1,5 +1,5 @@
-﻿/*
-Copyright (c) 2015-2017 Timur Gafarov 
+/*
+Copyright (c) 2015-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -47,7 +47,7 @@ mixin template Inherit(PT...)
     alias PT _parentTypeTuple;
     alias _parent this;
 
-    template opDispatch(string s) 
+    template opDispatch(string s)
     {
         enum e = tupleElemWithMember!(s, PT);
 
@@ -159,8 +159,8 @@ bool implements(T, I)()
  */
 template isMethod(alias F)
 {
-    enum isMethod = 
-           isSomeFunction!F && 
+    enum isMethod =
+           isSomeFunction!F &&
           !isFunctionPointer!F &&
           !isDelegate!F;
 }

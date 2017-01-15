@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2017 Timur Gafarov, Roman Chistokhodov 
+Copyright (c) 2016-2017 Timur Gafarov, Roman Chistokhodov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -148,7 +148,7 @@ class SliceLexer: InputRange!string
                         dec.advance();
                 }
                 else
-                {            
+                {
                     dec.advance();
                 }
 
@@ -199,9 +199,9 @@ class SliceLexer: InputRange!string
             {
                 dec.advance();
                 c = dec.current;
-   
+
                 string str = input[startPos..dec.index];
-                
+
                 if (isDelim(str))
                 {
                     if (str.length > bestStr.length)
@@ -209,17 +209,17 @@ class SliceLexer: InputRange!string
                         bestStr = str;
                     }
                 }
-                
+
                 if (c == UTF8_END || c == UTF8_ERROR)
                     break;
-                
+
                 if (str.length == maxDelimSize)
                     break;
             }
-            
+
             dec = decCopy;
             dec.forwardJump(count(bestStr));
-            
+
             return bestStr;
         }
     }
@@ -355,10 +355,10 @@ unittest
         arr ~= lexeme;
     }
     assert(arr == [
-        "for", " ", "(", "int", " ", "i", "=", "0", ";", " ", "i", "<", 
-        "arr", ".", "length", ";", " ", "++", "i", ")", "\n", "{", "doThing", 
+        "for", " ", "(", "int", " ", "i", "=", "0", ";", " ", "i", "<",
+        "arr", ".", "length", ";", " ", "++", "i", ")", "\n", "{", "doThing",
         "(", ")", ";", "}", "\n" ]);
-    
+
     input = "";
     lexer = new SliceLexer(input, delims);
     assert(lexer.getLexeme().length == 0);

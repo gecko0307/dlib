@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2017 Timur Gafarov 
+Copyright (c) 2016-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -32,7 +32,7 @@ import std.math;
 import std.random;
 import dlib.audio.sound;
 
-/* 
+/*
  * Generate random audio signal
  * snd - sound
  * ch - channel to fill (beginning from 0)

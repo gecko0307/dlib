@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 module dlib.container.queue;
 
 private
-{ 
+{
     import dlib.container.linkedlist;
 }
 
@@ -73,7 +73,7 @@ public:
         list.removeBeginning();
         return res;
     }
-    
+
     /**
      * Free memory allocated by Queue.
      */
@@ -87,7 +87,7 @@ public:
 unittest
 {
     import std.exception : assertThrown;
-    
+
     Queue!int q;
     assertThrown(q.dequeue());
     assert (q.empty);
@@ -100,6 +100,6 @@ unittest
     assert (q.dequeue() == 30);
     assert (q.dequeue() == 900);
     assert (q.empty);
-    
+
     q.free();
 }

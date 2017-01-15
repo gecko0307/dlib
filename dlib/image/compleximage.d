@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2017 Timur Gafarov 
+Copyright (c) 2013-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -43,26 +43,26 @@ class ComplexImageRGB
     Signal2D chR;
     Signal2D chG;
     Signal2D chB;
-    
+
     this(Signal2D r, Signal2D g, Signal2D b)
     {
         chR = r;
         chG = g;
         chB = b;
     }
-    
+
     this(SuperImage img)
     {
         assert(img.channels >= 3);
         chR = new Signal2D(img, 0);
         chG = new Signal2D(img, 1);
         chB = new Signal2D(img, 2);
-        
+
         chR.fft();
         chG.fft();
         chB.fft();
     }
-    
+
     ComplexImageRGB convolve(Signal2D kernel)
     {
         assert(kernel.domain == Signal2D.Domain.Frequency);
@@ -73,13 +73,13 @@ class ComplexImageRGB
     {
         return divide(kernel);
     }
-    
+
     ComplexImageRGB applyFilter(Signal2D filter)
     {
         assert(filter.domain == Signal2D.Domain.Spatial);
         return multiply(filter);
     }
-    
+
     ComplexImageRGB multiply(Signal2D sig)
     {
         auto resR = chR.multiply(sig);
@@ -95,7 +95,7 @@ class ComplexImageRGB
         auto resB = chB.divide(sig);
         return new ComplexImageRGB(resR, resG, resB);
     }
-    
+
     @property ImageRGB8 image()
     {
         if (chR.domain == Signal2D.Domain.Frequency)
@@ -109,12 +109,12 @@ class ComplexImageRGB
 }
 
 ImageRGB8 composeRGB(
-    Signal2D chRed, 
+    Signal2D chRed,
     Signal2D chGreen,
     Signal2D chBlue)
 {
     ImageRGB8 img = new ImageRGB8(chRed.width, chRed.height);
-        
+
     float maxIntensityR = 0.0f;
     float maxIntensityG = 0.0f;
     float maxIntensityB = 0.0f;
@@ -133,17 +133,17 @@ ImageRGB8 composeRGB(
         mb = chBlue.data[i].magnitude;
         if (mb > maxIntensityB)
             maxIntensityB = mb;
-            
+
         fpImage[i] = Vector3f(mr, mg, mb);
     }
-        
+
     foreach(ref v; fpImage)
     {
         v.r /= maxIntensityR;
         v.g /= maxIntensityG;
         v.b /= maxIntensityB;
     }
-        
+
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
     {
@@ -151,6 +151,6 @@ ImageRGB8 composeRGB(
         Vector3f m = fpImage[index];
         img[x, y] = Color4f(m);
     }
-        
+
     return img;
 }

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2017 Timur Gafarov 
+Copyright (c) 2015-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -122,7 +122,7 @@ class Trie(T, K)
                 auto n = New!(Trie!(T, K))(s);
                 current.children.append(n);
                 current = n;
-                
+
                 //current.children.append(n);
                 //current = n;
             }
@@ -132,12 +132,12 @@ class Trie(T, K)
         {
             current.value = v;
             current.key = k;
-            
+
             if (!current.active)
             {
                 current.active = true;
                 length++;
-            } 
+            }
         }
     }
 
@@ -163,7 +163,7 @@ class Trie(T, K)
 
         if (current !is this)
         {
-            if (current.active && 
+            if (current.active &&
                 current.key == k)
             {
                 return &current.value;

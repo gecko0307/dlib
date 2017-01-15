@@ -54,7 +54,7 @@ version (Windows)
 
 /**
  * A watcher is an opaque structure that you allocate and register to record
- * your interest in some event. 
+ * your interest in some event.
  */
 abstract class Watcher
 {

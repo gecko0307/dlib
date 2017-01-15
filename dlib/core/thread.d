@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2017 Timur Gafarov 
+Copyright (c) 2015-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -36,16 +36,16 @@ module dlib.core.thread;
 version(Windows)
 {
     extern(Windows):
-    
+
     struct SECURITY_ATTRIBUTES
     {
         uint   nLength;
         void*  lpSecurityDescriptor;
         int    bInheritHandle;
     }
-    
+
     alias extern(Windows) uint function(in void*) LPTHREAD_START_ROUTINE;
-    
+
     void* CreateThread(
         in SECURITY_ATTRIBUTES*   lpThreadAttributes,
         in size_t                 dwStackSize,
@@ -54,28 +54,28 @@ version(Windows)
         in uint                   dwCreationFlags,
         uint*                     lpThreadId
     );
-    
+
     uint WaitForMultipleObjects(
         in uint nCount,
         in void** lpHandles,
         in int bWaitAll,
         in uint dwMilliseconds
     );
-    
+
     int TerminateThread(
         void* hThread,
         in uint dwExitCode
     );
-    
+
     int GetExitCodeThread(
         in void* hThread,
         uint* lpExitCode
     );
-    
+
     int CloseHandle(
         in void* hObject
     );
-    
+
     enum INFINITE = uint.max;
     enum STILL_ACTIVE = 259;
 }
@@ -91,7 +91,7 @@ class Thread
     private void delegate() dlgt;
     private bool callFunc;
     private bool initialized = false;
-    
+
     version(Windows)
     {
         private void* winThread;
@@ -102,19 +102,19 @@ class Thread
         private pthread_t posixThread;
         private bool running = false;
     }
-    
+
     this(void function() func)
     {
         this.func = func;
         callFunc = true;
     }
-    
+
     this(void delegate() dlgt)
     {
         this.dlgt = dlgt;
         callFunc = false;
     }
-    
+
     ~this()
     {
         version(Windows)
@@ -129,7 +129,7 @@ class Thread
                 pthread_detach(posixThread);
         }
     }
-    
+
     void start()
     {
         version(Windows)
@@ -150,7 +150,7 @@ class Thread
             initialized = true;
         }
     }
-    
+
     void join()
     {
         version(Windows)
@@ -163,7 +163,7 @@ class Thread
             pthread_join(posixThread, null);
         }
     }
-    
+
     bool isRunning()
     {
         version(Windows)
@@ -178,7 +178,7 @@ class Thread
             return running;
         }
     }
-    
+
     void terminate()
     {
         version(Windows)
@@ -192,7 +192,7 @@ class Thread
             running = false;
         }
     }
-    
+
     version(Windows)
     {
         extern(Windows) static uint winThreadFunc(in void* lpParam)

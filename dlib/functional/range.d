@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -76,13 +76,13 @@ auto map(alias func, Range)(Range r)
         alias input this;
 
         typeof(input.front) front;
- 
+
         this(Range r)
         {
             input = r;
             front = func(input.front);
         }
-        
+
         void popFront()
         {
             if (!input.empty)
@@ -92,7 +92,7 @@ auto map(alias func, Range)(Range r)
             }
         }
     }
-    
+
     return ResultRange(r);
 }
 
@@ -102,14 +102,14 @@ auto filter(alias pred, Range)(Range r)
     {
         Range input;
         alias input this;
- 
+
         this(Range r)
         {
             input = r;
             while (!input.empty && !pred(input.front))
                 input.popFront();
         }
-        
+
         void popFront()
         {
             do
@@ -119,7 +119,7 @@ auto filter(alias pred, Range)(Range r)
             while (!input.empty && !pred(input.front));
         }
     }
-    
+
     return ResultRange(r);
 }
 

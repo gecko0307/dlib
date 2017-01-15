@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -40,7 +40,7 @@ struct ZlibBufferedEncoder
     ubyte[] buffer;
     ubyte[] input;
     bool ended = true;
-    
+
     this(ubyte[] buf, ubyte[] inp)
     {
         buffer = buf;
@@ -51,24 +51,24 @@ struct ZlibBufferedEncoder
         zlibStream.zalloc = null;
         zlibStream.zfree = null;
         zlibStream.opaque = null;
-        
+
         zlibStream.next_in = inp.ptr;
         zlibStream.avail_in = cast(uint)inp.length;
-        
+
         deflateInit(&zlibStream, Z_BEST_COMPRESSION);
         ended = false;
     }
-    
+
     size_t encode()
     {
         zlibStream.next_out = buffer.ptr;
         zlibStream.avail_out = cast(uint)buffer.length;
         zlibStream.total_out = 0;
-        
+
         while (zlibStream.avail_out > 0)
         {
             int msg = deflate(&zlibStream, Z_FINISH);
-            
+
             if (msg == Z_STREAM_END)
             {
                 deflateEnd(&zlibStream);
@@ -81,7 +81,7 @@ struct ZlibBufferedEncoder
                 return 0;
             }
         }
-        
+
         return zlibStream.total_out;
     }
 }
@@ -91,10 +91,10 @@ struct ZlibDecoder
     z_stream zlibStream;
     ubyte[] buffer;
     int msg = 0;
-    
+
     bool isInitialized = false;
     bool hasEnded = false;
-    
+
     this(ubyte[] buf)
     {
         buffer = buf;
@@ -102,12 +102,12 @@ struct ZlibDecoder
         zlibStream.avail_out = cast(uint)buffer.length;
         zlibStream.data_type = Z_BINARY;
     }
-    
+
     bool decode(ubyte[] input)
     {
         zlibStream.next_in = input.ptr;
         zlibStream.avail_in = cast(uint)input.length;
-        
+
         if (!isInitialized)
         {
             isInitialized = true;
@@ -118,7 +118,7 @@ struct ZlibDecoder
                 return false;
             }
         }
-        
+
         while (zlibStream.avail_in)
         {
             msg = inflate(&zlibStream, Z_NO_FLUSH);
@@ -141,10 +141,10 @@ struct ZlibDecoder
                 zlibStream.avail_out = cast(uint)(buffer.length / 2);
             }
         }
-        
+
         return true;
     }
-    
+
     void reallocateBuffer(size_t len)
     {
         ubyte[] buffer2 = New!(ubyte[])(len);
@@ -154,7 +154,7 @@ struct ZlibDecoder
         Delete(buffer);
         buffer = buffer2;
     }
-    
+
     void free()
     {
         Delete(buffer);

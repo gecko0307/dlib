@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -42,15 +42,15 @@ alias interpLinear lerp;
 
 T interpNearest(T) (T x, T y, float t)
 {
-    if (t < 0.5f) 
+    if (t < 0.5f)
         return x;
-    else 
-        return y; 
+    else
+        return y;
 }
 
 T interpCatmullRom(T) (T p0, T p1, T p2, T p3, float t)
 {
-    return 0.5 * ((2 * p1) + 
+    return 0.5 * ((2 * p1) +
                   (-p0 + p2) * t +
                   (2 * p0 - 5 * p1 + 4 * p2 - p3) * t^^2 +
                   (-p0 + 3 * p1 - 3 * p2 + p3) * t^^3);

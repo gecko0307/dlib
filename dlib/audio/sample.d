@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2017 Timur Gafarov 
+Copyright (c) 2016-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -56,7 +56,7 @@ float toFloatSample(ubyte* ptr, SampleFormat format)
     float res;
     switch (format)
     {
-        case SampleFormat.S8: 
+        case SampleFormat.S8:
             res = *cast(byte*)ptr;
             res /= byte.max;
             break;
@@ -64,7 +64,7 @@ float toFloatSample(ubyte* ptr, SampleFormat format)
             res = *cast(short*)ptr;
             res /= short.max;
             break;
-        case SampleFormat.U8: 
+        case SampleFormat.U8:
             res = *ptr;
             res /= ubyte.max;
             res = res * 2.0f - 1.0f; // normalize to range -1..1
@@ -91,7 +91,7 @@ void fromFloatSample(ubyte* ptr, SampleFormat format, float s)
         case SampleFormat.S16:
             *cast(short*)ptr = cast(short)(s * short.max);
             break;
-        case SampleFormat.U8: 
+        case SampleFormat.U8:
             *cast(ubyte*)ptr = cast(ubyte)((s + 1.0f) * 0.5f * ubyte.max);
             break;
         case SampleFormat.U16:

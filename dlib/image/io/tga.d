@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2017 Timur Gafarov, Roman Chistokhodov 
+Copyright (c) 2014-2017 Timur Gafarov, Roman Chistokhodov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -95,7 +95,7 @@ class TGALoadException: ImageLoadException
 SuperImage loadTGA(string filename)
 {
     InputStream input = openForInput(filename);
-    
+
     try
     {
         return loadTGA(input);
@@ -116,7 +116,7 @@ SuperImage loadTGA(string filename)
  */
 SuperImage loadTGA(InputStream istrm)
 {
-    Compound!(SuperImage, string) res = 
+    Compound!(SuperImage, string) res =
         loadTGA(istrm, defaultImageFactory);
     if (res[0] is null)
         throw new TGALoadException(res[1]);
@@ -129,7 +129,7 @@ SuperImage loadTGA(InputStream istrm)
  * GC-free
  */
 Compound!(SuperImage, string) loadTGA(
-    InputStream istrm, 
+    InputStream istrm,
     SuperImageFactory imgFac)
 {
     SuperImage img = null;
@@ -152,7 +152,7 @@ Compound!(SuperImage, string) loadTGA(
             writefln("idLength = %s", hdr.idLength);
             writefln("type = %s", hdr.type);
            /*
-            * Encoding flag: 
+            * Encoding flag:
             * 1 = Raw indexed image
             * 2 = Raw RGB
             * 3 = Raw greyscale
@@ -167,13 +167,13 @@ Compound!(SuperImage, string) loadTGA(
             writefln("colmapLen = %s", hdr.colmapLen);
             writefln("colmapBits = %s", hdr.colmapBits);
             writefln("xstart = %s", hdr.xstart);
-            writefln("ystart = %s", hdr.ystart);       
+            writefln("ystart = %s", hdr.ystart);
             writefln("width = %s", hdr.width);
             writefln("height = %s", hdr.height);
             writefln("bpp = %s", hdr.bpp);
             writefln("descriptor = %s", hdr.descriptor);
-            writeln("-------------------"); 
-        }   
+            writeln("-------------------");
+        }
         return hdr;
     }
 
@@ -181,7 +181,7 @@ Compound!(SuperImage, string) loadTGA(
     {
         uint channels = hdr.bpp / 8;
         SuperImage res = imgFac.createImage(hdr.width, hdr.height, channels, 8);
-        
+
         if (hdr.descriptor & TgaOrigin.Upper) {
             istrm.fillArray(res.data);
         } else {
@@ -189,19 +189,19 @@ Compound!(SuperImage, string) loadTGA(
                 istrm.fillArray(res.data[channels * hdr.width * (hdr.height-i-1)..channels * hdr.width * (hdr.height-i)]);
             }
         }
-        
+
         const ubyte alphaBits = cast(ubyte)(hdr.descriptor & 0xf);
         version(TGADebug) {
             writefln("Alpha bits: %s", alphaBits);
         }
-        
+
         if (channels == 4) {
             for (size_t i=0; i<res.data.length; i += channels) {
                 auto alphaIndex = i+3;
                 res.data[alphaIndex] = cast(ubyte)((res.data[alphaIndex] & ((1 << alphaBits)-1 )) << (8 - alphaBits));
             }
         }
-        
+
         return res;
     }
 
@@ -209,18 +209,18 @@ Compound!(SuperImage, string) loadTGA(
     {
         uint channels = hdr.bpp / 8;
         uint imageSize = hdr.width * hdr.height * channels;
-        SuperImage res = imgFac.createImage(hdr.width, hdr.height, channels, 8); 
+        SuperImage res = imgFac.createImage(hdr.width, hdr.height, channels, 8);
 
         // Calculate offset to image data
         uint dataOffset = 18 + hdr.idLength;
 
         // Add palette offset for indexed images
         if (hdr.type == 1)
-            dataOffset += 768; 
+            dataOffset += 768;
 
         // Read compressed data
         // TODO: take scanline order into account (bottom-up or top-down)
-        ubyte[] data = New!(ubyte[])(cast(uint)istrm.size - dataOffset); 
+        ubyte[] data = New!(ubyte[])(cast(uint)istrm.size - dataOffset);
         istrm.fillArray(data);
 
         uint ii = 0;
@@ -281,7 +281,7 @@ Compound!(SuperImage, string) loadTGA(
         }
 
         Delete(id);
-    }  
+    }
 
     if (hdr.encoding == TGAEncoding.RGB) {
         img = readRawRGB(hdr);
@@ -322,14 +322,14 @@ Compound!(bool, string) saveTGA(SuperImage img, OutputStream output)
     {
         return compound(false, errorMsg);
     }
-    
+
     enum ubyte[12] tgaStart = [0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     output.writeArray(tgaStart);
     output.writeLE(cast(ushort)img.width);
     output.writeLE(cast(ushort)img.height);
-    
+
     const bool hasAlpha = img.channels == 4;
-    
+
     if (img.channels == 3) {
         output.writeLE(cast(ubyte)24);
         output.writeLE(cast(ubyte)TgaOrigin.Upper);
@@ -339,7 +339,7 @@ Compound!(bool, string) saveTGA(SuperImage img, OutputStream output)
     } else {
         return error("saveTGA error: unsupported number of channels");
     }
-    
+
     foreach(y; 0..img.height) {
         foreach(x; 0..img.width) {
             ubyte[4] rgb;
@@ -347,7 +347,7 @@ Compound!(bool, string) saveTGA(SuperImage img, OutputStream output)
             rgb[0] = cast(ubyte)color[2];
             rgb[1] = cast(ubyte)color[1];
             rgb[2] = cast(ubyte)color[0];
-            
+
             if (hasAlpha) {
                 rgb[3] = cast(ubyte)(color[3]);
                 output.writeArray(rgb[]);
@@ -356,6 +356,6 @@ Compound!(bool, string) saveTGA(SuperImage img, OutputStream output)
             }
         }
     }
-    
+
     return compound(true, "");
 }

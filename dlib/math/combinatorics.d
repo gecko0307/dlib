@@ -60,7 +60,7 @@ ulong fibonacci(ulong n) {
     }
 
     alias mfib = memoize!fibonacci;
-    
+
     return mfib(n - 1) + mfib(n - 2);
 }
 
@@ -71,8 +71,8 @@ unittest {
     import std.array : array;
 
     auto fibs = iota(1, 21).map!(n => fib(n)).array;
-    
-    assert(fibs == [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 
+
+    assert(fibs == [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144,
                     233, 377, 610, 987, 1597, 2584, 4181, 6765]);
 }
 
@@ -96,7 +96,7 @@ BigInt hyperFactorial(ulong n) {
 
     alias mhfac = memoize!hyperFactorial;
 
-    return BigInt(n ^^ n) * hyperFactorial(n - 1); 
+    return BigInt(n ^^ n) * hyperFactorial(n - 1);
 
 
 }
@@ -139,7 +139,7 @@ unittest {
 ulong lucas(ulong n) @safe nothrow {
     if(n == 0) {
         return 2;
-    } 
+    }
 
     if(n == 1) {
         return 1;
@@ -155,6 +155,6 @@ unittest {
     import std.array;
 
     auto lucasRange = iota(0, 12).map!(k => lucas(k)).array;
-    
-    assert(lucasRange == [2, 1, 3, 4, 7, 11, 18, 29, 47, 76, 123, 199]); 
+
+    assert(lucasRange == [2, 1, 3, 4, 7, 11, 18, 29, 47, 76, 123, 199]);
 }

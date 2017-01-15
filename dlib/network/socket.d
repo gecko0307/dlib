@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2017 Eugene Wissner 
+Copyright (c) 2016-2017 Eugene Wissner
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -958,7 +958,7 @@ abstract class Socket
      * can $(D_PSYMBOL listen).
      *
      * Params:
-     *     backlog = Request of how many pending incoming connections are 
+     *     backlog = Request of how many pending incoming connections are
      *               queued until $(D_PSYMBOL accept)ed.
      */
     void listen(int backlog) const @trusted
@@ -1307,7 +1307,7 @@ class InternetAddress : Address
         {
             freeaddrinfoPointer(ai_res);
         }
-        
+
         ubyte* dp = cast(ubyte*) &storage, sp = cast(ubyte*) ai_res.ai_addr;
         for (auto i = ai_res.ai_addrlen; i > 0; --i, *dp++, *sp++)
         {

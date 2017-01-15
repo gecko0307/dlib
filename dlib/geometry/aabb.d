@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -41,16 +41,16 @@ struct AABB
     Vector3f center;
     Vector3f size;
     Vector3f pmin, pmax;
-    
+
     this(Vector3f newPosition, Vector3f newSize)
     {
         center = newPosition;
         size = newSize;
-        
+
         pmin = center - size;
         pmax = center + size;
     }
-    
+
     @property float topHeight()
     {
         return (center.y + size.y);
@@ -60,7 +60,7 @@ struct AABB
     {
         return (center.y - size.y);
     }
-    
+
     Vector3f closestPoint(Vector3f point)
     {
         Vector3f closest;
@@ -69,17 +69,17 @@ struct AABB
         closest.z = (point.z < pmin.z)? pmin.z : ((point.z > pmax.z)? pmax.z : point.z);
         return closest;
     }
-    
+
     bool containsPoint(Vector3f point)
     {
-        return !(point.x < pmin.x || point.x > pmax.x || 
-                 point.y < pmin.y || point.y > pmax.y || 
+        return !(point.x < pmin.x || point.x > pmax.x ||
+                 point.y < pmin.y || point.y > pmax.y ||
                  point.z < pmin.z || point.z > pmax.z);
     }
-    
-    // TODO: move the following into 
+
+    // TODO: move the following into
     // separate intersection module
-    
+
     bool intersectsAABB(AABB b)
     {
         Vector3f t = b.center - center;
@@ -87,10 +87,10 @@ struct AABB
                fabs(t.y) <= (size.y + b.size.y) &&
                fabs(t.z) <= (size.z + b.size.z);
     }
-    
+
     bool intersectsSphere(
-        Sphere sphere, 
-        out Vector3f collisionNormal, 
+        Sphere sphere,
+        out Vector3f collisionNormal,
         out float penetrationDepth)
     {
         penetrationDepth = 0.0f;
@@ -110,15 +110,15 @@ struct AABB
         penetrationDepth = sphere.radius - fDist;
         collisionNormal = xDiff / fDist;
         collisionNormal.normalize();
-        return true;    
+        return true;
     }
-    
+
     private bool intersectsRaySlab(
-        float slabmin, 
-        float slabmax, 
-        float raystart, 
-        float rayend, 
-        ref float tbenter, 
+        float slabmin,
+        float slabmax,
+        float raystart,
+        float rayend,
+        ref float tbenter,
         ref float tbexit)
     {
         float raydir = rayend - raystart;
@@ -150,21 +150,21 @@ struct AABB
             return true;
         }
     }
-    
+
     bool intersectsSegment(
-        Vector3f segStart, 
-        Vector3f segEnd, 
+        Vector3f segStart,
+        Vector3f segEnd,
         ref float intersectionTime)
     {
-        float tenter = 0.0f, texit = 1.0f; 
+        float tenter = 0.0f, texit = 1.0f;
 
-        if (!intersectsRaySlab(pmin.x, pmax.x, segStart.x, segEnd.x, tenter, texit)) 
+        if (!intersectsRaySlab(pmin.x, pmax.x, segStart.x, segEnd.x, tenter, texit))
             return false;
 
-        if (!intersectsRaySlab(pmin.y, pmax.y, segStart.y, segEnd.y, tenter, texit)) 
+        if (!intersectsRaySlab(pmin.y, pmax.y, segStart.y, segEnd.y, tenter, texit))
             return false;
 
-        if (!intersectsRaySlab(pmin.z, pmax.z, segStart.z, segEnd.z, tenter, texit)) 
+        if (!intersectsRaySlab(pmin.z, pmax.z, segStart.z, segEnd.z, tenter, texit))
             return false;
 
         intersectionTime = tenter;

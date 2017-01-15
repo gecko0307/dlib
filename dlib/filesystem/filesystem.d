@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2017 Martin Cejp, Timur Gafarov 
+Copyright (c) 2014-2017 Martin Cejp, Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -60,7 +60,7 @@ struct DirEntry {
 interface Directory {
     ///
     void close();
-    
+
     /// Get directory contents as a range.
     /// This range $(I should) be lazily evaluated when practical.
     /// The entries "." and ".." are skipped.
@@ -74,31 +74,31 @@ interface ReadOnlyFileSystem {
         ---
         void printFileInfo(ReadOnlyFileSystem fs, string filename) {
             FileStat stat;
-            
+
             writef("'%s'\t", filename);
-            
+
             if (!fs.stat(filename, stat)) {
                 writeln("ERROR");
                 return;
             }
-            
+
             if (stat.isFile)
                 writefln("%u", stat.sizeInBytes);
             else if (stat.isDirectory)
                 writeln("DIR");
-            
+
             writefln("  created: %s", to!string(stat.creationTimestamp));
             writefln("  modified: %s", to!string(stat.modificationTimestamp));
         }
         ---
     */
     bool stat(string filename, out FileStat stat);
-    
+
     /** Open a file for input.
         Returns: a valid InputStream on success, null on failure
     */
     InputStream openForInput(string filename);
-    
+
     /** Open a directory.
     */
     Directory openDir(string path);
@@ -112,27 +112,27 @@ interface FileSystem: ReadOnlyFileSystem {
         read = 1,
         write = 2,
     }
-    
+
     /// File creation flags.
     enum {
         create = 1,
         truncate = 2,
     }
-    
+
     // TODO: Keep it this way? (strongly-typed)
-    
+
     /** Open a file for output.
         Returns: a valid OutputStream on success, null on failure
     */
     OutputStream openForOutput(string filename, uint creationFlags);
-    
+
     /** Open a file for input & output.
         Returns: a valid IOStream on success, null on failure
     */
     IOStream openForIO(string filename, uint creationFlags);
-    
+
     //IOStream openFile(string filename, uint accessFlags, uint creationFlags);
-    
+
     /** Create a new directory.
         Returns: true if a new directory was created
         Examples:
@@ -142,12 +142,12 @@ interface FileSystem: ReadOnlyFileSystem {
         ---
     */
     bool createDir(string path, bool recursive);
-    
+
     // BROKEN API. Must define semantics for non-atomic move cases (e.g. moving a file to a different drive)
     /** Rename or move a file.
     */
     //bool move(string path, string newPath);
-    
+
     /** Permanently delete a file or directory.
     */
     bool remove(string path, bool recursive);
@@ -159,7 +159,7 @@ interface FileSystem: ReadOnlyFileSystem {
     baseDir = path to the base directory (if empty, defaults to current working directory)
     recursive = if true, the search will recurse into subdirectories
     filter = a delegate to be called for each entry found to decide whether it should be returned as part of the collection (optional)
-    
+
     Examples:
     ---
     void listImagesInDirectory(ReadOnlyFileSystem fs, string baseDir = "") {
@@ -174,7 +174,7 @@ interface FileSystem: ReadOnlyFileSystem {
 InputRange!DirEntry findFiles(ReadOnlyFileSystem rofs, string baseDir, bool recursive)
 {
     // Do some magic so that we don't have to keep our own stack
-        
+
     import core.thread;
 
     //baseDir = normalizePath(baseDir);
@@ -188,27 +188,27 @@ InputRange!DirEntry findFiles(ReadOnlyFileSystem rofs, string baseDir, bool recu
             // and jump outside of the .call() (see below)
             entry = de;
             Fiber.yield();
-                
+
             // after resuming, return to findFiles for another round
             return 0;
         });
-            
+
         // state becomes TERM after we're resumed after returning the last entry
     });
-        
+
     return new DirRange(delegate bool(out DirEntry de) {
         // terminated before?
         if (search.state == Fiber.State.TERM)
             return false;
-                
+
         // jumps into our search delegate
         search.call();
-            
+
         // last entry had been returned last time?
         // (even findFiles didn't know until we returned to it again)
         if (search.state == Fiber.State.TERM)
             return false;
-            
+
         de = entry;
         return true;
     });
@@ -219,22 +219,22 @@ private int findFiles(ReadOnlyFileSystem rofs, string baseDir, bool recursive, i
 
     if (dir is null)
         return 0;
-        
+
     int result = 0;
-        
+
     try {
         foreach (entry; dir.contents) {
             if (!baseDir.empty)
                 entry.name = baseDir ~ "/" ~ entry.name;
-                
+
             result = dg(entry);
-                
+
             if (result != 0)
                 return result;
 
             if (recursive && entry.isDirectory) {
                 result = findFiles(rofs, entry.name, recursive, dg);
-                
+
                 if (result != 0)
                     return result;
             }
@@ -243,7 +243,7 @@ private int findFiles(ReadOnlyFileSystem rofs, string baseDir, bool recursive, i
     finally {
         dir.close();
     }
-        
+
     return result;
 }
 

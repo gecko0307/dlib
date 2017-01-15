@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2017 Timur Gafarov 
+Copyright (c) 2013-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -38,9 +38,9 @@ private
 void fastFourierTransform(Complex!(float)[] data, bool forward)
 {
     assert(isPowerOfTwo(data.length));
-    
+
     uint target = 0;
-    
+
     for (uint pos = 0; pos < data.length; ++pos)
     {
         if (target > pos)
@@ -54,9 +54,9 @@ void fastFourierTransform(Complex!(float)[] data, bool forward)
             target &= ~mask;
         target |= mask;
     }
-    
+
     float pi = forward? -PI : PI;
-    
+
     for (uint step = 1; step < data.length; step <<= 1)
     {
         uint jump = step << 1;
@@ -64,7 +64,7 @@ void fastFourierTransform(Complex!(float)[] data, bool forward)
         float sine = sin(delta * 0.5f);
         Complex!(float) multiplier = Complex!(float)(-2.0f * sine * sine, sin(delta));
         Complex!(float) factor = Complex!(float)(1.0f);
-        
+
         for (uint group = 0; group < step; ++group)
         {
             for (uint pair = group; pair < data.length; pair += jump)
@@ -74,7 +74,7 @@ void fastFourierTransform(Complex!(float)[] data, bool forward)
                 data[match] = data[pair] - product;
                 data[pair] += product;
             }
-            
+
             factor = multiplier * factor + factor;
         }
     }

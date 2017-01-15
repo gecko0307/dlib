@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2017 Timur Gafarov 
+Copyright (c) 2015-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -61,25 +61,25 @@ struct DynamicArray(T, size_t chunkSize = 32)
         else
         {
             reallocateArray(
-                dynamicStorage, 
+                dynamicStorage,
                 dynamicStorage.length + chunkSize);
         }
         numChunks++;
     }
-    
+
     ///
     unittest
     {
         DynamicArray!int arr;
         scope(exit) arr.free();
-        
+
         assert(arr.length == 0);
         arr.addChunk();
         assert(arr.length == 0);
     }
 
     /**
-     * Shift contents of array to the right. 
+     * Shift contents of array to the right.
      * It inreases the size of array by 1.
      * The first element becomes default initialized.
      */
@@ -92,20 +92,20 @@ struct DynamicArray(T, size_t chunkSize = 32)
             storage[i] = storage[i-1];
         }
     }
-    
+
     ///
     unittest
     {
         DynamicArray!int arr;
         scope(exit) arr.free();
-        
+
         arr.shiftRight();
         assert(arr.length == 1);
         assert(arr[0] == int.init);
-        
+
         arr[0] = 1;
         arr.append([2,3]);
-        
+
         arr.shiftRight();
         assert(arr.length == 4);
         assert(arr[0] == 1);
@@ -115,7 +115,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     }
 
     /**
-     * Shift contents of array to the left by n positions. 
+     * Shift contents of array to the left by n positions.
      * Does not change the size of array.
      * n of last elements becomes default initialized.
      */
@@ -129,18 +129,18 @@ struct DynamicArray(T, size_t chunkSize = 32)
                 storage[i] = T.init;
         }
     }
-    
+
     ///
     unittest
     {
         DynamicArray!int arr;
         scope(exit) arr.free();
-        
+
         arr.shiftLeft(1);
         assert(arr.length == 0);
-        
+
         arr.append([1,2,3,4,5]);
-        
+
         arr.shiftLeft(2);
         assert(arr.length == 5);
         assert(arr[0] == 3);
@@ -169,19 +169,19 @@ struct DynamicArray(T, size_t chunkSize = 32)
         else
         {
             if (pos == dynamicStorage.length)
-                addChunk(); 
+                addChunk();
 
             dynamicStorage[pos] = c;
-            pos++;          
+            pos++;
         }
     }
-    
+
     ///
     unittest
     {
         DynamicArray!int arr;
         scope(exit) arr.free();
-        
+
         foreach(i; 0..16) {
             arr.append(i);
         }
@@ -199,13 +199,13 @@ struct DynamicArray(T, size_t chunkSize = 32)
         shiftRight();
         storage[0] = c;
     }
-    
+
     ///
     unittest
     {
         DynamicArray!int arr;
         scope(exit) arr.free();
-        
+
         arr.append(1);
         arr.append(2);
         arr.appendLeft(0);
@@ -220,13 +220,13 @@ struct DynamicArray(T, size_t chunkSize = 32)
         foreach(c; s)
             append(cast(T)c);
     }
-    
+
     ///
     unittest
     {
         DynamicArray!int arr;
         scope(exit) arr.free();
-        
+
         arr.append([1,2,3,4]);
         assert(arr.data == [1,2,3,4]);
         arr.append([5,6,7,8]);
@@ -241,13 +241,13 @@ struct DynamicArray(T, size_t chunkSize = 32)
         foreach_reverse(c; s)
             appendLeft(cast(T)c);
     }
-    
+
     ///
     unittest
     {
         DynamicArray!int arr;
         scope(exit) arr.free();
-        
+
         arr.appendLeft([5,6,7,8]);
         assert(arr.data == [5,6,7,8]);
         arr.appendLeft([1,2,3,4]);
@@ -262,13 +262,13 @@ struct DynamicArray(T, size_t chunkSize = 32)
         append(c);
         return this;
     }
-    
+
     ///
     unittest
     {
         DynamicArray!int arr;
         scope(exit) arr.free();
-        
+
         arr ~= 1;
         arr ~= 2;
         assert(arr.data == [1,2]);
@@ -282,13 +282,13 @@ struct DynamicArray(T, size_t chunkSize = 32)
         append(s);
         return this;
     }
-    
+
     ///
     unittest
     {
         DynamicArray!int arr;
         scope(exit) arr.free();
-        
+
         arr ~= [1,2,3];
         assert(arr.data == [1,2,3]);
     }
@@ -309,28 +309,28 @@ struct DynamicArray(T, size_t chunkSize = 32)
             pos -= n;
             return n;
         }
-        else 
+        else
         {
             n = pos;
             pos = 0;
             return n;
-        }   
+        }
     }
-    
+
     ///
     unittest
     {
         DynamicArray!int arr;
         scope(exit) arr.free();
-        
+
         arr.append([1,2,3]);
         assert(arr.remove(3) == 3);
         assert(arr.length == 0);
-        
+
         arr.append([1,2,3,4]);
         assert(arr.remove(2) == 2);
         assert(arr.data == [1,2]);
-        
+
         assert(arr.remove(3) == 2);
         assert(arr.length == 0);
     }
@@ -359,20 +359,20 @@ struct DynamicArray(T, size_t chunkSize = 32)
             return n;
         }
     }
-    
+
     ///
     unittest
     {
         DynamicArray!int arr;
         scope(exit) arr.free();
-        
+
         arr.append([1,2,3]);
         assert(arr.removeLeft(3) == 3);
-        
+
         arr.append([1,2,3,4]);
         assert(arr.removeLeft(2) == 2);
         assert(arr.data == [3,4]);
-        
+
         assert(arr.removeLeft(3) == 2);
         assert(arr.length == 0);
     }
@@ -384,13 +384,13 @@ struct DynamicArray(T, size_t chunkSize = 32)
     {
         return pos;
     }
-    
+
     ///
     unittest
     {
         DynamicArray!int arr;
         scope(exit) arr.free();
-        
+
         arr.append([1,2,3]);
         assert(arr.length == 3);
     }
@@ -402,17 +402,17 @@ struct DynamicArray(T, size_t chunkSize = 32)
     {
         return storage[0..pos];
     }
-    
+
     ///
     unittest
     {
         DynamicArray!(int,4) arr;
         scope(exit) arr.free();
-        
+
         foreach(i; 0..6) {
             arr.append(i);
         }
-        
+
         assert(arr.data == [0,1,2,3,4,5]);
     }
 
@@ -449,13 +449,13 @@ struct DynamicArray(T, size_t chunkSize = 32)
 
         return result;
     }
-    
+
     ///
     unittest
     {
         DynamicArray!(int,4) arr;
         scope(exit) arr.free();
-        
+
         int[4] values;
         arr.append([1,2,3,4]);
         foreach(i, ref val; arr) {
@@ -470,7 +470,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     int opApply(scope int delegate(ref T) dg)
     {
         int result = 0;
-    
+
         foreach(i, ref v; data)
         {
             result = dg(v);
@@ -480,13 +480,13 @@ struct DynamicArray(T, size_t chunkSize = 32)
 
         return 0;
     }
-    
+
     ///
     unittest
     {
         DynamicArray!(int,4) arr;
         scope(exit) arr.free();
-        
+
         int[] values;
         arr.append([1,2,3,4]);
         foreach(ref val; arr) {
@@ -522,12 +522,12 @@ unittest
 {
     auto arr = New!(int[])(3);
     arr[0] = 1; arr[1] = 2; arr[2] = 3;
-    
+
     reallocateArray(arr, 2);
     assert(arr.length == 2);
     assert(arr[0] == 1);
     assert(arr[1] == 2);
-    
+
     reallocateArray(arr, 4);
     assert(arr.length == 4);
     assert(arr[0] == 1);

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -48,12 +48,12 @@ struct Vector(T, int size)
 {
     public:
 
-   /* 
+   /*
     * Vector constructor
     * Supports initializing from vector of arbitrary length and type
     */
     this (T2, int size2)(Vector!(T2, size2) v)
-    {           
+    {
         if (v.arrayof.length >= size)
         {
             foreach(i; 0..size)
@@ -66,11 +66,11 @@ struct Vector(T, int size)
         }
     }
 
-   /* 
+   /*
     * Array constructor
     */
     this (A)(A components) if (isDynamicArray!A && !isSomeString!A)
-    {        
+    {
         if (components.length >= size)
         {
             foreach(i; 0..size)
@@ -83,11 +83,11 @@ struct Vector(T, int size)
         }
     }
 
-   /* 
+   /*
     * Static array constructor
     */
     this (T2, size_t arrSize)(T2[arrSize] components)
-    {        
+    {
         if (components.length >= size)
         {
             foreach(i; 0..size)
@@ -100,7 +100,7 @@ struct Vector(T, int size)
         }
     }
 
-   /* 
+   /*
     * Tuple constructor
     */
     this (F...)(F components)
@@ -110,7 +110,7 @@ struct Vector(T, int size)
                 arrayof[i] = cast(T)v;
     }
 
-   /* 
+   /*
     * String constructor
     */
     this (S)(S str) if (isSomeString!S)
@@ -118,11 +118,11 @@ struct Vector(T, int size)
         arrayof = parse!(T[size])(str);
     }
 
-   /* 
+   /*
     * Vector!(T,size) = Vector!(T,size2)
     */
     void opAssign(T2, int size2)(Vector!(T2,size2) v)
-    {           
+    {
         if (v.arrayof.length >= size)
         {
             foreach(i; 0..size)
@@ -135,7 +135,7 @@ struct Vector(T, int size)
         }
     }
 
-   /* 
+   /*
     * -Vector!(T,size)
     */
     Vector!(T,size) opUnary(string s) () const if (s == "-")
@@ -143,11 +143,11 @@ struct Vector(T, int size)
     {
         Vector!(T,size) res;
         foreach(i; RangeTuple!(0, size))
-            res.arrayof[i] = -arrayof[i]; 
+            res.arrayof[i] = -arrayof[i];
         return res;
     }
 
-   /* 
+   /*
     * +Vector!(T,size)
     */
     Vector!(T,size) opUnary(string s) () const if (s == "+")
@@ -164,7 +164,7 @@ struct Vector(T, int size)
     {
         Vector!(T,size) res;
         foreach(i; RangeTuple!(0, size))
-            res.arrayof[i] = cast(T)(arrayof[i] + v.arrayof[i]); 
+            res.arrayof[i] = cast(T)(arrayof[i] + v.arrayof[i]);
         return res;
     }
 
@@ -176,7 +176,7 @@ struct Vector(T, int size)
     {
         Vector!(T,size) res;
         foreach(i; RangeTuple!(0, size))
-            res.arrayof[i] = cast(T)(arrayof[i] - v.arrayof[i]); 
+            res.arrayof[i] = cast(T)(arrayof[i] - v.arrayof[i]);
         return res;
     }
 
@@ -188,7 +188,7 @@ struct Vector(T, int size)
     {
         Vector!(T,size) res;
         foreach(i; RangeTuple!(0, size))
-            res.arrayof[i] = cast(T)(arrayof[i] * v.arrayof[i]); 
+            res.arrayof[i] = cast(T)(arrayof[i] * v.arrayof[i]);
         return res;
     }
 
@@ -200,7 +200,7 @@ struct Vector(T, int size)
     {
         Vector!(T,size) res;
         foreach(i; RangeTuple!(0, size))
-            res.arrayof[i] = cast(T)(arrayof[i] / v.arrayof[i]); 
+            res.arrayof[i] = cast(T)(arrayof[i] / v.arrayof[i]);
         return res;
     }
 
@@ -263,7 +263,7 @@ struct Vector(T, int size)
             res.arrayof[i] = cast(T)(arrayof[i] / t);
         return res;
     }
-    
+
    /*
     * Vector!(T,size) % T
     */
@@ -371,7 +371,7 @@ struct Vector(T, int size)
             arrayof[i] /= t;
         return this;
     }
-    
+
    /*
     * Vector!(T,size) %= T
     */
@@ -391,11 +391,11 @@ struct Vector(T, int size)
     in
     {
         assert ((0 <= index) && (index < size),
-            "Vector!(T,size).opIndex(int index): array index out of bounds");  
+            "Vector!(T,size).opIndex(int index): array index out of bounds");
     }
     body
     {
-        return arrayof[index]; 
+        return arrayof[index];
     }
 
    /*
@@ -405,7 +405,7 @@ struct Vector(T, int size)
     in
     {
         assert ((0 <= index) && (index < size),
-            "Vector!(T,size).opIndexAssign(int index): array index out of bounds");  
+            "Vector!(T,size).opIndexAssign(int index): array index out of bounds");
     }
     body
     {
@@ -418,8 +418,8 @@ struct Vector(T, int size)
     auto opSlice (this X)(size_t index1, size_t index2)
     in
     {
-        assert ((0 <= index1) || (index1 < 3) || (0 <= index2) || (index2 < 3) || (index1 < index2), 
-            "Vector!(T,size).opSlice(int index1, int index2): array index out of bounds");  
+        assert ((0 <= index1) || (index1 < 3) || (0 <= index2) || (index2 < 3) || (index1 < index2),
+            "Vector!(T,size).opSlice(int index1, int index2): array index out of bounds");
     }
     body
     {
@@ -432,8 +432,8 @@ struct Vector(T, int size)
     T opSliceAssign (T t, size_t index1, size_t index2)
     in
     {
-        assert ((0 <= index1) || (index1 < 3) || (0 <= index2) || (index2 < 3) || (index1 < index2), 
-            "Vector!(T,size).opSliceAssign(T t, int index1, int index2): array index out of bounds");  
+        assert ((0 <= index1) || (index1 < 3) || (0 <= index2) || (index2 < 3) || (index1 < index2),
+            "Vector!(T,size).opSliceAssign(T t, int index1, int index2): array index out of bounds");
     }
     body
     {
@@ -472,7 +472,7 @@ struct Vector(T, int size)
         body
         {
             T res = 0;
-            foreach (component; arrayof) 
+            foreach (component; arrayof)
                 res += component * component;
             return res;
         }
@@ -486,14 +486,14 @@ struct Vector(T, int size)
             static if (isFloatingPoint!T)
             {
                 T t = 0;
-                foreach (component; arrayof) 
+                foreach (component; arrayof)
                     t += component * component;
                 return sqrt(t);
             }
             else
             {
                 T t = 0;
-                foreach (component; arrayof) 
+                foreach (component; arrayof)
                     t += component * component;
                 return cast(T)sqrt(cast(float)t);
             }
@@ -511,7 +511,7 @@ struct Vector(T, int size)
                 if (lensqr > 0)
                 {
                     T coef = 1.0 / sqrt(lensqr);
-                    foreach (ref component; arrayof) 
+                    foreach (ref component; arrayof)
                         component *= coef;
                 }
             }
@@ -521,7 +521,7 @@ struct Vector(T, int size)
                 if (lensqr > 0)
                 {
                     float coef = 1.0 / sqrt(cast(float)lensqr);
-                    foreach (ref component; arrayof) 
+                    foreach (ref component; arrayof)
                         component = cast(T)(component * coef);
                 }
             }
@@ -555,7 +555,7 @@ struct Vector(T, int size)
         */
         void clamp(T minv, T maxv)
         {
-            foreach (ref v; arrayof) 
+            foreach (ref v; arrayof)
                 v = .clamp(v, minv, maxv);
         }
     }
@@ -595,12 +595,12 @@ struct Vector(T, int size)
         }
         else*/
         static if (s.length <= 4)
-        { 
+        {
             @property auto ref opDispatch(this X)()
             {
-                auto extend(string s) 
+                auto extend(string s)
                 {
-                    while (s.length < 4) 
+                    while (s.length < 4)
                         s ~= s[$-1];
                     return s;
                 }
@@ -609,9 +609,9 @@ struct Vector(T, int size)
                 enum i = (char c) => ['x':0, 'y':1, 'z':2, 'w':3,
                                       'r':0, 'g':1, 'b':2, 'a':3,
                                       's':0, 't':1, 'p':2, 'q':3][c];
-                enum i0 = i(p[0]), 
-                     i1 = i(p[1]), 
-                     i2 = i(p[2]), 
+                enum i0 = i(p[0]),
+                     i1 = i(p[1]),
+                     i2 = i(p[2]),
                      i3 = i(p[3]);
 
                 static if (s.length == 4)
@@ -624,7 +624,7 @@ struct Vector(T, int size)
         }
     }
 
-    private static bool valid(string s) 
+    private static bool valid(string s)
     {
         if (s.length < 2)
             return false;
@@ -633,16 +633,16 @@ struct Vector(T, int size)
         {
             switch(c)
             {
-                case 'w', 'a', 'q': 
+                case 'w', 'a', 'q':
                     if (size < 4) return false;
                     else break;
-                case 'z', 'b', 'p': 
+                case 'z', 'b', 'p':
                     if (size < 3) return false;
                     else break;
-                case 'y', 'g', 't': 
+                case 'y', 'g', 't':
                     if (size < 2) return false;
                     else break;
-                case 'x', 'r', 's': 
+                case 'x', 'r', 's':
                     if (size < 1) return false;
                     else break;
                 default:
@@ -651,7 +651,7 @@ struct Vector(T, int size)
         }
         return true;
     }
-    
+
    /*
     * Symbolic element access
     */
@@ -717,7 +717,7 @@ body
 Vector!(T,size) cross(T, int size) (Vector!(T,size) a, Vector!(T,size) b) if (size == 3)
 body
 {
-    return Vector!(T,size) 
+    return Vector!(T,size)
     (
         (a.y * b.z) - (a.z * b.y),
         (a.z * b.x) - (a.x * b.z),
@@ -728,22 +728,22 @@ body
 Vector!(T,size) cross(T, int size) (Vector!(T,size) a, Vector!(T,size) b, Vector!(T,size) c) if (size == 4)
 body
 {
-    return Vector!(T,size) 
+    return Vector!(T,size)
     (
-        (a.y * b.z * c.w) - (a.y * b.w * c.z) 
-      + (a.z * b.w * c.y) - (a.z * b.y * c.w) 
+        (a.y * b.z * c.w) - (a.y * b.w * c.z)
+      + (a.z * b.w * c.y) - (a.z * b.y * c.w)
       + (a.w * b.y * c.z) - (a.w * b.z * c.y),
-      
-        (a.z * b.w * c.x) - (a.z * b.x * c.w) 
-      + (a.w * b.x * c.z) - (a.w * b.z * c.x) 
+
+        (a.z * b.w * c.x) - (a.z * b.x * c.w)
+      + (a.w * b.x * c.z) - (a.w * b.z * c.x)
       + (a.x * b.z * c.w) - (a.x * b.w * c.z),
-      
-        (a.w * b.x * c.y) - (a.w * b.y * c.x) 
-      + (a.x * b.y * c.w) - (a.x * b.w * c.y) 
+
+        (a.w * b.x * c.y) - (a.w * b.y * c.x)
+      + (a.x * b.y * c.w) - (a.x * b.w * c.y)
       + (a.y * b.w * c.x) - (a.y * b.x * c.w),
-      
-        (a.x * b.y * c.z) - (a.x * b.z * c.y) 
-      + (a.y * b.z * c.x) - (a.y * b.x * c.z) 
+
+        (a.x * b.y * c.z) - (a.x * b.z * c.y)
+      + (a.y * b.z * c.x) - (a.y * b.x * c.z)
       + (a.z * b.x * c.y) - (a.z * b.y * c.x)
     );
 }
@@ -773,7 +773,7 @@ body
 {
     Vector!(T,3) vec1 = Vector!(T,3)(p1 - p2);
     Vector!(T,3) vec2 = Vector!(T,3)(p1 - p3);
-    
+
     Vector!(T,3) result = Vector!(T,3)(cross(vec1,vec2));
     result.normalize();
 
@@ -798,7 +798,7 @@ void rotateAroundAxis(T) (ref Vector!(T,3) V, Vector!(T,3) P, Vector!(T,3) D, T 
     u = D.x;
     v = D.y;
     w = D.z;
-    
+
     u2 = u * u;
     v2 = v * v;
     w2 = w * w;
@@ -807,20 +807,20 @@ void rotateAroundAxis(T) (ref Vector!(T,3) V, Vector!(T,3) P, Vector!(T,3) D, T 
     b = P.y;
     c = P.z;
 
-    axx = u2+(v2+w2)*ca;   
-    axy = u*v*(1-ca)-w*sa; 
-    axz = u*w*(1-ca)+v*sa; 
+    axx = u2+(v2+w2)*ca;
+    axy = u*v*(1-ca)-w*sa;
+    axz = u*w*(1-ca)+v*sa;
     ax1 = a*(v2+w2)-u*(b*v+c*w)+(u*(b*v+c*w)-a*(v2+w2))*ca+(b*w-c*v)*sa;
-    
-    ayx = u*v*(1-ca)+w*sa; 
-    ayy = v2+(u2+w2)*ca;   
-    ayz = v*w*(1-ca)-u*sa; 
+
+    ayx = u*v*(1-ca)+w*sa;
+    ayy = v2+(u2+w2)*ca;
+    ayz = v*w*(1-ca)-u*sa;
     ay1 = b*(u2+w2)-v*(a*u+c*w)+(v*(a*u+c*w)-b*(u2+w2))*ca+(c*u-a*w)*sa;
-    
-    azx = u*w*(1-ca)-v*sa; 
-    azy = v*w*(1-ca)+u*sa; 
-    azz = w2+(u2+v2)*ca;   
-    
+
+    azx = u*w*(1-ca)-v*sa;
+    azy = v*w*(1-ca)+u*sa;
+    azz = w2+(u2+v2)*ca;
+
     az1 = c*(u2+v2)-w*(a*u+b*v)+(w*(a*u+b*v)-c*(u2+v2))*ca+(a*v-b*u)*sa;
 
     Vector!(T,3) W;
@@ -831,7 +831,7 @@ void rotateAroundAxis(T) (ref Vector!(T,3) V, Vector!(T,3) P, Vector!(T,3) D, T 
     V = W;
 }
 
-/* 
+/*
  * Compute distance between two points
  */
 T distance(T) (Vector!(T,3) a, Vector!(T,3) b)
@@ -873,7 +873,7 @@ Vector!(T,3) randomUnitVector3(T)()
  */
 Vector!(T,3) slerp(T) (Vector!(T,3) a, Vector!(T,3) b, T t)
 {
-    T dp = dot(a, b);     
+    T dp = dot(a, b);
     dp = clamp(dp, -1.0, 1.0);
     T theta = acos(dp) * t;
     Vector!(T,3) relativeVec = b - a * dp;
@@ -963,7 +963,7 @@ enum AxisVector: Vector3f
 */
 
 /*
- * Vector factory function 
+ * Vector factory function
  */
 auto vectorf(T...)(T t) if (t.length > 0)
 {
@@ -988,7 +988,7 @@ auto lvector(T...)(ref T x)
         {
             if (v.arrayof.length >= size)
                 foreach(i; 0..size)
-                    *arrayof[i] = v.arrayof[i];       
+                    *arrayof[i] = v.arrayof[i];
             else
                 foreach(i; 0..v.arrayof.length)
                     *arrayof[i] = v.arrayof[i];
@@ -1024,14 +1024,14 @@ unittest
 
     auto xy = a[0..1];
     auto n = a[];
-    
+
     vec3 v1 = vec3(2.0f, 0.0f, 1.0f);
-    ivec3 v2 = v1; 
+    ivec3 v2 = v1;
     assert(ivec3(v1) == ivec3(2, 0, 1));
-    
+
     vec3 v3 = [0, 2, 3.5];
     assert(v3 == vec3(0.0f, 2.0f, 3.5f));
-    
+
     ivec3 v4 = [7, 8, 3];
     v4 %= 2;
     assert(v4 == ivec3(1, 0, 1));

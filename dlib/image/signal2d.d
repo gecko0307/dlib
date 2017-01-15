@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2017 Timur Gafarov 
+Copyright (c) 2013-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -48,20 +48,20 @@ class Signal2D
     uint width;
     uint height;
     Domain domain = Domain.Spatial;
-    
+
     this(uint w, uint h)
     {
         width = w;
         height = h;
         data = new Complex!(float)[width * height];
     }
-    
+
     this(SuperImage img, uint channel)
     {
         width = img.width;
         height = img.height;
         data = new Complex!(float)[width * height];
-        
+
         foreach(y; 0..height)
         foreach(x; 0..width)
         {
@@ -71,11 +71,11 @@ class Signal2D
             data[index].im = 0.0f;
         }
     }
-    
+
     ImageL8 image()
     {
         ImageL8 img = new ImageL8(width, height);
-        
+
         float maxIntensity = 0.0f;
         float[] fpImage = new float[width * height];
 
@@ -86,15 +86,15 @@ class Signal2D
             {
                 maxIntensity = m;
             }
-            
+
             fpImage[i] = m;
         }
-        
+
         foreach(ref v; fpImage)
         {
             v /= maxIntensity;
         }
-        
+
         foreach(y; 0..height)
         foreach(x; 0..width)
         {
@@ -103,10 +103,10 @@ class Signal2D
             auto col = Color4f(m, m, m);
             img[x, y] = col;
         }
-        
+
         return img;
     }
-    
+
     void fft()
     {
         foreach(y; 0..height)
@@ -119,16 +119,16 @@ class Signal2D
                 data[index].im = data[index].im * -1;
             }
         }
-        
+
         fft2(true);
         domain = Domain.Frequency;
     }
-    
+
     void fftInverse()
     {
         if (domain != Domain.Frequency)
             return;
-    
+
         fft2(false);
         domain = Domain.Spatial;
 
@@ -143,29 +143,29 @@ class Signal2D
             }
         }
     }
-    
+
     Signal2D multiply(Signal2D img)
     {
         assert(img.width == width && img.height == height);
-        
+
         Signal2D res = new Signal2D(width, height);
         res.domain = domain;
-        
+
         foreach(i, v; data)
         {
             res.data[i] = v * img.data[i];
         }
-        
+
         return res;
     }
-	
+
     Signal2D divide(Signal2D img)
     {
         assert(img.width == width && img.height == height);
-        
+
         Signal2D res = new Signal2D(width, height);
         res.domain = domain;
-        
+
         foreach(i, v; data)
         {
             if (img.data[i].re == 0.0f)
@@ -173,20 +173,20 @@ class Signal2D
             else
                 res.data[i] = v / img.data[i];
         }
-        
+
         return res;
     }
-    
+
     Complex!(float) opIndex(int x, int y)
     {
         while(x >= width) x = width-1;
         while(y >= height) y = height-1;
         while(x < 0) x = 0;
         while(y < 0) y = 0;
-        
+
         return data[y * width + x];
     }
-    
+
     void fft2(bool forward)
     {
         // process rows
@@ -198,7 +198,7 @@ class Signal2D
                 auto index = y * width + x;
                 row[x] = data[index];
             }
-        
+
             fastFourierTransform(row, forward);
 
             for (int x = 0; x < width; x++)
@@ -207,7 +207,7 @@ class Signal2D
                 data[index] = row[x];
             }
         }
-    
+
         // process columns
         Complex!(float)[] col = new Complex!(float)[height];
         for (int x = 0; x < width; x++)

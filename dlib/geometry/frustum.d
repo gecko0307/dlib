@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2017 Timur Gafarov 
+Copyright (c) 2014-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -120,7 +120,7 @@ struct Frustum
     }
 
     bool intersectsAABB(
-        AABB aabb, 
+        AABB aabb,
         bool checkBoundariesOnly = false,
         bool checkNearPlane = true)
     {
@@ -130,16 +130,16 @@ struct Frustum
         {
             if (i == 5 && !checkNearPlane)
                 break;
-        
+
             float d = dot(aabb.center, -plane.normal);
 
-            float r = aabb.size.x * abs(plane.normal.x) + 
-                      aabb.size.y * abs(plane.normal.y) + 
+            float r = aabb.size.x * abs(plane.normal.x) +
+                      aabb.size.y * abs(plane.normal.y) +
                       aabb.size.z * abs(plane.normal.z);
- 
+
             float d_p_r = d + r;
             float d_m_r = d - r;
- 
+
             if (d_p_r < plane.d)
             {
                 result = false; // Outside

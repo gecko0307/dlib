@@ -40,8 +40,8 @@ import dlib.math.quaternion;
  *
  * Affine transformation is a function between affine spaces
  * which preserves points, straight lines and planes.
- * Examples of affine transformations include translation, scaling, 
- * rotation, reflection, shear and compositions of them in any 
+ * Examples of affine transformations include translation, scaling,
+ * rotation, reflection, shear and compositions of them in any
  * combination and sequence.
  *
  * dlib uses 4x4 matrices to represent affine transformations.
@@ -151,7 +151,7 @@ body
     return Vector!(T,3)(m.a11, m.a22, m.a33);
 }
 
-/* 
+/*
  * Create a matrix to perform a rotation about a world axis
  * (theta in radians)
  */
@@ -190,7 +190,7 @@ body
     return res;
 }
 
-/* 
+/*
  * Create a translation matrix given a translation vector
  */
 Matrix!(T,4) translationMatrix(T) (Vector!(T,3) v)
@@ -210,7 +210,7 @@ Matrix!(T,4) scaleMatrix(T) (Vector!(T,3) v)
 body
 {
     auto res = Matrix!(T,4).identity;
-    res.a11 = v.x;  
+    res.a11 = v.x;
     res.a22 = v.y;
     res.a33 = v.z;
     return res;
@@ -281,7 +281,7 @@ body
     return res;
 }
 
-/* 
+/*
  * Setup the matrix to perform a projection onto a plane passing
  * through the origin. The plane is perpendicular to the
  * unit vector n.
@@ -373,7 +373,7 @@ body
 }
 
 /*
- * Setup the matrix to perform a "Look At" transformation 
+ * Setup the matrix to perform a "Look At" transformation
  * like a first person camera
  */
 Matrix!(T,4) lookAtMatrix(T) (Vector!(T,3) eye, Vector!(T,3) center, Vector!(T,3) up)
@@ -385,7 +385,7 @@ body
     auto u = (up).normalized;
     auto s = cross(f, u).normalized;
     u = cross(s, f);
-    
+
     Result[0,0] = s.x;
     Result[0,1] = s.y;
     Result[0,2] = s.z;
@@ -535,7 +535,7 @@ body
 }
 
 /*
- * Setup a matrix that flattens geometry into a plane, 
+ * Setup a matrix that flattens geometry into a plane,
  * as if it were casting a shadow from a light
  */
 Matrix!(T,4) shadowMatrix(T) (Vector!(T,4) groundplane, Vector!(T,4) lightpos)
@@ -563,7 +563,7 @@ Matrix!(T,4) shadowMatrix(T) (Vector!(T,4) groundplane, Vector!(T,4) lightpos)
     res.a42 =  -lightpos.w * groundplane.y;
     res.a43 =  -lightpos.w * groundplane.z;
     res.a44 = d-lightpos.w * groundplane.w;
-    
+
     return res;
 }
 
@@ -607,9 +607,9 @@ Matrix!(T,4) directionToMatrix(T) (Vector!(T,3) zdir)
 
 /*
  * Setup an orientation matrix that performs rotation
- * between two vectors 
+ * between two vectors
  *
- * NOTE: currently this is just a shortcut 
+ * NOTE: currently this is just a shortcut
  * for dlib.math.quaternion.rotationBetween
  */
 Matrix!(T,4) rotationBetweenVectors(T) (Vector!(T,3) source, Vector!(T,3) target)
@@ -622,7 +622,7 @@ Matrix!(T,4) rotationBetweenVectors(T) (Vector!(T,3) source, Vector!(T,3) target
  */
  Vector!(T,2) affineTransform2D(T)(Vector!(T,2) v, Matrix!(T,3) m)
 {
-    return Vector!(T,2) 
+    return Vector!(T,2)
     (
         (v.x * m.a11) + (v.y * m.a12) + m.a13,
         (v.x * m.a21) + (v.y * m.a22) + m.a23
@@ -666,33 +666,33 @@ unittest
     bool isAlmostZero(Vector4f v)
     {
         float e = 0.002f;
-        
+
         return abs(v.x) < e &&
                abs(v.y) < e &&
                abs(v.z) < e &&
                abs(v.w) < e;
     }
 
-    // build ModelView (World to Camera)    
+    // build ModelView (World to Camera)
     vec3 center = vec3(0.0f, 0.0f, 0.0f);
     vec3 eye = center + vec3(0.0f, 1.0f, 1.0f);
     vec3 up = vec3(0.0f, -0.707f, 0.707f);
 
     Matrix4f modelView = lookAtMatrix(eye, center, up);
-    
+
     // build Projection (Camera to Eye)
     Matrix4f projection = perspectiveMatrix(45.0f, 16.0f / 9.0f, 1.0f, 100.0f);
-    
+
     // compose into one transformation
     Matrix4f projectionModelView = projection * modelView;
-    
+
     vec4 positionInWorld = vec4(0.0f, 0.0f, 0.0f, 1.0f);
-    
+
     vec4 transformed1 =
         positionInWorld * projectionModelView;
-        
+
     vec4 transformed2 =
         (positionInWorld * modelView) * projection;
-        
+
     assert(isAlmostZero(transformed1 - transformed2));
 }

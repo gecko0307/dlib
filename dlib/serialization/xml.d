@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2017 Timur Gafarov 
+Copyright (c) 2015-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -44,7 +44,7 @@ import dlib.text.utils;
  * - supports only ASCII and UTF-8 encodings
  * - doesn't support DOCTYPE and some other special tags
  */
- 
+
 string[] xmlDelims =
 [
     "<", ">", "</", "/>", "=", "<?", "?>", "\"",
@@ -70,7 +70,7 @@ string appendChar(string s, dchar ch)
 
     char[4] chars;
     uint byteMask = 0xBF;
-    uint byteMark = 0x80; 
+    uint byteMark = 0x80;
 
     uint bytesToWrite = 0;
     if (ch < 0x80) bytesToWrite = 1;
@@ -99,7 +99,7 @@ class XmlNode
     string name;
     string text;
     Dict!(string, string) properties;
-    
+
     this(string name, XmlNode parent = null)
     {
         this.name = name;
@@ -110,7 +110,7 @@ class XmlNode
         }
         this.properties = New!(Dict!(string, string));
     }
-    
+
     ~this()
     {
         if (text.length)
@@ -129,7 +129,7 @@ class XmlNode
         }
         children.free();
     }
-    
+
     XmlNode firstChildByTag(string tag)
     {
         XmlNode res = null;
@@ -141,15 +141,15 @@ class XmlNode
                 break;
             }
         }
-        
+
         return res;
     }
-    
+
     void addChild(XmlNode node)
     {
         children.append(node);
     }
-    
+
     void appendText(dchar c)
     {
         string newText = appendChar(text, c);
@@ -157,7 +157,7 @@ class XmlNode
             Delete(text);
         text = newText;
     }
-    
+
     string getTextUnmanaged()
     {
         DynamicArray!char res;
@@ -175,7 +175,7 @@ class XmlNode
         res.free();
         return output;
     }
-    
+
     void printProperties(dstring indent = "")
     {
         if (properties.length)
@@ -184,12 +184,12 @@ class XmlNode
                 writeln(indent, k, " = ", v);
         }
     }
-    
+
     // Warning! Causes GC allocation!
     void print(dstring indent = "")
     {
         printProperties(indent);
-        
+
         foreach(n; children)
         {
             auto nm = n.name;
@@ -197,14 +197,14 @@ class XmlNode
                 writeln(indent, "tag: ", nm);
             else
                 writeln(indent, "tag: <anonymous>");
-                
+
             string txt = n.getTextUnmanaged();
             if (txt.length)
             {
                 writeln(indent, "text: ", txt);
                 Delete(txt);
             }
-                
+
             n.print(indent ~ " ");
         }
     }
@@ -222,7 +222,7 @@ class XmlDocument
 {
     XmlNode prolog = null;
     XmlNode root;
-    
+
     this()
     {
         root = New!XmlNode(emptyStr);
@@ -241,9 +241,9 @@ XmlDocument parseXMLUnmanaged(string text)
     XmlDocument doc = New!XmlDocument();
     SliceLexer lex = New!SliceLexer(text, xmlDelims);
     Stack!XmlNode nodeStack;
-    
+
     nodeStack.push(doc.root);
-    
+
     XmlToken expect = XmlToken.TagOpen;
 
     bool tagOpening = false;
@@ -256,14 +256,14 @@ XmlDocument parseXMLUnmanaged(string text)
     DynamicArray!char tmpPropValue;
 
     bool finished = false;
-    
+
     bool failed = false;
     void error(string text, string t)
     {
         writefln("XML parse error: %s \"%s\"", text, t);
         failed = true;
     }
-    
+
     string token;
     while(!finished)
     {
@@ -383,7 +383,7 @@ XmlDocument parseXMLUnmanaged(string text)
                     finished = true;
                 }
                 break;
-                    
+
             case "<?":
                 if (comment) break;
                 if (cdata)
@@ -398,7 +398,7 @@ XmlDocument parseXMLUnmanaged(string text)
                     tagOpening = true;
                 }
                 break;
-                    
+
             case "?>":
                 if (comment) break;
                 if (cdata)
@@ -574,7 +574,7 @@ XmlDocument parseXMLUnmanaged(string text)
                 else if (expect == XmlToken.TagClose)
                 {
                     expect = XmlToken.Assignment;
-                            
+
                     if (tmpPropName.length)
                         Delete(tmpPropName);
                     tmpPropName = immutableCopy(token);
@@ -591,20 +591,20 @@ XmlDocument parseXMLUnmanaged(string text)
                 break;
         }
     }
-    
+
     if (tmpPropName.length)
         Delete(tmpPropName);
     tmpPropValue.free();
 
     nodeStack.free();
     Delete(lex);
-    
+
     if (failed)
     {
         Delete(doc);
         doc = null;
     }
-    
+
     return doc;
 }
 

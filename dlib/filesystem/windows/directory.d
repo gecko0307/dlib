@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2017 Martin Cejp 
+Copyright (c) 2014-2017 Martin Cejp
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -40,7 +40,7 @@ class WindowsDirectory : Directory {
     FileSystem fs;
     HANDLE find = INVALID_HANDLE_VALUE;
     string prefix;
-    
+
     WIN32_FIND_DATAW entry;
     bool entryValid = false;
 
@@ -53,11 +53,11 @@ class WindowsDirectory : Directory {
         if (find != INVALID_HANDLE_VALUE)
             entryValid = true;
     }
-    
+
     ~this() {
         close();
     }
-    
+
     void close() {
         if (find != INVALID_HANDLE_VALUE) {
             FindClose(find);
@@ -69,23 +69,23 @@ class WindowsDirectory : Directory {
         return new DirRange(delegate bool(out DirEntry de) {
             for (;;) {
                 WIN32_FIND_DATAW* entry = nextEntry();
-                
+
                 if (entry == null)
                     return false;
                 else {
                     size_t len = wcslen(entry.cFileName.ptr);
                     string name = to!string(entry.cFileName[0..len]);
-                    
+
                     if (name == "." || name == "..")
                         continue;
-                    
+
                     de.name = name;
 
                     if (entry.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
                         de.isDirectory = true;
                     else
                         de.isFile = true;
-                    
+
                     return true;
                 }
             }

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -66,7 +66,7 @@ struct LinkedList(T, bool ordered = true)
     {
         return length == 0;
     }
-    
+
     ///
     unittest
     {
@@ -111,24 +111,24 @@ struct LinkedList(T, bool ordered = true)
 
         return result;
     }
-    
+
     ///
     unittest
     {
         LinkedList!int list;
         scope(exit) list.free();
-        
+
         list.append(1);
         list.append(2);
         list.append(3);
         list.append(4);
-        
+
         int[4] values;
-        
+
         foreach(size_t i, ref int val; list) {
             values[i] = val;
         }
-        
+
         assert(values[] == [1,2,3,4]);
     }
 
@@ -150,24 +150,24 @@ struct LinkedList(T, bool ordered = true)
 
         return result;
     }
-    
+
     ///
     unittest
     {
         LinkedList!int list;
         scope(exit) list.free();
-        
+
         list.append(1);
         list.append(2);
         list.append(3);
         list.append(4);
-        
+
         int[] values;
-        
+
         foreach(ref int val; list) {
             values ~= val;
         }
-        
+
         assert(values[] == [1,2,3,4]);
     }
 
@@ -178,7 +178,7 @@ struct LinkedList(T, bool ordered = true)
     LinkedListElement!(T)* append(T v)
     {
         length++;
-        
+
         if (tail is null)
         {
             tail = New!(LinkedListElement!(T))(null);
@@ -192,16 +192,16 @@ struct LinkedList(T, bool ordered = true)
         }
 
         if (head is null) head = tail;
-        
+
         return tail;
     }
-    
+
     ///
     unittest
     {
         LinkedList!int list;
         scope(exit) list.free();
-        
+
         auto element = list.append(13);
         assert(element.datum == 13);
         assert(list.length == 1);
@@ -225,17 +225,17 @@ struct LinkedList(T, bool ordered = true)
         if (element is tail) tail = newElement;
         return newElement;
     }
-    
+
     ///
     unittest
     {
         LinkedList!int list;
         scope(exit) list.free();
-        
+
         auto first = list.append(1);
         auto last = list.append(2);
         list.insertAfter(first, 3);
-        
+
         assert(list.length == 3);
         auto arr = list.toArray();
         assert(arr == [1,3,2]);
@@ -257,17 +257,17 @@ struct LinkedList(T, bool ordered = true)
         }
         return newElement;
     }
-    
+
     ///
     unittest
     {
         LinkedList!int list;
         scope(exit) list.free();
-        
+
         list.insertBeginning(1);
         list.append(2);
         list.insertBeginning(0);
-        
+
         import std.algorithm : equal;
         assert(equal(list.byElement(), [0,1,2]));
     }
@@ -287,18 +287,18 @@ struct LinkedList(T, bool ordered = true)
             Delete(obsolete);
         }
     }
-    
+
     ///
     unittest
     {
         LinkedList!int list;
         scope(exit) list.free();
-        
+
         auto first = list.append(1);
         auto second = list.append(2);
         auto third = list.append(3);
         list.removeAfter(first);
-        
+
         import std.algorithm : equal;
         assert(equal(list.byElement(), [1,3]));
     }
@@ -317,17 +317,17 @@ struct LinkedList(T, bool ordered = true)
             Delete(obsolete);
         }
     }
-    
+
     ///
     unittest
     {
         LinkedList!int list;
         scope(exit) list.free();
-        
+
         list.append(0);
         list.removeBeginning();
         assert(list.length == 0);
-        
+
         list.append(1);
         list.append(2);
         list.append(3);
@@ -352,7 +352,7 @@ struct LinkedList(T, bool ordered = true)
         }
         tail = list.tail;
     }
-    
+
     ///
     unittest
     {
@@ -360,19 +360,19 @@ struct LinkedList(T, bool ordered = true)
         scope(exit) list1.free();
         LinkedList!int list2;
         LinkedList!int list3;
-        
+
         list2.append(1);
         list2.append(2);
-        
+
         list1.appendList(list2);
-        
+
         import std.algorithm : equal;
         assert(equal(list1.byElement(), [1,2]));
-        
+
         list3.append(3);
         list3.append(4);
         list1.appendList(list3);
-        
+
         assert(equal(list1.byElement(), [1,2,3,4]));
     }
 
@@ -392,8 +392,8 @@ struct LinkedList(T, bool ordered = true)
                 {
                    /*
                     * Move-to-front heuristic:
-                    * Move an element to the beginning of the list once it is found. 
-                    * This scheme ensures that the most recently used items are also 
+                    * Move an element to the beginning of the list once it is found.
+                    * This scheme ensures that the most recently used items are also
                     * the quickest to find again.
                     */
                     prevElement.next = element.next;
@@ -410,24 +410,24 @@ struct LinkedList(T, bool ordered = true)
 
         return null;
     }
-    
+
     ///
     unittest
     {
         LinkedList!int list;
         scope(exit) list.free();
-        
+
         assert(list.search(42) is null);
-        
+
         list.append(13);
         list.append(42);
-        
+
         auto first = list.search(13);
         assert(first && first.datum == 13);
-        
+
         auto second = list.search(42);
         assert(second && second.datum == 42);
-        
+
         assert(list.search(0) is null);
     }
 
@@ -441,69 +441,69 @@ struct LinkedList(T, bool ordered = true)
             arr[i] = v;
         return arr;
     }
-    
+
     ///
     unittest
     {
         LinkedList!int list;
         scope(exit) list.free();
-        
+
         list.append(1);
         list.append(2);
         list.append(3);
-        
+
         auto arr = list.toArray();
         assert(arr == [1,2,3]);
         Delete(arr);
     }
-    
+
     auto byElement()
     {
         struct ByElement
         {
         private:
             LinkedListElement!(T)* _first;
-            
+
         public:
             @property bool empty() {
                 return _first is null;
             }
-            
+
             @property T front() {
                 return _first.datum;
             }
-            
+
             void popFront() {
                 _first = _first.next;
             }
-            
+
             auto save() {
                 return this;
             }
         }
-        
+
         return ByElement(head);
     }
-    
+
     ///
     unittest
     {
         LinkedList!int list;
         scope(exit) list.free();
-        
+
         assert(list.byElement().empty);
-        
+
         list.append(1);
         list.append(2);
         list.append(3);
-        
+
         auto range = list.byElement();
         import std.range : isInputRange;
         import std.algorithm : equal;
         static assert(isInputRange!(typeof(range)));
-        
+
         assert(equal(range, [1,2,3]));
-        
+
         range = list.byElement();
         auto saved = range.save();
         range.popFront();

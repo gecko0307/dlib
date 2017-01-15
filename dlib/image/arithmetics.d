@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 module dlib.image.arithmetics;
 
 private
-{   
+{
     import dlib.image.image;
     import dlib.image.color;
 }
@@ -63,7 +63,7 @@ body
         a.updateProgress();
         b.updateProgress();
     }
-    
+
     a.resetProgress();
     b.resetProgress();
 
@@ -99,7 +99,7 @@ body
         a.updateProgress();
         b.updateProgress();
     }
-    
+
     a.resetProgress();
     b.resetProgress();
 
@@ -135,7 +135,7 @@ body
         a.updateProgress();
         b.updateProgress();
     }
-    
+
     a.resetProgress();
     b.resetProgress();
 
@@ -171,7 +171,7 @@ body
         a.updateProgress();
         b.updateProgress();
     }
-    
+
     a.resetProgress();
     b.resetProgress();
 
@@ -197,7 +197,7 @@ SuperImage invert(SuperImage a, SuperImage outp)
         img[x, y] = a[x, y].inverse;
         a.updateProgress();
     }
-    
+
     a.resetProgress();
 
     return img;

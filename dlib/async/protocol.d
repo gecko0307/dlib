@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2017 Eugene Wissnerv 
+Copyright (c) 2016-2017 Eugene Wissnerv
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
