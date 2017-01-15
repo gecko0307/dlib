@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2015 Timur Gafarov, Oleg Baharev
+Copyright (c) 2011-2017 Timur Gafarov, Oleg Baharev
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -76,5 +76,3 @@ SuperImage edgeDetectGradient(SuperImage src, SuperImage outp)
 
     return subtract(g, src, outp);
 }
-
-

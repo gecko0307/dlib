@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015 Timur Gafarov 
+Copyright (c) 2015-2017 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -40,7 +40,7 @@ enum Endian
 
 T hiNibble(T)(T b)
 {
-    return ((b >> 4) & 0x0F); 
+    return ((b >> 4) & 0x0F);
 }
 
 T loNibble(T)(T b)
@@ -65,5 +65,3 @@ bool getBit(T)(T b, uint pos)
 {
     return ((b & (1 << pos)) != 0);
 }
-
-

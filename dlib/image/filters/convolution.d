@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2015 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -36,11 +36,11 @@ private
     import dlib.image.color;
 }
 
-SuperImage convolve(SuperImage img, 
-                    float[] kernel, 
-                    uint kw = 3, 
+SuperImage convolve(SuperImage img,
+                    float[] kernel,
+                    uint kw = 3,
                     uint kh = 3,
-                    float divisor = 1.0f, 
+                    float divisor = 1.0f,
                     float offset = 0.5f,
                     bool normalize = true,
                     bool useAlpha = true)
@@ -50,10 +50,10 @@ SuperImage convolve(SuperImage img,
 
 SuperImage convolve(SuperImage img,
                     SuperImage outp,
-                    float[] kernel, 
+                    float[] kernel,
                     uint kw = 3, 
                     uint kh = 3,
-                    float divisor = 1.0f, 
+                    float divisor = 1.0f,
                     float offset = 0.5f,
                     bool normalize = true,
                     bool useAlpha = true)
@@ -149,7 +149,7 @@ struct Kernel
         1, 1, 1
     ],
 
-    GaussianBlur = 
+    GaussianBlur =
     [
         1, 2, 1,
         2, 4, 2,
@@ -165,9 +165,9 @@ struct Kernel
     
     Emboss = 
     [
-       -1, -1,  0, 
-       -1,  0,  1, 
-        0,  1,  1, 
+       -1, -1,  0,
+       -1,  0,  1,
+        0,  1,  1,
     ],
     
     EdgeEmboss = 
@@ -177,18 +177,17 @@ struct Kernel
         -0.0f,  0.5f,  1.0f
     ],
 
-    EdgeDetect = 
+    EdgeDetect =
     [
-        -1, -1, -1, 
-        -1,  8, -1, 
-        -1, -1, -1, 
+        -1, -1, -1,
+        -1,  8, -1,
+        -1, -1, -1,
     ],
 
     Laplace = 
     [
-        0,  1,  0, 
-        1, -4,  1, 
-        0,  1,  0, 
+        0,  1,  0,
+        1, -4,  1,
+        0,  1,  0,
     ];
 }
-

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016 Timur Gafarov 
+Copyright (c) 2016-2017 Eugene Wissner, Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 

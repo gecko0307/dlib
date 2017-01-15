@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2015 Timur Gafarov 
+Copyright (c) 2015-2017 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -161,7 +161,7 @@ Matrix4x4f sseMulMat4(Matrix4x4f a, Matrix4x4f b)
         for (j = 1; j < 4; j++)
         {
             a_line = *cast(Vector4f*)(a.arrayof.ptr + j * 4);
-            _b = *(b.arrayof.ptr + i + j); // i
+            _b = *(b.arrayof.ptr + i + j);
             asm
             {
                 movups XMM0, a_line;

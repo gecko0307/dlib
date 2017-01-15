@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2015 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -237,4 +237,3 @@ Color4f color4(int hex)
         cast(float)b / 255.0f,
         cast(float)a / 255.0f);
 }
-

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2013 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -68,4 +68,3 @@ template RangeTuple(int start, int stop, int step)
             alias Tuple!(RangeTuple!(start, stop-step, step), stop-step) RangeTuple;
     }
 }
-

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2012 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -85,5 +85,3 @@ unittest
     assert(qsort([8, 5, 10, 2, 16, 9, 1, 100, 3]) 
               == [1, 2, 3, 5, 8, 9, 10, 16, 100]);
 }
-
-

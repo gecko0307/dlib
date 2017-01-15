@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2015 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -787,17 +787,21 @@ void rotateAroundAxis(T) (ref Vector!(T,3) V, Vector!(T,3) P, Vector!(T,3) D, T 
     T azx,azy,azz,az1;
 
     T u,v,w;
-    T u2,v2,w2;    T a,b,c;
-    T sa,ca;
+    T u2,v2,w2;
+    T a,b,c;
+
+    T sa,ca;
 
     sa = sin(angle);
     ca = cos(angle);
 
-    u = D.x;    v = D.y;
+    u = D.x;
+    v = D.y;
     w = D.z;
     
     u2 = u * u;
-    v2 = v * v;    w2 = w * w;
+    v2 = v * v;
+    w2 = w * w;
 
     a = P.x;
     b = P.y;

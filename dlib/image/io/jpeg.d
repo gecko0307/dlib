@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015 Timur Gafarov
+Copyright (c) 2015-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -367,7 +367,8 @@ struct JPEGImage
 SuperImage loadJPEG(string filename)
 {
     InputStream input = openForInput(filename);
-    auto img = loadJPEG(input);    input.close();
+    auto img = loadJPEG(input);
+    input.close();
     return img;
 }
 
@@ -512,7 +513,8 @@ Compound!(bool, string) readMarker(
             return readSOF0(jpg, istrm);
 
         case 0xFFC2:
-            *mt = JPEGMarkerType.SOF2;            break;
+            *mt = JPEGMarkerType.SOF2;
+            break;
             
         case 0xFFC4:
             *mt = JPEGMarkerType.DHT;
@@ -1279,5 +1281,3 @@ struct MCU
         return col;
     }
 }
-
-

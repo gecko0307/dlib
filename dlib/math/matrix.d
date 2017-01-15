@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2014 Timur Gafarov, Martin Cejp
+Copyright (c) 2013-2017 Timur Gafarov, Martin Cejp
 
 Boost Software License - Version 1.0 - August 17th, 2003
 

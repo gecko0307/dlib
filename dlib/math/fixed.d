@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2013 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -91,4 +91,3 @@ struct fixed
         return 1.0 * x / (1 << 16); 
     }
 }
-

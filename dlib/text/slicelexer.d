@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016 Timur Gafarov, Roman Chistokhodov 
+Copyright (c) 2016-2017 Timur Gafarov, Roman Chistokhodov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -363,4 +363,3 @@ unittest
     lexer = new SliceLexer(input, delims);
     assert(lexer.getLexeme().length == 0);
 }
-

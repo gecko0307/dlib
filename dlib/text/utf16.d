@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016 Timur Gafarov 
+Copyright (c) 2016-2017 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -62,16 +62,16 @@ wchar[] convertUTF8toUTF16(string s, bool nullTerm = false)
         {
             // Split ch up into a surrogate pair as it is over 16 bits long.
             wchar x = cast(wchar)ch;
-	        auto vh = UTF16_HI_SURROGATE | ((((ch >> 16) & ((1 << 5) - 1)) - 1) << 6) | (x >> 10);
-	        auto vl = UTF16_LO_SURROGATE | (x & ((1 << 10) - 1));
-	        array.append(cast(wchar)vh);
-	        array.append(cast(wchar)vl);
+            auto vh = UTF16_HI_SURROGATE | ((((ch >> 16) & ((1 << 5) - 1)) - 1) << 6) | (x >> 10);
+            auto vl = UTF16_LO_SURROGATE | (x & ((1 << 10) - 1));
+            array.append(cast(wchar)vh);
+            array.append(cast(wchar)vl);
         }
         /*
         else if (ch >= 0xD800 && ch <= 0xDFFF)
         {
-	        // Between possible UTF-16 surrogates (invalid!)
-	        array[pos++] = UTF_REPLACEMENT_CHARACTER;
+            // Between possible UTF-16 surrogates (invalid!)
+            array[pos++] = UTF_REPLACEMENT_CHARACTER;
         }
         */
         else
@@ -106,25 +106,25 @@ char[] convertUTF16ztoUTF8(wchar* s, bool nullTerm = false)
         {
             if (utf16char < 0x80)
             {
-		        array.append((utf16char >> 0 & 0x7F) | 0x00);
-	        }
+                array.append((utf16char >> 0 & 0x7F) | 0x00);
+            }
             else if (utf16char < 0x0800)
             {
-		        array.append((utf16char >> 6 & 0x1F) | 0xC0);
-		        array.append((utf16char >> 0 & 0x3F) | 0x80);
+                array.append((utf16char >> 6 & 0x1F) | 0xC0);
+                array.append((utf16char >> 0 & 0x3F) | 0x80);
             }
             else if (utf16char < 0x010000)
             {
-		        array.append((utf16char >> 12 & 0x0F) | 0xE0);
-		        array.append((utf16char >> 6 & 0x3F) | 0x80);
-		        array.append((utf16char >> 0 & 0x3F) | 0x80);
+                array.append((utf16char >> 12 & 0x0F) | 0xE0);
+                array.append((utf16char >> 6 & 0x3F) | 0x80);
+                array.append((utf16char >> 0 & 0x3F) | 0x80);
             }
             else if (utf16char < 0x110000)
             {
-		        array.append((utf16char >> 18 & 0x07) | 0xF0);
-		        array.append((utf16char >> 12 & 0x3F) | 0x80);
-		        array.append((utf16char >> 6 & 0x3F) | 0x80);
-		        array.append((utf16char >> 0 & 0x3F) | 0x80);
+                array.append((utf16char >> 18 & 0x07) | 0xF0);
+                array.append((utf16char >> 12 & 0x3F) | 0x80);
+                array.append((utf16char >> 6 & 0x3F) | 0x80);
+                array.append((utf16char >> 0 & 0x3F) | 0x80);
             }
         }
     }

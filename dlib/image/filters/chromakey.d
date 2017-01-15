@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2015 Timur Gafarov 
+Copyright (c) 2013-2017 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -40,8 +40,8 @@ private
 }
 
 SuperImage chromaKeyEuclidean(
-    SuperImage img, 
-    Color4f keyColor, 
+    SuperImage img,
+    Color4f keyColor,
     float minDist,
     float maxDist)
 {
@@ -49,9 +49,9 @@ SuperImage chromaKeyEuclidean(
 }
 
 SuperImage chromaKeyEuclidean(
-    SuperImage img, 
+    SuperImage img,
     SuperImage outp,
-    Color4f keyColor, 
+    Color4f keyColor,
     float minDist,
     float maxDist)
 {
@@ -69,7 +69,7 @@ SuperImage chromaKeyEuclidean(
         Color4f delta = col - keyColor;
         float distSqr = dot(delta, delta);
         col.a = clamp(
-            (distSqr - minDist) / (maxDist - minDist), 
+            (distSqr - minDist) / (maxDist - minDist),
             0.0f, 1.0f);
         res[x, y] = col;
         
@@ -82,10 +82,10 @@ SuperImage chromaKeyEuclidean(
 }
 
 SuperImage chromaKey(
-    SuperImage img, 
+    SuperImage img,
     float hue,
-    float hueToleranceMin = -20.0f, 
-    float hueToleranceMax = 20.0f, 
+    float hueToleranceMin = -20.0f,
+    float hueToleranceMax = 20.0f,
     float satThres = 0.2f,
     float valThres = 0.3f)
 {
@@ -96,8 +96,8 @@ SuperImage chromaKey(
     SuperImage img,
     SuperImage outp,
     float hue,
-    float hueToleranceMin = -20.0f, 
-    float hueToleranceMax = 20.0f, 
+    float hueToleranceMin = -20.0f,
+    float hueToleranceMax = 20.0f,
     float satThres = 0.2f,
     float valThres = 0.3f)
 {
@@ -139,8 +139,8 @@ SuperImage chromaKey(
 SuperImage colorPass(
     SuperImage img, 
     float hue,
-    float hueToleranceMin = -20.0f, 
-    float hueToleranceMax = 20.0f, 
+    float hueToleranceMin = -20.0f,
+    float hueToleranceMax = 20.0f,
     float satThres = 0.2f,
     float valThres = 0.3f)
 {
@@ -151,8 +151,8 @@ SuperImage colorPass(
     SuperImage img,
     SuperImage outp,
     float hue,
-    float hueToleranceMin = -20.0f, 
-    float hueToleranceMax = 20.0f, 
+    float hueToleranceMin = -20.0f,
+    float hueToleranceMax = 20.0f,
     float satThres = 0.2f,
     float valThres = 0.3f)
 in
@@ -199,17 +199,17 @@ void selectiveScale(ref ColorHSVAf col,
                     HSVAChannel chan,
                     float scale,
                     bool inverse,
-                    float hueToleranceMin = -20.0f, 
-                    float hueToleranceMax = 20.0f, 
+                    float hueToleranceMin = -20.0f,
+                    float hueToleranceMax = 20.0f,
                     float satThres = 0.2f,
                     float valThres = 0.3f)
 {
-    while (hue >= 360.0f) 
+    while (hue >= 360.0f)
         hue -= 360.0f;
-    while (hue < 0.0f) 
+    while (hue < 0.0f)
         hue += 360.0f;
 
-    if (col.hueInRange(hue, hueToleranceMin, hueToleranceMax) 
+    if (col.hueInRange(hue, hueToleranceMin, hueToleranceMax)
         && col.s > satThres 
         && col.v > valThres)
     {
@@ -218,7 +218,7 @@ void selectiveScale(ref ColorHSVAf col,
     }
     else
     {
-        if (inverse)          
+        if (inverse)
             col.arrayof[chan] *= scale;
     }
 }

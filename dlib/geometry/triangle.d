@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2016 Timur Gafarov 
+Copyright (c) 2013-2017 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -43,7 +43,7 @@ struct Triangle
     Vector2f[3] t1;
     Vector2f[3] t2;
     Vector4f[3] tg;
-	
+
     Vector3f[3] edges;
     Vector3f normal;
     Vector3f barycenter;

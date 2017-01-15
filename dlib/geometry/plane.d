@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2013 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -75,7 +75,7 @@ struct Plane
         x = n.x;
         y = n.y;
         z = n.z;
-	    d = -(p0.x * x + p0.y * y + p0.z * z);
+        d = -(p0.x * x + p0.y * y + p0.z * z);
     }
 
     void fromPointAndNormal(Vector3f p, Vector3f n)

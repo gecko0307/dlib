@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014 Martin Cejp 
+Copyright (c) 2014-2017 Martin Cejp 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -39,10 +39,10 @@ version (Windows) {
     enum DWORD INVALID_FILE_ATTRIBUTES = cast(DWORD)0xFFFFFFFF;
 
     static T wenforce(T)(T cond, string str = null) {
-    	import std.array;
+        import std.array;
 
         if (cond)
-        	return cond;
+            return cond;
 
         string err = sysErrorString(GetLastError());
         throw new Exception(!str.empty ? (str ~ ": " ~ err) : err);

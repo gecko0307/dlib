@@ -12,11 +12,9 @@ d:
  - dmd-2.068.2
  - ldc-1.0.0
  - gdc-5.2.0
- - gdc-4.9.2
 
 matrix:
   allow_failures:
-   - d: gdc-4.9.2
    - d: gdc-5.2.0
    - d: dmd-2.068.2
 

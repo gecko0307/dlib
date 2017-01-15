@@ -31,6 +31,7 @@ module dlib;
 public
 {
     import dlib.async;
+    import dlib.audio;
     import dlib.coding;
     import dlib.container;
     import dlib.core;
@@ -40,7 +41,7 @@ public
     import dlib.image;
     import dlib.math;
     import dlib.memory;
-    import dlib.serialization.xml;
-    import dlib.text;
     import dlib.network;
+    import dlib.serialization;
+    import dlib.text;
 }

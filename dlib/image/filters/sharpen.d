@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2015 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -52,4 +52,3 @@ SuperImage sharpen(SuperImage src, SuperImage outp, int radius, float amount)
     auto highcon = contrast(mask, outp, amount, ContrastMethod.AverageImage);
     return add(src, highcon, outp, 0.25f);
 }
-

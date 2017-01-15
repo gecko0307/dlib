@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013 Timur Gafarov 
+Copyright (c) 2013-2017 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -44,4 +44,3 @@ auto diff(alias F, T)(T x)
     auto eval = F(Dual!(T)(x, 1.0));
     return compound(eval.re, eval.du);
 }
-

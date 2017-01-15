@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2013 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -132,4 +132,3 @@ auto reduce(alias func, Range)(Range r)
         res = func(res, v);
     return res;
 }
-

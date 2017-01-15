@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014 Timur Gafarov 
+Copyright (c) 2014-2017 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -77,4 +77,3 @@ T readStruct(T)(InputStream input, bool bigEndian = false)
     }
     return res;
 }
-

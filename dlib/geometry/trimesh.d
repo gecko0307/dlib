@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2016 Timur Gafarov 
+Copyright (c) 2013-2017 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -158,9 +158,9 @@ struct TriMesh
 
             float r = (s1 * t2) - (s2 * t1);
 
-	        // Prevent division by zero
+            // Prevent division by zero
             if (r == 0.0f)
-	            r = 1.0f;
+                r = 1.0f;
 
             float oneOverR = 1.0f / r;
 
@@ -171,14 +171,14 @@ struct TriMesh
                                      (s1 * y2 - s2 * y1) * oneOverR,
                                      (s1 * z2 - s2 * z1) * oneOverR);
 
-	        sTan[i0] += sDir;
-	        tTan[i0] += tDir;
+            sTan[i0] += sDir;
+            tTan[i0] += tDir;
 
-	        sTan[i1] += sDir;
-	        tTan[i1] += tDir;
+            sTan[i1] += sDir;
+            tTan[i1] += tDir;
 
-	        sTan[i2] += sDir;
-	        tTan[i2] += tDir;
+            sTan[i2] += sDir;
+            tTan[i2] += tDir;
         }
 
         tangents = new Vector4f[vertices.length];
@@ -199,7 +199,7 @@ struct TriMesh
 
             // Calculate handedness
             if (dot(cross(n, t), tTan[i]) < 0.0f)
-	            tangents[i].w = -1.0f;
+                tangents[i].w = -1.0f;
             else
                 tangents[i].w = 1.0f;
         }

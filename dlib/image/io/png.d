@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2015 Timur Gafarov, Martin Cejp
+Copyright (c) 2011-2017 Timur Gafarov, Martin Cejp, Vadim Lopatin 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -124,7 +124,8 @@ class PNGLoadException: ImageLoadException
 SuperImage loadPNG(string filename)
 {
     InputStream input = openForInput(filename);
-    auto img = loadPNG(input);    input.close();
+    auto img = loadPNG(input);
+    input.close();
     return img;
 }
 
@@ -761,4 +762,3 @@ unittest
     savePNG(img, "tests/minimal.png");
     loadPNG("tests/minimal.png");
 }
-

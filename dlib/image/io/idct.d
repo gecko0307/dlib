@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014 Timur Gafarov
+Copyright (c) 2014-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -187,30 +187,3 @@ void idct64(int* src)
         src[8*7+x] = (y7 - y1) >> 14;
     }
 }
-
-/*
-void idct(float* inMat, float* outMat)
-{
-    uint i, j, u, v;
-    float s;
-
-    for (i = 0; i < 8; i++)
-    for (j = 0; j < 8; j++)
-    {
-        s = 0;
-
-        for (u = 0; u < 8; u++)
-        for (v = 0; v < 8; v++)
-        {
-            s += inMat[u * 8 + v] 
-                * cos((2 * i + 1) * u * PI / 16.0f)
-                * cos((2 * j + 1) * v * PI / 16.0f)
-                * ((u == 0) ? 1 / sqrt(2.0f) : 1.0f)
-                * ((v == 0) ? 1 / sqrt(2.0f) : 1.0f);
-        }
-
-        outMat[i * 8 + j] = s / 4.0f;
-    }
-}
-*/
-

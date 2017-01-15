@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov 
+Copyright (c) 2017 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,49 +26,9 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.math.interpolation;
+module dlib.serialization;
 
-private
+public
 {
-    import std.math;
-}
-
-T interpLinear(T) (T a, T b, float t)
-{
-    return a + (b - a) * t;
-}
-
-alias interpLinear lerp;
-
-T interpNearest(T) (T x, T y, float t)
-{
-    if (t < 0.5f) 
-        return x;
-    else 
-        return y; 
-}
-
-T interpCatmullRom(T) (T p0, T p1, T p2, T p3, float t)
-{
-    return 0.5 * ((2 * p1) + 
-                  (-p0 + p2) * t +
-                  (2 * p0 - 5 * p1 + 4 * p2 - p3) * t^^2 +
-                  (-p0 + 3 * p1 - 3 * p2 + p3) * t^^3);
-}
-
-T interpCatmullRomDerivative(T) (T p0, T p1, T p2, T p3, float t)
-{
-    return 0.5 * ((2 * p1) +
-                  (-p0 + p2) +
-                  2 * (2 * p0 - 5 * p1 + 4 * p2 - p3) * t +
-                  3 * (-p0 + 3 * p1 - 3 * p2 + p3) * t^^2);
-}
-
-T interpHermite(T) (T x, T tx, T y, T ty, float t)
-{
-    T h1 = 2 * t^^3 - 3 * t^^2 + 1;
-    T h2 = -2* t^^3 + 3 * t^^2;
-    T h3 = t^^3 - 2 * t^^2 + t;
-    T h4 = t^^3 - t^^2;
-    return h1 * x + h3 * tx + h2 * y + h4 * ty;
+    import dlib.serialization.xml;
 }

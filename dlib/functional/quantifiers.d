@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2013 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 module dlib.functional.quantifiers;
 
 // Universal quantifier
-bool forAll(T) (in T[] val, bool delegate(T) func)
+bool forAll(T) (in T[] val, scope bool delegate(T) func)
 {
     foreach(v; val)
         if (!func(v)) return false;
@@ -37,7 +37,7 @@ bool forAll(T) (in T[] val, bool delegate(T) func)
 }
 
 // Existential quantifier
-bool forSome(T) (in T[] val, bool delegate(T) func)
+bool forSome(T) (in T[] val, scope bool delegate(T) func)
 {
     foreach(v; val)
         if (func(v)) return true;
@@ -45,7 +45,7 @@ bool forSome(T) (in T[] val, bool delegate(T) func)
 }
 
 // Uniqueness quantifier
-bool forOne(T) (in T[] val, bool delegate(T) func)
+bool forOne(T) (in T[] val, scope bool delegate(T) func)
 {
     bool res = false;
     foreach(v; val)
@@ -57,7 +57,7 @@ bool forOne(T) (in T[] val, bool delegate(T) func)
 }
 
 // Plurality quantifier
-bool forMost(T) (in T[] val, bool delegate(T) func)
+bool forMost(T) (in T[] val, scope bool delegate(T) func)
 {
     size_t count = 0;
     foreach(v; val)
@@ -66,7 +66,7 @@ bool forMost(T) (in T[] val, bool delegate(T) func)
 }
 
 // Counting quantifier
-bool forN(size_t n, T) (in T[] val, bool delegate(T) func)
+bool forN(size_t n, T) (in T[] val, scope bool delegate(T) func)
 {
     size_t count = 0;
     foreach(v; val)

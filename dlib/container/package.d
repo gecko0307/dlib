@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2015 Timur Gafarov 
+Copyright (c) 2013-2017 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -30,13 +30,11 @@ module dlib.container;
 
 public
 {
-    import dlib.container.aarray;
     import dlib.container.array;
+    import dlib.container.buffer;
     import dlib.container.bst;
     import dlib.container.dict;
-    import dlib.container.hash;
     import dlib.container.linkedlist;
     import dlib.container.queue;
     import dlib.container.stack;
 }
-

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2013 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -87,7 +87,7 @@ Vector2f triObjectSpaceToTextureSpace(
     float invDenom = 1.0f / (dot00 * dot11 - dot01 * dot01);
     float u = (dot11 * dot02 - dot01 * dot12) * invDenom;
     float v = (dot00 * dot12 - dot01 * dot02) * invDenom;
-						
+
     Vector2f t2 = uv2 - uv1;
     Vector2f t1 = uv3 - uv1;
 

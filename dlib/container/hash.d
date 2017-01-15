@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2014 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov 
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -30,13 +30,13 @@ module dlib.container.hash;
 
 public:
 
-pure int stringHash(string key, int tableSize = 5381) 
-{ 
-    int hashVal = 0; 
-    for (int x = 0; x < key.length; ++x) 
-    { 
-        hashVal ^= (hashVal << 5) + (hashVal >> 2) + key[x]; 
-    } 
-    return hashVal % tableSize; 
+pure int stringHash(string key, int tableSize = 5381)
+{
+    int hashVal = 0;
+    for (int x = 0; x < key.length; ++x)
+    {
+        hashVal ^= (hashVal << 5) + (hashVal >> 2) + key[x];
+    }
+    return hashVal % tableSize;
 }
 
