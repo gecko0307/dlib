@@ -423,14 +423,13 @@ unittest
             .filter!(e => e.name.baseName.globMatch("*.d"))
         ) {
         FileStat stat_;
-        assert(stat(entry.name, stat_));        // make sure we're getting the expected path
+        assert(stat(entry.name, stat_)); // make sure we're getting the expected path
         assert(expected[i] == entry.name);
         assert(stat_.sizeInBytes == expected[i].getSize());
 
-        //SysTime modificationTime, accessTime;
-        //expected[i].getTimes(accessTime, modificationTime);
-        //modificationTime.fracSecs = Duration.zero;
-        //assert(modificationTime ==  stat_.modificationTimestamp);
+        SysTime modificationTime, accessTime;
+        expected[i].getTimes(accessTime, modificationTime);
+        assert(modificationTime ==  stat_.modificationTimestamp);
 
         ++i;
     }
