@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -51,7 +51,7 @@ SuperImage convolve(SuperImage img,
 SuperImage convolve(SuperImage img,
                     SuperImage outp,
                     float[] kernel,
-                    uint kw = 3, 
+                    uint kw = 3,
                     uint kh = 3,
                     float divisor = 1.0f,
                     float offset = 0.5f,
@@ -107,7 +107,7 @@ body
 
             if (divisor == 0.0f)
             {
-                divisor = 1.0f; 
+                divisor = 1.0f;
                 offset = 0.5f;
             }
 
@@ -121,10 +121,10 @@ body
             csum.a = alpha;
 
         res[x,y] = csum;
-        
+
         img.updateProgress();
     }
-    
+
     img.resetProgress();
 
     return res;
@@ -135,14 +135,14 @@ struct Kernel
 {
     enum float[]
 
-    Identity = 
+    Identity =
     [
         0, 0, 0,
         0, 1, 0,
         0, 0, 0
     ],
 
-    BoxBlur = 
+    BoxBlur =
     [
         1, 1, 1,
         1, 1, 1,
@@ -156,21 +156,21 @@ struct Kernel
         1, 2, 1
     ],
 
-    Sharpen = 
+    Sharpen =
     [
         -1, -1, -1,
         -1, 11, -1,
         -1, -1, -1
     ],
-    
-    Emboss = 
+
+    Emboss =
     [
        -1, -1,  0,
        -1,  0,  1,
         0,  1,  1,
     ],
-    
-    EdgeEmboss = 
+
+    EdgeEmboss =
     [
         -1.0f, -0.5f, -0.0f,
         -0.5f,  1.0f,  0.5f,
@@ -184,7 +184,7 @@ struct Kernel
         -1, -1, -1,
     ],
 
-    Laplace = 
+    Laplace =
     [
         0,  1,  0,
         1, -4,  1,

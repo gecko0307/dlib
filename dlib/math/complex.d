@@ -1,5 +1,5 @@
-﻿/*
-Copyright (c) 2013-2017 Timur Gafarov 
+/*
+Copyright (c) 2013-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -39,41 +39,41 @@ struct Complex(T)
 {
     T re;
     T im;
-    
+
     this(T r, T i)
     {
         re = r;
-        im = i; 
+        im = i;
     }
-    
+
     this(T r)
     {
         re = r;
-        im = 0.0; 
+        im = 0.0;
     }
-    
+
     Complex!(T) opUnary(string s) () if (s == "-")
     {
         return Complex!(T)(re, -im);
     }
-    
+
     Complex!(T) opAdd(Complex!(T) c)
     {
         return Complex!(T)(re + c.re, im + c.im);
     }
-    
+
     Complex!(T) opSub(Complex!(T) c)
     {
         return Complex!(T)(re - c.re, im - c.im);
     }
-    
+
     Complex!(T) opMul(Complex!(T) c)
     {
         return Complex!(T)(
-            re * c.re - im * c.im, 
+            re * c.re - im * c.im,
             re * c.im + im * c.re);
     }
-    
+
     Complex!(T) opDiv(Complex!(T) c)
     {
         T denominator = c.re * c.re + c.im * c.im;
@@ -81,21 +81,21 @@ struct Complex(T)
             (re * c.re + im * c.im) / denominator,
             (im * c.re - re * c.im) / denominator);
     }
-    
+
     Complex!(T) opAddAssign(Complex!(T) c)
     {
         re += c.re;
         im += c.im;
         return this;
     }
-    
+
     Complex!(T) opSubAssign(Complex!(T) c)
     {
         re -= c.re;
         im -= c.im;
         return this;
     }
-    
+
     Complex!(T) opMulAssign(Complex!(T) c)
     {
         T temp = re;
@@ -103,7 +103,7 @@ struct Complex(T)
         im = im * c.re + temp * c.im;
         return this;
     }
-    
+
     Complex!(T) opDivAssign(Complex!(T) c)
     {
         T denominator = c.re * c.re + c.im * c.im;
@@ -112,43 +112,43 @@ struct Complex(T)
         im = (im * c.re - temp * c.im) / denominator;
         return this;
     }
-    
+
     Complex!(T) opAdd(T scalar)
     {
         return Complex!(T)(re + scalar, im + scalar);
     }
-    
+
     Complex!(T) opSub(T scalar)
     {
         return Complex!(T)(re + scalar, im + scalar);
     }
-    
+
     Complex!(T) opMul(T scalar)
     {
         return Complex!(T)(re * scalar, im * scalar);
     }
-    
+
     Complex!(T) opDiv(T scalar)
     {
         return Complex!(T)(re / scalar, im / scalar);
     }
-    
+
     Complex!(T) reciprocal()
     {
         T scale = re * re + im * im;
         return Complex!(T)(re / scale, -im / scale);
     }
-    
+
     T magnitude()
     {
         return sqrt(re * re + im * im);
     }
-    
+
     T norm()
     {
         return (re * re + im * im);
     }
-    
+
     string toString()
     {
         auto writer = appender!string();
@@ -173,7 +173,7 @@ Complex!T pow(T)(Complex!T x, Complex!T n)
     T t = arg(x);
     T c = n.re;
     T d = n.im;
-    
+
     Complex!T res;
     res.re = std.math.pow(r, c) * std.math.exp(-d*t) * cos(c*t + d*log(r));
     res.im = std.math.pow(r, c) * std.math.exp(-d*t) * sin(c*t + d*log(r));
@@ -184,7 +184,7 @@ Complex!T pow(T)(Complex!T x, Complex!T n)
 Complex!T exp(T)(Complex!T s)
 {
     return Complex!T(
-        std.math.exp(s.re) * cos(s.im), 
+        std.math.exp(s.re) * cos(s.im),
         std.math.exp(s.re) * sin(s.im));
 }
 

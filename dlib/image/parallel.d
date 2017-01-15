@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2017 Timur Gafarov 
+Copyright (c) 2013-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -62,8 +62,8 @@ struct Block
  * for reading.
  */
 void parallelFilter(
-     SuperImage img, 
-     void delegate(PixRange blockRow, PixRange blockCol) ffunc, 
+     SuperImage img,
+     void delegate(PixRange blockRow, PixRange blockCol) ffunc,
      uint bw = 100,
      uint bh = 100)
 {
@@ -106,7 +106,7 @@ void parallelFilter(
 SuperImage myFilter(SuperImage img)
 {
     auto res = img.dup;
-    
+
     img.parallelFilter((PixRange row, PixRange col)
     {
         foreach(x; row)
@@ -115,7 +115,7 @@ SuperImage myFilter(SuperImage img)
             res[x, y] = ... // Set output pixel
         }
     });
-    
+
     return res;
 }
 

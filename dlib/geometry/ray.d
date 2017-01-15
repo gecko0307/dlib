@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -28,7 +28,7 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.geometry.ray;
 
-private 
+private
 {
     import std.math;
     import dlib.math.vector;
@@ -112,7 +112,7 @@ struct Ray
         if (r < 0.0f) // ray goes away from triangle
         {
             // no intersect
-            intersectionPoint = Vector3f(0.0f, 0.0f, 0.0f); 
+            intersectionPoint = Vector3f(0.0f, 0.0f, 0.0f);
             return false;
         }
 

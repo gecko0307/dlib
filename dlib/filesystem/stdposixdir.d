@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2017 Timur Gafarov 
+Copyright (c) 2016-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -115,7 +115,7 @@ class StdPosixDirEntryRange: InputRange!(DirEntry)
 
         return 0;
     }
-    
+
     int opApply(scope int delegate(size_t, DirEntry) dg)
     {
         size_t i = 0;
@@ -134,7 +134,7 @@ class StdPosixDirectory: Directory
 {
     DIR* dir;
     StdPosixDirEntryRange drange;
-    
+
     this(string path)
     {
         dir = opendir(path.toStringz); // TODO: GC-free toStringz replacement
@@ -159,7 +159,7 @@ class StdPosixDirectory: Directory
             dir = null;
         }
     }
-    
+
     StdPosixDirEntryRange contents()
     {
         if (drange)

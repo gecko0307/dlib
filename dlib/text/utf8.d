@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2017 Timur Gafarov 
+Copyright (c) 2015-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -127,7 +127,7 @@ struct UTF8Decoder
     {
         return (index >= input.length);
     }
-    
+
     /**
      * Range interface.
      */
@@ -143,43 +143,43 @@ struct UTF8Decoder
                 _decoder = decoder;
                 _lastRead = cast(dchar)_decoder.decodeNext();
             }
-            
+
             bool empty() {
                 return _lastRead == UTF8_END || _lastRead == UTF8_ERROR;
             }
-            
+
             dchar front() {
                 return _lastRead;
             }
-            
+
             void popFront() {
                 _lastRead = cast(dchar)_decoder.decodeNext();
             }
-            
+
             auto save() {
                 return this;
             }
         }
-        
+
         return ByDchar(this);
     }
-    
+
     ///
     unittest
     {
         auto decoder = UTF8Decoder("Eng 日本語 Кир ©€");
         import std.algorithm : equal;
         assert(equal(decoder.byDChar(), "Eng 日本語 Кир ©€"d));
-        
+
         auto range = decoder.byDChar();
         auto saved = range.save;
-        
+
         range.popFront();
         range.popFront();
         range.popFront();
         range.popFront();
         range.popFront();
-        
+
         assert(equal(range, "本語 Кир ©€"d));
         assert(equal(saved, "Eng 日本語 Кир ©€"d));
     }

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2017 Eugene Wissner 
+Copyright (c) 2016-2017 Eugene Wissner
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -261,7 +261,7 @@ class KqueueLoop : SelectorLoop
         timespec ts;
         blockTime.split!("seconds", "nsecs")(ts.tv_sec, ts.tv_nsec);
 
-        if (changeCount > maxEvents) 
+        if (changeCount > maxEvents)
         {
             MmapPool.instance.resizeArray(events, changes.length);
         }

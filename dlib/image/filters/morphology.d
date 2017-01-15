@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -86,7 +86,7 @@ body
             if (ix >= img.width) ix = img.width - 1;
             if (iy < 0) iy = 0;
             if (iy >= img.height) iy = img.height - 1;
-            
+
             // TODO:
             // Wrap
 
@@ -99,22 +99,22 @@ body
             }
             static if (op == MorphOperation.Erode)
             {
-                if (pix < resc) 
+                if (pix < resc)
                     resc = pix;
             }
         }
 
         res[x, y] = resc; //Color4f(resc.r, resc.g, resc.b, alpha);
-        
+
         img.updateProgress();
     }
-    
+
     img.resetProgress();
 
     return res;
 }
 
-SuperImage morph(MorphOperation op) (SuperImage img) 
+SuperImage morph(MorphOperation op) (SuperImage img)
 {
     return morphOp!(op)(img, null);
 }

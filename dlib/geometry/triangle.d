@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2017 Timur Gafarov 
+Copyright (c) 2013-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -48,9 +48,9 @@ struct Triangle
     Vector3f normal;
     Vector3f barycenter;
     float d;
-    
+
     int materialIndex;
-    
+
     int isPointInside(Vector3f point)
     {
         //select coordinate
@@ -89,13 +89,13 @@ struct Triangle
 
         float det0, det1, det2;
 
-        det0 = (point[dim0] - v[0][dim0]) * (v[0][dim1] - v[1][dim1]) + 
+        det0 = (point[dim0] - v[0][dim0]) * (v[0][dim1] - v[1][dim1]) +
                (v[0][dim1] - point[dim1]) * (v[0][dim0] - v[1][dim0]);
-    
-        det1 = (point[dim0] - v[1][dim0]) * (v[1][dim1] - v[2][dim1]) + 
+
+        det1 = (point[dim0] - v[1][dim0]) * (v[1][dim1] - v[2][dim1]) +
                (v[1][dim1] - point[dim1]) * (v[1][dim0] - v[2][dim0]);
-    
-        det2 = (point[dim0] - v[2][dim0]) * (v[2][dim1] - v[0][dim1]) + 
+
+        det2 = (point[dim0] - v[2][dim0]) * (v[2][dim1] - v[0][dim1]) +
                (v[2][dim1] - point[dim1]) * (v[2][dim0] - v[0][dim0]);
 
         int ret;
@@ -109,7 +109,7 @@ struct Triangle
                 else
                     ret = 5; // outside edge 2
             }
-            else 
+            else
             {
                 if (det2 > 0.0f)
                     ret = 3; // outside edge 1
@@ -117,7 +117,7 @@ struct Triangle
                     ret = 4; // outside vertex 2
             }
         }
-        else 
+        else
         {
             if (det1 > 0.0f)
             {
@@ -148,14 +148,14 @@ struct Triangle
     {
         Vector3f pmin = v[0];
         Vector3f pmax = pmin;
-    
+
         void adjustMinPoint(Vector3f p)
-        {    
+        {
             if (p.x < pmin.x) pmin.x = p.x;
             if (p.y < pmin.y) pmin.y = p.y;
             if (p.z < pmin.z) pmin.z = p.z;
         }
-    
+
         void adjustMaxPoint(Vector3f p)
         {
             if (p.x > pmax.x) pmax.x = p.x;
@@ -168,7 +168,7 @@ struct Triangle
             adjustMinPoint(vertex);
             adjustMaxPoint(vertex);
         }
-    
+
         return boxFromMinMaxPoints(pmin - 0.5f, pmax + 0.5f);
     }
 }

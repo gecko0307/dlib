@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -28,7 +28,7 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.functional.hof;
 
-T delegate(S) compose(T, U, S)(T function(U) f, U function(S) g) 
+T delegate(S) compose(T, U, S)(T function(U) f, U function(S) g)
 {
     return (S s) => f(g(s));
 }

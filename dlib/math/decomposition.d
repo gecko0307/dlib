@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2017 Timur Gafarov 
+Copyright (c) 2013-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -34,19 +34,19 @@ import dlib.math.matrix;
 /*
  * LUP decomposition.
  * Factors a matrix A into PA = LU,
- * where L is a lower triangular matrix, 
+ * where L is a lower triangular matrix,
  * U is an upper triangular matrix,
  * and P is a permutation matrix.
  */
 void decomposeLUP(T, size_t N)(
-      Matrix!(T,N) A, 
-  ref Matrix!(T,N) L, 
-  ref Matrix!(T,N) U, 
+      Matrix!(T,N) A,
+  ref Matrix!(T,N) L,
+  ref Matrix!(T,N) U,
   ref Matrix!(T,N) P)
 {
     Matrix!(T,N) C = A;
     P = Matrix!(T,N).identity;
- 
+
     for (size_t i = 0; i < N; i++)
     {
         T pivotValue = 0.0;
@@ -68,7 +68,7 @@ void decomposeLUP(T, size_t N)(
         for (size_t j = i + 1; j < N; j++)
         {
             C[j, i] = C[j, i] / C[i, i];
-            for (size_t k = i + 1; k < N; k++) 
+            for (size_t k = i + 1; k < N; k++)
                 C[j, k] = C[j, k] - C[j, i] * C[i, k];
         }
     }

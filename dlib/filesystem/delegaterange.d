@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2017 Martin Cejp 
+Copyright (c) 2014-2017 Martin Cejp
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -34,54 +34,54 @@ class DelegateInputRange(T) : InputRange!T {
     bool delegate(out T t) fetch;
     bool have = false;
     T front_;
-    
+
     this(bool delegate(out T t) fetch) {
         this.fetch = fetch;
     }
-    
+
     override bool empty() {
         if (!have)
             have = fetch(front_);
-        
+
         return !have;
     }
-    
+
     override T front() {
         return front_;
     }
-    
+
     override void popFront() {
         have = false;
     }
-    
+
     override T moveFront() {
         have = false;
         return front_;
     }
-    
+
     override int opApply(scope int delegate(T) dg) {
         int result = 0;
-        
+
         for (size_t i = 0; !empty; i++) {
             result = dg(moveFront);
-            
+
             if (result != 0)
                 break;
         }
-        
+
         return result;
     }
-    
+
     override int opApply(scope int delegate(size_t, T) dg) {
         int result = 0;
-        
+
         for (size_t i = 0; !empty; i++) {
             result = dg(i, moveFront);
-            
+
             if (result != 0)
                 break;
         }
-        
+
         return result;
     }
 }

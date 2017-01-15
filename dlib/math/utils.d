@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -28,7 +28,7 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.math.utils;
 
-private 
+private
 {
     import core.stdc.stdlib;
     import std.math;
@@ -113,11 +113,11 @@ bool isConsiderZero(T) (T f) nothrow
 bool isPowerOfTwo(T)(T x) nothrow
 {
     return (x != 0) && ((x & (x - 1)) == 0);
-} 
+}
 
 T nextPowerOfTwo(T) (T k) nothrow
 {
-    if (k == 0) 
+    if (k == 0)
         return 1;
     k--;
     for (T i = 1; i < T.sizeof * 8; i <<= 1)
@@ -136,7 +136,7 @@ T nextPowerOfTen(T) (T k) nothrow
 T sum(T) (T[] array...) nothrow
 {
     T result = 0;
-    foreach(v; array) 
+    foreach(v; array)
         result += v;
     return result;
 }
@@ -144,21 +144,21 @@ T sum(T) (T[] array...) nothrow
 T[] invertArray(T) (T[] array...) nothrow
 {
     auto result = new T[array.length];
-    foreach(i, v; array) 
+    foreach(i, v; array)
         result[i] = -v;
     return result;
 }
 
 bool allIsZero(T) (T[] array...) nothrow
 {
-    foreach(i, v; array) 
+    foreach(i, v; array)
         if (v != 0) return false;
     return true;
 }
 
 bool oneOfIsZero(T) (T[] array...) nothrow
 {
-    foreach(i, v; array) 
+    foreach(i, v; array)
         if (v == 0) return true;
     return false;
 }
@@ -179,7 +179,7 @@ version (BigEndian)
     }
 }
 
-version (LittleEndian) 
+version (LittleEndian)
 {
     uint bigEndian(uint value) nothrow
     {
@@ -197,7 +197,7 @@ version (LittleEndian)
 
 uint bytesToUint(ubyte[4] src) nothrow
 {
-    return (src[0] << 24 | src[1] << 16 | src[2] << 8 | src[3]); 
+    return (src[0] << 24 | src[1] << 16 | src[2] << 8 | src[3]);
 }
 
 /*
@@ -220,7 +220,7 @@ T fovXfromY(T) (T yfov, T aspectRatio) nothrow
 /*
  * Misc functions
  */
- 
+
 int sign(T)(T x) nothrow
 {
     return (x > 0) - (x < 0);

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -61,7 +61,7 @@ body
         floor_y = cast(int)floor(y * yFactor);
 
         ceil_x = floor_x + 1;
-        if (ceil_x >= img.width) 
+        if (ceil_x >= img.width)
             ceil_x = floor_x;
 
         ceil_y = floor_y + 1;

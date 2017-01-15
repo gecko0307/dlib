@@ -1,5 +1,5 @@
-﻿/*
-Copyright (c) 2015-2017 Timur Gafarov 
+/*
+Copyright (c) 2015-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -37,7 +37,7 @@ import dlib.math.matrix;
 import dlib.math.quaternion;
 import dlib.math.affine;
 import dlib.math.dual;
-    
+
 /*
  * Dual quaternion is a generalization of quaternion to dual numbers field.
  * Similar to the way that simple quaternion represents rotation in 3D space,
@@ -46,25 +46,25 @@ import dlib.math.dual;
  */
 
 struct DualQuaternion(T)
-{   
+{
     this(Quaternion!(T) q1, Quaternion!(T) q2)
     {
         this.q1 = q1;
         this.q2 = q2;
     }
-    
+
     this(Quaternion!(T) r, Vector!(T,3) t)
     {
         this.q1 = r;
         this.q2 = Quaternion!(T)(t * 0.5, 0.0) * r;
     }
-    
+
     this(Quaternion!(T) r)
     {
         this.q1 = r;
         this.q2 = Quaternion!(T).identity * r;
     }
-    
+
     this(Vector!(T,3) t)
     {
         this.q1 = Quaternion!(T).identity;
@@ -74,47 +74,47 @@ struct DualQuaternion(T)
     Vector!(T,3) transform(Vector!(T,3) v)
     {
         auto vq = DualQuaternion!(T)(
-            Quaternion!(T).identity, 
+            Quaternion!(T).identity,
             Quaternion!(T)(v.x, v.y, v.z, 0.0));
         auto q = this * vq * this.fullConjugate;
         return q.q2.xyz;
     }
-    
+
     Vector!(T,3) rotate(Vector!(T,3) v)
     {
         return q1.rotate(v);
     }
-    
+
     DualQuaternion!(T) conjugate()
     {
         return DualQuaternion!(T)(q1.conj, q2.conj);
     }
-    
+
     DualQuaternion!(T) dualConjugate()
     {
         return DualQuaternion!(T)(q1, q2 * -1.0);
     }
-    
+
     DualQuaternion!(T) fullConjugate()
     {
         return DualQuaternion!(T)(q1.conj, q2.conj * -1.0);
     }
-    
+
     DualQuaternion!(T) opMul(DualQuaternion!(T) d)
     {
         return DualQuaternion!(T)(q1 * d.q1, q1 * d.q2 + q2 * d.q1);
     }
-    
+
     DualQuaternion!(T) opAdd(DualQuaternion!(T) d)
     {
         return DualQuaternion!(T)(q1 + d.q1, q2 + d.q2);
     }
-    
+
     DualQuaternion!(T) opSub(DualQuaternion!(T) d)
     {
         return DualQuaternion!(T)(q1 - d.q1, q2 - d.q2);
     }
-    
+
    /*
     * Rotation part
     */
@@ -122,7 +122,7 @@ struct DualQuaternion(T)
     {
         return q1;
     }
-    
+
    /*
     * Translation part
     */
@@ -130,8 +130,8 @@ struct DualQuaternion(T)
     {
         return (2.0 * q2 * q1.conj).xyz;
     }
-    
-   /* 
+
+   /*
     * Convert to 4x4 matrix
     */
     Matrix!(T,4) toMatrix4x4()
@@ -139,8 +139,8 @@ struct DualQuaternion(T)
         // TODO: Can this be done without matrix multiplication?
         return translationMatrix(translation) * rotation.toMatrix4x4;
     }
-    
-   /* 
+
+   /*
     * Dual quaternion norm
     */
     Dual!(T) norm()
@@ -148,8 +148,8 @@ struct DualQuaternion(T)
         auto qq = this * this.conjugate;
         return Dual!(T)(qq.q1.lengthsqr, qq.q2.lengthsqr).sqrt;
     }
-    
-   /* 
+
+   /*
     * Set norm to 1
     */
     DualQuaternion!(T) normalized()
@@ -157,7 +157,7 @@ struct DualQuaternion(T)
         Dual!(T) n = norm;
         return DualQuaternion!(T)(q1 / n.re, q2 / n.re);
     }
-    
+
    /*
     * Convert to string
     */
@@ -167,7 +167,7 @@ struct DualQuaternion(T)
         formattedWrite(writer, "[%s, %s]", q1.arrayof, q2.arrayof);
         return writer.data;
     }
-    
+
     union
     {
         struct
@@ -175,7 +175,7 @@ struct DualQuaternion(T)
             Quaternion!(T) q1; // rotation
             Quaternion!(T) q2; // translation
         }
-        
+
         T[8] arrayof;
     }
 }

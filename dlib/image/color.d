@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -48,9 +48,9 @@ alias Color4 ColorRGBA;
 Color4 invert(Color4 c)
 {
     return Color4(
-        cast(ushort)(255 - c.r), 
-        cast(ushort)(255 - c.g), 
-        cast(ushort)(255 - c.b), 
+        cast(ushort)(255 - c.r),
+        cast(ushort)(255 - c.g),
+        cast(ushort)(255 - c.b),
         c.a);
 }
 
@@ -58,7 +58,7 @@ struct Color4f
 {
     Vector4f vec;
     alias vec this;
-    
+
     this(Color4 c, uint bitDepth = 8)
     {
         float maxv = (2 ^^ bitDepth) - 1;
@@ -67,7 +67,7 @@ struct Color4f
         vec.b = c.b / maxv;
         vec.a = c.a / maxv;
     }
-    
+
     this(Color4f c)
     {
         vec = c.vec;
@@ -77,12 +77,12 @@ struct Color4f
     {
         vec = v;
     }
-    
+
     this(Vector3f v)
     {
         vec = Vector4f(v.x, v.y, v.z, 1.0f);
     }
-    
+
     this(float cr, float cg, float cb, float ca = 1.0f)
     {
         vec = Vector4f(cr, cg, cb, ca);
@@ -156,7 +156,7 @@ struct Color4f
             cast(ushort)(a.clamp(0.0f, 1.0f) * maxv)
         );
     }
-    
+
     int opCmp(ref const(Color4f) c) const
     {
         return cast(int)((luminance() - c.luminance()) * 100);
@@ -168,8 +168,8 @@ struct Color4f
     float luminance709() const
     {
         return (
-            vec.arrayof[0] * 0.2126f + 
-            vec.arrayof[1] * 0.7152f + 
+            vec.arrayof[0] * 0.2126f +
+            vec.arrayof[1] * 0.7152f +
             vec.arrayof[2] * 0.0722f
         );
     }
@@ -178,8 +178,8 @@ struct Color4f
     float luminance601() const
     {
         return (
-            vec.arrayof[0] * 0.3f + 
-            vec.arrayof[1] * 0.59f + 
+            vec.arrayof[0] * 0.3f +
+            vec.arrayof[1] * 0.59f +
             vec.arrayof[2] * 0.11f
         );
     }
@@ -189,7 +189,7 @@ struct Color4f
         return Color4f(
             1.0f - vec.r,
             1.0f - vec.g,
-            1.0f - vec.b, 
+            1.0f - vec.b,
             vec.a);
     }
 
@@ -220,7 +220,7 @@ Color4f color3(int hex)
     ubyte g = (hex >> 8) & 255;
     ubyte b = hex & 255;
     return Color4f(
-        cast(float)r / 255.0f, 
+        cast(float)r / 255.0f,
         cast(float)g / 255.0f,
         cast(float)b / 255.0f);
 }
@@ -232,7 +232,7 @@ Color4f color4(int hex)
     ubyte b = (hex >> 8) & 255;
     ubyte a = hex & 255;
     return Color4f(
-        cast(float)r / 255.0f, 
+        cast(float)r / 255.0f,
         cast(float)g / 255.0f,
         cast(float)b / 255.0f,
         cast(float)a / 255.0f);

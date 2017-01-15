@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2017 Timur Gafarov 
+Copyright (c) 2016-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -59,22 +59,22 @@ class StdWindowsDirEntryRange: InputRange!(DirEntry)
     bool _empty = false;
     wchar* path;
     bool initialized = false;
-        
+
     this(wchar* cwstr)
     {
         this.path = cwstr;
     }
-    
+
     ~this()
     {
         if (frontEntry.name.length)
             Delete(frontEntry.name);
-            
+
         close();
     }
-    
+
     import std.stdio;
-    
+
     bool advance()
     {
         bool success = false;
@@ -88,7 +88,7 @@ class StdWindowsDirEntryRange: InputRange!(DirEntry)
             initialized = true;
             if (hFind != INVALID_HANDLE_VALUE)
                 success = true;
-        
+
             string name = unmanagedStrFromCStrW(findData.cFileName.ptr);
             if (name == "." || name == "..")
             {
@@ -105,13 +105,13 @@ class StdWindowsDirEntryRange: InputRange!(DirEntry)
 
         if (!success && hFind != INVALID_HANDLE_VALUE)
         {
-            string name; 
+            string name;
             while(!success)
             {
                 auto r = FindNextFileW(hFind, &findData);
                 if (!r)
                     break;
-                            
+
                 name = unmanagedStrFromCStrW(findData.cFileName.ptr);
                 if (name != "." && name != "..")
                     success = true;
@@ -126,7 +126,7 @@ class StdWindowsDirEntryRange: InputRange!(DirEntry)
                 frontEntry = DirEntry(name, isFile, isDir);
             }
         }
-        
+
         if (!success)
         {
             FindClose(hFind);
@@ -151,51 +151,51 @@ class StdWindowsDirEntryRange: InputRange!(DirEntry)
         _empty = !advance();
         return frontEntry;
     }
-    
+
     override bool empty()
     {
         return _empty;
     }
-    
+
     int opApply(scope int delegate(DirEntry) dg)
     {
         int result = 0;
-       
+
         for (size_t i = 0; !empty; i++)
         {
             popFront();
             if (!empty())
                 result = dg(frontEntry);
-            
+
             if (result != 0)
                 break;
         }
-        
+
         return result;
     }
-    
+
     int opApply(scope int delegate(size_t, DirEntry) dg)
     {
         int result = 0;
-       
+
         for (size_t i = 0; !empty; i++)
         {
             popFront();
             if (!empty())
                 result = dg(i, frontEntry);
-            
+
             if (result != 0)
                 break;
         }
-        
+
         return result;
     }
-    
+
     void reset()
     {
         close();
     }
-        
+
     void close()
     {
         if (hFind != INVALID_HANDLE_VALUE)
@@ -212,7 +212,7 @@ class StdWindowsDirectory: Directory
 {
     StdWindowsDirEntryRange drange;
     wchar* path;
-    
+
     this(wchar* cwstr)
     {
         path = cwstr;
@@ -223,14 +223,14 @@ class StdWindowsDirectory: Directory
     {
         drange.close();
     }
-    
+
     StdWindowsDirEntryRange contents()
     {
         if (drange)
             drange.reset();
         return drange;
     }
-        
+
     ~this()
     {
         Delete(drange);

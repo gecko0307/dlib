@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2017 Oleg Baharev, Timur Gafarov 
+Copyright (c) 2015-2017 Oleg Baharev, Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -51,7 +51,7 @@ void drawLine(SuperImage img, Color4f color, int x1, int y1, int x2, int y2)
     int iy = (dy > 0) - (dy < 0);
     int dy2 = abs(dy) * 2;
     img[x1, y1] = color;
- 
+
     if (dx2 >= dy2)
     {
         int error = dy2 - (dx2 / 2);
@@ -62,7 +62,7 @@ void drawLine(SuperImage img, Color4f color, int x1, int y1, int x2, int y2)
                 error -= dx2;
                 y1 += iy;
             }
- 
+
             error += dy2;
             x1 += ix;
             img[x1, y1] = color;
@@ -78,7 +78,7 @@ void drawLine(SuperImage img, Color4f color, int x1, int y1, int x2, int y2)
                 error -= dy2;
                 x1 += ix;
             }
- 
+
             error += dx2;
             y1 += iy;
             img[x1, y1] = color;
@@ -93,15 +93,15 @@ void drawCircle(SuperImage img, Color4f col, int x0, int y0, uint r)
     int ddF_y = -2 * r;
     int x = 0;
     int y = r;
- 
+
     img[x0, y0 + r] = col;
     img[x0, y0 - r] = col;
     img[x0 + r, y0] = col;
     img[x0 - r, y0] = col;
- 
-    while(x < y) 
+
+    while(x < y)
     {
-        if(f >= 0) 
+        if(f >= 0)
         {
             y--;
             ddF_y += 2;
@@ -109,7 +109,7 @@ void drawCircle(SuperImage img, Color4f col, int x0, int y0, uint r)
         }
         x++;
         ddF_x += 2;
-        f += ddF_x + 1;    
+        f += ddF_x + 1;
         img[x0 + x, y0 + y] = col;
         img[x0 - x, y0 + y] = col;
         img[x0 + x, y0 - y] = col;

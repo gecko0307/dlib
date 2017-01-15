@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2017 Timur Gafarov 
+Copyright (c) 2013-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -37,9 +37,9 @@ private
 
 enum HSVAChannel
 {
-    H = 0, 
-    S = 1, 
-    V = 2, 
+    H = 0,
+    S = 1,
+    V = 2,
     A = 3
 }
 
@@ -56,7 +56,7 @@ struct ColorHSVAf
         }
         float[4] arrayof;
     }
-    
+
     this(float h, float s, float v, float a)
     {
         this.h = h;
@@ -64,29 +64,29 @@ struct ColorHSVAf
         this.v = v;
         this.a = a;
     }
-    
+
     this(Color4f c)
     {
         a = c.a;
-        
+
         float cmin, cmax, delta;
         cmin = min(c.r, c.g, c.b);
         cmax = max(c.r, c.g, c.b);
-        
+
         v = cmax;
         delta = cmax - cmin;
-        
+
         if (cmax > 0.0f)
             s = delta / cmax;
         else
         {
-            // r = g = b = 0                        
+            // r = g = b = 0
             // s = 0, h is undefined
             s = 0.0f;
             h = float.nan;
             return;
         }
-        
+
         if (c.r >= cmax)
             h = (c.g - c.b) / delta;
         else
@@ -96,17 +96,17 @@ struct ColorHSVAf
             else
                 h = 4.0f + (c.r - c.g) / delta;
         }
-        
+
         h *= 60.0f;
 
         if (h < 0.0f)
             h += 360.0f;
     }
-    
+
     Color4f rgba()
     {
         Color4f res;
-        
+
         res.a = a;
 
         if (s <= 0.0f)
@@ -117,7 +117,7 @@ struct ColorHSVAf
 
         float hh = h;
 
-        if (hh >= 360.0f) 
+        if (hh >= 360.0f)
             hh = 0.0f;
             hh /= 60.0f;
 
@@ -127,7 +127,7 @@ struct ColorHSVAf
         float q = v * (1.0f - (s * ff));
         float t = v * (1.0f - (s * (1.0f - ff)));
 
-        switch(i) 
+        switch(i)
         {
             case 0:  res.r = v; res.g = t; res.b = p; break;
             case 1:  res.r = q; res.g = v; res.b = p; break;
@@ -140,28 +140,28 @@ struct ColorHSVAf
 
         return res;
     }
-    
+
     void shiftHue(float degrees)
     {
         h += degrees;
-        while (h >= 360.0f) 
+        while (h >= 360.0f)
             h -= 360.0f;
-        while (h < 0.0f) 
+        while (h < 0.0f)
             h += 360.0f;
     }
-    
+
     void shiftSaturation(float val)
     {
         s += val;
         s = clamp(s, 0.0f, 1.0f);
     }
-    
+
     void scaleSaturation(float val)
     {
         s *= val;
         s = clamp(s, 0.0f, 1.0f);
     }
-    
+
     void shiftValue(float val)
     {
         v += val;
@@ -173,25 +173,25 @@ struct ColorHSVAf
         v *= val;
         v = clamp(v, 0.0f, 1.0f);
     }
-    
+
     bool hueInRange(float hue2, float tmin, float tmax)
     {
-        if (h == hue2) 
+        if (h == hue2)
             return true;
 
         float h1 = hue2 + tmin;
-        while (h1 >= 360.0f) 
+        while (h1 >= 360.0f)
             h1 -= 360.0f;
-        while (h1 < 0.0f) 
+        while (h1 < 0.0f)
             h1 += 360.0f;
 
         float h2 = hue2 + tmax;
-        while (h2 >= 360.0f) 
+        while (h2 >= 360.0f)
             h2 -= 360.0f;
-        while (h1 < 0.0f) 
+        while (h1 < 0.0f)
             h2 += 360.0f;
 
-        return (h1 > h2)? 
+        return (h1 > h2)?
             (h > h1 || h < h2):
             (h > h1 && h < h2);
     }

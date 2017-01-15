@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2017 Martin Cejp 
+Copyright (c) 2014-2017 Martin Cejp
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -40,12 +40,12 @@ class PosixFile : IOStream {
     int fd;
     uint accessFlags;
     bool eof = false;
-    
+
     this(int fd, uint accessFlags) {
         this.fd = fd;
         this.accessFlags = accessFlags;
     }
-    
+
     ~this() {
         close();
     }
@@ -56,53 +56,53 @@ class PosixFile : IOStream {
             fd = -1;
         }
     }
-    
+
     override bool seekable() {
         return true;
     }
-    
+
     override StreamPos getPosition() {
         import core.sys.posix.stdio;
-        
+
         return lseek(fd, 0, SEEK_CUR);
     }
-    
+
     override bool setPosition(StreamPos pos) {
         import core.sys.posix.stdio;
-        
+
         return lseek(fd, pos, SEEK_SET) == pos;
     }
-    
+
     override StreamSize size() {
         import core.sys.posix.stdio;
-        
+
         auto off = lseek(fd, 0, SEEK_CUR);
         auto end = lseek(fd, 0, SEEK_END);
         lseek(fd, off, SEEK_SET);
         return end;
     }
-    
+
     override bool readable() {
         return fd != -1 && (accessFlags & FileSystem.read) && !eof;
     }
-    
+
     override size_t readBytes(void* buffer, size_t count) {
         immutable size_t got = core.sys.posix.unistd.read(fd, buffer, count);
-        
+
         if (count > got)
             eof = true;
-        
+
         return got;
     }
-    
+
     override bool writeable() {
         return fd != -1 && (accessFlags & FileSystem.write);
     }
-    
+
     override size_t writeBytes(const void* buffer, size_t count) {
         return core.sys.posix.unistd.write(fd, buffer, count);
     }
-    
+
     override void flush() {
     }
 }

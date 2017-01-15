@@ -1,5 +1,5 @@
-﻿/*
-Copyright (c) 2016-2017 Timur Gafarov 
+/*
+Copyright (c) 2016-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -62,7 +62,7 @@ enum MaxStaticTensorSize = double.sizeof * 16; // fit 4x4 matrix of doubles
 
 /*
  * Generic multi-dimensional array template.
- * It mainly serves as a base for creating various 
+ * It mainly serves as a base for creating various
  * more specialized algebraic objects via encapsulation.
  * Think of Tensor as a backend for e.g. Vector and Matrix.
  *
@@ -78,7 +78,7 @@ enum MaxStaticTensorSize = double.sizeof * 16; // fit 4x4 matrix of doubles
  *    4,4 - 4x4 matrix
  *    etc.
  *
- * Data storage type (stack or heap) is statically selected: if given size(s) 
+ * Data storage type (stack or heap) is statically selected: if given size(s)
  * imply data size larger than MaxStaticTensorSize, data is allocated
  * on heap (as dynamic array). Otherwise, data is allocated on stack (as static array).
  */
@@ -158,7 +158,7 @@ template Tensor(T, size_t dim, sizes...)
                 v = initVal;
         }
 
-       /* 
+       /*
         * Tensor constructor
         */
         this(Tensor!(T, order, sizes) t)
@@ -174,7 +174,7 @@ template Tensor(T, size_t dim, sizes...)
             }
         }
 
-       /* 
+       /*
         * Tuple constructor
         */
         this(F...)(F components) if (F.length > 1)
@@ -220,11 +220,11 @@ template Tensor(T, size_t dim, sizes...)
         in
         {
             assert ((0 <= index) && (index < _dataLen),
-                "Tensor.opIndex: array index out of bounds");  
+                "Tensor.opIndex: array index out of bounds");
         }
         body
         {
-            return arrayof[index]; 
+            return arrayof[index];
         }
 
        /*
@@ -234,14 +234,14 @@ template Tensor(T, size_t dim, sizes...)
         in
         {
             assert (index < _dataLen,
-                "Tensor.opIndexAssign: array index out of bounds");  
+                "Tensor.opIndexAssign: array index out of bounds");
         }
         body
         {
             arrayof[index] = n;
         }
 
-       /* 
+       /*
         * T = Tensor[i, j, ...]
         */
         T opIndex(I...)(in I indices) const if (I.length == sizes.length)
@@ -256,7 +256,7 @@ template Tensor(T, size_t dim, sizes...)
             return arrayof[index];
         }
 
-       /* 
+       /*
         * Tensor[i, j, ...] = T
         */
         T opIndexAssign(I...)(in T t, in I indices) if (I.length == sizes.length)
@@ -286,7 +286,7 @@ template Tensor(T, size_t dim, sizes...)
                 arrayof[i] = v;
             }
         }
-        
+
         alias NTypeTuple!(size_t, order) Indices;
 
         int opApply(scope int delegate(ref T v, Indices indices) dg)
@@ -296,13 +296,13 @@ template Tensor(T, size_t dim, sizes...)
             size_t index = 0;
 
             while(index < data.length)
-            {   
+            {
                 result = dg(data[index], ind.tuple);
                 if (result)
                     break;
-                
+
                 ind[0]++;
-            
+
                 foreach(i; RangeTuple!(0, order))
                 {
                     if (ind[i] == sizes[i])
@@ -314,7 +314,7 @@ template Tensor(T, size_t dim, sizes...)
                         }
                     }
                 }
-            
+
                 index++;
             }
 
@@ -353,7 +353,7 @@ template Tensor(T, size_t dim, sizes...)
             * opDispatch with alias this.
             */
 
-            private static bool valid(string s) 
+            private static bool valid(string s)
             {
                 if (s.length < 2)
                     return false;
@@ -362,16 +362,16 @@ template Tensor(T, size_t dim, sizes...)
                 {
                     switch(c)
                     {
-                        case 'w', 'a', 'q': 
+                        case 'w', 'a', 'q':
                             if (size < 4) return false;
                             else break;
-                        case 'z', 'b', 'p': 
+                        case 'z', 'b', 'p':
                             if (size < 3) return false;
                             else break;
-                        case 'y', 'g', 't': 
+                        case 'y', 'g', 't':
                             if (size < 2) return false;
                             else break;
-                        case 'x', 'r', 's': 
+                        case 'x', 'r', 's':
                             if (size < 1) return false;
                             else break;
                         default:
@@ -403,12 +403,12 @@ template Tensor(T, size_t dim, sizes...)
             template opDispatch(string s) if (valid(s))
             {
                 static if (s.length <= 4)
-                { 
+                {
                     @property auto ref opDispatch(this X)()
                     {
-                        auto extend(string s) 
+                        auto extend(string s)
                         {
-                            while (s.length < 4) 
+                            while (s.length < 4)
                                 s ~= s[$-1];
                             return s;
                         }
@@ -417,9 +417,9 @@ template Tensor(T, size_t dim, sizes...)
                         enum i = (char c) => ['x':0, 'y':1, 'z':2, 'w':3,
                                               'r':0, 'g':1, 'b':2, 'a':3,
                                               's':0, 't':1, 'p':2, 'q':3][c];
-                        enum i0 = i(p[0]), 
-                             i1 = i(p[1]), 
-                             i2 = i(p[2]), 
+                        enum i0 = i(p[0]),
+                             i1 = i(p[1]),
+                             i2 = i(p[2]),
                              i3 = i(p[3]);
 
                         static if (s.length == 4)
@@ -504,13 +504,13 @@ auto tensorProduct(T1, T2)(T1 t1, T2 t2)
     size_t index = 0;
 
     while(index < t.data.length)
-    {   
-        t.data[index] = 
-            t2[ind.tuple[0..$/2]] * 
+    {
+        t.data[index] =
+            t2[ind.tuple[0..$/2]] *
             t1[ind.tuple[$/2..$]];
-                
+
         ind[0]++;
-            
+
         foreach(i; RangeTuple!(0, order))
         {
             if (ind[i] == sizes[i])
@@ -522,7 +522,7 @@ auto tensorProduct(T1, T2)(T1 t1, T2 t2)
                 }
             }
         }
-            
+
         index++;
     }
 

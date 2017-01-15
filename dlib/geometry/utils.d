@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -71,7 +71,7 @@ Vector2f triObjectSpaceToTextureSpace(
     Vector2f uv1, Vector2f uv2, Vector2f uv3,
     Vector3f pos)
 {
-    // Compute vectors 
+    // Compute vectors
     Vector3f v0 = p3 - p1;
     Vector3f v1 = p2 - p1;
     Vector3f v2 = pos - p1;

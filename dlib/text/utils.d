@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2017 Timur Gafarov 
+Copyright (c) 2016-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -77,7 +77,7 @@ unittest
 {
     auto str1 = "hello";
     auto str2 = " world";
-    
+
     auto cat = catStr(str1, str2);
     assert(cat == "hello world");
     Delete(cat);

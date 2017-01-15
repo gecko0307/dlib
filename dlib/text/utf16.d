@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2017 Timur Gafarov 
+Copyright (c) 2016-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -43,21 +43,21 @@ wchar[] convertUTF8toUTF16(string s, bool nullTerm = false)
 
     DynamicArray!wchar array;
     wchar[] output;
-    
+
     UTF8Decoder dec = UTF8Decoder(s);
-  
+
     while(!dec.eos)
     {
         int code = dec.decodeNext();
-        
+
         if (code == UTF8_ERROR)
         {
             array.free();
             return output;
         }
-        
+
         dchar ch = cast(dchar)code;
-            
+
         if (ch > 0xFFFF)
         {
             // Split ch up into a surrogate pair as it is over 16 bits long.
@@ -79,7 +79,7 @@ wchar[] convertUTF8toUTF16(string s, bool nullTerm = false)
             array.append(cast(wchar)ch);
         }
     }
-    
+
     if (nullTerm)
     {
         array.append(0);
@@ -101,7 +101,7 @@ char[] convertUTF16ztoUTF8(wchar* s, bool nullTerm = false)
     {
         utf16char = *utf16;
         utf16++;
-        
+
         if (utf16char)
         {
             if (utf16char < 0x80)
@@ -129,7 +129,7 @@ char[] convertUTF16ztoUTF8(wchar* s, bool nullTerm = false)
         }
     }
     while (utf16char);
-    
+
     if (nullTerm)
     {
         array.append(0);

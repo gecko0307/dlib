@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2017 Timur Gafarov 
+Copyright (c) 2016-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -43,7 +43,7 @@ SuperImage affineTransformImage(SuperImage img, Matrix3x3f m)
 {
     return affineTransformImage(img, null, m);
 }
- 
+
 SuperImage affineTransformImage(SuperImage img, SuperImage outp, Matrix3x3f m)
 {
     SuperImage res;
@@ -69,7 +69,7 @@ SuperImage translateImage(SuperImage img, Vector2f t)
 {
     return translateImage(img, null, t);
 }
- 
+
 SuperImage translateImage(SuperImage img, SuperImage outp, Vector2f t)
 {
     Matrix3x3f m = translationMatrix2D(-t);
@@ -84,11 +84,11 @@ SuperImage rotateImage(SuperImage img, float angle)
 {
     return rotateImage(img, null, angle);
 }
- 
+
 SuperImage rotateImage(SuperImage img, SuperImage outp, float angle)
 {
     Vector2f center = Vector2f(img.width, img.height) * 0.5f;
-    Matrix3x3f m = 
+    Matrix3x3f m =
       translationMatrix2D(center) *
       rotationMatrix2D(degtorad(angle)) *
       translationMatrix2D(-center);
@@ -102,7 +102,7 @@ SuperImage scaleImage(SuperImage img, Vector2f s)
 {
     return scaleImage(img, null, s);
 }
- 
+
 SuperImage scaleImage(SuperImage img, SuperImage outp, Vector2f s)
 {
     Matrix3x3f m = scaleMatrix2D(Vector2f(1, 1) / s);
@@ -116,7 +116,7 @@ SuperImage scaleImage(SuperImage img, float s)
 {
     return scaleImage(img, null, s);
 }
- 
+
 SuperImage scaleImage(SuperImage img, SuperImage outp, float s)
 {
     float sinv = 1.0f / s;

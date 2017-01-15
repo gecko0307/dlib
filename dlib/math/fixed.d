@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -35,7 +35,7 @@ module dlib.math.fixed;
 struct fixed
 {
     private int x;
-    
+
     public:
 
     static fixed opCall(int n)
@@ -44,7 +44,7 @@ struct fixed
         res.x = n << 16;
         return res;
     }
-    
+
     static fixed opCall(double n)
     {
         fixed res;
@@ -63,7 +63,7 @@ struct fixed
         x = cast(int)(n * (1 << 16));
         return this;
     }
-    
+
     fixed opAdd(fixed b)
     {
         fixed res;
@@ -77,7 +77,7 @@ struct fixed
         res.x = x - b.x;
         return res;
     }
-    
+
     fixed opMul(fixed b)
     {
         fixed res;
@@ -85,9 +85,9 @@ struct fixed
         res.x = cast(int)(x1 >> 16);
         return res;
     }
-    
+
     double opCast()
-    { 
-        return 1.0 * x / (1 << 16); 
+    {
+        return 1.0 * x / (1 << 16);
     }
 }

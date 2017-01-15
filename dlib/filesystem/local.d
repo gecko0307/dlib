@@ -58,25 +58,25 @@ class LocalFileSystem : FileSystem {
     override InputStream openForInput(string filename) {
         return cast(InputStream) openFile(filename, read, 0);
     }
-    
+
     override OutputStream openForOutput(string filename, uint creationFlags) {
-        return cast(OutputStream) openFile(filename, write, creationFlags); 
+        return cast(OutputStream) openFile(filename, write, creationFlags);
     }
-    
+
     override IOStream openForIO(string filename, uint creationFlags) {
         return openFile(filename, read | write, creationFlags);
     }
-    
+
     override bool createDir(string path, bool recursive) {
         import std.algorithm;
-        
+
         if (recursive) {
             ptrdiff_t index = max(path.lastIndexOf('/'), path.lastIndexOf('\\'));
-            
+
             if (index != -1)
                 createDir(path[0..index], true);
         }
-        
+
         version (Posix) {
             return mkdir(toStringz(path), access_0755) == 0;
         }
@@ -86,11 +86,11 @@ class LocalFileSystem : FileSystem {
         else
             throw new Exception("Not implemented.");
     }
-    
+
     override Directory openDir(string path) {
         version (Posix) {
             DIR* d = opendir(!path.empty ? toStringz(path) : ".");
-            
+
             if (d == null)
                 return null;
             else
@@ -111,7 +111,7 @@ class LocalFileSystem : FileSystem {
         else
             throw new Exception("Not implemented.");
     }
-    
+
     override bool stat(string path, out FileStat stat_out) {
         version (Posix) {
             stat_t st;
@@ -148,22 +148,22 @@ class LocalFileSystem : FileSystem {
         else
             throw new Exception("Not implemented.");
     }
-    
+
     /*override bool move(string path, string newPath) {
         // TODO: should we allow newPath to actually be a directory?
-        
+
         return rename(toStringz(path), toStringz(newPath)) == 0;
     }*/
-    
+
     override bool remove(string path, bool recursive) {
         FileStat stat;
-        
+
         if (!this.stat(path, stat))
             return false;
-        
+
         return remove(path, stat.isDirectory, recursive);
     }
-    
+
 private:
     version (Posix) {
         enum access_0644 = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
@@ -172,25 +172,25 @@ private:
 
     IOStream openFile(string filename, uint accessFlags, uint creationFlags) {
         // TODO: Windows implementation
-        
+
         version (Posix) {
             int flags;
-            
+
             switch (accessFlags & (read | write)) {
                 case read: flags = O_RDONLY; break;
                 case write: flags = O_WRONLY; break;
                 case read | write: flags = O_RDWR; break;
                 default: flags = 0;
             }
-            
+
             if (creationFlags & FileSystem.create)
                 flags |= O_CREAT;
-            
+
             if (creationFlags & FileSystem.truncate)
                 flags |= O_TRUNC;
-            
+
             int fd = open(toStringz(filename), flags, access_0644);
-            
+
             if (fd < 0)
                 return null;
             else
@@ -225,14 +225,14 @@ private:
         else
             throw new Exception("Not implemented.");
     }
-    
+
     bool remove(string path, bool isDirectory, bool recursive) {
         // TODO: Windows implementation
-        
+
         if (isDirectory && recursive) {
             // Remove contents
             auto dir = openDir(path);
-            
+
             try {
                 foreach (entry; dir.contents)
                     remove(path ~ "/" ~ entry.name, entry.isDirectory, recursive);
@@ -241,9 +241,9 @@ private:
                 dir.close();
             }
         }
-            
+
         version (Posix) {
-            if (isDirectory) 
+            if (isDirectory)
                 return rmdir(toStringz(path)) == 0;
             else
                 return std.stdio.remove(toStringz(path)) == 0;
@@ -265,7 +265,7 @@ private FileSystem fs;
 static this() {
     // decouple dependency from the rest of this module
     import dlib.filesystem.local;
-    
+
     setFileSystem(new LocalFileSystem);
 }
 
@@ -336,20 +336,20 @@ bool remove(string path, bool recursive) {
 
 unittest {
     // TODO: test >4GiB files
-    
+
     import std.algorithm;
     import std.file;
-    
+
     alias remove = dlib.filesystem.local.remove;
-    
+
     remove("tests/test_data", true);
     assert(openDir("tests/test_data") is null);
-    
+
     assert(createDir("tests/test_data/main", true));
-    
+
     enum dir = "tests";
     auto d = openDir(dir);
-    
+
     try
     {
         chdir(dir);
@@ -376,7 +376,7 @@ unittest {
     OutputStream outp = openForOutput("tests/test_data/main/hello_world.txt", FileSystem.create | FileSystem.truncate);
     string expected = "Hello, World!\n";
     assert(outp);
-    
+
     try
     {
         assert(outp.writeArray(expected));
@@ -384,17 +384,17 @@ unittest {
     finally {
         outp.close();
     }
-    
+
     //
     InputStream inp = openForInput("tests/test_data/main/hello_world.txt");
     assert(inp);
-    
+
     try
     {
         while (inp.readable)
         {
             char[1] buffer;
-            
+
             auto have = inp.readBytes(buffer.ptr, buffer.length);
             assert(buffer[0..have] == expected[0..have]);
             expected.popFrontN(have);

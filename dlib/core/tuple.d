@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -53,13 +53,13 @@ template RangeTuple(int start, int stop, int step)
 {
     static assert(step != 0, "RangeTuple: step must be != 0");
 
-    static if (step > 0) 
+    static if (step > 0)
     {
         static if (stop <= start)
             alias Tuple!() RangeTuple;
         else
             alias Tuple!(RangeTuple!(start, stop-step, step), stop-step) RangeTuple;
-    } 
+    }
     else
     {
         static if (stop >= start)

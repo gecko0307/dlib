@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2017 Timur Gafarov 
+Copyright (c) 2014-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -118,7 +118,7 @@ class HDRImage: SuperHDRImage
         memcpy(&a, dataptr + 4 * 3, 4);
         return Color4f(r, g, b, a);
     }
-    
+
     override Color4f opIndexAssign(Color4f c, int x, int y)
     {
         while(x >= _width) x = _width-1;
@@ -139,7 +139,7 @@ class HDRImage: SuperHDRImage
     {
         _data = new ubyte[_width * _height * _pixelSize];
     }
-    
+
     void free()
     {
         // Do nothing, let GC delete the object
@@ -216,7 +216,7 @@ class UnmanagedHDRImage: HDRImage
     {
         _data = New!(ubyte[])(_width * _height * _pixelSize);
     }
-    
+
     override void free()
     {
         Delete(this);
@@ -231,7 +231,7 @@ class UnmanagedHDRImageFactory: SuperHDRImageFactory
     }
 }
 
-SuperImage hdrTonemapGamma(SuperHDRImage img, float gamma) 
+SuperImage hdrTonemapGamma(SuperHDRImage img, float gamma)
 {
     return hdrTonemapGamma(img, null, gamma);
 }

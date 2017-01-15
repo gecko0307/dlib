@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -49,9 +49,9 @@ bool forOne(T) (in T[] val, scope bool delegate(T) func)
 {
     bool res = false;
     foreach(v; val)
-        if (func(v) && !res) 
+        if (func(v) && !res)
             res = true;
-        else 
+        else
             return false;
     return true;
 }

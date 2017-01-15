@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -68,12 +68,12 @@ abstract class SuperImage: Freeable
     Color4f opIndexAssign(Color4f c, int x, int y);
 
     SuperImage createSameFormat(uint w, uint h);
-    
+
     final @property auto row()
     {
         return range!uint(0, width);
     }
-    
+
     final @property auto col()
     {
         return range!uint(0, height);
@@ -81,17 +81,17 @@ abstract class SuperImage: Freeable
 
     float pixelCost = 0.0f;
     shared float progress = 0.0f;
-    
+
     final void updateProgress()
     {
         progress = progress + pixelCost;
     }
-    
+
     final void resetProgress()
     {
         progress = 0.0f;
     }
-    
+
     final int opApply(scope int delegate(ref Color4f p, uint x, uint y) dg)
     {
         int result = 0;
@@ -173,22 +173,22 @@ class Image(PixelFormat fmt): SuperImage
         _height = h;
 
         _bitDepth = [
-            PixelFormat.L8:     8, PixelFormat.LA8:     8,  
+            PixelFormat.L8:     8, PixelFormat.LA8:     8,
             PixelFormat.RGB8:   8, PixelFormat.RGBA8:   8,
-            PixelFormat.L16:   16, PixelFormat.LA16:   16, 
+            PixelFormat.L16:   16, PixelFormat.LA16:   16,
             PixelFormat.RGB16: 16, PixelFormat.RGBA16: 16
         ][fmt];
 
         _channels = [
             PixelFormat.L8:    1, PixelFormat.LA8:    2,
             PixelFormat.RGB8:  3, PixelFormat.RGBA8:  4,
-            PixelFormat.L16:   1, PixelFormat.LA16:   2,  
+            PixelFormat.L16:   1, PixelFormat.LA16:   2,
             PixelFormat.RGB16: 3, PixelFormat.RGBA16: 4
         ][fmt];
 
         _pixelSize = (_bitDepth / 8) * _channels;
         allocateData();
-        
+
         pixelCost = 1.0f / (_width * _height);
         progress = 0.0f;
     }
@@ -202,7 +202,7 @@ class Image(PixelFormat fmt): SuperImage
     {
         if (x >= width) x = width-1;
         else if (x < 0) x = 0;
-        
+
         if (y >= height) y = height-1;
         else if (y < 0) y = 0;
 
@@ -334,13 +334,13 @@ class Image(PixelFormat fmt): SuperImage
     {
         return Color4f(getPixel(x, y), _bitDepth);
     }
-    
+
     override Color4f opIndexAssign(Color4f c, int x, int y)
     {
         setPixel(c.convert(_bitDepth), x, y);
         return c;
     }
-    
+
     void free()
     {
         // Do nothing, let GC delete the object
@@ -519,18 +519,18 @@ struct ImageWindowRange
     SuperImage img;
     uint width;
     uint height;
-    
+
     private uint halfWidth;
     private uint halfHeight;
     private uint wx = 0;
     private uint wy = 0;
-    
+
     this(SuperImage img, uint w, uint h)
     {
         this.img = img;
         this.width = w;
         this.height = h;
-        
+
         this.halfWidth = this.width / 2;
         this.halfHeight = this.height / 2;
     }
@@ -555,13 +555,13 @@ struct ImageWindowRange
 
             if (result)
                 break;
-        }        
+        }
 
         return result;
     }
-    
+
     bool empty = false;
-    
+
     void popFront()
     {
         wx++;
@@ -569,7 +569,7 @@ struct ImageWindowRange
         {
             wx = 0;
             wy++;
-            
+
             if (wy == img.height)
             {
                 wy = 0;
@@ -577,7 +577,7 @@ struct ImageWindowRange
             }
         }
     }
-    
+
     @property ImageRegion front()
     {
         return region(img, wx - halfWidth, wy - halfHeight, width, height);
@@ -591,10 +591,10 @@ ImageWindowRange windows(SuperImage img, uint width, uint height)
 
 /*
     ImageWindowRange usage example (convolution with emboss kernel):
-  
+
     float[3][3] kernel = [
-        [-1, -1,  0], 
-        [-1,  0,  1], 
+        [-1, -1,  0],
+        [-1,  0,  1],
         [ 0,  1,  1],
     ];
 

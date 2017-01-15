@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 module dlib.image.filters.normalmap;
 
 private
-{   
+{
     import dlib.image.image;
     import dlib.image.color;
     import dlib.math.vector;
@@ -44,16 +44,16 @@ private
 
 SuperImage heightToNormal(
     SuperImage img,
-    Channel channel = Channel.R, 
+    Channel channel = Channel.R,
     float strength = 2.0f)
 {
     return heightToNormal(img, null, channel, strength);
-} 
- 
+}
+
 SuperImage heightToNormal(
     SuperImage img,
     SuperImage outp,
-    Channel channel = Channel.R, 
+    Channel channel = Channel.R,
     float strength = 2.0f)
 in
 {
@@ -69,12 +69,12 @@ body
 
     if (img.channels == 1)
         channel = Channel.R;
-    
+
     float[8] sobelTaps;
-    
+
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
-    {       
+    {
         sobelTaps[0] = img[x-1, y-1][channel];
         sobelTaps[1] = img[x,   y-1][channel];
         sobelTaps[2] = img[x+1, y-1][channel];
@@ -83,9 +83,9 @@ body
         sobelTaps[5] = img[x+1, y+1][channel];
         sobelTaps[6] = img[x-1, y  ][channel];
         sobelTaps[7] = img[x+1, y  ][channel];
-            
+
         float dx, dy;
-        
+
         // Do y sobel filter
         dy  = sobelTaps[0] * +1.0f;
         dy += sobelTaps[1] * +2.0f;
@@ -101,19 +101,19 @@ body
         dx += sobelTaps[2] * +1.0f;
         dx += sobelTaps[7] * +2.0f;
         dx += sobelTaps[5] * +1.0f;
-        
+
         // pack normal into floating-point RGBA
         Vector3f normal = Vector3f(-dx, -dy, 1.0f / strength);
         Color4f col = packNormal(normal);
         col.a = 1.0f;
-        
+
         // write result
         res[x, y] = col;
-        
+
         img.updateProgress();
     }
-    
+
     img.resetProgress();
-    
+
     return res;
 }

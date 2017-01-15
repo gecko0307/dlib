@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -41,7 +41,7 @@ T lanczos(T) (T x, int filterSize)
         return 0.0; // Outside of the window
     if (x > -T.epsilon && x < T.epsilon)
         return 1.0; // Special case the discontinuity at the origin
-    
+
     auto sinc = (T x) => sin(PI * x) / (PI * x);
     return sinc(x) * sinc(x / filterSize);
 }
@@ -98,7 +98,7 @@ body
                 }
             }
 
-            if (kSum > 0.0f) 
+            if (kSum > 0.0f)
                 colSum /= kSum;
 
             //colSum.clamp(0.0f, 1.0f);

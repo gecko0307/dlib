@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov 
+Copyright (c) 2011-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 module dlib.container.stack;
 
 private
-{ 
+{
     import dlib.container.linkedlist;
 }
 
@@ -41,7 +41,7 @@ public:
 struct Stack(T)
 {
     private LinkedList!(T, true) list;
-    
+
     public:
     /**
      * Push element to stack.
@@ -79,7 +79,7 @@ struct Stack(T)
     {
         return &(list.head.datum);
     }
-    
+
     /**
      * Check if stack has no elements.
      */
@@ -87,7 +87,7 @@ struct Stack(T)
     {
         return (list.head is null);
     }
-    
+
     /**
      * Free memory allocated by Stack.
      */
@@ -101,7 +101,7 @@ struct Stack(T)
 unittest
 {
     import std.exception : assertThrown;
-    
+
     Stack!int s;
     assertThrown(s.pop());
     s.push(100);

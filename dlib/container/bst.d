@@ -1,5 +1,5 @@
-﻿/*
-Copyright (c) 2015-2017 Timur Gafarov 
+/*
+Copyright (c) 2015-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -42,7 +42,7 @@ class BST(T)
     int key = 0;
 
     T value;
-    
+
     this()
     {
         root = true;
@@ -62,7 +62,7 @@ class BST(T)
 
     void insert(int k, T v)
     {
-        if (k < key) 
+        if (k < key)
         {
             if (left is null) left = allocate!(BST)(k, v);
             else left.insert(k, v);
@@ -83,10 +83,10 @@ class BST(T)
             else return null;
         }
         else if (k > key)
-        { 
+        {
             if (right !is null) return right.find(k);
             else return null;
-        } 
+        }
         else return this;
     }
 
@@ -106,7 +106,7 @@ class BST(T)
         else if (k > key)
         {
             if (right !is null) right.remove(k, this);
-            else return; 
+            else return;
         }
         else
         {
@@ -127,9 +127,9 @@ class BST(T)
                 par.right = (left !is null)? left : right;
                 //deallocate(value);
             }
-        } 
+        }
     }
-    
+
     void traverse(void function(int, T) func)
     {
         if (left !is null)
@@ -139,7 +139,7 @@ class BST(T)
         if (right !is null)
             right.traverse(func);
     }
-    
+
     int opApply(scope int delegate(int, ref T) dg)
     {
         int result = 0;
@@ -150,10 +150,10 @@ class BST(T)
             if (result)
                 return result;
         }
-        
+
         if (!root)
             dg(key, value);
-            
+
         if (right !is null)
         {
             result = right.opApply(dg);
@@ -163,7 +163,7 @@ class BST(T)
 
         return result;
     }
-    
+
     void clear()
     {
         if (left !is null)

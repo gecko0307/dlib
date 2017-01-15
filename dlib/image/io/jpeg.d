@@ -69,7 +69,7 @@ T readNumeric(T) (InputStream istrm, Endian endian = Endian.Little)
 if (is(T == ushort))
 {
     union U16
-    { 
+    {
         ubyte[2] asBytes;
         ushort asUshort;
     }
@@ -106,7 +106,7 @@ struct HuffmanCode
 {
     ushort bits;
     ushort length;
-    
+
     auto bitString()
     {
         return .bitString(bits, length);
@@ -124,7 +124,7 @@ DynamicArray!char bitString(T)(T n, uint len = 1) if (isIntegral!T)
     DynamicArray!char arr;
 
     const int size = T.sizeof * 8;
-    
+
     bool s = 0;
     for (int a = 0; a < size; a++)
     {
@@ -137,10 +137,10 @@ DynamicArray!char bitString(T)(T n, uint len = 1) if (isIntegral!T)
         }
         n <<= 1;
     }
-    
+
     while (arr.length < len)
         arr.appendLeft('0');
-        
+
     return arr;
 }
 
@@ -349,7 +349,7 @@ struct JPEGImage
                 return &t;
         return null;
     }
-    
+
     DHT* getHuffmanTable(ubyte clas, ubyte id)
     {
         foreach(ref t; dht)
@@ -378,7 +378,7 @@ SuperImage loadJPEG(string filename)
  */
 SuperImage loadJPEG(InputStream istrm)
 {
-    Compound!(SuperImage, string) res = 
+    Compound!(SuperImage, string) res =
         loadJPEG(istrm, defaultImageFactory);
     if (res[0] is null)
         throw new Exception(res[1]);
@@ -391,12 +391,12 @@ SuperImage loadJPEG(InputStream istrm)
  * GC-free
  */
 Compound!(SuperImage, string) loadJPEG(
-    InputStream istrm, 
+    InputStream istrm,
     SuperImageFactory imgFac)
 {
     JPEGImage jpg;
     SuperImage img = null;
-    
+
     while (istrm.readable)
     {
         JPEGMarkerType mt;
@@ -432,14 +432,14 @@ Compound!(bool, string) readMarker(
     JPEGMarkerType* mt)
 {
     ushort magic = istrm.readNumeric!ushort(Endian.Big);
-    
+
     switch (magic)
     {
         case 0xFFD8:
             *mt = JPEGMarkerType.SOI;
             version(JPEGDebug) writeln("SOI");
             break;
-            
+
         case 0xFFE0:
             *mt = JPEGMarkerType.APP0;
             return readJFIF(jpg, istrm);
@@ -447,67 +447,67 @@ Compound!(bool, string) readMarker(
         case 0xFFE1:
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 1);
-            
+
         case 0xFFE2:
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 2);
-            
+
         case 0xFFE3:
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 3);
-            
+
         case 0xFFE4:
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 4);
-            
+
         case 0xFFE5:
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 5);
-            
+
         case 0xFFE6:
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 6);
-            
+
         case 0xFFE7:
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 7);
-            
+
         case 0xFFE8:
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 8);
-            
+
          case 0xFFE9:
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 9);
-            
+
          case 0xFFEA:
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 10);
-            
+
          case 0xFFEB:
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 11);
-            
+
          case 0xFFEC:
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 12);
-            
+
          case 0xFFED:
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 13);
-            
+
          case 0xFFEE:
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 14);
-            
+
          case 0xFFEF:
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 15);
-            
+
         case 0xFFDB:
             *mt = JPEGMarkerType.DQT;
             return readDQT(jpg, istrm);
-            
+
         case 0xFFC0:
             *mt = JPEGMarkerType.SOF0;
             return readSOF0(jpg, istrm);
@@ -515,11 +515,11 @@ Compound!(bool, string) readMarker(
         case 0xFFC2:
             *mt = JPEGMarkerType.SOF2;
             break;
-            
+
         case 0xFFC4:
             *mt = JPEGMarkerType.DHT;
             return readDHT(jpg, istrm);
-            
+
         case 0xFFDA:
             *mt = JPEGMarkerType.SOS;
             return readSOS(jpg, istrm);
@@ -527,12 +527,12 @@ Compound!(bool, string) readMarker(
         case 0xFFFE:
             *mt = JPEGMarkerType.COM;
             return readCOM(jpg, istrm);
-            
+
         default:
             *mt = JPEGMarkerType.Unknown;
             break;
     }
-    
+
     return compound(true, "");
 }
 
@@ -551,7 +551,7 @@ Compound!(bool, string) readJFIF(JPEGImage* jpg, InputStream istrm)
     jpg.jfif.yDensity = istrm.readNumeric!ushort(Endian.Big);
     jpg.jfif.thumbnailWidth = istrm.readNumeric!ubyte;
     jpg.jfif.thumbnailHeight = istrm.readNumeric!ubyte;
-    
+
     uint jfif_thumb_length = jpg.jfif.thumbnailWidth * jpg.jfif.thumbnailHeight * 3;
     if (jfif_thumb_length > 0)
     {
@@ -620,7 +620,7 @@ Compound!(bool, string) readCOM(JPEGImage* jpg, InputStream istrm)
     {
         writefln("COM string: \"%s\"", cast(string)com);
         writefln("COM length: %s", com_length);
-    }    
+    }
 
     // TODO: save COM data somewhere.
     // Maybe add a generic ImageInfo object for this?
@@ -630,7 +630,7 @@ Compound!(bool, string) readCOM(JPEGImage* jpg, InputStream istrm)
 }
 
 Compound!(bool, string) readDQT(JPEGImage* jpg, InputStream istrm)
-{   
+{
     ushort dqt_length = istrm.readNumeric!ushort(Endian.Big);
     version(JPEGDebug)
     {
@@ -674,13 +674,13 @@ Compound!(bool, string) readDQT(JPEGImage* jpg, InputStream istrm)
 }
 
 Compound!(bool, string) readSOF0(JPEGImage* jpg, InputStream istrm)
-{   
+{
     ushort sof0_length = istrm.readNumeric!ushort(Endian.Big);
     jpg.sof0.precision = istrm.readNumeric!ubyte;
     jpg.sof0.height = istrm.readNumeric!ushort(Endian.Big);
     jpg.sof0.width = istrm.readNumeric!ushort(Endian.Big);
     jpg.sof0.componentsNum = istrm.readNumeric!ubyte;
-    
+
     version(JPEGDebug)
     {
         writefln("SOF0 length: %s", sof0_length);
@@ -689,9 +689,9 @@ Compound!(bool, string) readSOF0(JPEGImage* jpg, InputStream istrm)
         writefln("SOF0 width: %s", jpg.sof0.width);
         writefln("SOF0 components: %s", jpg.sof0.componentsNum);
     }
-    
+
     jpg.sof0.components = New!(JPEGImage.SOF0Component[])(jpg.sof0.componentsNum);
-    
+
     foreach(ref c; jpg.sof0.components)
     {
         ubyte c_id = istrm.readNumeric!ubyte;
@@ -712,19 +712,19 @@ Compound!(bool, string) readSOF0(JPEGImage* jpg, InputStream istrm)
 }
 
 Compound!(bool, string) readDHT(JPEGImage* jpg, InputStream istrm)
-{    
-    ushort dht_length = istrm.readNumeric!ushort(Endian.Big);  
+{
+    ushort dht_length = istrm.readNumeric!ushort(Endian.Big);
     version(JPEGDebug)
     {
         writefln("DHT length: %s", dht_length);
     }
-  
+
     dht_length -= 2;
 
     while(dht_length > 0)
-    {    
+    {
         JPEGImage.DHT* dht = jpg.addDHT();
-    
+
         ubyte bite = istrm.readNumeric!ubyte;
         dht_length--;
         dht.clas = bite.hiNibble;
@@ -742,16 +742,16 @@ Compound!(bool, string) readDHT(JPEGImage* jpg, InputStream istrm)
             writefln("DHT tableId: %s", dht.tableId);
             writefln("DHT Huffman code lengths: %s", dht_code_lengths);
         }
-    
-        // Read Huffman table   
+
+        // Read Huffman table
         int totalCodes = reduce!("a + b")(0, dht_code_lengths);
         int storedCodes = 0;
         ubyte treeLevel = 0;
         ushort bits = 0;
-    
+
         while (storedCodes != totalCodes)
         {
-            while (treeLevel < 15 && 
+            while (treeLevel < 15 &&
                 dht_code_lengths[treeLevel] == 0)
             {
                 treeLevel++;
@@ -767,7 +767,7 @@ Compound!(bool, string) readDHT(JPEGImage* jpg, InputStream istrm)
                 dht.huffmanTable.append(entry);
 
                 dht_length--;
-            
+
                 storedCodes++;
                 bits++;
                 dht_code_lengths[treeLevel]--;
@@ -781,7 +781,7 @@ Compound!(bool, string) readDHT(JPEGImage* jpg, InputStream istrm)
 }
 
 Compound!(bool, string) readSOS(JPEGImage* jpg, InputStream istrm)
-{   
+{
     ushort sos_length = istrm.readNumeric!ushort(Endian.Big);
     jpg.sos.componentsNum = istrm.readNumeric!ubyte;
 
@@ -790,9 +790,9 @@ Compound!(bool, string) readSOS(JPEGImage* jpg, InputStream istrm)
         writefln("SOS length: %s", sos_length);
         writefln("SOS components: %s", jpg.sos.componentsNum);
     }
-    
+
     jpg.sos.components = New!(JPEGImage.SOSComponent[])(jpg.sos.componentsNum);
-    
+
     foreach(ref c; jpg.sos.components)
     {
         ubyte c_id = istrm.readNumeric!ubyte;
@@ -812,7 +812,7 @@ Compound!(bool, string) readSOS(JPEGImage* jpg, InputStream istrm)
     ubyte bite = istrm.readNumeric!ubyte;
     jpg.sos.successiveApproximationBitHigh = bite.hiNibble;
     jpg.sos.successiveApproximationBitLow = bite.loNibble;
-    
+
     version(JPEGDebug)
     {
         writefln("SOS spectral selection start: %s", jpg.sos.spectralSelectionStart);
@@ -865,27 +865,27 @@ struct ScanBitStream
         while(!node.isLeaf)
         {
             ubyte b = curByte;
-        
+
             bool bit = getBit(b, 7-bitPos);
             bitPos++;
             if (bitPos == 8)
             {
                 bitPos = 0;
                 readNextByte();
-                
+
                 if (b == 0xFF)
                 {
-                    b = curByte; 
+                    b = curByte;
                     if (b == 0x00)
                     {
                         readNextByte();
                     }
                 }
             }
-            
-            if (bit) 
+
+            if (bit)
                 node = node.right;
-            else 
+            else
                 node = node.left;
 
             if (node is null)
@@ -907,7 +907,7 @@ struct ScanBitStream
         while (i < len)
         {
             ubyte b = curByte;
-        
+
             bool bit = getBit(b, 7-bitPos);
             buffer = setBit(buffer, (by * 8 + bi), bit);
 
@@ -975,14 +975,14 @@ Compound!(SuperImage, string) decodeScanData(
     int decodeCoef(uint buffer, ubyte numBits)
     {
         bool positive = getBit(buffer, 0);
-        
+
         int value = 0;
         foreach(j; 0..numBits)
         {
             bool bit = getBit(buffer, numBits-1-j);
             value = setBit(value, j, bit);
         }
-        
+
         if (positive)
             return value;
         else
@@ -1056,7 +1056,7 @@ Compound!(SuperImage, string) decodeScanData(
                 // Read DC coefficient
                 ubyte dcDiffLen;
                 auto res = sbs.decodeByte(tableDC.huffmanTree, &dcDiffLen);
-                if (!res[0]) return error(res[1]); 
+                if (!res[0]) return error(res[1]);
 
                 if (dcDiffLen > 0)
                 {
@@ -1100,7 +1100,7 @@ Compound!(SuperImage, string) decodeScanData(
                                 i++;
                             }
 
-                            int acCoef = 0;     
+                            int acCoef = 0;
                             if (lo > 0)
                             {
                                 uint acBuffer = sbs.readBits(lo);
@@ -1236,7 +1236,7 @@ struct MCU
         if (crBlocks.length) Delete(crBlocks);
     }
 
-    Color4f getPixel(uint x, uint y) // coordinates relative to upper-left MCU corner 
+    Color4f getPixel(uint x, uint y) // coordinates relative to upper-left MCU corner
     {
         // Y block coordinates
         uint ybx = x / yWidth;

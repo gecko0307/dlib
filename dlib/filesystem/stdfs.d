@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2017 Timur Gafarov 
+Copyright (c) 2015-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -55,7 +55,7 @@ version(Windows)
 {
    extern(C) int _wmkdir(const wchar*);
    extern(C) int _wremove(const wchar*);
-   
+
    extern(Windows) int RemoveDirectoryW(const wchar*);
 }
 
@@ -72,7 +72,7 @@ class StdInFileStream: InputStream
         fseek(file, 0, SEEK_END);
         _size = ftell(file);
         fseek(file, 0, SEEK_SET);
-        
+
         eof = false;
     }
 
@@ -82,7 +82,7 @@ class StdInFileStream: InputStream
     }
 
     StreamPos getPosition() @property
-    { 
+    {
         return ftell(file);
     }
 
@@ -121,7 +121,7 @@ class StdInFileStream: InputStream
     }
 }
 
-class StdOutFileStream: OutputStream 
+class StdOutFileStream: OutputStream
 {
     FILE* file;
     bool _writeable;
@@ -136,42 +136,42 @@ class StdOutFileStream: OutputStream
     {
         fclose(file);
     }
-    
+
     StreamPos getPosition() @property
     {
         return 0;
     }
-    
+
     bool setPosition(StreamPos pos)
     {
         return false;
     }
-    
+
     StreamSize size()
     {
         return 0;
     }
-    
+
     void close()
     {
         fclose(file);
     }
-    
+
     bool seekable()
     {
         return false;
     }
-    
+
     void flush()
     {
-        fflush(file); 
+        fflush(file);
     }
-    
+
     bool writeable()
     {
         return _writeable;
     }
-    
+
     size_t writeBytes(const void* buffer, size_t count)
     {
         size_t res = fwrite(buffer, 1, count, file);
@@ -192,21 +192,21 @@ class StdIOStream: IOStream
     {
         this.file = file;
         this._writeable = true;
-        
+
         fseek(file, 0, SEEK_END);
         this._size = ftell(file);
         fseek(file, 0, SEEK_SET);
-        
+
         this._eof = false;
     }
-    
+
     ~this()
     {
         fclose(file);
     }
-    
+
     StreamPos getPosition() @property
-    { 
+    {
         return ftell(file);
     }
 
@@ -243,17 +243,17 @@ class StdIOStream: IOStream
             _eof = true;
         return bytesRead;
     }
-    
+
     void flush()
     {
-        fflush(file); 
+        fflush(file);
     }
-    
+
     bool writeable()
     {
         return _writeable;
     }
-    
+
     size_t writeBytes(const void* buffer, size_t count)
     {
         size_t res = fwrite(buffer, 1, count, file);
@@ -271,7 +271,7 @@ class StdFileSystem: FileSystem
     {
         openedDirs = New!(Dict!(Directory, string));
     }
-    
+
     ~this()
     {
         foreach(k, v; openedDirs)
@@ -288,9 +288,9 @@ class StdFileSystem: FileSystem
                 isFile = std.file.isFile(filename);
                 isDirectory = std.file.isDir(filename);
                 sizeInBytes = std.file.getSize(filename);
-                getTimes(filename, 
+                getTimes(filename,
                     modificationTimestamp,
-                    modificationTimestamp); 
+                    modificationTimestamp);
             }
             return true;
         }
@@ -314,7 +314,7 @@ class StdFileSystem: FileSystem
         }
         return New!StdInFileStream(file);
     }
-    
+
     StdOutFileStream openForOutput(string filename, uint creationFlags = FileSystem.create)
     {
         version(Posix)
@@ -331,9 +331,9 @@ class StdFileSystem: FileSystem
         }
         return New!StdOutFileStream(file);
     }
-    
+
     StdIOStream openForIO(string filename, uint creationFlags = FileSystem.create)
-    {        
+    {
         version(Posix)
         {
             FILE* file = fopen(filename.toStringz, "rb+"); // TODO: GC-free toStringz replacement
@@ -433,7 +433,7 @@ class StdFileSystem: FileSystem
                 wchar[] wp = convertUTF8toUTF16(path, true);
                 res = _wremove(wp.ptr) == 0;
                 Delete(wp);
-            }  
+            }
             return res;
         }
     }

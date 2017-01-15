@@ -1,5 +1,5 @@
-﻿/*
-Copyright (c) 2015-2017 Timur Gafarov 
+/*
+Copyright (c) 2015-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -97,8 +97,8 @@ float sseDot4(Vector4f a, Vector4f b)
         mulps XMM0, XMM1;
 
         // Horizontal addition
-        movhlps XMM1, XMM0;     
-        addps XMM0, XMM1;      
+        movhlps XMM1, XMM0;
+        addps XMM0, XMM1;
         movups XMM1, XMM0;
         shufps XMM1, XMM1, 0x55;
         addps XMM0, XMM1;
@@ -148,16 +148,16 @@ Matrix4x4f sseMulMat4(Matrix4x4f a, Matrix4x4f b)
         asm
         {
             movups XMM0, a_line;
-            
+
             mov EAX, _b;
             movd XMM1, EAX;
-            
+
             shufps XMM1, XMM1, 0;
-            
+
             mulps XMM0, XMM1;
             movups r_line, XMM0;
         }
-        
+
         for (j = 1; j < 4; j++)
         {
             a_line = *cast(Vector4f*)(a.arrayof.ptr + j * 4);
@@ -165,16 +165,16 @@ Matrix4x4f sseMulMat4(Matrix4x4f a, Matrix4x4f b)
             asm
             {
                 movups XMM0, a_line;
-                
+
                 mov EAX, _b;
                 movd XMM1, EAX;
                 shufps XMM1, XMM1, 0;
-                
+
                 mulps XMM0, XMM1;
-                
+
                 movups XMM2, r_line;
                 addps XMM0, XMM2;
-                
+
                 movups r_line, XMM0;
             }
         }
@@ -191,6 +191,6 @@ Matrix4x4f sseMulMat4(Matrix4x4f a, Matrix4x4f b)
             movups [RAX], XMM0;
         }
     }
-    
+
     return r;
 }

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2017 Timur Gafarov 
+Copyright (c) 2013-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -37,25 +37,25 @@ import dlib.math.vector;
 
 // Solve Ax = b iteratively
 void solveGS(T, size_t N)(
-      Matrix!(T,N) a, 
-  ref Vector!(T,N) x, 
-      Vector!(T,N) b, 
+      Matrix!(T,N) a,
+  ref Vector!(T,N) x,
+      Vector!(T,N) b,
       uint iterations = 10)
 {
     double delta;
-    
+
     for (int k = 0; k < iterations; ++k)
     {
         for (int i = 0; i < N; ++i)
         {
             delta = 0.0;
-            
+
             for (int j = 0; j < i; ++j)
                 delta += a[j, i] * x[j];
 
             for (int j = i + 1; j < N; ++j)
                 delta += a[j, i] * x[j];
-                
+
             delta = (b[i] - delta) / a[i, i];
             x[i] = delta;
         }
@@ -64,9 +64,9 @@ void solveGS(T, size_t N)(
 
 // Solve LUx = b directly
 void solveLU(T, size_t N)(
-    Matrix!(T,N) L, 
+    Matrix!(T,N) L,
     Matrix!(T,N) U,
-ref Vector!(T,N) x, 
+ref Vector!(T,N) x,
     Vector!(T,N) b)
 {
     int i = 0;

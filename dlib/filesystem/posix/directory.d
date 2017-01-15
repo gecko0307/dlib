@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2017 Martin Cejp 
+Copyright (c) 2014-2017 Martin Cejp
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -41,47 +41,47 @@ class PosixDirectory : Directory {
     FileSystem fs;
     DIR* dir;
     string prefix;
-    
+
     this(FileSystem fs, DIR* dir, string prefix) {
         this.fs = fs;
         this.dir = dir;
         this.prefix = prefix;
-    } 
-    
+    }
+
     ~this() {
         close();
     }
-    
+
     void close() {
         if (dir != null) {
             closedir(dir);
             dir = null;
         }
     }
-    
+
     InputRange!DirEntry contents() {
         if (dir == null)
             return null;        // FIXME: throw an error
-        
+
         return new DirRange(delegate bool(out DirEntry de) {
             dirent entry_buf;
             dirent* entry;
-            
+
             for (;;) {
                 readdir_r(dir, &entry_buf, &entry);
-                
+
                 if (entry == null)
                     return false;
                 else {
                     string name = to!string(cast(const char*) entry.d_name);
-                    
+
                     if (name == "." || name == "..")
                         continue;
-                    
+
                     de.name = name;
                     de.isFile = (entry.d_type & DT_REG) != 0;
                     de.isDirectory = (entry.d_type & DT_DIR) != 0;
-                    
+
                     return true;
                 }
             }

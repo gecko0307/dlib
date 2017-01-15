@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2017 Timur Gafarov 
+Copyright (c) 2014-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,22 +29,22 @@ DEALINGS IN THE SOFTWARE.
 module dlib.image.filters.lens;
 
 import std.math;
-import dlib.image.image; 
+import dlib.image.image;
 
 SuperImage lensDistortion(
-    SuperImage img, 
-    float strength, 
-    float zoom, 
+    SuperImage img,
+    float strength,
+    float zoom,
     bool interpolation = true)
 {
     return lensDistortion(img, null, strength, zoom, interpolation);
 }
 
 SuperImage lensDistortion(
-    SuperImage img, 
+    SuperImage img,
     SuperImage outp,
-    float strength, 
-    float zoom, 
+    float strength,
+    float zoom,
     bool interpolation = true)
 {
     SuperImage res;

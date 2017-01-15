@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2017 Timur Gafarov 
+Copyright (c) 2016-2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -72,7 +72,7 @@ class Lexer: InputRange!(dchar[])
     {
         this.input = input;
         this.delims = delims;
-        
+
         if (delims.length)
         {
             sort!("count(a) < count(b)")(this.delims);
@@ -157,12 +157,12 @@ class Lexer: InputRange!(dchar[])
                 foreach(i; 0..maxDelimLength-tmp.length)
                 {
                     int c = getNextChar();
-                    
+
                     if (cast(dchar)c == '\r') // ignore carriage return
                     {
                         continue;
                     }
-                    
+
                     if (cast(dchar)c == '\n')
                     {
                         c = '\n';
@@ -184,7 +184,7 @@ class Lexer: InputRange!(dchar[])
                     break;
                 }
             }
-            
+
             uint pos = 0;
             size_t delimLen = 0;
             string delim;
@@ -202,7 +202,7 @@ class Lexer: InputRange!(dchar[])
                     }
                 }
             }
-            
+
             if (pos && pos == delimLen)
             {
                 if (buffer.length)
@@ -220,7 +220,7 @@ class Lexer: InputRange!(dchar[])
                 }
             }
             else
-            {                        
+            {
                 buffer.append(tmp.data[0]);
                 tmp.removeLeft(1);
                 fillTmp = true;
@@ -301,9 +301,9 @@ unittest
     string[] delims = ["(", ")", ";", " ", "{", "}", ".", "\n", "\r", "=", "++", "<"];
     auto input = "for (int i=0; i<arr.length; ++i)\r\n{doThing();}\n";
     auto lexer = new Lexer(input, delims);
-    
+
     import std.utf : toUTF8;
-    
+
     string[] arr;
     while(true) {
         auto lexeme = lexer.getLexeme();
@@ -314,7 +314,7 @@ unittest
         Delete(lexeme);
     }
     assert(arr == ["for", " ", "(", "int", " ", "i", "=", "0", ";", " ", "i", "<", "arr", ".", "length", ";", " ", "++", "i", ")", "\n", "{", "doThing", "(", ")", ";", "}", "\n" ]);
-    
+
     input = "";
     lexer = new Lexer(input, delims);
     assert(lexer.getLexeme().length == 0);
