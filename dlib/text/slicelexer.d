@@ -181,7 +181,7 @@ class SliceLexer: InputRange!string
     void advance()
     {
         current = dec.decodeNext();
-        currentSize = dec.index - index;
+        currentSize = cast(uint)dec.index - index;
         index += currentSize;
     }
 
