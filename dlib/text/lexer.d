@@ -28,6 +28,11 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.text.lexer;
 
+import dlib.text.slicelexer;
+
+alias SliceLexer Lexer;
+
+/+++
 import std.stdio;
 import std.algorithm;
 import std.ascii;
@@ -318,4 +323,5 @@ unittest
     input = "";
     lexer = new Lexer(input, delims);
     assert(lexer.getLexeme().length == 0);
-}
+}+++/
+

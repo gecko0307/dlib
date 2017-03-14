@@ -28,52 +28,9 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.text.slicelexer;
 
-import std.stdio;
-import std.algorithm;
 import std.ascii;
 import std.range.interfaces;
-
 import dlib.text.utf8;
-
-struct LexerDecoder
-{
-    UTF8Decoder dec;
-    dchar current;
-    size_t index;
-    size_t currentSize;
-
-    this(string s)
-    {
-        dec = UTF8Decoder(s);
-    }
-
-    void advance()
-    {
-        index = dec.index;
-        current = dec.decodeNext();
-        currentSize = dec.index - index;
-    }
-
-    size_t forwardLookup(size_t numChars)
-    {
-        size_t oldIndex = dec.index;
-        for(size_t i = 0; i < numChars; i++)
-        {
-            dec.decodeNext();
-        }
-        size_t res = dec.index;
-        dec.index = oldIndex;
-        return res;
-    }
-
-    void forwardJump(size_t numChars)
-    {
-        for(size_t i = 0; i < numChars; i++)
-        {
-            advance();
-        }
-    }
-}
 
 /**
  * General-purpose non-allocating lexical analyzer.
@@ -85,171 +42,200 @@ struct LexerDecoder
  */
 class SliceLexer: InputRange!string
 {
+    protected:
+    string input;
+    string[] delims;
+
+    UTF8Decoder dec;
+    size_t index;
+    dchar current;
+    size_t currentSize;
+
     public:
     bool ignoreWhitespaces = false;
     bool ignoreNewlines = false;
 
-    private:
-    string input;
-    string[] delims;
-    size_t maxDelimSize = 0;
-    LexerDecoder dec;
-
-    public:
     this(string input, string[] delims)
     {
         this.input = input;
         this.delims = delims;
-
-        if (this.delims.length)
-        {
-            sort!("count(a) < count(b)")(this.delims);
-            maxDelimSize = this.delims[$-1].length;
-        }
-
-        this.dec = LexerDecoder(this.input);
-        dec.advance();
+        this.dec = UTF8Decoder(this.input);
+        this.index = 0;
+        advance();
     }
 
     string getLexeme()
     {
-        size_t startPos, endPos;
-
-        startPos = dec.index;
-
-        if (startPos == input.length)
-            return "";
-
-        dchar c = dec.current;
-
-        if (isNewline(c)) // read newlines
+        string res = "";
+        int tStart = -1;
+        while(true)
         {
-            if (ignoreNewlines)
+            dchar c = current;
+            if (c == UTF8_END || c == UTF8_ERROR)
             {
-                while (isNewline(c))
+                if (tStart > -1)
                 {
-                    dec.advance();
-                    c = dec.current;
-                    if (c == UTF8_END || c == UTF8_ERROR)
-                        return "";
-                }
-
-                startPos = dec.index;
-
-                // Don't return, continue lexing
-            }
-            else
-            {
-                if (c == '\r')
-                {
-                    dec.advance();
-                    c = dec.current;
-                    if (c == '\n')
-                        dec.advance();
+                    res = input[tStart..pos];
+                    tStart = -1;
+                    break;
                 }
                 else
                 {
-                    dec.advance();
+                    res = "";
+                    break;
                 }
-
-                return "\n";
             }
-        }
 
-        if (isWhitespace(c)) // read spaces and tabs
-        {
-            if (ignoreWhitespaces)
+            if (isNewline(c)) 
             {
-                while (isWhitespace(c))
+                if (tStart > -1)
                 {
-                    dec.advance();
-                    c = dec.current;
-                    if (c == UTF8_END || c == UTF8_ERROR)
-                        return "";
+                    res = input[tStart..pos];
+                    tStart = -1;
+                    break;
+                }
+                else
+                {
+                    if (c == '\r')
+                    {
+                        advance();
+                        c = current;
+                        if (c == '\n')
+                            advance();
+                    }
+                    else
+                    {
+                        advance();
+                    }
+
+                    if (ignoreNewlines)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        res = "\n";
+                        break;
+                    }
+                }
+            }
+
+            if (isWhitespace(c))
+            {
+                if (tStart > -1)
+                {
+                    res = input[tStart..pos];
+                    tStart = -1;
+                    break;
+                }
+                else
+                {
+                    advance();
+                    if (ignoreWhitespaces)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        res = " ";
+                        break;
+                    }
+                }
+            }
+
+            string d = consumeDelimiter();
+            if (d.length)
+            {
+                if (tStart > -1)
+                {
+                    res = input[tStart..pos];
+                }
+                else
+                {
+                    res = d;
+                    forwardJump(d.length);
                 }
 
-                startPos = dec.index;
-
-                // Don't return, continue lexing
+                break;
             }
             else
             {
-                dec.advance();
-                return " ";
-            }
-        }
-
-        if (isText(c)) // read non-delimiter
-        {
-            while (isText(c))
-            {
-                dec.advance();
-                c = dec.current;
-                if (c == UTF8_END || c == UTF8_ERROR)
-                    break;
-            }
-
-            return input[startPos..dec.index];
-        }
-        else // read delimiter
-        {
-            string bestStr = "";
-            LexerDecoder decCopy = dec;
-            while(true)
-            {
-                dec.advance();
-                c = dec.current;
-
-                string str = input[startPos..dec.index];
-
-                if (isDelim(str))
+                if (tStart == -1)
                 {
-                    if (str.length > bestStr.length)
-                    {
-                        bestStr = str;
-                    }
+                    tStart = pos;
                 }
+                advance();
+            }
+        }
 
-                if (c == UTF8_END || c == UTF8_ERROR)
-                    break;
+        return res;
+    }
 
-                if (str.length == maxDelimSize)
-                    break;
+    protected:
+
+    size_t pos()
+    {
+        return index-currentSize;
+    }
+
+    void advance()
+    {
+        current = dec.decodeNext();
+        currentSize = dec.index - index;
+        index += currentSize;
+    }
+
+    void forwardJump(size_t numChars)
+    {
+        for(size_t i = 0; i < numChars; i++)
+        {
+            advance();
+        }
+    }
+
+    bool forwardCompare(string str)
+    {
+        UTF8Decoder dec2 = UTF8Decoder(str);
+        size_t oldIndex = dec.index;
+
+        bool res = true;
+
+        int c1 = current;
+        int c2 = dec2.decodeNext();
+        do
+        {
+            if (c2 == UTF8_END || c2 == UTF8_ERROR)
+                break;
+
+            if (c1 == UTF8_END && c2 == UTF8_END)
+            {
+                res = true;
+                break;
             }
 
-            dec = decCopy;
-            dec.forwardJump(count(bestStr));
+            if (c1 != UTF8_END && c1 != UTF8_ERROR &&
+                c2 != UTF8_END && c2 != UTF8_ERROR)
+            {
+                if (c1 != c2)
+                {
+                    res = false;
+                    break;
+                }
+            }
+            else
+            {
+                res = false;
+                break;
+            }
 
-            return bestStr;
+            c1 = dec.decodeNext();
+            c2 = dec2.decodeNext();
         }
-    }
+        while(c2 != UTF8_END && c2 != UTF8_ERROR);
 
-    private:
+        dec.index = oldIndex;
 
-    bool isText(dchar c)
-    {
-        return (!isDelimPrefix(c) && !isWhitespace(c) && !isNewline(c));
-    }
-
-    bool isDelimPrefix(dchar c)
-    {
-        foreach(d; delims)
-        {
-            auto dec = UTF8Decoder(d);
-            if (dec.decodeNext == c)
-                return true;
-        }
-        return false;
-    }
-
-    bool isDelim(string delim)
-    {
-        foreach(d; delims)
-        {
-            if (d[] == delim[])
-                return true;
-        }
-        return false;
+        return res;
     }
 
     bool isWhitespace(dchar c)
@@ -267,6 +253,24 @@ class SliceLexer: InputRange!string
     bool isNewline(dchar c)
     {
         return (c == '\n' || c == '\r');
+    }
+
+    string consumeDelimiter()
+    {
+        size_t bestLen = 0;
+        string bestStr = "";
+        foreach(d; delims)
+        {
+            if (forwardCompare(d))
+            {
+                if (d.length > bestLen)
+                {
+                    bestLen = d.length;
+                    bestStr = input[pos..pos+d.length];
+                }
+            }
+        }
+        return bestStr;
     }
 
     // Range interface
@@ -363,3 +367,4 @@ unittest
     lexer = new SliceLexer(input, delims);
     assert(lexer.getLexeme().length == 0);
 }
+
