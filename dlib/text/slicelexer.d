@@ -47,9 +47,9 @@ class SliceLexer: InputRange!string
     string[] delims;
 
     UTF8Decoder dec;
-    size_t index;
+    uint index;
     dchar current;
-    size_t currentSize;
+    uint currentSize;
 
     public:
     bool ignoreWhitespaces = false;
@@ -173,7 +173,7 @@ class SliceLexer: InputRange!string
 
     protected:
 
-    size_t pos()
+    uint pos()
     {
         return index-currentSize;
     }
