@@ -23,7 +23,7 @@ Currently dlib contains the following packages:
 
 * dlib.geometry - computational geometry (ray casting, primitives, intersection, etc.)
 
-* dlib.image - image processing (8 and 16 bits per channel, floating point operations, filtering, FFT, HDRI, graphics formats I/O: JPEG, PNG, BMP, TGA, HDR)
+* dlib.image - image processing (8-bit, 16-bit and 32-bit floating point channels, common filters and convolution kernels, resizing, FFT, HDRI, animation, graphics formats I/O: JPEG, PNG/APNG, BMP, TGA, HDR)
 
 * dlib.audio - sound processing (8 and 16 bits per sample, synthesizers, WAV export and import)
 
