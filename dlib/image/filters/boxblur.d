@@ -70,9 +70,9 @@ SuperImage boxBlur(SuperImage img, SuperImage outp, int radius)
         total.a = alpha;
 
         res[x,y] = total;
-        img.updateProgress();
+        //img.updateProgress();
     }
 
-    img.resetProgress();
+    //img.resetProgress();
     return res;
 }

@@ -106,10 +106,10 @@ body
 
         res[x, y] = resc; //Color4f(resc.r, resc.g, resc.b, alpha);
 
-        img.updateProgress();
+        //img.updateProgress();
     }
 
-    img.resetProgress();
+    //img.resetProgress();
 
     return res;
 }

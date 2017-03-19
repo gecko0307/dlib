@@ -73,10 +73,10 @@ SuperImage chromaKeyEuclidean(
             0.0f, 1.0f);
         res[x, y] = col;
 
-        img.updateProgress();
+        //img.updateProgress();
     }
 
-    img.resetProgress();
+    //img.resetProgress();
 
     return res;
 }
@@ -125,10 +125,10 @@ SuperImage chromaKey(
 
         res[x, y] = hsva.rgba;
 
-        img.updateProgress();
+        //img.updateProgress();
     }
 
-    img.resetProgress();
+    //img.resetProgress();
 
     return res;
 }
@@ -184,10 +184,10 @@ body
 
         res[x, y] = hsva.rgba;
 
-        img.updateProgress();
+        //img.updateProgress();
     }
 
-    img.resetProgress();
+    //img.resetProgress();
 
     return res;
 }

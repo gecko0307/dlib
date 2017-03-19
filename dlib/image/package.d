@@ -30,6 +30,7 @@ module dlib.image;
 
 public
 {
+    import dlib.image.animation;
     import dlib.image.arithmetics;
     import dlib.image.color;
     import dlib.image.compleximage;

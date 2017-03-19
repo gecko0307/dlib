@@ -122,10 +122,10 @@ body
 
         res[x,y] = csum;
 
-        img.updateProgress();
+        //img.updateProgress();
     }
 
-    img.resetProgress();
+    //img.resetProgress();
 
     return res;
 }

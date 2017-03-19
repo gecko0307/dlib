@@ -110,10 +110,10 @@ body
         // write result
         res[x, y] = col;
 
-        img.updateProgress();
+        //img.updateProgress();
     }
 
-    img.resetProgress();
+    //img.resetProgress();
 
     return res;
 }

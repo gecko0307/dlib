@@ -52,7 +52,7 @@ enum PixelFormat
     RGBA_FLOAT
 }
 
-abstract class SuperImage: Freeable
+interface SuperImage: Freeable
 {
     @property uint width();
     @property uint height();
@@ -60,7 +60,7 @@ abstract class SuperImage: Freeable
     @property uint channels();
     @property uint pixelSize();
     @property PixelFormat pixelFormat();
-    @property ref ubyte[] data();
+    @property ubyte[] data();
 
     @property SuperImage dup();
 
@@ -79,9 +79,9 @@ abstract class SuperImage: Freeable
         return range!uint(0, height);
     }
 
-    float pixelCost = 0.0f;
-    shared float progress = 0.0f;
-
+    //float pixelCost = 0.0f;
+    //shared float progress = 0.0f;
+/*
     final void updateProgress()
     {
         progress = progress + pixelCost;
@@ -91,7 +91,7 @@ abstract class SuperImage: Freeable
     {
         progress = 0.0f;
     }
-
+*/
     final int opApply(scope int delegate(ref Color4f p, uint x, uint y) dg)
     {
         int result = 0;
@@ -150,7 +150,7 @@ class Image(PixelFormat fmt): SuperImage
         return fmt;
     }
 
-    override @property ref ubyte[] data()
+    override @property ubyte[] data()
     {
         return _data;
     }
@@ -158,7 +158,7 @@ class Image(PixelFormat fmt): SuperImage
     override @property SuperImage dup()
     {
         auto res = new Image!(fmt)(_width, _height);
-        res.data = _data.dup;
+        res.data[] = data[];
         return res;
     }
 
@@ -189,8 +189,8 @@ class Image(PixelFormat fmt): SuperImage
         _pixelSize = (_bitDepth / 8) * _channels;
         allocateData();
 
-        pixelCost = 1.0f / (_width * _height);
-        progress = 0.0f;
+        //pixelCost = 1.0f / (_width * _height);
+        //progress = 0.0f;
     }
 
     protected void allocateData()
@@ -200,6 +200,8 @@ class Image(PixelFormat fmt): SuperImage
 
     public Color4 getPixel(int x, int y)
     {
+        ubyte[] pixData = data();
+
         if (x >= width) x = width-1;
         else if (x < 0) x = 0;
 
@@ -212,47 +214,47 @@ class Image(PixelFormat fmt): SuperImage
 
         static if (fmt == PixelFormat.L8)
         {
-            auto v = _data[index];
+            auto v = pixData[index];
             return Color4(v, v, v);
         }
         else if (fmt == PixelFormat.LA8)
         {
-            auto v = _data[index];
+            auto v = pixData[index];
             return Color4(v, v, v, data[index+1]);
         }
         else if (fmt == PixelFormat.RGB8)
         {
-            return Color4(_data[index], _data[index+1], _data[index+2], cast(ubyte)maxv);
+            return Color4(pixData[index], pixData[index+1], pixData[index+2], cast(ubyte)maxv);
         }
         else if (fmt == PixelFormat.RGBA8)
         {
-            return Color4(_data[index], _data[index+1], _data[index+2], _data[index+3]);
+            return Color4(pixData[index], pixData[index+1], pixData[index+2], pixData[index+3]);
         }
         else if (fmt == PixelFormat.L16)
         {
-            ushort v = _data[index] << 8 | _data[index+1];
+            ushort v = pixData[index] << 8 | pixData[index+1];
             return Color4(v, v, v);
         }
         else if (fmt == PixelFormat.LA16)
         {
-            ushort v = _data[index]   << 8 | _data[index+1];
-            ushort a = _data[index+2] << 8 | _data[index+3];
+            ushort v = pixData[index]   << 8 | pixData[index+1];
+            ushort a = pixData[index+2] << 8 | pixData[index+3];
             return Color4(v, v, v, a);
         }
         else if (fmt == PixelFormat.RGB16)
         {
-            ushort r = _data[index]   << 8 | _data[index+1];
-            ushort g = _data[index+2] << 8 | _data[index+3];
-            ushort b = _data[index+4] << 8 | _data[index+5];
+            ushort r = pixData[index]   << 8 | pixData[index+1];
+            ushort g = pixData[index+2] << 8 | pixData[index+3];
+            ushort b = pixData[index+4] << 8 | pixData[index+5];
             ushort a = cast(ushort)maxv;
             return Color4(r, g, b, a);
         }
         else if (fmt == PixelFormat.RGBA16)
         {
-            ushort r = _data[index]   << 8 | _data[index+1];
-            ushort g = _data[index+2] << 8 | _data[index+3];
-            ushort b = _data[index+4] << 8 | _data[index+5];
-            ushort a = _data[index+6] << 8 | _data[index+7];
+            ushort r = pixData[index]   << 8 | pixData[index+1];
+            ushort g = pixData[index+2] << 8 | pixData[index+3];
+            ushort b = pixData[index+4] << 8 | pixData[index+5];
+            ushort a = pixData[index+6] << 8 | pixData[index+7];
             return Color4(r, g, b, a);
         }
         else
@@ -263,6 +265,8 @@ class Image(PixelFormat fmt): SuperImage
 
     public Color4 setPixel(Color4 c, int x, int y)
     {
+        ubyte[] pixData = data();
+
         if(x >= width || y >= height || x < 0 || y < 0)
             return c;
 
@@ -270,57 +274,57 @@ class Image(PixelFormat fmt): SuperImage
 
         static if (fmt == PixelFormat.L8)
         {
-            _data[index] = cast(ubyte)c.r;
+            pixData[index] = cast(ubyte)c.r;
         }
         else if (fmt == PixelFormat.LA8)
         {
-            _data[index] = cast(ubyte)c.r;
-            _data[index+1] = cast(ubyte)c.a;
+            pixData[index] = cast(ubyte)c.r;
+            pixData[index+1] = cast(ubyte)c.a;
         }
         else if (fmt == PixelFormat.RGB8)
         {
-            _data[index] = cast(ubyte)c.r;
-            _data[index+1] = cast(ubyte)c.g;
-            _data[index+2] = cast(ubyte)c.b;
+            pixData[index] = cast(ubyte)c.r;
+            pixData[index+1] = cast(ubyte)c.g;
+            pixData[index+2] = cast(ubyte)c.b;
         }
         else if (fmt == PixelFormat.RGBA8)
         {
-            _data[index] = cast(ubyte)c.r;
-            _data[index+1] = cast(ubyte)c.g;
-            _data[index+2] = cast(ubyte)c.b;
-            _data[index+3] = cast(ubyte)c.a;
+            pixData[index] = cast(ubyte)c.r;
+            pixData[index+1] = cast(ubyte)c.g;
+            pixData[index+2] = cast(ubyte)c.b;
+            pixData[index+3] = cast(ubyte)c.a;
         }
         else if (fmt == PixelFormat.L16)
         {
-            _data[index] = cast(ubyte)(c.r >> 8);
-            _data[index+1] = cast(ubyte)(c.r & 0xFF);
+            pixData[index] = cast(ubyte)(c.r >> 8);
+            pixData[index+1] = cast(ubyte)(c.r & 0xFF);
         }
         else if (fmt == PixelFormat.LA16)
         {
-            _data[index] = cast(ubyte)(c.r >> 8);
-            _data[index+1] = cast(ubyte)(c.r & 0xFF);
-            _data[index+2] = cast(ubyte)(c.a >> 8);
-            _data[index+3] = cast(ubyte)(c.a & 0xFF);
+            pixData[index] = cast(ubyte)(c.r >> 8);
+            pixData[index+1] = cast(ubyte)(c.r & 0xFF);
+            pixData[index+2] = cast(ubyte)(c.a >> 8);
+            pixData[index+3] = cast(ubyte)(c.a & 0xFF);
         }
         else if (fmt == PixelFormat.RGB16)
         {
-            _data[index] = cast(ubyte)(c.r >> 8);
-            _data[index+1] = cast(ubyte)(c.r & 0xFF);
-            _data[index+2] = cast(ubyte)(c.g >> 8);
-            _data[index+3] = cast(ubyte)(c.g & 0xFF);
-            _data[index+4] = cast(ubyte)(c.b >> 8);
-            _data[index+5] = cast(ubyte)(c.b & 0xFF);
+            pixData[index] = cast(ubyte)(c.r >> 8);
+            pixData[index+1] = cast(ubyte)(c.r & 0xFF);
+            pixData[index+2] = cast(ubyte)(c.g >> 8);
+            pixData[index+3] = cast(ubyte)(c.g & 0xFF);
+            pixData[index+4] = cast(ubyte)(c.b >> 8);
+            pixData[index+5] = cast(ubyte)(c.b & 0xFF);
         }
         else if (fmt == PixelFormat.RGBA16)
         {
-            _data[index] = cast(ubyte)(c.r >> 8);
-            _data[index+1] = cast(ubyte)(c.r & 0xFF);
-            _data[index+2] = cast(ubyte)(c.g >> 8);
-            _data[index+3] = cast(ubyte)(c.g & 0xFF);
-            _data[index+4] = cast(ubyte)(c.b >> 8);
-            _data[index+5] = cast(ubyte)(c.b & 0xFF);
-            _data[index+6] = cast(ubyte)(c.a >> 8);
-            _data[index+7] = cast(ubyte)(c.a & 0xFF);
+            pixData[index] = cast(ubyte)(c.r >> 8);
+            pixData[index+1] = cast(ubyte)(c.r & 0xFF);
+            pixData[index+2] = cast(ubyte)(c.g >> 8);
+            pixData[index+3] = cast(ubyte)(c.g & 0xFF);
+            pixData[index+4] = cast(ubyte)(c.b >> 8);
+            pixData[index+5] = cast(ubyte)(c.b & 0xFF);
+            pixData[index+6] = cast(ubyte)(c.a >> 8);
+            pixData[index+7] = cast(ubyte)(c.a & 0xFF);
         }
         else
         {
@@ -371,12 +375,12 @@ alias Image!(PixelFormat.RGBA16) ImageRGBA16;
  */
 interface SuperImageFactory
 {
-    SuperImage createImage(uint w, uint h, uint channels, uint bitDepth);
+    SuperImage createImage(uint w, uint h, uint channels, uint bitDepth, uint numFrames = 1);
 }
 
 class ImageFactory: SuperImageFactory
 {
-    SuperImage createImage(uint w, uint h, uint channels, uint bitDepth)
+    SuperImage createImage(uint w, uint h, uint channels, uint bitDepth, uint numFrames = 1)
     {
         return image(w, h, channels, bitDepth);
     }

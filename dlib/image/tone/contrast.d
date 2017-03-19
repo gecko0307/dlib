@@ -65,12 +65,12 @@ SuperImage contrast(SuperImage img, SuperImage outp, float k, ContrastMethod met
         foreach(x; 0..res.width)
         {
             aver += img[x, y];
-            img.updateProgress();
+            //img.updateProgress();
         }
 
         aver /= (res.height * res.width);
 
-        img.resetProgress();
+        //img.resetProgress();
     }
 
     foreach(y; 0..res.height)
@@ -79,10 +79,10 @@ SuperImage contrast(SuperImage img, SuperImage outp, float k, ContrastMethod met
         auto col = img[x, y];
         col = ((col - aver) * k + aver);
         res[x, y] = col;
-        img.updateProgress();
+        //img.updateProgress();
     }
 
-    img.resetProgress();
+    //img.resetProgress();
 
     return res;
 }

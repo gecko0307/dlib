@@ -168,7 +168,17 @@ bool oneOfIsZero(T) (T[] array...) nothrow
  */
 version (BigEndian)
 {
+    ushort bigEndian(ushort value) nothrow
+    {
+        return value;
+    }
+
     uint bigEndian(uint value) nothrow
+    {
+        return value;
+    }
+
+    ushort networkByteOrder(ushort value) nothrow
     {
         return value;
     }
@@ -181,12 +191,22 @@ version (BigEndian)
 
 version (LittleEndian)
 {
+    ushort bigEndian(ushort value) nothrow
+    {
+        return ((value & 0xFF) << 8) | ((value >> 8) & 0xFF);
+    }
+
     uint bigEndian(uint value) nothrow
     {
         return value << 24
             | (value & 0x0000FF00) << 8
             | (value & 0x00FF0000) >> 8
             |  value >> 24;
+    }
+
+    ushort networkByteOrder(ushort value) nothrow
+    {
+        return bigEndian(value);
     }
 
     uint networkByteOrder(uint value) nothrow

@@ -82,7 +82,7 @@ alias UnmanagedImage!(PixelFormat.RGBA16) UnmanagedImageRGBA16;
 
 class UnmanagedImageFactory: SuperImageFactory
 {
-    SuperImage createImage(uint w, uint h, uint channels, uint bitDepth)
+    SuperImage createImage(uint w, uint h, uint channels, uint bitDepth, uint numFrames = 1)
     {
         return unmanagedImage(w, h, channels, bitDepth);
     }

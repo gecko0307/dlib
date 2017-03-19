@@ -48,44 +48,44 @@ class HDRImage: SuperHDRImage
 {
     public:
 
-    override @property uint width()
+    @property uint width()
     {
         return _width;
     }
 
-    override @property uint height()
+    @property uint height()
     {
         return _height;
     }
 
-    override @property uint bitDepth()
+    @property uint bitDepth()
     {
         return _bitDepth;
     }
 
-    override @property uint channels()
+    @property uint channels()
     {
         return _channels;
     }
 
-    override @property uint pixelSize()
+    @property uint pixelSize()
     {
         return _pixelSize;
     }
 
-    override @property ref ubyte[] data()
+    @property ubyte[] data()
     {
         return _data;
     }
 
-    override @property SuperImage dup()
+    @property SuperImage dup()
     {
         auto res = new HDRImage(_width, _height);
-        res.data = _data.dup;
+        res.data[] = data[];
         return res;
     }
 
-    override SuperImage createSameFormat(uint w, uint h)
+    SuperImage createSameFormat(uint w, uint h)
     {
         return new HDRImage(w, h);
     }
@@ -99,11 +99,11 @@ class HDRImage: SuperHDRImage
         _pixelSize = (_bitDepth / 8) * _channels;
         allocateData();
 
-        pixelCost = 1.0f / (_width * _height);
-        progress = 0.0f;
+        //pixelCost = 1.0f / (_width * _height);
+        //progress = 0.0f;
     }
 
-    override Color4f opIndex(int x, int y)
+    Color4f opIndex(int x, int y)
     {
         while(x >= _width) x = _width-1;
         while(y >= _height) y = _height-1;
@@ -119,7 +119,7 @@ class HDRImage: SuperHDRImage
         return Color4f(r, g, b, a);
     }
 
-    override Color4f opIndexAssign(Color4f c, int x, int y)
+    Color4f opIndexAssign(Color4f c, int x, int y)
     {
         while(x >= _width) x = _width-1;
         while(y >= _height) y = _height-1;
