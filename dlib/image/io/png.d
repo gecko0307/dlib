@@ -200,6 +200,18 @@ SuperImage loadPNG(string filename)
 }
 
 /*
+ * Load animated PNG (APNG) from file using local FileSystem.
+ * Causes GC allocation
+ */
+SuperAnimatedImage loadAPNG(string filename)
+{
+    InputStream input = openForInput(filename);
+    auto img = loadAPNG(input);
+    input.close();
+    return img;
+}
+
+/*
  * Save PNG to file using local FileSystem.
  * Causes GC allocation
  */
@@ -226,6 +238,20 @@ SuperImage loadPNG(InputStream istrm)
         throw new PNGLoadException(res[1]);
     else
         return res[0];
+}
+
+/*
+ * Load animated PNG (APNG) from stream using default animated image factory.
+ * Causes GC allocation
+ */
+SuperAnimatedImage loadAPNG(InputStream istrm)
+{
+    Compound!(SuperImage, string) res =
+        loadPNG(istrm, animatedImageFactory);
+    if (res[0] is null)
+        throw new PNGLoadException(res[1]);
+    else
+        return cast(SuperAnimatedImage)res[0];
 }
 
 /*
@@ -606,6 +632,7 @@ Compound!(SuperImage, string) loadPNG(
                 frameHeight = frameControl.frameHeight;
                 frameX = frameControl.frameX;
                 frameY = frameControl.frameY;
+
                 disposeOp = cast(APNGDisposeOp)frameControl.disposeOp;
                 blendOp = cast(APNGBlendOp)frameControl.blendOp;
 
@@ -692,23 +719,24 @@ Compound!(SuperImage, string) loadPNG(
         }
     }
 
-    // finalize decoder
-    //version(PNGDebug) writefln("zlibDecoder.hasEnded = %s", zlibDecoder.hasEnded);
-    //if (!zlibDecoder.hasEnded)
-    //    return error("loadPNG error: unexpected end of zlib stream");
-/*
-    version(PNGDebug)
-    {
-        writefln("img.width = %s", img.width);
-        writefln("img.height = %s", img.height);
-        writefln("img.bitDepth = %s", img.bitDepth);
-        writefln("img.channels = %s", img.channels);
-        writeln("----------------");
-    }
-*/
     finalize();
 
     return res;
+}
+
+/*
+ * Load animated PNG (APNG) from stream using specified image factory.
+ * GC-free
+ */
+Compound!(SuperAnimatedImage, string) loadAPNG(
+    InputStream istrm,
+    SuperImageFactory imgFac)
+{
+    SuperAnimatedImage img = null;
+    auto res = loadPNG(istrm, imgFac);
+    if (res[0])
+        img = cast(SuperAnimatedImage)res[0];
+    return compound(img, res[1]);
 }
 
 /*
@@ -811,6 +839,7 @@ body
     return compound(true, "");
 }
 
+// TODO: support disposeOp and blendOp
 void blitImage(SuperImage img, ubyte[] data, uint width, uint height, uint px, uint py)
 {
     for(uint y = 0; y < height; y++)

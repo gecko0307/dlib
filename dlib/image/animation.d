@@ -135,6 +135,15 @@ class AnimatedImageFactory: SuperImageFactory
     }
 }
 
+private AnimatedImageFactory _defaultAnimatedImageFactory;
+
+AnimatedImageFactory animatedImageFactory()
+{
+    if (!_defaultAnimatedImageFactory)
+        _defaultAnimatedImageFactory = new AnimatedImageFactory();
+    return _defaultAnimatedImageFactory;
+}
+
 SuperImage animatedImage(uint w, uint h, uint channels, uint bitDepth, uint numFrames = 1)
 in
 {

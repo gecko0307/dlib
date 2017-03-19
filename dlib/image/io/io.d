@@ -33,6 +33,7 @@ private
     import std.path;
 
     import dlib.image.image;
+    import dlib.image.animation;
     import dlib.image.io.bmp;
     import dlib.image.io.hdr;
     import dlib.image.io.png;
@@ -84,5 +85,19 @@ SuperImage loadImage(string filename)
     }
 }
 
+SuperAnimatedImage loadAnimatedImage(string filename)
+{
+    switch(filename.extension)
+    {
+        case ".png", ".apng", ".PNG", ".APNG":
+            return loadAPNG(filename);
+        default:
+            assert(0, "Image I/O error: unsupported image format or illegal extension");
+    }
+}
+
 alias saveImage save;
 alias loadImage load;
+
+alias loadAnimatedImage loadAnimated;
+
