@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/gecko0307/dlib.svg?branch=master)](https://travis-ci.org/gecko0307/dlib)
+[![License](http://img.shields.io/badge/license-boost-blue.svg)](http://www.boost.org/LICENSE_1_0.txt)
+
 dlib
 ====
 [![dlib-logo.png](/logo/dlib-logo.png)](/logo/dlib-logo.png)
