@@ -220,7 +220,7 @@ class Image(PixelFormat fmt): SuperImage
         else if (fmt == PixelFormat.LA8)
         {
             auto v = pixData[index];
-            return Color4(v, v, v, data[index+1]);
+            return Color4(v, v, v, pixData[index+1]);
         }
         else if (fmt == PixelFormat.RGB8)
         {
