@@ -28,4 +28,8 @@ addons:
      - gcc-multilib
 
 script:
- - dub test --arch=$ARCH
+ - dub test --arch=$ARCH --build=unittest-cov
+
+after_success:
+ - bash <(curl -s https://codecov.io/bash)
+
