@@ -36,14 +36,14 @@ module dlib.memory;
 public
 {
     import dlib.memory.allocator;
-    import std.experimental.allocator : make, dispose, shrinkArray, expandArray, makeArray, dispose;
+    import dlib.memory.mallocator;
+    import dlib.memory.mmappool;
 }
 
-shared Allocator allocator;
+Allocator allocator;
 
-@property ref shared(Allocator) defaultAllocator()
+@property Allocator defaultAllocator()
 {
-    import dlib.memory.mallocator;
     if (allocator is null)
     {
         allocator = Mallocator.instance;

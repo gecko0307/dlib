@@ -51,7 +51,7 @@ class Mallocator : Allocator
      *
      * Returns: The pointer to the new allocated memory.
      */
-    void[] allocate(size_t size) shared @nogc nothrow
+    void[] allocate(size_t size)
     {
         if (!size)
         {
@@ -67,7 +67,7 @@ class Mallocator : Allocator
     }
 
     ///
-    @nogc nothrow unittest
+    unittest
     {
         auto p = Mallocator.instance.allocate(20);
 
@@ -84,7 +84,7 @@ class Mallocator : Allocator
      *
      * Returns: Whether the deallocation was successful.
      */
-    bool deallocate(void[] p) shared @nogc nothrow
+    bool deallocate(void[] p)
     {
         if (p !is null)
         {
@@ -94,7 +94,7 @@ class Mallocator : Allocator
     }
 
     ///
-    @nogc nothrow unittest
+    unittest
     {
         void[] p;
         assert(Mallocator.instance.deallocate(p));
@@ -112,7 +112,7 @@ class Mallocator : Allocator
      *
      * Returns: Whether the reallocation was successful.
      */
-    bool reallocate(ref void[] p, size_t size) shared @nogc nothrow
+    bool reallocate(ref void[] p, size_t size)
     {
         if (!size)
         {
@@ -137,7 +137,7 @@ class Mallocator : Allocator
     }
 
     ///
-    @nogc nothrow unittest
+    unittest
     {
         void[] p;
 
@@ -157,7 +157,7 @@ class Mallocator : Allocator
     /**
      * Returns: The alignment offered.
      */
-    @property immutable(uint) alignment() shared const @safe pure nothrow
+    @property immutable(uint) alignment() const
     {
         return cast(uint) max(double.alignof, real.alignof);
     }
@@ -167,7 +167,7 @@ class Mallocator : Allocator
      *
      * Returns: The global $(D_PSYMBOL Allocator) instance.
      */
-    static @property ref shared(Mallocator) instance() @nogc nothrow
+    static @property Mallocator instance() @nogc nothrow
     {
         if (instance_ is null)
         {
@@ -179,7 +179,7 @@ class Mallocator : Allocator
                 onOutOfMemoryError();
             }
             p[psize..size] = typeid(Mallocator).initializer[];
-            instance_ = cast(shared Mallocator) p[psize..size].ptr;
+            instance_ = cast(Mallocator) p[psize..size].ptr;
         }
         return instance_;
     }
@@ -192,5 +192,6 @@ class Mallocator : Allocator
 
     private enum psize = 8;
 
-    private shared static Mallocator instance_;
+    private static __gshared Mallocator instance_;
 }
+

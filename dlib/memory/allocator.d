@@ -33,9 +33,6 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.memory.allocator;
 
-import std.experimental.allocator;
-import std.traits;
-
 version (unittest)
 {
     import dlib.memory : defaultAllocator;
@@ -50,11 +47,11 @@ interface Allocator
      * Allocates $(D_PARAM size) bytes of memory.
      *
      * Params:
-     *     size = Amount of memory to allocate.
+     *     s = Amount of memory to allocate.
      *
      * Returns: The pointer to the new allocated memory.
      */
-    void[] allocate(size_t size) shared;
+    void[] allocate(size_t size);
 
     /**
      * Deallocates a memory block.
@@ -64,7 +61,7 @@ interface Allocator
      *
      * Returns: Whether the deallocation was successful.
      */
-    bool deallocate(void[] p) shared;
+    bool deallocate(void[] p);
 
     /**
      * Increases or decreases the size of a memory block.
@@ -75,12 +72,12 @@ interface Allocator
      *
      * Returns: Whether the reallocation was successful.
      */
-    bool reallocate(ref void[] p, size_t size) shared;
+    bool reallocate(ref void[] p, size_t s);
 
     /**
      * Returns: The alignment offered.
      */
-    @property immutable(uint) alignment() shared const @safe pure nothrow;
+    @property immutable(uint) alignment() const @safe pure nothrow;
 }
 
 /**
@@ -93,7 +90,7 @@ interface Allocator
  * Returns: $(D_KEYWORD true) upon success, $(D_KEYWORD false) if memory could
  *          not be reallocated. In the latter
  */
-bool resizeArray(T)(shared Allocator allocator,
+bool resizeArray(T)(Allocator allocator,
                     ref T[] array,
                     in size_t length)
 {
@@ -128,3 +125,4 @@ unittest
 
 enum bool isFinalizable(T) = is(T == class) || is(T == interface)
                            || hasElaborateDestructor!T || isDynamicArray!T;
+

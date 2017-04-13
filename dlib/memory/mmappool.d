@@ -84,7 +84,7 @@ class MmapPool : Allocator
 {
     @disable this();
 
-    shared static this()
+    static this()
     {
         version (Posix)
         {
@@ -106,7 +106,7 @@ class MmapPool : Allocator
      *
      * Returns: The pointer to the new allocated memory.
      */
-    void[] allocate(size_t size) shared @nogc @trusted nothrow
+    void[] allocate(size_t size) @nogc @trusted nothrow
     {
         if (!size)
         {
@@ -142,7 +142,7 @@ class MmapPool : Allocator
      *
      * Returns: Data the block points to or $(D_KEYWORD null).
      */
-    private void* findBlock(size_t size) shared @nogc nothrow
+    private void* findBlock(size_t size) @nogc nothrow
     {
         Block block1;
         RegionLoop: for (auto r = head; r !is null; r = r.next)
@@ -182,12 +182,14 @@ class MmapPool : Allocator
             block1.size = size;
 
             block2.region = block1.region;
-            atomicOp!"+="(block1.region.blocks, 1);
+            //atomicOp!"+="(block1.region.blocks, 1); // atomicOp works only with shared data
+            ++block1.region.blocks;
         }
         else
         {
             block1.free = false;
-            atomicOp!"+="(block1.region.blocks, 1);
+            //atomicOp!"+="(block1.region.blocks, 1); // atomicOp works only with shared data
+            ++block1.region.blocks;
         }
         return cast(void*) block1 + blockEntrySize;
     }
@@ -200,7 +202,7 @@ class MmapPool : Allocator
      *
      * Returns: Whether the deallocation was successful.
      */
-    bool deallocate(void[] p) shared @nogc @trusted nothrow
+    bool deallocate(void[] p) @nogc @trusted nothrow
     {
         if (p is null)
         {
@@ -234,7 +236,8 @@ class MmapPool : Allocator
         else
         {
             block.free = true;
-            atomicOp!"-="(block.region.blocks, 1);
+            //atomicOp!"-="(block.region.blocks, 1); // atomicOp works only with shared data
+            --block.region.blocks;
             return true;
         }
     }
@@ -256,7 +259,7 @@ class MmapPool : Allocator
      *
      * Returns: Whether the reallocation was successful.
      */
-    bool reallocate(ref void[] p, size_t size) shared @nogc @trusted nothrow
+    bool reallocate(ref void[] p, size_t size) @nogc @trusted nothrow
     {
         void[] reallocP;
 
@@ -324,7 +327,7 @@ class MmapPool : Allocator
      *
      * Returns: Global $(D_PSYMBOL MmapPool) instance.
      */
-    static @property ref shared(MmapPool) instance() @nogc @trusted nothrow
+    static @property MmapPool instance() @nogc @trusted nothrow
     {
         if (instance_ is null)
         {
@@ -335,7 +338,7 @@ class MmapPool : Allocator
             if (data !is null)
             {
                 data[0..instanceSize] = typeid(MmapPool).initializer[];
-                instance_ = cast(shared MmapPool) data;
+                instance_ = cast(MmapPool) data;
                 instance_.head = head;
             }
         }
@@ -432,7 +435,7 @@ class MmapPool : Allocator
     }
 
     /// Ditto.
-    private void* initializeRegion(size_t size) shared @nogc nothrow
+    private void* initializeRegion(size_t size) @nogc nothrow
     {
         return initializeRegion(size, head);
     }
@@ -474,29 +477,29 @@ class MmapPool : Allocator
         return x / pageSize * pageSize + pageSize;
     }
 
-    @property immutable(uint) alignment() shared const @nogc @safe pure nothrow
+    @property immutable(uint) alignment() const @nogc @safe pure nothrow
     {
         return alignment_;
     }
     private enum alignment_ = 8;
 
-    private shared static MmapPool instance_;
+    private static __gshared MmapPool instance_;
 
-    private shared static immutable size_t pageSize;
+    private static __gshared immutable size_t pageSize;
 
-    private shared struct RegionEntry
+    private struct RegionEntry
     {
         Region prev;
         Region next;
         uint blocks;
         size_t size;
     }
-    private alias Region = shared RegionEntry*;
+    private alias Region = RegionEntry*;
     private enum regionEntrySize = 32;
 
-    private shared Region head;
+    private Region head;
 
-    private shared struct BlockEntry
+    private struct BlockEntry
     {
         Block prev;
         Block next;
@@ -504,6 +507,7 @@ class MmapPool : Allocator
         size_t size;
         Region region;
     }
-    private alias Block = shared BlockEntry*;
+    private alias Block = BlockEntry*;
     private enum blockEntrySize = 40;
 }
+
