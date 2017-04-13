@@ -44,13 +44,23 @@ import dlib.memory;
 
 private __gshared ulong _allocatedMemory = 0;
 
-private __gshared Mallocator defaultGlobalAllocator; 
-private __gshared Allocator globalAllocator;
+private __gshared Mallocator _defaultGlobalAllocator; 
+private __gshared Allocator _globalAllocator;
 
-static this()
+Allocator globalAllocator()
 {
-    defaultGlobalAllocator = Mallocator.instance;
-    globalAllocator = defaultGlobalAllocator;
+    if (_globalAllocator is null)
+    {
+        if (_defaultGlobalAllocator is null)
+            _defaultGlobalAllocator = Mallocator.instance;
+        _globalAllocator = _defaultGlobalAllocator;
+    }
+    return _globalAllocator;
+}
+
+void globalAllocator(Allocator a)
+{
+    _globalAllocator = a;
 }
 
 version(MemoryDebug)

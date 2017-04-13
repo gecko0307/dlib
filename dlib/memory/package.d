@@ -36,6 +36,7 @@ module dlib.memory;
 public
 {
     import dlib.memory.allocator;
+    import dlib.memory.gcallocator;
     import dlib.memory.mallocator;
     import dlib.memory.mmappool;
 
