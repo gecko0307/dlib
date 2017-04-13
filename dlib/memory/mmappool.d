@@ -82,9 +82,9 @@ else version (Windows)
  */
 class MmapPool : Allocator
 {
-    @disable this();
+    //@disable this();
 
-    static this()
+    static initialize()
     {
         version (Posix)
         {
@@ -331,6 +331,8 @@ class MmapPool : Allocator
     {
         if (instance_ is null)
         {
+            initialize();
+
             immutable instanceSize = addAlignment(__traits(classInstanceSize, MmapPool));
 
             Region head; // Will become soon our region list head
@@ -466,7 +468,7 @@ class MmapPool : Allocator
      */
     pragma(inline)
     private static immutable(size_t) calculateRegionSize(size_t x)
-    @nogc @safe pure nothrow
+    @nogc nothrow
     out (result)
     {
         assert(result > 0);
@@ -485,7 +487,7 @@ class MmapPool : Allocator
 
     private static __gshared MmapPool instance_;
 
-    private static __gshared immutable size_t pageSize;
+    private static __gshared size_t pageSize;
 
     private struct RegionEntry
     {
