@@ -38,6 +38,8 @@ public
     import dlib.memory.allocator;
     import dlib.memory.mallocator;
     import dlib.memory.mmappool;
+
+    import std.experimental.allocator : make, dispose, shrinkArray, expandArray, makeArray, dispose;
 }
 
 Allocator allocator;
