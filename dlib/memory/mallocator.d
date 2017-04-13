@@ -57,13 +57,13 @@ class Mallocator : Allocator
         {
             return null;
         }
-        auto p = malloc(size + psize);
+        auto p = malloc(size);
 
         if (!p)
         {
             onOutOfMemoryError();
         }
-        return p[psize.. psize + size];
+        return p[0..size];
     }
 
     ///
@@ -88,7 +88,7 @@ class Mallocator : Allocator
     {
         if (p !is null)
         {
-            free(p.ptr - psize);
+            free(p.ptr);
         }
         return true;
     }
@@ -125,13 +125,13 @@ class Mallocator : Allocator
             p = allocate(size);
             return true;
         }
-        auto r = realloc(p.ptr - psize, size + psize);
+        auto r = realloc(p.ptr, size);
 
         if (!r)
         {
             onOutOfMemoryError();
         }
-        p = r[psize.. psize + size];
+        p = r[0..size];
 
         return true;
     }
@@ -171,15 +171,15 @@ class Mallocator : Allocator
     {
         if (instance_ is null)
         {
-            immutable size = __traits(classInstanceSize, Mallocator) + psize;
+            immutable size = __traits(classInstanceSize, Mallocator);
             void* p = malloc(size);
 
             if (p is null)
             {
                 onOutOfMemoryError();
             }
-            p[psize..size] = typeid(Mallocator).initializer[];
-            instance_ = cast(Mallocator) p[psize..size].ptr;
+            p[0..size] = typeid(Mallocator).initializer[];
+            instance_ = cast(Mallocator) p[0..size].ptr;
         }
         return instance_;
     }
@@ -189,8 +189,6 @@ class Mallocator : Allocator
     {
         assert(instance is instance);
     }
-
-    private enum psize = 8;
 
     private static __gshared Mallocator instance_;
 }
