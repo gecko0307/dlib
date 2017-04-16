@@ -492,7 +492,6 @@ Compound!(SuperImage, string) loadPNG(
                     }
 
                     tmpImg.data[] = frameBuffer[];
-
                     img.data[] = tmpImg.data[];
 
                     if (animImg)
@@ -506,12 +505,20 @@ Compound!(SuperImage, string) loadPNG(
 
                     img.data[] = tmpImg.data[];
 
-                    animImg.currentFrame = animImg.currentFrame - 1;
+                    uint f = animImg.currentFrame;
+                    animImg.currentFrame = f - 1;
                     disposeFrame(&png, animImg, tmpImg, false);
-                    animImg.currentFrame = animImg.currentFrame + 1;
+                    animImg.currentFrame = f;
                 }
 
                 Delete(frameBuffer);
+
+                if (animImg.currentFrame == animImg.numFrames-1)
+                {
+                    // Last frame, stop here
+                    animImg.currentFrame = 0;
+                    break;
+                }
             }
             else
             {
@@ -902,7 +909,18 @@ void blitFrame(
             if (png.frame.blendOp == BlendOp.Source)
                 img[png.frame.x + x, png.frame.y + y] = c2;
             else
-                img[png.frame.x + x, png.frame.y + y] = lerp(c1, c2, c2.a);
+            {
+                Color4f c;
+                float a = c2.a + c1.a * (1.0f - c2.a);
+                if (a == 0.0f)
+                    c = Color4f(0, 0, 0, 0);
+                else
+                {
+                    c = (c2 * c2.a + c1 * c1.a * (1.0f - c2.a)) / a;
+                    c.a = a;
+                }
+                img[png.frame.x + x, png.frame.y + y] = c;
+            }
         }
     }
 }
