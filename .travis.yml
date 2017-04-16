@@ -11,11 +11,11 @@ d:
  - dmd-2.073.2
  - dmd-2.072.2
  - ldc-1.1.0
- - gdc-6.3.0
+ - gdc
 
 matrix:
   allow_failures:
-   - d: gdc-6.3.0
+   - d: gdc
 
 env: 
   matrix:
