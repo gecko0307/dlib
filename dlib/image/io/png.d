@@ -200,20 +200,52 @@ struct PNGImage
 
     ZlibDecoder decoder;
 
+    ubyte[] frameBuffer;
+    uint frameSize;
+
+    ubyte[] filteredBuffer;
+    uint filteredBufferSize;
+
     void initDecoder()
     {
-        if (decoder.buffer.length)
-            Delete(decoder.buffer);
+        ubyte[] buffer;
 
-        uint bufferLength = frame.width * frame.height * numChannels * bytesPerChannel + frame.height; 
-        ubyte[] buffer = New!(ubyte[])(bufferLength);
+        if (decoder.buffer.length)
+        {
+            //Delete(decoder.buffer);
+            buffer = decoder.buffer;
+        }
+        else
+        {
+            uint bufferLength = hdr.width * hdr.height * numChannels * bytesPerChannel + hdr.height; 
+            buffer = New!(ubyte[])(bufferLength);
+        }
+
         decoder = ZlibDecoder(buffer);
+    }
+
+    void initFrameBuffer()
+    {
+        if (frameBuffer.length)
+            Delete(frameBuffer);
+
+        if (filteredBuffer.length)
+            Delete(filteredBuffer);
+
+        frameBuffer = New!(ubyte[])(hdr.width * hdr.height * numChannels * bytesPerChannel);
+        filteredBuffer = New!(ubyte[])(hdr.width * hdr.height * numChannels * bytesPerChannel);
     }
 
     void free()
     {
         if (decoder.buffer.length)
             Delete(decoder.buffer);
+
+        if (frameBuffer.length)
+            Delete(frameBuffer);
+
+        if (filteredBuffer.length)
+            Delete(filteredBuffer);
 
         if (palette.length)
             Delete(palette);
@@ -306,6 +338,7 @@ Compound!(SuperImage, string) loadPNG(
     SuperImageFactory imgFac)
 {
     PNGImage png;
+
     SuperImage img = null;
     SuperAnimatedImage animImg = null;
     SuperImage tmpImg = null;
@@ -381,6 +414,7 @@ Compound!(SuperImage, string) loadPNG(
                 png.frame.x = 0;
                 png.frame.y = 0;
 
+                png.initFrameBuffer();
                 png.initDecoder();
             }
             else if (chunk.type == IDAT)
@@ -408,6 +442,9 @@ Compound!(SuperImage, string) loadPNG(
                 {
                     writefln("transparency.length = %s", png.transparency.length);
                 }
+
+                png.initFrameBuffer();
+                png.initDecoder();
             }
             else if (chunk.type == acTL)
             {
@@ -476,22 +513,25 @@ Compound!(SuperImage, string) loadPNG(
             }
 
             // TODO: use one frameBuffer for all frames (frames are guaranteed to be smaller than actual image)
-            ubyte[] frameBuffer;
-            frameBuffer = New!(ubyte[])(png.frame.width * png.frame.height * png.numChannels);
-            res = processData(&png, frameBuffer);
+            //ubyte[] frameBuffer;
+            //frameBuffer = New!(ubyte[])(png.frame.width * png.frame.height * png.numChannels);
+            //png.frameSize = png.frame.width * png.frame.height * png.numChannels * png.bytesPerChannel;
+            //png.filteredBufferSize = png.frameSize;
+
+            res = fillFrameBuffer(&png);
             if (res[0])
             {
                 if (png.decodingFirstFrame)
                 {
                     png.decodingFirstFrame = false;
 
-                    if (tmpImg.data.length != frameBuffer.length)
+                    if (tmpImg.data.length != png.frameBuffer.length)
                     {
-                        Delete(frameBuffer);
+                        //Delete(frameBuffer);
                         return error("loadPNG error: uncompressed data length mismatch");
                     }
 
-                    tmpImg.data[] = frameBuffer[];
+                    tmpImg.data[] = png.frameBuffer[0..png.frameSize];
                     img.data[] = tmpImg.data[];
 
                     if (animImg)
@@ -501,7 +541,7 @@ Compound!(SuperImage, string) loadPNG(
                 }
                 else
                 {
-                    blitFrame(&png, frameBuffer, tmpImg);
+                    blitFrame(&png, png.frameBuffer, tmpImg);
 
                     img.data[] = tmpImg.data[];
 
@@ -511,7 +551,7 @@ Compound!(SuperImage, string) loadPNG(
                     animImg.currentFrame = f;
                 }
 
-                Delete(frameBuffer);
+                //Delete(frameBuffer);
 
                 if (animImg.currentFrame == animImg.numFrames-1)
                 {
@@ -522,7 +562,7 @@ Compound!(SuperImage, string) loadPNG(
             }
             else
             {
-                Delete(frameBuffer);
+                //Delete(frameBuffer);
                 return error(res[1]);
             }
 
@@ -790,20 +830,8 @@ Compound!(bool, string) readIHDR(
 }
 
 // Apply filtering and substitude palette colors if necessary
-Compound!(bool, string) processData(
-      PNGImage* png, 
-      ubyte[] pdata)
+Compound!(bool, string) fillFrameBuffer(PNGImage* png)
 {
-    ubyte[] filteredBuffer;
-
-    Compound!(bool, string) error(string errorMsg)
-    {
-        if (filteredBuffer.length)
-            Delete(filteredBuffer);
-
-        return err(errorMsg);
-    }
-
     ubyte[] decodedBuffer = png.decoder.buffer;
     version(PNGDebug) writefln("decodedBuffer.length = %s", decodedBuffer.length);
 
@@ -815,30 +843,38 @@ Compound!(bool, string) processData(
     else
         calculatedSize = png.frame.width * png.frame.height * png.numChannels + png.frame.height;
 
+    png.frameSize = png.frame.width * png.frame.height * png.numChannels * png.bytesPerChannel;
+    png.filteredBufferSize = calculatedSize - png.frame.height;
+
     version(PNGDebug)
     {
         writefln("calculatedSize = %s", calculatedSize);
+        writefln("frameSize = %s", png.frameSize);
+        writefln("filteredBufferSize = %s", png.filteredBufferSize);
+
+        writefln("png.frameBuffer.length = %s", png.frameBuffer.length);
     }
+
+    ubyte[] pdata = png.frameBuffer[0..png.frameSize];
+    ubyte[] filteredBuffer = png.filteredBuffer[0..png.filteredBufferSize];
 
     if (decodedBuffer.length != calculatedSize)
     {
         return err("loadPNG error: image size and data mismatch");
     }
 
-    filteredBuffer = New!(ubyte[])(calculatedSize - png.frame.height);
-
     // apply filtering to the image data
     auto res = filter(png, indexed, decodedBuffer, filteredBuffer);
     if (!res[0])
     {
-        return error(res[1]);
+        return err(res[1]);
     }
 
     // if a palette is used, substitute target colors
     if (indexed)
     {
         if (png.palette.length == 0)
-            return error("loadPNG error: palette chunk not found");
+            return err("loadPNG error: palette chunk not found");
 
         if (png.hdr.bitDepth == 8)
         {
@@ -887,9 +923,6 @@ Compound!(bool, string) processData(
     {
         pdata[] = filteredBuffer[];
     }
-
-    if (filteredBuffer.length)
-        Delete(filteredBuffer);
 
     return suc();
 }
