@@ -749,7 +749,8 @@ Compound!(bool, string) readIHDR(
     if (hdr.interlaceMethod != 0)
         return err("loadPNG error: interlacing is not supported");
 
-    if (hdr.colorType == ColorType.Greyscale)        png.numChannels = 1;
+    if (hdr.colorType == ColorType.Greyscale)
+        png.numChannels = 1;
     else if (hdr.colorType == ColorType.GreyscaleAlpha)
         png.numChannels = 2;
     else if (hdr.colorType == ColorType.RGB)
