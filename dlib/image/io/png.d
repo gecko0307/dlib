@@ -512,12 +512,6 @@ Compound!(SuperImage, string) loadPNG(
                     animImg = cast(SuperAnimatedImage)img;
             }
 
-            // TODO: use one frameBuffer for all frames (frames are guaranteed to be smaller than actual image)
-            //ubyte[] frameBuffer;
-            //frameBuffer = New!(ubyte[])(png.frame.width * png.frame.height * png.numChannels);
-            //png.frameSize = png.frame.width * png.frame.height * png.numChannels * png.bytesPerChannel;
-            //png.filteredBufferSize = png.frameSize;
-
             res = fillFrameBuffer(&png);
             if (res[0])
             {
@@ -527,7 +521,6 @@ Compound!(SuperImage, string) loadPNG(
 
                     if (tmpImg.data.length != png.frameBuffer.length)
                     {
-                        //Delete(frameBuffer);
                         return error("loadPNG error: uncompressed data length mismatch");
                     }
 
@@ -551,18 +544,18 @@ Compound!(SuperImage, string) loadPNG(
                     animImg.currentFrame = f;
                 }
 
-                //Delete(frameBuffer);
-
-                if (animImg.currentFrame == animImg.numFrames-1)
+                if (animImg)
                 {
-                    // Last frame, stop here
-                    animImg.currentFrame = 0;
-                    break;
+                    if (animImg.currentFrame == animImg.numFrames-1)
+                    {
+                        // Last frame, stop here
+                        animImg.currentFrame = 0;
+                        break;
+                    }
                 }
             }
             else
             {
-                //Delete(frameBuffer);
                 return error(res[1]);
             }
 
