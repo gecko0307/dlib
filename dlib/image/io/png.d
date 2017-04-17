@@ -49,7 +49,7 @@ private
 }
 
 // uncomment this to see debug messages:
-//version = PNGDebug;
+version = PNGDebug;
 
 static const ubyte[8] PNGSignature = [137, 80, 78, 71, 13, 10, 26, 10];
 static const ubyte[4] IHDR = ['I', 'H', 'D', 'R'];
@@ -120,8 +120,15 @@ struct PNGHeader
 
 struct AnimationControlChunk
 {
-    uint numFrames;
-    uint numPlays;
+    union
+    {
+        struct
+        {
+            uint numFrames;
+            uint numPlays;
+        };
+        ubyte[8] bytes;
+    }
 
     void readFromBuffer(ubyte[] data)
     {
@@ -147,15 +154,22 @@ enum BlendOp: ubyte
 
 struct FrameControlChunk
 {
-    uint sequenceNumber;
-    uint width;
-    uint height;
-    uint x;
-    uint y;
-    ushort delayNumerator;
-    ushort delayDenominator;
-    ubyte disposeOp;
-    ubyte blendOp;
+    union
+    {
+        struct
+        {
+            uint sequenceNumber;
+            uint width;
+            uint height;
+            uint x;
+            uint y;
+            ushort delayNumerator;
+            ushort delayDenominator;
+            ubyte disposeOp;
+            ubyte blendOp;
+        };
+        ubyte[26] bytes;
+    }
 
     void readFromBuffer(ubyte[] data)
     {
@@ -295,6 +309,20 @@ void savePNG(SuperImage img, string filename)
 {
     OutputStream output = openForOutput(filename);
     Compound!(bool, string) res = savePNG(img, output);
+    output.close();
+
+    if (!res[0])
+        throw new PNGLoadException(res[1]);
+}
+
+/*
+ * Save APNG to file using local FileSystem.
+ * Causes GC allocation
+ */
+void saveAPNG(SuperAnimatedImage img, string filename)
+{
+    OutputStream output = openForOutput(filename);
+    Compound!(bool, string) res = saveAPNG(img, output);
     output.close();
 
     if (!res[0])
@@ -473,6 +501,8 @@ Compound!(SuperImage, string) loadPNG(
                     writefln("frameHeight = %s", png.frame.height);
                     writefln("frameX = %s", png.frame.x);
                     writefln("frameY = %s", png.frame.y);
+                    writefln("delayNumerator = %s", png.frame.delayNumerator);
+                    writefln("delayDenominator = %s", png.frame.delayDenominator);
                     writefln("disposeOp = %s", cast(DisposeOp)png.frame.disposeOp);
                     writefln("blendOp = %s", cast(BlendOp)png.frame.blendOp);
                 }
@@ -486,6 +516,10 @@ Compound!(SuperImage, string) loadPNG(
                 uint dataSequenceNumber;
                 *(&dataSequenceNumber) = *(cast(uint*)chunk.data.ptr);
                 dataSequenceNumber = bigEndian(dataSequenceNumber);
+                version(PNGDebug)
+                {
+                    writefln("sequenceNumber = %s", dataSequenceNumber);
+                }
 
                 png.decoder.decode(chunk.data[4..$]);
                 chunk.free();
@@ -512,7 +546,7 @@ Compound!(SuperImage, string) loadPNG(
                     animImg = cast(SuperAnimatedImage)img;
             }
 
-            res = fillFrameBuffer(&png);
+            res = fillFrame(&png);
             if (res[0])
             {
                 if (png.decodingFirstFrame)
@@ -588,6 +622,201 @@ Compound!(SuperAnimatedImage, string) loadAPNG(
     if (res[0])
         img = cast(SuperAnimatedImage)res[0];
     return compound(img, res[1]);
+}
+
+/*
+ * Save APNG to stream.
+ * GC-free
+ */
+Compound!(bool, string) saveAPNG(SuperAnimatedImage img, OutputStream output)
+in
+{
+    assert (img.data.length);
+}
+body
+{
+    ubyte[] raw;
+    ubyte[] buffer;
+
+    void finalize()
+    {
+        if (buffer.length)
+            Delete(buffer);
+        if (raw.length)
+            Delete(raw);
+    }
+
+    Compound!(bool, string) error(string errorMsg)
+    {
+        finalize();
+        return compound(false, errorMsg);
+    }
+
+    if (img.bitDepth != 8)
+        return error("savePNG error: only 8-bit images are supported by encoder");
+
+    bool writeChunk(ubyte[4] chunkType, ubyte[] chunkData)
+    {
+        PNGChunk hdrChunk;
+        hdrChunk.length = cast(uint)chunkData.length;
+        hdrChunk.type = chunkType;
+        hdrChunk.data = chunkData;
+        hdrChunk.crc = crc32(chain(chunkType[0..$], hdrChunk.data));
+
+        if (!output.writeBE!uint(hdrChunk.length)
+            || !output.writeArray(hdrChunk.type))
+            return false;
+
+        if (chunkData.length)
+            if (!output.writeArray(hdrChunk.data))
+                return false;
+
+        if (!output.writeBE!uint(hdrChunk.crc))
+            return false;
+
+        return true;
+    }
+
+    bool writeHeader()
+    {
+        PNGHeader hdr;
+        hdr.width = networkByteOrder(img.width);
+        hdr.height = networkByteOrder(img.height);
+        hdr.bitDepth = 8;
+        if (img.channels == 4)
+            hdr.colorType = ColorType.RGBA;
+        else if (img.channels == 3)
+            hdr.colorType = ColorType.RGB;
+        else if (img.channels == 2)
+            hdr.colorType = ColorType.GreyscaleAlpha;
+        else if (img.channels == 1)
+            hdr.colorType = ColorType.Greyscale;
+        hdr.compressionMethod = 0;
+        hdr.filterMethod = 0;
+        hdr.interlaceMethod = 0;
+
+        return writeChunk(IHDR, hdr.bytes);
+    }
+
+    uint seqNumber = 0;
+
+    bool writeAnimationControlChunk()
+    {
+        AnimationControlChunk actl;
+        actl.numFrames = networkByteOrder(img.numFrames);
+        actl.numPlays = networkByteOrder(0);
+        return writeChunk(acTL, actl.bytes);
+    }
+
+    bool writeFrameControlChunk()
+    {
+        FrameControlChunk fctl;
+        fctl.sequenceNumber = networkByteOrder(seqNumber);
+        seqNumber++;
+        fctl.width = networkByteOrder(img.width);
+        fctl.height = networkByteOrder(img.height);
+        fctl.x = networkByteOrder(0);
+        fctl.y = networkByteOrder(0);
+        // TODO: add timeStep to SuperAnimatedImage
+        fctl.delayNumerator = networkByteOrder(75);
+        fctl.delayDenominator = networkByteOrder(1000);
+        fctl.disposeOp = DisposeOp.Background;
+        fctl.blendOp = BlendOp.Source;
+        return writeChunk(fcTL, fctl.bytes);
+    }
+
+    bool writeFrameDataChunk(ubyte[] data)
+    {
+        uint len = cast(uint)data.length + 4;
+        ubyte[4] type = fdAT;
+        uint seq = seqNumber;
+        uint seqBE = networkByteOrder(seqNumber);
+        seqNumber++;
+        ubyte[4] seqNumberBytes;
+        seqNumberBytes = (cast(ubyte*)&seqBE)[0..4][];
+        uint crc = crc32(chain(type[0..$], seqNumberBytes[0..$], data));
+
+        if (!output.writeBE!uint(len)
+            || !output.writeArray(type))
+            return false;
+
+        if (!output.writeBE!uint(seq))
+            return false;
+
+        if (data.length)
+            if (!output.writeArray(data))
+                return false;
+
+        if (!output.writeBE!uint(crc))
+            return false;
+
+        return true;
+    }
+
+    output.writeArray(PNGSignature);
+    if (!writeHeader())
+        return error("savePNG error: write failed (disk full?)");
+
+    if (!writeAnimationControlChunk())
+        return error("savePNG error: write failed (disk full?)");
+
+    //TODO: filtering
+    raw = New!(ubyte[])(img.width * img.height * img.channels + img.height);
+    buffer = New!(ubyte[])(64 * 1024);
+
+    bool encode(uint frame)
+    {
+        if (!writeFrameControlChunk())
+            return false;
+
+        foreach(y; 0..img.height)
+        {
+            auto rowStart = y * (img.width * img.channels + 1);
+            raw[rowStart] = 0; // No filter
+
+            foreach(x; 0..img.width)
+            {
+                auto dataIndex = (y * img.width + x) * img.channels;
+                auto rawIndex = rowStart + 1 + x * img.channels;
+
+                foreach(ch; 0..img.channels)
+                    raw[rawIndex + ch] = img.data[dataIndex + ch];
+            }
+        }
+
+        ZlibBufferedEncoder zlibEncoder = ZlibBufferedEncoder(buffer, raw);
+        while (!zlibEncoder.ended)
+        {
+            auto len = zlibEncoder.encode();
+            if (len > 0)
+            {
+                bool res;
+                if (frame == 0)
+                    res = writeChunk(IDAT, zlibEncoder.buffer[0..len]);
+                else
+                    res = writeFrameDataChunk(zlibEncoder.buffer[0..len]);
+
+                if (!res)
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    uint startFrame = img.currentFrame;
+    foreach(f; 0..img.numFrames)
+    {
+        img.currentFrame = f;
+        if (!encode(f))
+            return error("savePNG error: write failed (disk full?)");
+    }
+    img.currentFrame = startFrame;
+
+    writeChunk(IEND, []);
+
+    finalize();
+    return compound(true, "");
 }
 
 /*
@@ -822,8 +1051,7 @@ Compound!(bool, string) readIHDR(
     return suc();
 }
 
-// Apply filtering and substitude palette colors if necessary
-Compound!(bool, string) fillFrameBuffer(PNGImage* png)
+Compound!(bool, string) fillFrame(PNGImage* png)
 {
     ubyte[] decodedBuffer = png.decoder.buffer;
     version(PNGDebug) writefln("decodedBuffer.length = %s", decodedBuffer.length);
