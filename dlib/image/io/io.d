@@ -96,8 +96,20 @@ SuperAnimatedImage loadAnimatedImage(string filename)
     }
 }
 
+void saveAnimatedImage(SuperAnimatedImage img, string filename)
+{
+    switch(filename.extension)
+    {
+        case ".png", ".PNG", ".apng", ".APNG":
+            img.saveAPNG(filename);
+            break;
+        default:
+            assert(0, "Image I/O error: unsupported image format or illegal extension");
+    }
+}
+
 alias saveImage save;
 alias loadImage load;
 
 alias loadAnimatedImage loadAnimated;
-
+alias saveAnimatedImage saveAnimated;
