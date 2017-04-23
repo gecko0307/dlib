@@ -299,7 +299,7 @@ abstract class Loop
     {
         watcher.socket.shutdown();
         defaultAllocator.dispose(watcher.socket);
-        MmapPool.instance.dispose(watcher.transport);
+        //MmapPool.instance.dispose(watcher.transport);
         watcher.exception = exception;
         swapPendings.insertBack(watcher);
     }
