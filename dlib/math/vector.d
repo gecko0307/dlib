@@ -834,6 +834,22 @@ void rotateAroundAxis(T) (ref Vector!(T,3) V, Vector!(T,3) P, Vector!(T,3) D, T 
 /*
  * Compute distance between two points
  */
+T distance(T) (Vector!(T,2) a, Vector!(T,2) b)
+body
+{
+    T dx = a.x - b.x;
+    T dy = a.y - b.y;
+    return sqrt((dx * dx) + (dy * dy));
+}
+
+T distancesqr(T) (Vector!(T,2) a, Vector!(T,2) b)
+body
+{
+    T dx = a.x - b.x;
+    T dy = a.y - b.y;
+    return ((dx * dx) + (dy * dy));
+}
+
 T distance(T) (Vector!(T,3) a, Vector!(T,3) b)
 body
 {
@@ -869,7 +885,8 @@ Vector!(T,3) randomUnitVector3(T)()
 }
 
 /*
- * Interpolation
+ * Spherical linear interpolation
+ * (simple lerp is in dlib.math.interpolation)
  */
 Vector!(T,3) slerp(T) (Vector!(T,3) a, Vector!(T,3) b, T t)
 {
@@ -925,7 +942,7 @@ alias Vector!(float, 4) Vector4f;
 alias Vector!(double, 4) Vector4d;
 
 /*
- * Short aliases
+ * GLSL-like short aliases
  */
 alias Vector2i ivec2;
 alias Vector2u uvec2;
@@ -951,16 +968,6 @@ static struct AxisVector
     Vector3f y = Vector3f(0.0f, 1.0f, 0.0f);
     Vector3f z = Vector3f(0.0f, 0.0f, 1.0f);
 }
-
-// For some reason, this doesn't work:
-/*
-enum AxisVector: Vector3f
-{
-    x = Vector3f(1.0f, 0.0f, 0.0f),
-    y = Vector3f(0.0f, 1.0f, 0.0f),
-    z = Vector3f(0.0f, 0.0f, 1.0f)
-}
-*/
 
 /*
  * Vector factory function

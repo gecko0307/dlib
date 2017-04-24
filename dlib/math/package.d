@@ -30,7 +30,7 @@ module dlib.math;
 
 public
 {
-    import dlib.math.affine;
+    import dlib.math.transformation;
     import dlib.math.complex;
     import dlib.math.combinatorics;
     import dlib.math.decomposition;
