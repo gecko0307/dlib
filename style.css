@@ -41,12 +41,12 @@ a:hover {
   text-decoration: underline;
 }
 
-img {
+img.clickable {
   opacity: 1.0;
   transition: opacity 0.5s;
 }
 
-img:hover {
+img.clickable:hover {
   opacity: .5;
   transition: opacity 0.5s;
 }
