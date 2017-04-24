@@ -14,9 +14,11 @@ d:
  - gdc
 
 matrix:
+  fast_finish: true
   allow_failures:
    - d: gdc
    - d: ldc-1.2.0
+     os: osx
 
 env: 
   matrix:
