@@ -16,6 +16,7 @@ d:
 matrix:
   allow_failures:
    - d: gdc
+   - d: ldc-1.2.0
 
 env: 
   matrix:
