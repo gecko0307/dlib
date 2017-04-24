@@ -1,67 +1,99 @@
-<!doctype html>
-<html>
+<html lang="ru">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>dlib by gecko0307</title>
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/main.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="Keywords" content="dlib,dlang,library,generic"/>    <meta name="Description" content="dlib, a generic library for D"/>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+
+    <title>dlib</title>
+
+    <link rel="stylesheet" href="style.css" Type="text/css"/>
+
+    <link rel="stylesheet" href="styles/default.css">
+    <script src="scripts/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
 
   </head>
   <body>
+    <table class="center">
+    <tr valign="top">
+    <td>
+      <h1>dlib</h1>
+    </td>
+    <td width="50%">
+      <div style="float:right;margin-right:10px;">
+        <a href="https://gitter.im/gecko0307/dlib" target="_blank"><img src="images/gitter.png" title="Gitter chat room"/></a>
+      </div>
+      <div style="float:right;margin-right:10px;">
+        <a href="https://code.dlang.org/packages/dlib" target="_blank"><img src="images/dub.png" title="Dub package"/></a>
+      </div>
+      <div style="float:right;margin-right:10px;">
+        <a href="https://github.com/gecko0307/dlib" target="_blank"><img src="images/github.png" title="GitHub repository"/></a>
+      </div>
+    </td>
+    </tr>
+    <tr>
+    <td colspan="2">
+      <p><a href="https://gitter.im/gecko0307/dlib" target="_blank">dlib</a> is a general-purpose library for <a href="https://dlang.org" target="_blank">D language</a>. It implements such common functionality as image manipulation, OpenGL-friendly linear algebra, threading, stream-based I/O, memory management, async event loop, etc. dlib is an ideal solution for writing game engines and rendering pipelines, building simple web apps, quickly prototyping new ideas and algorithms.
+      </p>
+      <p>dlib is cross-platform, it supports Windows, Linux, OSX and FreeBSD. It is fully written in D2 and has no external dependencies aside D's standard library, Phobos.</p>
+      <p>Currently dlib contains the following packages:
+      <ul>
+      <li>dlib.async - event loop and asynchronous programming capabilities</li>
+      <li>dlib.core - basic functionality used by other modules (manual memory management, streams, OOP for structs, etc.)</li>
+      <li>dlib.container - generic data structures (GC-free dynamic and associative arrays and more)</li>
+      <li>dlib.filesystem - abstract FS interface and its implementations for Windows and POSIX filesystems</li>
+      <li>dlib.functional - some functional programming idioms (HOFs, combiners, quantifiers, etc.)</li>
+      <li>dlib.math - linear algebra and numerical analysis (vectors, matrices, quaternions, linear system solvers etc.)</li>
+      <li>dlib.geometry - computational geometry (ray casting, primitives, intersection, etc.)</li>
+      <li>dlib.image - image processing (8-bit, 16-bit and 32-bit floating point channels, common filters and convolution kernels, resizing, FFT, HDRI, animation, graphics formats I/O: JPEG, PNG/APNG, BMP, TGA, HDR)</li>
+      <li>dlib.audio - sound processing (8 and 16 bits per sample, synthesizers, WAV export and import)</li>
+      <li>dlib.network - networking and web functionality</li>
+      <li>dlib.memory - allocators and memory management functions</li>
+      <li>dlib.text - text processing</li>
+      <li>dlib.serialization - data serialization (currently includes lightweight XML parser)</li>
+      <li>dlib.coding - various data compression and coding algorithms</li>
+      </ul>
+      </p>
+      <h2>Download</h2>
+      <p>Head on to <a href="https://github.com/gecko0307/dlib/releases" target="_blank">releases page</a> and get the latest source tarball. You may also use dub package instead - add the following dependency to your dub.json: 
+      </p>
+      <p>
+<pre><code class="nohighlight">
+"dlib": "0.10.1"
+</code></pre>
+      </p>
+      <h2>Examples</h2>
+      <p>Load PNG image and save its resized copy:</p>
+      <p>
+<pre><code>
+import dlib;
 
-      <header>
-        <h1>dlib</h1>
-        <p>D language utility library</p>
-      </header>
+void main()
+{
+    loadPNG("input.png").resampleBilinear(240, 320).savePNG("output.png");
+}
+</code></pre>
+      </p>
+      <p>Transform a vector with 4x4 affine matrix:</p>
+      <p>
+<pre><code>
+import dlib;
 
-      <div id="banner">
-        <span id="logo"></span>
-
-        <a href="https://github.com/gecko0307/dlib" class="button fork"><strong>View On GitHub</strong></a>
-        <div class="downloads">
-          <span>Downloads:</span>
-          <ul>
-            <li><a href="https://github.com/gecko0307/dlib/zipball/master" class="button">ZIP</a></li>
-            <li><a href="https://github.com/gecko0307/dlib/tarball/master" class="button">TAR</a></li>
-          </ul>
-        </div>
-      </div><!-- end banner -->
-
-    <div class="wrapper">
-      <nav>
-        <ul></ul>
-      </nav>
-      <section>
-        <h1>
-<a name="dlib" class="anchor" href="#dlib"><span class="octicon octicon-link"></span></a>dlib</h1>
-
-<p>dlib is a growing collection of native D language libraries useful for various higher-level projects - such as game engines, rendering pipelines and multimedia applications. 
-It is written in D2 and has no external dependencies aside D's standard library, Phobos.</p>
-
-<p>Currently dlib contains the following packages:</p>
-
-<ul>
-<li><p>dlib.core - standard algorithms, data structures, useful templates, etc.</p></li>
-<li><p>dlib.functional - some functional programming idioms (HOFs, combiners, quantifiers, etc.)</p></li>
-<li><p>dlib.math - linear algebra and numerical analysis (vectors, matrices, quaternions, etc.)</p></li>
-<li><p>dlib.geometry - computational geometry (ray casting, primitives, intersection, etc.)</p></li>
-<li><p>dlib.image - image processing (filters, color correction, FFT, graphics formats I/O, support for 8 and 16-bit RGBA buffers and floating point operations)</p></li>
-<li><p>dlib.xml - lightweight XML parser (only reading, only Unicode)</p></li>
-</ul>
-      </section>
-      <footer>
-        <p>Project maintained by <a href="https://github.com/gecko0307">gecko0307</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></small></p>
-      </footer>
-    </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-    
+void main()
+{
+    Vector3f v1 = Vector3f(1, 0, 0);
+    Vector3f v2 = v1 * translationMatrix(Vector3f(0, 2, 0));
+}
+</code></pre>
+      </p>
+      <h2>Documentation</h2>
+      <p>Refer to <a href="https://github.com/gecko0307/dlib/wiki" target="_blank">GitHub wiki</a>. Also HTML documentation can be generated from wiki pages using this set of tools. Be aware that documentation is currently incomplete. For support and overall discussions, use our <a href="https://gitter.im/gecko0307/dlib" target="_blank">Gitter chat room</a>.
+      </p>
+      <h2>License</h2>
+      <p>dlib is distributed under the <a href="http://www.boost.org/LICENSE_1_0.txt" target="_blank">Boost Software License, Version 1.0</a>.
+      </p>
+    </td>
+    </tr>
+    </table>
   </body>
 </html>
