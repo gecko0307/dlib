@@ -8,6 +8,8 @@ dlib is a growing collection of native D language libraries useful for various h
 [![License](http://img.shields.io/badge/license-boost-blue.svg)](http://www.boost.org/LICENSE_1_0.txt)
 [![codecov](https://codecov.io/gh/gecko0307/dlib/branch/master/graph/badge.svg)](https://codecov.io/gh/gecko0307/dlib)
 
+What's inside
+-------------
 Currently dlib contains the following packages:
 
 * dlib.async - event loop and asynchronous programming capabilities
