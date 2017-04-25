@@ -31,9 +31,11 @@ module dlib.image.hdri;
 private
 {
     import core.stdc.string;
+    import std.math;
     import dlib.core.memory;
     import dlib.image.image;
     import dlib.image.color;
+    import dlib.math.utils;
 }
 
 abstract class SuperHDRImage: SuperImage
@@ -256,3 +258,48 @@ SuperImage hdrTonemapGamma(SuperHDRImage img, SuperImage output, float gamma)
 
     return res;
 }
+
+SuperImage hdrTonemapAverageLuminance(SuperHDRImage img, float a, float gamma)
+{
+    return hdrTonemapAverageLuminance(img, null, a, gamma);
+}
+
+SuperImage hdrTonemapAverageLuminance(SuperHDRImage img, SuperImage output, float a, float gamma)
+{
+    SuperImage res;
+    if (output)
+        res = output;
+    else
+        res = image(img.width, img.height, 3);
+
+    float sumLuminance = 0.0f;
+
+    foreach(y; 0..img.height)
+    foreach(x; 0..img.width)
+    {
+        sumLuminance += log(EPSILON + img[x, y].luminance);        
+    }
+
+    float N = img.width * img.height;
+    float lumAverage = exp(sumLuminance / N); 
+
+    float aOverLumAverage = a / lumAverage;
+
+    foreach(y; 0..img.height)
+    foreach(x; 0..img.width)
+    {
+        auto col = img[x, y];
+        float Lw = col.luminance;
+        float L = Lw * aOverLumAverage;
+        float Ld = L / (1.0f + L);
+        Color4f nRGB = col / Lw;
+        Color4f dRGB = nRGB * Ld;
+        float r = dRGB.r ^^ gamma;
+        float g = dRGB.g ^^ gamma;
+        float b = dRGB.b ^^ gamma;
+        res[x, y] = Color4f(r, g, b, col.a);
+    }
+
+    return res;
+}
+

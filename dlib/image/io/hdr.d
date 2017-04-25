@@ -244,5 +244,7 @@ Compound!(SuperHDRImage, string) loadHDR(
         }
     }
 
+    Delete(dataRGBE);
+
     return compound(img, "");
 }
