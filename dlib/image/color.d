@@ -237,3 +237,22 @@ Color4f color4(int hex)
         cast(float)b / 255.0f,
         cast(float)a / 255.0f);
 }
+/*
+ * Blend two colors taking transparency into account
+ */
+Color4f alphaOver(Color4f c1, Color4f c2)
+{
+    Color4f c;
+    float a = c2.a + c1.a * (1.0f - c2.a);
+
+    if (a == 0.0f)
+        c = Color4f(0, 0, 0, 0);
+    else
+    {
+        c = (c2 * c2.a + c1 * c1.a * (1.0f - c2.a)) / a;
+        c.a = a;
+    }
+
+    return c;
+}
+

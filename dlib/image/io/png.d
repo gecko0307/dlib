@@ -1163,18 +1163,7 @@ void blitFrame(
             if (png.frame.blendOp == BlendOp.Source)
                 img[png.frame.x + x, png.frame.y + y] = c2;
             else
-            {
-                Color4f c;
-                float a = c2.a + c1.a * (1.0f - c2.a);
-                if (a == 0.0f)
-                    c = Color4f(0, 0, 0, 0);
-                else
-                {
-                    c = (c2 * c2.a + c1 * c1.a * (1.0f - c2.a)) / a;
-                    c.a = a;
-                }
-                img[png.frame.x + x, png.frame.y + y] = c;
-            }
+                img[png.frame.x + x, png.frame.y + y] = alphaOver(c1, c2);
         }
     }
 }
