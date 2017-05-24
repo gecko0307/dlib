@@ -393,11 +393,6 @@ Compound!(SuperImage, string) loadPNG(
             img.free();
             img = null;
         }
-        if (tmpImg)
-        {
-            tmpImg.free();
-            tmpImg = null;
-        }
         return compound(img, errorMsg);
     }
 
