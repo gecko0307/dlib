@@ -32,7 +32,7 @@ private
 {
     import dlib.math.vector;
     import dlib.math.matrix;
-    import dlib.math.affine;
+    import dlib.math.transformation;
 }
 
 struct OBB

@@ -33,7 +33,7 @@ private
     import std.math;
     import dlib.math.vector;
     import dlib.math.utils;
-    import dlib.math.affine;
+    import dlib.math.transformation;
     import dlib.geometry.sphere;
     import dlib.geometry.plane;
     import dlib.geometry.triangle;
