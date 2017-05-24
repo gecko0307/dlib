@@ -375,6 +375,12 @@ Compound!(SuperImage, string) loadPNG(
     {
         png.free();
 
+        if (tmpImg)
+        {
+            tmpImg.free();
+            tmpImg = null;
+        }
+
         // don't close the stream, just release our reference
         istrm = null;
     }
