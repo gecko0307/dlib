@@ -30,12 +30,35 @@ module dlib.math.linsolve;
 
 import dlib.math.matrix;
 import dlib.math.vector;
+import dlib.math.decomposition;
 
 /*
- * This module implements different linear equation system solvers
+ * This module implements various linear equation system solvers.
+ *
+ * A system is given in matrix form: 
+ * Ax = b
+ *
+ * For example:
+ * x + 3y - 2z = 5
+ * 3x + 5y + 6z = 7
+ * 2x + 4y + 3z = 8 
+ *
+ * For this system, A (coefficient matrix) will be
+ * [1, 3, -2]
+ * [3, 5,  6]
+ * [2, 4,  3]
+ *
+ * And b (right side vector) will be 
+ * [5, 7, 8]
+ *
+ * x is a vector of unknowns:
+ * [x, y, z]
+ *
+ * TODO:
+ * - use arrays instead of Matrix structs to support big systems stored in heap
  */
 
-// Solve Ax = b iteratively
+// Solve Ax = b iteratively using Gauss-Seidel method
 void solveGS(T, size_t N)(
       Matrix!(T,N) a,
   ref Vector!(T,N) x,
@@ -60,6 +83,17 @@ void solveGS(T, size_t N)(
             x[i] = delta;
         }
     }
+}
+
+// Solve Ax = b directly using LUP decomposition
+void solve(T, size_t N)(
+      Matrix!(T,N) a,
+  ref Vector!(T,N) x,
+      Vector!(T,N) b)
+{
+    Matrix!(T,N) L, U, P;
+    decomposeLUP(a, L, U, P);
+    solveLU(L, U, x, b * P);
 }
 
 // Solve LUx = b directly
