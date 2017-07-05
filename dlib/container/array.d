@@ -206,9 +206,9 @@ struct DynamicArray(T, size_t chunkSize = 32)
         DynamicArray!int arr;
         scope(exit) arr.free();
 
-        arr.insertBack(1);
-        arr.insertBack(2);
-        arr.insertBack(0);
+        arr.insertFront(1);
+        arr.insertFront(2);
+        arr.insertFront(0);
         assert(arr.data == [0,1,2]);
     }
 
