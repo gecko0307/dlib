@@ -44,7 +44,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     /**
      * Get pointer to stored data
      */
-    T* storage()
+    private T* storage()
     {
         if (numChunks == 0)
             return staticStorage.ptr;
@@ -52,7 +52,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
             return dynamicStorage.ptr;
     }
 
-    void addChunk()
+    private void addChunk()
     {
         if (numChunks == 0)
         {
@@ -85,7 +85,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
      */
     void shiftRight()
     {
-        append(T.init);
+        insertBack(T.init);
 
         for(uint i = pos-1; i > 0; i--)
         {
@@ -104,7 +104,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
         assert(arr[0] == int.init);
 
         arr[0] = 1;
-        arr.append([2,3]);
+        arr.insertBack([2,3]);
 
         arr.shiftRight();
         assert(arr.length == 4);
@@ -139,7 +139,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
         arr.shiftLeft(1);
         assert(arr.length == 0);
 
-        arr.append([1,2,3,4,5]);
+        arr.insertBack([1,2,3,4,5]);
 
         arr.shiftLeft(2);
         assert(arr.length == 5);
@@ -153,7 +153,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     /**
      * Append single element c to the end.
      */
-    void append(T c)
+    void insertBack(T c)
     {
         if (numChunks == 0)
         {
@@ -183,10 +183,10 @@ struct DynamicArray(T, size_t chunkSize = 32)
         scope(exit) arr.free();
 
         foreach(i; 0..16) {
-            arr.append(i);
+            arr.insertBack(i);
         }
         assert(arr.length == 16);
-        arr.append(16);
+        arr.insertBack(16);
         assert(arr.length == 17);
         assert(arr[16] == 16);
     }
@@ -194,7 +194,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     /**
      * Append element to the start.
      */
-    void appendLeft(T c)
+    void insertFront(T c)
     {
         shiftRight();
         storage[0] = c;
@@ -206,19 +206,19 @@ struct DynamicArray(T, size_t chunkSize = 32)
         DynamicArray!int arr;
         scope(exit) arr.free();
 
-        arr.append(1);
-        arr.append(2);
-        arr.appendLeft(0);
+        arr.insertBack(1);
+        arr.insertBack(2);
+        arr.insertBack(0);
         assert(arr.data == [0,1,2]);
     }
 
     /**
      * Append all elements of slice s to the end.
      */
-    void append(const(T)[] s)
+    void insertBack(const(T)[] s)
     {
         foreach(c; s)
-            append(cast(T)c);
+            insertBack(cast(T)c);
     }
 
     ///
@@ -227,19 +227,19 @@ struct DynamicArray(T, size_t chunkSize = 32)
         DynamicArray!int arr;
         scope(exit) arr.free();
 
-        arr.append([1,2,3,4]);
+        arr.insertBack([1,2,3,4]);
         assert(arr.data == [1,2,3,4]);
-        arr.append([5,6,7,8]);
+        arr.insertBack([5,6,7,8]);
         assert(arr.data == [1,2,3,4,5,6,7,8]);
     }
 
     /**
      * Append all elements of slice s to the start.
      */
-    void appendLeft(const(T)[] s)
+    void insertFront(const(T)[] s)
     {
         foreach_reverse(c; s)
-            appendLeft(cast(T)c);
+            insertFront(cast(T)c);
     }
 
     ///
@@ -248,18 +248,18 @@ struct DynamicArray(T, size_t chunkSize = 32)
         DynamicArray!int arr;
         scope(exit) arr.free();
 
-        arr.appendLeft([5,6,7,8]);
+        arr.insertFront([5,6,7,8]);
         assert(arr.data == [5,6,7,8]);
-        arr.appendLeft([1,2,3,4]);
+        arr.insertFront([1,2,3,4]);
         assert(arr.data == [1,2,3,4,5,6,7,8]);
     }
 
     /**
-     * Same as append, but in operator form.
+     * Same as insertBack, but in operator form.
      */
     auto opCatAssign(T c)
     {
-        append(c);
+        insertBack(c);
         return this;
     }
 
@@ -275,11 +275,11 @@ struct DynamicArray(T, size_t chunkSize = 32)
     }
 
     /**
-     * Same as append, but in operator form.
+     * Same as insertBack, but in operator form.
      */
     auto opCatAssign(const(T)[] s)
     {
-        append(s);
+        insertBack(s);
         return this;
     }
 
@@ -297,7 +297,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
      * Remove n of elements from the end.
      * Returns: number of removed elements.
      */
-    uint remove(uint n)
+    uint removeBack(uint n)
     {
         if (pos == n)
         {
@@ -323,15 +323,15 @@ struct DynamicArray(T, size_t chunkSize = 32)
         DynamicArray!int arr;
         scope(exit) arr.free();
 
-        arr.append([1,2,3]);
-        assert(arr.remove(3) == 3);
+        arr.insertBack([1,2,3]);
+        assert(arr.removeBack(3) == 3);
         assert(arr.length == 0);
 
-        arr.append([1,2,3,4]);
-        assert(arr.remove(2) == 2);
+        arr.insertBack([1,2,3,4]);
+        assert(arr.removeBack(2) == 2);
         assert(arr.data == [1,2]);
 
-        assert(arr.remove(3) == 2);
+        assert(arr.removeBack(3) == 2);
         assert(arr.length == 0);
     }
 
@@ -339,7 +339,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
      * Remove n of elements from the start.
      * Returns: number of removed elements.
      */
-    uint removeLeft(uint n)
+    uint removeFront(uint n)
     {
         if (pos == n)
         {
@@ -366,16 +366,63 @@ struct DynamicArray(T, size_t chunkSize = 32)
         DynamicArray!int arr;
         scope(exit) arr.free();
 
-        arr.append([1,2,3]);
-        assert(arr.removeLeft(3) == 3);
+        arr.insertBack([1,2,3]);
+        assert(arr.removeFront(3) == 3);
 
-        arr.append([1,2,3,4]);
-        assert(arr.removeLeft(2) == 2);
+        arr.insertBack([1,2,3,4]);
+        assert(arr.removeFront(2) == 2);
         assert(arr.data == [3,4]);
 
-        assert(arr.removeLeft(3) == 2);
+        assert(arr.removeFront(3) == 2);
         assert(arr.length == 0);
     }
+
+    /**
+     * Inserts an element by a given index
+     * (resizing an array and shifting elements).
+     */
+    void insertKey(size_t i, T v)
+    {
+        if (i < pos)
+        {
+            T* s = storage();
+
+            insertBack(T.init);
+
+            for (size_t p = pos-1; p > i; p--)
+            {
+                s[p] = s[p-1];
+            }
+
+            s[i] = v;
+        }
+    }
+
+    /**
+     * Removes an element by a given index.
+     */
+    void removeKey(size_t i)
+    {
+        if (i < pos)
+        {
+            T* s = storage();
+            for (size_t p = i+1; p <= pos; p++)
+            {
+                s[p-1] = s[p];
+            }
+
+            pos--;
+        }
+    }
+
+    alias insertKey insertAt;
+    alias removeKey removeAt;
+
+    // For backward compatibility
+    alias insertBack append;
+    alias insertFront appendLeft;
+    alias removeBack remove;
+    alias removeFront removeLeft;
 
     /**
      * Get number of elements in array.
@@ -391,7 +438,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
         DynamicArray!int arr;
         scope(exit) arr.free();
 
-        arr.append([1,2,3]);
+        arr.insertBack([1,2,3]);
         assert(arr.length == 3);
     }
 
@@ -410,7 +457,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
         scope(exit) arr.free();
 
         foreach(i; 0..6) {
-            arr.append(i);
+            arr.insertBack(i);
         }
 
         assert(arr.data == [0,1,2,3,4,5]);
@@ -457,7 +504,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
         scope(exit) arr.free();
 
         int[4] values;
-        arr.append([1,2,3,4]);
+        arr.insertBack([1,2,3,4]);
         foreach(i, ref val; arr) {
             values[i] = val;
         }
@@ -488,7 +535,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
         scope(exit) arr.free();
 
         int[] values;
-        arr.append([1,2,3,4]);
+        arr.insertBack([1,2,3,4]);
         foreach(ref val; arr) {
             values ~= val;
         }
@@ -506,6 +553,8 @@ struct DynamicArray(T, size_t chunkSize = 32)
         pos = 0;
     }
 }
+
+alias DynamicArray Array;
 
 void reallocateArray(T)(ref T[] buffer, size_t len)
 {
