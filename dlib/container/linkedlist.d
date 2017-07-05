@@ -175,7 +175,7 @@ struct LinkedList(T, bool ordered = true)
      * Appen value v to the end.
      * Returns: Pointer to added list element.
      */
-    LinkedListElement!(T)* append(T v)
+    LinkedListElement!(T)* insertBack(T v)
     {
         length++;
 
@@ -245,7 +245,7 @@ struct LinkedList(T, bool ordered = true)
     /**
      * Insert value v at the beginning.
      */
-    LinkedListElement!(T)* insertBeginning(T v)
+    LinkedListElement!(T)* insertFront(T v)
     {
         length++;
         auto newElement = New!(LinkedListElement!(T))(null);
@@ -265,7 +265,7 @@ struct LinkedList(T, bool ordered = true)
         scope(exit) list.free();
 
         list.insertBeginning(1);
-        list.append(2);
+        list.insertBack(2);
         list.insertBeginning(0);
 
         import std.algorithm : equal;
@@ -294,9 +294,9 @@ struct LinkedList(T, bool ordered = true)
         LinkedList!int list;
         scope(exit) list.free();
 
-        auto first = list.append(1);
-        auto second = list.append(2);
-        auto third = list.append(3);
+        auto first = list.insertBack(1);
+        auto second = list.insertBack(2);
+        auto third = list.insertBack(3);
         list.removeAfter(first);
 
         import std.algorithm : equal;
@@ -307,7 +307,7 @@ struct LinkedList(T, bool ordered = true)
      * Remove the first element.
      * Note: list must be non-empty.
      */
-    void removeBeginning()
+    void removeFront()
     {
         length--;
         auto obsolete = head;
@@ -324,14 +324,14 @@ struct LinkedList(T, bool ordered = true)
         LinkedList!int list;
         scope(exit) list.free();
 
-        list.append(0);
-        list.removeBeginning();
+        list.insertBack(0);
+        list.removeFront();
         assert(list.length == 0);
 
-        list.append(1);
-        list.append(2);
-        list.append(3);
-        list.removeBeginning();
+        list.insertBack(1);
+        list.insertBack(2);
+        list.insertBack(3);
+        list.removeFront();
         assert(list.length == 2);
         import std.algorithm : equal;
         assert(equal(list.byElement(), [2,3]));
@@ -361,16 +361,16 @@ struct LinkedList(T, bool ordered = true)
         LinkedList!int list2;
         LinkedList!int list3;
 
-        list2.append(1);
-        list2.append(2);
+        list2.insertBack(1);
+        list2.insertBack(2);
 
         list1.appendList(list2);
 
         import std.algorithm : equal;
         assert(equal(list1.byElement(), [1,2]));
 
-        list3.append(3);
-        list3.append(4);
+        list3.insertBack(3);
+        list3.insertBack(4);
         list1.appendList(list3);
 
         assert(equal(list1.byElement(), [1,2,3,4]));
@@ -380,7 +380,7 @@ struct LinkedList(T, bool ordered = true)
      * Search for element with value v.
      * Returns: Found element or null if could not find.
      */
-    LinkedListElement!(T)* search(T v)
+    LinkedListElement!(T)* find(T v)
     {
         LinkedListElement!(T)* element = head;
         LinkedListElement!(T)* prevElement = head;
@@ -417,18 +417,18 @@ struct LinkedList(T, bool ordered = true)
         LinkedList!int list;
         scope(exit) list.free();
 
-        assert(list.search(42) is null);
+        assert(list.find(42) is null);
 
-        list.append(13);
-        list.append(42);
+        list.insertBack(13);
+        list.insertBack(42);
 
-        auto first = list.search(13);
+        auto first = list.find(13);
         assert(first && first.datum == 13);
 
-        auto second = list.search(42);
+        auto second = list.find(42);
         assert(second && second.datum == 42);
 
-        assert(list.search(0) is null);
+        assert(list.find(0) is null);
     }
 
     /**
@@ -448,9 +448,9 @@ struct LinkedList(T, bool ordered = true)
         LinkedList!int list;
         scope(exit) list.free();
 
-        list.append(1);
-        list.append(2);
-        list.append(3);
+        list.insertBack(1);
+        list.insertBack(2);
+        list.insertBack(3);
 
         auto arr = list.toArray();
         assert(arr == [1,2,3]);
@@ -493,9 +493,9 @@ struct LinkedList(T, bool ordered = true)
 
         assert(list.byElement().empty);
 
-        list.append(1);
-        list.append(2);
-        list.append(3);
+        list.insertBack(1);
+        list.insertBack(2);
+        list.insertBack(3);
 
         auto range = list.byElement();
         import std.range : isInputRange;
@@ -510,4 +510,10 @@ struct LinkedList(T, bool ordered = true)
         assert(equal(range,[2,3]));
         assert(equal(saved,[1,2,3]));
     }
+
+    // For backward compatibility
+    alias insertBack append;
+    alias insertFront insertBeginning;
+    alias removeFront removeBeginning;
+    alias find search;
 }
