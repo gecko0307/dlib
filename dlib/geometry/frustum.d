@@ -124,7 +124,7 @@ struct Frustum
     {
 	    float d;
 
-	    foreach(i, ref p; f.planes)
+	    foreach(i, ref p; planes)
         {
 		    d = p.distance(sphere.center);
 
