@@ -35,6 +35,7 @@ private
     import dlib.math.matrix;
     import dlib.geometry.plane;
     import dlib.geometry.aabb;
+    import dlib.geometry.sphere;
 }
 
 struct Frustum
@@ -117,6 +118,21 @@ struct Frustum
         }
 
         return (res == (checkNearPlane? 6 : 5));
+    }
+
+    bool intersectsSphere(Sphere sphere)
+    {
+	    float d;
+
+	    foreach(i, ref p; f.planes)
+        {
+		    d = p.distance(sphere.center);
+
+		    if (d > sphere.radius)
+			    return false;
+	    }
+
+	    return true;
     }
 
     bool intersectsAABB(
