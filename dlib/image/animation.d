@@ -28,6 +28,7 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.image.animation;
 
+import dlib.core.memory;
 import dlib.image.image;
 
 interface SuperAnimatedImage: SuperImage
@@ -187,7 +188,7 @@ body
     }
 }
 
-class UnmanagedAnimatedImage(PixelFormat fmt): Image!(fmt)
+class UnmanagedAnimatedImage(PixelFormat fmt): AnimatedImage!(fmt)
 {
     override @property SuperImage dup()
     {
