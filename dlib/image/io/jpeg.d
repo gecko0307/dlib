@@ -37,13 +37,11 @@ import std.math;
 import dlib.core.memory;
 import dlib.core.stream;
 import dlib.core.compound;
+import dlib.core.bitio;
 import dlib.container.array;
 import dlib.filesystem.local;
 import dlib.image.color;
 import dlib.image.image;
-
-import dlib.core.bitio;
-import dlib.coding.huffman;
 
 /*
  * Simple JPEG decoder
@@ -142,6 +140,57 @@ DynamicArray!char bitString(T)(T n, uint len = 1) if (isIntegral!T)
         arr.appendLeft('0');
 
     return arr;
+}
+
+struct HuffmanTreeNode
+{
+    HuffmanTreeNode* parent;
+    HuffmanTreeNode* left;
+    HuffmanTreeNode* right;
+    ubyte ch;
+    uint freq;
+    bool blank = true;
+
+    this(
+        HuffmanTreeNode* leftNode,
+        HuffmanTreeNode* rightNode,
+        ubyte symbol,
+        uint frequency,
+        bool isBlank)
+    {
+        parent = null;
+        left = leftNode;
+        right = rightNode;
+
+        if (left !is null)
+            left.parent = &this;
+        if (right !is null)
+            right.parent = &this;
+
+        ch = symbol;
+        freq = frequency;
+        blank = isBlank;
+    }
+
+    bool isLeaf()
+    {
+        return (left is null && right is null);
+    }
+
+    void free()
+    {
+        if (left !is null)
+        {
+            left.free();
+            Delete(left);
+        }
+
+        if (right !is null)
+        {
+            right.free();
+            Delete(right);
+        }
+    }
 }
 
 HuffmanTreeNode* emptyNode()
