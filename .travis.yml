@@ -7,7 +7,7 @@ os:
 language: d
 
 d:
- - dmd-2.076.0-dirty
+ - dmd-2.076.0
  - dmd-2.075.1
  - ldc-1.4.0
  - ldc-1.3.0
