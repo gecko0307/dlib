@@ -7,10 +7,11 @@ os:
 language: d
 
 d:
+ - dmd-2.076.0-dirty
  - dmd-2.075.1
- - dmd-2.074.0
+ - ldc-1.4.0
+ - ldc-1.3.0
  - ldc-1.2.0
- - ldc-1.1.0
  - gdc
 
 matrix:
