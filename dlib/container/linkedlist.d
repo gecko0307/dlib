@@ -196,6 +196,13 @@ struct LinkedList(T, bool ordered = true)
         return tail;
     }
 
+    // Insert operator
+    auto opCatAssign(T v)
+    {
+        insertBack(v);
+        return this;
+    }
+
     ///
     unittest
     {
