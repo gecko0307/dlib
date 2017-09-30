@@ -187,3 +187,98 @@ body
     }
 }
 
+class UnmanagedAnimatedImage(PixelFormat fmt): Image!(fmt)
+{
+    override @property SuperImage dup()
+    {
+        auto res = New!(UnmanagedAnimatedImage!(fmt))(_width, _height, _numFrames);
+        res.data[] = data[];
+        return res;
+    }
+
+    override SuperImage createSameFormat(uint w, uint h)
+    {
+        return New!(UnmanagedAnimatedImage!(fmt))(w, h, _numFrames);
+    }
+
+    this(uint w, uint h, uint frames)
+    {
+        super(w, h, frames);
+    }
+
+    ~this()
+    {
+        Delete(_data);
+    }
+
+    protected override void allocateData()
+    {
+        _data = New!(ubyte[])(_width * _height * _pixelSize * _numFrames);
+    }
+
+    override void free()
+    {
+        Delete(this);
+    }
+}
+
+alias UnmanagedAnimatedImage!(PixelFormat.L8) UnmanagedAnimatedImageL8;
+alias UnmanagedAnimatedImage!(PixelFormat.LA8) UnmanagedAnimatedImageLA8;
+alias UnmanagedAnimatedImage!(PixelFormat.RGB8) UnmanagedAnimatedImageRGB8;
+alias UnmanagedAnimatedImage!(PixelFormat.RGBA8) UnmanagedAnimatedImageRGBA8;
+
+alias UnmanagedAnimatedImage!(PixelFormat.L16) UnmanagedAnimatedImageL16;
+alias UnmanagedAnimatedImage!(PixelFormat.LA16) UnmanagedAnimatedImageLA16;
+alias UnmanagedAnimatedImage!(PixelFormat.RGB16) UnmanagedAnimatedImageRGB16;
+alias UnmanagedAnimatedImage!(PixelFormat.RGBA16) UnmanagedAnimatedImageRGBA16;
+
+class UnmanagedAnimatedImageFactory: SuperImageFactory
+{
+    SuperImage createImage(uint w, uint h, uint channels, uint bitDepth, uint numFrames = 1)
+    {
+        return unmanagedAnimatedImage(w, h, channels, bitDepth, numFrames);
+    }
+}
+
+SuperImage unmanagedAnimatedImage(uint w, uint h, uint channels, uint bitDepth, uint numFrames = 1)
+in
+{
+    assert(channels > 0 && channels <= 4);
+    assert(bitDepth == 8 || bitDepth == 16);
+}
+body
+{
+    switch(channels)
+    {
+        case 1:
+        {
+            if (bitDepth == 8)
+                return New!UnmanagedAnimatedImageL8(w, h, numFrames);
+            else
+                return New!UnmanagedAnimatedImageL16(w, h, numFrames);
+        }
+        case 2:
+        {
+            if (bitDepth == 8)
+                return New!UnmanagedAnimatedImageLA8(w, h, numFrames);
+            else
+                return New!UnmanagedAnimatedImageLA16(w, h, numFrames);
+        }
+        case 3:
+        {
+            if (bitDepth == 8)
+                return New!UnmanagedAnimatedImageRGB8(w, h, numFrames);
+            else
+                return New!UnmanagedAnimatedImageRGB16(w, h, numFrames);
+        }
+        case 4:
+        {
+            if (bitDepth == 8)
+                return New!UnmanagedAnimatedImageRGBA8(w, h, numFrames);
+            else
+                return New!UnmanagedAnimatedImageRGBA16(w, h, numFrames);
+        }
+        default:
+            assert(0);
+    }
+}
