@@ -124,7 +124,12 @@ class LocalFileSystem : FileSystem {
 
             stat_out.sizeInBytes = st.st_size;
             stat_out.creationTimestamp = SysTime(unixTimeToStdTime(st.st_ctime));
-            stat_out.modificationTimestamp = SysTime(unixTimeToStdTime(st.st_mtime));
+            auto modificationStdTime = unixTimeToStdTime(st.st_mtime);
+            static if (is(typeof(st.st_mtimensec)))
+            {
+                modificationStdTime += st.st_mtimensec / 100;
+            }
+            stat_out.modificationTimestamp = SysTime(modificationStdTime);
 
             return true;
         }
