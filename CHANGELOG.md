@@ -333,7 +333,7 @@ dlib 0.1.0 - 13 Jul, 2013
 -------------------------
 Initial release.
 
-13 Jul 2013
+13 Jul, 2013
 -----------
 Project moved to GitHub.
 
@@ -341,7 +341,7 @@ Project moved to GitHub.
 ---------
 Early development on code.google.com.
 
-Sep 28, 2012
+28 Sep, 2012
 ------------
 Project started.
 
