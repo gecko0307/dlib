@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2017 Timur Gafarov
+Copyright (c) 2017 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,16 +26,40 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.core;
+module dlib.core.ownership;
 
-public
+import dlib.core.memory;
+import dlib.container.array;
+
+interface Owned
 {
-    import dlib.core.bitio;
-    import dlib.core.compound;
-    import dlib.core.memory;
-    import dlib.core.oop;
-    import dlib.core.ownership;
-    import dlib.core.stream;
-    import dlib.core.tuple;
-    import dlib.core.thread;
 }
+
+class Owner: Owned
+{
+    DynamicArray!Owned ownedObjects;
+
+    this(Owner owner)
+    {
+        if (owner)
+            owner.addOwnedObject(this);
+    }
+
+    void addOwnedObject(Owned obj)
+    {
+        ownedObjects.append(obj);
+    }
+
+    void clearOwnedObjects()
+    {
+        foreach(i, obj; ownedObjects)
+            Delete(obj);
+        ownedObjects.free();
+    }
+
+    ~this()
+    {
+        clearOwnedObjects();
+    }
+}
+
