@@ -132,8 +132,13 @@ class LocalFileSystem : FileSystem {
                 modificationStdTime += st.st_mtimensec / 100;
             }
             stat_out.modificationTimestamp = SysTime(modificationStdTime);
-            
-            // TODO: stat_out.permissions
+
+            if ((st.st_mode & S_IRUSR) | (st.st_mode & S_IRGRP) | (st.st_mode & S_IROTH))
+                stat_out.permissions |= PRead;
+            if ((st.st_mode & S_IWUSR) | (st.st_mode & S_IWGRP) | (st.st_mode & S_IWOTH))
+                stat_out.permissions |= PWrite;
+            if ((st.st_mode & S_IXUSR) | (st.st_mode & S_IXGRP) | (st.st_mode & S_IXOTH))
+                stat_out.permissions |= PExecute;
 
             return true;
         }
