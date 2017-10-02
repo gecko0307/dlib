@@ -297,6 +297,8 @@ class StdFileSystem: FileSystem
                 getTimes(filename,
                     modificationTimestamp,
                     modificationTimestamp);
+                    
+                // TODO: permissions
             }
             return true;
         }

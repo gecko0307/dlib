@@ -49,6 +49,8 @@ else version (Windows) {
     import dlib.filesystem.windows.common;
     import dlib.filesystem.windows.directory;
     import dlib.filesystem.windows.file;
+    import core.sys.windows.accctrl;
+    import core.sys.windows.aclapi;
 }
 
 // TODO: Should probably check for FILE_ATTRIBUTE_REPARSE_POINT before recursing
@@ -130,13 +132,17 @@ class LocalFileSystem : FileSystem {
                 modificationStdTime += st.st_mtimensec / 100;
             }
             stat_out.modificationTimestamp = SysTime(modificationStdTime);
+            
+            // TODO: stat_out.permissions
 
             return true;
         }
         else version (Windows) {
             WIN32_FILE_ATTRIBUTE_DATA data;
+            
+            auto p = toUTF16z(path);
 
-            if (!GetFileAttributesExW(toUTF16z(path), GET_FILEEX_INFO_LEVELS.GetFileExInfoStandard, &data))
+            if (!GetFileAttributesExW(p, GET_FILEEX_INFO_LEVELS.GetFileExInfoStandard, &data))
                 return false;
 
             if (data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
@@ -147,6 +153,30 @@ class LocalFileSystem : FileSystem {
             stat_out.sizeInBytes = (cast(FileSize) data.nFileSizeHigh << 32) | data.nFileSizeLow;
             stat_out.creationTimestamp = SysTime(FILETIMEToStdTime(&data.ftCreationTime));
             stat_out.modificationTimestamp = SysTime(FILETIMEToStdTime(&data.ftLastWriteTime));
+            
+            stat_out.permissions = 0;
+            
+            PACL pacl;
+            PSECURITY_DESCRIPTOR secDesc;
+            TRUSTEE_W trustee;
+            trustee.pMultipleTrustee = null;
+            trustee.MultipleTrusteeOperation = MULTIPLE_TRUSTEE_OPERATION.NO_MULTIPLE_TRUSTEE;
+            trustee.TrusteeForm = TRUSTEE_FORM.TRUSTEE_IS_NAME;
+            trustee.TrusteeType = TRUSTEE_TYPE.TRUSTEE_IS_UNKNOWN;
+            trustee.ptstrName = cast(wchar*)"CURRENT_USER"w.ptr;
+            GetNamedSecurityInfoW(cast(wchar*)p, SE_OBJECT_TYPE.SE_FILE_OBJECT, DACL_SECURITY_INFORMATION, null, null, &pacl, null, &secDesc);
+            if (pacl)
+            {
+                uint access;
+                GetEffectiveRightsFromAcl(pacl, &trustee, &access);
+                
+                if (access & ACTRL_FILE_READ)
+                    stat_out.permissions |= PRead;
+                if ((access & ACTRL_FILE_WRITE) && !(data.dwFileAttributes & FILE_ATTRIBUTE_READONLY))
+                    stat_out.permissions |= PWrite;
+                if (access & ACTRL_FILE_EXECUTE)
+                    stat_out.permissions |= PExecute;
+            }
 
             return true;
         }

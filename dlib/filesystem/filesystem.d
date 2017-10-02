@@ -39,6 +39,10 @@ import dlib.filesystem.dirrange;
 
 alias FileSize = StreamSize;
 
+enum PRead = 0x01;
+enum PWrite = 0x02;
+enum PExecute = 0x04;
+
 /// Holds general information about a file or directory.
 struct FileStat {
     ///
@@ -47,6 +51,8 @@ struct FileStat {
     FileSize sizeInBytes;
     ///
     SysTime creationTimestamp, modificationTimestamp;
+    ///
+    int permissions;
 }
 
 struct DirEntry {
