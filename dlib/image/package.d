@@ -52,6 +52,7 @@ public
     import dlib.image.filters.morphology;
     import dlib.image.filters.normalmap;
     import dlib.image.filters.sharpen;
+    import dlib.image.filters.contrast;
 
     import dlib.image.io.bmp;
     import dlib.image.io.io;
@@ -67,6 +68,4 @@ public
     import dlib.image.resampling.bilinear;
     import dlib.image.resampling.bicubic;
     import dlib.image.resampling.lanczos;
-
-    import dlib.image.tone.contrast;
 }
