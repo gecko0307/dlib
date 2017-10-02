@@ -33,7 +33,7 @@ private
     import dlib.image.image;
     import dlib.image.color;
     import dlib.image.arithmetics;
-    import dlib.image.tone.contrast;
+    import dlib.image.filters.contrast;
     import dlib.image.filters.boxblur;
 }
 
