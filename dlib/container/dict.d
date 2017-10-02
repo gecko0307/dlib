@@ -83,6 +83,9 @@ auto byteRange(T)(T v)
     return R(v);
 }
 
+/**
+ * Trie-based dictionary (associative array) that can use any type as a key. No hash functions are required.
+ */
 class Trie(T, K)
 {
     T value;
@@ -101,6 +104,7 @@ class Trie(T, K)
         symbol = s;
     }
 
+    /// Set value by key.
     void set(K k, T v)
     {
         Trie!(T, K) current = this;
@@ -141,6 +145,7 @@ class Trie(T, K)
         }
     }
 
+    /// Get value by key. Returns null if the element does not exist in trie.
     T* get(K k)
     {
         Trie!(T, K) current = this;
@@ -173,6 +178,7 @@ class Trie(T, K)
         return null;
     }
 
+    /// Remove element by key.
     void remove(K k)
     {
         Trie!(T, K) current = this;
@@ -204,6 +210,7 @@ class Trie(T, K)
         }
     }
 
+    /// Get value by key. It's an error to access non-existing key.
     T opIndex(K k)
     {
         T* v = get(k);
@@ -213,12 +220,14 @@ class Trie(T, K)
             assert(0, format("Non-existing key in Trie.opIndex: %s", k));
     }
 
+    /// Set value by key
     T opIndexAssign(T v, K k)
     {
         set(k, v);
         return v;
     }
 
+    ///
     T* opIn_r(K k)
     {
         return get(k);
@@ -245,6 +254,7 @@ class Trie(T, K)
         return result;
     }
 
+    /// Remove all elements.
     void clear()
     {
         foreach(c; children)
@@ -261,16 +271,71 @@ class Trie(T, K)
         clear();
     }
 
+    /// Trie must be manually freed when it's no longer needed.
     void free()
     {
         Delete(this);
     }
 }
 
+/// Convenient alias
 alias Trie Dict;
 
+/// Convenient function for dict creation.
 Dict!(T, K) dict(T, K)()
 {
     return New!(Dict!(T, K))();
 }
 
+///
+unittest
+{
+    auto d = dict!(string, string)();
+    scope(exit) d.free();
+    d["Hell"] = "No";
+    d["Hello"] = "World";
+    d["Help"] = "Me";
+    d["Something"] = "Else";
+    assert(d["Hell"] == "No");
+    assert(d["Hello"] == "World");
+    assert(d["Help"] == "Me");
+    assert(d["Something"] == "Else");
+    assert("Held" !in d);
+    assert(d.length == 4);
+
+    string[string] elements;
+    foreach(key, value; d)
+    {
+        elements[key] = value;
+    }
+    assert(elements["Hell"] == "No");
+    assert(elements["Hello"] == "World");
+    assert(elements["Help"] == "Me");
+    assert(elements["Something"] == "Else");
+    assert(elements.length == d.length);
+
+    d["Something"] = "New";
+    assert(d["Something"] == "New");
+
+    d.remove("Hell");
+    assert(d.length == 3);
+    assert(d.get("Hell") is null);
+
+    d.clear();
+    assert(d.length == 0);
+    assert("Hello" !in d);
+    assert("Help" !in d);
+    assert("Something" !in d);
+
+    d["Held"] = "Fire";
+    assert(d["Held"] == "Fire");
+
+    auto di = dict!(string, int);
+    scope(exit) di.free();
+    di[0xBEAF] = "BEAF";
+    di[0xDEADBEAF] = "DEADBEAF";
+    di[0xDEAD] = "DEAD";
+    assert(di[0xBEAF] == "BEAF");
+    assert(di[0xDEADBEAF] == "DEADBEAF");
+    assert(di[0xDEAD] == "DEAD");
+}
