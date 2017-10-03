@@ -398,6 +398,18 @@ struct DynamicArray(T, size_t chunkSize = 32)
         }
     }
 
+    unittest
+    {
+        DynamicArray!int arr;
+        scope(exit) arr.free();
+
+        arr.insertBack([1, 4, 5]);
+
+        arr.insertKey(1, 7);
+        assert(arr.length == 4);
+        assert(arr.data == [1, 7, 4, 5]);
+    }
+
     /**
      * Removes an element by a given index.
      */
@@ -413,6 +425,18 @@ struct DynamicArray(T, size_t chunkSize = 32)
 
             pos--;
         }
+    }
+
+    unittest
+    {
+        DynamicArray!int arr;
+        scope(exit) arr.free();
+
+        arr.insertBack([1, 4, 5]);
+
+        arr.removeKey(1);
+        assert(arr.length == 2);
+        assert(arr.data == [1, 5]);
     }
 
     alias insertKey insertAt;
@@ -507,6 +531,9 @@ struct DynamicArray(T, size_t chunkSize = 32)
         arr.insertBack([1,2,3,4]);
         foreach(i, ref val; arr) {
             values[i] = val;
+            if(values[i] == 4) {
+                break;
+            }
         }
         assert(values[] == arr.data);
     }
