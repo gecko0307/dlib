@@ -8,7 +8,10 @@
         "Nick Papanastasiou",
         "Oleg Baharev", 
         "Roman Chistokhodov", 
-        "Eugene Wissner"
+        "Eugene Wissner",
+        "Roman Vlasov",
+        "Basile Burg",
+        "Valeriy Fedotov"
     ],
     "license": "Boost",
     "homepage": "http://github.com/gecko0307/dlib",
