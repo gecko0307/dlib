@@ -31,7 +31,7 @@ module dlib.core.fiber;
 import std.traits;
 import dlib.core.memory;
 
-version(Posix):
+version(linux):
 
 import core.sys.posix.ucontext;
 
