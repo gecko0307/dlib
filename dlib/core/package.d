@@ -32,6 +32,7 @@ public
 {
     import dlib.core.bitio;
     import dlib.core.compound;
+    import dlib.core.fiber;
     import dlib.core.memory;
     import dlib.core.oop;
     import dlib.core.ownership;
