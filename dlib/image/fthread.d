@@ -28,31 +28,44 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.image.fthread;
 
-import core.thread;
+import dlib.core.memory;
+import dlib.core.thread;
 import dlib.image.image;
 
-abstract class FilteringThread: Thread
+class FilteringThread
 {
+    Thread thread;
     protected SuperImage image;
     protected SuperImage output;
 
     this(SuperImage img)
     {
-        super(&run);
+        thread = New!Thread(&threadFunc);
         image = img;
+        output = img;
+    }
+
+    ~this()
+    {
+        Delete(thread);
+    }
+
+    void threadFunc()
+    {
+        run();
     }
 
     SuperImage filtered()
     {
-        start();
-        while(isRunning)
+        thread.start();
+        while(thread.isRunning)
             onRunning();
         onFinished();
         return output;
     }
 
     // override these:
-    void run();
-    void onRunning();
-    void onFinished();
+    void run() {} // this method is called in a second thread
+    void onRunning() {} // this method is called in main thread in a loop while second thread is running
+    void onFinished() {} // this method is called in main thread pnce when second thread finishes 
 }
