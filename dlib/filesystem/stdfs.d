@@ -31,6 +31,7 @@ module dlib.filesystem.stdfs;
 import core.stdc.stdio;
 import std.file;
 import std.string;
+import std.datetime;
 import dlib.core.memory;
 import dlib.core.stream;
 import dlib.container.dict;
@@ -39,7 +40,8 @@ import dlib.filesystem.filesystem;
 
 version(Posix)
 {
-    import core.sys.posix.sys.stat;
+    //import core.sys.posix.sys.stat;
+    import dlib.filesystem.posix.common;
     import dlib.filesystem.stdposixdir;
 }
 version(Windows)
@@ -291,14 +293,82 @@ class StdFileSystem: FileSystem
         {
             with(stat)
             {
-                isFile = std.file.isFile(filename);
-                isDirectory = std.file.isDir(filename);
-                sizeInBytes = std.file.getSize(filename);
-                getTimes(filename,
-                    modificationTimestamp,
-                    modificationTimestamp);
+                version (Posix)
+                {
+                    stat_t st;
+                    stat_(toStringz(filename), &st); // TODO: GC-free toStringz replacement
+
+                    isFile = S_ISREG(st.st_mode);
+                    isDirectory = S_ISDIR(st.st_mode);
+                    sizeInBytes = st.st_size;
+                    creationTimestamp = SysTime(unixTimeToStdTime(st.st_ctime));
+                    auto modificationStdTime = unixTimeToStdTime(st.st_mtime);
+                    static if (is(typeof(st.st_mtimensec)))
+                    {
+                        modificationStdTime += st.st_mtimensec / 100;
+                    }
+                    modificationTimestamp = SysTime(modificationStdTime);
+
+                    if ((st.st_mode & S_IRUSR) | (st.st_mode & S_IRGRP) | (st.st_mode & S_IROTH))
+                        permissions |= PRead;
+                    if ((st.st_mode & S_IWUSR) | (st.st_mode & S_IWGRP) | (st.st_mode & S_IWOTH))
+                        permissions |= PWrite;
+                    if ((st.st_mode & S_IXUSR) | (st.st_mode & S_IXGRP) | (st.st_mode & S_IXOTH))
+                        permissions |= PExecute;
+                }
+                else version(Windows)
+                {
+                    wchar[] filename_utf16 = convertUTF8toUTF16(filename, true);
+
+                    WIN32_FILE_ATTRIBUTE_DATA data;
+
+                    if (!GetFileAttributesExW(filename_utf16.ptr, GET_FILEEX_INFO_LEVELS.GetFileExInfoStandard, &data))
+                        return false;
+
+                    if (data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+                        isDirectory = true;
+                    else
+                        isFile = true;
+
+                    sizeInBytes = (cast(FileSize) data.nFileSizeHigh << 32) | data.nFileSizeLow;
+                    creationTimestamp = SysTime(FILETIMEToStdTime(&data.ftCreationTime));
+                    modificationTimestamp = SysTime(FILETIMEToStdTime(&data.ftLastWriteTime));
                     
-                // TODO: permissions
+                    permissions = 0;
+                    
+                    PACL pacl;
+                    PSECURITY_DESCRIPTOR secDesc;
+                    TRUSTEE_W trustee;
+                    trustee.pMultipleTrustee = null;
+                    trustee.MultipleTrusteeOperation = MULTIPLE_TRUSTEE_OPERATION.NO_MULTIPLE_TRUSTEE;
+                    trustee.TrusteeForm = TRUSTEE_FORM.TRUSTEE_IS_NAME;
+                    trustee.TrusteeType = TRUSTEE_TYPE.TRUSTEE_IS_UNKNOWN;
+                    trustee.ptstrName = cast(wchar*)"CURRENT_USER"w.ptr;
+                    GetNamedSecurityInfoW(filename_utf16.ptr, SE_OBJECT_TYPE.SE_FILE_OBJECT, DACL_SECURITY_INFORMATION, null, null, &pacl, null, &secDesc);
+                    if (pacl)
+                    {
+                        uint access;
+                        GetEffectiveRightsFromAcl(pacl, &trustee, &access);
+                        
+                        if (access & ACTRL_FILE_READ)
+                            permissions |= PRead;
+                        if ((access & ACTRL_FILE_WRITE) && !(data.dwFileAttributes & FILE_ATTRIBUTE_READONLY))
+                            permissions |= PWrite;
+                        if (access & ACTRL_FILE_EXECUTE)
+                            permissions |= PExecute;
+                    }
+
+                    Delete(filename_utf16);
+                }
+                else
+                {
+                    isFile = std.file.isFile(filename);
+                    isDirectory = std.file.isDir(filename);
+                    sizeInBytes = std.file.getSize(filename);
+                    getTimes(filename,
+                        modificationTimestamp,
+                        modificationTimestamp);
+                }
             }
             return true;
         }
