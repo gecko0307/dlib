@@ -40,3 +40,8 @@ pure int stringHash(string key, int tableSize = 5381)
     return hashVal % tableSize;
 }
 
+unittest
+{
+    int h = stringHash("Hello!");
+    assert(h == -4720);}
+
