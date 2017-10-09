@@ -32,6 +32,8 @@ public {
 version (Windows) {
     import core.stdc.wchar_;
     import core.sys.windows.windows;
+    import core.sys.windows.accctrl;
+    import core.sys.windows.aclapi;
     import std.utf;
     import std.windows.syserror;
 

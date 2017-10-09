@@ -49,8 +49,6 @@ else version (Windows) {
     import dlib.filesystem.windows.common;
     import dlib.filesystem.windows.directory;
     import dlib.filesystem.windows.file;
-    import core.sys.windows.accctrl;
-    import core.sys.windows.aclapi;
 }
 
 // TODO: Should probably check for FILE_ATTRIBUTE_REPARSE_POINT before recursing

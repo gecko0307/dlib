@@ -40,13 +40,13 @@ import dlib.filesystem.filesystem;
 
 version(Posix)
 {
-    //import core.sys.posix.sys.stat;
     import dlib.filesystem.posix.common;
     import dlib.filesystem.stdposixdir;
 }
 version(Windows)
 {
     import std.stdio;
+    import dlib.filesystem.windows.common;
     import dlib.filesystem.stdwindowsdir;
 }
 
