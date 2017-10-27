@@ -49,23 +49,39 @@ private
 }
 
 // uncomment this to see debug messages:
-//version = PNGDebug;
+version = PNGDebug;
 
 static const ubyte[8] PNGSignature = [137, 80, 78, 71, 13, 10, 26, 10];
-static const ubyte[4] IHDR = ['I', 'H', 'D', 'R'];
-static const ubyte[4] IEND = ['I', 'E', 'N', 'D'];
-static const ubyte[4] IDAT = ['I', 'D', 'A', 'T'];
-static const ubyte[4] PLTE = ['P', 'L', 'T', 'E'];
-static const ubyte[4] tRNS = ['t', 'R', 'N', 'S'];
-static const ubyte[4] bKGD = ['b', 'K', 'G', 'D'];
-static const ubyte[4] tEXt = ['t', 'E', 'X', 't'];
-static const ubyte[4] iTXt = ['i', 'T', 'X', 't'];
-static const ubyte[4] zTXt = ['z', 'T', 'X', 't'];
+
+// Standard chunks
+static const ubyte[4] IHDR = ['I', 'H', 'D', 'R']; // Image header
+static const ubyte[4] IEND = ['I', 'E', 'N', 'D']; // Image end
+static const ubyte[4] IDAT = ['I', 'D', 'A', 'T']; // Image data
+static const ubyte[4] PLTE = ['P', 'L', 'T', 'E']; // Palette
+static const ubyte[4] tRNS = ['t', 'R', 'N', 'S']; // Transparency
+static const ubyte[4] bKGD = ['b', 'K', 'G', 'D']; // Background color
+static const ubyte[4] tEXt = ['t', 'E', 'X', 't']; // Textual data (uncompressed)
+static const ubyte[4] zTXt = ['z', 'T', 'X', 't']; // Textual data (zlib compressed)
+static const ubyte[4] iTXt = ['i', 'T', 'X', 't']; // International text
+
+// Extension chunks
+static const ubyte[4] oFFs = ['o', 'F', 'F', 's']; // Image offset
+static const ubyte[4] pCAL = ['p', 'C', 'A', 'L']; // Calibration of pixel values
+static const ubyte[4] sCAL = ['s', 'C', 'A', 'L']; // Physical scale of image subject
+static const ubyte[4] gIFg = ['g', 'I', 'F', 'g']; // GIF graphic control
+static const ubyte[4] gIFx = ['g', 'I', 'F', 'x']; // GIF application
+static const ubyte[4] gIFt = ['g', 'I', 'F', 't']; // GIF plain text (deprecated)
+static const ubyte[4] fRAc = ['f', 'R', 'A', 'c']; // Fractal image parameters
+static const ubyte[4] sTER = ['s', 'T', 'E', 'R']; // Indicator of stereo image
+static const ubyte[4] dSIG = ['d', 'S', 'I', 'G']; // Digital signature
+
+// ImageMagick chunks
+static const ubyte[4] vpAg = ['v', 'p', 'A', 'g']; // VirtualPage Tags
 
 // APNG chunks
-static const ubyte[4] acTL = ['a', 'c', 'T', 'L'];
-static const ubyte[4] fcTL = ['f', 'c', 'T', 'L'];
-static const ubyte[4] fdAT = ['f', 'd', 'A', 'T'];
+static const ubyte[4] acTL = ['a', 'c', 'T', 'L']; // Animation control
+static const ubyte[4] fcTL = ['f', 'c', 'T', 'L']; // Frame control
+static const ubyte[4] fdAT = ['f', 'd', 'A', 'T']; // Frame data
 
 enum ColorType: ubyte
 {
@@ -136,6 +152,38 @@ struct AnimationControlChunk
         numFrames = bigEndian(numFrames);
         *(&numPlays) = *(cast(uint*)(data.ptr+4));
         numPlays = bigEndian(numPlays);
+    }
+}
+
+struct OffsetChunk
+{
+    int posX;
+    int posY;
+    ubyte unitSpecifier;
+
+    void readFromBuffer(ubyte[] data)
+    {
+        *(&posX) = *(cast(int*)data.ptr);
+        posX = bigEndian(posX);
+        *(&posY) = *(cast(int*)(data.ptr+4));
+        posY = bigEndian(posY);
+        *(&unitSpecifier) = *(data.ptr+8);
+    }
+}
+
+struct VirtualPageTagsChunk
+{
+    int posX;
+    int posY;
+    ubyte unitSpecifier;
+
+    void readFromBuffer(ubyte[] data)
+    {
+        *(&posX) = *(cast(int*)data.ptr);
+        posX = bigEndian(posX);
+        *(&posY) = *(cast(int*)(data.ptr+4));
+        posY = bigEndian(posY);
+        *(&unitSpecifier) = *(data.ptr+8);
     }
 }
 
@@ -211,6 +259,9 @@ struct PNGImage
     uint numLoops = 0;
     bool decodingFirstFrame;
     FrameControlChunk frame;
+
+    // Offset
+    OffsetChunk offset;
 
     ZlibDecoder decoder;
 
@@ -474,6 +525,25 @@ Compound!(SuperImage, string) loadPNG(
 
                 png.initFrameBuffer();
                 png.initDecoder();
+            }
+            else if (chunk.type == oFFs)
+            {
+                png.offset.readFromBuffer(chunk.data);
+                chunk.free();
+
+                version(PNGDebug)
+                {
+                    writefln("posX = %s", png.offset.posX);
+                    writefln("posY = %s", png.offset.posY);
+                    writefln("unitSpecifier = %s", png.offset.unitSpecifier);
+                }
+
+                // TODO: this check is not needed if we can calculate pixels per unit,
+                // e.g., if pHYs chunk is present
+                if (png.offset.unitSpecifier != 0)
+                {
+                    return error("loadPNG error: unsupported oFFs unit specifier");
+                }
             }
             else if (chunk.type == acTL)
             {
@@ -1061,9 +1131,9 @@ Compound!(bool, string) fillFrame(PNGImage* png)
 
     uint calculatedSize;
     if (indexed)
-        calculatedSize = png.frame.width * png.frame.height * png.hdr.bitDepth / 8 + png.frame.height;
+        calculatedSize = png.frame.width * png.frame.height * (png.hdr.bitDepth / 8) + png.frame.height;
     else
-        calculatedSize = png.frame.width * png.frame.height * png.numChannels + png.frame.height;
+        calculatedSize = png.frame.width * png.frame.height * (png.hdr.bitDepth / 8) * png.numChannels + png.frame.height;
 
     png.frameSize = png.frame.width * png.frame.height * png.numChannels * png.bytesPerChannel;
     png.filteredBufferSize = calculatedSize - png.frame.height;
@@ -1280,11 +1350,13 @@ Compound!(bool, string) filter(
     uint height = png.frame.height;
     uint channels = png.numChannels;
 
+    uint bytesPerPixel = png.hdr.bitDepth / 8; // 1 for 8bit, 2 for 16bit
+
     uint scanlineSize;
     if (indexed)
-        scanlineSize = width * png.hdr.bitDepth / 8 + 1;
+        scanlineSize = width * bytesPerPixel + 1;
     else
-        scanlineSize = width * channels + 1;
+        scanlineSize = width * bytesPerPixel * channels + 1;
 
     ubyte pback, pup, pupback, cbyte;
 
@@ -1312,35 +1384,35 @@ Compound!(bool, string) filter(
         else
         for (int j = 0; j < width; ++j)
         {
-            for (int k = 0; k < channels; ++k)
+            for (int k = 0; k < bytesPerPixel * channels; ++k)
             {
                 if (i == 0) pup = 0;
-                else pup = obuffer[((i-1) * width + j) * channels + k];
+                else pup = obuffer[((i-1) * width + j) * bytesPerPixel * channels + k];
                 if (j == 0) pback = 0;
-                else pback = obuffer[(i * width + j-1) * channels + k];
+                else pback = obuffer[(i * width + j-1) * bytesPerPixel * channels + k];
                 if (i == 0 || j == 0) pupback = 0;
-                else pupback = obuffer[((i-1) * width + j - 1) * channels + k];
+                else pupback = obuffer[((i-1) * width + j - 1) * bytesPerPixel * channels + k];
 
                 // get the current byte from ibuffer
-                cbyte = ibuffer[i * (width * channels + 1) + j * channels + k + 1];
+                cbyte = ibuffer[i * (width * bytesPerPixel * channels + 1) + j * bytesPerPixel * channels + k + 1];
 
                 // filter, then set the current byte in data
                 switch (scanFilter)
                 {
                     case FilterMethod.None:
-                        obuffer[(i * width + j) * channels + k] = cbyte;
+                        obuffer[(i * width + j) * bytesPerPixel * channels + k] = cbyte;
                         break;
                     case FilterMethod.Sub:
-                        obuffer[(i * width + j) * channels + k] = cast(ubyte)(cbyte + pback);
+                        obuffer[(i * width + j) * bytesPerPixel * channels + k] = cast(ubyte)(cbyte + pback);
                         break;
                     case FilterMethod.Up:
-                        obuffer[(i * width + j) * channels + k] = cast(ubyte)(cbyte + pup);
+                        obuffer[(i * width + j) * bytesPerPixel * channels + k] = cast(ubyte)(cbyte + pup);
                         break;
                     case FilterMethod.Average:
-                        obuffer[(i * width + j) * channels + k] = cast(ubyte)(cbyte + (pback + pup) / 2);
+                        obuffer[(i * width + j) * bytesPerPixel * channels + k] = cast(ubyte)(cbyte + (pback + pup) / 2);
                         break;
                     case FilterMethod.Paeth:
-                        obuffer[(i * width + j) * channels + k] = cast(ubyte)(cbyte + paeth(pback, pup, pupback));
+                        obuffer[(i * width + j) * bytesPerPixel * channels + k] = cast(ubyte)(cbyte + paeth(pback, pup, pupback));
                         break;
                     default:
                         return err(format("loadPNG error: unknown scanline filter (%s)", scanFilter));
