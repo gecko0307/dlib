@@ -36,12 +36,12 @@ private
 T bezier(T) (T A, T B, T C, T D, T t)
 {
     T s = cast(T)1.0 - t;
-    T AB = A * s + B * t;
-    T BC = B * s + C * t;
-    T CD = C * s + D * t;
-    T ABC = AB * s + CD * t;
-    T BCD = BC * s + CD * t;
-    return ABC * s + BCD * t;
+    T s2 = s * s;
+    T s3 = s2 * s;
+    return s3 * A +
+           3.0 * t * s2 * B +
+           3.0 * t * t * s * C +
+           t * t * t * D;
 }
 
 Vector!(T,3) bezierCurveFunc3D(T)(
