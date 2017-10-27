@@ -49,7 +49,7 @@ private
 }
 
 // uncomment this to see debug messages:
-version = PNGDebug;
+//version = PNGDebug;
 
 static const ubyte[8] PNGSignature = [137, 80, 78, 71, 13, 10, 26, 10];
 
