@@ -171,22 +171,6 @@ struct OffsetChunk
     }
 }
 
-struct VirtualPageTagsChunk
-{
-    int posX;
-    int posY;
-    ubyte unitSpecifier;
-
-    void readFromBuffer(ubyte[] data)
-    {
-        *(&posX) = *(cast(int*)data.ptr);
-        posX = bigEndian(posX);
-        *(&posY) = *(cast(int*)(data.ptr+4));
-        posY = bigEndian(posY);
-        *(&unitSpecifier) = *(data.ptr+8);
-    }
-}
-
 enum DisposeOp: ubyte
 {
     None = 0,
