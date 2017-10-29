@@ -33,7 +33,7 @@ private
     import dlib.math.vector;
 }
 
-T bezier(T) (T A, T B, T C, T D, T t)
+T bezierCubic(T) (T A, T B, T C, T D, T t)
 {
     T s = cast(T)1.0 - t;
     T s2 = s * s;
@@ -44,7 +44,9 @@ T bezier(T) (T A, T B, T C, T D, T t)
            t * t * t * D;
 }
 
-Vector!(T,3) bezierCurveFunc3D(T)(
+alias bezier bezierCubic;
+
+Vector!(T,3) bezierVector3(T)(
     Vector!(T,3) a,
     Vector!(T,3) b,
     Vector!(T,3) c,
@@ -59,7 +61,9 @@ Vector!(T,3) bezierCurveFunc3D(T)(
     );
 }
 
-Vector!(T,2) bezierCurveFunc2D(T)(
+alias bezierVector3 bezierCurveFunc3D;
+
+Vector!(T,2) bezierVector2(T)(
     Vector!(T,2) a,
     Vector!(T,2) b,
     Vector!(T,2) c,
@@ -72,3 +76,5 @@ Vector!(T,2) bezierCurveFunc2D(T)(
         bezier(a.y, b.y, c.y, d.y, t)
     );
 }
+
+alias bezierVector2 bezierCurveFunc2D;
