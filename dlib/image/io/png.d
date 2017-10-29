@@ -521,13 +521,6 @@ Compound!(SuperImage, string) loadPNG(
                     writefln("posY = %s", png.offset.posY);
                     writefln("unitSpecifier = %s", png.offset.unitSpecifier);
                 }
-
-                // TODO: this check is not needed if we can calculate pixels per unit,
-                // e.g., if pHYs chunk is present
-                if (png.offset.unitSpecifier != 0)
-                {
-                    return error("loadPNG error: unsupported oFFs unit specifier");
-                }
             }
             else if (chunk.type == acTL)
             {
