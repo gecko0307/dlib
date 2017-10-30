@@ -44,7 +44,7 @@ T bezierCubic(T) (T A, T B, T C, T D, T t)
            t * t * t * D;
 }
 
-alias bezier bezierCubic;
+alias bezierCubic bezier;
 
 Vector!(T,3) bezierVector3(T)(
     Vector!(T,3) a,
