@@ -135,6 +135,12 @@ struct Vector(T, int size)
         }
     }
 
+    // Same, but for enums
+    void opAssign(T2)(T2 ev) if (is(T2 == enum))
+    {
+        opAssign(cast(OriginalType!T2)ev);
+    }
+
    /*
     * -Vector!(T,size)
     */
