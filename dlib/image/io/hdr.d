@@ -117,7 +117,14 @@ Compound!(SuperHDRImage, string) loadHDR(
     char[11] magic;
     istrm.fillArray(magic);
     if (magic != "#?RADIANCE\n")
-        return error("loadHDR error: signature check failed");
+    {
+        if (magic[0..7] == "#?RGBE\n")
+        {
+            istrm.position = 7;
+        }
+        else
+            return error("loadHDR error: signature check failed");
+    }
 
     // Read header
     DynamicArray!char line;
