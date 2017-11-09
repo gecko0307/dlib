@@ -35,6 +35,7 @@ private
     import dlib.core.memory;
     import dlib.image.image;
     import dlib.image.color;
+    import dlib.math.vector;
     import dlib.math.utils;
 }
 
@@ -244,7 +245,7 @@ SuperImage hdrTonemapGamma(SuperHDRImage img, SuperImage output, float gamma)
     if (output)
         res = output;
     else
-        res = image(img.width, img.height, 3);
+        res = image(img.width, img.height, img.channels);
 
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
@@ -259,6 +260,69 @@ SuperImage hdrTonemapGamma(SuperHDRImage img, SuperImage output, float gamma)
     return res;
 }
 
+SuperImage hdrTonemapReinhard(SuperHDRImage img, float exposure, float gamma)
+{
+    return hdrTonemapReinhard(img, null, exposure, gamma);
+}
+
+SuperImage hdrTonemapReinhard(SuperHDRImage img, SuperImage output, float exposure, float gamma)
+{
+    SuperImage res;
+    if (output)
+        res = output;
+    else
+        res = image(img.width, img.height, img.channels);
+
+    foreach(y; 0..img.height)
+    foreach(x; 0..img.width)
+    {
+        Color4f c = img[x, y];
+        Vector3f v = c * exposure;
+        v = v / (v + 1.0f);
+        float r = v.r ^^ gamma;
+        float g = v.g ^^ gamma;
+        float b = v.b ^^ gamma;
+        res[x, y] = Color4f(r, g, b, c.a);
+    }
+
+    return res;
+}
+
+SuperImage hdrTonemapHable(SuperHDRImage img, float exposure, float gamma)
+{
+    return hdrTonemapHable(img, null, exposure, gamma);
+}
+
+SuperImage hdrTonemapHable(SuperHDRImage img, SuperImage output, float exposure, float gamma)
+{
+    SuperImage res;
+    if (output)
+        res = output;
+    else
+        res = image(img.width, img.height, img.channels);
+
+    foreach(y; 0..img.height)
+    foreach(x; 0..img.width)
+    {
+        Color4f c = img[x, y];
+        Vector3f v = c * exposure;
+        Vector3f one = Vector3f(1.0f, 1.0f, 1.0f);
+        Vector3f W = Vector3f(11.2f, 11.2f, 11.2f);
+        v = hableFunc(v * 2.0f) * (one / hableFunc(W));
+        float r = v.r ^^ gamma;
+        float g = v.g ^^ gamma;
+        float b = v.b ^^ gamma;
+        res[x, y] = Color4f(r, g, b, c.a);
+    }
+
+    return res;
+}
+
+Vector3f hableFunc(Vector3f x)
+{
+   return ((x * (x * 0.15f + 0.1f * 0.5f) + 0.2f * 0.02f) / (x * (x * 0.15f + 0.5f) + 0.2f * 0.3f)) - 0.02f / 0.3f;
+}
+
 SuperImage hdrTonemapAverageLuminance(SuperHDRImage img, float a, float gamma)
 {
     return hdrTonemapAverageLuminance(img, null, a, gamma);
@@ -270,7 +334,7 @@ SuperImage hdrTonemapAverageLuminance(SuperHDRImage img, SuperImage output, floa
     if (output)
         res = output;
     else
-        res = image(img.width, img.height, 3);
+        res = image(img.width, img.height, img.channels);
 
     float sumLuminance = 0.0f;
 
