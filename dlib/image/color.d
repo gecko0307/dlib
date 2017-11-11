@@ -93,13 +93,6 @@ struct Color4f
         return Color4f(0.0f, 0.0f, 0.0f, 0.0f);
     }
 
-/*
-    Color4f opAssign(Vector4f v)
-    {
-        vec = v;
-        return this;
-    }
-*/
     Color4f opAssign(Color4f c)
     {
         vec = c.vec;
@@ -202,6 +195,25 @@ struct Color4f
             vec.a.clamp(minv, maxv)
         );
     }
+
+    // Converts color to linear space
+    Color4f toLinear(float gamma = 2.2f)
+    {
+        float lr = r ^^ gamma;
+        float lg = g ^^ gamma;
+        float lb = b ^^ gamma;
+        return Color4f(lr, lg, lb, a);
+    }
+
+    // Converts color to gamma space
+    Color4f toGamma(float gamma = 2.2f)
+    {
+        float invGamma = 1.0f / gamma;
+        float lr = r ^^ invGamma;
+        float lg = g ^^ invGamma;
+        float lb = b ^^ invGamma;
+        return Color4f(lr, lg, lb, a);
+    }
 }
 
 Color4f packNormal(Vector3f n)
@@ -237,6 +249,7 @@ Color4f color4(int hex)
         cast(float)b / 255.0f,
         cast(float)a / 255.0f);
 }
+
 /*
  * Blend two colors taking transparency into account
  */
