@@ -1,3 +1,44 @@
+dlib 0.12.2 - 7 Nov, 2017
+-------------------------
+* Enum constants of type `Vector` now can be assigned to variables.
+* Naming of functions in `dlib.geometry.bezier` is changed. `bezier` function is now `bezierCubic`, `bezierCurveFunc2D` is `bezierVector2`, `bezierCurveFunc3D` is `bezierVector3`. There are aliases with old names for backward compatibility.
+
+dlib 0.12.1 - 28 Oct, 2017
+--------------------------
+* Fixed loading 16-bit PNG images
+* Corrected Bézier function.
+
+dlib 0.12.0 - 16 Oct, 2017
+--------------------------
+No changes since dlib 0.12.0 beta1.
+
+dlib 0.12.0 beta1 - 9 Oct, 2017
+-------------------------------
+- **dlib.core**
+  - New module `dlib.core.ownership` - a Delphi-like object ownership system. Objects are registered to parent object, which automatically deletes them when gets deleted itself. In many cases this can be a convenient trade-off between fully automatic and fully manual memory management.
+  - New module `dlib.core.fiber` - initial fibers implementation (Linux-only for now).
+- **dlib.container**
+  - Containers now use Phobos-conforming method names. Old names are still supported via aliases.
+  - `DynamicArray` now supports inserting and removing values by arbitrary indices (`insertKey` and `removeKey`).
+  - `~=` operator support for `LinkedList`.
+  - Full unittest coverage of `dlib.container.array`.
+  - More unittests for `dlib.container.dict`.
+- **dlib.image**
+  - New class `UnmanagedAnimatedImage` - GC-free counterpart of `AnimatedImage`.
+  - **Breaking change:** `dlib.image.tone.contrast` is now `dlib.image.filters.contrast`.
+  - `dlib.image.fthread` is now based on `dlib.core.thread`.
+- **dlib.filesystem**
+  - File access rights in `FileStat`.
+  - Nanosecond modification time precision support in `stat` under Posix.
+- **dlib.math**
+  - New direct solver (`solve`) in `dlib.math.linsolve` based on LUP decomposition.
+- **dlib.geometry**
+  - Frustum-sphere intersection test (`intersectsSphere`) for `dlib.geometry.frustum`.
+- **dlib.coding**
+  - **Breaking change:** `dlib.coding.huffman` is merged with `dlib.image.io.jpeg`.
+- **Misc**
+  - Added latest DMD (2.075.1, 2.076.0) and LDC (1.3.0, 1.4.0) to Travis CI config.
+
 dlib 0.11.1 - 24 May, 2017
 --------------------------
 * Added `alphaOver` in `dlib.image.color`
@@ -334,7 +375,7 @@ dlib 0.1.0 - 13 Jul, 2013
 Initial release.
 
 13 Jul, 2013
------------
+------------
 Project moved to GitHub.
 
 2012-2013
