@@ -7,10 +7,10 @@ os:
 language: d
 
 d:
- - dmd-2.078.0
- - dmd-2.077.0
+ - dmd-2.078.3
+ - dmd-2.077.1
+ - ldc-1.7.0
  - ldc-1.6.0
- - ldc-1.5.0
  - gdc
 
 matrix:
