@@ -19,16 +19,16 @@ matrix:
    - d: gdc
    - d: dmd-2.078.3
      os: linux
-     env: ARCH="x86"
+     env: ARCH=x86
    - d: dmd-2.077.1
      os: linux
-     env: ARCH="x86"
+     env: ARCH=x86
    - d: ldc-1.7.0
      os: linux
-     env: ARCH="x86"
+     env: ARCH=x86
    - d: ldc-1.6.0
      os: linux
-     env: ARCH="x86"
+     env: ARCH=x86
    
 env: 
   matrix:
