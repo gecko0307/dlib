@@ -59,13 +59,9 @@ body
         Color4f acol = Color4f(a[x, y]);
         Color4f bcol = Color4f(b[x, y]);
         Color4f col  = acol + (bcol * t);
+        col.a = acol.a;
         img[x, y] = col;
-        //a.updateProgress();
-        //b.updateProgress();
     }
-
-    //a.resetProgress();
-    //b.resetProgress();
 
     return img;
 }
@@ -95,13 +91,9 @@ body
         Color4f acol = Color4f(a[x, y]);
         Color4f bcol = Color4f(b[x, y]);
         Color4f col  = acol - (bcol * t);
+        col.a = acol.a;
         img[x, y] = col;
-        //a.updateProgress();
-        //b.updateProgress();
     }
-
-    //a.resetProgress();
-    //b.resetProgress();
 
     return img;
 }
@@ -131,13 +123,9 @@ body
         Color4f acol = Color4f(a[x, y]);
         Color4f bcol = Color4f(b[x, y]);
         Color4f col  = acol * (bcol * t);
+        col.a = acol.a;
         img[x, y] = col;
-        //a.updateProgress();
-        //b.updateProgress();
     }
-
-    //a.resetProgress();
-    //b.resetProgress();
 
     return img;
 }
@@ -167,13 +155,9 @@ body
         Color4f acol = Color4f(a[x, y]);
         Color4f bcol = Color4f(b[x, y]);
         Color4f col  = acol / (bcol * t);
+        col.a = acol.a;
         img[x, y] = col;
-        //a.updateProgress();
-        //b.updateProgress();
     }
-
-    //a.resetProgress();
-    //b.resetProgress();
 
     return img;
 }
@@ -195,10 +179,7 @@ SuperImage invert(SuperImage a, SuperImage outp)
     foreach(x; 0..img.width)
     {
         img[x, y] = a[x, y].inverse;
-        //a.updateProgress();
     }
-
-    //a.resetProgress();
 
     return img;
 }

@@ -30,12 +30,17 @@ module dlib.image.filters.edgedetect;
 
 private
 {
+    import std.math;
+    
+    import dlib.math.vector;
+    
     import dlib.image.image;
     import dlib.image.color;
     import dlib.image.arithmetics;
     import dlib.image.filters.contrast;
     import dlib.image.filters.boxblur;
     import dlib.image.filters.morphology;
+    import dlib.image.filters.convolution;
 }
 
 SuperImage edgeDetectDoG(SuperImage src, int radius1, int radius2, float amount, bool inv = true)
@@ -64,7 +69,7 @@ SuperImage edgeDetectDoG(SuperImage src, SuperImage outp, int radius1, int radiu
 
 SuperImage edgeDetectGradient(SuperImage src)
 {
-    return subtract(gradient(src), src);
+    return edgeDetectGradient(src, null);
 }
 
 SuperImage edgeDetectGradient(SuperImage src, SuperImage outp)
@@ -72,7 +77,59 @@ SuperImage edgeDetectGradient(SuperImage src, SuperImage outp)
     if (outp is null)
         outp = src.dup;
 
-    auto g = gradient(src, outp);
+    return gradient(src, outp);
+}
 
-    return subtract(g, src, outp);
+SuperImage edgeDetectLaplace(SuperImage src)
+{
+    return edgeDetectLaplace(src, null);
+}
+
+SuperImage edgeDetectLaplace(SuperImage src, SuperImage outp)
+{
+    if (outp is null)
+        outp = src.dup;
+
+    return convolve(src, outp, Kernel.Laplace, 3, 3, 1.0f, 0.0f, false);
+}
+
+SuperImage edgeDetectSobel(SuperImage src, float normFactor = 1.0f / 8.0f)
+{
+    return edgeDetectSobel(src, null, normFactor);
+}
+
+SuperImage edgeDetectSobel(SuperImage src, SuperImage outp, float normFactor = 1.0f / 8.0f)
+{
+    if (outp is null)
+        outp = src.dup;
+    
+    enum float[3][3] sobelHorizontal = [
+        [-1,  0,  1],
+        [-2,  0,  2],
+        [-1,  0,  1],
+    ];
+    
+    enum float[3][3] sobelVertical = [
+        [-1, -2, -1],
+        [ 0,  0,  0],
+        [ 1,  2,  1],
+    ];
+    
+    foreach(window, x, y; src.windows(3, 3))
+    {
+        Color4f hor = Color4f(0, 0, 0);
+        Color4f ver = Color4f(0, 0, 0);
+        foreach(ref Color4f pixel, x, y; window)
+        {
+            hor += pixel * sobelHorizontal[y][x];
+            ver += pixel * sobelVertical[y][x];
+        }
+        
+        float magnitude = sqrt(hor.xyz.lengthsqr + ver.xyz.lengthsqr) * normFactor;
+        Color4f res = Color4f(magnitude, magnitude, magnitude, 1.0f);
+        res.a = 1.0f;
+        outp[x, y] = res;
+    }
+    
+    return outp;
 }
