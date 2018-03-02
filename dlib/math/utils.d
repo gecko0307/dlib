@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov
+Copyright (c) 2011-2018 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -64,7 +64,20 @@ T radtodeg(T) (T angle) nothrow
 }
 
 /*
- * Find maximum of three values
+ * Find maximum and minimum of two values
+ */
+T max2(T) (T x, T y) nothrow
+{
+    return (x > y)? x : y;
+}
+
+T min2(T) (T x, T y) nothrow
+{
+    return (x < y)? x : y;
+}
+
+/*
+ * Find maximum and minimum of three values
  */
 T max3(T) (T x, T y, T z) nothrow
 {
@@ -103,7 +116,6 @@ else
  */
 bool isConsiderZero(T) (T f) nothrow
 {
-    //enum ZERO = 1.0e-6;
     return (abs(f) < EPSILON);
 }
 

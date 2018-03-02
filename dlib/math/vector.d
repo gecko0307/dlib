@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov
+Copyright (c) 2011-2018 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -927,6 +927,25 @@ bool isAlmostZero(Vector3f v)
     return (isConsiderZero(v.x) &&
             isConsiderZero(v.y) &&
             isConsiderZero(v.z));
+}
+
+
+Vector!(T,3) reflect(T)(Vector!(T,3) I, Vector!(T,3) N)
+{
+    return I - N * dot(N, I) * 2.0;
+}
+
+Vector!(T,3) refract(T)(Vector!(T,3) I, Vector!(T,3) N, T r)
+{
+    T d = 1.0 - r * r * (1.0 - dot(N, I) * dot(N, I));
+    if (d < 0.0)
+        return Vector!(T,3)(0.0, 0.0, 0.0);
+    return I * r - N * (r * dot(N, I) + sqrt(d));
+}
+
+Vector!(T,3) faceforward(T)(Vector!(T,3) N, Vector!(T,3) I, Vector!(T,3) Nref) 
+{
+    return dot(Nref, I) < 0.0 ? N : -N;
 }
 
 /*

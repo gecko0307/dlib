@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2017 Timur Gafarov
+Copyright (c) 2013-2018 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -44,7 +44,30 @@ T bezierCubic(T) (T A, T B, T C, T D, T t)
            t * t * t * D;
 }
 
+T bezierCubicTangent(T)(T a, T b, T c, T d, T t)
+{
+    T c1 = (d - (3.0 * c) + (3.0 * b) - a);
+    T c2 = ((3.0 * c) - (6.0 * b) + (3.0 * a));
+    T c3 = ((3.0 * b) - (3.0 * a));
+    return ((3.0 * c1 * t * t) + (2.0 * c2 * t) + c3);
+}
+
 alias bezierCubic bezier;
+alias bezierCubicTangent bezierTangent;
+
+Vector!(T,2) bezierVector2(T)(
+    Vector!(T,2) a,
+    Vector!(T,2) b,
+    Vector!(T,2) c,
+    Vector!(T,2) d,
+    T t)
+{
+    return Vector!(T,2)
+    (
+        bezier(a.x, b.x, c.x, d.x, t),
+        bezier(a.y, b.y, c.y, d.y, t)
+    );
+}
 
 Vector!(T,3) bezierVector3(T)(
     Vector!(T,3) a,
@@ -61,9 +84,12 @@ Vector!(T,3) bezierVector3(T)(
     );
 }
 
-alias bezierVector3 bezierCurveFunc3D;
+// For backward compatibility
+deprecated alias bezierVector2 bezierCurveFunc2D;
+deprecated alias bezierVector3 bezierCurveFunc3D;
 
-Vector!(T,2) bezierVector2(T)(
+// Tangent is not normalized!
+Vector!(T,2) bezierTangentVector2(T)(
     Vector!(T,2) a,
     Vector!(T,2) b,
     Vector!(T,2) c,
@@ -72,9 +98,24 @@ Vector!(T,2) bezierVector2(T)(
 {
     return Vector!(T,2)
     (
-        bezier(a.x, b.x, c.x, d.x, t),
-        bezier(a.y, b.y, c.y, d.y, t)
+        bezierTangent(a.x, b.x, c.x, d.x, t),
+        bezierTangent(a.y, b.y, c.y, d.y, t)
     );
 }
 
-alias bezierVector2 bezierCurveFunc2D;
+// Tangent is not normalized!
+Vector!(T,3) bezierTangentVector3(T)(
+    Vector!(T,3) a,
+    Vector!(T,3) b,
+    Vector!(T,3) c,
+    Vector!(T,3) d,
+    T t)
+{
+    return Vector!(T,3)
+    (
+        bezierTangent(a.x, b.x, c.x, d.x, t),
+        bezierTangent(a.y, b.y, c.y, d.y, t),
+        bezierTangent(a.z, b.z, c.z, d.z, t)
+    );
+}
+
