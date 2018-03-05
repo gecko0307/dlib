@@ -17,7 +17,13 @@ matrix:
   fast_finish: true
   allow_failures:
    - d: gdc
+   - d: dmd-2.079.0
+     os: linux
+     env: ARCH=x86
    - d: dmd-2.078.3
+     os: linux
+     env: ARCH=x86
+   - d: ldc-1.8.0-beta1
      os: linux
      env: ARCH=x86
    - d: ldc-1.7.0
