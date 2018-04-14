@@ -13,8 +13,6 @@ What's inside
 -------------
 Currently dlib contains the following packages:
 
-* dlib.async - event loop and asynchronous programming capabilities
-
 * dlib.core - basic functionality used by other modules (manual memory management, streams, OOP for structs, etc.)
 
 * dlib.container - generic data structures (GC-free dynamic and associative arrays and more)

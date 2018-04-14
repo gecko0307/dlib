@@ -30,7 +30,6 @@ module dlib;
 
 public
 {
-    import dlib.async;
     import dlib.audio;
     import dlib.coding;
     import dlib.container;

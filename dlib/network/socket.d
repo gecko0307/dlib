@@ -58,7 +58,10 @@ version (Posix)
 }
 else version (Windows)
 {
-    import dlib.async.iocp;
+    //import dlib.async.iocp;
+    import core.sys.windows.winbase;
+    import core.sys.windows.windef;
+
     import core.sys.windows.basetyps;
     import core.sys.windows.mswsock;
     import core.sys.windows.winbase;
@@ -217,6 +220,18 @@ else version (Windows)
         accept = 1,
         read = 2,
         write = 3,
+    }
+    
+    class State
+    {
+        /// For internal use by Windows API.
+        align(1) OVERLAPPED overlapped;
+
+        /// File/socket handle.
+        HANDLE handle;
+
+        /// For keeping events or event masks.
+        int event;
     }
 
     class SocketState : State
