@@ -7,26 +7,26 @@ os:
 language: d
 
 d:
+ - dmd-2.080.0
  - dmd-2.079.1
- - dmd-2.078.3
+ - ldc-1.9.0
  - ldc-1.8.0
- - ldc-1.7.0
  - gdc
 
 matrix:
   fast_finish: true
   allow_failures:
    - d: gdc
+   - d: dmd-2.080.0
+     os: linux
+     env: ARCH=x86
    - d: dmd-2.079.1
      os: linux
      env: ARCH=x86
-   - d: dmd-2.078.3
+   - d: ldc-1.9.0
      os: linux
      env: ARCH=x86
    - d: ldc-1.8.0
-     os: linux
-     env: ARCH=x86
-   - d: ldc-1.7.0
      os: linux
      env: ARCH=x86
    
