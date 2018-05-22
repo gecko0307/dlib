@@ -35,7 +35,7 @@
     <tr>
     <td colspan="2">
       <p></p>
-      <p><a href="https://github.com/gecko0307/dlib" target="_blank">dlib</a> is a general-purpose library for <a href="https://dlang.org" target="_blank">D language</a>. It implements such common functionality as image manipulation, OpenGL-friendly linear algebra, threading, stream-based I/O, memory management, async event loop, etc. dlib is an ideal solution for writing game engines and rendering pipelines, building simple web apps, quickly prototyping new ideas and algorithms.
+      <p><a href="https://github.com/gecko0307/dlib" target="_blank">dlib</a> is a general-purpose library for <a href="https://dlang.org" target="_blank">D language</a>. It implements such common functionality as image manipulation, OpenGL-friendly linear algebra, multithreading, networking, stream-based I/O, memory management, etc. dlib is an ideal solution for writing game engines and rendering pipelines, building simple web apps, quickly prototyping new ideas and algorithms.
       </p>
       <p>dlib is cross-platform, it supports Windows, Linux, macOS and FreeBSD. It is fully written in D2 and has no external dependencies aside D's standard library, Phobos.</p>
       <p>Currently dlib contains the following packages:
@@ -48,11 +48,11 @@
       <li><b>dlib.geometry</b> - computational geometry (ray casting, primitives, intersection, etc.)</li>
       <li><b>dlib.image</b> - image processing (8-bit, 16-bit and 32-bit floating point channels, common filters and convolution kernels, resizing, FFT, HDRI, animation, vector graphics rendering, image formats I/O: JPEG, PNG/APNG, BMP, TGA, HDR)</li>
       <li><b>dlib.audio</b> - sound processing (8 and 16 bits per sample, synthesizers, WAV export and import)</li>
-      <li><b>dlib.network</b> - networking and web functionality</li>
+      <li><b>dlib.network</b> - cross-platform sockets and other network functionality</li>
       <li><b>dlib.memory</b> - allocators and memory management functions</li>
       <li><b>dlib.text</b> - text processing</li>
       <li><b>dlib.serialization</b> - data serialization (currently includes lightweight XML parser)</li>
-      <li><b>dlib.coding</b> - various data compression and coding algorithms</li>
+      <li><b>dlib.coding</b> - various data compression and coding algorithms.</li>
       </ul>
       </p>
       <h2>Download</h2>
@@ -107,8 +107,8 @@ void main()
         ConnectedSocket connection = listener.accept();
         if (connection)
         {
-            auto numBytesReceibed = connection.receive(inputBuffer);
-            string receivedStr = cast(string)inputBuffer[0..numBytesReceibed];
+            auto numBytesReceived = connection.receive(inputBuffer);
+            string receivedStr = cast(string)inputBuffer[0..numBytesReceived];
             writeln(receivedStr);
 
             string responce = "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n<html><body>Hello, world!</body></html>\r\n";
