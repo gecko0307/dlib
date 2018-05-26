@@ -108,8 +108,8 @@ void saveAnimatedImage(SuperAnimatedImage img, string filename)
     }
 }
 
-alias saveImage save;
-alias loadImage load;
+alias save = saveImage;
+alias load = loadImage;
 
-alias loadAnimatedImage loadAnimated;
-alias saveAnimatedImage saveAnimated;
+alias loadAnimated = loadAnimatedImage;
+alias saveAnimated = saveAnimatedImage;

@@ -32,7 +32,7 @@ import dlib.image.image;
 import dlib.image.color;
 
 // Default desaturate filter
-alias desaturate709 desaturate;
+alias desaturate = desaturate709;
 
 // ITU-R recommendation BT.709
 SuperImage desaturate709(SuperImage img, SuperImage outp = null)

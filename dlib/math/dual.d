@@ -208,5 +208,5 @@ struct Dual(T)
     }
 }
 
-alias Dual!(float) Dualf;
-alias Dual!(double) Duald;
+alias Dualf = Dual!(float);
+alias Duald = Dual!(double);

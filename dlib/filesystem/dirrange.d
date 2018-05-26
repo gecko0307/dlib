@@ -31,4 +31,4 @@ module dlib.filesystem.dirrange;
 import dlib.filesystem.delegaterange;
 import dlib.filesystem.filesystem;
 
-alias DelegateInputRange!DirEntry DirRange;
+alias DirRange = DelegateInputRange!DirEntry;

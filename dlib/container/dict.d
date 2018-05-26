@@ -279,7 +279,7 @@ class Trie(T, K)
 }
 
 /// Convenient alias
-alias Trie Dict;
+alias Dict = Trie;
 
 /// Convenient function for dict creation.
 Dict!(T, K) dict(T, K)()

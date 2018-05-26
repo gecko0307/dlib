@@ -183,5 +183,5 @@ struct DualQuaternion(T)
 /*
  * Predefined dual quaternion type aliases
  */
-alias DualQuaternion!(float) DualQuaternionf;
-alias DualQuaternion!(double) DualQuaterniond;
+alias DualQuaternionf = DualQuaternion!(float);
+alias DualQuaterniond = DualQuaternion!(double);

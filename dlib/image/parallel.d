@@ -40,7 +40,7 @@ private
  * allowing to write filters that run faster on multicore processors
  */
 
-alias Range!uint PixRange;
+alias PixRange = Range!uint;
 
 struct Block
 {
