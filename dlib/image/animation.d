@@ -118,15 +118,15 @@ class AnimatedImage(PixelFormat fmt): Image!(fmt), SuperAnimatedImage
     }
 }
 
-alias AnimatedImage!(PixelFormat.L8) AnimatedImageL8;
-alias AnimatedImage!(PixelFormat.LA8) AnimatedImageLA8;
-alias AnimatedImage!(PixelFormat.RGB8) AnimatedImageRGB8;
-alias AnimatedImage!(PixelFormat.RGBA8) AnimatedImageRGBA8;
+alias AnimatedImageL8 = AnimatedImage!(PixelFormat.L8);
+alias AnimatedImageLA8 = AnimatedImage!(PixelFormat.LA8);
+alias AnimatedImageRGB8 = AnimatedImage!(PixelFormat.RGB8);
+alias AnimatedImageRGBA8 = AnimatedImage!(PixelFormat.RGBA8);
 
-alias AnimatedImage!(PixelFormat.L16) AnimatedImageL16;
-alias AnimatedImage!(PixelFormat.LA16) AnimatedImageLA16;
-alias AnimatedImage!(PixelFormat.RGB16) AnimatedImageRGB16;
-alias AnimatedImage!(PixelFormat.RGBA16) AnimatedImageRGBA16;
+alias AnimatedImageL16 = AnimatedImage!(PixelFormat.L16);
+alias AnimatedImageLA16 = AnimatedImage!(PixelFormat.LA16);
+alias AnimatedImageRGB16 = AnimatedImage!(PixelFormat.RGB16);
+alias AnimatedImageRGBA16 = AnimatedImage!(PixelFormat.RGBA16);
 
 class AnimatedImageFactory: SuperImageFactory
 {
@@ -223,15 +223,15 @@ class UnmanagedAnimatedImage(PixelFormat fmt): AnimatedImage!(fmt)
     }
 }
 
-alias UnmanagedAnimatedImage!(PixelFormat.L8) UnmanagedAnimatedImageL8;
-alias UnmanagedAnimatedImage!(PixelFormat.LA8) UnmanagedAnimatedImageLA8;
-alias UnmanagedAnimatedImage!(PixelFormat.RGB8) UnmanagedAnimatedImageRGB8;
-alias UnmanagedAnimatedImage!(PixelFormat.RGBA8) UnmanagedAnimatedImageRGBA8;
+alias UnmanagedAnimatedImageL8 = UnmanagedAnimatedImage!(PixelFormat.L8);
+alias UnmanagedAnimatedImageLA8 = UnmanagedAnimatedImage!(PixelFormat.LA8);
+alias UnmanagedAnimatedImageRGB8 = UnmanagedAnimatedImage!(PixelFormat.RGB8);
+alias UnmanagedAnimatedImageRGBA8 = UnmanagedAnimatedImage!(PixelFormat.RGBA8);
 
-alias UnmanagedAnimatedImage!(PixelFormat.L16) UnmanagedAnimatedImageL16;
-alias UnmanagedAnimatedImage!(PixelFormat.LA16) UnmanagedAnimatedImageLA16;
-alias UnmanagedAnimatedImage!(PixelFormat.RGB16) UnmanagedAnimatedImageRGB16;
-alias UnmanagedAnimatedImage!(PixelFormat.RGBA16) UnmanagedAnimatedImageRGBA16;
+alias UnmanagedAnimatedImageL16 = UnmanagedAnimatedImage!(PixelFormat.L16);
+alias UnmanagedAnimatedImageLA16 = UnmanagedAnimatedImage!(PixelFormat.LA16);
+alias UnmanagedAnimatedImageRGB16 = UnmanagedAnimatedImage!(PixelFormat.RGB16);
+alias UnmanagedAnimatedImageRGBA16 = UnmanagedAnimatedImage!(PixelFormat.RGBA16);
 
 class UnmanagedAnimatedImageFactory: SuperImageFactory
 {

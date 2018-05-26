@@ -769,7 +769,7 @@ body
     return res;
 }
 
-alias tensorProduct outerProduct;
+alias outerProduct = tensorProduct;
 
 /*
  * Compute normal of a plane from three points
@@ -951,38 +951,38 @@ Vector!(T,3) faceforward(T)(Vector!(T,3) N, Vector!(T,3) I, Vector!(T,3) Nref)
 /*
  * Predefined vector types
  */
-alias Vector!(int, 2) Vector2i;
-alias Vector!(uint, 2) Vector2u;
-alias Vector!(float, 2) Vector2f;
-alias Vector!(double, 2) Vector2d;
+alias Vector2i = Vector!(int, 2);
+alias Vector2u = Vector!(uint, 2);
+alias Vector2f = Vector!(float, 2);
+alias Vector2d = Vector!(double, 2);
 
-alias Vector!(int, 3) Vector3i;
-alias Vector!(uint, 3) Vector3u;
-alias Vector!(float, 3) Vector3f;
-alias Vector!(double, 3) Vector3d;
+alias Vector3i = Vector!(int, 3);
+alias Vector3u = Vector!(uint, 3);
+alias Vector3f = Vector!(float, 3);
+alias Vector3d = Vector!(double, 3);
 
-alias Vector!(int, 4) Vector4i;
-alias Vector!(uint, 4) Vector4u;
-alias Vector!(float, 4) Vector4f;
-alias Vector!(double, 4) Vector4d;
+alias Vector4i = Vector!(int, 4);
+alias Vector4u = Vector!(uint, 4);
+alias Vector4f = Vector!(float, 4);
+alias Vector4d = Vector!(double, 4);
 
 /*
  * GLSL-like short aliases
  */
-alias Vector2i ivec2;
-alias Vector2u uvec2;
-alias Vector2f vec2;
-alias Vector2d dvec2;
+alias ivec2 = Vector2i;
+alias uvec2 = Vector2u;
+alias vec2 = Vector2f;
+alias dvec2 = Vector2d;
 
-alias Vector3i ivec3;
-alias Vector3u uvec3;
-alias Vector3f vec3;
-alias Vector3d dvec3;
+alias ivec3 = Vector3i;
+alias uvec3 = Vector3u;
+alias vec3 = Vector3f;
+alias dvec3 = Vector3d;
 
-alias Vector4i ivec4;
-alias Vector4u uvec4;
-alias Vector4f vec4;
-alias Vector4d dvec4;
+alias ivec4 = Vector4i;
+alias uvec4 = Vector4u;
+alias vec4 = Vector4f;
+alias dvec4 = Vector4d;
 
 /*
  * Axis vectors

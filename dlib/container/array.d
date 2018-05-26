@@ -439,14 +439,14 @@ struct DynamicArray(T, size_t chunkSize = 32)
         assert(arr.data == [1, 5]);
     }
 
-    alias insertKey insertAt;
-    alias removeKey removeAt;
+    alias insertAt = insertKey;
+    alias removeAt = removeKey;
 
     // For backward compatibility
-    alias insertBack append;
-    alias insertFront appendLeft;
-    alias removeBack remove;
-    alias removeFront removeLeft;
+    alias append = insertBack;
+    alias appendLeft = insertFront;
+    alias remove = removeBack;
+    alias removeLeft = removeFront;
 
     /**
      * Get number of elements in array.
@@ -581,7 +581,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     }
 }
 
-alias DynamicArray Array;
+alias Array = DynamicArray;
 
 void reallocateArray(T)(ref T[] buffer, size_t len)
 {

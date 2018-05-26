@@ -1229,7 +1229,7 @@ struct MCU
     uint width;
     uint height;
 
-    alias int[8*8] Block;
+    alias Block = int[8*8];
     Block[] yBlocks;
     Block[] cbBlocks;
     Block[] crBlocks;

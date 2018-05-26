@@ -30,23 +30,23 @@ module dlib.core.tuple;
 
 template Tuple(E...)
 {
-    alias E Tuple;
+    alias Tuple = E;
 }
 
 template RangeTuple(int stop)
 {
     static if (stop <= 0)
-        alias Tuple!() RangeTuple;
+        alias RangeTuple = Tuple!();
     else
-        alias Tuple!(RangeTuple!(stop-1), stop-1) RangeTuple;
+        alias RangeTuple = Tuple!(RangeTuple!(stop-1), stop-1);
 }
 
 template RangeTuple(int start, int stop)
 {
     static if (stop <= start)
-        alias Tuple!() RangeTuple;
+        alias RangeTuple = Tuple!();
     else
-        alias Tuple!(RangeTuple!(start, stop-1), stop-1) RangeTuple;
+        alias RangeTuple = Tuple!(RangeTuple!(start, stop-1), stop-1);
 }
 
 template RangeTuple(int start, int stop, int step)
@@ -56,15 +56,15 @@ template RangeTuple(int start, int stop, int step)
     static if (step > 0)
     {
         static if (stop <= start)
-            alias Tuple!() RangeTuple;
+            alias RangeTuple = Tuple!();
         else
-            alias Tuple!(RangeTuple!(start, stop-step, step), stop-step) RangeTuple;
+            alias RangeTuple = Tuple!(RangeTuple!(start, stop-step, step), stop-step);
     }
     else
     {
         static if (stop >= start)
-            alias Tuple!() RangeTuple;
+            alias RangeTuple = Tuple!();
         else
-            alias Tuple!(RangeTuple!(start, stop-step, step), stop-step) RangeTuple;
+            alias RangeTuple = Tuple!(RangeTuple!(start, stop-step, step), stop-step);
     }
 }

@@ -41,7 +41,7 @@ T readStruct(T)(File* f, bool bigEndian = false)
     T res;
     foreach(ref field; res.tupleof)
     {
-        alias typeof(field) FieldType;
+        alias FieldType = typeof(field);
 
         ubyte[FieldType.sizeof] bytes;
         f.rawRead(bytes);
@@ -62,7 +62,7 @@ T readStruct(T)(InputStream input, bool bigEndian = false)
     T res;
     foreach(ref field; res.tupleof)
     {
-        alias typeof(field) FieldType;
+        alias FieldType = typeof(field);
 
         ubyte[FieldType.sizeof] bytes;
         input.fillArray(bytes);

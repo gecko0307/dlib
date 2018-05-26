@@ -44,7 +44,7 @@ import std.traits;
 mixin template Inherit(PT...)
 {
     PT _parent;
-    alias PT _parentTypeTuple;
+    alias _parentTypeTuple = PT;
     alias _parent this;
 
     template opDispatch(string s)
@@ -144,8 +144,8 @@ bool implements(T, I)()
                 return false;
             else
             {
-                alias typeof(__traits(getMember, T, name)) t1;
-                alias typeof(__traits(getMember, I, name)) t2;
+                alias t1 = typeof(__traits(getMember, T, name));
+                alias t2 = typeof(__traits(getMember, I, name));
                 static if (!is(t1 == t2))
                     return false;
             }

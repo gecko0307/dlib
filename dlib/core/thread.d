@@ -44,7 +44,7 @@ version(Windows)
         int    bInheritHandle;
     }
 
-    alias extern(Windows) uint function(in void*) LPTHREAD_START_ROUTINE;
+    alias LPTHREAD_START_ROUTINE = extern(Windows) uint function(in void*);
 
     void* CreateThread(
         in SECURITY_ATTRIBUTES*   lpThreadAttributes,

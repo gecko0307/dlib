@@ -119,8 +119,8 @@ SuperImage morph(MorphOperation op) (SuperImage img)
     return morphOp!(op)(img, null);
 }
 
-alias morph!(MorphOperation.Dilate) dilate;
-alias morph!(MorphOperation.Erode) erode;
+alias dilate = morph!(MorphOperation.Dilate);
+alias erode = morph!(MorphOperation.Erode);
 
 SuperImage open(SuperImage img)
 {

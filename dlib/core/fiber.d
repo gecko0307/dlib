@@ -44,8 +44,8 @@ enum FiberState
 
 class Fiber(YT)
 {
-    alias YT YieldType;
-    alias extern(C) void function() CFunc;
+    alias YieldType = YT;
+    alias CFunc = extern(C) void function();
 
     void function(Fiber) func;
     void delegate(Fiber) dlgt;

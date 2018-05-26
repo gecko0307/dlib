@@ -360,15 +360,15 @@ class Image(PixelFormat fmt): SuperImage
     ubyte[] _data;
 }
 
-alias Image!(PixelFormat.L8) ImageL8;
-alias Image!(PixelFormat.LA8) ImageLA8;
-alias Image!(PixelFormat.RGB8) ImageRGB8;
-alias Image!(PixelFormat.RGBA8) ImageRGBA8;
+alias ImageL8 = Image!(PixelFormat.L8);
+alias ImageLA8 = Image!(PixelFormat.LA8);
+alias ImageRGB8 = Image!(PixelFormat.RGB8);
+alias ImageRGBA8 = Image!(PixelFormat.RGBA8);
 
-alias Image!(PixelFormat.L16) ImageL16;
-alias Image!(PixelFormat.LA16) ImageLA16;
-alias Image!(PixelFormat.RGB16) ImageRGB16;
-alias Image!(PixelFormat.RGBA16) ImageRGBA16;
+alias ImageL16 = Image!(PixelFormat.L16);
+alias ImageLA16 = Image!(PixelFormat.LA16);
+alias ImageRGB16 = Image!(PixelFormat.RGB16);
+alias ImageRGBA16 = Image!(PixelFormat.RGBA16);
 
 /*
  * All-in-one image factory

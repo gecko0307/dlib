@@ -224,5 +224,5 @@ void deallocate(T)(T* obj)
     }
 }
 
-alias allocate New;
-alias deallocate Delete;
+alias New = allocate;
+alias Delete = deallocate;
