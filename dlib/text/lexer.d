@@ -30,7 +30,7 @@ module dlib.text.lexer;
 
 import dlib.text.slicelexer;
 
-alias SliceLexer Lexer;
+alias Lexer = SliceLexer;
 
 /+++
 import std.stdio;
@@ -323,5 +323,6 @@ unittest
     input = "";
     lexer = new Lexer(input, delims);
     assert(lexer.getLexeme().length == 0);
-}+++/
+}
++++/
 

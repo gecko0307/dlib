@@ -42,8 +42,8 @@ enum Channel
     A = 3
 }
 
-alias Vector!(ushort, 4) Color4;
-alias Color4 ColorRGBA;
+alias Color4 = Vector!(ushort, 4);
+alias ColorRGBA = Color4;
 
 Color4 invert(Color4 c)
 {
@@ -155,7 +155,7 @@ struct Color4f
         return cast(int)((luminance() - c.luminance()) * 100);
     }
 
-    alias luminance709 luminance;
+    alias luminance = luminance709;
 
     // ITU-R Rec. BT.709
     float luminance709() const
@@ -221,7 +221,7 @@ Color4f packNormal(Vector3f n)
     return Color4f((n + 1.0f) * 0.5f);
 }
 
-alias Color4f ColorRGBAf;
+alias ColorRGBAf = Color4f;
 
 /*
  * 32-bit color unpacking

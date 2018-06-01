@@ -38,7 +38,7 @@ T interpLinear(T) (T a, T b, float t)
     return a + (b - a) * t;
 }
 
-alias interpLinear lerp;
+alias lerp = interpLinear;
 
 T interpNearest(T) (T x, T y, float t)
 {

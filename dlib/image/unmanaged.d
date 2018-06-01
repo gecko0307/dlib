@@ -70,15 +70,15 @@ class UnmanagedImage(PixelFormat fmt): Image!(fmt)
     }
 }
 
-alias UnmanagedImage!(PixelFormat.L8) UnmanagedImageL8;
-alias UnmanagedImage!(PixelFormat.LA8) UnmanagedImageLA8;
-alias UnmanagedImage!(PixelFormat.RGB8) UnmanagedImageRGB8;
-alias UnmanagedImage!(PixelFormat.RGBA8) UnmanagedImageRGBA8;
+alias UnmanagedImageL8 = UnmanagedImage!(PixelFormat.L8);
+alias UnmanagedImageLA8 = UnmanagedImage!(PixelFormat.LA8);
+alias UnmanagedImageRGB8 = UnmanagedImage!(PixelFormat.RGB8);
+alias UnmanagedImageRGBA8 = UnmanagedImage!(PixelFormat.RGBA8);
 
-alias UnmanagedImage!(PixelFormat.L16) UnmanagedImageL16;
-alias UnmanagedImage!(PixelFormat.LA16) UnmanagedImageLA16;
-alias UnmanagedImage!(PixelFormat.RGB16) UnmanagedImageRGB16;
-alias UnmanagedImage!(PixelFormat.RGBA16) UnmanagedImageRGBA16;
+alias UnmanagedImageL16 = UnmanagedImage!(PixelFormat.L16);
+alias UnmanagedImageLA16 = UnmanagedImage!(PixelFormat.LA16);
+alias UnmanagedImageRGB16 = UnmanagedImage!(PixelFormat.RGB16);
+alias UnmanagedImageRGBA16 = UnmanagedImage!(PixelFormat.RGBA16);
 
 class UnmanagedImageFactory: SuperImageFactory
 {

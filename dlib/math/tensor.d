@@ -53,9 +53,9 @@ size_t calcLen(T...)(T n)
 template NTypeTuple(T, int n)
 {
     static if (n <= 0)
-        alias Tuple!() NTypeTuple;
+        alias NTypeTuple = Tuple!();
     else
-        alias Tuple!(NTypeTuple!(T, n-1), T) NTypeTuple;
+        alias NTypeTuple = Tuple!(NTypeTuple!(T, n-1), T);
 }
 
 enum MaxStaticTensorSize = double.sizeof * 16; // fit 4x4 matrix of doubles
@@ -94,10 +94,10 @@ template Tensor(T, size_t dim, sizes...)
     {
         private enum size_t _dataLen = calcLen(sizes);
 
-        alias T ElementType;
+        alias ElementType = T;
         enum size_t dimensions = dim;
         enum size_t order = dim;
-        alias sizes Sizes;
+        alias Sizes = sizes;
         enum bool isTensor = true;
         enum bool isScalar = (order == 0 && _dataLen == 1);
         enum bool isVector = (order == 1);
@@ -287,7 +287,7 @@ template Tensor(T, size_t dim, sizes...)
             }
         }
 
-        alias NTypeTuple!(size_t, order) Indices;
+        alias Indices = NTypeTuple!(size_t, order);
 
         int opApply(scope int delegate(ref T v, Indices indices) dg)
         {
@@ -471,7 +471,7 @@ template Tensor(T, size_t dim, sizes...)
             }
         }
 
-        alias data arrayof;
+        alias arrayof = data;
 
     }
 }
@@ -489,10 +489,10 @@ auto tensorProduct(T1, T2)(T1 t1, T2 t2)
 {
     static assert(T1.dimensions == T2.dimensions);
 
-    alias T1.ElementType T;
+    alias T = T1.ElementType;
     enum order = T1.dimensions + T2.dimensions;
-    alias Tuple!(T2.Sizes, T1.Sizes) sizes;
-    alias Tensor!(T, order, sizes) TensorType;
+    alias sizes = Tuple!(T2.Sizes, T1.Sizes);
+    alias TensorType = Tensor!(T, order, sizes);
 
     TensorType t;
     static if (TensorType.dynamic)

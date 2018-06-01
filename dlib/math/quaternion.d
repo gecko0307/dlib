@@ -218,7 +218,7 @@ struct Quaternion(T)
         return Quaternion!(T)(-x, -y, -z, w);
     }
 
-    alias conjugate conj;
+    alias conj = conjugate;
 
    /*
     * Compute the W component of a unit length quaternion
@@ -734,5 +734,5 @@ deprecated("identityQuaternion is deprecated, use Quaternion!(T).identity instea
 /*
  * Predefined quaternion type aliases
  */
-alias Quaternion!(float) Quaternionf;
-alias Quaternion!(double) Quaterniond;
+alias Quaternionf = Quaternion!(float);
+alias Quaterniond = Quaternion!(double);

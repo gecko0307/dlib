@@ -52,8 +52,8 @@ T bezierCubicTangent(T)(T a, T b, T c, T d, T t)
     return ((3.0 * c1 * t * t) + (2.0 * c2 * t) + c3);
 }
 
-alias bezierCubic bezier;
-alias bezierCubicTangent bezierTangent;
+alias bezier = bezierCubic;
+alias bezierTangent = bezierCubicTangent;
 
 Vector!(T,2) bezierVector2(T)(
     Vector!(T,2) a,
@@ -85,8 +85,8 @@ Vector!(T,3) bezierVector3(T)(
 }
 
 // For backward compatibility
-deprecated alias bezierVector2 bezierCurveFunc2D;
-deprecated alias bezierVector3 bezierCurveFunc3D;
+deprecated alias bezierCurveFunc2D = bezierVector2;
+deprecated alias bezierCurveFunc3D = bezierVector3;
 
 // Tangent is not normalized!
 Vector!(T,2) bezierTangentVector2(T)(

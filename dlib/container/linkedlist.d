@@ -519,8 +519,8 @@ struct LinkedList(T, bool ordered = true)
     }
 
     // For backward compatibility
-    alias insertBack append;
-    alias insertFront insertBeginning;
-    alias removeFront removeBeginning;
-    alias find search;
+    alias append = insertBack;
+    alias insertBeginning = insertFront;
+    alias removeBeginning = removeFront;
+    alias search = find;
 }

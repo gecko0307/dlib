@@ -497,7 +497,7 @@ struct Matrix(T, size_t N)
     else
     static if (N == 3)
     {
-        alias determinant3x3 determinant;
+        alias determinant = determinant3x3;
     }
     else
     {
@@ -541,7 +541,7 @@ struct Matrix(T, size_t N)
         }
     }
 
-    alias determinant det;
+    alias det = determinant;
 
    /*
     * Return true if matrix is singular
@@ -552,7 +552,7 @@ struct Matrix(T, size_t N)
         return (determinant == 0);
     }
 
-    alias isSingular singular;
+    alias singular = isSingular;
 
    /*
     * Check if matrix represents affine transformation
@@ -568,7 +568,7 @@ struct Matrix(T, size_t N)
                  && a44 == 1.0);
         }
 
-        alias isAffine affine;
+        alias affine = isAffine;
     }
 
    /*
@@ -923,9 +923,9 @@ alias Matrix!(double, 4) Matrix4x4d, Matrix4d;
 /*
  * Short aliases
  */
-alias Matrix2x2f mat2;
-alias Matrix3x3f mat3;
-alias Matrix4x4f mat4;
+alias mat2 = Matrix2x2f;
+alias mat3 = Matrix3x3f;
+alias mat4 = Matrix4x4f;
 
 /*
  * Matrix factory function
