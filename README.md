@@ -41,8 +41,6 @@ Currently dlib contains the following packages:
 
 * dlib.coding - various data compression and coding algorithms
 
-If you like dlib, please support its development via [PayPal](https://www.paypal.me/tgafarov). Thanks in advance!
-
 Documentation
 -------------
 Please, refer to [the wiki](https://github.com/gecko0307/dlib/wiki). Also HTML documentation can be generated from wiki pages using [this](https://github.com/gecko0307/dlib/tree/master/gendoc) set of tools. Be aware that documentation is currently incomplete.
