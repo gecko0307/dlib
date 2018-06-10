@@ -372,8 +372,8 @@ class Canvas
 
     void blitTmpBuffer(Color4f color)
     {
-        foreach(y; 0.._image.width)
-        foreach(x; 0.._image.height)
+        foreach(y; 0.._image.height)
+        foreach(x; 0.._image.width)
         {
             Color4f c1 = _image[x, y];
             Color4f c2 = color;
