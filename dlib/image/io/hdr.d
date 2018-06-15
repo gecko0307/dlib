@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2017 Timur Gafarov
+Copyright (c) 2016-2018 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -39,10 +39,48 @@ import dlib.image.color;
 import dlib.image.image;
 import dlib.image.hdri;
 import dlib.image.io.io;
+import dlib.math.utils;
 
 /*
- * Radiance HDR/RGBE decoder
+ * Radiance HDR/RGBE decoder and encoder
  */
+
+struct ColorRGBE
+{
+    ubyte r;
+    ubyte g;
+    ubyte b;
+    ubyte e;
+}
+
+ColorRGBE floatToRGBE(Color4f c)
+{
+    ColorRGBE rgbe;
+
+    float v = c.r;
+    if (c.g > v)
+        v = c.g;
+    if (c.b > v)
+        v = c.b;
+    if (v < EPSILON)
+    {
+        rgbe.r = 0;
+        rgbe.g = 0;
+        rgbe.b = 0;
+        rgbe.e = 0;
+    }
+    else
+    {
+        int e;
+        v = frexp(v, e) * 256.0f / v;
+        rgbe.r = cast(ubyte)(c.r * v);
+        rgbe.g = cast(ubyte)(c.g * v);
+        rgbe.b = cast(ubyte)(c.b * v);
+        rgbe.e = cast(ubyte)(e + 128);
+    }
+
+    return rgbe;
+}
 
 void readLineFromStream(InputStream istrm, ref DynamicArray!char line)
 {
@@ -231,7 +269,7 @@ Compound!(SuperHDRImage, string) loadHDR(
     }
 
     // Convert RGBE to IEEE floats
-    img = imgFac.createImage(width, height); //new FPImage(width, height);
+    img = imgFac.createImage(width, height);
     foreach(y; 0..height)
     foreach(x; 0..width)
     {
@@ -255,3 +293,128 @@ Compound!(SuperHDRImage, string) loadHDR(
 
     return compound(img, "");
 }
+
+/*
+ * Save HDR to file using local FileSystem.
+ * Causes GC allocation
+ */
+void saveHDR(SuperHDRImage img, string filename)
+{
+    OutputStream output = openForOutput(filename);
+    Compound!(bool, string) res = saveHDR(img, output);
+    output.close();
+}
+
+/*
+ * Save HDR to stream.
+ * GC-free
+ */
+Compound!(bool, string) saveHDR(SuperHDRImage img, OutputStream output)
+{
+    Compound!(bool, string) error(string errorMsg)
+    {
+        return compound(false, errorMsg);
+    }
+
+    // Signature and header
+    string hdrStart = "#?RADIANCE\n\n"; // double LF needed to mark end of header
+    output.writeArray(hdrStart);
+
+    // Resolution line
+    char[256] resolution;
+    int len = sprintf(resolution.ptr, "-Y %d +X %d\n", img.height, img.width);
+    output.writeArray(resolution[0..len]);
+
+    ubyte[] scanline = New!(ubyte[])(img.width * 4);
+
+    for (uint y = 0; y < img.height; y++)
+    {
+        ubyte[4] scanlineHeader;
+        scanlineHeader[0] = 2;
+        scanlineHeader[1] = 2;
+        scanlineHeader[2] = cast(ubyte)(img.width >> 8);
+        scanlineHeader[3] = cast(ubyte)(img.width & 0xFF);
+        output.writeArray(scanlineHeader);
+
+        // Convert a scanline to RGBE decomposing channels
+        for (uint x = 0; x < img.width; x++)
+        {
+            ColorRGBE rgbe = img[x, y].floatToRGBE;
+            scanline[x] = rgbe.r;
+            scanline[x + img.width] = rgbe.g;
+            scanline[x + img.width * 2] = rgbe.b;
+            scanline[x + img.width * 3] = rgbe.e;
+        }
+
+        // Write channels
+        foreach(ch; 0..4)
+        {
+            uint offset = ch * img.width;
+            writeBufferRLE(output, scanline[offset..offset+img.width]);
+        }
+    }
+
+    Delete(scanline);
+    
+    return compound(true, "");
+}
+
+/*
+ * Based on code by Bruce Walter:
+ * http://www.graphics.cornell.edu/~bjw/rgbe/rgbe.c
+ */
+void writeBufferRLE(OutputStream output, ubyte[] data)
+{
+    enum MINRUNLENGTH = 4;
+    int cur, beg_run, run_count, old_run_count, nonrun_count;
+    ubyte[2] buf;
+
+    cur = 0;
+    while(cur < data.length)
+    {
+        beg_run = cur;
+
+        // find next run of length at least 4 if one exists
+        run_count = old_run_count = 0;
+        while((run_count < MINRUNLENGTH) && (beg_run < data.length))
+        {
+            beg_run += run_count;
+            old_run_count = run_count;
+            run_count = 1;
+            while( (beg_run + run_count < data.length) && (run_count < 127)
+                && (data[beg_run] == data[beg_run + run_count]))
+	            run_count++;
+        }
+
+        // if data before next big run is a short run then write it as such
+        if ((old_run_count > 1) && (old_run_count == beg_run - cur))
+        {
+            buf[0] = cast(ubyte)(128 + old_run_count); // write short run
+            buf[1] = data[cur];
+            output.writeArray(buf);
+            cur = beg_run;
+        }
+
+        // write out bytes until we reach the start of the next run
+        while(cur < beg_run)
+        {
+            nonrun_count = beg_run - cur;
+            if (nonrun_count > 128) 
+	            nonrun_count = 128;
+            buf[0] = cast(ubyte)nonrun_count;
+            output.writeBytes(buf.ptr, 1);
+            output.writeBytes(&data[cur], nonrun_count);
+            cur += nonrun_count;
+        }
+
+        // write out next run if one was found
+        if (run_count >= MINRUNLENGTH)
+        {
+            buf[0] = cast(ubyte)(128 + run_count);
+            buf[1] = data[beg_run];
+            output.writeArray(buf);
+            cur += run_count;
+        }
+    }
+}
+

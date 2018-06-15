@@ -34,6 +34,7 @@ private
 
     import dlib.image.image;
     import dlib.image.animation;
+    import dlib.image.hdri;
     import dlib.image.io.bmp;
     import dlib.image.io.hdr;
     import dlib.image.io.png;
@@ -108,8 +109,23 @@ void saveAnimatedImage(SuperAnimatedImage img, string filename)
     }
 }
 
+void saveHDRImage(SuperHDRImage img, string filename)
+{
+    switch(filename.extension)
+    {
+        case ".hdr", ".HDR":
+            img.saveHDR(filename);
+            break;
+        default:
+            assert(0, "Image I/O error: unsupported image format or illegal extension");
+    }
+}
+
 alias save = saveImage;
 alias load = loadImage;
 
 alias loadAnimated = loadAnimatedImage;
 alias saveAnimated = saveAnimatedImage;
+
+alias saveHDR = saveHDRImage;
+

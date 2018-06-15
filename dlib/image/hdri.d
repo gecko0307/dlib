@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2017 Timur Gafarov
+Copyright (c) 2014-2018 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -101,9 +101,6 @@ class HDRImage: SuperHDRImage
         _channels = 4;
         _pixelSize = (_bitDepth / 8) * _channels;
         allocateData();
-
-        //pixelCost = 1.0f / (_width * _height);
-        //progress = 0.0f;
     }
 
     Color4f opIndex(int x, int y)
@@ -323,6 +320,41 @@ Vector3f hableFunc(Vector3f x)
    return ((x * (x * 0.15f + 0.1f * 0.5f) + 0.2f * 0.02f) / (x * (x * 0.15f + 0.5f) + 0.2f * 0.3f)) - 0.02f / 0.3f;
 }
 
+SuperImage hdrTonemapACES(SuperHDRImage img, float exposure, float gamma)
+{
+    return hdrTonemapACES(img, null, exposure, gamma);
+}
+
+SuperImage hdrTonemapACES(SuperHDRImage img, SuperImage output, float exposure, float gamma)
+{
+    SuperImage res;
+    if (output)
+        res = output;
+    else
+        res = image(img.width, img.height, img.channels);
+
+    float a = 2.51;
+    float b = 0.03;
+    float c = 2.43;
+    float d = 0.59;
+    float e = 0.14;
+
+    foreach(y; 0..img.height)
+    foreach(x; 0..img.width)
+    {
+        Color4f col = img[x, y];
+        Color4f v = col * exposure * 0.6;
+        v = ((v*(v*a+b))/(v*(v*c+d)+e)).clamped(0.0, 1.0);
+        res[x, y] = Color4f(
+            v.r ^^ gamma, 
+            v.g ^^ gamma, 
+            v.b ^^ gamma, 
+            col.a);
+    }
+
+    return res;
+}
+
 SuperImage hdrTonemapAverageLuminance(SuperHDRImage img, float a, float gamma)
 {
     return hdrTonemapAverageLuminance(img, null, a, gamma);
@@ -336,17 +368,7 @@ SuperImage hdrTonemapAverageLuminance(SuperHDRImage img, SuperImage output, floa
     else
         res = image(img.width, img.height, img.channels);
 
-    float sumLuminance = 0.0f;
-
-    foreach(y; 0..img.height)
-    foreach(x; 0..img.width)
-    {
-        sumLuminance += log(EPSILON + img[x, y].luminance);        
-    }
-
-    float N = img.width * img.height;
-    float lumAverage = exp(sumLuminance / N); 
-
+    float lumAverage = averageLuminance(img);
     float aOverLumAverage = a / lumAverage;
 
     foreach(y; 0..img.height)
@@ -366,4 +388,20 @@ SuperImage hdrTonemapAverageLuminance(SuperHDRImage img, SuperImage output, floa
 
     return res;
 }
+
+float averageLuminance(SuperHDRImage img)
+{
+    float sumLuminance = 0.0f;
+
+    foreach(y; 0..img.height)
+    foreach(x; 0..img.width)
+    {
+        sumLuminance += log(EPSILON + img[x, y].luminance);        
+    }
+
+    float N = img.width * img.height;
+    float lumAverage = exp(sumLuminance / N); 
+    return lumAverage;
+}
+
 
