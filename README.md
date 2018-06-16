@@ -9,6 +9,8 @@ dlib is a growing collection of native D language libraries useful for various h
 [![License](http://img.shields.io/badge/license-boost-blue.svg)](http://www.boost.org/LICENSE_1_0.txt)
 [![Codecov](https://codecov.io/gh/gecko0307/dlib/branch/master/graph/badge.svg)](https://codecov.io/gh/gecko0307/dlib)
 
+**Important:** dlib doesn't support macOS. Please, read the [manifesto](https://github.com/gecko0307/dlib/wiki/Why-dlib-doesn't-support-macOS%3F).
+
 If you like dlib, please support its development on [Patreon](https://www.patreon.com/gecko0307). You can also make one-time donation via [PayPal](https://www.paypal.me/tgafarov). Thanks in advance!
 
 What's inside
