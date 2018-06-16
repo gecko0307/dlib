@@ -147,6 +147,11 @@ class Canvas
         state.transformation = Matrix3x3f.identity;
     }
 
+    void transform(Matrix3x3f m)
+    {
+        state.transformation *= m;
+    }
+
     void translate(float x, float y)
     {
         state.transformation *= translationMatrix2D(Vector2f(x, y));
@@ -200,18 +205,12 @@ class Canvas
     {
         dlib.image.render.shapes.fillColor(tmpBuffer, Color4f(0, 0, 0, 0));
         drawContour();       
-        blitTmpBuffer(state.lineColor);
+        blitTmpBuffer(state.lineColor);    
     }
 
     void pathFill()
     {
-        dlib.image.render.shapes.fillColor(tmpBuffer, Color4f(0, 0, 0, 0));
         fillShape();
-        CanvasState oldState = state;
-        state.lineWidth = 2.0f;
-        drawContour();
-        state = oldState;
-        blitTmpBuffer(state.fillColor);
     }
 
    protected:
@@ -268,14 +267,19 @@ class Canvas
             }
         }
 
-        foreach(y; 0..tmpBuffer.height)
-        foreach(x; 0..tmpBuffer.width)
+        foreach(y; 0.._image.height)
+        foreach(x; 0.._image.width)
         {
             auto p = Vector2f(x, y);
-            if (pointInPolygon(p, poly.data))
+
+            float alpha = pointInPolygonAAFast(p, poly.data);
+
+            Color4f c = state.fillColor;
+            c.a = c.a * alpha;
+
+            if (c.a > 0.0f)
             {
-                float srcAlpha = tmpBuffer[x, y].r;
-                tmpBuffer[x, y] = Color4f(min2(srcAlpha + 1.0f, 1.0f), 0, 0, 1);
+                _image[x, y] = alphaOver(_image[x, y], c);
             }
         }
 
@@ -402,5 +406,56 @@ bool pointInPolygon(Vector2f p, Vector2f[] poly)
     }
 
     return inside;
+}
+
+float sqrDistanceToLineSegment(Vector2f a, Vector2f b, Vector2f p)
+{
+    Vector2f n = b - a;
+    Vector2f pa = a - p;
+ 
+    float c = dot(n, pa);
+ 
+    if (c > 0.0f)
+        return dot(pa, pa);
+ 
+    Vector2f bp = p - b;
+
+    if (dot(n, bp) > 0.0f)
+        return dot(bp, bp);
+
+    Vector2f e = pa - n * (c / dot(n, n));
+ 
+    return dot(e, e);
+}
+
+float pointInPolygonAAFast(Vector2f p, Vector2f[] poly)
+{
+    size_t i = 0;
+    size_t j = poly.length - 1;
+    bool inside = false;
+    float minDistance = float.max;
+
+    for (i = 0; i < poly.length; i++)
+    {
+        Vector2f a = poly[i];
+        Vector2f b = poly[j];
+        
+        float lx = (b.x - a.x) * (p.y - a.y) / (b.y - a.y) + a.x;
+
+        if ((a.y > p.y) != (b.y > p.y))
+        {
+            if (p.x < lx)
+                inside = !inside; 
+
+            float dist = sqrDistanceToLineSegment(a, b, p);
+            if (dist < minDistance)
+                minDistance = dist;
+        }
+
+        j = i;
+    }
+
+    float cd = 1.0f - clamp(sqrt(minDistance), 0.0f, 1.0f);
+    return max2(cast(float)inside, cd);
 }
 
