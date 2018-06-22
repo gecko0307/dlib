@@ -1,6 +1,6 @@
 [![dlib-logo.png](/logo/dlib-logo.png)](/logo/dlib-logo.png)
 
-dlib is a growing collection of native D language libraries useful for various higher-level projects - such as game engines, rendering pipelines and multimedia applications. It is written in D2 and has no external dependencies aside D's standard library, Phobos.
+dlib is a growing collection of native D language libraries useful for various higher-level projects - such as game engines, rendering pipelines and multimedia applications. It is written in D2 and has no external dependencies aside D's standard library, Phobos.  dlib is created and maintained by [Timur Gafarov](https://github.com/gecko0307).
 
 [![Travis Build Status](https://travis-ci.org/gecko0307/dlib.svg?branch=master)](https://travis-ci.org/gecko0307/dlib)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/90mrqd6hq7i2twap?svg=true)](https://ci.appveyor.com/project/gecko0307/dlib)
@@ -9,9 +9,9 @@ dlib is a growing collection of native D language libraries useful for various h
 [![License](http://img.shields.io/badge/license-boost-blue.svg)](http://www.boost.org/LICENSE_1_0.txt)
 [![Codecov](https://codecov.io/gh/gecko0307/dlib/branch/master/graph/badge.svg)](https://codecov.io/gh/gecko0307/dlib)
 
-**Important:** dlib doesn't support macOS. Please, read the [manifesto](https://github.com/gecko0307/dlib/wiki/Why-dlib-doesn't-support-macOS%3F).
-
 If you like dlib, please support its development on [Patreon](https://www.patreon.com/gecko0307). You can also make one-time donation via [PayPal](https://www.paypal.me/tgafarov). Thanks in advance!
+
+**Important:** dlib doesn't support macOS. Please, read the [manifesto](https://github.com/gecko0307/dlib/wiki/Why-dlib-doesn't-support-macOS%3F).
 
 What's inside
 -------------
@@ -45,9 +45,9 @@ Currently dlib contains the following packages:
 
 Documentation
 -------------
-Please, refer to [the wiki](https://github.com/gecko0307/dlib/wiki). Also HTML documentation can be generated from wiki pages using [this](https://github.com/gecko0307/dlib/tree/master/gendoc) set of tools. Be aware that documentation is currently incomplete.
+Please, refer to [the wiki](https://github.com/gecko0307/dlib/wiki). Also HTML documentation can be generated from wiki pages using [this](https://github.com/gecko0307/dlib/tree/master/gendoc) set of tools. Be aware that documentation is currently incomplete. I'm currently running a [Patreon campaign](https://www.patreon.com/gecko0307) to reach $100 funding per month - help me get there to finish the documentation.
 
-For support and overall discussions, use our [Gitter chat room](https://gitter.im/gecko0307/dlib).
+For quick support and overall discussions, use [Gitter chat room](https://gitter.im/gecko0307/dlib).
 
 License
 -------
@@ -70,4 +70,4 @@ Users
 * [aoynthesizer](https://github.com/AODQ/aoynthesizer) - sound synthesizer based on Lisp-like scripting language
 * [D-VXLMapPreview](https://github.com/rakiru/D-VXLMapPreview) - isometric preview generator for Ace of Spades and Iceball maps  
 
-If you use dlib, please tell us by email (gecko0307@gmail.com), and we'll add your link to the list.
+If you use dlib, please tell me by email (gecko0307@gmail.com), and I'll add your link to the list.
