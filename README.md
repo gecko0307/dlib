@@ -70,4 +70,4 @@ Users
 * [aoynthesizer](https://github.com/AODQ/aoynthesizer) - sound synthesizer based on Lisp-like scripting language
 * [D-VXLMapPreview](https://github.com/rakiru/D-VXLMapPreview) - isometric preview generator for Ace of Spades and Iceball maps  
 
-If you use dlib, please tell us by [email](gecko0307@gmail.com), and we'll add your link to the list.
+If you use dlib, please tell us by email (gecko0307@gmail.com), and we'll add your link to the list.
