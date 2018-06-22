@@ -53,3 +53,21 @@ License
 -------
 Copyright (c) 2011-2018 Timur Gafarov, Martin Cejp, Andrey Penechko, Vadim Lopatin, Nick Papanastasiou, Oleg Baharev, Roman Chistokhodov, Eugene Wissner, Roman Vlasov, Basile Burg, Valeriy Fedotov. Distributed under the Boost Software License, Version 1.0 (see accompanying file COPYING or at http://www.boost.org/LICENSE_1_0.txt).
 
+Users
+-----
+* [Dagon](https://github.com/gecko0307/dagon) - 3D game engine for D
+* [dmech](https://github.com/gecko0307/dmech) - physics engine
+* [Atrium](https://github.com/gecko0307/atrium) - work-in-progress first person puzzle game
+* [DlangUI](https://github.com/buggins/dlangui) - native UI toolkit for D
+* [Voxelman](https://github.com/MrSmith33/voxelman) - voxel-based game engine
+* [Laser Patriarch](http://ludumdare.com/compo/ludum-dare-36/?action=preview&uid=14310) - Ludum Dare 36 participant, a rougelike with random maps
+* [Litecraft](https://github.com/Litecrafty/Litecraft) - open source Minecraft client
+* [Anchovy](https://github.com/MrSmith33/anchovy) - multimedia library for games and graphics apps
+* [RIP](https://github.com/LightHouseSoftware/rip) - image processing and analysis library by LightHouse Software
+* [GeneticAlgorithm](https://github.com/Hnatekmar/GeneticAlgorithm) - genetic algorithms library
+* [Orb](https://github.com/claudemr/orb) - a game/engine with procedural content
+* [Leptbag](https://github.com/thotgamma/LeptbagCpp) - physics simulator by Gamma-Lab. Written in C++, but supports D plugins
+* [aoynthesizer](https://github.com/AODQ/aoynthesizer) - sound synthesizer based on Lisp-like scripting language
+* [D-VXLMapPreview](https://github.com/rakiru/D-VXLMapPreview) - isometric preview generator for Ace of Spades and Iceball maps  
+
+If you use dlib, please tell us by [email](gecko0307@gmail.com), and we'll add your link to the list.
