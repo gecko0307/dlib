@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov
+Copyright (c) 2011-2018 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -50,7 +50,7 @@ enum PixelFormat: uint
     RGB16 = 6,
     RGBA16 = 7,
 
-    // deprecated, use dlib.image.hdri.FloatPixelFormat.RGBAF32 instead
+    // Deprecated, use dlib.image.hdri.FloatPixelFormat.RGBAF32 instead
     RGBA_FLOAT = 8
 }
 
@@ -62,8 +62,9 @@ interface SuperImage: Freeable
     @property uint channels();
     @property uint pixelSize();
 
-    // values from 0 to 255 are reserved by dlib
-    // Values 256 and higher are application-specific
+    // This is compatible with PixelFormat and other internal format enums in dlib.
+    // Values from 0 to 255 are reserved for dlib.
+    // Values 256 and above are application-specific and can be used for custom SuperImage implementations.
     @property uint pixelFormat(); 
 
     @property ubyte[] data();
