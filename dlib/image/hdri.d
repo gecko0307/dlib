@@ -51,7 +51,7 @@ abstract class SuperHDRImage: SuperImage
 {
     override @property uint pixelFormat()
     {
-        return PixelFormat.RGBA_FLOAT;
+        return FloatPixelFormat.RGBAF32;
     }
 }
 
