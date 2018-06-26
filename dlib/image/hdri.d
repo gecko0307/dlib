@@ -39,9 +39,17 @@ private
     import dlib.math.utils;
 }
 
+enum FloatPixelFormat: uint
+{
+    RGBAF32 = 8
+    //TODO:
+    //RGBAF64 = 9
+    //RGBAF16 = 10
+}
+
 abstract class SuperHDRImage: SuperImage
 {
-    override @property PixelFormat pixelFormat()
+    override @property uint pixelFormat()
     {
         return PixelFormat.RGBA_FLOAT;
     }

@@ -39,17 +39,19 @@ private
     import dlib.image.color;
 }
 
-enum PixelFormat
+enum PixelFormat: uint
 {
-    L8,
-    LA8,
-    RGB8,
-    RGBA8,
-    L16,
-    LA16,
-    RGB16,
-    RGBA16,
-    RGBA_FLOAT
+    L8 = 0,
+    LA8 = 1,
+    RGB8 = 2,
+    RGBA8 = 3,
+    L16 = 4,
+    LA16 = 5,
+    RGB16 = 6,
+    RGBA16 = 7,
+
+    // deprecated, use dlib.image.hdri.FloatPixelFormat.RGBAF32 instead
+    RGBA_FLOAT = 8
 }
 
 interface SuperImage: Freeable
@@ -59,7 +61,11 @@ interface SuperImage: Freeable
     @property uint bitDepth();
     @property uint channels();
     @property uint pixelSize();
-    @property PixelFormat pixelFormat();
+
+    // values from 0 to 255 are reserved by dlib
+    // Values 256 and higher are application-specific
+    @property uint pixelFormat(); 
+
     @property ubyte[] data();
 
     @property SuperImage dup();
@@ -145,7 +151,7 @@ class Image(PixelFormat fmt): SuperImage
         return _pixelSize;
     }
 
-    override @property PixelFormat pixelFormat()
+    override @property uint pixelFormat()
     {
         return fmt;
     }
