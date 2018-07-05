@@ -54,6 +54,8 @@ public
     import dlib.image.filters.normalmap;
     import dlib.image.filters.sharpen;
     import dlib.image.filters.contrast;
+    import dlib.image.filters.histogram;
+    import dlib.image.filters.binarization;
 
     import dlib.image.io.bmp;
     import dlib.image.io.io;
