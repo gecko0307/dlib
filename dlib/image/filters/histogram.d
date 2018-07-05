@@ -62,7 +62,6 @@ SuperImage histogramImage(SuperImage img, Color4f background, Color4f diagram)
         v = cast(int)(cast(float)v / cast(float)vmax * 255.0f);
     }
 
-    writeln(h);
 	foreach (x; 0..res.width)
 	foreach (y; 0..res.height)
 	{
