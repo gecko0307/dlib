@@ -33,7 +33,116 @@ import std.random;
 import dlib.audio.sound;
 
 /*
- * Generate random audio signal
+ * An interface for a synthesizer that maps sample position to -1..1 sample value
+ */
+interface Synth
+{
+    float eval(Sound sound, ulong position, float frequency);
+}
+
+/*
+ * Sine wave synthesizer
+ */
+class SineWaveSynth: Synth
+{
+    float eval(Sound sound, ulong position, float frequency)
+    {
+        double samplePeriod = 1.0 / cast(double)sound.sampleRate;
+        double time = position * samplePeriod;
+        return sin(2.0 * PI * frequency * time);
+    }
+}
+
+/*
+ * Square wave synthesizer
+ */
+class SquareWaveSynth: Synth
+{
+    float eval(Sound sound, ulong position, float frequency)
+    {
+        double samplePeriod = 1.0 / cast(double)sound.sampleRate;
+        double phase = position * samplePeriod * frequency;
+        double s = 2.0 * floor(phase) - floor(2.0 * phase) + 1.0;
+        return s * 2.0 - 1.0;
+    }
+}
+
+// TODO: SawtoothWaveSynth
+
+/*
+ * Frequency modulation synthesizer
+ */
+class FMSynth: Synth
+{
+    Synth carrier;
+    Synth modulator;
+    float frequencyRatio;
+
+    this(Synth carrier, Synth modulator, float frequencyRatio)
+    {
+        this.carrier = carrier;
+        this.modulator = modulator;
+        this.frequencyRatio = frequencyRatio;
+    }
+
+    float eval(Sound sound, ulong position, float frequency)
+    {
+        float m = modulator.eval(sound, position, frequency * frequencyRatio);
+        return carrier.eval(sound, position, frequency + m);
+    }
+}
+
+// TODO: EnvelopeSynth
+
+/*
+ * Fill a given portion of a sound with a signal from specified synthesizer.
+ * sound - a sound object to write to
+ * channel - channel to fill (beginning from 0)
+ * synth - synthesizer object
+ * freq - synthesizer frequency
+ * startTime - start time of a signal in seconds
+ * duration - duration of a signal in seconds
+ * amplitude - volume coefficient of a signal
+ */
+void fillSynth(Sound sound, uint channel, Synth synth, float freq, double startTime, double duration, float amplitude)
+{
+    ulong startSample = cast(ulong)(startTime * sound.sampleRate);
+    ulong endSample = startSample + cast(ulong)(duration * sound.sampleRate);
+    if (endSample >= sound.size)
+        endSample = sound.size - 1;
+
+    foreach(i; startSample..endSample)
+    {
+        sound[channel, i] = synth.eval(sound, i - startSample, freq) * amplitude;
+    }
+}
+
+/*
+ * Additively mix a signal from specified synthesizer to a given portion of a sound.
+ * sound - a sound object to write to
+ * channel - channel to fill (beginning from 0)
+ * synth - synthesizer object
+ * freq - synthesizer frequency
+ * startTime - start time of a signal in seconds
+ * duration - duration of a signal in seconds
+ * amplitude - volume coefficient of a signal
+ */
+void mixSynth(Sound sound, uint channel, Synth synth, float freq, double startTime, double duration, float amplitude)
+{
+    ulong startSample = cast(ulong)(startTime * sound.sampleRate);
+    ulong endSample = startSample + cast(ulong)(duration * sound.sampleRate);
+    if (endSample >= sound.size)
+        endSample = sound.size - 1;
+
+    foreach(i; startSample..endSample)
+    {
+        float src = sound[channel, i];
+        sound[channel, i] = src + synth.eval(sound, i - startSample, freq) * amplitude;
+    }
+}
+
+/*
+ * Generate random audio signal.
  * snd - sound
  * ch - channel to fill (beginning from 0)
  */
@@ -46,18 +155,16 @@ void whiteNoise(Sound snd, uint ch)
 }
 
 /*
- * Fill the sound with simple sinewave tone.
+ * Fill the sound with simple sine wave tone.
  * snd - sound
  * ch - channel to fill (beginning from 0)
  * freq - frequency in Hz. For example, a dial tone in Europe is usually 425 Hz
  */
 void sineWave(Sound snd, uint ch, float freq)
 {
-    float time = 0.0f;
     float samplePeriod = 1.0f / cast(float)snd.sampleRate;
     foreach(i; 0..snd.size)
     {
-        snd[ch, i] = sin(2.0f * PI * freq * time);
-        time += samplePeriod;
+        snd[ch, i] = sin(samplePeriod * i * freq * 2.0f * PI);
     }
 }
