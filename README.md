@@ -11,7 +11,7 @@ dlib is a growing collection of native D language libraries useful for various h
 
 If you like dlib, please support its development on [Patreon](https://www.patreon.com/gecko0307) or [Liberapay](https://liberapay.com/gecko0307). You can also make one-time donation via [PayPal](https://www.paypal.me/tgafarov). Thanks in advance!
 
-**Important:** dlib doesn't support macOS. Please, read the [manifesto](https://github.com/gecko0307/dlib/wiki/Why-dlib-doesn't-support-macOS%3F).
+**Important:** dlib doesn't support macOS. Please, read the [manifesto](https://github.com/gecko0307/dlib/wiki/Why-doesn't-dlib-support-macOS%3F).
 
 What's inside
 -------------
