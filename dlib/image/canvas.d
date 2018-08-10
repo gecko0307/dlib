@@ -39,6 +39,7 @@ import dlib.container.array;
 import dlib.image.color;
 import dlib.image.image;
 import dlib.image.render.shapes;
+import dlib.core.memory;
 
 struct CanvasState
 {
@@ -81,7 +82,7 @@ class Canvas
 
     DynamicArray!ContourSegment contour;
     Vector2f penPosition;
-    
+
     float tesselationStep = 1.0f / 40.0f;
     uint subpixelResolution = 4;
 
@@ -156,7 +157,7 @@ class Canvas
     {
         state.transformation *= translationMatrix2D(Vector2f(x, y));
     }
-    
+
     void rotate(float a)
     {
         state.transformation *= rotationMatrix2D(a);
@@ -204,8 +205,8 @@ class Canvas
     void pathStroke()
     {
         dlib.image.render.shapes.fillColor(tmpBuffer, Color4f(0, 0, 0, 0));
-        drawContour();       
-        blitTmpBuffer(state.lineColor);    
+        drawContour();
+        blitTmpBuffer(state.lineColor);
     }
 
     void pathFill()
@@ -237,45 +238,75 @@ class Canvas
     void fillShape()
     {
         DynamicArray!Vector2f poly;
+        DynamicArray!size_t polyBounds;
+        Vector2f startP, endP, wayP1, wayP2;
 
-        Vector2f tp1, tp2, tp3, tp4;
-        
-        foreach(i, ref p; contour.data)
+        foreach(ref p; contour.data)
         {
+            startP = p.p1.affineTransform2D(state.transformation);
+
+            if (startP != endP)
+            {
+                polyBounds.append(poly.length);
+                poly.append(startP);
+            }
+
             if (p.type == SegmentType.Line)
             {
-                tp1 = p.p1.affineTransform2D(state.transformation);
-                tp2 = p.p2.affineTransform2D(state.transformation);
-                poly.append(tp1);
-                poly.append(tp2);
+                endP = p.p2.affineTransform2D(state.transformation);
+                poly.append(endP);
             }
-            else if (p.type == SegmentType.BezierCubic)
+            else
             {
-                tp1 = p.p1.affineTransform2D(state.transformation);
-                tp2 = p.p2.affineTransform2D(state.transformation);
-                tp3 = p.p3.affineTransform2D(state.transformation);
-                tp4 = p.p4.affineTransform2D(state.transformation);
-                poly.append(tp1);
+                assert(p.type == SegmentType.BezierCubic);
+                wayP1 = p.p2.affineTransform2D(state.transformation);
+                wayP2 = p.p3.affineTransform2D(state.transformation);
+                endP = p.p4.affineTransform2D(state.transformation);
 
                 float t = 0.0f;
                 while(t < 1.0f)
                 {
                     t += tesselationStep;
-                    Vector2f p2 = bezierVector2(tp1, tp2, tp3, tp4, t);
-                    poly.append(p2);
+                    Vector2f tessP = bezierVector2(startP, wayP1, wayP2, endP, t);
+                    poly.append(tessP);
                 }
             }
         }
+
+        auto alphas = New!(float[])(polyBounds.length);
+        polyBounds.append(poly.length);
 
         foreach(y; 0.._image.height)
         foreach(x; 0.._image.width)
         {
             auto p = Vector2f(x, y);
+            bool inside = false;
 
-            float alpha = pointInPolygonAAFast(p, poly.data);
+            foreach(i, ref alpha; alphas)
+            {
+                alpha = pointInPolygonAAFast(p, poly.data[polyBounds[i] .. polyBounds[i+1]]);
+                if (alpha == 1) inside = !inside;
+            }
+
+            float totalAlpha = inside? 1: 0;
+
+            if (inside)
+            {
+                foreach(alpha; alphas)
+                {
+                    totalAlpha *= alpha == 1? 1: 1 - alpha;
+                }
+            }
+            else
+            {
+                foreach(alpha; alphas)
+                {
+                    totalAlpha += alpha == 1? 0: (1 - totalAlpha) * alpha;
+                }
+            }
 
             Color4f c = state.fillColor;
-            c.a = c.a * alpha;
+            c.a = c.a * totalAlpha;
 
             if (c.a > 0.0f)
             {
@@ -284,12 +315,14 @@ class Canvas
         }
 
         poly.free();
+        polyBounds.free();
+        alphas.Delete();
     }
 
     void drawContour()
     {
         Vector2f tp1, tp2, tp3, tp4;
-        
+
         foreach(i, ref p; contour.data)
         {
             if (p.type == SegmentType.Line)
@@ -314,7 +347,7 @@ class Canvas
         Vector2f n1 = Vector2f(-t1.y, t1.x);
         Vector2f n2 = Vector2f(-t2.y, t2.x);
 
-        Vector2f offset1 = n1 * state.lineWidth * 0.5f;       
+        Vector2f offset1 = n1 * state.lineWidth * 0.5f;
         Vector2f offset2 = n2 * state.lineWidth * 0.5f;
 
         Vector2f[4] poly;
@@ -322,7 +355,7 @@ class Canvas
         poly[1] = p1 + offset1;
         poly[2] = p2 + offset2;
         poly[3] = p2 - offset2;
-        
+
         float subpSize = 1.0f / subpixelResolution;
         float subpContrib = 1.0f / (subpixelResolution * subpixelResolution);
 
@@ -349,7 +382,7 @@ class Canvas
             tmpBuffer[x, y] = Color4f(min2(srcAlpha + alpha, 1.0f), 0, 0, 1);
         }
     }
-    
+
     void drawLine(Vector2f p1, Vector2f p2)
     {
         Vector2f dir = p2 - p1;
@@ -412,19 +445,19 @@ float sqrDistanceToLineSegment(Vector2f a, Vector2f b, Vector2f p)
 {
     Vector2f n = b - a;
     Vector2f pa = a - p;
- 
+
     float c = dot(n, pa);
- 
+
     if (c > 0.0f)
         return dot(pa, pa);
- 
+
     Vector2f bp = p - b;
 
     if (dot(n, bp) > 0.0f)
         return dot(bp, bp);
 
     Vector2f e = pa - n * (c / dot(n, n));
- 
+
     return dot(e, e);
 }
 
@@ -439,13 +472,13 @@ float pointInPolygonAAFast(Vector2f p, Vector2f[] poly)
     {
         Vector2f a = poly[i];
         Vector2f b = poly[j];
-        
+
         float lx = (b.x - a.x) * (p.y - a.y) / (b.y - a.y) + a.x;
 
         if ((a.y > p.y) != (b.y > p.y))
         {
             if (p.x < lx)
-                inside = !inside; 
+                inside = !inside;
 
             float dist = sqrDistanceToLineSegment(a, b, p);
             if (dist < minDistance)
