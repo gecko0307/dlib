@@ -96,7 +96,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
                 reallocateArray(dynamicStorage, amount);
             }
             
-            numChunks = amount / 32 + amount % 32;
+            numChunks = cast(uint)(amount / 32 + amount % 32);
         }
     }
     
@@ -108,7 +108,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
         if (newLen > pos)
         {
             reserve(newLen);
-            for(uint i = pos; i < newLen; i++)
+            for(size_t i = pos; i < newLen; i++)
             {
                 storage[i] = initValue;
             }
