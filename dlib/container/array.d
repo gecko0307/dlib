@@ -99,6 +99,23 @@ struct DynamicArray(T, size_t chunkSize = 32)
             numChunks = amount / 32 + amount % 32;
         }
     }
+    
+    /**
+     * Resize array and initialize newly added elements with initValue.
+     */
+    void resize(size_t newLen, T initValue)
+    {        
+        if (newLen > pos)
+        {
+            reserve(newLen);
+            for(uint i = pos; i < newLen; i++)
+            {
+                storage[i] = initValue;
+            }
+        }
+        
+        pos = newLen;
+    }
 
     /**
      * Shift contents of array to the right.
