@@ -1,9 +1,9 @@
-sudo: false
+language: d
+sudo: required
+dist: xenial
 
 os:
  - linux
-
-language: d
 
 d:
  - dmd-2.082.0
@@ -27,7 +27,14 @@ addons:
     packages:
      - gcc-multilib
 
+before_script:
+ - if [[ "$DC" == "gdc" ]]; then docker build -t debtesting -f ci/Dockerfile .; fi
+
 script:
+ - if [[ "$DC" == "gdc" ]]; then
+    docker run -t -e DC=$DC -v `pwd`:/build debtesting
+     ./ci/build-and-test.sh; fi
+ - if [[ "$DC" != "gdc" ]]; then ./ci/build-and-test.sh; fi
  - dub test --arch=$ARCH --build=unittest-cov
 
 after_success:
