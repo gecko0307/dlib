@@ -33,7 +33,7 @@ before_script:
 script:
  - if [[ "$DC" == "gdc" ]]; then
     docker run -t -e DC=$DC -v `pwd`:/build debtesting
-     ./ci/build-and-test.sh; fi
+    dub test --arch=$ARCH --build=unittest-cov; fi
  - if [[ "$DC" != "gdc" ]]; then
    dub test --arch=$ARCH --build=unittest-cov; fi
 
