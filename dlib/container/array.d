@@ -100,6 +100,15 @@ struct DynamicArray(T, size_t chunkSize = 32)
         }
     }
     
+    ///
+    unittest
+    {
+        DynamicArray!int arr;
+        arr.reserve(100);
+        assert(arr.length == 0);
+        assert(arr.dynamicStorage.length == 100);
+    }
+    
     /**
      * Resize array and initialize newly added elements with initValue.
      */
@@ -115,6 +124,15 @@ struct DynamicArray(T, size_t chunkSize = 32)
         }
         
         pos = cast(uint)newLen;
+    }
+    
+    ///
+    unittest
+    {
+        DynamicArray!int arr;
+        arr.resize(100, 1);
+        assert(arr.length == 100);
+        assert(arr[50] == 1);
     }
 
     /**
