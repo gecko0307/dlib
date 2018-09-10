@@ -114,7 +114,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
             }
         }
         
-        pos = newLen;
+        pos = cast(uint)newLen;
     }
 
     /**
