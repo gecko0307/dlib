@@ -77,6 +77,28 @@ struct DynamicArray(T, size_t chunkSize = 32)
         arr.addChunk();
         assert(arr.length == 0);
     }
+    
+    /**
+     * Preallocate memory without resizing.
+     */
+    void reserve(size_t amount)
+    {
+        if (amount > pos && amount > staticStorage.length)
+        {            
+            if (numChunks == 0)
+            {
+                dynamicStorage = New!(T[])(amount);
+                foreach(i, v; staticStorage)
+                    dynamicStorage[i] = v;
+            }
+            else
+            {
+                reallocateArray(dynamicStorage, amount);
+            }
+            
+            numChunks = amount / 32 + amount % 32;
+        }
+    }
 
     /**
      * Shift contents of array to the right.
