@@ -1,3 +1,50 @@
+dlib 0.14.0 - 9 Jul, 2018
+-------------------------
+No changes since dlib 0.14.0 beta1.
+
+dlib 0.14.0 beta1 - 8 Jul, 2018
+-------------------------------
+**Important:** dlib now officially doesn't support macOS. This is an act of protest against [Apple's drop of OpenGL support](https://developer.apple.com/macos/whats-new/#deprecationofopenglandopencl). While you probably still can use dlib's platform-independent and Posix-based functionality under macOS, there's no guarantee that this will continue, and compatibility issues will not be addressed. Read detailed manifesto [here](https://github.com/gecko0307/dlib/wiki/Why-dlib-doesn%27t-support-macOS%3F).
+
+- **dlib.image**
+  - **Breaking change:** `SuperImage.pixelFormat` now returns `uint` instead of `PixelFormat`. This allows extending dlib with custom pixel formats while maintaining compatibility with `PixelFormat`. Values from 0 to 255 are reserved for dlib, values 256 and above are application-specific. This change is just a new convention and will not break any existing logics, though explicit cast to `PixelFormat` may be required in some cases. Comparisons such as `img.pixelFormat == PixelFormat.RGB8` will work fine.
+  - `PixelFormat.RGBA_FLOAT` is now deprecated, use `FloatPixelFormat.RGBAF32` from `dlib.image.hdri` instead. 
+  - Saving to HDR is now supported (`saveHDR` functions in `dlib.image.io.hdr`). 
+  - New filters: `dlib.image.filters.histogram` (generates an image histogram) and `dlib.image.filters.binarization` (image thresholding using Otsu's method).
+  - ACES tonemapper (`hdrTonemapACES`) and average luminance function (`averageLuminance`) in `dlib.image.hdri`. 
+  - Improved `dlib.image.canvas`. Path rasterizer now natively does anti-aliasing. Fixed bug with rendering on non-square images.
+- **dlib.audio**
+  - Synthesizer framework (`dlib.audio.synth`). It allows to write synthesizers and use them to 'render' sounds, like in DAWs. Three built-in synthesizers are available: `SineWaveSynth`, `SquareWaveSynth`, `FMSynth`. To write actual data to `Sound` objects, two functions are available: `fillSynth` and `mixSynth`.
+- **dlib.math**
+  - New module `dlib.math.smoothstep` with sigmoid-like functions: `hermiteSmoothstep`, `rationalSmoothstep`.
+- **dlib.core**
+  - DMD 2.081.0 compatibility fix in `dlib.core.stream`.
+- **Misc**
+  - Added latest DMD (2.081.0, 2.080.1) and LDC (1.10.0) to Travis CI config. CI builds for macOS were stopped for reason mentioned above.
+
+dlib 0.13.0 - 14 May, 2018
+--------------------------
+No changes since dlib 0.13.0 beta1.
+
+dlib 0.13.0 beta1 - 9 May, 2018
+-------------------------------
+- **dlib.async** has been removed for security reasons. Currently there are no active contributors to maintain the package and fix bugs, so it is considered not safe to use due to potential data corruption or loss. There's [async branch](https://github.com/gecko0307/dlib/tree/async) for those who still want to use it, but for new projects it is strongly recommended to consider using more actively developed alternatives, such as [vibe-core](https://code.dlang.org/packages/vibe-core) or [Tanya](https://code.dlang.org/packages/tanya).
+- **dlib.image**
+  - New module `dlib.image.canvas` that provides `Canvas` class, a vector graphics engine inspired by HTML5 canvas. Currently it supports rasterizing arbitrary polygons and cubic Bezier paths, filled and outlined. It renders to user-provided `SuperImage`.
+  - Improved HDR file decoder. Now it supports HDR files with magic string `#?RGBE`.
+  - Reinhard and Hable tonemappers in `dlib.image.hdri`: `hdrTonemapReinhard` and `hdrTonemapHable`.
+  - New filters in `dlib.image.filters.edgedetect`: `edgeDetectLaplace` and `edgeDetectSobel`.
+  - New methods for `Color4f`: `toLinear` and `toGamma`.
+  - Fixed bugs in `dlib.image.arithmetics` module.
+- **dlib.math**
+  - New functions in `dlib.math.vector`: `reflect`, `refract`, `faceforward`.
+  - New functions in `dlib.math.utils`: `min2` and `max2`.
+- **dlib.geometry**
+  - New functions in `dlib.geometry.bezier`: `bezierTangentVector2` and `bezierTangentVector3`.
+- **Misc**
+  - Added latest DMD (2.080.0, 2.079.1) and LDC (1.9.0, 1.8.0) to Travis CI config.
+  - dlib now does CI under Windows using [AppVeyor](https://www.appveyor.com/).
+
 dlib 0.12.2 - 7 Nov, 2017
 -------------------------
 * Enum constants of type `Vector` now can be assigned to variables.
@@ -385,4 +432,3 @@ Early development on code.google.com.
 28 Sep, 2012
 ------------
 Project started.
-

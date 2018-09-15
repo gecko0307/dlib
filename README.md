@@ -23,7 +23,7 @@ Currently dlib contains the following packages:
 
 * dlib.filesystem - abstract FS interface and its implementations for Windows and POSIX filesystems
 
-* dlib.functional - some functional programming idioms (HOFs, combiners, quantifiers, etc.)
+* dlib.functional - some functional programming idioms (HOFs, combiners, etc.)
 
 * dlib.math - linear algebra and numerical analysis (vectors, matrices, quaternions, linear system solvers etc.)
 
