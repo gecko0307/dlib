@@ -22,6 +22,7 @@
     "buildRequirements":[
         "allowWarnings"
     ],
+    "lflags-linux-gdc": ["-lz"],
     "configurations": [
         {
             "name": "library",
