@@ -28,12 +28,12 @@ addons:
      - gcc-multilib
 
 before_script:
- - if [[ "$DC" == "gdc" ]]; then docker build -t debtesting -f ci/Dockerfile .; fi
+ - if [[ "$DC" == "gdc" ]]; then docker build -t debtesting -f Dockerfile .; fi
 
 script:
  - if [[ "$DC" == "gdc" ]]; then
     docker run -t -e DC=$DC -v `pwd`:/build debtesting
-    dub test --arch=$ARCH --build=unittest-cov; fi
+    dub test -b unittest-cov; fi
  - if [[ "$DC" != "gdc" ]]; then
    dub test --arch=$ARCH --build=unittest-cov; fi
 
