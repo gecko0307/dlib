@@ -9,7 +9,7 @@ FROM debian:unstable
 RUN apt-get update -qq
 
 # install build essentials
-RUN apt-get install -yq gcc gdc ldc meson dub
+RUN apt-get install -yq gcc gdc ldc meson dub zlib1g-dev
 
 # finish
 RUN mkdir /build
