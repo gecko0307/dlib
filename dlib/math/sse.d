@@ -31,6 +31,12 @@ module dlib.math.sse;
 import dlib.math.vector;
 import dlib.math.matrix;
 
+version(GNU)
+{
+    pragma(msg, "Warning: dlib.math.sse is not compatible with GNU D Compiler");
+}
+else:
+
 /*
  * This module implements some frequently used vector and matrix operations
  * using SSE instructions. Implementation is in WIP status.
