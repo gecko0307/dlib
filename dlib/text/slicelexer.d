@@ -26,7 +26,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-deprecated("dlib.text.slicelexeris deprecated, import dlib.text.lexer instead")
+deprecated("dlib.text.slicelexer is deprecated, import dlib.text.lexer instead")
 module dlib.text.slicelexer;
 
 public import dlib.text.lexer;

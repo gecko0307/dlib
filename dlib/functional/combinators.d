@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov
+Copyright (c) 2011-2018 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,62 +26,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+deprecated("dlib.functional.combinators is deprecated, import dlib.functional.hof instead")
 module dlib.functional.combinators;
 
-/+++
- Y combinator
- Description:
- We're all familiar with the idea of a function as something that takes some
- input value and returns some output value. Say, the function for squaring numbers:
-
-   f(x) = x*x;
-
- The fixed points of a function are any input values for which f(x) is equal to x.
- So, the fixed points of f(x) = x*x are 0 and 1.
-
- Now, we have things called higher-order functions. These are functions that take another
- function as input, or return a function as output, or both.
-
- The fixed point of a higher-order function f is another function p such that f(p) = p.
- It may be more helpful to think in terms of functions actually being executed.
- The previous statement is equivalent to the statement that f(p)(x) = p(x) for all values of x.
-
- Y (the Y combinator) is a special function that returns the fixed points of higher-order
- functions, that is to say:
-
-   f(Y(f)) = Y(f)
-
- Y combinator is commonly use to allow anonymous recursion without assuming your host
- language supports it.
-+++/
-
-auto Y(R, P...) (R delegate(P) delegate(R delegate(P)) lambda)
-{
-    struct RFunc {R delegate(P) delegate(RFunc) f;}
-    auto r = RFunc( (RFunc w) => lambda((P x) => w.f(w)(x)) );
-    return r.f(r);
-}
-
-unittest
-{
-    import std.algorithm;
-    import std.range;
-
-    auto factorial = Y((int delegate(int) self) =>
-        (int n) => 0 == n ? 1 : n * self(n - 1));
-
-    auto ackermann = Y((ulong delegate(ulong, ulong) self) =>
-        (ulong m, ulong n) => (!m && n)?
-            (n+1) : (m && !n)? self(m-1, 1) : self(m-1, self(m, n-1)));
-
-    auto qsort = Y((int[] delegate(int[]) self) =>
-        (int[] arr) => arr.length?
-            self(arr.filter!(a => a < arr[0]).array)
-          ~ arr[0]
-          ~ self(arr.filter!(a => a > arr[0]).array) : []);
-
-    assert(factorial(6) == 720);
-    assert(ackermann(3, 5) == 253);
-    assert(qsort([8, 5, 10, 2, 16, 9, 1, 100, 3])
-              == [1, 2, 3, 5, 8, 9, 10, 16, 100]);
-}
+public import dlib.functional.hof;
