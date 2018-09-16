@@ -39,7 +39,6 @@ public
     import dlib.image.hdri;
     import dlib.image.hsv;
     import dlib.image.image;
-    import dlib.image.parallel;
     import dlib.image.signal2d;
     import dlib.image.unmanaged;
     import dlib.image.transform;

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2017 Timur Gafarov
+Copyright (c) 2013-2018 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,6 +26,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+deprecated("dlib.image.parallel is deprecated")
 module dlib.image.parallel;
 
 private
@@ -120,4 +121,3 @@ SuperImage myFilter(SuperImage img)
 }
 
 */
-
