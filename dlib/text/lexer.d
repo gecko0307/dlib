@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2017 Timur Gafarov
+Copyright (c) 2016-2018 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -28,76 +28,217 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.text.lexer;
 
-import dlib.text.slicelexer;
-
-alias Lexer = SliceLexer;
-
-/+++
-import std.stdio;
-import std.algorithm;
 import std.ascii;
 import std.range.interfaces;
-
-import dlib.core.memory;
-import dlib.container.array;
 import dlib.text.utf8;
 
-dchar[] copyBuffer(dchar[] b)
-{
-    auto res = New!(dchar[])(b.length);
-    foreach(i, c; b)
-        res[i] = c;
-    return res;
-}
-
-bool buffEq(dchar[] b1, dchar[] b2)
-{
-    if (b1.length != b2.length)
-        return false;
-    foreach(i, c; b1)
-        if (c != b2[i])
-            return false;
-    return true;
-}
-
 /**
- * General-purpose lexical analyzer.
- * Breaks the input string to a stream of lexemes according to a given dictionary.
+ * General-purpose non-allocating lexical analyzer.
+ * Breaks the input string to a stream of lexemes according to a given delimiter dictionary.
+ * Delimiters are symbols that separate sequences of characters (e.g. operators).
+ * Lexemes are slices of the input string.
  * Assumes UTF-8 input.
  * Treats \r\n as a single \n.
  */
-class Lexer: InputRange!(dchar[])
+class Lexer: InputRange!string
 {
+    protected:
     string input;
     string[] delims;
-    size_t maxDelimLength = 0;
-    UTF8Decoder utf8dec;
+
+    UTF8Decoder dec;
+    uint index;
+    dchar current;
+    uint currentSize;
+
+    public:
+    bool ignoreWhitespaces = false;
+    bool ignoreNewlines = false;
 
     this(string input, string[] delims)
     {
         this.input = input;
         this.delims = delims;
+        this.dec = UTF8Decoder(this.input);
+        this.index = 0;
+        advance();
+    }
 
-        if (delims.length)
+    string getLexeme()
+    {
+        string res = "";
+        int tStart = -1;
+        while(true)
         {
-            sort!("count(a) < count(b)")(this.delims);
-            maxDelimLength = count(delims[$-1]);
+            dchar c = current;
+            if (c == UTF8_END || c == UTF8_ERROR)
+            {
+                if (tStart > -1)
+                {
+                    res = input[tStart..pos];
+                    tStart = -1;
+                    break;
+                }
+                else
+                {
+                    res = "";
+                    break;
+                }
+            }
+
+            if (isNewline(c)) 
+            {
+                if (tStart > -1)
+                {
+                    res = input[tStart..pos];
+                    tStart = -1;
+                    break;
+                }
+                else
+                {
+                    if (c == '\r')
+                    {
+                        advance();
+                        c = current;
+                        if (c == '\n')
+                            advance();
+                    }
+                    else
+                    {
+                        advance();
+                    }
+
+                    if (ignoreNewlines)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        res = "\n";
+                        break;
+                    }
+                }
+            }
+
+            if (isWhitespace(c))
+            {
+                if (tStart > -1)
+                {
+                    res = input[tStart..pos];
+                    tStart = -1;
+                    break;
+                }
+                else
+                {
+                    advance();
+                    if (ignoreWhitespaces)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        res = " ";
+                        break;
+                    }
+                }
+            }
+
+            string d = consumeDelimiter();
+            if (d.length)
+            {
+                if (tStart > -1)
+                {
+                    res = input[tStart..pos];
+                }
+                else
+                {
+                    res = d;
+                    forwardJump(d.length);
+                }
+
+                break;
+            }
+            else
+            {
+                if (tStart == -1)
+                {
+                    tStart = pos;
+                }
+                advance();
+            }
         }
 
-        this.utf8dec = UTF8Decoder(input);
+        return res;
     }
 
-    dchar getNextChar()
+    protected:
+
+    uint pos()
     {
-        return cast(dchar)utf8dec.decodeNext();
+        return index-currentSize;
     }
 
-    bool eos()
+    void advance()
     {
-        return utf8dec.eos();
+        current = dec.decodeNext();
+        currentSize = cast(uint)dec.index - index;
+        index += currentSize;
     }
 
-    static bool isWhitespace(dchar c)
+    void forwardJump(size_t numChars)
+    {
+        for(size_t i = 0; i < numChars; i++)
+        {
+            advance();
+        }
+    }
+
+    bool forwardCompare(string str)
+    {
+        UTF8Decoder dec2 = UTF8Decoder(str);
+        size_t oldIndex = dec.index;
+
+        bool res = true;
+
+        int c1 = current;
+        int c2 = dec2.decodeNext();
+        do
+        {
+            if (c2 == UTF8_END || c2 == UTF8_ERROR)
+                break;
+
+            if (c1 == UTF8_END && c2 == UTF8_END)
+            {
+                res = true;
+                break;
+            }
+
+            if (c1 != UTF8_END && c1 != UTF8_ERROR &&
+                c2 != UTF8_END && c2 != UTF8_ERROR)
+            {
+                if (c1 != c2)
+                {
+                    res = false;
+                    break;
+                }
+            }
+            else
+            {
+                res = false;
+                break;
+            }
+
+            c1 = dec.decodeNext();
+            c2 = dec2.decodeNext();
+        }
+        while(c2 != UTF8_END && c2 != UTF8_ERROR);
+
+        dec.index = oldIndex;
+
+        return res;
+    }
+
+    bool isWhitespace(dchar c)
     {
         foreach(w; std.ascii.whitespace)
         {
@@ -109,140 +250,43 @@ class Lexer: InputRange!(dchar[])
         return false;
     }
 
-    uint prefixCompare(dchar[] s1, string s2)
+    bool isNewline(dchar c)
     {
-        auto dec = UTF8Decoder(s2);
-        uint pos = 0;
-        foreach(dchar c; s1)
-        {
-            int g = dec.decodeNext();
-            if (g == UTF8_ERROR || g == UTF8_END)
-                return pos;
-
-            if (c != cast(dchar)g)
-                return pos;
-
-            pos++;
-        }
-
-        return pos;
+        return (c == '\n' || c == '\r');
     }
 
-    DynamicArray!dchar tmp;
-    DynamicArray!dchar buffer;
-    bool fillTmp = true;
-
-    dchar[] getLexeme()
+    string consumeDelimiter()
     {
-        bool ready = false;
-        dchar[] output;
-
-        while(!ready)
+        size_t bestLen = 0;
+        string bestStr = "";
+        foreach(d; delims)
         {
-            if (eos())
+            if (forwardCompare(d))
             {
-                fillTmp = false;
-
-                if (!tmp.length)
+                if (d.length > bestLen)
                 {
-
-                if (buffer.length)
-                {
-                    output = copyBuffer(buffer.data);
-                    buffer.free();
-                    ready = true;
+                    bestLen = d.length;
+                    bestStr = input[pos..pos+d.length];
                 }
-
-                break;
-                }
-            }
-
-            if (fillTmp)
-            {
-                foreach(i; 0..maxDelimLength-tmp.length)
-                {
-                    int c = getNextChar();
-
-                    if (cast(dchar)c == '\r') // ignore carriage return
-                    {
-                        continue;
-                    }
-
-                    if (cast(dchar)c == '\n')
-                    {
-                        c = '\n';
-                    }
-                    else if (isWhitespace(c))
-                    {
-                        c = ' ';
-                    }
-
-                    if (c != UTF8_ERROR && c != UTF8_END)
-                        tmp.append(cast(dchar)c);
-                    else
-                        break;
-                }
-
-                if (tmp.length == 0)
-                {
-                    ready = true;
-                    break;
-                }
-            }
-
-            uint pos = 0;
-            size_t delimLen = 0;
-            string delim;
-            foreach(d; delims)
-            {
-                uint newPos = prefixCompare(tmp.data, d);
-                auto co = count(d);
-                if (newPos == co)
-                {
-                    if (newPos > pos)
-                    {
-                        pos = newPos;
-                        delimLen = co;
-                        delim = d;
-                    }
-                }
-            }
-
-            if (pos && pos == delimLen)
-            {
-                if (buffer.length)
-                {
-                    output = copyBuffer(buffer.data);
-                    buffer.free();
-                    ready = true;
-                }
-                else
-                {
-                    output = copyBuffer(tmp.data[0..pos]);
-                    tmp.removeLeft(pos);
-                    fillTmp = true;
-                    ready = true;
-                }
-            }
-            else
-            {
-                buffer.append(tmp.data[0]);
-                tmp.removeLeft(1);
-                fillTmp = true;
             }
         }
-
-        return output;
+        return bestStr;
     }
 
-    dchar[] _front;
+    // Range interface
+
+    private:
+
+    string _front;
+
+    public:
 
     bool empty()
     {
         return _front.length == 0;
     }
 
-    dchar[] front()
+    string front()
     {
         return _front;
     }
@@ -252,19 +296,19 @@ class Lexer: InputRange!(dchar[])
         _front = getLexeme();
     }
 
-    dchar[] moveFront()
+    string moveFront()
     {
         _front = getLexeme();
         return _front;
     }
 
-    final int opApply(scope int delegate(dchar[]) dg)
+    int opApply(scope int delegate(string) dg)
     {
         int result = 0;
 
         while(true)
         {
-            dchar[] lexeme = getLexeme();
+            string lexeme = getLexeme();
 
             if (!lexeme.length)
                 break;
@@ -277,14 +321,14 @@ class Lexer: InputRange!(dchar[])
         return result;
     }
 
-    final int opApply(scope int delegate(size_t, dchar[]) dg)
+    int opApply(scope int delegate(size_t, string) dg)
     {
         int result = 0;
         size_t i = 0;
 
         while(true)
         {
-            dchar[] lexeme = getLexeme();
+            string lexeme = getLexeme();
 
             if (!lexeme.length)
                 break;
@@ -300,14 +344,11 @@ class Lexer: InputRange!(dchar[])
     }
 }
 
-///
 unittest
 {
     string[] delims = ["(", ")", ";", " ", "{", "}", ".", "\n", "\r", "=", "++", "<"];
     auto input = "for (int i=0; i<arr.length; ++i)\r\n{doThing();}\n";
     auto lexer = new Lexer(input, delims);
-
-    import std.utf : toUTF8;
 
     string[] arr;
     while(true) {
@@ -315,14 +356,18 @@ unittest
         if(lexeme.length == 0) {
             break;
         }
-        arr ~= lexeme.toUTF8;
-        Delete(lexeme);
+        arr ~= lexeme;
     }
-    assert(arr == ["for", " ", "(", "int", " ", "i", "=", "0", ";", " ", "i", "<", "arr", ".", "length", ";", " ", "++", "i", ")", "\n", "{", "doThing", "(", ")", ";", "}", "\n" ]);
+    assert(arr == [
+        "for", " ", "(", "int", " ", "i", "=", "0", ";", " ", "i", "<",
+        "arr", ".", "length", ";", " ", "++", "i", ")", "\n", "{", "doThing",
+        "(", ")", ";", "}", "\n" ]);
 
     input = "";
     lexer = new Lexer(input, delims);
     assert(lexer.getLexeme().length == 0);
 }
-+++/
 
+// For backward compatibility
+deprecated("SliceLexer is deprecated, use Lexer instead")
+alias SliceLexer = Lexer;

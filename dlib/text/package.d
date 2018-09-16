@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2017 Timur Gafarov
+Copyright (c) 2015-2018 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -34,5 +34,4 @@ public
     import dlib.text.utf8;
     import dlib.text.utf16;
     import dlib.text.lexer;
-    import dlib.text.slicelexer;
 }
