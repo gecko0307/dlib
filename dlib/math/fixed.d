@@ -32,6 +32,7 @@ module dlib.math.fixed;
  * Fixed point arythmetics
  * (WIP status)
  */
+deprecated("dlib.math.fixed is deprecated, use floats or doubles instead")
 struct fixed
 {
     private int x;

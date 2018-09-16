@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2017 Timur Gafarov
+Copyright (c) 2013-2018 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -37,7 +37,6 @@ public
     import dlib.math.dual;
     import dlib.math.dualquaternion;
     import dlib.math.fft;
-    import dlib.math.fixed;
     import dlib.math.interpolation;
     import dlib.math.linsolve;
     import dlib.math.matrix;

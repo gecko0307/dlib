@@ -32,4 +32,5 @@ public
 {
     import dlib.coding.zlib;
     import dlib.coding.varint;
+    import dlib.coding.hash;
 }

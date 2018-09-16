@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2017 Timur Gafarov
+Copyright (c) 2011-2018 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,54 +26,22 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.container.aarray;
+module dlib.coding.hash;
 
-private
+public:
+
+pure int stringHash(string key, int tableSize = 5381)
 {
-    import dlib.core.memory;
-    import dlib.container.bst;
-    import dlib.container.hash;
+    int hashVal = 0;
+    for (int x = 0; x < key.length; ++x)
+    {
+        hashVal ^= (hashVal << 5) + (hashVal >> 2) + key[x];
+    }
+    return hashVal % tableSize;
 }
 
-/*
- * GC-free associative array implementation
- */
-
-deprecated("dlib.container.aarray is deprecated, use dlib.container.dict instead")
-class AArray(T): BST!(T)
+unittest
 {
-    this()
-    {
-        super();
-    }
+    int h = stringHash("Hello!");
+    assert(h == -4720);}
 
-    void opIndexAssign(T v, string i)
-    {
-        insert(stringHash(i), v);
-    }
-
-    T opIndex(string i)
-    {
-        auto node = find(stringHash(i));
-        if (node is null)
-            return value.init;
-        else
-            return node.value;
-    }
-
-    T* opIn_r(string i)
-    {
-        auto node = find(stringHash(i));
-        if (node !is null)
-            return &node.value;
-        else
-            return null;
-    }
-
-    void remove(string i)
-    {
-        super.remove(stringHash(i));
-    }
-
-    //mixin FreeImpl;
-}

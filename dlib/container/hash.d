@@ -26,22 +26,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+deprecated("dlib.container.hash is deprecated, import dlib.coding.hash instead")
 module dlib.container.hash;
 
-public:
-
-pure int stringHash(string key, int tableSize = 5381)
-{
-    int hashVal = 0;
-    for (int x = 0; x < key.length; ++x)
-    {
-        hashVal ^= (hashVal << 5) + (hashVal >> 2) + key[x];
-    }
-    return hashVal % tableSize;
-}
-
-unittest
-{
-    int h = stringHash("Hello!");
-    assert(h == -4720);}
-
+public import dlib.coding.hash;
