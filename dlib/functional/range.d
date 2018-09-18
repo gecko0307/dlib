@@ -26,7 +26,6 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-deprecated("dlib.functional.range is deprecated, use std.algorithm instead")
 module dlib.functional.range;
 
 struct Range(T)
@@ -69,6 +68,7 @@ auto range(T)(T start, T end, T step = 1)
     return Range!(T)(start, end, step);
 }
 
+deprecated("dlib.functional.range.map is deprecated, use std.algorithm.map instead")
 auto map(alias func, Range)(Range r)
 {
     struct ResultRange
@@ -97,6 +97,7 @@ auto map(alias func, Range)(Range r)
     return ResultRange(r);
 }
 
+deprecated("dlib.functional.range.filter is deprecated, use std.algorithm.filter instead")
 auto filter(alias pred, Range)(Range r)
 {
     struct ResultRange
@@ -124,8 +125,10 @@ auto filter(alias pred, Range)(Range r)
     return ResultRange(r);
 }
 
+deprecated("dlib.functional.range.where is deprecated, use std.algorithm.filter instead")
 alias where = filter;
 
+deprecated("dlib.functional.range.reduce is deprecated, use std.algorithm.reduce instead")
 auto reduce(alias func, Range)(Range r)
 {
     typeof(r.front) res = 0;
