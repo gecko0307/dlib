@@ -63,7 +63,6 @@ Users
 * [DlangUI](https://github.com/buggins/dlangui) - native UI toolkit for D
 * [Voxelman](https://github.com/MrSmith33/voxelman) - voxel-based game engine
 * [Laser Patriarch](http://ludumdare.com/compo/ludum-dare-36/?action=preview&uid=14310) - Ludum Dare 36 participant, a rougelike with random maps
-* [Litecraft](https://github.com/Litecrafty/Litecraft) - open source Minecraft client
 * [Anchovy](https://github.com/MrSmith33/anchovy) - multimedia library for games and graphics apps
 * [RIP](https://github.com/LightHouseSoftware/rip) - image processing and analysis library by LightHouse Software
 * [GeneticAlgorithm](https://github.com/Hnatekmar/GeneticAlgorithm) - genetic algorithms library
