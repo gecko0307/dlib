@@ -45,6 +45,10 @@ Currently dlib contains the following packages:
 
 * dlib.coding - various data compression and coding algorithms
 
+Supported Compilers
+-------------------
+dlib is automatically tested for compatibility with latest two releases of DMD and LDC. Older releases formally are not supported, but in practice usually are. There's no guaranteed support for GDC and other D compilers.
+
 Documentation
 -------------
 Please, refer to [the wiki](https://github.com/gecko0307/dlib/wiki). Also HTML documentation can be generated from wiki pages using [this](https://github.com/gecko0307/dlib/tree/master/gendoc) set of tools. Be aware that documentation is currently incomplete. I'm currently running a [Patreon campaign](https://www.patreon.com/gecko0307) to reach $100 funding per month - help me get there to finish the documentation.
