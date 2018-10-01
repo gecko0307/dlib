@@ -13,7 +13,7 @@
         "Basile Burg",
         "Valeriy Fedotov"
     ],
-    "license": "Boost",
+    "license": "BSL-1.0",
     "homepage": "http://github.com/gecko0307/dlib",
     "name": "dlib",
     "importPaths": [
