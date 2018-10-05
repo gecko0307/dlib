@@ -8,7 +8,7 @@ Note that macOS compatibility issues are not considered bugs. dlib intentionally
 
 ####  Bug fixing 
 
-Open a new GitHub pull request with your patch. Provide a description of the problem and solution. Follow our [code style](#Code-style-and-standards). Please, try to avoid solutions that break library API and semantics - such changes should be made very carefully. If the problem can't be solved without breaking changes, explicitly state that in the description.
+Open a new GitHub pull request with your patch. Provide a description of the problem and solution. Follow our [code style](#code-style-and-standards). Please, try to avoid solutions that break library API and semantics - such changes should be made very carefully. If the problem can't be solved without breaking changes, explicitly state that in the description.
 
 ####  Implementing new features 
 
@@ -18,7 +18,7 @@ New code should at least:
 * Work under Windows and POSIX systems and provide platform-agnostic API
 * Support x86 and x86_64 targets
 * Don't rely on third party libraries other than system API
-* Follow our [code style](#Code-style-and-standards)
+* Follow our [code style](#code-style-and-standards)
 * Use transparent dynamic memory allocations. Ideally the code should not allocate at all or rely on user for that. If dynamic allocations can't be avoided, they should be dome with `dlib.core.memory`. Garbage collector usage is discouraged - `dlib.memory` can be used to abstract away from actual allocation method
 * Not violate copyright/licensing. When adapting third-party code, make sure that it is compatible with [Boost Software License 1.0](https://www.boost.org/LICENSE_1_0.txt).
 
