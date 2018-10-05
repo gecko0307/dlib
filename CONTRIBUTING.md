@@ -31,7 +31,9 @@ dlib follows [D style](https://dlang.org/dstyle.html) (formerly Phobos style). E
 * Types, constants and enums should be in `PascalCase`
 * Modules should be in lowercase.
 
-Additionally, each D module should start with a Boost license block prepended with a copyright notice:
+All modules in dlib should belong to a package (`dlib.core`, `dlib.math`, `dlib.image`, etc.). Keep package and module names short and informative. Modules with related functionality can be combined to subpackages (such as `dlib.image.io`). Provide a package module (`package.d` with public imports) for each subpackage.
+
+Each D module should start with a Boost license block prepended with a copyright notice:
 ```
 /*
 Copyright (c) 2018 <author's name here>
@@ -61,5 +63,3 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 ```
-
-All modules in dlib should belong to a package (`dlib.core`, `dlib.math`, `dlib.image`, etc.). Keep package and module names short and informative. Modules with related functionality can be combined to subpackages (such as `dlib.image.io`). Provide a package module (`package.d` with public imports) for each subpackage.
