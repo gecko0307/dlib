@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2017 Timur Gafarov
+Copyright (c) 2016-2018 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -33,10 +33,7 @@ import dlib.core.memory;
 import dlib.container.array;
 import dlib.text.utf8;
 import dlib.text.utils;
-
-// TODO move this to separate module
-enum DECODE_END = -1;
-enum DECODE_ERROR = -2;
+import dlib.text.common;
 
 // TODO: byte order
 struct UTF16Decoder

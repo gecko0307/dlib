@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2017 Timur Gafarov
+Copyright (c) 2015-2018 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -28,10 +28,12 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.text.utf8;
 
-///Constant to return from UTF8Decoder on the ned of string.
-enum UTF8_END = -1;
+import dlib.text.common;
+
+///Constant to return from UTF8Decoder on the end of string.
+enum UTF8_END = DECODE_END;
 ///Constant to return from UTF8Decoder when error occurs.
-enum UTF8_ERROR = -2;
+enum UTF8_ERROR = DECODE_ERROR;
 
 /**
  * Simple and pretty fast UTF-8 decoder
