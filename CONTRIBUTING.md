@@ -12,24 +12,24 @@ Open a new GitHub pull request with your patch. Provide a description of the pro
 
 ####  Implementing new features 
 
-Before writing a new module, familiarize yourself with [project philosophy](https://github.com/gecko0307/dlib/wiki/Rationale) and [best practices](https://github.com/gecko0307/dlib/wiki/Best-Practices). Despite being a general-purpose library, dlib is not a place for rarely used or too domain-specific code. In most cases it's better to start a new library instead of pushing new modules to dlib. Only in case you find yourself constantly reusing some generic functionality in different projects it may be reasonable to propose such code to dlib. It may be a data structure, sorting algorithm, data compressing method, image file decoder, communication protocol, or anything of that sort.
+Before writing a new module, familiarize yourself with [project philosophy](https://github.com/gecko0307/dlib/wiki/Rationale) and [best practices](https://github.com/gecko0307/dlib/wiki/Best-Practices). Despite being a general-purpose library, dlib is not a place for rarely used or too domain-specific code. In most cases it's better to start a new library instead of pushing new modules to dlib. Only in case you find yourself constantly reusing some generic functionality in different projects it may be reasonable to propose such code to dlib. It may be a data structure, sorting algorithm, data compression method, image file decoder, communication protocol, or anything of that sort.
 
 New code should at least:
-* Work under Windows and POSIX systems and provide platform-agnostic API
-* Support x86 and x86_64 targets
-* Don't rely on third party libraries other than system API
-* Follow our [code style](#code-style-and-standards)
-* Use transparent dynamic memory allocations. Ideally the code should not allocate at all or rely on user for that. If dynamic allocations can't be avoided, they should be dome with `dlib.core.memory`. Garbage collector usage is discouraged - `dlib.memory` can be used to abstract away from actual allocation method
-* Not violate copyright/licensing. When adapting third-party code, make sure that it is compatible with [Boost Software License 1.0](https://www.boost.org/LICENSE_1_0.txt).
+* work under Windows and POSIX systems and provide platform-agnostic API
+* support x86 and x86_64 targets
+* don't rely on third party libraries other than system API
+* follow our [code style](#code-style-and-standards)
+* use transparent dynamic memory allocations. Ideally the code should not allocate at all or rely on user for that. If dynamic allocations can't be avoided, they should be done with `dlib.core.memory`. Direct garbage collector usage is discouraged - `dlib.memory` can be used to abstract away from actual allocation method
+* not violate copyright/licensing. When adapting third-party code, make sure that it is compatible with [Boost Software License 1.0](https://www.boost.org/LICENSE_1_0.txt).
 
 ####  Code style and standards 
 
-dlib follows [D style](https://dlang.org/dstyle.html) (formerly Phobos style). Essential rules are the following:
+dlib follows [D style](https://dlang.org/dstyle.html). Essential rules are the following:
 * Use spaces instead of tabs. Each indentation level is 4 spaces
-* Opening curly braces should be on a new line
+* Opening curly bracket should be on a new line
 * Functions and variables should be in `camelCase`
 * Types, constants and enums should be in `PascalCase`
-* Modules should be in lowercase.
+* Module names should be in lowercase.
 
 All modules in dlib should belong to a package (`dlib.core`, `dlib.math`, `dlib.image`, etc.). Keep package and module names short and informative. Modules with related functionality can be combined to subpackages (such as `dlib.image.io`). Provide a package module (`package.d` with public imports) for each subpackage.
 
