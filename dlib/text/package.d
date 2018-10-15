@@ -33,5 +33,6 @@ public
     import dlib.text.utils;
     import dlib.text.utf8;
     import dlib.text.utf16;
+	import dlib.text.encodings;
     import dlib.text.lexer;
 }

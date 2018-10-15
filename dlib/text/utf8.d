@@ -216,3 +216,47 @@ unittest
         assert(decoder.decodeNext() == UTF8_ERROR);
     }
 }
+
+// Encoder a Unicode code point to UTF-8 into user-provided buffer.
+// Returns number of bytes written, or 0 at error.
+struct UTF8Encoder
+{
+    size_t encode(uint c, char[] buffer)
+    {
+        if (c <= 0x7F)
+        {
+            // Plain ASCII
+            buffer[0] = cast(char)c;
+            return 1;
+        }
+        else if (c <= 0x07FF)
+        {
+            // 2-byte unicode
+            buffer[0] = cast(char)(((c >> 6) & 0x1F) | 0xC0);
+            buffer[1] = cast(char)(((c >> 0) & 0x3F) | 0x80);
+            return 2;
+        }
+        else if (c <= 0xFFFF)
+        {
+            // 3-byte unicode
+            buffer[0] = cast(char)(((c >> 12) & 0x0F) | 0xE0);
+            buffer[1] = cast(char)(((c >>  6) & 0x3F) | 0x80);
+            buffer[2] = cast(char)(((c >>  0) & 0x3F) | 0x80);
+            return 3;
+        }
+        else if (c <= 0x10FFFF)
+        {
+            // 4-byte unicode
+            buffer[0] = cast(char)(((c >> 18) & 0x07) | 0xF0);
+            buffer[1] = cast(char)(((c >> 12) & 0x3F) | 0x80);
+            buffer[2] = cast(char)(((c >>  6) & 0x3F) | 0x80);
+            buffer[3] = cast(char)(((c >>  0) & 0x3F) | 0x80);
+            return 4;
+        }
+        else
+        {
+            // error
+            return 0;
+        }
+    }
+}

@@ -34,7 +34,75 @@ import dlib.container.array;
 import dlib.text.utf8;
 import dlib.text.utils;
 
-// TODO: make generic UTF16 decoder and encoder to build converters upon
+// TODO move this to separate module
+enum DECODE_END = -1;
+enum DECODE_ERROR = -2;
+
+// TODO: byte order
+struct UTF16Decoder
+{
+    size_t index = 0;
+    int character = 0;
+    string input;
+
+    this(string str)
+    {
+        index = 0;
+        character = 0;
+        input = str;
+    }
+
+    int decodeNext()
+    {
+        if (index >= input.length)
+            return index == input.length ? DECODE_END : DECODE_ERROR;
+        character++;
+        wchar c = *cast(wchar*)(&input[index]);
+        index += 2;
+        return c;
+    }
+
+    bool eos()
+    {
+        return (index >= input.length);
+    }
+
+    auto byDChar()
+    {
+        static struct ByDchar
+        {
+            private:
+            UTF16Decoder _decoder;
+            dchar _lastRead;
+
+            public:
+            this(UTF16Decoder decoder) {
+                _decoder = decoder;
+                _lastRead = cast(dchar)_decoder.decodeNext();
+            }
+
+            bool empty() {
+                return _lastRead == DECODE_END || _lastRead == DECODE_ERROR;
+            }
+
+            dchar front() {
+                return _lastRead;
+            }
+
+            void popFront() {
+                _lastRead = cast(dchar)_decoder.decodeNext();
+            }
+
+            auto save() {
+                return this;
+            }
+        }
+
+        return ByDchar(this);
+    }
+}
+
+// TODO: UTF16Encoder
 
 wchar[] convertUTF8toUTF16(string s, bool nullTerm = false)
 {
