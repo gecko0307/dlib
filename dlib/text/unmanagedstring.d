@@ -26,7 +26,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.text.altstring;
+module dlib.text.unmanagedstring;
 
 import dlib.container.array;
 import dlib.text.utf8;
