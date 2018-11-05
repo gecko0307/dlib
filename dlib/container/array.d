@@ -512,6 +512,8 @@ struct DynamicArray(T, size_t chunkSize = 32)
     {
         return pos;
     }
+    
+    alias opDollar = length;
 
     ///
     unittest
@@ -550,6 +552,14 @@ struct DynamicArray(T, size_t chunkSize = 32)
     T opIndex(size_t index)
     {
         return data[index];
+    }
+    
+    /**
+     * Access by slice.
+     */
+    T[] opSlice(size_t start, size_t end)
+    {
+        return data[start..end];
     }
 
     /**

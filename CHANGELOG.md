@@ -1,3 +1,30 @@
+dlib 0.15.0 beta1 - 4 Nov, 2018
+-------------------------------
+- **dlib.core**
+  - **Breaking change**: temporarily removed `dlib.core.fiber` due to lacking Windows support. It is now in [fiber branch](https://github.com/gecko0307/dlib/tree/fiber) until finished.
+- **dlib.text**
+  - New module `dlib.text.unmanagedstring` that provides `String`, a GC-free UTF8 string type based on `DynamicArray`.
+  - `UTF16Decoder` in `dlib.text.utf16`, `UTF8Encoder` in `dlib.text.utf8`.
+  - `dlib.text.encodings` - a one-stop solution for handling text encodings in generic way. Decoder is any range that outputs `dchar`, encoder is any object that defines `size_t encode(dchar, ubyte[])`.
+  - `dlib.text.common` that defines `DECODE_END` and `DECODE_ERROR` for decoders to use.
+- **dlib.container**
+  - `reserve` and `resize` for `dlib.container.array.DynamicArray` (#151).
+  - **Breaking change**: deprecated `dlib.container.aarray` module has been removed. Use `dlib.container.dict` instead.
+- **dlib.image**
+  - Fixed unintentional fallthrough in `dlib.image.io.saveImage` that caused error on TGA image.
+  - More accurate path filling in `dlib.image.canvas`.
+  - `dlib.image.parallel` has been deprecated.
+- **dlib.math**
+  - **Breaking change**: deprecated `dlib.math.affine` module has been removed. Use `dlib.math.transformation` instead.
+  - `dlib.math.fixed` has been deprecated.
+- **dlib.functional**
+  - `dlib.functional.quantifiers` has been deprecated.
+  - Free functions in `dlib.functional.range` (`map`, `filter`, `reduce`) have been deprecated. Use corresponding Phobos functions instead.
+- **Misc**
+  - dlib now can be built with recent GNU D Compiler (GDC). **Note:** `dlib.math.sse` is not supported with GDC.
+  - Added latest DMD (2.083.0, 2.082.1) and LDC (1.12.0) to Travis CI config.
+  - Support for [harbored-mod](https://github.com/dlang-community/harbored-mod) documentation generator.
+
 dlib 0.14.0 - 9 Jul, 2018
 -------------------------
 No changes since dlib 0.14.0 beta1.
