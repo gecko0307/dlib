@@ -1,6 +1,6 @@
-[![dlib-logo.png](/logo/dlib-logo.png)](/logo/dlib-logo.png)
+<img align="left" alt="dlib logo" src="https://github.com/gecko0307/dlib/raw/master/logo/dlib-logo.png" height="66" />
 
-dlib is a growing collection of native D language libraries useful for various higher-level projects - such as game engines, rendering pipelines and multimedia applications. It is written in D2 and has no external dependencies aside D's standard library, Phobos.  dlib is created and maintained by [Timur Gafarov](https://github.com/gecko0307).
+dlib is a growing collection of native D language libraries useful for various higher-level projects - such as game engines, rendering pipelines and multimedia applications. It is written in D2 and has no external dependencies aside D's standard library, Phobos. dlib is created and maintained by [Timur Gafarov](https://github.com/gecko0307).
 
 [![Travis Build Status](https://travis-ci.org/gecko0307/dlib.svg?branch=master)](https://travis-ci.org/gecko0307/dlib)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/90mrqd6hq7i2twap?svg=true)](https://ci.appveyor.com/project/gecko0307/dlib)
