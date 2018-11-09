@@ -1,3 +1,8 @@
+dlib 0.15.0 - 9 Nov, 2018
+-------------------------
+- **dlib.container**
+  - `opSlice` and `$` for `dlib.container.array.DynamicArray`.
+
 dlib 0.15.0 beta1 - 4 Nov, 2018
 -------------------------------
 - **dlib.core**
