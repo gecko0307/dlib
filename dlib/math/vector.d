@@ -1037,36 +1037,38 @@ auto lvector(T...)(ref T x)
 
 unittest
 {
-    const vec3 a = vec3(10.5f, 20.0f, 33.12345f);
-    const vec3 b = -a;
-    const vec3 c = +a - b;
-    const vec3 d = a * b / c;
+    {
+        const vec3 a = vec3(10.5f, 20.0f, 33.12345f);
+        const vec3 b = -a;
+        const vec3 c = +a - b;
+        const vec3 d = a * b / c;
 
-    assert(isAlmostZero(to!vec3(c.toString()) - c));
+        assert(isAlmostZero(to!vec3(c.toString()) - c));
 
-    ivec2 ab = ivec2(5, 15);
-    ab += ivec2(20, 30);
-    ab *= 3;
+        ivec2 ab = ivec2(5, 15);
+        ab += ivec2(20, 30);
+        ab *= 3;
 
-    assert(ab[0] == 75 && ab[1] == 135);
+        assert(ab[0] == 75 && ab[1] == 135);
 
-    auto len = c.length();
-    auto lensqr = c.lengthsqr();
-    auto dist = distance(a, b);
+        auto len = c.length();
+        auto lensqr = c.lengthsqr();
+        auto dist = distance(a, b);
 
-    auto xy = a[0..1];
-    auto n = a[];
+        auto xy = a[0..1];
+        auto n = a[];
 
-    vec3 v1 = vec3(2.0f, 0.0f, 1.0f);
-    ivec3 v2 = v1;
-    assert(ivec3(v1) == ivec3(2, 0, 1));
+        vec3 v1 = vec3(2.0f, 0.0f, 1.0f);
+        ivec3 v2 = v1;
+        assert(ivec3(v1) == ivec3(2, 0, 1));
 
-    vec3 v3 = [0, 2, 3.5];
-    assert(v3 == vec3(0.0f, 2.0f, 3.5f));
+        vec3 v3 = [0, 2, 3.5];
+        assert(v3 == vec3(0.0f, 2.0f, 3.5f));
 
-    ivec3 v4 = [7, 8, 3];
-    v4 %= 2;
-    assert(v4 == ivec3(1, 0, 1));
+        ivec3 v4 = [7, 8, 3];
+        v4 %= 2;
+        assert(v4 == ivec3(1, 0, 1));
+    }
 
     {
         Vector3f a = Vector3f(1, 2, 3);
