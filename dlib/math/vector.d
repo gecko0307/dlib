@@ -943,7 +943,7 @@ Vector!(T,3) refract(T)(Vector!(T,3) I, Vector!(T,3) N, T r)
     return I * r - N * (r * dot(N, I) + sqrt(d));
 }
 
-Vector!(T,3) faceforward(T)(Vector!(T,3) N, Vector!(T,3) I, Vector!(T,3) Nref) 
+Vector!(T,3) faceforward(T)(Vector!(T,3) N, Vector!(T,3) I, Vector!(T,3) Nref)
 {
     return dot(Nref, I) < 0.0 ? N : -N;
 }
@@ -1067,4 +1067,62 @@ unittest
     ivec3 v4 = [7, 8, 3];
     v4 %= 2;
     assert(v4 == ivec3(1, 0, 1));
+
+    {
+        Vector3f a = Vector3f(1, 2, 3);
+        Vector2f b = Vector2f(a);
+        assert(b == Vector2f(1, 2));
+    }
+
+    {
+        Vector3f a = Vector3f([0, 1]);
+        assert(isNaN(a.z));
+    }
+
+    {
+        Vector3f a = Vector3f(0, 1, 2);
+        a += 1;
+        assert(a == Vector3f(1, 2, 3));
+        a *= 2;
+        assert(a == Vector3f(2, 4, 6));
+        a -= 1;
+        assert(a == Vector3f(1, 3, 5));
+        a /= 3;
+        assert(a.y == 1);
+    }
+
+    {
+        Vector3f a;
+        a[1] = 3;
+        assert(a.y == 3);
+
+        a[0..3] = 1;
+        assert(a == Vector3f(1, 1, 1));
+
+        a[] = 0;
+        assert(a == Vector3f(0, 0, 0));
+    }
+
+    {
+        Vector3i a = Vector3i(0, 0, 3);
+        a = a.normalized;
+        assert(a == Vector3i(0, 0, 1));
+        assert(a.length == 1);
+    }
+
+    {
+        Vector3f a = Vector3f(0, 0, 0);
+        assert(a.isZero);
+    }
+
+    {
+        Vector3f a = Vector3f(2, -3, 0);
+        a.clamp(-1, 1);
+        assert(a == Vector3f(1, -1, 0));
+    }
+
+    {
+        Vector3f a = Vector3f(1, 2, 3, 4);
+        assert(dot(a, a) == 14);
+    }
 }
