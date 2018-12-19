@@ -63,6 +63,11 @@ class Lexer: InputRange!string
         this.index = 0;
         advance();
     }
+    
+    uint position() @property
+    {
+        return index;
+    }
 
     string getLexeme()
     {
