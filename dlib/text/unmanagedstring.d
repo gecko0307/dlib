@@ -38,7 +38,7 @@ import dlib.text.utf8;
  */
 struct String
 {
-    private DynamicArray!(char, 128) data;
+    DynamicArray!(char, 128) data;
     
     // Construct from D string
     this(string s)

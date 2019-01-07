@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2017 Timur Gafarov
+Copyright (c) 2017-2018 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -30,5 +30,6 @@ module dlib.serialization;
 
 public
 {
+    import dlib.serialization.json;
     import dlib.serialization.xml;
 }

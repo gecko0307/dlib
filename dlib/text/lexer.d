@@ -66,7 +66,7 @@ class Lexer: InputRange!string
     
     uint position() @property
     {
-        return index;
+        return pos();
     }
 
     string getLexeme()
