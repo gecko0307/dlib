@@ -28,8 +28,10 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.text.unmanagedstring;
 
+import dlib.core.memory;
 import dlib.container.array;
 import dlib.text.utf8;
+import dlib.coding.hash;
 
 /*
     GC-free UTF8 string type based on DynamicArray.
@@ -39,13 +41,14 @@ import dlib.text.utf8;
 struct String
 {
     DynamicArray!(char, 128) data;
-    
+    String* _cString;
+
     // Construct from D string
     this(string s)
     {
         data.insertBack(s);
     }
-    
+
     // Construct from zero-terminated C string (ASCII or UTF8)
     this(const(char)* cStr)
     {
@@ -57,7 +60,7 @@ struct String
         if (offset > 0)
             data.insertBack(cStr[0..offset]);
     }
-    
+
     // Construct from zero-terminated UTF-16 string
     this(const(wchar)* wStr)
     {
@@ -96,30 +99,36 @@ struct String
         }
         while(utf16char);
     }
-    
+
     void free()
     {
         data.free();
+
+        if (_cString)
+        {
+            _cString.free();
+            Delete(_cString);
+        }
     }
-    
+
     auto opCatAssign(string s)
     {
         data.insertBack(s);
         return this;
     }
-    
+
     auto opCatAssign(char c)
     {
         data.insertBack(c);
         return this;
     }
-    
+
     auto opCat(String s)
     {
         String s1 = this;
         return s1 ~= s;
     }
-    
+
     /*
     auto opCatAssign(dchar dc)
     {
@@ -127,34 +136,55 @@ struct String
         return this;
     }
     */
-    
+
     void reserve(size_t amount)
     {
         data.reserve(amount);
     }
-    
+
     @property size_t length()
     {
         return data.length;
     }
-    
+
     @property string toString()
     {
         return cast(string)data.data;
     }
-    
+
     alias toString this;
 
-    @property const(char)* ptr()
+    @property char* ptr()
     {
         return data.data.ptr;
     }
-    
+
+    private int hash = 0;
+    @property char* cString()
+    {
+        int newHash = stringHash(toString);
+        bool rebuildCString = false;
+
+        if (newHash != hash || _cString is null)
+        {
+            hash = newHash;
+
+            if (_cString)
+                _cString.free();
+            else
+                _cString = New!(String)();
+            *_cString ~= toString;
+            *_cString ~= '\0';
+        }
+
+        return _cString.data.data.ptr;
+    }
+
     @property bool isDynamic()
     {
         return data.dynamicStorage.length > 0;
     }
-    
+
     // Range interface that iterates the string by Unicode code point (dchar),
     // i.e., foreach(dchar c; str.byDChar)
     auto byDChar()
