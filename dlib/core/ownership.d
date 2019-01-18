@@ -59,6 +59,7 @@ class Owner: Owned
 
     void deleteOwnedObject(Owned obj)
     {
+        /*
         size_t index;
         bool found = false;
 
@@ -77,6 +78,12 @@ class Owner: Owned
         {
             Delete(obj);
             ownedObjects.removeKey(index);
+        }
+        */
+
+        if (ownedObjects.removeFirst(obj))
+        {
+            Delete(obj);
         }
     }
 

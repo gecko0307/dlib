@@ -77,14 +77,14 @@ struct DynamicArray(T, size_t chunkSize = 32)
         arr.addChunk();
         assert(arr.length == 0);
     }
-    
+
     /**
      * Preallocate memory without resizing.
      */
     void reserve(size_t amount)
     {
         if (amount > pos && amount > staticStorage.length)
-        {            
+        {
             if (numChunks == 0)
             {
                 dynamicStorage = New!(T[])(amount);
@@ -95,11 +95,11 @@ struct DynamicArray(T, size_t chunkSize = 32)
             {
                 reallocateArray(dynamicStorage, amount);
             }
-            
+
             numChunks = cast(uint)(amount / 32 + amount % 32);
         }
     }
-    
+
     ///
     unittest
     {
@@ -108,12 +108,12 @@ struct DynamicArray(T, size_t chunkSize = 32)
         assert(arr.length == 0);
         assert(arr.dynamicStorage.length == 100);
     }
-    
+
     /**
      * Resize array and initialize newly added elements with initValue.
      */
     void resize(size_t newLen, T initValue)
-    {        
+    {
         if (newLen > pos)
         {
             reserve(newLen);
@@ -122,10 +122,10 @@ struct DynamicArray(T, size_t chunkSize = 32)
                 storage[i] = initValue;
             }
         }
-        
+
         pos = cast(uint)newLen;
     }
-    
+
     ///
     unittest
     {
@@ -499,6 +499,35 @@ struct DynamicArray(T, size_t chunkSize = 32)
     alias insertAt = insertKey;
     alias removeAt = removeKey;
 
+    /**
+     * If obj is in array, remove its first occurence and return true.
+     * Otherwise do nothing and return false.
+     */
+    bool removeFirst(T obj)
+    {
+        size_t index;
+        bool found = false;
+
+        for (size_t i = 0; i < data.length; i++)
+        {
+            T o = data[i];
+            if (o is obj)
+            {
+                index = i;
+                found = true;
+                break;
+            }
+        }
+
+        if (found)
+        {
+            removeKey(index);
+            return true;
+        }
+
+        return false;
+    }
+
     // For backward compatibility
     alias append = insertBack;
     alias appendLeft = insertFront;
@@ -512,7 +541,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     {
         return pos;
     }
-    
+
     alias opDollar = length;
 
     ///
@@ -553,7 +582,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     {
         return data[index];
     }
-    
+
     /**
      * Access by slice.
      */
