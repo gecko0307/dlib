@@ -28,6 +28,7 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.container.array;
 
+import std.traits;
 import dlib.core.memory;
 
 /**
@@ -511,11 +512,24 @@ struct DynamicArray(T, size_t chunkSize = 32)
         for (size_t i = 0; i < data.length; i++)
         {
             T o = data[i];
-            if (o is obj)
+
+            static if (isArray!T)
             {
-                index = i;
-                found = true;
-                break;
+                if (o[] == obj[])
+                {
+                    index = i;
+                    found = true;
+                    break;
+                }
+            }
+            else
+            {
+                if (o is obj)
+                {
+                    index = i;
+                    found = true;
+                    break;
+                }
             }
         }
 
