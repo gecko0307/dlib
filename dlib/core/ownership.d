@@ -37,7 +37,7 @@ interface Owned
 
 class Owner: Owned
 {
-    DynamicArray!Owned ownedObjects;
+    protected DynamicArray!Owned ownedObjects;
 
     this(Owner owner)
     {
@@ -55,6 +55,29 @@ class Owner: Owned
         foreach(i, obj; ownedObjects)
             Delete(obj);
         ownedObjects.free();
+    }
+
+    void deleteOwnedObject(Owned obj)
+    {
+        size_t index;
+        bool found = false;
+
+        for (size_t i = 0; i < ownedObjects.data.length; i++)
+        {
+            Owned o = ownedObjects.data[i];
+            if (o is obj)
+            {
+                index = i;
+                found = true;
+                break;
+            }
+        }
+
+        if (found)
+        {
+            Delete(obj);
+            ownedObjects.removeKey(index);
+        }
     }
 
     ~this()
