@@ -439,7 +439,7 @@ struct Quaternion(T)
             if (s <= 0.0f)
                 return Vector!(T,3)(x, y, z);
             else
-                return Vector!(T,3)(x * s, y * s, z * s);
+                return Vector!(T,3)(x / s, y / s, z / s);
         }
 
        /*
