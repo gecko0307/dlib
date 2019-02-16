@@ -80,9 +80,9 @@ struct AllocationRecord
 
 private
 {
-    bool memoryProfilerEnabled = false;
-    AllocationRecord[ulong] records;
-    ulong counter = 0;
+    __gshared bool memoryProfilerEnabled = false;
+    __gshared AllocationRecord[ulong] records;
+    __gshared ulong counter = 0;
 
     void addRecord(void* p, string type, size_t size, string file, int line)
     {
