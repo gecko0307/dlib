@@ -484,17 +484,17 @@ class Region{
     double areaFromContour;
     double perimeter;
     Point centroid;
-    //double aspectRatio;
+    double aspect_Ratio;
     Rectangle bBox;
     //XYList convexHull;
     //double convexArea;
     Ellipse ellipse;
+    double extent;
     //double solidity;
     double majorAxisLength;
     double minorAxisLength;
     //double orientation;
-    //float eccentricity;
-    //float aspect_Ratio;
+    double eccentricity;
     double equivalentDiameter;
     XYList contourPixelList; // chain sorted!
     XYList pixelList;
@@ -555,6 +555,9 @@ class RegionProps{
             
             region.image = imsub;
             
+            region.aspect_Ratio = region.bBox.width / cast(double)region.bBox.height;
+            region.extent = cast(double)region.area/(region.bBox.width*region.bBox.height);
+            
             region.perimeter = arcLength(contourIdx_sorted); // holes are ignored
             region.areaFromContour = contourArea(contourIdx_sorted); // holes are ignored
             region.area = coords[i].xs.length;
@@ -583,6 +586,8 @@ class RegionProps{
                 region.majorAxisLength = 2*region.ellipse.r2;
                 region.minorAxisLength = 2*region.ellipse.r1;
             }
+            
+            region.eccentricity = sqrt(1.0 - (region.minorAxisLength / region.majorAxisLength) * (region.minorAxisLength / region.majorAxisLength));
             
             regions[i] = region;
             
