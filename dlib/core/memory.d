@@ -31,6 +31,8 @@ module dlib.core.memory;
 import std.stdio;
 import std.conv;
 import std.traits;
+import std.datetime;
+import std.algorithm;
 import core.stdc.stdlib;
 import core.exception: onOutOfMemoryError;
 
@@ -40,9 +42,12 @@ import dlib.memory;
  * Tools for manual memory management
  */
 
-//version = MemoryDebug;
-
 private __gshared ulong _allocatedMemory = 0;
+
+ulong allocatedMemory()
+{
+    return _allocatedMemory;
+}
 
 private __gshared Mallocator _defaultGlobalAllocator; 
 private __gshared Allocator _globalAllocator;
@@ -63,66 +68,76 @@ void globalAllocator(Allocator a)
     _globalAllocator = a;
 }
 
-version(MemoryDebug)
+struct AllocationRecord
 {
-    import std.datetime;
-    import std.algorithm;
+    string type;
+    size_t size;
+    string file;
+    int line;
+    ulong id;
+    bool deleted;
+}
 
-    struct AllocationRecord
+private
+{
+    __gshared bool memoryProfilerEnabled = false;
+    __gshared AllocationRecord[ulong] records;
+    __gshared ulong counter = 0;
+
+    void addRecord(void* p, string type, size_t size, string file, int line)
     {
-        string type;
-        size_t size;
-        ulong id;
-        bool deleted;
-    }
-
-    AllocationRecord[ulong] records;
-    ulong counter = 0;
-
-    void addRecord(void* p, string type, size_t size)
-    {
-        records[cast(ulong)p] = AllocationRecord(type, size, counter, false);
+        records[cast(ulong)p] = AllocationRecord(type, size, file, line, counter, false);
         counter++;
-        //writefln("Allocated %s (%s bytes)", type, size);
     }
 
     void markDeleted(void* p)
     {
         ulong k = cast(ulong)p - psize;
-        //string type = records[k].type;
-        //size_t size = records[k].size;
         records[k].deleted = true;
-        //writefln("Dellocated %s (%s bytes)", type, size);
     }
+}
 
-    void printMemoryLog()
+void enableMemoryProfiler(bool mode)
+{
+    memoryProfilerEnabled = mode;
+}
+
+void printMemoryLog()
+{
+    writeln("----------------------------------------------------");
+    writeln("               Memory allocation log                ");
+    writeln("----------------------------------------------------");
+    auto keys = records.keys;
+    sort!((a, b) => records[a].id < records[b].id)(keys);
+    foreach(k; keys)
     {
-        writeln("----------------------------------------------------");
-        writeln("               Memory allocation log                ");
-        writeln("----------------------------------------------------");
-        auto keys = records.keys;
-        sort!((a, b) => records[a].id < records[b].id)(keys);
-        foreach(k; keys)
-        {
-            AllocationRecord r = records[k];
-            if (r.deleted)
-                writefln("         %s - %s byte(s) at %X", r.type, r.size, k);
-            else
-                writefln("REMAINS: %s - %s byte(s) at %X", r.type, r.size, k);
-        }
-        writeln("----------------------------------------------------");
-        writefln("Total amount of allocated memory: %s", _allocatedMemory);
-        writeln("----------------------------------------------------");
+        AllocationRecord r = records[k];
+        if (r.deleted)
+            writefln("         %s - %s byte(s) in %s(%s)", r.type, r.size, r.file, r.line);
+        else
+            writefln("REMAINS: %s - %s byte(s) in %s(%s)", r.type, r.size, r.file, r.line);
     }
+    writeln("----------------------------------------------------");
+    writefln("Total amount of allocated memory: %s byte(s)", _allocatedMemory);
+    writeln("----------------------------------------------------");
 }
-else
+    
+void printMemoryLeaks()
 {
-    void printMemoryLog() {}
-}
-
-ulong allocatedMemory()
-{
-    return _allocatedMemory;
+    writeln("----------------------------------------------------");
+    writeln("                    Memory leaks                    ");
+    writeln("----------------------------------------------------");
+    auto keys = records.keys;
+    sort!((a, b) => records[a].id < records[b].id)(keys);
+    foreach(k; keys)
+    {
+        AllocationRecord r = records[k];
+        if (!r.deleted)
+            writefln("%s - %s byte(s) in %s(%s)", r.type, r.size, r.file, r.line);
+    }
+    writeln("----------------------------------------------------");
+    writefln("Total amount of leaked memory: %s byte(s)", _allocatedMemory);
+    writeln("----------------------------------------------------");
 }
 
 interface Freeable
@@ -132,44 +147,44 @@ interface Freeable
 
 enum psize = 8;
 
-T allocate(T, A...) (A args) if (is(T == class))
+T allocate(T, A...) (A args, string file = __FILE__, int line = __LINE__) if (is(T == class))
 {
     enum size = __traits(classInstanceSize, T);
-    void* p = globalAllocator.allocate(size+psize).ptr; //malloc(size+psize);
+    void* p = globalAllocator.allocate(size+psize).ptr;
     if (!p)
         onOutOfMemoryError();
     auto memory = p[psize..psize+size];
     *cast(size_t*)p = size;
     _allocatedMemory += size;
-    version(MemoryDebug)
+    if (memoryProfilerEnabled)
     {
-        addRecord(p, T.stringof, size);
+        addRecord(p, T.stringof, size, file, line);
     }
     auto res = emplace!(T, A)(memory, args);
     return res;
 }
 
-T* allocate(T, A...) (A args) if (is(T == struct))
+T* allocate(T, A...) (A args, string file = __FILE__, int line = __LINE__) if (is(T == struct))
 {
     enum size = T.sizeof;
-    void* p = globalAllocator.allocate(size+psize).ptr; //malloc(size+psize);
+    void* p = globalAllocator.allocate(size+psize).ptr;
     if (!p)
         onOutOfMemoryError();
     auto memory = p[psize..psize+size];
     *cast(size_t*)p = size;
     _allocatedMemory += size;
-    version(MemoryDebug)
+    if (memoryProfilerEnabled)
     {
-        addRecord(p, T.stringof, size);
+        addRecord(p, T.stringof, size, file, line);
     }
     return emplace!(T, A)(memory, args);
 }
 
-T allocate(T) (size_t length) if (isArray!T)
+T allocate(T) (size_t length, string file = __FILE__, int line = __LINE__) if (isArray!T)
 {
     alias AT = ForeachType!T;
     size_t size = length * AT.sizeof;
-    auto mem = globalAllocator.allocate(size+psize).ptr; //malloc(size+psize);
+    auto mem = globalAllocator.allocate(size+psize).ptr;
     if (!mem)
         onOutOfMemoryError();
     T arr = cast(T)mem[psize..psize+size];
@@ -177,9 +192,9 @@ T allocate(T) (size_t length) if (isArray!T)
         v = v.init;
     *cast(size_t*)mem = size;
     _allocatedMemory += size;
-    version(MemoryDebug)
+    if (memoryProfilerEnabled)
     {
-        addRecord(mem, T.stringof, size);
+        addRecord(mem, T.stringof, size, file, line);
     }
     return arr;
 }
@@ -188,9 +203,9 @@ void deallocate(T)(ref T obj) if (isArray!T)
 {
     void* p = cast(void*)obj.ptr;
     size_t size = *cast(size_t*)(p - psize);
-    globalAllocator.deallocate((p - psize)[0..size+psize]); //free(p - psize);
+    globalAllocator.deallocate((p - psize)[0..size+psize]);
     _allocatedMemory -= size;
-    version(MemoryDebug)
+    if (memoryProfilerEnabled)
     {
         markDeleted(p);
     }
@@ -203,9 +218,9 @@ void deallocate(T)(T obj) if (is(T == class) || is(T == interface))
     void* p = cast(void*)o;
     size_t size = *cast(size_t*)(p - psize);
     destroy(obj);
-    globalAllocator.deallocate((p - psize)[0..size+psize]); //free(p - psize);
+    globalAllocator.deallocate((p - psize)[0..size+psize]);
     _allocatedMemory -= size;
-    version(MemoryDebug)
+    if (memoryProfilerEnabled)
     {
         markDeleted(p);
     }
@@ -216,9 +231,9 @@ void deallocate(T)(T* obj)
     void* p = cast(void*)obj;
     size_t size = *cast(size_t*)(p - psize);
     destroy(obj);
-    globalAllocator.deallocate((p - psize)[0..size+psize]); //free(p - psize); 
+    globalAllocator.deallocate((p - psize)[0..size+psize]);
     _allocatedMemory -= size;
-    version(MemoryDebug)
+    if (memoryProfilerEnabled)
     {
         markDeleted(p);
     }
