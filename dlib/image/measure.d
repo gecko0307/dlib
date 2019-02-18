@@ -51,7 +51,7 @@ immutable int[8] dy8 = [0,  0, 1, 1,  1, -1, -1, -1];
 // The reason for why 2 dfs functions are used is performace! I don't want
 // the algorithm to check proximity rule (conn) at each pixel.
 
-void dfs4(int x, int y, ubyte current_label, ubyte[] label, SuperImage img) {
+private void dfs4(int x, int y, ubyte current_label, ubyte[] label, SuperImage img) {
     if (x < 0 || x == row_count) return;
     if (y < 0 || y == col_count) return;
     if (label[x*col_count + y] || !img.data[x*col_count + y]) return;
@@ -62,7 +62,7 @@ void dfs4(int x, int y, ubyte current_label, ubyte[] label, SuperImage img) {
         dfs4(x + dx4[direction], y + dy4[direction], current_label, label, img);
 }
 
-void dfs8(int x, int y, ubyte current_label, ubyte[] label, SuperImage img) {
+private void dfs8(int x, int y, ubyte current_label, ubyte[] label, SuperImage img) {
     if (x < 0 || x == row_count) return;
     if (y < 0 || y == col_count) return;
     if (label[x*col_count + y] || !img.data[x*col_count + y]) return;
@@ -493,7 +493,7 @@ class Region{
     //double solidity;
     double majorAxisLength;
     double minorAxisLength;
-    //double orientation;
+    double orientation;
     double eccentricity;
     double equivalentDiameter;
     XYList contourPixelList; // chain sorted!
@@ -578,6 +578,7 @@ class RegionProps{
             _ellipse.center_y += region.bBox.y;
             
             region.ellipse = _ellipse;
+            region.orientation = region.ellipse.angle;
             
             if(region.ellipse.r1 > region.ellipse.r2){
                 region.majorAxisLength = 2*region.ellipse.r1;
