@@ -34,6 +34,7 @@ import std.algorithm;
 
 import dlib.image;
 import dlib.image.fitellipse;
+import dlib.image.convexhull;
 import dlib.math;
 import dlib.container;
 
@@ -487,11 +488,11 @@ class Region{
     Point centroid;
     double aspect_Ratio;
     Rectangle bBox;
-    //XYList convexHull;
-    //double convexArea;
+    XYList convexHull;
+    double convexArea;
     Ellipse ellipse;
     double extent;
-    //double solidity;
+    double solidity;
     double majorAxisLength;
     double minorAxisLength;
     double orientation;
@@ -591,10 +592,14 @@ class RegionProps{
             
             region.eccentricity = sqrt(1.0 - (region.minorAxisLength / region.majorAxisLength) * (region.minorAxisLength / region.majorAxisLength));
             
+            region.convexHull = convHull(region.contourPixelList); // need some comparisons with other libs
+            region.convexArea = contourArea(region.convexHull); // need some comparisons with other libs
+            region.solidity = region.area / region.convexArea; // need some comparisons with other libs
+            
             regions[i] = region;
             
         }
     }
 }
 
-// TODO: implement convex hull to calculate more props
+// TODO: voronoi skeletonization / morphological thinning. maybe in image/filters/morphology.d
