@@ -57,7 +57,7 @@ For quick support and overall discussions, use [Gitter chat room](https://gitter
 
 License
 -------
-Copyright (c) 2011-2018 Timur Gafarov, Martin Cejp, Andrey Penechko, Vadim Lopatin, Nick Papanastasiou, Oleg Baharev, Roman Chistokhodov, Eugene Wissner, Roman Vlasov, Basile Burg, Valeriy Fedotov, Ferhat Kurtulmuş. Distributed under the Boost Software License, Version 1.0 (see accompanying file COPYING or at http://www.boost.org/LICENSE_1_0.txt).
+Copyright (c) 2011-2018 Timur Gafarov, Martin Cejp, Andrey Penechko, Vadim Lopatin, Nick Papanastasiou, Oleg Baharev, Roman Chistokhodov, Eugene Wissner, Roman Vlasov, Basile Burg, Valeriy Fedotov. Distributed under the Boost Software License, Version 1.0 (see accompanying file COPYING or at http://www.boost.org/LICENSE_1_0.txt).
 
 Users
 -----
