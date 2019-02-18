@@ -161,6 +161,7 @@ private void _setValAtIdx_with_padding(SuperImage img, XYList xylist, int val, i
 XYList
 getContinousBoundaryPoints( SuperImage unpadded){
     // https://www.codeproject.com/Articles/1105045/Tracing-Boundary-in-D-Image-Using-Moore-Neighborho
+    // author Udaya K Unnikrishnan
     int _rows = unpadded.height;
     int _cols = unpadded.width;
     int pad = 2;

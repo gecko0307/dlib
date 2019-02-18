@@ -318,7 +318,7 @@ Ellipse ellipseFit(XYList xylist){
     auto _Q = _Q_V[0];
     auto _V = _Q_V[1]; // rotation matrix
     
-    double orientation = atan2(_V[1][0], _V[0][0]); // this seems wrong TODO: fix
+    double orientation = atan2(_V[1][0], _V[0][0]); // this seems wrong TODO: fix. help please Timur!
     double r1 = 1/sqrt(_Q[0][0]); 
     double r2 = 1/sqrt(_Q[1][1]); 
     
