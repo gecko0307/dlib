@@ -37,10 +37,6 @@ import dlib.image.fitellipse;
 import dlib.math;
 import dlib.container;
 
-/* The algorithm is based on:
- * https://stackoverflow.com/questions/14465297/connected-component-labelling
- */
-
 alias DfsFun = void function(int, int, ubyte, ubyte[], SuperImage);
 
 uint row_count;
@@ -78,6 +74,9 @@ void dfs8(int x, int y, ubyte current_label, ubyte[] label, SuperImage img) {
 }
 
 SuperImage bwlabel(SuperImage img, uint conn = 8){
+    /* The algorithm is based on:
+     * https://stackoverflow.com/questions/14465297/connected-component-labelling
+     */
     /* testing:
     auto img = loadImage("test.png");
     
