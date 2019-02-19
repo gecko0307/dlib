@@ -83,4 +83,3 @@ void decomposeLUP(T, size_t N)(
             U[i, j] = C[i, j];
     }
 }
-

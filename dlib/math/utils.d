@@ -270,4 +270,3 @@ bool isPerfectSquare(float n) nothrow
     float r = sqrt(n);
     return(r * r == n);
 }
-

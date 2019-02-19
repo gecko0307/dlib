@@ -30,14 +30,16 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.math.combinatorics;
 
-import std.functional : memoize;
-import std.algorithm : reduce, map;
-import std.range : iota;
+import std.functional: memoize;
+import std.algorithm: reduce, map;
+import std.range: iota;
 import std.bigint;
 
 /// Returns the factorial of n
-ulong factorial(ulong n) @safe nothrow {
-    if(n <= 1) {
+ulong factorial(ulong n) @safe nothrow
+{
+    if(n <= 1)
+    {
         return 1;
     }
 
@@ -46,7 +48,8 @@ ulong factorial(ulong n) @safe nothrow {
     return n * mfac(n - 1);
 }
 
-unittest {
+unittest
+{
     assert(factorial(10) == 3_628_800);
 
     int n = 5;
@@ -54,8 +57,10 @@ unittest {
 }
 
 /// Computes the nth fibonacci number
-ulong fibonacci(ulong n) {
-    if(n == 0 || n == 1) {
+ulong fibonacci(ulong n)
+{
+    if(n == 0 || n == 1)
+    {
         return n;
     }
 
@@ -67,7 +72,8 @@ ulong fibonacci(ulong n) {
 /// Common vernacular for fibonacci
 alias fib = fibonacci;
 
-unittest {
+unittest
+{
     import std.array : array;
 
     auto fibs = iota(1, 21).map!(n => fib(n)).array;
@@ -78,8 +84,10 @@ unittest {
 
 
 /// Computes the double factorial of n: n * (n - 2) * (n - 4) * ... * 1
-ulong doubleFactorial(ulong n) {
-    if(n <= 1) {
+ulong doubleFactorial(ulong n)
+{
+    if (n <= 1)
+    {
         return 1;
     }
 
@@ -89,24 +97,26 @@ ulong doubleFactorial(ulong n) {
 }
 
 /// Computes the hyperfactorial of n: 1^1 * 2^2 * 3^3 * ... n^n
-BigInt hyperFactorial(ulong n) {
-    if(n <= 1) {
+BigInt hyperFactorial(ulong n)
+{
+    if(n <= 1)
+    {
         return BigInt("1");
     }
 
     alias mhfac = memoize!hyperFactorial;
 
     return BigInt(n ^^ n) * hyperFactorial(n - 1);
-
-
 }
 
 /++
 + Compute the number of combinations of `objects` types of items
 + when considered `taken` at a time, where order is ignored
 +/
-ulong combinations(ulong objects, ulong taken) @safe nothrow {
-    if(objects < taken) {
+ulong combinations(ulong objects, ulong taken) @safe nothrow
+{
+    if (objects < taken)
+    {
         return 0;
     }
 
@@ -123,25 +133,30 @@ alias choose = combinations;
 +  Compute the number of permutations of `objects` types of items
 + when considered `taken` at a time, where order is considered
 +/
-ulong permutations(ulong objects, ulong taken) @safe nothrow {
+ulong permutations(ulong objects, ulong taken) @safe nothrow
+{
     return objects.factorial / (objects - taken).factorial;
 }
 
 // Common vernacular for permutations
 alias P = permutations;
 
-unittest {
+unittest
+{
     assert(5.choose(2) == 10);
     assert(10.P(2) == 90);
 }
 
 /// Computes the nth Lucas number
-ulong lucas(ulong n) @safe nothrow {
-    if(n == 0) {
+ulong lucas(ulong n) @safe nothrow
+{
+    if (n == 0)
+    {
         return 2;
     }
 
-    if(n == 1) {
+    if (n == 1)
+    {
         return 1;
     }
 
@@ -150,7 +165,8 @@ ulong lucas(ulong n) @safe nothrow {
     return mlucas(n - 1) + mlucas(n - 2);
 }
 
-unittest {
+unittest
+{
     import std.algorithm : map;
     import std.array;
 

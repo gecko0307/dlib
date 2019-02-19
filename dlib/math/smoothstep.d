@@ -54,4 +54,3 @@ T rationalSmoothstep(T)(T x, float k)
     T s = (x + x * k - k * 0.5 - 0.5) / (abs(x * k * 4.0 - k * 2.0) - k + 1.0) + 0.5;
     return clamp(s, 0.0, 1.0);
 }
-
