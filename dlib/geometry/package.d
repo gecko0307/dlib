@@ -42,5 +42,5 @@ public
     import dlib.geometry.triangle;
     import dlib.geometry.trimesh;
     import dlib.geometry.utils;
+    import dlib.geometry.wrapping;
 }
-
