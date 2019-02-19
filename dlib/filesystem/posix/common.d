@@ -28,25 +28,29 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.filesystem.posix.common;
 
-version (Posix) {
-public {
-    import core.sys.posix.dirent;
-    import core.sys.posix.fcntl;
-    import core.sys.posix.sys.stat;
-    import core.sys.posix.sys.types;
-    import core.sys.posix.unistd;
-}
+version(Posix)
+{
+    public
+    {
+        import core.sys.posix.dirent;
+        import core.sys.posix.fcntl;
+        import core.sys.posix.sys.stat;
+        import core.sys.posix.sys.types;
+        import core.sys.posix.unistd;
+    }
 
-// Rename stat to stat_ because of method name collision
-version (Linux) {
-    alias off_t = off64_t;
-    alias stat_t = stat64_t;
+    // Rename stat to stat_ because of method name collision
+    version(Linux)
+    {
+        alias off_t = off64_t;
+        alias stat_t = stat64_t;
 
-    alias lseek = lseek64;
-    alias open = open64;
-    alias stat_ = stat64;
-}
-else {
-    alias stat_ = stat;
-}
+        alias lseek = lseek64;
+        alias open = open64;
+        alias stat_ = stat64;
+    }
+    else
+    {
+        alias stat_ = stat;
+    }
 }

@@ -28,7 +28,8 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.filesystem;
 
-public {
+public
+{
     import dlib.filesystem.filesystem;
     import dlib.filesystem.local;
     import dlib.filesystem.stdfs;

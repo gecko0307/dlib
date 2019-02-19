@@ -28,26 +28,29 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.filesystem.windows.common;
 
-public {
-version (Windows) {
-    import core.stdc.wchar_;
-    import core.sys.windows.windows;
-    import core.sys.windows.accctrl;
-    import core.sys.windows.aclapi;
-    import std.utf;
-    import std.windows.syserror;
+public
+{
+    version(Windows)
+    {
+        import core.stdc.wchar_;
+        import core.sys.windows.windows;
+        import core.sys.windows.accctrl;
+        import core.sys.windows.aclapi;
+        import std.utf;
+        import std.windows.syserror;
 
-    enum DWORD NO_ERROR = 0;
-    enum DWORD INVALID_FILE_ATTRIBUTES = cast(DWORD)0xFFFFFFFF;
+        enum DWORD NO_ERROR = 0;
+        enum DWORD INVALID_FILE_ATTRIBUTES = cast(DWORD)0xFFFFFFFF;
 
-    static T wenforce(T)(T cond, string str = null) {
-        import std.array;
+        static T wenforce(T)(T cond, string str = null)
+        {
+            import std.array;
 
-        if (cond)
-            return cond;
+            if (cond)
+                return cond;
 
-        string err = sysErrorString(GetLastError());
-        throw new Exception(!str.empty ? (str ~ ": " ~ err) : err);
+            string err = sysErrorString(GetLastError());
+            throw new Exception(!str.empty ? (str ~ ": " ~ err) : err);
+        }
     }
-}
 }

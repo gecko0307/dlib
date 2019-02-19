@@ -640,4 +640,3 @@ RecursiveFileIterator traverseDir(ReadOnlyFileSystem rofs, string baseDir, bool 
     else
         return RecursiveFileIterator(rofs, baseDir, recursive);
 }
-

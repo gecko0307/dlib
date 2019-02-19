@@ -28,80 +28,92 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.filesystem.windows.directory;
 
-version (Windows) {
-import dlib.filesystem.filesystem;
-import dlib.filesystem.dirrange;
-import dlib.filesystem.windows.common;
+version(Windows)
+{
+    import dlib.filesystem.filesystem;
+    import dlib.filesystem.dirrange;
+    import dlib.filesystem.windows.common;
 
-import std.conv;
-import std.range;
+    import std.conv;
+    import std.range;
 
-class WindowsDirectory : Directory {
-    FileSystem fs;
-    HANDLE find = INVALID_HANDLE_VALUE;
-    string prefix;
+    class WindowsDirectory: Directory
+    {
+        FileSystem fs;
+        HANDLE find = INVALID_HANDLE_VALUE;
+        string prefix;
 
-    WIN32_FIND_DATAW entry;
-    bool entryValid = false;
+        WIN32_FIND_DATAW entry;
+        bool entryValid = false;
 
-    this(FileSystem fs, string path, string prefix) {
-        this.fs = fs;
-        this.prefix = prefix;
+        this(FileSystem fs, string path, string prefix)
+        {
+            this.fs = fs;
+            this.prefix = prefix;
 
-        find = FindFirstFileW(toUTF16z(path ~ `\*.*`), &entry);
+            find = FindFirstFileW(toUTF16z(path ~ `\*.*`), &entry);
 
-        if (find != INVALID_HANDLE_VALUE)
-            entryValid = true;
-    }
-
-    ~this() {
-        close();
-    }
-
-    void close() {
-        if (find != INVALID_HANDLE_VALUE) {
-            FindClose(find);
-            find = INVALID_HANDLE_VALUE;
+            if (find != INVALID_HANDLE_VALUE)
+                entryValid = true;
         }
-    }
 
-    InputRange!DirEntry contents() {
-        return new DirRange(delegate bool(out DirEntry de) {
-            for (;;) {
-                WIN32_FIND_DATAW* entry = nextEntry();
+        ~this()
+        {
+            close();
+        }
 
-                if (entry == null)
-                    return false;
-                else {
-                    size_t len = wcslen(entry.cFileName.ptr);
-                    string name = to!string(entry.cFileName[0..len]);
-
-                    if (name == "." || name == "..")
-                        continue;
-
-                    de.name = name;
-
-                    if (entry.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-                        de.isDirectory = true;
-                    else
-                        de.isFile = true;
-
-                    return true;
-                }
+        void close()
+        {
+            if (find != INVALID_HANDLE_VALUE)
+            {
+                FindClose(find);
+                find = INVALID_HANDLE_VALUE;
             }
-        });
-    }
+        }
 
-    private WIN32_FIND_DATAW* nextEntry() {
-        if (entryValid) {
-            entryValid = false;
+        InputRange!DirEntry contents()
+        {
+            return new DirRange(delegate bool(out DirEntry de)
+            {
+                for (;;)
+                {
+                    WIN32_FIND_DATAW* entry = nextEntry();
+
+                    if (entry == null)
+                        return false;
+                    else
+                    {
+                        size_t len = wcslen(entry.cFileName.ptr);
+                        string name = to!string(entry.cFileName[0..len]);
+
+                        if (name == "." || name == "..")
+                            continue;
+
+                        de.name = name;
+
+                        if (entry.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+                            de.isDirectory = true;
+                        else
+                            de.isFile = true;
+
+                        return true;
+                    }
+                }
+            });
+        }
+
+        private WIN32_FIND_DATAW* nextEntry()
+        {
+            if (entryValid)
+            {
+                entryValid = false;
+                return &entry;
+            }
+
+            if (find == INVALID_HANDLE_VALUE || !FindNextFileW(find, &entry))
+                return null;
+
             return &entry;
         }
-
-        if (find == INVALID_HANDLE_VALUE || !FindNextFileW(find, &entry))
-            return null;
-
-        return &entry;
     }
-}
 }

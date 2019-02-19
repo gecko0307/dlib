@@ -44,7 +44,8 @@ enum PWrite = 0x02;
 enum PExecute = 0x04;
 
 /// Holds general information about a file or directory.
-struct FileStat {
+struct FileStat
+{
     ///
     bool isFile, isDirectory;
     /// valid if isFile is true
@@ -55,7 +56,8 @@ struct FileStat {
     int permissions;
 }
 
-struct DirEntry {
+struct DirEntry
+{
     ///
     string name;
     ///
@@ -63,7 +65,8 @@ struct DirEntry {
 }
 
 /// A directory in the file system.
-interface Directory {
+interface Directory
+{
     ///
     void close();
 
@@ -74,16 +77,19 @@ interface Directory {
 }
 
 /// A file system limited to read access.
-interface ReadOnlyFileSystem {
+interface ReadOnlyFileSystem
+{
     /** Get file or directory stats.
         Example:
         ---
-        void printFileInfo(ReadOnlyFileSystem fs, string filename) {
+        void printFileInfo(ReadOnlyFileSystem fs, string filename)
+        {
             FileStat stat;
 
             writef("'%s'\t", filename);
 
-            if (!fs.stat(filename, stat)) {
+            if (!fs.stat(filename, stat))
+            {
                 writeln("ERROR");
                 return;
             }
@@ -112,15 +118,18 @@ interface ReadOnlyFileSystem {
 
 // TODO: Use exceptions or not?
 /// A file system with read/write access.
-interface FileSystem: ReadOnlyFileSystem {
+interface FileSystem: ReadOnlyFileSystem
+{
     /// File access flags.
-    enum {
+    enum
+    {
         read = 1,
         write = 2,
     }
 
     /// File creation flags.
-    enum {
+    enum
+    {
         create = 1,
         truncate = 2,
     }
@@ -168,10 +177,12 @@ interface FileSystem: ReadOnlyFileSystem {
 
     Examples:
     ---
-    void listImagesInDirectory(ReadOnlyFileSystem fs, string baseDir = "") {
+    void listImagesInDirectory(ReadOnlyFileSystem fs, string baseDir = "")
+    {
         foreach (entry; fs.findFiles(baseDir, true)
                 .filter!(entry => entry.isFile)
-                .filter!(entry => !matchFirst(entry.name, `.*\.(gif|jpg|png)$`).empty)) {
+                .filter!(entry => !matchFirst(entry.name, `.*\.(gif|jpg|png)$`).empty))
+        {
             writefln("%s", entry.name);
         }
     }
@@ -188,8 +199,10 @@ InputRange!DirEntry findFiles(ReadOnlyFileSystem rofs, string baseDir, bool recu
     DirEntry entry;
 
     // findFiles insists on calling us back (it's recursive), but we can trap it in a Fiber
-    auto search = new Fiber(delegate void() {
-        findFiles(rofs, baseDir, recursive, delegate int(ref DirEntry de) {
+    auto search = new Fiber(delegate void()
+    {
+        findFiles(rofs, baseDir, recursive, delegate int(ref DirEntry de)
+        {
             // save the data (D doesn't allow to yield it directly)
             // and jump outside of the .call() (see below)
             entry = de;
@@ -202,7 +215,8 @@ InputRange!DirEntry findFiles(ReadOnlyFileSystem rofs, string baseDir, bool recu
         // state becomes TERM after we're resumed after returning the last entry
     });
 
-    return new DirRange(delegate bool(out DirEntry de) {
+    return new DirRange(delegate bool(out DirEntry de)
+    {
         // terminated before?
         if (search.state == Fiber.State.TERM)
             return false;
@@ -220,7 +234,8 @@ InputRange!DirEntry findFiles(ReadOnlyFileSystem rofs, string baseDir, bool recu
     });
 }
 
-private int findFiles(ReadOnlyFileSystem rofs, string baseDir, bool recursive, int delegate(ref DirEntry entry) dg) {
+private int findFiles(ReadOnlyFileSystem rofs, string baseDir, bool recursive, int delegate(ref DirEntry entry) dg)
+{
     Directory dir = rofs.openDir(baseDir);
 
     if (dir is null)
@@ -228,8 +243,10 @@ private int findFiles(ReadOnlyFileSystem rofs, string baseDir, bool recursive, i
 
     int result = 0;
 
-    try {
-        foreach (entry; dir.contents) {
+    try
+    {
+        foreach (entry; dir.contents)
+        {
             if (!baseDir.empty)
                 entry.name = baseDir ~ "/" ~ entry.name;
 
@@ -238,7 +255,8 @@ private int findFiles(ReadOnlyFileSystem rofs, string baseDir, bool recursive, i
             if (result != 0)
                 return result;
 
-            if (recursive && entry.isDirectory) {
+            if (recursive && entry.isDirectory)
+            {
                 result = findFiles(rofs, entry.name, recursive, dg);
 
                 if (result != 0)
@@ -246,7 +264,9 @@ private int findFiles(ReadOnlyFileSystem rofs, string baseDir, bool recursive, i
             }
         }
     }
-    finally {
+    
+    finally
+    {
         dir.close();
     }
 

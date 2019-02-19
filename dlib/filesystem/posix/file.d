@@ -28,82 +28,97 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.filesystem.posix.file;
 
-version (Posix) {
-import dlib.core.stream;
-import dlib.core.memory;
-import dlib.filesystem.filesystem;
-import dlib.filesystem.posix.common;
+version (Posix)
+{
+    import dlib.core.stream;
+    import dlib.core.memory;
+    import dlib.filesystem.filesystem;
+    import dlib.filesystem.posix.common;
 
-static import core.sys.posix.unistd;
+    static import core.sys.posix.unistd;
 
-class PosixFile : IOStream {
-    int fd;
-    uint accessFlags;
-    bool eof = false;
+    class PosixFile: IOStream
+    {
+        int fd;
+        uint accessFlags;
+        bool eof = false;
 
-    this(int fd, uint accessFlags) {
-        this.fd = fd;
-        this.accessFlags = accessFlags;
-    }
+        this(int fd, uint accessFlags)
+        {
+            this.fd = fd;
+            this.accessFlags = accessFlags;
+        }
 
-    ~this() {
-        close();
-    }
+        ~this()
+        {
+            close();
+        }
 
-    override void close() {
-        if (fd != -1) {
-            core.sys.posix.unistd.close(fd);
-            fd = -1;
+        override void close()
+        {
+            if (fd != -1)
+            {
+                core.sys.posix.unistd.close(fd);
+                fd = -1;
+            }
+        }
+
+        override bool seekable()
+        {
+            return true;
+        }
+
+        override StreamPos getPosition()
+        {
+            import core.sys.posix.stdio;
+
+            return lseek(fd, 0, SEEK_CUR);
+        }
+
+        override bool setPosition(StreamPos pos)
+        {
+            import core.sys.posix.stdio;
+
+            return lseek(fd, pos, SEEK_SET) == pos;
+        }
+
+        override StreamSize size()
+        {
+            import core.sys.posix.stdio;
+
+            auto off = lseek(fd, 0, SEEK_CUR);
+            auto end = lseek(fd, 0, SEEK_END);
+            lseek(fd, off, SEEK_SET);
+            return end;
+        }
+
+        override bool readable()
+        {
+            return fd != -1 && (accessFlags & FileSystem.read) && !eof;
+        }
+
+        override size_t readBytes(void* buffer, size_t count)
+        {
+            immutable size_t got = core.sys.posix.unistd.read(fd, buffer, count);
+
+            if (count > got)
+                eof = true;
+
+            return got;
+        }
+
+        override bool writeable()
+        {
+            return fd != -1 && (accessFlags & FileSystem.write);
+        }
+
+        override size_t writeBytes(const void* buffer, size_t count)
+        {
+            return core.sys.posix.unistd.write(fd, buffer, count);
+        }
+
+        override void flush()
+        {
         }
     }
-
-    override bool seekable() {
-        return true;
-    }
-
-    override StreamPos getPosition() {
-        import core.sys.posix.stdio;
-
-        return lseek(fd, 0, SEEK_CUR);
-    }
-
-    override bool setPosition(StreamPos pos) {
-        import core.sys.posix.stdio;
-
-        return lseek(fd, pos, SEEK_SET) == pos;
-    }
-
-    override StreamSize size() {
-        import core.sys.posix.stdio;
-
-        auto off = lseek(fd, 0, SEEK_CUR);
-        auto end = lseek(fd, 0, SEEK_END);
-        lseek(fd, off, SEEK_SET);
-        return end;
-    }
-
-    override bool readable() {
-        return fd != -1 && (accessFlags & FileSystem.read) && !eof;
-    }
-
-    override size_t readBytes(void* buffer, size_t count) {
-        immutable size_t got = core.sys.posix.unistd.read(fd, buffer, count);
-
-        if (count > got)
-            eof = true;
-
-        return got;
-    }
-
-    override bool writeable() {
-        return fd != -1 && (accessFlags & FileSystem.write);
-    }
-
-    override size_t writeBytes(const void* buffer, size_t count) {
-        return core.sys.posix.unistd.write(fd, buffer, count);
-    }
-
-    override void flush() {
-    }
-}
 }

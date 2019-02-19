@@ -28,97 +28,112 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.filesystem.windows.file;
 
-version (Windows) {
-import dlib.filesystem.filesystem;
-import dlib.filesystem.windows.common;
-import dlib.core.stream;
-import dlib.core.memory;
+version(Windows)
+{
+    import dlib.filesystem.filesystem;
+    import dlib.filesystem.windows.common;
+    import dlib.core.stream;
+    import dlib.core.memory;
 
-class WindowsFile : IOStream {
-    HANDLE handle;
-    uint accessFlags;
-    bool eof = false;
+    class WindowsFile: IOStream
+    {
+        HANDLE handle;
+        uint accessFlags;
+        bool eof = false;
 
-    this(HANDLE handle, uint accessFlags) {
-        this.handle = handle;
-        this.accessFlags = accessFlags;
-    }
+        this(HANDLE handle, uint accessFlags)
+        {
+            this.handle = handle;
+            this.accessFlags = accessFlags;
+        }
 
-    ~this() {
-        close();
-    }
+        ~this()
+        {
+            close();
+        }
 
-    override void close() {
-        if (handle != INVALID_HANDLE_VALUE) {
-            CloseHandle(handle);
-            handle = INVALID_HANDLE_VALUE;
+        override void close()
+        {
+            if (handle != INVALID_HANDLE_VALUE)
+            {
+                CloseHandle(handle);
+                handle = INVALID_HANDLE_VALUE;
+            }
+        }
+
+        override bool seekable()
+        {
+            return true;
+        }
+
+        override StreamPos getPosition()
+        {
+            LONG pos_high = 0;
+            LONG pos_low = SetFilePointer(handle, 0, &pos_high, FILE_CURRENT);
+
+            wenforce(pos_low != INVALID_SET_FILE_POINTER || GetLastError() == NO_ERROR);
+
+            return cast(StreamPos) pos_high << 32 | pos_low;
+        }
+
+        override bool setPosition(StreamPos pos)
+        {
+            LONG pos_high = cast(LONG)(pos >> 32);
+
+            if (SetFilePointer(handle, cast(LONG) pos, &pos_high, FILE_BEGIN) == INVALID_SET_FILE_POINTER
+                && GetLastError() != NO_ERROR)
+                return false;
+            else
+                return true;
+        }
+
+        override StreamSize size()
+        {
+            DWORD size_high;
+            DWORD size_low = GetFileSize(handle, &size_high);
+
+            wenforce(size_low != INVALID_FILE_SIZE || GetLastError() == NO_ERROR);
+
+            return cast(StreamPos) size_high << 32 | size_low;
+        }
+
+        override bool readable()
+        {
+            return handle != INVALID_HANDLE_VALUE && (accessFlags & FileSystem.read) && !eof;
+        }
+
+        override size_t readBytes(void* buffer, size_t count)
+        {
+            // TODO: make sure that count fits in a DWORD
+            DWORD dwCount = cast(DWORD) count;
+
+            DWORD dwGot = void;
+            wenforce(ReadFile(handle, buffer, dwCount, &dwGot, null));
+
+            if (dwCount > dwGot)
+                eof = true;
+
+            return dwGot;
+        }
+
+        override bool writeable()
+        {
+            return handle != INVALID_HANDLE_VALUE && (accessFlags & FileSystem.write);
+        }
+
+        override size_t writeBytes(const void* buffer, size_t count)
+        {
+            // TODO: make sure that count fits in a DWORD
+            DWORD dwCount = cast(DWORD) count;
+
+            DWORD dwGot = void;
+            wenforce(WriteFile(handle, buffer, dwCount, &dwGot, null));
+
+            return dwGot;
+        }
+
+        override void flush()
+        {
         }
     }
-
-    override bool seekable() {
-        return true;
-    }
-
-    override StreamPos getPosition() {
-        LONG pos_high = 0;
-        LONG pos_low = SetFilePointer(handle, 0, &pos_high, FILE_CURRENT);
-
-        wenforce(pos_low != INVALID_SET_FILE_POINTER || GetLastError() == NO_ERROR);
-
-        return cast(StreamPos) pos_high << 32 | pos_low;
-    }
-
-    override bool setPosition(StreamPos pos) {
-        LONG pos_high = cast(LONG)(pos >> 32);
-
-        if (SetFilePointer(handle, cast(LONG) pos, &pos_high, FILE_BEGIN) == INVALID_SET_FILE_POINTER
-            && GetLastError() != NO_ERROR)
-            return false;
-        else
-            return true;
-    }
-
-    override StreamSize size() {
-        DWORD size_high;
-        DWORD size_low = GetFileSize(handle, &size_high);
-
-        wenforce(size_low != INVALID_FILE_SIZE || GetLastError() == NO_ERROR);
-
-        return cast(StreamPos) size_high << 32 | size_low;
-    }
-
-    override bool readable() {
-        return handle != INVALID_HANDLE_VALUE && (accessFlags & FileSystem.read) && !eof;
-    }
-
-    override size_t readBytes(void* buffer, size_t count) {
-        // TODO: make sure that count fits in a DWORD
-        DWORD dwCount = cast(DWORD) count;
-
-        DWORD dwGot = void;
-        wenforce(ReadFile(handle, buffer, dwCount, &dwGot, null));
-
-        if (dwCount > dwGot)
-            eof = true;
-
-        return dwGot;
-    }
-
-    override bool writeable() {
-        return handle != INVALID_HANDLE_VALUE && (accessFlags & FileSystem.write);
-    }
-
-    override size_t writeBytes(const void* buffer, size_t count) {
-        // TODO: make sure that count fits in a DWORD
-        DWORD dwCount = cast(DWORD) count;
-
-        DWORD dwGot = void;
-        wenforce(WriteFile(handle, buffer, dwCount, &dwGot, null));
-
-        return dwGot;
-    }
-
-    override void flush() {
-    }
-}
 }
