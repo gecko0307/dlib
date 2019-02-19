@@ -193,17 +193,21 @@ else version (Windows)
                                                     LPINT);
     const GUID WSAID_GETACCEPTEXSOCKADDRS = {0xb5367df2,0xcbac,0x11cf,[0x95,0xca,0x00,0x80,0x5f,0x48,0xa1,0x92]};
 
-    struct WSABUF {
+    struct WSABUF
+    {
         ULONG len;
         CHAR* buf;
     }
     alias WSABUF* LPWSABUF;
 
-    struct WSAOVERLAPPED {
+    struct WSAOVERLAPPED
+    {
         ULONG_PTR Internal;
         ULONG_PTR InternalHigh;
-        union {
-            struct {
+        union
+        {
+            struct
+            {
                 DWORD Offset;
                 DWORD OffsetHigh;
             }

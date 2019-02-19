@@ -195,36 +195,42 @@ StreamSize copyFromTo(InputStream input, OutputStream output)
     return total;
 }
 
-// TODO: Move this?
 // TODO: Add OutputStream methods
-class ArrayStream : InputStream {
+class ArrayStream : InputStream
+{
     import std.algorithm;
 
-    this() {
+    this()
+    {
     }
 
-    this(ubyte[] data, size_t size) {
+    this(ubyte[] data, size_t size)
+    {
         assert(size_ <= data.length);
 
         this.size_ = size;
         this.data = data;
     }
 
-    this(ubyte[] data) {
+    this(ubyte[] data)
+    {
         this(data, data.length);
     }
 
-    override void close() {
+    override void close()
+    {
         this.pos = 0;
         this.size_ = 0;
         this.data = null;
     }
 
-    override bool readable() {
+    override bool readable()
+    {
         return pos < size_;
     }
 
-    override size_t readBytes(void* buffer, size_t count) {
+    override size_t readBytes(void* buffer, size_t count)
+    {
         import core.stdc.string;
 
         count = min(count, size_ - pos);
@@ -236,15 +242,18 @@ class ArrayStream : InputStream {
         return count;
     }
 
-    override bool seekable() {
+    override bool seekable()
+    {
         return true;
     }
 
-    override StreamPos getPosition() {
+    override StreamPos getPosition()
+    {
         return pos;
     }
 
-    override bool setPosition(StreamPos pos) {
+    override bool setPosition(StreamPos pos)
+    {
         if (pos > size_)
             return false;
 
@@ -252,7 +261,8 @@ class ArrayStream : InputStream {
         return true;
     }
 
-    override StreamSize size() {
+    override StreamSize size()
+    {
         return size_;
     }
 
