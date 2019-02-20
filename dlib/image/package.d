@@ -42,7 +42,6 @@ public
     import dlib.image.signal2d;
     import dlib.image.unmanaged;
     import dlib.image.transform;
-    import dlib.image.measure;
 
     import dlib.image.filters.boxblur;
     import dlib.image.filters.chromakey;
