@@ -18,32 +18,19 @@ If you like dlib, please support its development on [Patreon](https://www.patreo
 What's inside
 -------------
 Currently dlib contains the following packages:
-
-* dlib.core - basic functionality used by other modules (manual memory management, streams, OOP for structs, etc.)
-
-* dlib.container - generic data structures (GC-free dynamic and associative arrays and more)
-
-* dlib.filesystem - abstract FS interface and its implementations for Windows and POSIX filesystems
-
-* dlib.functional - some functional programming idioms (HOFs, combiners, etc.)
-
-* dlib.math - linear algebra and numerical analysis (vectors, matrices, quaternions, linear system solvers etc.)
-
-* dlib.geometry - computational geometry (ray casting, primitives, intersection, etc.)
-
-* dlib.image - image processing (8-bit, 16-bit and 32-bit floating point channels, common filters and convolution kernels, resizing, FFT, HDRI, animation, graphics formats I/O: JPEG, PNG/APNG, BMP, TGA, HDR)
-
-* dlib.audio - sound processing (8 and 16 bits per sample, synthesizers, WAV export and import)
-
-* dlib.network - networking and web functionality
-
-* dlib.memory - allocators and memory management functions
-
-* dlib.text - text processing
-
-* dlib.serialization - data serialization (currently includes lightweight XML parser)
-
-* dlib.coding - various data compression and coding algorithms
+  * dlib.core - basic functionality used by other modules (manual memory management, streams, OOP for structs, etc.)
+  * dlib.container - generic data structures (GC-free dynamic and associative arrays and more)
+  * dlib.filesystem - abstract FS interface and its implementations for Windows and POSIX filesystems
+  * dlib.functional - some functional programming idioms (HOFs, combiners, etc.)
+  * dlib.math - linear algebra and numerical analysis (vectors, matrices, quaternions, linear system solvers etc.)
+  * dlib.geometry - computational geometry (ray casting, primitives, intersection, etc.)
+  * dlib.image - image processing (8-bit, 16-bit and 32-bit floating point channels, common filters and convolution kernels, resizing, FFT, HDRI, animation, graphics formats I/O: JPEG, PNG/APNG, BMP, TGA, HDR)
+  * dlib.audio - sound processing (8 and 16 bits per sample, synthesizers, WAV export and import)
+  * dlib.network - networking and web functionality
+  * dlib.memory - allocators and memory management functions
+  * dlib.text - text processing
+  * dlib.serialization - data serialization (currently includes lightweight XML parser)
+  * dlib.coding - various data compression and coding algorithms
 
 Supported Compilers
 -------------------
@@ -61,18 +48,18 @@ Copyright (c) 2011-2018 Timur Gafarov, Martin Cejp, Andrey Penechko, Vadim Lopat
 
 Users
 -----
-* [Dagon](https://github.com/gecko0307/dagon) - 3D game engine for D
-* [dmech](https://github.com/gecko0307/dmech) - physics engine
-* [Atrium](https://github.com/gecko0307/atrium) - work-in-progress first person puzzle game
-* [DlangUI](https://github.com/buggins/dlangui) - native UI toolkit for D
-* [Voxelman](https://github.com/MrSmith33/voxelman) - voxel-based game engine
-* [Laser Patriarch](http://ludumdare.com/compo/ludum-dare-36/?action=preview&uid=14310) - Ludum Dare 36 participant, a rougelike with random maps
-* [Anchovy](https://github.com/MrSmith33/anchovy) - multimedia library for games and graphics apps
-* [RIP](https://github.com/LightHouseSoftware/rip) - image processing and analysis library by LightHouse Software
-* [GeneticAlgorithm](https://github.com/Hnatekmar/GeneticAlgorithm) - genetic algorithms library
-* [Orb](https://github.com/claudemr/orb) - a game/engine with procedural content
-* [Leptbag](https://github.com/thotgamma/LeptbagCpp) - physics simulator by Gamma-Lab. Written in C++, but supports D plugins
-* [aoynthesizer](https://github.com/AODQ/aoynthesizer) - sound synthesizer based on Lisp-like scripting language
-* [D-VXLMapPreview](https://github.com/rakiru/D-VXLMapPreview) - isometric preview generator for Ace of Spades and Iceball maps  
+  * [Dagon](https://github.com/gecko0307/dagon) - 3D game engine for D
+  * [dmech](https://github.com/gecko0307/dmech) - physics engine
+  * [Atrium](https://github.com/gecko0307/atrium) - work-in-progress first person puzzle game
+  * [DlangUI](https://github.com/buggins/dlangui) - native UI toolkit for D
+  * [Voxelman](https://github.com/MrSmith33/voxelman) - voxel-based game engine
+  * [Laser Patriarch](http://ludumdare.com/compo/ludum-dare-36/?action=preview&uid=14310) - Ludum Dare 36 participant, a rougelike with random maps
+  * [Anchovy](https://github.com/MrSmith33/anchovy) - multimedia library for games and graphics apps
+  * [RIP](https://github.com/LightHouseSoftware/rip) - image processing and analysis library by LightHouse Software
+  * [GeneticAlgorithm](https://github.com/Hnatekmar/GeneticAlgorithm) - genetic algorithms library
+  * [Orb](https://github.com/claudemr/orb) - a game/engine with procedural content
+  * [Leptbag](https://github.com/thotgamma/LeptbagCpp) - physics simulator by Gamma-Lab. Written in C++, but supports D plugins
+  * [aoynthesizer](https://github.com/AODQ/aoynthesizer) - sound synthesizer based on Lisp-like scripting language
+  * [D-VXLMapPreview](https://github.com/rakiru/D-VXLMapPreview) - isometric preview generator for Ace of Spades and Iceball maps  
 
 If you use dlib, please tell me by email (gecko0307@gmail.com), and I'll add your link to the list.
