@@ -20,6 +20,7 @@ New code should at least:
 * don't rely on third party libraries other than system API
 * follow our [code style](#code-style-and-standards)
 * use transparent dynamic memory allocations. Ideally the code should not allocate at all or rely on user for that. If dynamic allocations can't be avoided, they should be done with `dlib.core.memory`. Direct garbage collector usage is discouraged - `dlib.memory` can be used to abstract away from actual allocation method
+* follow [dlib's best practices](https://github.com/gecko0307/dlib/wiki/Best-Practices), making use of our memory management tools, containers, exceptionless error handling and filesystem abstraction
 * not violate copyright/licensing. When adapting third-party code, make sure that it is compatible with [Boost Software License 1.0](https://www.boost.org/LICENSE_1_0.txt).
 
 ####  Code style and standards 
