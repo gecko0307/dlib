@@ -60,6 +60,8 @@ Users
 * [Orb](https://github.com/claudemr/orb) - a game/engine with procedural content
 * [Leptbag](https://github.com/thotgamma/LeptbagCpp) - physics simulator by Gamma-Lab. Written in C++, but supports D plugins
 * [aoynthesizer](https://github.com/AODQ/aoynthesizer) - sound synthesizer based on Lisp-like scripting language
-* [D-VXLMapPreview](https://github.com/rakiru/D-VXLMapPreview) - isometric preview generator for Ace of Spades and Iceball maps  
+* [D-VXLMapPreview](https://github.com/rakiru/D-VXLMapPreview) - isometric preview generator for Ace of Spades and Iceball maps
+* [dlib-webp](https://github.com/georgy7/dlib-webp) - WebP image format decoder based on libwebp
+* [SMSFontConverter](https://github.com/Doom2fan/SMSFontConverter) - a program for generating Sega Master System fonts.
 
 If you use dlib, please tell me by email (gecko0307@gmail.com), and I'll add your link to the list.
