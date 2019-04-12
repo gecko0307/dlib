@@ -6,10 +6,10 @@ os:
  - linux
 
 d:
- - dmd-2.085.0
+ - dmd-2.085.1
  - dmd-2.084.1
+ - ldc-1.15.0
  - ldc-1.14.0
- - ldc-1.13.0
  - gdc
 
 matrix:
