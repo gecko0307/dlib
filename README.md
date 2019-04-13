@@ -29,7 +29,7 @@ Currently dlib contains the following packages:
 * dlib.network - networking and web functionality
 * dlib.memory - allocators and memory management functions
 * dlib.text - text processing
-* dlib.serialization - data serialization (currently includes lightweight XML parser)
+* dlib.serialization - data serialization (XML and JSON parsers)
 * dlib.coding - various data compression and coding algorithms
 
 Supported Compilers
