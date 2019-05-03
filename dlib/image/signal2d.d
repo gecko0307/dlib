@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2017 Timur Gafarov
+Copyright (c) 2013-2019 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -30,37 +30,39 @@ module dlib.image.signal2d;
 
 private
 {
+    import dlib.core.memory;
+    import dlib.math.vector;
     import dlib.math.complex;
     import dlib.math.fft;
     import dlib.image.image;
     import dlib.image.color;
 }
 
+enum SignalDomain
+{
+    Spatial,
+    Frequency
+}
+
 class Signal2D
 {
-    enum Domain
-    {
-        Spatial,
-        Frequency
-    }
-
-    Complex!(float)[] data;
+    Complexf[] data;
     uint width;
     uint height;
-    Domain domain = Domain.Spatial;
+    SignalDomain domain = SignalDomain.Spatial;
 
     this(uint w, uint h)
     {
         width = w;
         height = h;
-        data = new Complex!(float)[width * height];
+        data = New!(Complexf[])(width * height);
     }
 
     this(SuperImage img, uint channel)
     {
         width = img.width;
         height = img.height;
-        data = new Complex!(float)[width * height];
+        data = New!(Complexf[])(width * height);
 
         foreach(y; 0..height)
         foreach(x; 0..width)
@@ -71,40 +73,10 @@ class Signal2D
             data[index].im = 0.0f;
         }
     }
-
-    ImageL8 image()
+    
+    ~this()
     {
-        ImageL8 img = new ImageL8(width, height);
-
-        float maxIntensity = 0.0f;
-        float[] fpImage = new float[width * height];
-
-        foreach(i, v; data)
-        {
-            float m = v.magnitude;
-            if (m > maxIntensity)
-            {
-                maxIntensity = m;
-            }
-
-            fpImage[i] = m;
-        }
-
-        foreach(ref v; fpImage)
-        {
-            v /= maxIntensity;
-        }
-
-        foreach(y; 0..height)
-        foreach(x; 0..width)
-        {
-            size_t index = (y * width + x);
-            float m = fpImage[index];
-            auto col = Color4f(m, m, m);
-            img[x, y] = col;
-        }
-
-        return img;
+        Delete(data);
     }
 
     void fft()
@@ -121,16 +93,16 @@ class Signal2D
         }
 
         fft2(true);
-        domain = Domain.Frequency;
+        domain = SignalDomain.Frequency;
     }
 
     void fftInverse()
     {
-        if (domain != Domain.Frequency)
+        if (domain != SignalDomain.Frequency)
             return;
 
         fft2(false);
-        domain = Domain.Spatial;
+        domain = SignalDomain.Spatial;
 
         foreach(y; 0..height)
         foreach(x; 0..width)
@@ -144,40 +116,34 @@ class Signal2D
         }
     }
 
-    Signal2D multiply(Signal2D img)
+    void multiply(Signal2D img, Signal2D dest)
     {
-        assert(img.width == width && img.height == height);
+        assert(img.width == width && img.height == height && dest.width == width && dest.height == height);
 
-        Signal2D res = new Signal2D(width, height);
-        res.domain = domain;
+        dest.domain = domain;
 
         foreach(i, v; data)
         {
-            res.data[i] = v * img.data[i];
+            dest.data[i] = v * img.data[i];
         }
-
-        return res;
     }
-
-    Signal2D divide(Signal2D img)
+    
+    void divide(Signal2D img, Signal2D dest)
     {
-        assert(img.width == width && img.height == height);
+        assert(img.width == width && img.height == height && dest.width == width && dest.height == height);
 
-        Signal2D res = new Signal2D(width, height);
-        res.domain = domain;
+        dest.domain = domain;
 
         foreach(i, v; data)
         {
             if (img.data[i].re == 0.0f)
-                res.data[i] = v;
+                dest.data[i] = v;
             else
-                res.data[i] = v / img.data[i];
+                dest.data[i] = v / img.data[i];
         }
-
-        return res;
     }
 
-    Complex!(float) opIndex(int x, int y)
+    Complexf opIndex(int x, int y)
     {
         while(x >= width) x = width-1;
         while(y >= height) y = height-1;
@@ -190,7 +156,7 @@ class Signal2D
     void fft2(bool forward)
     {
         // process rows
-        Complex!(float)[] row = new Complex!(float)[width];
+        Complexf[] row = New!(Complexf[])(width);
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
@@ -209,7 +175,7 @@ class Signal2D
         }
 
         // process columns
-        Complex!(float)[] col = new Complex!(float)[height];
+        Complexf[] col = New!(Complexf[])(height);
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
@@ -226,5 +192,50 @@ class Signal2D
                 data[index] = col[y];
             }
         }
+        
+        Delete(row);
+        Delete(col);
     }
+}
+
+void signalToImage(Signal2D chRed, Signal2D chGreen, Signal2D chBlue, SuperImage img)
+{
+    float maxIntensityR = 0.0f;
+    float maxIntensityG = 0.0f;
+    float maxIntensityB = 0.0f;
+    Vector3f[] fpImage = New!(Vector3f[])(img.width * img.height);
+
+    for(int i = 0; i < chRed.data.length; i++)
+    {
+        float mr, mg, mb;
+
+        mr = chRed.data[i].magnitude;
+        if (mr > maxIntensityR)
+            maxIntensityR = mr;
+        mg = chGreen.data[i].magnitude;
+        if (mg > maxIntensityG)
+            maxIntensityG = mg;
+        mb = chBlue.data[i].magnitude;
+        if (mb > maxIntensityB)
+            maxIntensityB = mb;
+
+        fpImage[i] = Vector3f(mr, mg, mb);
+    }
+
+    foreach(ref v; fpImage)
+    {
+        v.r /= maxIntensityR;
+        v.g /= maxIntensityG;
+        v.b /= maxIntensityB;
+    }
+
+    foreach(y; 0..img.height)
+    foreach(x; 0..img.width)
+    {
+        size_t index = (y * img.width + x);
+        Vector3f m = fpImage[index];
+        img[x, y] = Color4f(m);
+    }
+
+    Delete(fpImage);
 }

@@ -67,5 +67,5 @@ class FilteringThread
     // override these:
     void run() {} // this method is called in a second thread
     void onRunning() {} // this method is called in main thread in a loop while second thread is running
-    void onFinished() {} // this method is called in main thread pnce when second thread finishes 
+    void onFinished() {} // this method is called in main thread once when second thread finishes 
 }

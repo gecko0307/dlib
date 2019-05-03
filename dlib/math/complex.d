@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2017 Timur Gafarov
+Copyright (c) 2013-2019 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -198,3 +198,5 @@ Complex!T zeta(T)(Complex!T s)
         (s + Complex!T(3.0)) / (s - Complex!T(1.0)) *
         Complex!T(1.0) / pow(Complex!T(2.0), s + Complex!T(1.0));
 }
+
+alias Complexf = Complex!float;
