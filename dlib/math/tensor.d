@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2017 Timur Gafarov
+Copyright (c) 2016-2019 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -36,6 +36,7 @@ import std.format;
 
 import dlib.core.tuple;
 import dlib.core.compound;
+import dlib.core.memory;
 
 T zero(T)() if (isNumeric!T)
 {
@@ -440,7 +441,13 @@ template Tensor(T, size_t dim, sizes...)
             private void allocate()
             {
                 if (data.length == 0)
-                    data = new T[_dataLen];
+                    data = New!(T[])(_dataLen);
+            }
+            
+            void free()
+            {
+                if (data.length)
+                    Delete(data);
             }
         }
         else
