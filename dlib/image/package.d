@@ -34,7 +34,6 @@ public
     import dlib.image.arithmetics;
     import dlib.image.canvas;
     import dlib.image.color;
-    import dlib.image.compleximage;
     import dlib.image.fthread;
     import dlib.image.hdri;
     import dlib.image.hsv;
