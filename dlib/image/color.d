@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov
+Copyright (c) 2011-2019 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -268,4 +268,3 @@ Color4f alphaOver(Color4f c1, Color4f c2)
 
     return c;
 }
-

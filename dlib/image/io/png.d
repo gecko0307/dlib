@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov, Martin Cejp, Vadim Lopatin
+Copyright (c) 2011-2019 Timur Gafarov, Martin Cejp, Vadim Lopatin
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -1452,4 +1452,3 @@ unittest
     savePNG(img, "tests/minimal.png");
     loadPNG("tests/minimal.png");
 }
-

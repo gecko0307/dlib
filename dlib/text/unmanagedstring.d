@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2018 Timur Gafarov
+Copyright (c) 2018-2019 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -37,6 +37,9 @@ import dlib.coding.hash;
     GC-free UTF8 string type based on DynamicArray.
     Stores up to 128 bytes without dynamic memory allocation,
     so short strings are processed very fast.
+    
+    TODO:
+    - always zero-terminate to be more C-friendly
  */
 struct String
 {

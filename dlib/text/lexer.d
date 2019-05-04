@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2018 Timur Gafarov
+Copyright (c) 2016-2019 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -372,7 +372,3 @@ unittest
     lexer = new Lexer(input, delims);
     assert(lexer.getLexeme().length == 0);
 }
-
-// For backward compatibility
-deprecated("SliceLexer is deprecated, use Lexer instead")
-alias SliceLexer = Lexer;

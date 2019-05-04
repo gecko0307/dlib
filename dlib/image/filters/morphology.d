@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov
+Copyright (c) 2011-2019 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -59,16 +59,12 @@ body
 
     uint kw = 3, kh = 3;
 
-    //ushort maxChV = cast(ushort)((2 ^^ img.bitDepth) - 1);
-
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
     {
-        //auto alpha = img[x, y].a;
-
         static if (op == MorphOperation.Dilate)
         {
-            Color4f resc = Color4f(0, 0, 0, 1); //maxChV
+            Color4f resc = Color4f(0, 0, 0, 1);
         }
         static if (op == MorphOperation.Erode)
         {
@@ -104,12 +100,8 @@ body
             }
         }
 
-        res[x, y] = resc; //Color4f(resc.r, resc.g, resc.b, alpha);
-
-        //img.updateProgress();
+        res[x, y] = resc;
     }
-
-    //img.resetProgress();
 
     return res;
 }

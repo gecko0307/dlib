@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2017 Timur Gafarov, Roman Chistokhodov
+Copyright (c) 2014-2019 Timur Gafarov, Roman Chistokhodov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 

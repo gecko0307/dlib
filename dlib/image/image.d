@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2018 Timur Gafarov
+Copyright (c) 2011-2019 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -48,10 +48,7 @@ enum PixelFormat: uint
     L16 = 4,
     LA16 = 5,
     RGB16 = 6,
-    RGBA16 = 7,
-
-    // Deprecated, use dlib.image.hdri.FloatPixelFormat.RGBAF32 instead
-    RGBA_FLOAT = 8
+    RGBA16 = 7
 }
 
 interface SuperImage: Freeable
@@ -86,19 +83,6 @@ interface SuperImage: Freeable
         return range!uint(0, height);
     }
 
-    //float pixelCost = 0.0f;
-    //shared float progress = 0.0f;
-/*
-    final void updateProgress()
-    {
-        progress = progress + pixelCost;
-    }
-
-    final void resetProgress()
-    {
-        progress = 0.0f;
-    }
-*/
     final int opApply(scope int delegate(ref Color4f p, uint x, uint y) dg)
     {
         int result = 0;
@@ -195,9 +179,6 @@ class Image(PixelFormat fmt): SuperImage
 
         _pixelSize = (_bitDepth / 8) * _channels;
         allocateData();
-
-        //pixelCost = 1.0f / (_width * _height);
-        //progress = 0.0f;
     }
 
     protected void allocateData()

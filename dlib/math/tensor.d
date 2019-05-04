@@ -85,7 +85,6 @@ enum MaxStaticTensorSize = double.sizeof * 16; // fit 4x4 matrix of doubles
  */
 
 // TODO:
-// - Manual memory management
 // - External storage
 // - Component-wise addition, subtraction
 

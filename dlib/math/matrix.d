@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2017 Timur Gafarov, Martin Cejp
+Copyright (c) 2013-2019 Timur Gafarov, Martin Cejp
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -43,7 +43,7 @@ import dlib.math.linsolve;
  * Square (NxN) matrix.
  *
  * Implementation notes:
- * - The storage order is column-major (as of 30/01/2014);
+ * - The storage order is column-major;
  * - Affine vector of 4x4 matrix is in the 4th column (as in OpenGL);
  * - Elements are stored in a fixed manner, so it is impossible to change
  *   matrix size once it's created;

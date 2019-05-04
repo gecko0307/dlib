@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov
+Copyright (c) 2011-2019 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -121,11 +121,7 @@ body
             csum.a = alpha;
 
         res[x,y] = csum;
-
-        //img.updateProgress();
     }
-
-    //img.resetProgress();
 
     return res;
 }

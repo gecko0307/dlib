@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2017 Nick Papanastasiou
+Copyright (c) 2015-2019 Nick Papanastasiou
 
 Boost Software License - Version 1.0 - August 17th, 2003
 

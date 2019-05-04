@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2017 Timur Gafarov
+Copyright (c) 2011-2019 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -65,12 +65,9 @@ SuperImage contrast(SuperImage img, SuperImage outp, float k, ContrastMethod met
         foreach(x; 0..res.width)
         {
             aver += img[x, y];
-            //img.updateProgress();
         }
 
         aver /= (res.height * res.width);
-
-        //img.resetProgress();
     }
 
     foreach(y; 0..res.height)
@@ -79,10 +76,7 @@ SuperImage contrast(SuperImage img, SuperImage outp, float k, ContrastMethod met
         auto col = img[x, y];
         col = ((col - aver) * k + aver);
         res[x, y] = col;
-        //img.updateProgress();
     }
-
-    //img.resetProgress();
 
     return res;
 }

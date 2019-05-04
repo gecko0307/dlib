@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2017 Timur Gafarov
+Copyright (c) 2013-2019 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -72,11 +72,7 @@ SuperImage chromaKeyEuclidean(
             (distSqr - minDist) / (maxDist - minDist),
             0.0f, 1.0f);
         res[x, y] = col;
-
-        //img.updateProgress();
     }
-
-    //img.resetProgress();
 
     return res;
 }
@@ -124,11 +120,7 @@ SuperImage chromaKey(
             valThres);
 
         res[x, y] = hsva.rgba;
-
-        //img.updateProgress();
     }
-
-    //img.resetProgress();
 
     return res;
 }
@@ -183,11 +175,7 @@ body
             valThres);
 
         res[x, y] = hsva.rgba;
-
-        //img.updateProgress();
     }
-
-    //img.resetProgress();
 
     return res;
 }
