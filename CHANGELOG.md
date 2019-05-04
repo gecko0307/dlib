@@ -1,3 +1,36 @@
+dlib 0.16.0 - 30 Mar, 2019
+--------------------------
+No changes since dlib 0.16.0 beta1.
+
+dlib 0.16.0 beta1 - 4 Mar, 2019
+-------------------------------
+- **dlib.core**
+  - `dlib.core.memory`: Memory profiler now reports file and line of each allocation. Now it is enabled in runtime using `enableMemoryProfiler` function. 
+  - `dlib.core.memory`: `Owner.deleteOwnedObject`.
+- **dlib.text**
+  - `dlib.text.lexer`: `Lexer.position`.
+  - `dlib.text.unmanagedstring`: `String.cString`.
+  - **Breaking change:** deprecated module `dlib.text.slicelexer` has been removed.
+- **dlib.container**
+  - `dlib.container.array`: `DynamicArray.removeFirst`.
+  - **Breaking change:** deprecated module `dlib.container.hash` has been removed.
+- **dlib.image**
+  - **Breaking change:** deprecated module `dlib.image.parallel` has been removed.
+- **dlib.math**
+  - New module `dlib.math.easing` - some basic easing functions for fancy interpolation.
+  - **Breaking change:** deprecated module `dlib.math.fixed` has been removed.
+  - `dlib.math.quaternion`: fixed a bug in `Quaternion.rotationAxis`.
+- **dlib.geometry**
+  - `dlib.geometry.trimesh` not doesn't use GC.
+- **dlib.serialization**
+  - `dlib.serialization.json` - GC-free JSON parser.
+- **dlib.functional**
+  - **Breaking change:** deprecated module `dlib.functional.combinators`, `dlib.functional.quantifiers` has been removed.
+  - **Breaking change:** deprecated `map`, `filter`, `reduce` functions from `dlib.functional.range` have been removed.
+- **Misc**
+  - Added latest DMD (2.085.0, 2.084.1) and LDC (1.13.0, 1.14.0) to Travis CI config.
+
+
 dlib 0.15.0 - 9 Nov, 2018
 -------------------------
 - **dlib.container**
@@ -463,4 +496,4 @@ Early development on code.google.com.
 
 28 Sep, 2012
 ------------
-Project started.
+Start as a public project.
