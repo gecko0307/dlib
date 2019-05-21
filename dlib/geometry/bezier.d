@@ -84,10 +84,6 @@ Vector!(T,3) bezierVector3(T)(
     );
 }
 
-// For backward compatibility
-deprecated alias bezierCurveFunc2D = bezierVector2;
-deprecated alias bezierCurveFunc3D = bezierVector3;
-
 // Tangent is not normalized!
 Vector!(T,2) bezierTangentVector2(T)(
     Vector!(T,2) a,
@@ -118,4 +114,3 @@ Vector!(T,3) bezierTangentVector3(T)(
         bezierTangent(a.z, b.z, c.z, d.z, t)
     );
 }
-

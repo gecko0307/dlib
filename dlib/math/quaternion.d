@@ -720,17 +720,6 @@ body
     qb = qcurr * exp(-arg);
 }
 
-deprecated("identityQuaternion is deprecated, use Quaternion!(T).identity instead")
-{
-   /*
-    * Return identity quaternion
-    */
-    Quaternion!(T) identityQuaternion(T)()
-    {
-        return Quaternion!(T)(0.0f, 0.0f, 0.0f, 1.0f);
-    }
-}
-
 /*
  * Predefined quaternion type aliases
  */
