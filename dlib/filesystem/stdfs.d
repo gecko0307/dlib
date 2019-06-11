@@ -522,7 +522,7 @@ string readText(InputStream istrm)
 T readStruct(T)(InputStream istrm) if (is(T == struct))
 {
     T res;
-    istrm.readBytes(res.ptr, T.sizeof);
+    istrm.readBytes(&res, T.sizeof);
     return res;
 }
 enum MAX_PATH_LEN = 4096;
