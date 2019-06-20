@@ -84,7 +84,7 @@ private
     __gshared AllocationRecord[ulong] records;
     __gshared ulong counter = 0;
 
-    void addRecord(void* p, string type, size_t size, string file, int line)
+    void addRecord(void* p, string type, size_t size, string file = "<undefined>", int line = 0)
     {
         records[cast(ulong)p] = AllocationRecord(type, size, file, line, counter, false);
         counter++;
@@ -147,56 +147,113 @@ interface Freeable
 
 enum psize = 8;
 
-T allocate(T, A...) (A args, string file = __FILE__, int line = __LINE__) if (is(T == class))
+static if (__VERSION__ >= 2.079)
 {
-    enum size = __traits(classInstanceSize, T);
-    void* p = globalAllocator.allocate(size+psize).ptr;
-    if (!p)
-        onOutOfMemoryError();
-    auto memory = p[psize..psize+size];
-    *cast(size_t*)p = size;
-    _allocatedMemory += size;
-    if (memoryProfilerEnabled)
+    T allocate(T, A...) (A args, string file = __FILE__, int line = __LINE__) if (is(T == class))
     {
-        addRecord(p, T.stringof, size, file, line);
+        enum size = __traits(classInstanceSize, T);
+        void* p = globalAllocator.allocate(size+psize).ptr;
+        if (!p)
+            onOutOfMemoryError();
+        auto memory = p[psize..psize+size];
+        *cast(size_t*)p = size;
+        _allocatedMemory += size;
+        if (memoryProfilerEnabled)
+        {
+            addRecord(p, T.stringof, size, file, line);
+        }
+        auto res = emplace!(T, A)(memory, args);
+        return res;
     }
-    auto res = emplace!(T, A)(memory, args);
-    return res;
-}
 
-T* allocate(T, A...) (A args, string file = __FILE__, int line = __LINE__) if (is(T == struct))
-{
-    enum size = T.sizeof;
-    void* p = globalAllocator.allocate(size+psize).ptr;
-    if (!p)
-        onOutOfMemoryError();
-    auto memory = p[psize..psize+size];
-    *cast(size_t*)p = size;
-    _allocatedMemory += size;
-    if (memoryProfilerEnabled)
+    T* allocate(T, A...) (A args, string file = __FILE__, int line = __LINE__) if (is(T == struct))
     {
-        addRecord(p, T.stringof, size, file, line);
+        enum size = T.sizeof;
+        void* p = globalAllocator.allocate(size+psize).ptr;
+        if (!p)
+            onOutOfMemoryError();
+        auto memory = p[psize..psize+size];
+        *cast(size_t*)p = size;
+        _allocatedMemory += size;
+        if (memoryProfilerEnabled)
+        {
+            addRecord(p, T.stringof, size, file, line);
+        }
+        return emplace!(T, A)(memory, args);
     }
-    return emplace!(T, A)(memory, args);
-}
 
-T allocate(T) (size_t length, string file = __FILE__, int line = __LINE__) if (isArray!T)
-{
-    alias AT = ForeachType!T;
-    size_t size = length * AT.sizeof;
-    auto mem = globalAllocator.allocate(size+psize).ptr;
-    if (!mem)
-        onOutOfMemoryError();
-    T arr = cast(T)mem[psize..psize+size];
-    foreach(ref v; arr)
-        v = v.init;
-    *cast(size_t*)mem = size;
-    _allocatedMemory += size;
-    if (memoryProfilerEnabled)
+    T allocate(T) (size_t length, string file = __FILE__, int line = __LINE__) if (isArray!T)
     {
-        addRecord(mem, T.stringof, size, file, line);
+        alias AT = ForeachType!T;
+        size_t size = length * AT.sizeof;
+        auto mem = globalAllocator.allocate(size+psize).ptr;
+        if (!mem)
+            onOutOfMemoryError();
+        T arr = cast(T)mem[psize..psize+size];
+        foreach(ref v; arr)
+            v = v.init;
+        *cast(size_t*)mem = size;
+        _allocatedMemory += size;
+        if (memoryProfilerEnabled)
+        {
+            addRecord(mem, T.stringof, size, file, line);
+        }
+        return arr;
     }
-    return arr;
+}
+else
+{
+    T allocate(T, A...) (A args) if (is(T == class))
+    {
+        enum size = __traits(classInstanceSize, T);
+        void* p = globalAllocator.allocate(size+psize).ptr;
+        if (!p)
+            onOutOfMemoryError();
+        auto memory = p[psize..psize+size];
+        *cast(size_t*)p = size;
+        _allocatedMemory += size;
+        if (memoryProfilerEnabled)
+        {
+            addRecord(p, T.stringof, size);
+        }
+        auto res = emplace!(T, A)(memory, args);
+        return res;
+    }
+
+    T* allocate(T, A...) (A args) if (is(T == struct))
+    {
+        enum size = T.sizeof;
+        void* p = globalAllocator.allocate(size+psize).ptr;
+        if (!p)
+            onOutOfMemoryError();
+        auto memory = p[psize..psize+size];
+        *cast(size_t*)p = size;
+        _allocatedMemory += size;
+        if (memoryProfilerEnabled)
+        {
+            addRecord(p, T.stringof, size);
+        }
+        return emplace!(T, A)(memory, args);
+    }
+
+    T allocate(T) (size_t length) if (isArray!T)
+    {
+        alias AT = ForeachType!T;
+        size_t size = length * AT.sizeof;
+        auto mem = globalAllocator.allocate(size+psize).ptr;
+        if (!mem)
+            onOutOfMemoryError();
+        T arr = cast(T)mem[psize..psize+size];
+        foreach(ref v; arr)
+            v = v.init;
+        *cast(size_t*)mem = size;
+        _allocatedMemory += size;
+        if (memoryProfilerEnabled)
+        {
+            addRecord(mem, T.stringof, size);
+        }
+        return arr;
+    }
 }
 
 void deallocate(T)(ref T obj) if (isArray!T)
