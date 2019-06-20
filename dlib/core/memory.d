@@ -147,7 +147,7 @@ interface Freeable
 
 enum psize = 8;
 
-static if (__VERSION__ >= 2.079)
+static if (__VERSION__ >= 2079)
 {
     T allocate(T, A...) (A args, string file = __FILE__, int line = __LINE__) if (is(T == class))
     {
