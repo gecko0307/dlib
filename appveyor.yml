@@ -2,15 +2,15 @@ platform: x64
 environment:
  matrix:
   - DC: dmd
-    DVersion: 2.081.2
+    DVersion: 2.085.1
     arch: x86
     config: win32
   - DC: dmd
-    DVersion: 2.081.2
+    DVersion: 2.085.1
     arch: x86_mscoff
     config: win32
   - DC: dmd
-    DVersion: 2.081.2
+    DVersion: 2.085.1
     arch: x64
     config: win32
 
