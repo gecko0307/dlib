@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2019 Timur Gafarov, Martin Cejp, Vadim Lopatin
+Copyright (c) 2011-2017 Timur Gafarov, Martin Cejp, Vadim Lopatin
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -266,7 +266,7 @@ struct PNGImage
         }
         else
         {
-            uint bufferLength = hdr.width * hdr.height * numChannels * bytesPerChannel + hdr.height; 
+            uint bufferLength = hdr.width * hdr.height * numChannels * bytesPerChannel + hdr.height;
             buffer = New!(ubyte[])(bufferLength);
         }
 
@@ -525,7 +525,7 @@ Compound!(SuperImage, string) loadPNG(
             else if (chunk.type == acTL)
             {
                 AnimationControlChunk animControl;
-                animControl.readFromBuffer(chunk.data); 
+                animControl.readFromBuffer(chunk.data);
                 png.numFrames = animControl.numFrames;
                 png.numLoops = animControl.numPlays;
                 png.isAnimated = true;
@@ -1099,6 +1099,8 @@ Compound!(bool, string) readIHDR(
     return suc();
 }
 
+version = PNGDebug;
+
 Compound!(bool, string) fillFrame(PNGImage* png)
 {
     ubyte[] decodedBuffer = png.decoder.buffer;
@@ -1108,7 +1110,7 @@ Compound!(bool, string) fillFrame(PNGImage* png)
 
     uint calculatedSize;
     if (indexed)
-        calculatedSize = png.frame.width * png.frame.height * (png.hdr.bitDepth / 8) + png.frame.height;
+        calculatedSize = (png.frame.width * png.frame.height * png.hdr.bitDepth) / 8 + png.frame.height;
     else
         calculatedSize = png.frame.width * png.frame.height * (png.hdr.bitDepth / 8) * png.numChannels + png.frame.height;
 
@@ -1198,7 +1200,7 @@ Compound!(bool, string) fillFrame(PNGImage* png)
 
 void blitFrame(
     PNGImage* png,
-    ubyte[] frameBuffer, 
+    ubyte[] frameBuffer,
     SuperImage img)
 {
     for(uint y = 0; y < png.frame.height; y++)
@@ -1217,7 +1219,7 @@ void blitFrame(
 }
 
 void disposeFrame(
-    PNGImage* png, 
+    PNGImage* png,
     SuperImage prevImg,
     SuperImage img,
     bool firstFrame)
@@ -1238,7 +1240,7 @@ void disposeFrame(
 Color4f getColor(
     PNGImage* png,
     ubyte[] pixData,
-    uint x, 
+    uint x,
     uint y)
 {
     uint bitDepth = png.bitDepth;
@@ -1296,7 +1298,7 @@ Color4f getColor(
     }
     else
         assert(0);
-    
+
     return Color4f(res, bitDepth);
 }
 
@@ -1331,7 +1333,7 @@ Compound!(bool, string) filter(
 
     uint scanlineSize;
     if (indexed)
-        scanlineSize = width * bytesPerPixel + 1;
+        scanlineSize = (width * png.hdr.bitDepth) / 8 + 1;
     else
         scanlineSize = width * bytesPerPixel * channels + 1;
 
@@ -1346,53 +1348,78 @@ Compound!(bool, string) filter(
 
         if (indexed)
         {
-            // TODO: support filtering for indexed images
-            if (scanFilter != FilterMethod.None)
-            {
-                return err("loadPNG error: filtering is not supported for indexed images");
-            }
-
-            for (int j = 1; j < scanlineSize; ++j)
-            {
-                ubyte b = ibuffer[(i * scanlineSize) + j];
-                obuffer[(i * (scanlineSize-1) + j - 1)] = b;
-            }
-        }
-        else
-        for (int j = 0; j < width; ++j)
-        {
-            for (int k = 0; k < bytesPerPixel * channels; ++k)
+            width = scanlineSize - 1;
+            for (int j = 0; j < width; ++j)
             {
                 if (i == 0) pup = 0;
-                else pup = obuffer[((i-1) * width + j) * bytesPerPixel * channels + k];
+                else pup = obuffer[(i-1) * width + j];
                 if (j == 0) pback = 0;
-                else pback = obuffer[(i * width + j-1) * bytesPerPixel * channels + k];
+                else pback = obuffer[i * width + j-1];
                 if (i == 0 || j == 0) pupback = 0;
-                else pupback = obuffer[((i-1) * width + j - 1) * bytesPerPixel * channels + k];
+                else pupback = obuffer[(i-1) * width + j-1];
 
-                // get the current byte from ibuffer
-                cbyte = ibuffer[i * (width * bytesPerPixel * channels + 1) + j * bytesPerPixel * channels + k + 1];
+                cbyte = ibuffer[i * scanlineSize + j+1];
 
                 // filter, then set the current byte in data
                 switch (scanFilter)
                 {
                     case FilterMethod.None:
-                        obuffer[(i * width + j) * bytesPerPixel * channels + k] = cbyte;
+                        obuffer[i * width + j] = cbyte;
                         break;
                     case FilterMethod.Sub:
-                        obuffer[(i * width + j) * bytesPerPixel * channels + k] = cast(ubyte)(cbyte + pback);
+                        obuffer[i * width + j] = cast(ubyte)(cbyte + pback);
                         break;
                     case FilterMethod.Up:
-                        obuffer[(i * width + j) * bytesPerPixel * channels + k] = cast(ubyte)(cbyte + pup);
+                        obuffer[i * width + j] = cast(ubyte)(cbyte + pup);
                         break;
                     case FilterMethod.Average:
-                        obuffer[(i * width + j) * bytesPerPixel * channels + k] = cast(ubyte)(cbyte + (pback + pup) / 2);
+                        obuffer[i * width + j] = cast(ubyte)(cbyte + (pback + pup) / 2);
                         break;
                     case FilterMethod.Paeth:
-                        obuffer[(i * width + j) * bytesPerPixel * channels + k] = cast(ubyte)(cbyte + paeth(pback, pup, pupback));
+                        obuffer[i * width + j] = cast(ubyte)(cbyte + paeth(pback, pup, pupback));
                         break;
                     default:
                         return err(format("loadPNG error: unknown scanline filter (%s)", scanFilter));
+                }
+            }
+        }
+        else
+        {
+            for (int j = 0; j < width; ++j)
+            {
+                for (int k = 0; k < bytesPerPixel * channels; ++k)
+                {
+                    if (i == 0) pup = 0;
+                    else pup = obuffer[((i-1) * width + j) * bytesPerPixel * channels + k];
+                    if (j == 0) pback = 0;
+                    else pback = obuffer[(i * width + j-1) * bytesPerPixel * channels + k];
+                    if (i == 0 || j == 0) pupback = 0;
+                    else pupback = obuffer[((i-1) * width + j-1) * bytesPerPixel * channels + k];
+
+                    // get the current byte from ibuffer
+                    cbyte = ibuffer[i * (width * bytesPerPixel * channels + 1) + j * bytesPerPixel * channels + k + 1];
+
+                    // filter, then set the current byte in data
+                    switch (scanFilter)
+                    {
+                        case FilterMethod.None:
+                            obuffer[(i * width + j) * bytesPerPixel * channels + k] = cbyte;
+                            break;
+                        case FilterMethod.Sub:
+                            obuffer[(i * width + j) * bytesPerPixel * channels + k] = cast(ubyte)(cbyte + pback);
+                            break;
+                        case FilterMethod.Up:
+                            obuffer[(i * width + j) * bytesPerPixel * channels + k] = cast(ubyte)(cbyte + pup);
+                            break;
+                        case FilterMethod.Average:
+                            obuffer[(i * width + j) * bytesPerPixel * channels + k] = cast(ubyte)(cbyte + (pback + pup) / 2);
+                            break;
+                        case FilterMethod.Paeth:
+                            obuffer[(i * width + j) * bytesPerPixel * channels + k] = cast(ubyte)(cbyte + paeth(pback, pup, pupback));
+                            break;
+                        default:
+                            return err(format("loadPNG error: unknown scanline filter (%s)", scanFilter));
+                    }
                 }
             }
         }
@@ -1452,3 +1479,4 @@ unittest
     savePNG(img, "tests/minimal.png");
     loadPNG("tests/minimal.png");
 }
+
