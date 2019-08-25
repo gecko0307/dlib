@@ -1099,8 +1099,6 @@ Compound!(bool, string) readIHDR(
     return suc();
 }
 
-version = PNGDebug;
-
 Compound!(bool, string) fillFrame(PNGImage* png)
 {
     ubyte[] decodedBuffer = png.decoder.buffer;
