@@ -274,6 +274,30 @@ class ArrayStream : InputStream
     ubyte[] data;       // data.length is capacity
 }
 
+struct BufferedStreamReader
+{
+    InputStream stream;
+    ubyte[] buffer;
+    ubyte[] front;
+    
+    this(InputStream istrm, ubyte[] buffer)
+    {
+        stream = istrm;
+        this.buffer = buffer;
+        popFront();
+    }
+    
+    bool empty = false;
+    
+    void popFront()
+    {
+        empty = !stream.readable();
+        size_t readLen = stream.readBytes(buffer.ptr, buffer.length);
+        if (readLen > 0)
+            front = buffer[0..readLen];
+    }
+}
+
 ///
 unittest
 {
