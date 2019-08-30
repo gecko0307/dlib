@@ -49,7 +49,7 @@ ulong allocatedMemory()
     return _allocatedMemory;
 }
 
-private __gshared Mallocator _defaultGlobalAllocator; 
+private __gshared Mallocator _defaultGlobalAllocator;
 private __gshared Allocator _globalAllocator;
 
 Allocator globalAllocator()
@@ -68,18 +68,25 @@ void globalAllocator(Allocator a)
     _globalAllocator = a;
 }
 
-struct AllocationRecord
+Allocator defaultGlobalAllocator()
 {
-    string type;
-    size_t size;
-    string file;
-    int line;
-    ulong id;
-    bool deleted;
+    if (_defaultGlobalAllocator is null)
+        _defaultGlobalAllocator = Mallocator.instance;
+    return _defaultGlobalAllocator;
 }
 
 private
 {
+    struct AllocationRecord
+    {
+        string type;
+        size_t size;
+        string file;
+        int line;
+        ulong id;
+        bool deleted;
+    }
+
     __gshared bool memoryProfilerEnabled = false;
     __gshared AllocationRecord[ulong] records;
     __gshared ulong counter = 0;
@@ -121,7 +128,7 @@ void printMemoryLog()
     writefln("Total amount of allocated memory: %s byte(s)", _allocatedMemory);
     writeln("----------------------------------------------------");
 }
-    
+
 void printMemoryLeaks()
 {
     writeln("----------------------------------------------------");
@@ -145,23 +152,44 @@ interface Freeable
     void free();
 }
 
-enum psize = 8;
+private
+{
+    enum psize = 8;
+
+    void[] makeChunk(size_t size, Allocator allocator, string typename, string file = "", int line = 0)
+    {
+        void* p = allocator.allocate(size+psize).ptr;
+        if (!p)
+            onOutOfMemoryError();
+        auto memory = p[psize..size+psize];
+        *cast(size_t*)p = size;
+        _allocatedMemory += size;
+        if (memoryProfilerEnabled)
+        {
+            addRecord(p, typename, size, file, line);
+        }
+        return memory;
+    }
+
+    void freeChunk(void* p, Allocator allocator)
+    {
+        size_t size = *cast(size_t*)(p - psize);
+        ubyte* allocPtr = cast(ubyte*)p - psize;
+        allocator.deallocate(allocPtr[0..size+psize]);
+        _allocatedMemory -= size;
+        if (memoryProfilerEnabled)
+        {
+            markDeleted(p);
+        }
+    }
+}
 
 static if (__VERSION__ >= 2079)
 {
     T allocate(T, A...) (A args, string file = __FILE__, int line = __LINE__) if (is(T == class))
     {
         enum size = __traits(classInstanceSize, T);
-        void* p = globalAllocator.allocate(size+psize).ptr;
-        if (!p)
-            onOutOfMemoryError();
-        auto memory = p[psize..psize+size];
-        *cast(size_t*)p = size;
-        _allocatedMemory += size;
-        if (memoryProfilerEnabled)
-        {
-            addRecord(p, T.stringof, size, file, line);
-        }
+        auto memory = makeChunk(size, globalAllocator, T.stringof, file, line);
         auto res = emplace!(T, A)(memory, args);
         return res;
     }
@@ -169,16 +197,7 @@ static if (__VERSION__ >= 2079)
     T* allocate(T, A...) (A args, string file = __FILE__, int line = __LINE__) if (is(T == struct))
     {
         enum size = T.sizeof;
-        void* p = globalAllocator.allocate(size+psize).ptr;
-        if (!p)
-            onOutOfMemoryError();
-        auto memory = p[psize..psize+size];
-        *cast(size_t*)p = size;
-        _allocatedMemory += size;
-        if (memoryProfilerEnabled)
-        {
-            addRecord(p, T.stringof, size, file, line);
-        }
+        auto memory = makeChunk(size, globalAllocator, T.stringof, file, line);
         return emplace!(T, A)(memory, args);
     }
 
@@ -186,18 +205,10 @@ static if (__VERSION__ >= 2079)
     {
         alias AT = ForeachType!T;
         size_t size = length * AT.sizeof;
-        auto mem = globalAllocator.allocate(size+psize).ptr;
-        if (!mem)
-            onOutOfMemoryError();
-        T arr = cast(T)mem[psize..psize+size];
+        auto memory = makeChunk(size, globalAllocator, T.stringof, file, line);
+        T arr = cast(T)memory;
         foreach(ref v; arr)
             v = v.init;
-        *cast(size_t*)mem = size;
-        _allocatedMemory += size;
-        if (memoryProfilerEnabled)
-        {
-            addRecord(mem, T.stringof, size, file, line);
-        }
         return arr;
     }
 }
@@ -206,16 +217,7 @@ else
     T allocate(T, A...) (A args) if (is(T == class))
     {
         enum size = __traits(classInstanceSize, T);
-        void* p = globalAllocator.allocate(size+psize).ptr;
-        if (!p)
-            onOutOfMemoryError();
-        auto memory = p[psize..psize+size];
-        *cast(size_t*)p = size;
-        _allocatedMemory += size;
-        if (memoryProfilerEnabled)
-        {
-            addRecord(p, T.stringof, size);
-        }
+        auto memory = makeChunk(size, globalAllocator, T.stringof);
         auto res = emplace!(T, A)(memory, args);
         return res;
     }
@@ -223,16 +225,7 @@ else
     T* allocate(T, A...) (A args) if (is(T == struct))
     {
         enum size = T.sizeof;
-        void* p = globalAllocator.allocate(size+psize).ptr;
-        if (!p)
-            onOutOfMemoryError();
-        auto memory = p[psize..psize+size];
-        *cast(size_t*)p = size;
-        _allocatedMemory += size;
-        if (memoryProfilerEnabled)
-        {
-            addRecord(p, T.stringof, size);
-        }
+        auto memory = makeChunk(size, globalAllocator, T.stringof);
         return emplace!(T, A)(memory, args);
     }
 
@@ -240,18 +233,10 @@ else
     {
         alias AT = ForeachType!T;
         size_t size = length * AT.sizeof;
-        auto mem = globalAllocator.allocate(size+psize).ptr;
-        if (!mem)
-            onOutOfMemoryError();
-        T arr = cast(T)mem[psize..psize+size];
+        auto memory = makeChunk(size, globalAllocator, T.stringof);
+        T arr = cast(T)memory;
         foreach(ref v; arr)
             v = v.init;
-        *cast(size_t*)mem = size;
-        _allocatedMemory += size;
-        if (memoryProfilerEnabled)
-        {
-            addRecord(mem, T.stringof, size);
-        }
         return arr;
     }
 }
@@ -259,41 +244,22 @@ else
 void deallocate(T)(ref T obj) if (isArray!T)
 {
     void* p = cast(void*)obj.ptr;
-    size_t size = *cast(size_t*)(p - psize);
-    globalAllocator.deallocate((p - psize)[0..size+psize]);
-    _allocatedMemory -= size;
-    if (memoryProfilerEnabled)
-    {
-        markDeleted(p);
-    }
+    freeChunk(p, globalAllocator);
     obj.length = 0;
 }
 
 void deallocate(T)(T obj) if (is(T == class) || is(T == interface))
 {
-    Object o = cast(Object)obj;
-    void* p = cast(void*)o;
-    size_t size = *cast(size_t*)(p - psize);
+    void* p = cast(void*)obj;
     destroy(obj);
-    globalAllocator.deallocate((p - psize)[0..size+psize]);
-    _allocatedMemory -= size;
-    if (memoryProfilerEnabled)
-    {
-        markDeleted(p);
-    }
+    freeChunk(p, globalAllocator);
 }
 
 void deallocate(T)(T* obj)
 {
     void* p = cast(void*)obj;
-    size_t size = *cast(size_t*)(p - psize);
     destroy(obj);
-    globalAllocator.deallocate((p - psize)[0..size+psize]);
-    _allocatedMemory -= size;
-    if (memoryProfilerEnabled)
-    {
-        markDeleted(p);
-    }
+    freeChunk(p, globalAllocator);
 }
 
 alias New = allocate;
