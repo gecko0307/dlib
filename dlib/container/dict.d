@@ -228,7 +228,7 @@ class Trie(T, K)
     }
 
     ///
-    T* opIn_r(K k)
+    T* opBinaryRight(string op)(K k) if (op == "in")
     {
         return get(k);
     }

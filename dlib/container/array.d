@@ -315,7 +315,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     /**
      * Same as insertBack, but in operator form.
      */
-    auto opCatAssign(T c)
+    auto opOpAssign(string op)(T c) if (op == "~")
     {
         insertBack(c);
         return this;
@@ -335,7 +335,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     /**
      * Same as insertBack, but in operator form.
      */
-    auto opCatAssign(const(T)[] s)
+    auto opOpAssign(string op)(const(T)[] s) if (op == "~")
     {
         insertBack(s);
         return this;
