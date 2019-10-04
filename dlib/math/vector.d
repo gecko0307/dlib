@@ -165,7 +165,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) + Vector!(T,size)
     */
-    Vector!(T,size) opAdd (Vector!(T,size) v) const
+    const Vector!(T,size) opBinary(string op)(Vector!(T,size) v) if (op == "+")
     body
     {
         Vector!(T,size) res;
@@ -177,7 +177,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) - Vector!(T,size)
     */
-    Vector!(T,size) opSub (Vector!(T,size) v) const
+    const Vector!(T,size) opBinary(string op)(Vector!(T,size) v) if (op == "-")
     body
     {
         Vector!(T,size) res;
@@ -189,7 +189,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) * Vector!(T,size)
     */
-    Vector!(T,size) opBinary(string op) (Vector!(T,size) v) const if (op == "*")
+    const Vector!(T,size) opBinary(string op)(Vector!(T,size) v) if (op == "*")
     body
     {
         Vector!(T,size) res;
@@ -201,7 +201,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) / Vector!(T,size)
     */
-    Vector!(T,size) opDiv (Vector!(T,size) v) const
+    const Vector!(T,size) opBinary(string op)(Vector!(T,size) v) if (op == "/")
     body
     {
         Vector!(T,size) res;
@@ -213,7 +213,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) + T
     */
-    Vector!(T,size) opAdd (T t) const
+    const Vector!(T,size) opBinary(string op)(T t) if (op == "+")
     body
     {
         Vector!(T,size) res;
@@ -225,7 +225,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) - T
     */
-    Vector!(T,size) opSub (T t) const
+    const Vector!(T,size) opBinary(string op)(T t) if (op == "-")
     body
     {
         Vector!(T,size) res;
@@ -237,7 +237,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) * T
     */
-    Vector!(T,size) opBinary(string op) (T t) const if (op == "*")
+    const Vector!(T,size) opBinary(string op)(T t) if (op == "*")
     body
     {
         Vector!(T,size) res;
@@ -249,7 +249,7 @@ struct Vector(T, int size)
    /*
     * T * Vector!(T,size)
     */
-    Vector!(T,size) opBinaryRight(string op) (T t) const if (op == "*" && isNumeric!T)
+    const Vector!(T,size) opBinaryRight(string op) (T t) if (op == "*" && isNumeric!T)
     body
     {
         Vector!(T,size) res;
@@ -261,7 +261,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) / T
     */
-    Vector!(T,size) opDiv (T t) const
+    const Vector!(T,size) opBinary(string op)(T t) if (op == "/")
     body
     {
         Vector!(T,size) res;
@@ -285,7 +285,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) += Vector!(T,size)
     */
-    Vector!(T,size) opAddAssign (Vector!(T,size) v)
+    Vector!(T,size) opOpAssign(string op)(Vector!(T,size) v) if (op == "+")
     body
     {
         //foreach(i; 0..size)
@@ -297,7 +297,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) -= Vector!(T,size)
     */
-    Vector!(T,size) opSubAssign (Vector!(T,size) v)
+    Vector!(T,size) opOpAssign(string op)(Vector!(T,size) v) if (op == "-")
     body
     {
         //foreach(i; 0..size)
@@ -309,7 +309,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) *= Vector!(T,size)
     */
-    Vector!(T,size) opMulAssign (Vector!(T,size) v)
+    Vector!(T,size) opOpAssign(string op)(Vector!(T,size) v) if (op == "*")
     body
     {
         //foreach(i; 0..size)
@@ -321,7 +321,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) /= Vector!(T,size)
     */
-    Vector!(T,size) opDivAssign (Vector!(T,size) v)
+    Vector!(T,size) opOpAssign(string op)(Vector!(T,size) v) if (op == "/")
     body
     {
         //foreach(i; 0..size)
@@ -333,7 +333,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) += T
     */
-    Vector!(T,size) opAddAssign (T t)
+    Vector!(T,size) opOpAssign(string op)(T t) if (op == "+")
     body
     {
         //foreach(i; 0..size)
@@ -345,7 +345,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) -= T
     */
-    Vector!(T,size) opSubAssign (T t)
+    Vector!(T,size) opOpAssign(string op)(T t) if (op == "-")
     body
     {
         //foreach(i; 0..size)
@@ -357,7 +357,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) *= T
     */
-    Vector!(T,size) opMulAssign (T t)
+    Vector!(T,size) opOpAssign(string op)(T t) if (op == "*")
     body
     {
         //foreach(i; 0..size)
@@ -369,7 +369,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) /= T
     */
-    Vector!(T,size) opDivAssign (T t)
+    Vector!(T,size) opOpAssign(string op)(T t) if (op == "/")
     body
     {
         //foreach(i; 0..size)
@@ -381,7 +381,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) %= T
     */
-    Vector!(T,size) opModAssign(T2) (T2 t) // const if (op == "%=")
+    Vector!(T,size) opOpAssign(string op, T2)(T2 t) if (op == "%")
     body
     {
         //foreach(i; 0..size)
@@ -393,7 +393,7 @@ struct Vector(T, int size)
    /*
     * T = Vector!(T,size)[index]
     */
-    auto ref T opIndex (this X)(size_t index)
+    auto ref T opIndex(this X)(size_t index)
     in
     {
         assert ((0 <= index) && (index < size),
@@ -407,7 +407,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size)[index] = T
     */
-    void opIndexAssign (T n, size_t index)
+    void opIndexAssign(T n, size_t index)
     in
     {
         assert ((0 <= index) && (index < size),
@@ -421,7 +421,7 @@ struct Vector(T, int size)
    /*
     * T[] = Vector!(T,size)[index1..index2]
     */
-    auto opSlice (this X)(size_t index1, size_t index2)
+    auto opSlice(this X)(size_t index1, size_t index2)
     in
     {
         assert ((0 <= index1) || (index1 < 3) || (0 <= index2) || (index2 < 3) || (index1 < index2),
@@ -435,7 +435,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size)[index1..index2] = T
     */
-    T opSliceAssign (T t, size_t index1, size_t index2)
+    T opSliceAssign(T t, size_t index1, size_t index2)
     in
     {
         assert ((0 <= index1) || (index1 < 3) || (0 <= index2) || (index2 < 3) || (index1 < index2),
@@ -450,7 +450,7 @@ struct Vector(T, int size)
    /*
     * T = Vector!(T,size)[]
     */
-    auto opSlice (this X)()
+    auto opSlice(this X)()
     body
     {
         return arrayof[];
@@ -459,7 +459,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size)[] = T
     */
-    T opSliceAssign (T t)
+    T opSliceAssign(T t)
     body
     {
         //arrayof[] = t;

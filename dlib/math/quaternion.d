@@ -76,7 +76,7 @@ struct Quaternion(T)
    /*
     * Quaternion!(T) + Quaternion!(T)
     */
-    Quaternion!(T) opAdd(Quaternion!(T) q)
+    Quaternion!(T) opBinary(string op)(Quaternion!(T) q) if (op == "+")
     {
         return Quaternion!(T)(x + q.x, y + q.y, z + q.z, w + q.w);
     }
@@ -84,7 +84,7 @@ struct Quaternion(T)
    /*
     * Quaternion!(T) += Quaternion!(T)
     */
-    Quaternion!(T) opAddAssign(Quaternion!(T) q)
+    Quaternion!(T) opOpAssign(string op)(Quaternion!(T) q) if (op == "+")
     {
         this = this + q;
         return this;
@@ -93,7 +93,7 @@ struct Quaternion(T)
    /*
     * Quaternion!(T) - Quaternion!(T)
     */
-    Quaternion!(T) opSub(Quaternion!(T) q)
+    Quaternion!(T) opBinary(string op)(Quaternion!(T) q) if (op == "-")
     {
         return Quaternion!(T)(x - q.x, y - q.y, z - q.z, w - q.w);
     }
@@ -101,7 +101,7 @@ struct Quaternion(T)
    /*
     * Quaternion!(T) -= Quaternion!(T)
     */
-    Quaternion!(T) opSubAssign(Quaternion!(T) q)
+    Quaternion!(T) opOpAssign(string op)(Quaternion!(T) q) if (op == "-")
     {
         this = this - q;
         return this;
@@ -110,7 +110,7 @@ struct Quaternion(T)
    /*
     * Quaternion!(T) * Quaternion!(T)
     */
-    Quaternion!(T) opMul(Quaternion!(T) q)
+    Quaternion!(T) opBinary(string op)(Quaternion!(T) q) if (op == "*")
     {
         return Quaternion!(T)
         (
@@ -124,7 +124,7 @@ struct Quaternion(T)
    /*
     * Quaternion!(T) *= Quaternion!(T)
     */
-    Quaternion!(T) opMulAssign(Quaternion!(T) q)
+    Quaternion!(T) opOpAssign(string op)(Quaternion!(T) q) if (op == "*")
     {
         this = this * q;
         return this;
@@ -133,7 +133,7 @@ struct Quaternion(T)
    /*
     * Quaternion!(T) * T
     */
-    Quaternion!(T) opMul(T k)
+    Quaternion!(T) opBinary(string op)(T k) if (op == "*")
     {
         return Quaternion!(T)(x * k, y * k, z * k, w * k);
     }
@@ -141,7 +141,7 @@ struct Quaternion(T)
    /*
     * Quaternion!(T) *= T
     */
-    Quaternion!(T) opMulAssign(T k)
+    Quaternion!(T) opOpAssign(string op)(T k) if (op == "*")
     {
         x *= k;
         y *= k;
@@ -161,7 +161,7 @@ struct Quaternion(T)
    /*
     * Quaternion!(T) / T
     */
-    Quaternion!(T) opDiv(T k)
+    Quaternion!(T) opBinary(string op)(T k) if (op == "/")
     {
         T oneOverK = 1.0 / k;
         return Quaternion!(T)
@@ -176,7 +176,7 @@ struct Quaternion(T)
    /*
     * Quaternion!(T) /= T
     */
-    Quaternion!(T) opDivAssign(T k)
+    Quaternion!(T) opOpAssign(string op)(T k) if (op == "/")
     {
         T oneOverK = 1.0 / k;
         x *= oneOverK;
@@ -189,7 +189,7 @@ struct Quaternion(T)
    /*
     * Quaternion!(T) * Vector!(T,3)
     */
-    Quaternion!(T) opMul(Vector!(T,3) v)
+    Quaternion!(T) opBinary(string op)(Vector!(T,3) v) if (op == "*")
     {
         return Quaternion!(T)
         (
@@ -203,7 +203,7 @@ struct Quaternion(T)
    /*
     * Quaternion!(T) *= Vector!(T,3)
     */
-    Quaternion!(T) opMulAssign(Vector!(T,3) v)
+    Quaternion!(T) opOpAssign(string op)(Vector!(T,3) v) if (op == "*")
     {
         this = this * v;
         return this;

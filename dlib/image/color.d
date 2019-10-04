@@ -99,42 +99,42 @@ struct Color4f
         return this;
     }
 
-    Color4f opAdd(float x)
+    Color4f opBinary(string op)(float x) if (op == "+")
     {
         return Color4f(this.vec + x);
     }
 
-    Color4f opSub(float x)
+    Color4f opBinary(string op)(float x) if (op == "-")
     {
         return Color4f(this.vec - x);
     }
 
-    Color4f opMul(float x)
+    Color4f opBinary(string op)(float x) if (op == "*")
     {
         return Color4f(this.vec * x);
     }
 
-    Color4f opDiv(float x)
+    Color4f opBinary(string op)(float x) if (op == "/")
     {
         return Color4f(this.vec / x);
     }
 
-    Color4f opAdd(Vector4f v)
+    Color4f opBinary(string op)(Vector4f v) if (op == "+")
     {
         return Color4f(this.vec + v);
     }
 
-    Color4f opSub(Vector4f v)
+    Color4f opBinary(string op)(Vector4f v) if (op == "-")
     {
         return Color4f(this.vec - v);
     }
 
-    Color4f opMul(Vector4f v)
+    Color4f opBinary(string op)(Vector4f v) if (op == "*")
     {
         return Color4f(this.vec * v);
     }
 
-    Color4f opDiv(Vector4f v)
+    Color4f opBinary(string op)(Vector4f v) if (op == "/")
     {
         return Color4f(this.vec / v);
     }
@@ -150,7 +150,7 @@ struct Color4f
         );
     }
 
-    int opCmp(ref const(Color4f) c) const
+    const int opCmp(ref const(Color4f) c)
     {
         return cast(int)((luminance() - c.luminance()) * 100);
     }
@@ -158,7 +158,7 @@ struct Color4f
     alias luminance = luminance709;
 
     // ITU-R Rec. BT.709
-    float luminance709() const
+    const float luminance709()
     {
         return (
             vec.arrayof[0] * 0.2126f +
@@ -168,7 +168,7 @@ struct Color4f
     }
 
     // ITU-R Rec. BT.601
-    float luminance601() const
+    const float luminance601()
     {
         return (
             vec.arrayof[0] * 0.3f +

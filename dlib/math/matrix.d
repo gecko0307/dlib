@@ -202,7 +202,7 @@ struct Matrix(T, size_t N)
    /*
     * Matrix + Matrix
     */
-    Matrix!(T,N) opAdd (Matrix!(T,N) mat)
+    Matrix!(T,N) opBinary(string op)(Matrix!(T,N) mat) if (op == "+")
     body
     {
         auto res = Matrix!(T,N)();
@@ -217,7 +217,7 @@ struct Matrix(T, size_t N)
    /*
     * Matrix - Matrix
     */
-    Matrix!(T,N) opSub (Matrix!(T,N) mat)
+    Matrix!(T,N) opBinary(string op)(Matrix!(T,N) mat) if (op == "-")
     body
     {
         auto res = Matrix!(T,N)();
@@ -232,7 +232,7 @@ struct Matrix(T, size_t N)
    /*
     * Matrix * Matrix
     */
-    Matrix!(T,N) opMul (Matrix!(T,N) mat)
+    Matrix!(T,N) opBinary(string op)(Matrix!(T,N) mat) if (op == "*")
     body
     {
         static if (N == 2)
@@ -311,7 +311,7 @@ struct Matrix(T, size_t N)
    /*
     * Matrix += Matrix
     */
-    Matrix!(T,N) opAddAssign (Matrix!(T,N) mat)
+    Matrix!(T,N) opOpAssign(string op)(Matrix!(T,N) mat) if (op == "+")
     body
     {
         this = this + mat;
@@ -321,7 +321,7 @@ struct Matrix(T, size_t N)
    /*
     * Matrix -= Matrix
     */
-    Matrix!(T,N) opSubAssign (Matrix!(T,N) mat)
+    Matrix!(T,N) opOpAssign(string op)(Matrix!(T,N) mat) if (op == "-")
     body
     {
         this = this - mat;
@@ -331,7 +331,7 @@ struct Matrix(T, size_t N)
    /*
     * Matrix *= Matrix
     */
-    Matrix!(T,N) opMulAssign (Matrix!(T,N) mat)
+    Matrix!(T,N) opOpAssign(string op)(Matrix!(T,N) mat) if (op == "*")
     body
     {
         this = this * mat;
@@ -341,7 +341,7 @@ struct Matrix(T, size_t N)
    /*
     * Matrix * T
     */
-    Matrix!(T,N) opMul (T k)
+    Matrix!(T,N) opBinary(string op)(T k) if (op == "*")
     body
     {
         auto res = Matrix!(T,N)();
@@ -353,7 +353,7 @@ struct Matrix(T, size_t N)
    /*
     * Matrix *= T
     */
-    Matrix!(T,N) opMulAssign (T k)
+    Matrix!(T,N) opOpAssign(string op)(T k) if (op == "*")
     body
     {
         foreach(ref v; arrayof)
@@ -668,15 +668,7 @@ struct Matrix(T, size_t N)
         body
         {
             Matrix!(T,N) res;
-/*
-            // Analytical inversion
-            enum inv = q{{
-                res = adjugate;
-                T oneOverDet = 1.0 / determinant;
-                foreach(ref v; res.arrayof)
-                    v *= oneOverDet;
-            }};
-*/
+
             // Inversion via LU decomposition
             enum inv = q{{
                 Matrix!(T,N) l, u, p;

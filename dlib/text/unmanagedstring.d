@@ -114,19 +114,19 @@ struct String
         }
     }
 
-    auto opCatAssign(string s)
+    auto opOpAssign(string op)(string s) if (op == "~")
     {
         data.insertBack(s);
         return this;
     }
 
-    auto opCatAssign(char c)
+    auto opOpAssign(string op)(char c) if (op == "~")
     {
         data.insertBack(c);
         return this;
     }
 
-    auto opCat(String s)
+    auto opOpAssign(string op)(String s) if (op == "~")
     {
         String s1 = this;
         return s1 ~= s;

@@ -52,29 +52,29 @@ struct Complex(T)
         im = 0.0;
     }
 
-    Complex!(T) opUnary(string s) () if (s == "-")
+    Complex!(T) opUnary(string op) () if (op == "-")
     {
         return Complex!(T)(re, -im);
     }
 
-    Complex!(T) opAdd(Complex!(T) c)
+    Complex!(T) opBinary(string op)(Complex!(T) c) if (op == "+")
     {
         return Complex!(T)(re + c.re, im + c.im);
     }
 
-    Complex!(T) opSub(Complex!(T) c)
+    Complex!(T) opBinary(string op)(Complex!(T) c) if (op == "-")
     {
         return Complex!(T)(re - c.re, im - c.im);
     }
 
-    Complex!(T) opMul(Complex!(T) c)
+    Complex!(T) opBinary(string op)(Complex!(T) c) if (op == "*")
     {
         return Complex!(T)(
             re * c.re - im * c.im,
             re * c.im + im * c.re);
     }
 
-    Complex!(T) opDiv(Complex!(T) c)
+    Complex!(T) opBinary(string op)(Complex!(T) c) if (op == "/")
     {
         T denominator = c.re * c.re + c.im * c.im;
         return Complex!(T)(
@@ -82,21 +82,21 @@ struct Complex(T)
             (im * c.re - re * c.im) / denominator);
     }
 
-    Complex!(T) opAddAssign(Complex!(T) c)
+    Complex!(T) opOpAssign(string op)(Complex!(T) c) if (op == "+")
     {
         re += c.re;
         im += c.im;
         return this;
     }
 
-    Complex!(T) opSubAssign(Complex!(T) c)
+    Complex!(T) opOpAssign(string op)(Complex!(T) c) if (op == "-")
     {
         re -= c.re;
         im -= c.im;
         return this;
     }
 
-    Complex!(T) opMulAssign(Complex!(T) c)
+    Complex!(T) opOpAssign(string op)(Complex!(T) c) if (op == "*")
     {
         T temp = re;
         re = re * c.re - im * c.im;
@@ -104,7 +104,7 @@ struct Complex(T)
         return this;
     }
 
-    Complex!(T) opDivAssign(Complex!(T) c)
+    Complex!(T) opOpAssign(string op)(Complex!(T) c) if (op == "/")
     {
         T denominator = c.re * c.re + c.im * c.im;
         T temp = re;
@@ -113,22 +113,22 @@ struct Complex(T)
         return this;
     }
 
-    Complex!(T) opAdd(T scalar)
+    Complex!(T) opBinary(string op)(T scalar) if (op == "+")
     {
         return Complex!(T)(re + scalar, im + scalar);
     }
 
-    Complex!(T) opSub(T scalar)
+    Complex!(T) opBinary(string op)(T scalar) if (op == "-")
     {
         return Complex!(T)(re + scalar, im + scalar);
     }
 
-    Complex!(T) opMul(T scalar)
+    Complex!(T) opBinary(string op)(T scalar) if (op == "*")
     {
         return Complex!(T)(re * scalar, im * scalar);
     }
 
-    Complex!(T) opDiv(T scalar)
+    Complex!(T) opBinary(string op)(T scalar) if (op == "/")
     {
         return Complex!(T)(re / scalar, im / scalar);
     }

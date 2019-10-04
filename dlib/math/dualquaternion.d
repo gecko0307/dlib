@@ -100,17 +100,17 @@ struct DualQuaternion(T)
         return DualQuaternion!(T)(q1.conj, q2.conj * -1.0);
     }
 
-    DualQuaternion!(T) opMul(DualQuaternion!(T) d)
+    DualQuaternion!(T) opBinary(string op)(DualQuaternion!(T) d) if (op == "*")
     {
         return DualQuaternion!(T)(q1 * d.q1, q1 * d.q2 + q2 * d.q1);
     }
 
-    DualQuaternion!(T) opAdd(DualQuaternion!(T) d)
+    DualQuaternion!(T) opBinary(string op)(DualQuaternion!(T) d) if (op == "+")
     {
         return DualQuaternion!(T)(q1 + d.q1, q2 + d.q2);
     }
 
-    DualQuaternion!(T) opSub(DualQuaternion!(T) d)
+    DualQuaternion!(T) opBinary(string op)(DualQuaternion!(T) d) if (op == "-")
     {
         return DualQuaternion!(T)(q1 - d.q1, q2 - d.q2);
     }
