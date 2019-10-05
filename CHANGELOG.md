@@ -1,3 +1,19 @@
+dlib 0.17.0 beta1 - 5 Oct, 2019
+-------------------------------
+- **dlib.core**
+  - `BufferedStreamReader` in `dlib.core.stream` - a simple input range to read fixed chunks of data from an `InputStream`.
+- **dlib.image**
+  - **Breaking change:** `dlib.image.compleximage` has been removed.
+  - `dlib.image.signal2d` is now fully GC-free.
+  - Filtering of indexed images in PNG decoder is now supported (#142).
+- **dlib.math**
+  - `dlib.math.tensor` now uses `dlib.core.memory` for internal allocations.
+  - **Breaking change:** deprecated function `identityQuaternion` has been removed. Use `Quaternion.identity` instead.
+- **dlib.geometry**
+  - **Breaking change:** deprecated aliases `bezierCurveFunc2D` and `bezierCurveFunc3D` have been removed. Use `bezierVector2` and `bezierVector3` instead.
+- **Misc**
+  - Added latest DMD (2.088.0, 2.087.1) and LDC (1.17.0, 1.16.0) to Travis CI config.
+
 dlib 0.16.0 - 30 Mar, 2019
 --------------------------
 No changes since dlib 0.16.0 beta1.
@@ -29,7 +45,6 @@ dlib 0.16.0 beta1 - 4 Mar, 2019
   - **Breaking change:** deprecated `map`, `filter`, `reduce` functions from `dlib.functional.range` have been removed.
 - **Misc**
   - Added latest DMD (2.085.0, 2.084.1) and LDC (1.13.0, 1.14.0) to Travis CI config.
-
 
 dlib 0.15.0 - 9 Nov, 2018
 -------------------------
