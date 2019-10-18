@@ -630,7 +630,24 @@ struct DynamicArray(T, size_t chunkSize = 32)
 
         return result;
     }
+    
+    /**
+     * Iterating over array via foreach_reverse.
+     */
+    int opApplyReverse(scope int delegate(size_t i, ref T) dg)
+    {
+        int result = 0;
+        
+        for(size_t i =  length; i-- > 0; )
+        {
+            result = dg(i, data[i]);
+            if (result)
+                break;
+        }
 
+        return result;
+    }
+    
     ///
     unittest
     {
@@ -664,7 +681,24 @@ struct DynamicArray(T, size_t chunkSize = 32)
 
         return 0;
     }
+    
+     /**
+     * Iterating over array via foreach_reverse.
+     */
+    int opApplyReverse(scope int delegate(ref T) dg)
+    {
+        int result = 0;
+        
+        for(size_t i =  length; i-- > 0; )
+        {
+            result = dg(data[i]);
+            if (result)
+                break;
+        }
 
+        return result;
+    }
+    
     ///
     unittest
     {
