@@ -1,3 +1,9 @@
+dlib 0.17.0 - 21 Oct, 2019
+--------------------------
+Changes since beta:
+- **dlib.container**
+  - `dlib.container.array`: iterating over array via `foreach_reverse`.
+
 dlib 0.17.0 beta1 - 5 Oct, 2019
 -------------------------------
 - **dlib.core**
