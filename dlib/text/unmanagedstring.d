@@ -42,14 +42,24 @@ import dlib.coding.hash;
     - always zero-terminate to be more C-friendly
  */
 struct String
-{
+{  
     DynamicArray!(char, 128) data;
-    String* _cString;
+    
+    private void addZero()
+    {
+        data.insertBack('\0');
+    }
+    
+    private void removeZero()
+    {
+        data.removeBack(1);
+    }
 
     // Construct from D string
     this(string s)
     {
         data.insertBack(s);
+        addZero();
     }
 
     // Construct from zero-terminated C string (ASCII or UTF8)
@@ -62,6 +72,7 @@ struct String
         }
         if (offset > 0)
             data.insertBack(cStr[0..offset]);
+        addZero();
     }
 
     // Construct from zero-terminated UTF-16 string
@@ -101,44 +112,38 @@ struct String
             }
         }
         while(utf16char);
+        addZero();
     }
 
     void free()
     {
         data.free();
-
-        if (_cString)
-        {
-            _cString.free();
-            Delete(_cString);
-        }
     }
 
     auto opOpAssign(string op)(string s) if (op == "~")
     {
+        removeZero();
         data.insertBack(s);
+        addZero();
         return this;
     }
 
     auto opOpAssign(string op)(char c) if (op == "~")
     {
+        removeZero();
         data.insertBack(c);
+        addZero();
         return this;
     }
 
     auto opOpAssign(string op)(String s) if (op == "~")
     {
         String s1 = this;
-        return s1 ~= s;
+        s1.removeZero();
+        s1 ~= s;
+        s1.addZero();
+        return s1;
     }
-
-    /*
-    auto opCatAssign(dchar dc)
-    {
-        // TODO
-        return this;
-    }
-    */
 
     void reserve(size_t amount)
     {
@@ -147,12 +152,18 @@ struct String
 
     @property size_t length()
     {
-        return data.length;
+        if (data.length == 0)
+            return 0;
+        else
+            return data.length - 1;
     }
 
     @property string toString()
     {
-        return cast(string)data.data;
+        if (data.length == 0)
+            return "";
+        else 
+            return cast(string)data.data[0..$-1];
     }
 
     alias toString this;
@@ -162,25 +173,9 @@ struct String
         return data.data.ptr;
     }
 
-    private int hash = 0;
-    @property char* cString()
+    deprecated("use String.ptr instead") @property char* cString()
     {
-        int newHash = stringHash(toString);
-        bool rebuildCString = false;
-
-        if (newHash != hash || _cString is null)
-        {
-            hash = newHash;
-
-            if (_cString)
-                _cString.free();
-            else
-                _cString = New!(String)();
-            *_cString ~= toString;
-            *_cString ~= '\0';
-        }
-
-        return _cString.data.data.ptr;
+        return ptr();
     }
 
     @property bool isDynamic()
