@@ -16,19 +16,20 @@
     ],
     "license": "BSL-1.0",
     "homepage": "http://github.com/gecko0307/dlib",
-    "name": "dlib",
+    "name": "dlib2",
     "importPaths": [
-        "."
+        "src"
     ],
     "buildRequirements":[
         "allowWarnings"
     ],
+    "dflags": ["-betterC"],
     "lflags-linux-gdc": ["-lz"],
     "configurations": [
         {
             "name": "library",
             "targetType": "library",
-            "sourcePaths": ["dlib"]
+            "sourcePaths": ["src/dcore"]
         },
         {
             "name": "import",

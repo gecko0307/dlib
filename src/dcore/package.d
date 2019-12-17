@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2018-2019 Timur Gafarov
+Copyright (c) 2019 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,26 +26,9 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.text.encodings;
+module dcore;
 
-import dlib.container.array;
-import dlib.text.utils;
-
-string transcode(Decoder, Encoder)(string input)
+public
 {
-    DynamicArray!char array;
-	
-	auto encoder = Encoder();
-    
-    foreach(c; Decoder(input).byDChar)
-    {
-        char[4] buffer;
-        size_t len = encoder.encode(c, buffer);
-        if (len)
-            array.append(buffer[0..len]);
-    }
-    
-    auto output = copy(array.data);
-    array.free();
-    return cast(string)output;
+    import dcore.stdio;
 }
