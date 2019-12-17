@@ -7,11 +7,18 @@ version(WebAssembly)
         uint malloc(uint size);
         void free(uint mem);
 
-        void consoleLog(const char* str);
+        int putchar(int c)
+        {
+            return 0;
+        }
+
+        int puts(const char* s)
+        {
+            return 0;
+        }
 
         int printf(const char* fmt, ...)
         {
-            consoleLog(fmt);
             return 0;
         }
 
@@ -31,6 +38,8 @@ else
             void* malloc(size_t size);
             void free(void* mem);
 
+            int putchar(int c);
+            int puts(const char* s);
             int printf(const char* fmt, ...);
 
             double sin(double x);

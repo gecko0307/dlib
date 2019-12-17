@@ -28,7 +28,5 @@ DEALINGS IN THE SOFTWARE.
 
 module dcore.stdio;
 
-version(FreeStanding) version = UseFallbackFunctions;
-else version(WebAssembly) version = UseFallbackFunctions;
-
+import std.traits;
 public import dcore.libc;

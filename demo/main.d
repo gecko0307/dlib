@@ -1,5 +1,6 @@
 module main;
 
+import std.traits;
 import dcore;
 
 version(WebAssembly)
