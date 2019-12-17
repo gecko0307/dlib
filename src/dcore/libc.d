@@ -48,9 +48,9 @@ else
     }
 }
 
-void* memset(void* ptr, int value, uint num)
+void* memset(void* ptr, int value, size_t num)
 {
-    for (uint i = 0; i < num; i++)
+    for (size_t i = 0; i < num; i++)
     {
         (cast(ubyte*)ptr)[i] = cast(ubyte)value;
     }
