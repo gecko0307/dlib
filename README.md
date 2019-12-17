@@ -8,6 +8,7 @@ Project goals
 * Become a minimal standard library: include standard I/O, math, data manipulation, etc.
 * WebAssembly support
 * ARM/Android support?
+* Extensive unit testing
 
 Architecture
 ------------
