@@ -57,13 +57,13 @@ double sin(double angle) pure nothrow @nogc
 
 unittest
 {
-    import std.math: sin, cos;
+    import std.math: stdsin = sin, stdcos = cos;
 
     enum ErrorTolerance = 0.001;
-    assert(isClose(cos(0.0f), std.math.cos(0.0f), ErrorTolerance));
-    assert(isClose(cos(PI * 0.5), std.math.cos(PI * 0.5), ErrorTolerance));
-    assert(isClose(cos(PI), std.math.cos(PI), ErrorTolerance));
-    assert(isClose(sin(0.0f), std.math.sin(0.0f), ErrorTolerance));
-    assert(isClose(sin(PI * 0.5), std.math.sin(PI * 0.5), ErrorTolerance));
-    assert(isClose(sin(PI), std.math.sin(PI), ErrorTolerance));
+    assert(isClose(cos(0.0f), stdcos(0.0f), ErrorTolerance));
+    assert(isClose(cos(PI * 0.5), stdcos(PI * 0.5), ErrorTolerance));
+    assert(isClose(cos(PI), stdcos(PI), ErrorTolerance));
+    assert(isClose(sin(0.0f), stdsin(0.0f), ErrorTolerance));
+    assert(isClose(sin(PI * 0.5), stdsin(PI * 0.5), ErrorTolerance));
+    assert(isClose(sin(PI), stdsin(PI), ErrorTolerance));
 }
