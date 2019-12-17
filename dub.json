@@ -23,19 +23,24 @@
     "buildRequirements":[
         "allowWarnings"
     ],
-    "dflags": ["-betterC"],
     "lflags-linux-gdc": ["-lz"],
     "configurations": [
         {
             "name": "library",
             "targetType": "library",
-            "sourcePaths": ["src/dcore"]
+            "sourcePaths": ["src/dcore"],
+            "dflags": ["-betterC"]
         },
         {
             "name": "import",
             "targetType": "sourceLibrary",
             "sourceFiles-posix": ["libdlib.a"],
-            "sourceFiles-windows": ["dlib.lib"]
+            "sourceFiles-windows": ["dlib.lib"],
+            "dflags": ["-betterC"]
+        },
+        {
+            "name": "unittest",
+            "sourcePaths": ["src/dcore"]
         }
     ]
 }
