@@ -2,24 +2,24 @@ module dcore.memory;
 
 import std.traits;
 
-version(FreeStanding)
+version(WebAssembly)
 {
-    version(WebAssembly)
+    extern(C) pure nothrow @nogc
     {
-        extern(C) pure nothrow @nogc
-        {
-            uint malloc(uint size);
-            void free(uint mem);
-        }
-    }
-    else
-    {
-        static assert(0, "Compilation without libc is supported for WebAssembly only");
+        uint malloc(uint size);
+        void free(uint mem);
     }
 }
 else
 {
-    import dcore.libc;
+    version(FreeStanding)
+    {
+        static assert(0, "dcore.memory requires libc for this target");
+    }
+    else
+    {
+        import dcore.libc;
+    }
 }
 
 void* memset(void* ptr, int value, uint num)
