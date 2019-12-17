@@ -1,36 +1,7 @@
 module dcore.memory;
 
 import std.traits;
-
-version(WebAssembly)
-{
-    extern(C) pure nothrow @nogc
-    {
-        uint malloc(uint size);
-        void free(uint mem);
-    }
-}
-else
-{
-    version(FreeStanding)
-    {
-        static assert(0, "dcore.memory requires libc for this target");
-    }
-    else
-    {
-        import dcore.libc;
-    }
-}
-
-void* memset(void* ptr, int value, uint num)
-{
-    for (uint i = 0; i < num; i++)
-    {
-        (cast(ubyte*)ptr)[i] = cast(ubyte)value;
-    }
-
-    return ptr;
-}
+import dcore.libc;
 
 enum psize = 8;
 __gshared ulong _allocatedMemory = 0;

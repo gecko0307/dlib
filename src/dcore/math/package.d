@@ -35,15 +35,9 @@ else version(WebAssembly) version = UseFallbackFunctions;
 
 version(UseFallbackFunctions)
 {
-    import dcore.math._trig;
-
-    alias sin = dcore.math._trig._sin;
-    alias cos = dcore.math._trig._cos;
+    public import dcore.math._trig;
 }
 else
 {
-    import dcore.libc;
-
-    alias sin = dcore.libc.sin;
-    alias cos = dcore.libc.cos;
+    public import dcore.libc;
 }
