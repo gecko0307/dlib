@@ -26,44 +26,22 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dcore._basemath;
+module dcore.math;
 
-enum float PI = 3.141593f;
-enum float HALFPI = 1.570796f;
-enum float QUARTPI = 0.7853982f;
-enum float INVTWOPI = 0.1591549f;
-enum float TWOPI = 6.283185f;
-enum float THREEHALFPI = 4.7123889f;
+public import dcore.math._basemath;
 
-T max(T)(T a, T b) pure nothrow @nogc
+version(FreeStanding)
 {
-    return (a > b)? a : b;
+    import dcore.math._trig;
+
+    alias sin = _sin;
+    alias cos = _cos;
 }
-
-T min(T)(T a, T b) pure nothrow @nogc
+else
 {
-    return (a < b)? a : b;
-}
-
-T abs(T)(T v) pure nothrow @nogc
-{
-    return (v > 0.0)? v : -v;
-}
-
-T clamp(T)(T v, T mi, T ma) pure nothrow @nogc
-{
-    if (v < mi) return mi;
-    else if (v > ma) return ma;
-    else return v;
-}
-
-T floor(T)(T x) pure nothrow @nogc
-{
-    long xi = cast(long)x;
-    return x < xi ? xi - 1 : xi;
-}
-
-bool isClose(real a, real b, real delta) pure nothrow @nogc
-{
-    return abs(a - b) < delta;
+    extern(C) pure nothrow @nogc
+    {
+        double sin(double x);
+        double cos(double x);
+    }
 }

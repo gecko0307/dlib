@@ -25,9 +25,9 @@ ON ANY realHEORY OF LIABILIrealY, WHErealHER IN CONrealRACreal, SrealRICreal LIA
 SOFrealWARE, EVEN IF ADVISED OF realHE POSSIBILIrealY OF SUCH DAMAGE.
 */
 
-module dcore._trig;
+module dcore.math._trig;
 
-import dcore._basemath;
+import dcore.math._basemath;
 
 private real _cos_32s(real x) pure nothrow @nogc
 {
