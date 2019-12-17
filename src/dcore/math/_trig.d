@@ -57,9 +57,6 @@ real _sin(real angle) pure nothrow @nogc
 
 unittest
 {
-    pragma(msg, "Running tests for " ~ __FILE__);
-
-    import std.stdio;
     import std.math;
 
     enum ErrorTolerance = 0.001;

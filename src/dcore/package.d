@@ -30,8 +30,9 @@ module dcore;
 
 public
 {
-    import dcore.stdio;
     import dcore.math;
+    import dcore.memory;
+    import dcore.stdio;
 }
 
 debug
