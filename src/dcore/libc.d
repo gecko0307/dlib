@@ -1,12 +1,18 @@
 module dcore.libc;
 
-extern(C) nothrow @nogc
+version(WebAssembly)
 {
-    void* malloc(size_t size);
-    void free(void* mem);
+}
+else
+{
+    extern(C) nothrow @nogc
+    {
+        void* malloc(size_t size);
+        void free(void* mem);
 
-    int printf(const char* fmt, ...);
+        int printf(const char* fmt, ...);
 
-    double sin(double x);
-    double cos(double x);
+        double sin(double x);
+        double cos(double x);
+    }
 }

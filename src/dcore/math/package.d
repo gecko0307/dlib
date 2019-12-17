@@ -30,7 +30,10 @@ module dcore.math;
 
 public import dcore.math._basemath;
 
-version(FreeStanding)
+version(FreeStanding) version = UseFallbackFunctions;
+else version(WebAssembly) version = UseFallbackFunctions;
+
+version(UseFallbackFunctions)
 {
     import dcore.math._trig;
 

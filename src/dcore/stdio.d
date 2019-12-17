@@ -28,4 +28,21 @@ DEALINGS IN THE SOFTWARE.
 
 module dcore.stdio;
 
-public import dcore.libc;
+version(FreeStanding) version = UseFallbackFunctions;
+else version(WebAssembly) version = UseFallbackFunctions;
+
+version(UseFallbackFunctions)
+{
+    extern(C) nothrow @nogc
+    {
+        int printf(const char* fmt, ...)
+        {
+            //
+            return 0;
+        }
+    }
+}
+else
+{
+    public import dcore.libc;
+}
