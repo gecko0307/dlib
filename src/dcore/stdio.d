@@ -28,4 +28,7 @@ DEALINGS IN THE SOFTWARE.
 
 module dcore.stdio;
 
-// TODO
+extern(C) nothrow @nogc
+{
+    int printf(const char* fmt, ...);
+}

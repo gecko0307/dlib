@@ -39,7 +39,7 @@ version(FreeStanding)
 }
 else
 {
-    extern(C) pure nothrow @nogc
+    extern(C) nothrow @nogc
     {
         double sin(double x);
         double cos(double x);
