@@ -19,11 +19,7 @@ version(FreeStanding)
 }
 else
 {
-    extern(C) pure nothrow @nogc
-    {
-        void* malloc(size_t size);
-        void free(void* mem);
-    }
+    import dcore.libc;
 }
 
 void* memset(void* ptr, int value, uint num)

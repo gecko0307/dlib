@@ -34,14 +34,13 @@ version(FreeStanding)
 {
     import dcore.math._trig;
 
-    alias sin = _sin;
-    alias cos = _cos;
+    alias sin = dcore.math._trig._sin;
+    alias cos = dcore.math._trig._cos;
 }
 else
 {
-    extern(C) nothrow @nogc
-    {
-        double sin(double x);
-        double cos(double x);
-    }
+    import dcore.libc;
+
+    alias sin = dcore.libc.sin;
+    alias cos = dcore.libc.cos;
 }

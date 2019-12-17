@@ -28,7 +28,4 @@ DEALINGS IN THE SOFTWARE.
 
 module dcore.stdio;
 
-extern(C) nothrow @nogc
-{
-    int printf(const char* fmt, ...);
-}
+public import dcore.libc;
