@@ -31,4 +31,39 @@ module dcore;
 public
 {
     import dcore.stdio;
+    import dcore.math;
+}
+
+debug
+{
+    version(DigitalMars) pragma(msg, "Compiler: Digital Mars D");
+    else version(GNU) pragma(msg, "Compiler: GNU D Compiler");
+    else version(LDC) pragma(msg, "Compiler: LLVM D Compiler");
+    else version(SDC) pragma(msg, "Compiler: Stupid D Compiler");
+
+    version(Windows) pragma(msg, "System: Microsoft Windows");
+    else version(linux) pragma(msg, "System: GNU/Linux");
+    else version(OSX) pragma(msg, "System: macOS");
+    else version(FreeBSD) pragma(msg, "System: FreeBSD");
+    else version(OpenBSD) pragma(msg, "System: OpenBSD");
+    else version(NetBSD) pragma(msg, "System: NetBSD");
+    else version(DragonFlyBSD) pragma(msg, "System: DragonFlyBSD");
+    else version(BSD) pragma(msg, "System: BSD");
+    else version(Solaris) pragma(msg, "System: Solaris");
+    else version(Posix) pragma(msg, "System: POSIX");
+    else version(AIX) pragma(msg, "System: AIX");
+    else version(Haiku) pragma(msg, "System: Haiku");
+    else version(SkyOS) pragma(msg, "System: SkyOS");
+    else version(SysV3) pragma(msg, "System: UNIX System V Release 3");
+    else version(SysV4) pragma(msg, "System: UNIX System V Release 4");
+    else version(Hurd) pragma(msg, "System: GNU/Hurd");
+
+    version(Android) pragma(msg, "Platform: Android");
+    else version(Emscripten) pragma(msg, "Platform: Emscripten");
+    else version(PlayStation) pragma(msg, "Platform: PlayStation");
+    else version(PlayStation4) pragma(msg, "Platform: PlayStation4");
+
+    version(Cygwin) pragma(msg, "Environment: Cygwin");
+    else version(MinGW) pragma(msg, "Environment: MinGW");
+    else version(FreeStanding) pragma(msg, "Platfrom: bare metal / no environment");
 }
