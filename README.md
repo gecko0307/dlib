@@ -21,6 +21,7 @@ What's inside
 -------------
 Currently dlib contains the following packages:
 * dlib.core - basic functionality used by other modules (manual memory management, streams, OOP for structs, etc.)
+* dlib.concurrency - a thread pool for executing concurrent tasks
 * dlib.container - generic data structures (GC-free dynamic and associative arrays and more)
 * dlib.filesystem - abstract FS interface and its implementations for Windows and POSIX filesystems
 * dlib.functional - some functional programming idioms (HOFs, range primitives, etc.)
