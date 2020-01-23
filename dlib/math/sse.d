@@ -41,162 +41,163 @@ else:
  * This module implements some frequently used vector and matrix operations
  * using SSE instructions. Implementation is in WIP status.
  */
-
-Vector4f sseAdd4(Vector4f a, Vector4f b)
-{
-    asm
+version(DMD)
+    Vector4f sseAdd4(Vector4f a, Vector4f b)
     {
-        movups XMM0, a;
-        movups XMM1, b;
-        addps XMM0, XMM1;
-        movups a, XMM0;
-    }
-
-    return a;
-}
-
-Vector4f sseSub4(Vector4f a, Vector4f b)
-{
-    asm
-    {
-        movups XMM0, a;
-        movups XMM1, b;
-        subps XMM0, XMM1;
-        movups a, XMM0;
-    }
-
-    return a;
-}
-
-Vector4f sseMul4(Vector4f a, Vector4f b)
-{
-    asm
-    {
-        movups XMM0, a;
-        movups XMM1, b;
-        mulps XMM0, XMM1;
-        movups a, XMM0;
-    }
-
-    return a;
-}
-
-Vector4f sseDiv4(Vector4f a, Vector4f b)
-{
-    asm
-    {
-        movups XMM0, a;
-        movups XMM1, b;
-        divps XMM0, XMM1;
-        movups a, XMM0;
-    }
-
-    return a;
-}
-
-float sseDot4(Vector4f a, Vector4f b)
-{
-    asm
-    {
-        movups XMM0, a;
-        movups XMM1, b;
-        mulps XMM0, XMM1;
-
-        // Horizontal addition
-        movhlps XMM1, XMM0;
-        addps XMM0, XMM1;
-        movups XMM1, XMM0;
-        shufps XMM1, XMM1, 0x55;
-        addps XMM0, XMM1;
-
-        movups a, XMM0;
-    }
-
-    return a[0];
-}
-
-Vector4f sseCross3(Vector4f a, Vector4f b)
-{
-    asm
-    {
-        movups XMM0, a;
-        movups XMM1, b;
-        movaps XMM2, XMM0;
-        movaps XMM3, XMM1;
-
-        shufps XMM0, XMM0, 0xC9;
-        shufps XMM1, XMM1, 0xD2;
-        shufps XMM2, XMM2, 0xD2;
-        shufps XMM3, XMM3, 0xC9;
-
-        mulps XMM0, XMM1;
-        mulps XMM2, XMM3;
-
-        subps XMM0, XMM2;
-
-        movups a, XMM0;
-    }
-
-    return a;
-}
-
-Matrix4x4f sseMulMat4(Matrix4x4f a, Matrix4x4f b)
-{
-    Matrix4x4f r;
-    Vector4f a_line, b_line, r_line;
-    float _b;
-    uint i, j;
-    Vector4f* _rp;
-    for (i = 0; i < 16; i += 4)
-    {
-        a_line = *cast(Vector4f*)(a.arrayof.ptr);
-        _b = *(b.arrayof.ptr + i);
         asm
         {
-            movups XMM0, a_line;
-
-            mov EAX, _b;
-            movd XMM1, EAX;
-
-            shufps XMM1, XMM1, 0;
-
-            mulps XMM0, XMM1;
-            movups r_line, XMM0;
+            movups XMM0, a;
+            movups XMM1, b;
+            addps XMM0, XMM1;
+            movups a, XMM0;
         }
 
-        for (j = 1; j < 4; j++)
+        return a;
+    }
+
+    Vector4f sseSub4(Vector4f a, Vector4f b)
+    {
+        asm
         {
-            a_line = *cast(Vector4f*)(a.arrayof.ptr + j * 4);
-            _b = *(b.arrayof.ptr + i + j);
+            movups XMM0, a;
+            movups XMM1, b;
+            subps XMM0, XMM1;
+            movups a, XMM0;
+        }
+
+        return a;
+    }
+
+    Vector4f sseMul4(Vector4f a, Vector4f b)
+    {
+        asm
+        {
+            movups XMM0, a;
+            movups XMM1, b;
+            mulps XMM0, XMM1;
+            movups a, XMM0;
+        }
+
+        return a;
+    }
+
+    Vector4f sseDiv4(Vector4f a, Vector4f b)
+    {
+        asm
+        {
+            movups XMM0, a;
+            movups XMM1, b;
+            divps XMM0, XMM1;
+            movups a, XMM0;
+        }
+
+        return a;
+    }
+
+    float sseDot4(Vector4f a, Vector4f b)
+    {
+        asm
+        {
+            movups XMM0, a;
+            movups XMM1, b;
+            mulps XMM0, XMM1;
+
+            // Horizontal addition
+            movhlps XMM1, XMM0;
+            addps XMM0, XMM1;
+            movups XMM1, XMM0;
+            shufps XMM1, XMM1, 0x55;
+            addps XMM0, XMM1;
+
+            movups a, XMM0;
+        }
+
+        return a[0];
+    }
+
+    Vector4f sseCross3(Vector4f a, Vector4f b)
+    {
+        asm
+        {
+            movups XMM0, a;
+            movups XMM1, b;
+            movaps XMM2, XMM0;
+            movaps XMM3, XMM1;
+
+            shufps XMM0, XMM0, 0xC9;
+            shufps XMM1, XMM1, 0xD2;
+            shufps XMM2, XMM2, 0xD2;
+            shufps XMM3, XMM3, 0xC9;
+
+            mulps XMM0, XMM1;
+            mulps XMM2, XMM3;
+
+            subps XMM0, XMM2;
+
+            movups a, XMM0;
+        }
+
+        return a;
+    }
+
+    Matrix4x4f sseMulMat4(Matrix4x4f a, Matrix4x4f b)
+    {
+        Matrix4x4f r;
+        Vector4f a_line, b_line, r_line;
+        float _b;
+        uint i, j;
+        Vector4f* _rp;
+        for (i = 0; i < 16; i += 4)
+        {
+            a_line = *cast(Vector4f*)(a.arrayof.ptr);
+            _b = *(b.arrayof.ptr + i);
             asm
             {
                 movups XMM0, a_line;
 
                 mov EAX, _b;
                 movd XMM1, EAX;
+
                 shufps XMM1, XMM1, 0;
 
                 mulps XMM0, XMM1;
-
-                movups XMM2, r_line;
-                addps XMM0, XMM2;
-
                 movups r_line, XMM0;
+            }
+
+            for (j = 1; j < 4; j++)
+            {
+                a_line = *cast(Vector4f*)(a.arrayof.ptr + j * 4);
+                _b = *(b.arrayof.ptr + i + j);
+                asm
+                {
+                    movups XMM0, a_line;
+
+                    mov EAX, _b;
+                    movd XMM1, EAX;
+                    shufps XMM1, XMM1, 0;
+
+                    mulps XMM0, XMM1;
+
+                    movups XMM2, r_line;
+                    addps XMM0, XMM2;
+
+                    movups r_line, XMM0;
+                }
+            }
+
+            _rp = cast(Vector4f*)(r.arrayof.ptr + i);
+            version(X86) asm
+            {
+                mov EAX, _rp;
+                movups [EAX], XMM0;
+            }
+            version(X86_64) asm
+            {
+                mov RAX, _rp;
+                movups [RAX], XMM0;
             }
         }
 
-        _rp = cast(Vector4f*)(r.arrayof.ptr + i);
-        version(X86) asm
-        {
-            mov EAX, _rp;
-            movups [EAX], XMM0;
-        }
-        version(X86_64) asm
-        {
-            mov RAX, _rp;
-            movups [RAX], XMM0;
-        }
+        return r;
     }
-
-    return r;
 }
