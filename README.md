@@ -15,7 +15,7 @@ dlib is created and maintained by [Timur Gafarov](https://github.com/gecko0307).
 
 If you like dlib, please support its development on [Patreon](https://www.patreon.com/gecko0307) or [Liberapay](https://liberapay.com/gecko0307). You can also make one-time donation via [PayPal](https://www.paypal.me/tgafarov). Thanks in advance!
 
-**Important:** dlib doesn't support macOS. Please, read the [manifesto](https://github.com/gecko0307/dlib/wiki/Why-doesn't-dlib-support-macOS).
+**Important:** if you want to use dlib on macOS then, please, first read the [manifesto](https://github.com/gecko0307/dlib/wiki/Why-doesn't-dlib-support-macOS).
 
 What's inside
 -------------
