@@ -37,9 +37,7 @@ import dlib.coding.hash;
     GC-free UTF8 string type based on DynamicArray.
     Stores up to 128 bytes without dynamic memory allocation,
     so short strings are processed very fast.
-    
-    TODO:
-    - always zero-terminate to be more C-friendly
+    String is always zero-terminated and directly compatible with C.
  */
 struct String
 {  
