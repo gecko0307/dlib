@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2019 Timur Gafarov
+Copyright (c) 2016-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -67,7 +67,33 @@ class SquareWaveSynth: Synth
     }
 }
 
-// TODO: SawtoothWaveSynth
+/*
+ * Sawtooth wave synthesizer
+ */
+class SawtoothWaveSynth: Synth
+{
+    float eval(Sound sound, ulong position, float frequency)
+    {
+        double samplePeriod = 1.0 / cast(double)sound.sampleRate;
+        double phase = position * samplePeriod * frequency;
+        double s = phase - floor(phase);
+        return s * 2.0 - 1.0;
+    }
+}
+
+/*
+ * Triangle wave synthesizer
+ */
+class TriangleWaveSynth: Synth
+{
+    float eval(Sound sound, ulong position, float frequency)
+    {
+        double samplePeriod = 1.0 / cast(double)sound.sampleRate;
+        double phase = position * samplePeriod * frequency;
+        double s = abs(1.0 - fmod(phase, 2.0));
+        return s * 2.0 - 1.0;
+    }
+}
 
 /*
  * Frequency modulation synthesizer
