@@ -145,7 +145,7 @@ struct Vector(T, int size)
     * -Vector!(T,size)
     */
     Vector!(T,size) opUnary(string s) () const if (s == "-")
-    body
+    do
     {
         Vector!(T,size) res;
         foreach(i; RangeTuple!(0, size))
@@ -157,7 +157,7 @@ struct Vector(T, int size)
     * +Vector!(T,size)
     */
     Vector!(T,size) opUnary(string s) () const if (s == "+")
-    body
+    do
     {
         return Vector!(T,size)(this);
     }
@@ -166,7 +166,7 @@ struct Vector(T, int size)
     * Vector!(T,size) + Vector!(T,size)
     */
     const Vector!(T,size) opBinary(string op)(Vector!(T,size) v) if (op == "+")
-    body
+    do
     {
         Vector!(T,size) res;
         foreach(i; RangeTuple!(0, size))
@@ -178,7 +178,7 @@ struct Vector(T, int size)
     * Vector!(T,size) - Vector!(T,size)
     */
     const Vector!(T,size) opBinary(string op)(Vector!(T,size) v) if (op == "-")
-    body
+    do
     {
         Vector!(T,size) res;
         foreach(i; RangeTuple!(0, size))
@@ -190,7 +190,7 @@ struct Vector(T, int size)
     * Vector!(T,size) * Vector!(T,size)
     */
     const Vector!(T,size) opBinary(string op)(Vector!(T,size) v) if (op == "*")
-    body
+    do
     {
         Vector!(T,size) res;
         foreach(i; RangeTuple!(0, size))
@@ -202,7 +202,7 @@ struct Vector(T, int size)
     * Vector!(T,size) / Vector!(T,size)
     */
     const Vector!(T,size) opBinary(string op)(Vector!(T,size) v) if (op == "/")
-    body
+    do
     {
         Vector!(T,size) res;
         foreach(i; RangeTuple!(0, size))
@@ -214,7 +214,7 @@ struct Vector(T, int size)
     * Vector!(T,size) + T
     */
     const Vector!(T,size) opBinary(string op)(T t) if (op == "+")
-    body
+    do
     {
         Vector!(T,size) res;
         foreach(i; RangeTuple!(0, size))
@@ -226,7 +226,7 @@ struct Vector(T, int size)
     * Vector!(T,size) - T
     */
     const Vector!(T,size) opBinary(string op)(T t) if (op == "-")
-    body
+    do
     {
         Vector!(T,size) res;
         foreach(i; RangeTuple!(0, size))
@@ -238,7 +238,7 @@ struct Vector(T, int size)
     * Vector!(T,size) * T
     */
     const Vector!(T,size) opBinary(string op)(T t) if (op == "*")
-    body
+    do
     {
         Vector!(T,size) res;
         foreach(i; RangeTuple!(0, size))
@@ -250,7 +250,7 @@ struct Vector(T, int size)
     * T * Vector!(T,size)
     */
     const Vector!(T,size) opBinaryRight(string op) (T t) if (op == "*" && isNumeric!T)
-    body
+    do
     {
         Vector!(T,size) res;
         foreach(i; RangeTuple!(0, size))
@@ -262,7 +262,7 @@ struct Vector(T, int size)
     * Vector!(T,size) / T
     */
     const Vector!(T,size) opBinary(string op)(T t) if (op == "/")
-    body
+    do
     {
         Vector!(T,size) res;
         foreach(i; RangeTuple!(0, size))
@@ -274,7 +274,7 @@ struct Vector(T, int size)
     * Vector!(T,size) % T
     */
     Vector!(T,size) opBinary(string op, T2) (T2 t) const if (op == "%")
-    body
+    do
     {
         Vector!(T,size) res;
         foreach(i; RangeTuple!(0, size))
@@ -286,7 +286,7 @@ struct Vector(T, int size)
     * Vector!(T,size) += Vector!(T,size)
     */
     Vector!(T,size) opOpAssign(string op)(Vector!(T,size) v) if (op == "+")
-    body
+    do
     {
         //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
@@ -298,7 +298,7 @@ struct Vector(T, int size)
     * Vector!(T,size) -= Vector!(T,size)
     */
     Vector!(T,size) opOpAssign(string op)(Vector!(T,size) v) if (op == "-")
-    body
+    do
     {
         //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
@@ -310,7 +310,7 @@ struct Vector(T, int size)
     * Vector!(T,size) *= Vector!(T,size)
     */
     Vector!(T,size) opOpAssign(string op)(Vector!(T,size) v) if (op == "*")
-    body
+    do
     {
         //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
@@ -322,7 +322,7 @@ struct Vector(T, int size)
     * Vector!(T,size) /= Vector!(T,size)
     */
     Vector!(T,size) opOpAssign(string op)(Vector!(T,size) v) if (op == "/")
-    body
+    do
     {
         //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
@@ -334,7 +334,7 @@ struct Vector(T, int size)
     * Vector!(T,size) += T
     */
     Vector!(T,size) opOpAssign(string op)(T t) if (op == "+")
-    body
+    do
     {
         //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
@@ -346,7 +346,7 @@ struct Vector(T, int size)
     * Vector!(T,size) -= T
     */
     Vector!(T,size) opOpAssign(string op)(T t) if (op == "-")
-    body
+    do
     {
         //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
@@ -358,7 +358,7 @@ struct Vector(T, int size)
     * Vector!(T,size) *= T
     */
     Vector!(T,size) opOpAssign(string op)(T t) if (op == "*")
-    body
+    do
     {
         //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
@@ -370,7 +370,7 @@ struct Vector(T, int size)
     * Vector!(T,size) /= T
     */
     Vector!(T,size) opOpAssign(string op)(T t) if (op == "/")
-    body
+    do
     {
         //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
@@ -382,7 +382,7 @@ struct Vector(T, int size)
     * Vector!(T,size) %= T
     */
     Vector!(T,size) opOpAssign(string op, T2)(T2 t) if (op == "%")
-    body
+    do
     {
         //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
@@ -399,7 +399,7 @@ struct Vector(T, int size)
         assert ((0 <= index) && (index < size),
             "Vector!(T,size).opIndex(int index): array index out of bounds");
     }
-    body
+    do
     {
         return arrayof[index];
     }
@@ -413,7 +413,7 @@ struct Vector(T, int size)
         assert ((0 <= index) && (index < size),
             "Vector!(T,size).opIndexAssign(int index): array index out of bounds");
     }
-    body
+    do
     {
         arrayof[index] = n;
     }
@@ -427,7 +427,7 @@ struct Vector(T, int size)
         assert ((0 <= index1) || (index1 < 3) || (0 <= index2) || (index2 < 3) || (index1 < index2),
             "Vector!(T,size).opSlice(int index1, int index2): array index out of bounds");
     }
-    body
+    do
     {
         return arrayof[index1..index2];
     }
@@ -441,7 +441,7 @@ struct Vector(T, int size)
         assert ((0 <= index1) || (index1 < 3) || (0 <= index2) || (index2 < 3) || (index1 < index2),
             "Vector!(T,size).opSliceAssign(T t, int index1, int index2): array index out of bounds");
     }
-    body
+    do
     {
         arrayof[index1..index2] = t;
         return t;
@@ -451,7 +451,7 @@ struct Vector(T, int size)
     * T = Vector!(T,size)[]
     */
     auto opSlice(this X)()
-    body
+    do
     {
         return arrayof[];
     }
@@ -460,7 +460,7 @@ struct Vector(T, int size)
     * Vector!(T,size)[] = T
     */
     T opSliceAssign(T t)
-    body
+    do
     {
         //arrayof[] = t;
         //foreach(i; 0..size)
@@ -475,7 +475,7 @@ struct Vector(T, int size)
         * Get vector length squared
         */
         @property T lengthsqr() const
-        body
+        do
         {
             T res = 0;
             foreach (component; arrayof)
@@ -487,7 +487,7 @@ struct Vector(T, int size)
         * Get vector length
         */
         @property T length() const
-        body
+        do
         {
             static if (isFloatingPoint!T)
             {
@@ -509,7 +509,7 @@ struct Vector(T, int size)
         * Set vector length to 1
         */
         void normalize()
-        body
+        do
         {
             static if (isFloatingPoint!T)
             {
@@ -537,7 +537,7 @@ struct Vector(T, int size)
         * Return normalized copy
         */
         @property Vector!(T,size) normalized() const
-        body
+        do
         {
             Vector!(T,size) res = this;
             res.normalize();
@@ -548,7 +548,7 @@ struct Vector(T, int size)
         * Return true if all components are zero
         */
         @property bool isZero() const
-        body
+        do
         {
             foreach(i; RangeTuple!(0, size))
                 if (arrayof[i] != 0)
@@ -570,7 +570,7 @@ struct Vector(T, int size)
     * Convert to string
     */
     @property string toString() const
-    body
+    do
     {
         auto writer = appender!string();
         formattedWrite(writer, "%s", arrayof);
@@ -662,7 +662,7 @@ struct Vector(T, int size)
     * Symbolic element access
     */
     private static string elements(string[4] letters) @property
-    body
+    do
     {
         string res;
         foreach (i; 0..size)
@@ -691,7 +691,7 @@ struct Vector(T, int size)
  * Dot product
  */
 T dot(T, int size) (Vector!(T,size) a, Vector!(T,size) b)
-body
+do
 {
     static if (size == 1)
     {
@@ -721,7 +721,7 @@ body
  * Cross product
  */
 Vector!(T,size) cross(T, int size) (Vector!(T,size) a, Vector!(T,size) b) if (size == 3)
-body
+do
 {
     return Vector!(T,size)
     (
@@ -732,7 +732,7 @@ body
 }
 
 Vector!(T,size) cross(T, int size) (Vector!(T,size) a, Vector!(T,size) b, Vector!(T,size) c) if (size == 4)
-body
+do
 {
     return Vector!(T,size)
     (
@@ -758,7 +758,7 @@ body
  * Tensor product
  */
 Matrix!(T,N) tensorProduct(T, size_t N) (Vector!(T,N) u, Vector!(T,N) v)
-body
+do
 {
     Matrix!(T,N) res;
     foreach(i; 0..N)
@@ -775,7 +775,7 @@ alias outerProduct = tensorProduct;
  * Compute normal of a plane from three points
  */
 Vector!(T,3) planeNormal(T) (Vector!(T,3) p1, Vector!(T,3) p2, Vector!(T,3) p3)
-body
+do
 {
     Vector!(T,3) vec1 = Vector!(T,3)(p1 - p2);
     Vector!(T,3) vec2 = Vector!(T,3)(p1 - p3);
@@ -841,7 +841,7 @@ void rotateAroundAxis(T) (ref Vector!(T,3) V, Vector!(T,3) P, Vector!(T,3) D, T 
  * Compute distance between two points
  */
 T distance(T) (Vector!(T,2) a, Vector!(T,2) b)
-body
+do
 {
     T dx = a.x - b.x;
     T dy = a.y - b.y;
@@ -849,7 +849,7 @@ body
 }
 
 T distancesqr(T) (Vector!(T,2) a, Vector!(T,2) b)
-body
+do
 {
     T dx = a.x - b.x;
     T dy = a.y - b.y;
@@ -857,7 +857,7 @@ body
 }
 
 T distance(T) (Vector!(T,3) a, Vector!(T,3) b)
-body
+do
 {
     T dx = a.x - b.x;
     T dy = a.y - b.y;
@@ -866,7 +866,7 @@ body
 }
 
 T distancesqr(T) (Vector!(T,3) a, Vector!(T,3) b)
-body
+do
 {
     T dx = a.x - b.x;
     T dy = a.y - b.y;

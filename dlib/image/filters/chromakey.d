@@ -151,7 +151,7 @@ in
 {
     assert (img.data.length);
 }
-body
+do
 {
     SuperImage res;
     if (outp)

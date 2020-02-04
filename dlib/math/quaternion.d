@@ -236,7 +236,7 @@ struct Quaternion(T)
     * Rotate a point by quaternion
     */
     Vector!(T,3) rotate(Vector!(T,3) v)
-    body
+    do
     {
         Quaternion!(T) qf = this * v * this.conj;
         return Vector!(T,3)(qf.x, qf.y, qf.z);
@@ -264,7 +264,7 @@ struct Quaternion(T)
         * Convert to 4x4 matrix
         */
         Matrix!(T,4) toMatrix4x4()
-        body
+        do
         {
             auto mat = Matrix!(T,4).identity;
 
@@ -295,7 +295,7 @@ struct Quaternion(T)
         * Convert to 3x3 matrix
         */
         Matrix!(T,3) toMatrix3x3()
-        body
+        do
         {
             auto mat = Matrix!(T,3).identity;
 
@@ -319,7 +319,7 @@ struct Quaternion(T)
         * given the angular displacement in matrix form
         */
         static Quaternion!(T) fromMatrix(Matrix!(T,4) m)
-        body
+        do
         {
             Quaternion!(T) q;
 
@@ -369,7 +369,7 @@ struct Quaternion(T)
         * given the orientation in XYZ-Euler angles format (in radians)
         */
         static Quaternion!(T) fromEulerAngles(Vector!(T,3) e)
-        body
+        do
         {
             Quaternion!(T) q;
 
@@ -393,7 +393,7 @@ struct Quaternion(T)
         * Returned x,y,z are in radians
         */
         Vector!(T,3) toEulerAngles()
-        body
+        do
         {
             Vector!(T,3) e;
 
@@ -423,7 +423,7 @@ struct Quaternion(T)
         * Return the rotation angle (in radians)
         */
         T rotationAngle()
-        body
+        do
         {
             return 2.0 * acos(w);
         }
@@ -432,7 +432,7 @@ struct Quaternion(T)
         * Return the rotation axis
         */
         Vector!(T,3) rotationAxis()
-        body
+        do
         {
             T s = sqrt(1.0 - (w * w));
 
@@ -446,7 +446,7 @@ struct Quaternion(T)
         * Quaternion as an angular velocity
         */
         Vector!(T,3) generator()
-        body
+        do
         {
             T s = sqrt(1.0 - (w * w));
 
@@ -706,7 +706,7 @@ in
     assert (dot(qprev, qprev) <= 1.0001);
     assert (dot(qcurr, qcurr) <= 1.0001);
 }
-body
+do
 {
     Quaternion!(T) inv_prev = qprev.conj;
     Quaternion!(T) inv_curr = qcurr.conj;

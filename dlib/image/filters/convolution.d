@@ -62,7 +62,7 @@ in
     assert(img.data.length);
     assert(kernel.length == kw * kh);
 }
-body
+do
 {
     SuperImage res;
     if (outp)

@@ -45,7 +45,7 @@ version (unittest)
     {
         assert(start < end);
     }
-    body
+    do
     {
         auto numberRead = end - start;
         for (ubyte i; i < numberRead; ++i)
@@ -585,7 +585,7 @@ class WriteBuffer : Buffer
     {
         assert(length <= this.length);
     }
-    body
+    do
     {
         auto afterRing = ring + 1;
         auto oldStart = start;

@@ -222,7 +222,7 @@ template Tensor(T, size_t dim, sizes...)
             assert ((0 <= index) && (index < _dataLen),
                 "Tensor.opIndex: array index out of bounds");
         }
-        body
+        do
         {
             return arrayof[index];
         }
@@ -236,7 +236,7 @@ template Tensor(T, size_t dim, sizes...)
             assert (index < _dataLen,
                 "Tensor.opIndexAssign: array index out of bounds");
         }
-        body
+        do
         {
             arrayof[index] = n;
         }

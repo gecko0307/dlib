@@ -681,7 +681,7 @@ in
 {
     assert (img.data.length);
 }
-body
+do
 {
     ubyte[] raw;
     ubyte[] buffer;
@@ -876,7 +876,7 @@ in
 {
     assert (img.data.length);
 }
-body
+do
 {
     Compound!(bool, string) error(string errorMsg)
     {

@@ -71,7 +71,7 @@ Matrix!(T,4) fromEuler(T) (Vector!(T,3) v)
  * Setup the Euler angles in radians, given a rotation matrix
  */
 Vector!(T,3) toEuler(T) (Matrix!(T,4) m)
-body
+do
 {
     Vector!(T,3) v;
 
@@ -98,7 +98,7 @@ body
  * Right vector of the matrix
  */
 Vector!(T,3) right(T) (Matrix!(T,4) m)
-body
+do
 {
     return Vector!(T,3)(m.a11, m.a21, m.a31);
 }
@@ -107,7 +107,7 @@ body
  * Up vector of the matrix
  */
 Vector!(T,3) up(T) (Matrix!(T,4) m)
-body
+do
 {
     return Vector!(T,3)(m.a12, m.a22, m.a32);
 }
@@ -116,7 +116,7 @@ body
  * Forward vector of the matrix
  */
 Vector!(T,3) forward(T) (Matrix!(T,4) m)
-body
+do
 {
     return Vector!(T,3)(m.a13, m.a23, m.a33);
 }
@@ -125,7 +125,7 @@ body
  * Translation vector of the matrix
  */
 Vector!(T,3) translation(T) (Matrix!(T,4) m)
-body
+do
 {
     return Vector!(T,3)(m.a14, m.a24, m.a34);
 }
@@ -134,7 +134,7 @@ body
  * Scaling vector of the matrix
  */
 Vector!(T,3) scaling(T) (Matrix!(T,4) m)
-body
+do
 {
     return Vector!(T,3)(m.a11, m.a22, m.a33);
 }
@@ -144,7 +144,7 @@ body
  * (theta in radians)
  */
 Matrix!(T,4) rotationMatrix(T) (uint rotaxis, T theta)
-body
+do
 {
     auto res = Matrix!(T,4).identity;
 
@@ -182,7 +182,7 @@ body
  * Create a translation matrix given a translation vector
  */
 Matrix!(T,4) translationMatrix(T) (Vector!(T,3) v)
-body
+do
 {
     auto res = Matrix!(T,4).identity;
     res.a14 = v.x;
@@ -195,7 +195,7 @@ body
  * Create a matrix to perform scale on each axis
  */
 Matrix!(T,4) scaleMatrix(T) (Vector!(T,3) v)
-body
+do
 {
     auto res = Matrix!(T,4).identity;
     res.a11 = v.x;
@@ -212,7 +212,7 @@ in
 {
     assert (fabs (dot(scaleAxis, scaleAxis) - 1.0) < 0.001);
 }
-body
+do
 {
     auto res = Matrix!(T,4).identity;
 
@@ -238,7 +238,7 @@ body
  * NOTE: needs test
  */
 Matrix!(T,4) shearMatrix(T) (uint shearAxis, T s, T t)
-body
+do
 {
     auto res = Matrix!(T,4).identity;
 
@@ -281,7 +281,7 @@ in
 {
     assert (fabs(dot(n, n) - 1.0) < 0.001);
 }
-body
+do
 {
     auto res = Matrix!(T,4).identity;
 
@@ -301,7 +301,7 @@ body
  * to a cardinal plane.
  */
 Matrix!(T,4) reflectionMatrix(T) (Axis reflectionAxis, T k)
-body
+do
 {
     auto res = Matrix!(T,4).identity;
 
@@ -341,7 +341,7 @@ in
 {
     assert (fabs(dot(n, n) - 1.0) < 0.001);
 }
-body
+do
 {
     auto res = Matrix!(T,4).identity;
 
@@ -365,7 +365,7 @@ body
  * like a first person camera
  */
 Matrix!(T,4) lookAtMatrix(T) (Vector!(T,3) eye, Vector!(T,3) center, Vector!(T,3) up)
-body
+do
 {
     auto Result = Matrix!(T,4).identity;
 
@@ -399,7 +399,7 @@ in
     assert (n >= 0.0);
     assert (f >= 0.0);
 }
-body
+do
 {
     auto res = Matrix!(T,4).identity;
 
@@ -435,7 +435,7 @@ body
  * in degrees, the aspect ratio of Y/X, and near and far plane distances
  */
 Matrix!(T,4) perspectiveMatrix(T) (T fovY, T aspect, T n, T f)
-body
+do
 {
     auto res = Matrix!(T,4).identity;
 
@@ -475,7 +475,7 @@ body
  * and far values for the frustum boundaries.
  */
 Matrix!(T,4) orthoMatrix(T) (T l, T r, T b, T t, T n, T f)
-body
+do
 {
     auto res = Matrix!(T,4).identity;
 
@@ -510,7 +510,7 @@ body
  * Setup an orientation matrix using 3 basis normalized vectors
  */
 Matrix!(T,4) orthoNormalMatrix(T) (Vector!(T,3) xdir, Vector!(T,3) ydir, Vector!(T,3) zdir)
-body
+do
 {
     auto res = Matrix!(T,4).identity;
 
@@ -618,7 +618,7 @@ Matrix!(T,4) rotationBetweenVectors(T) (Vector!(T,3) source, Vector!(T,3) target
 }
 
 Matrix!(T,3) translationMatrix2D(T) (Vector!(T,2) t)
-body
+do
 {
     Matrix!(T,3) res;
     res.a11 = 1; res.a12 = 0; res.a13 = t.x;
@@ -628,7 +628,7 @@ body
 }
 
 Matrix!(T,3) rotationMatrix2D(T) (T theta)
-body
+do
 {
     Matrix!(T,3) res;
     T s = sin(theta);
@@ -640,7 +640,7 @@ body
 }
 
 Matrix!(T,3) scaleMatrix2D(T) (Vector!(T,2) s)
-body
+do
 {
     Matrix!(T,3) res;
     res.a11 = s.x; res.a12 = 0;   res.a13 = 0;
