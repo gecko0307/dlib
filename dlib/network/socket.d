@@ -225,7 +225,7 @@ else version (Windows)
         read = 2,
         write = 3,
     }
-    
+
     class State
     {
         /// For internal use by Windows API.

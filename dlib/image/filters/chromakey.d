@@ -210,4 +210,3 @@ void selectiveScale(ref ColorHSVAf col,
             col.arrayof[chan] *= scale;
     }
 }
-

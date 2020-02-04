@@ -442,7 +442,7 @@ template Tensor(T, size_t dim, sizes...)
                 if (data.length == 0)
                     data = New!(T[])(_dataLen);
             }
-            
+
             void free()
             {
                 if (data.length)
@@ -534,4 +534,3 @@ auto tensorProduct(T1, T2)(T1 t1, T2 t2)
 
     return t;
 }
-

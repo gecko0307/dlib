@@ -1477,4 +1477,3 @@ unittest
     savePNG(img, "tests/minimal.png");
     loadPNG("tests/minimal.png");
 }
-

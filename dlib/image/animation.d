@@ -46,7 +46,7 @@ interface SuperAnimatedImage: SuperImage
  * Current frame can be switched with currentFrame property.
  * All usual image operations work on current frame, so
  * you can use this class with any existing dlib.image
- * functionality: save to file, apply filters, etc. 
+ * functionality: save to file, apply filters, etc.
  */
 class AnimatedImage(PixelFormat fmt): Image!(fmt), SuperAnimatedImage
 {

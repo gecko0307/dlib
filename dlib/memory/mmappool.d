@@ -512,4 +512,3 @@ class MmapPool : Allocator
     private alias Block = BlockEntry*;
     private enum blockEntrySize = 40;
 }
-
