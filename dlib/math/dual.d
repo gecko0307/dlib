@@ -68,32 +68,32 @@ struct Dual(T)
         return this;
     }
 
-    const Dual!(T) opBinary(string op)(in T x) if (op == "+")
+    Dual!(T) opBinary(string op)(in T x) const if (op == "+")
     {
         return this + Dual!(T)(x);
     }
 
-    const Dual!(T) opBinary(string op)(in T x) if (op == "-")
+    Dual!(T) opBinary(string op)(in T x) const if (op == "-")
     {
         return this - Dual!(T)(x);
     }
 
-    const Dual!(T) opBinary(string op)(in T x) if (op == "*")
+    Dual!(T) opBinary(string op)(in T x) const if (op == "*")
     {
         return this * Dual!(T)(x);
     }
 
-    const Dual!(T) opBinary(string op)(in T x) if (op == "/")
+    Dual!(T) opBinary(string op)(in T x) const if (op == "/")
     {
         return this / Dual!(T)(x);
     }
 
-    const Dual!(T) opUnary(string s)() if (s == "-")
+    Dual!(T) opUnary(string s)() const if (s == "-")
     {
         return Dual!(T)(-re, -du);
     }
 
-    const Dual!(T) opBinary(string op)(in Dual!(T) x) if (op == "+")
+    Dual!(T) opBinary(string op)(in Dual!(T) x) const if (op == "+")
     {
         return Dual!(T)(
             re + x.re,
@@ -101,7 +101,7 @@ struct Dual(T)
         );
     }
 
-    const Dual!(T) opBinary(string op)(in Dual!(T) x) if (op == "-")
+    Dual!(T) opBinary(string op)(in Dual!(T) x) const if (op == "-")
     {
         return Dual!(T)(
             re - x.re,
@@ -109,7 +109,7 @@ struct Dual(T)
         );
     }
 
-    const Dual!(T) opBinary(string op)(in Dual!(T) x) if (op == "*")
+    Dual!(T) opBinary(string op)(in Dual!(T) x) const if (op == "*")
     {
         return Dual!(T)(
             re * x.re,
@@ -117,7 +117,7 @@ struct Dual(T)
         );
     }
 
-    const Dual!(T) opBinary(string op)(in Dual!(T) x) if (op == "/")
+    Dual!(T) opBinary(string op)(in Dual!(T) x) const if (op == "/")
     {
         return Dual!(T)(
             re / x.re,
@@ -153,7 +153,7 @@ struct Dual(T)
         return this;
     }
 
-    const Dual!(T) sqrt()
+    Dual!(T) sqrt() const
     {
         T tmp = std.math.sqrt(re);
         return Dual!(T)(
@@ -162,47 +162,47 @@ struct Dual(T)
         );
     }
 
-    const Dual!(T) opBinaryRight(string op)(in T v) if (op == "+")
+    Dual!(T) opBinaryRight(string op)(in T v) const if (op == "+")
     {
         return Dual!(T)(v) + this;
     }
 
-    const Dual!(T) opBinaryRight(string op)(in T v) if (op == "-")
+    Dual!(T) opBinaryRight(string op)(in T v) const if (op == "-")
     {
         return Dual!(T)(v) - this;
     }
 
-    const Dual!(T) opBinaryRight(string op)(in T v) if (op == "*")
+    Dual!(T) opBinaryRight(string op)(in T v) const if (op == "*")
     {
         return Dual!(T)(v) * this;
     }
 
-    const Dual!(T) opBinaryRight(string op)(in T v) if (op == "/")
+    Dual!(T) opBinaryRight(string op)(in T v) const if (op == "/")
     {
         return Dual!(T)(v) / this;
     }
 
-    const int opCmp(in double s)
+    int opCmp(in double s) const
     {
         return cast(int)((re - s) * 100);
     }
 
-    const Dual!(T) sin()
+    Dual!(T) sin() const
     {
         return Dual!(T)(.sin(re), du * .cos(re));
     }
 
-    const Dual!(T) cos()
+    Dual!(T) cos() const
     {
         return Dual!(T)(.cos(re), -du * .sin(re));
     }
 
-    const Dual!(T) exp()
+    Dual!(T) exp() const
     {
         return Dual!(T)(.exp(re), du * .exp(re));
     }
 
-    const Dual!(T) pow(T k)
+    Dual!(T) pow(T k) const
     {
         return Dual!(T)(re^^k, k * (re^^(k-1)) * du);
     }

@@ -165,7 +165,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) + Vector!(T,size)
     */
-    const Vector!(T,size) opBinary(string op)(Vector!(T,size) v) if (op == "+")
+    Vector!(T,size) opBinary(string op)(Vector!(T,size) v) const if (op == "+")
     do
     {
         Vector!(T,size) res;
@@ -177,7 +177,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) - Vector!(T,size)
     */
-    const Vector!(T,size) opBinary(string op)(Vector!(T,size) v) if (op == "-")
+    Vector!(T,size) opBinary(string op)(Vector!(T,size) v) const if (op == "-")
     do
     {
         Vector!(T,size) res;
@@ -189,7 +189,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) * Vector!(T,size)
     */
-    const Vector!(T,size) opBinary(string op)(Vector!(T,size) v) if (op == "*")
+    Vector!(T,size) opBinary(string op)(Vector!(T,size) v) const if (op == "*")
     do
     {
         Vector!(T,size) res;
@@ -201,7 +201,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) / Vector!(T,size)
     */
-    const Vector!(T,size) opBinary(string op)(Vector!(T,size) v) if (op == "/")
+    Vector!(T,size) opBinary(string op)(Vector!(T,size) v) const if (op == "/")
     do
     {
         Vector!(T,size) res;
@@ -213,7 +213,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) + T
     */
-    const Vector!(T,size) opBinary(string op)(T t) if (op == "+")
+    Vector!(T,size) opBinary(string op)(T t) const if (op == "+")
     do
     {
         Vector!(T,size) res;
@@ -225,7 +225,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) - T
     */
-    const Vector!(T,size) opBinary(string op)(T t) if (op == "-")
+    Vector!(T,size) opBinary(string op)(T t) const if (op == "-")
     do
     {
         Vector!(T,size) res;
@@ -237,7 +237,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) * T
     */
-    const Vector!(T,size) opBinary(string op)(T t) if (op == "*")
+    Vector!(T,size) opBinary(string op)(T t) const if (op == "*")
     do
     {
         Vector!(T,size) res;
@@ -249,7 +249,8 @@ struct Vector(T, int size)
    /*
     * T * Vector!(T,size)
     */
-    const Vector!(T,size) opBinaryRight(string op) (T t) if (op == "*" && isNumeric!T)
+    Vector!(T,size) opBinaryRight(string op) (T t) const
+        if (op == "*" && isNumeric!T)
     do
     {
         Vector!(T,size) res;
@@ -261,7 +262,7 @@ struct Vector(T, int size)
    /*
     * Vector!(T,size) / T
     */
-    const Vector!(T,size) opBinary(string op)(T t) if (op == "/")
+    Vector!(T,size) opBinary(string op)(T t) const if (op == "/")
     do
     {
         Vector!(T,size) res;
