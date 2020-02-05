@@ -150,7 +150,7 @@ struct Color4f
         );
     }
 
-    const int opCmp(ref const(Color4f) c)
+    int opCmp(ref const(Color4f) c) const
     {
         return cast(int)((luminance() - c.luminance()) * 100);
     }
@@ -158,7 +158,7 @@ struct Color4f
     alias luminance = luminance709;
 
     // ITU-R Rec. BT.709
-    const float luminance709()
+    float luminance709() const
     {
         return (
             vec.arrayof[0] * 0.2126f +
@@ -168,7 +168,7 @@ struct Color4f
     }
 
     // ITU-R Rec. BT.601
-    const float luminance601()
+    float luminance601() const
     {
         return (
             vec.arrayof[0] * 0.3f +

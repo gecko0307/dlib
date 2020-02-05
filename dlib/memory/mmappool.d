@@ -455,7 +455,7 @@ class MmapPool : Allocator
     {
         assert(result > 0);
     }
-    body
+    do
     {
         return (x - 1) / alignment_ * alignment_ + alignment_;
     }
@@ -473,7 +473,7 @@ class MmapPool : Allocator
     {
         assert(result > 0);
     }
-    body
+    do
     {
         x += regionEntrySize + blockEntrySize * 2;
         return x / pageSize * pageSize + pageSize;
@@ -512,4 +512,3 @@ class MmapPool : Allocator
     private alias Block = BlockEntry*;
     private enum blockEntrySize = 40;
 }
-

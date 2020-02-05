@@ -681,7 +681,7 @@ in
 {
     assert (img.data.length);
 }
-body
+do
 {
     ubyte[] raw;
     ubyte[] buffer;
@@ -876,7 +876,7 @@ in
 {
     assert (img.data.length);
 }
-body
+do
 {
     Compound!(bool, string) error(string errorMsg)
     {
@@ -1477,4 +1477,3 @@ unittest
     savePNG(img, "tests/minimal.png");
     loadPNG("tests/minimal.png");
 }
-

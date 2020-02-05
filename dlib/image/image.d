@@ -62,7 +62,7 @@ interface SuperImage: Freeable
     // This is compatible with PixelFormat and other internal format enums in dlib.
     // Values from 0 to 255 are reserved for dlib.
     // Values 256 and above are application-specific and can be used for custom SuperImage implementations.
-    @property uint pixelFormat(); 
+    @property uint pixelFormat();
 
     @property ubyte[] data();
 
@@ -389,7 +389,7 @@ in
     assert(channels > 0 && channels <= 4);
     assert(bitDepth == 8 || bitDepth == 16);
 }
-body
+do
 {
     switch(channels)
     {

@@ -222,7 +222,7 @@ template Tensor(T, size_t dim, sizes...)
             assert ((0 <= index) && (index < _dataLen),
                 "Tensor.opIndex: array index out of bounds");
         }
-        body
+        do
         {
             return arrayof[index];
         }
@@ -236,7 +236,7 @@ template Tensor(T, size_t dim, sizes...)
             assert (index < _dataLen,
                 "Tensor.opIndexAssign: array index out of bounds");
         }
-        body
+        do
         {
             arrayof[index] = n;
         }
@@ -442,7 +442,7 @@ template Tensor(T, size_t dim, sizes...)
                 if (data.length == 0)
                     data = New!(T[])(_dataLen);
             }
-            
+
             void free()
             {
                 if (data.length)
@@ -534,4 +534,3 @@ auto tensorProduct(T1, T2)(T1 t1, T2 t2)
 
     return t;
 }
-

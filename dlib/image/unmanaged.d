@@ -94,7 +94,7 @@ in
     assert(channels > 0 && channels <= 4);
     assert(bitDepth == 8 || bitDepth == 16);
 }
-body
+do
 {
     switch(channels)
     {

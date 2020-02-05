@@ -151,7 +151,7 @@ in
 {
     assert (img.data.length);
 }
-body
+do
 {
     SuperImage res;
     if (outp)
@@ -210,4 +210,3 @@ void selectiveScale(ref ColorHSVAf col,
             col.arrayof[chan] *= scale;
     }
 }
-

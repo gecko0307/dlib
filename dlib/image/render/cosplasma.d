@@ -40,7 +40,7 @@ in
 {
     assert (img.data.length);
 }
-body
+do
 {
     foreach (y; 0..img.height)
     foreach (x; 0..img.width)

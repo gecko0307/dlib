@@ -55,7 +55,7 @@ struct OBB
         }
 
         Vector3f center(Vector3f v)
-        body
+        do
         {
             //transform.translation = v;
             transform.a41 = v.x;

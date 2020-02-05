@@ -40,7 +40,7 @@ in
 {
     assert (img.data.length);
 }
-body
+do
 {
     SuperImage res = img.createSameFormat(newWidth, newHeight);
 

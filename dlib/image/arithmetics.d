@@ -45,7 +45,7 @@ in
     assert(a.width == b.width);
     assert(a.height == b.height);
 }
-body
+do
 {
     SuperImage img;
     if (outp)
@@ -77,7 +77,7 @@ in
     assert(a.width == b.width);
     assert(a.height == b.height);
 }
-body
+do
 {
     SuperImage img;
     if (outp)
@@ -109,7 +109,7 @@ in
     assert(a.width == b.width);
     assert(a.height == b.height);
 }
-body
+do
 {
     SuperImage img;
     if (outp)
@@ -141,7 +141,7 @@ in
     assert(a.width == b.width);
     assert(a.height == b.height);
 }
-body
+do
 {
     SuperImage img;
     if (outp)
