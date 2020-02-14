@@ -30,21 +30,17 @@ module dlib.math;
 
 public
 {
-    import dlib.math.bezier;
     import dlib.math.combinatorics;
     import dlib.math.complex;
     import dlib.math.decomposition;
     import dlib.math.diff;
     import dlib.math.dual;
     import dlib.math.dualquaternion;
-    import dlib.math.easing;
     import dlib.math.fft;
-    import dlib.math.hermite;
     import dlib.math.interpolation;
     import dlib.math.linsolve;
     import dlib.math.matrix;
     import dlib.math.quaternion;
-    import dlib.math.smoothstep;
     import dlib.math.sse;
     import dlib.math.tensor;
     import dlib.math.transformation;

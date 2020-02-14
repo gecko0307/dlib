@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2020 Timur Gafarov
+Copyright (c) 2011-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,17 +26,17 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.math.hermite;
+module dlib.math.interpolation.nearest;
 
-V hermiteCurve(T, V)(V p1, V t1, V p2, V t2, T s)
+private
 {
-    T a = s * s;
-    T b = a * s;
+    import std.math;
+}
 
-    T h1 = cast(T)( 2.0) * b - cast(T)(3.0) * a + cast(T)(1.0);
-    T h2 = cast(T)(-2.0) * b + cast(T)(3.0) * a;
-    T h3 = b - cast(T)(2.0) * a + s;
-    T h4 = b - a;
-
-    return p1 * h1 + p2 * h2 + t1 * h3 + t2 * h4;
+T interpNearest(T) (T x, T y, float t)
+{
+    if (t < 0.5f)
+        return x;
+    else
+        return y;
 }

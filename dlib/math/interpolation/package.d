@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019-2020 Timur Gafarov
+Copyright (c) 2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,10 +26,15 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-deprecated("dlib.math.easing is deprecated, import dlib.math.interpolation.easing instead")
-module dlib.math.easing;
+module dlib.math.interpolation;
 
 public
 {
+    import dlib.math.interpolation.bezier;
+    import dlib.math.interpolation.catmullrom;
     import dlib.math.interpolation.easing;
+    import dlib.math.interpolation.hermite;
+    import dlib.math.interpolation.linear;
+    import dlib.math.interpolation.nearest;
+    import dlib.math.interpolation.smoothstep;
 }

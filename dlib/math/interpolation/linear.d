@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019-2020 Timur Gafarov
+Copyright (c) 2011-2019 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,10 +26,17 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-deprecated("dlib.math.easing is deprecated, import dlib.math.interpolation.easing instead")
-module dlib.math.easing;
+module dlib.math.interpolation.linear;
 
-public
+private
 {
-    import dlib.math.interpolation.easing;
+    import std.math;
 }
+
+T interpLinear(T) (T a, T b, float t)
+{
+    return a + (b - a) * t;
+}
+
+alias lerp = interpLinear;
+

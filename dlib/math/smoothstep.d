@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2018-2019 Timur Gafarov
+Copyright (c) 2018-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,31 +26,10 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+deprecated("dlib.math.smoothstep is deprecated, import dlib.math.interpolation.smoothstep instead")
 module dlib.math.smoothstep;
 
-import std.math;
-import dlib.math.utils;
-
-/*
- * Sigmoid-like functions for clamping and non-linear interpolation of values in [0, 1] range.
- */
-
-/*
- * Hermite polynomial, analogous to GLSL smoothstep.
- * e0 and e1 define lower and upper edges of Hermite function.
- */
-T hermiteSmoothstep(T)(T x, float e0, float e1)
+public
 {
-    T t = clamp((x - e0) / (e1 - e0), 0.0, 1.0);
-    return t * t * (3.0 - 2.0 * t);
-}
-
-/*
- * Rational sigmoid that becomes linear at k=0 and discrete at k=1.
- * Allows varying between linear and nearest-neighbour interpolation.
- */
-T rationalSmoothstep(T)(T x, float k)
-{
-    T s = (x + x * k - k * 0.5 - 0.5) / (abs(x * k * 4.0 - k * 2.0) - k + 1.0) + 0.5;
-    return clamp(s, 0.0, 1.0);
+    import dlib.math.interpolation.smoothstep;
 }

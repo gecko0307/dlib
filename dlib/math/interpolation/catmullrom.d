@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019-2020 Timur Gafarov
+Copyright (c) 2011-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,10 +26,25 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-deprecated("dlib.math.easing is deprecated, import dlib.math.interpolation.easing instead")
-module dlib.math.easing;
+module dlib.math.interpolation.catmullrom;
 
-public
+private
 {
-    import dlib.math.interpolation.easing;
+    import std.math;
+}
+
+T interpCatmullRom(T) (T p0, T p1, T p2, T p3, float t)
+{
+    return 0.5 * ((2 * p1) +
+                  (-p0 + p2) * t +
+                  (2 * p0 - 5 * p1 + 4 * p2 - p3) * t^^2 +
+                  (-p0 + 3 * p1 - 3 * p2 + p3) * t^^3);
+}
+
+T interpCatmullRomDerivative(T) (T p0, T p1, T p2, T p3, float t)
+{
+    return 0.5 * ((2 * p1) +
+                  (-p0 + p2) +
+                  2 * (2 * p0 - 5 * p1 + 4 * p2 - p3) * t +
+                  3 * (-p0 + 3 * p1 - 3 * p2 + p3) * t^^2);
 }

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019-2020 Timur Gafarov
+Copyright (c) 2013-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,10 +26,27 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-deprecated("dlib.math.easing is deprecated, import dlib.math.interpolation.easing instead")
-module dlib.math.easing;
+module dlib.math.interpolation.hermite;
 
-public
+T interpHermite(T) (T x, T tx, T y, T ty, float t)
 {
-    import dlib.math.interpolation.easing;
+    T h1 = 2 * t^^3 - 3 * t^^2 + 1;
+    T h2 = -2* t^^3 + 3 * t^^2;
+    T h3 = t^^3 - 2 * t^^2 + t;
+    T h4 = t^^3 - t^^2;
+    return h1 * x + h3 * tx + h2 * y + h4 * ty;
+}
+
+// FIXME: redundant?
+V hermiteCurve(T, V)(V p1, V t1, V p2, V t2, T s)
+{
+    T a = s * s;
+    T b = a * s;
+
+    T h1 = cast(T)( 2.0) * b - cast(T)(3.0) * a + cast(T)(1.0);
+    T h2 = cast(T)(-2.0) * b + cast(T)(3.0) * a;
+    T h3 = b - cast(T)(2.0) * a + s;
+    T h4 = b - a;
+
+    return p1 * h1 + p2 * h2 + t1 * h3 + t2 * h4;
 }
