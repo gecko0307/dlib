@@ -37,6 +37,7 @@ public
     import dlib.math.dual;
     import dlib.math.dualquaternion;
     import dlib.math.fft;
+    import dlib.math.hof;
     import dlib.math.interpolation;
     import dlib.math.linsolve;
     import dlib.math.matrix;
