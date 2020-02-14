@@ -32,8 +32,8 @@ private
 {
     import std.math;
     import std.conv;
+    import std.range;
     import dlib.core.memory;
-    import dlib.functional.range;
     import dlib.math.vector;
     import dlib.math.interpolation;
     import dlib.image.color;
@@ -75,12 +75,12 @@ interface SuperImage: Freeable
 
     final @property auto row()
     {
-        return range!uint(0, width);
+        return iota(0, width);
     }
 
     final @property auto col()
     {
-        return range!uint(0, height);
+        return iota(0, height);
     }
 
     final int opApply(scope int delegate(ref Color4f p, uint x, uint y) dg)

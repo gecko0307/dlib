@@ -31,5 +31,4 @@ module dlib.functional;
 public
 {
     import dlib.functional.hof;
-    import dlib.functional.range;
 }
