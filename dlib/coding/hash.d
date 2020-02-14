@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2019 Timur Gafarov
+Copyright (c) 2011-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -42,6 +42,8 @@ pure int stringHash(string key, int tableSize = 5381)
 
 unittest
 {
+
     int h = stringHash("Hello!");
-    assert(h == -4720);}
+    assert(h == -4720);
+}
 
