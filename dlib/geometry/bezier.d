@@ -31,5 +31,5 @@ module dlib.geometry.bezier;
 
 public
 {
-    import dlib.math.bezier;
+    import dlib.math.interpolation.bezier;
 }
