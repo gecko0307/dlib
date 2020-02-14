@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2019 Timur Gafarov
+Copyright (c) 2013-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -31,9 +31,7 @@ module dlib.geometry;
 public
 {
     import dlib.geometry.aabb;
-    import dlib.geometry.bezier;
     import dlib.geometry.frustum;
-    import dlib.geometry.hermite;
     import dlib.geometry.intersection;
     import dlib.geometry.obb;
     import dlib.geometry.plane;

@@ -24,7 +24,7 @@ Currently dlib contains the following packages:
 * dlib.container - generic data structures (GC-free dynamic and associative arrays and more)
 * dlib.filesystem - abstract FS interface and its implementations for Windows and POSIX filesystems
 * dlib.functional - some functional programming idioms (HOFs, range primitives, etc.)
-* dlib.math - linear algebra and numerical analysis (vectors, matrices, quaternions, linear system solvers etc.)
+* dlib.math - linear algebra and numerical analysis (vectors, matrices, quaternions, linear system solvers, interpolation functions etc.)
 * dlib.geometry - computational geometry (ray casting, primitives, intersection, etc.)
 * dlib.image - image processing (8-bit, 16-bit and 32-bit floating point channels, common filters and convolution kernels, resizing, FFT, HDRI, animation, graphics formats I/O: JPEG, PNG/APNG, BMP, TGA, HDR)
 * dlib.audio - sound processing (8 and 16 bits per sample, synthesizers, WAV export and import)

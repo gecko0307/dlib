@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2019 Timur Gafarov
+Copyright (c) 2013-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -30,14 +30,16 @@ module dlib.math;
 
 public
 {
-    import dlib.math.complex;
+    import dlib.math.bezier;
     import dlib.math.combinatorics;
+    import dlib.math.complex;
     import dlib.math.decomposition;
     import dlib.math.diff;
     import dlib.math.dual;
     import dlib.math.dualquaternion;
     import dlib.math.easing;
     import dlib.math.fft;
+    import dlib.math.hermite;
     import dlib.math.interpolation;
     import dlib.math.linsolve;
     import dlib.math.matrix;

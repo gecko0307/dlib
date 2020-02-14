@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2019 Timur Gafarov
+Copyright (c) 2013-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,91 +26,10 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+deprecated("dlib.geometry.bezier is deprecated, import dlib.math.bezier instead")
 module dlib.geometry.bezier;
 
-private
+public
 {
-    import dlib.math.vector;
-}
-
-T bezierCubic(T) (T A, T B, T C, T D, T t)
-{
-    T s = cast(T)1.0 - t;
-    T s2 = s * s;
-    T s3 = s2 * s;
-    return s3 * A +
-           3.0 * t * s2 * B +
-           3.0 * t * t * s * C +
-           t * t * t * D;
-}
-
-T bezierCubicTangent(T)(T a, T b, T c, T d, T t)
-{
-    T c1 = (d - (3.0 * c) + (3.0 * b) - a);
-    T c2 = ((3.0 * c) - (6.0 * b) + (3.0 * a));
-    T c3 = ((3.0 * b) - (3.0 * a));
-    return ((3.0 * c1 * t * t) + (2.0 * c2 * t) + c3);
-}
-
-alias bezier = bezierCubic;
-alias bezierTangent = bezierCubicTangent;
-
-Vector!(T,2) bezierVector2(T)(
-    Vector!(T,2) a,
-    Vector!(T,2) b,
-    Vector!(T,2) c,
-    Vector!(T,2) d,
-    T t)
-{
-    return Vector!(T,2)
-    (
-        bezier(a.x, b.x, c.x, d.x, t),
-        bezier(a.y, b.y, c.y, d.y, t)
-    );
-}
-
-Vector!(T,3) bezierVector3(T)(
-    Vector!(T,3) a,
-    Vector!(T,3) b,
-    Vector!(T,3) c,
-    Vector!(T,3) d,
-    T t)
-{
-    return Vector!(T,3)
-    (
-        bezier(a.x, b.x, c.x, d.x, t),
-        bezier(a.y, b.y, c.y, d.y, t),
-        bezier(a.z, b.z, c.z, d.z, t)
-    );
-}
-
-// Tangent is not normalized!
-Vector!(T,2) bezierTangentVector2(T)(
-    Vector!(T,2) a,
-    Vector!(T,2) b,
-    Vector!(T,2) c,
-    Vector!(T,2) d,
-    T t)
-{
-    return Vector!(T,2)
-    (
-        bezierTangent(a.x, b.x, c.x, d.x, t),
-        bezierTangent(a.y, b.y, c.y, d.y, t)
-    );
-}
-
-// Tangent is not normalized!
-Vector!(T,3) bezierTangentVector3(T)(
-    Vector!(T,3) a,
-    Vector!(T,3) b,
-    Vector!(T,3) c,
-    Vector!(T,3) d,
-    T t)
-{
-    return Vector!(T,3)
-    (
-        bezierTangent(a.x, b.x, c.x, d.x, t),
-        bezierTangent(a.y, b.y, c.y, d.y, t),
-        bezierTangent(a.z, b.z, c.z, d.z, t)
-    );
+    import dlib.math.bezier;
 }
