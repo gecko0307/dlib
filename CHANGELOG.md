@@ -1,3 +1,18 @@
+dlib 0.17.0 beta1 - TBD
+-----------------------
+- **dlib.math**
+  - All interpolation functions moved to `dlib.math.interpolation`, which is now a package import. It includes `nearest`, `linear`, `bezier`, `catmullrom`, `hermite`, `smoothstep`, `easing` modules. Corresponding old modules (`dlib.math.easing`, `dlib.math.smoothstep`, `dlib.geometry.bezier`, `dlib.geometry.hermite`) are deprecated.
+- **dlib.audio**
+  - `SawtoothWaveSynth`, `TriangleWaveSynth` in `dlib.audio.synth`.
+- **dlib.text**
+  - `String` is now always null-terminated.
+- **dlib.functional**
+  - The whole package is now deprecated.
+  - `dlib.functional.hof` module moved to `dlib.math.hof`.
+  - `dlib.functional.range` module is deprecated, use `std.range.iota` instead.
+- **Misc**
+  - Added latest DMD (2.090.1, 2.089.1) and LDC (1.19.0, 1.18.0) to Travis CI config.
+
 dlib 0.17.0 - 21 Oct, 2019
 --------------------------
 Changes since beta:
