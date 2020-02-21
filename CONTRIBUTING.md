@@ -17,10 +17,10 @@ Before writing a new module, familiarize yourself with [project philosophy](http
 New code should at least:
 * work under Windows and POSIX systems and provide platform-agnostic API
 * support x86 and x86_64 targets
-* don't rely on third party libraries other than system API
-* follow our [code style](#code-style-and-standards)
-* use transparent dynamic memory allocations. Ideally the code should not allocate at all or rely on user for that. If dynamic allocations can't be avoided, they should be done with `dlib.core.memory`. Direct garbage collector usage is discouraged - `dlib.memory` can be used to abstract away from actual allocation method
-* follow [dlib's best practices](https://github.com/gecko0307/dlib/wiki/Best-Practices), making use of our memory management tools, containers, exceptionless error handling and filesystem abstraction
+* not rely on third party libraries other than system API
+* follow dlib's [code style](#code-style-and-standards)
+* use transparent dynamic memory allocations. Ideally the code should not allocate at all or rely on user for that. If internal dynamic allocations can't be avoided, they should be done with `dlib.core.memory` or `dlib.memory`. Direct garbage collector usage is discouraged
+* follow [dlib's best practices](https://github.com/gecko0307/dlib/wiki/Best-Practices), making use of ownership, containers, streams, exceptionless error handling and filesystem abstraction
 * not violate copyright/licensing. When adapting third-party code, make sure that it is compatible with [Boost Software License 1.0](https://www.boost.org/LICENSE_1_0.txt).
 
 ####  Code style and standards 
@@ -32,7 +32,7 @@ dlib follows [D style](https://dlang.org/dstyle.html). Essential rules are the f
 * Types, constants and enums should be in `PascalCase`
 * Module names should be in lowercase.
 
-All modules in dlib should belong to a package (`dlib.core`, `dlib.math`, `dlib.image`, etc.). Keep package and module names short and informative. Modules with related functionality can be combined to subpackages (such as `dlib.image.io`). Provide a package module (`package.d` with public imports) for each subpackage.
+All modules in dlib should belong to a package (`dlib.core`, `dlib.math`, `dlib.image`, etc.). Keep package and module names short and informative. Modules with related functionality can be combined to subpackages (such as `dlib.image.io`). Provide a package import module (`package.d` with public imports) for each subpackage.
 
 Each D module should start with a Boost license block prepended with a copyright notice:
 ```
