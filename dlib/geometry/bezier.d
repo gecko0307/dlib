@@ -26,7 +26,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-deprecated("dlib.geometry.bezier is deprecated, import dlib.math.interpolation.bezier instead")
+deprecated("import dlib.math.interpolation.bezier instead")
 module dlib.geometry.bezier;
 
 public

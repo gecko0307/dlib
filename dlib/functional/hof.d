@@ -26,7 +26,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-deprecated("dlib.functional.hof is deprecated, import dlib.math.hof instead")
+deprecated("import dlib.math.hof instead")
 module dlib.functional.hof;
 
 public

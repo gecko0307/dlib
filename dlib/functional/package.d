@@ -26,5 +26,5 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-deprecated("dlib.functional is deprecated")
+deprecated("use dlib.math.hof and std.range.iota instead")
 module dlib.functional;

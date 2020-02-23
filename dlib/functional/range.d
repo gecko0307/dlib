@@ -26,7 +26,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-deprecated("dlib.functional.range is deprecated, use std.range.iota instead")
+deprecated("use std.range.iota instead")
 module dlib.functional.range;
 
 struct Range(T)

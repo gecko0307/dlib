@@ -26,7 +26,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-deprecated("dlib.math.smoothstep is deprecated, import dlib.math.interpolation.smoothstep instead")
+deprecated("import dlib.math.interpolation.smoothstep instead")
 module dlib.math.smoothstep;
 
 public

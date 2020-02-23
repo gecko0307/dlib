@@ -26,7 +26,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-deprecated("dlib.math.easing is deprecated, import dlib.math.interpolation.easing instead")
+deprecated("import dlib.math.interpolation.easing instead")
 module dlib.math.easing;
 
 public
