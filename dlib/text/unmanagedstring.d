@@ -120,7 +120,6 @@ struct String
         data.resize(cast(size_t)istrm.size, 0);
         istrm.fillArray(data.data);
         addZero();
-        istrm.setPosition(0);
     }
 
     void free()
