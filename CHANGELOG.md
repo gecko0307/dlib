@@ -1,4 +1,8 @@
-dlib 0.18.0 beta1 - 32 Mar, 2020
+dlib 0.18.0 - 28 Feb, 2020
+--------------------------
+No changes since dlib 0.18.0 beta1.
+
+dlib 0.18.0 beta1 - 23 Feb, 2020
 --------------------------------
 - **dlib.math**
   - All interpolation functions moved to `dlib.math.interpolation`, which is now a package import. It includes `nearest`, `linear`, `bezier`, `catmullrom`, `hermite`, `smoothstep`, `easing` modules. Corresponding old modules (`dlib.math.easing`, `dlib.math.smoothstep`, `dlib.geometry.bezier`, `dlib.geometry.hermite`) are deprecated.
