@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2018-2019 Timur Gafarov
+Copyright (c) 2018-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -32,6 +32,7 @@ import dlib.core.memory;
 import dlib.container.array;
 import dlib.text.utf8;
 import dlib.coding.hash;
+import dlib.core.stream;
 
 /*
     GC-free UTF8 string type based on DynamicArray.
@@ -186,6 +187,17 @@ struct String
     auto byDChar()
     {
         return UTF8Decoder(toString()).byDChar;
+    }
+
+    // Creates a String and fills it with the data from an InputStream
+    static String fromStream(InputStream istrm)
+    {
+        String s;
+        s.data.resize(cast(size_t)istrm.size, 0);
+        istrm.fillArray(s.data.data);
+        s.addZero();
+        istrm.setPosition(0);
+        return s;
     }
 }
 
