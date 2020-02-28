@@ -113,6 +113,15 @@ struct String
         while(utf16char);
         addZero();
     }
+    
+    // Construct from an InputStream
+    this(InputStream istrm)
+    {
+        data.resize(cast(size_t)istrm.size, 0);
+        istrm.fillArray(data.data);
+        addZero();
+        istrm.setPosition(0);
+    }
 
     void free()
     {
@@ -187,17 +196,6 @@ struct String
     auto byDChar()
     {
         return UTF8Decoder(toString()).byDChar;
-    }
-
-    // Creates a String and fills it with the data from an InputStream
-    static String fromStream(InputStream istrm)
-    {
-        String s;
-        s.data.resize(cast(size_t)istrm.size, 0);
-        istrm.fillArray(s.data.data);
-        s.addZero();
-        istrm.setPosition(0);
-        return s;
     }
 }
 
