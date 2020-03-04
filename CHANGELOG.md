@@ -1,3 +1,16 @@
+dlib 0.19.0 beta1 - TBD
+-----------------------
+- **dlib.core**
+  - New module `dlib.core.mutex`, a thin abstraction over platform-specific thread synchronization primitives.
+- **dlib.math**
+  - **Breaking change:** deprecated modules `dlib.math.easing`, `dlib.math.smoothstep` have been removed.
+  - **Breaking change:** tuple constructor of `Vector` now implicitly extends the last argument to all remaining components if the tuple is smaller than vector. This ensures e.g. `Vector3f(0) == Vector3f(0, 0, 0)`.
+- **dlib.geometry**
+  - **Breaking change:** deprecated modules `dlib.geometry.bezier`, `dlib.geometry.hermite` have been removed.
+- **Breaking change:** deprecated package `dlib.functional` has been removed.
+- **dlib.text**
+  - `String` can now be constructed directly from `InputStream`.
+
 dlib 0.18.0 - 28 Feb, 2020
 --------------------------
 No changes since dlib 0.18.0 beta1.
