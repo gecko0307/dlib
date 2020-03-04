@@ -105,9 +105,13 @@ struct Vector(T, int size)
     */
     this (F...)(F components)
     {
-        foreach(i, v; components)
-            static if (i < size)
-                arrayof[i] = cast(T)v;
+        static foreach(i; 0..size)
+        {
+            static if (i < components.length)
+                arrayof[i] = cast(T)components[i];
+            else
+                arrayof[i] = cast(T)components[$-1];
+        }
     }
 
    /*
