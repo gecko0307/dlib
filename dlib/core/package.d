@@ -33,6 +33,7 @@ public
     import dlib.core.bitio;
     import dlib.core.compound;
     import dlib.core.memory;
+    import dlib.core.mutex;
     import dlib.core.oop;
     import dlib.core.ownership;
     import dlib.core.stream;
