@@ -1,6 +1,6 @@
 <img align="left" alt="dlib logo" src="https://github.com/gecko0307/dlib/raw/master/logo/dlib-logo.png" height="66" />
 
-dlib is a growing collection of native D language libraries useful for various higher-level projects - such as game engines, rendering pipelines and multimedia applications. It is written in D2 and has no external dependencies aside D's standard library, Phobos. 
+dlib is a high level general purpose library for D language intended to game engine developers. It provides basic building blocks for writing graphics-intensive applications: containers, data streams, linear algebra and image decoders. dlib has no external dependencies aside D's standard library, Phobos. 
 
 dlib is created and maintained by [Timur Gafarov](https://github.com/gecko0307).
 
@@ -19,8 +19,8 @@ If you like dlib, please support its development on [Patreon](https://www.patreo
 
 What's inside
 -------------
-Currently dlib contains the following packages:
-* dlib.core - basic functionality used by other modules (manual memory management, streams, OOP for structs, etc.)
+Currently dlib consists of the following packages:
+* dlib.core - basic functionality used by other modules (memory management, streams, threads, etc.)
 * dlib.container - generic data structures (GC-free dynamic and associative arrays and more)
 * dlib.filesystem - abstract FS interface and its implementations for Windows and POSIX filesystems
 * dlib.math - linear algebra and numerical analysis (vectors, matrices, quaternions, linear system solvers, interpolation functions, etc.)
@@ -28,8 +28,8 @@ Currently dlib contains the following packages:
 * dlib.image - image processing (8-bit, 16-bit and 32-bit floating point channels, common filters and convolution kernels, resizing, FFT, HDRI, animation, graphics formats I/O: JPEG, PNG/APNG, BMP, TGA, HDR)
 * dlib.audio - sound processing (8 and 16 bits per sample, synthesizers, WAV export and import)
 * dlib.network - networking and web functionality
-* dlib.memory - allocators and memory management functions
-* dlib.text - text processing
+* dlib.memory - memory allocators
+* dlib.text - text processing, GC-free strings, Unicode decoding and encoding
 * dlib.serialization - data serialization (XML and JSON parsers)
 * dlib.coding - various data compression and coding algorithms
 
