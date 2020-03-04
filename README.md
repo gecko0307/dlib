@@ -2,7 +2,7 @@
 
 dlib is a high level general purpose library for D language intended to game engine developers. It provides basic building blocks for writing graphics-intensive applications: containers, data streams, linear algebra and image decoders. 
 
-dlib has no external dependencies aside D's standard library, Phobos. dlib is created and maintained by [Timur Gafarov](https://github.com/gecko0307).
+dlib has no external dependencies aside D's standard library. dlib is created and maintained by [Timur Gafarov](https://github.com/gecko0307).
 
 [![Travis Build Status](https://travis-ci.org/gecko0307/dlib.svg?branch=master)](https://travis-ci.org/gecko0307/dlib)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/90mrqd6hq7i2twap?svg=true)](https://ci.appveyor.com/project/gecko0307/dlib)
