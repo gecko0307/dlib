@@ -1,6 +1,6 @@
 <img align="left" alt="dlib logo" src="https://github.com/gecko0307/dlib/raw/master/logo/dlib-logo.png" height="66" />
 
-dlib is a high level general purpose library for D language intended to game engine developers. It provides basic building blocks for writing graphics-intensive applications: containers, data streams, linear algebra and image decoders. 
+dlib is a high-level general purpose library for D language intended to game engine developers. It provides basic building blocks for writing graphics-intensive applications: containers, data streams, linear algebra and image decoders. 
 
 dlib has no external dependencies aside D's standard library. dlib is created and maintained by [Timur Gafarov](https://github.com/gecko0307).
 
