@@ -105,7 +105,7 @@ struct Vector(T, int size)
     */
     this (F...)(F components)
     {
-        static foreach(i; 0..size)
+        foreach(i; RangeTuple!(0, size))
         {
             static if (i < components.length)
                 arrayof[i] = cast(T)components[i];
