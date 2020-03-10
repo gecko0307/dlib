@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2019 Timur Gafarov
+Copyright (c) 2015-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -83,6 +83,17 @@ version(Windows)
 version(Posix)
 {
     import core.sys.posix.pthread;
+}
+
+version(Windows)
+{
+    private extern(Windows) void Sleep(uint msec);
+}
+else version(Posix)
+{
+    import core.stdc.time;
+    import core.sys.posix.time;
+    import core.sys.posix.signal;
 }
 
 class Thread
@@ -217,6 +228,24 @@ class Thread
                 t.dlgt();
             t.running = false;
             return null;
+        }
+    }
+    
+    version(Windows)
+    {
+        static void sleep(uint msec)
+        {
+            Sleep(msec);
+        }
+    }
+    else version(Posix)
+    {
+        static void sleep(uint msec)
+        {
+            timespec ts;
+            ts.tv_sec = msec / 1000;
+            ts.tv_nsec = (msec % 1000) * 1000000;
+            nanosleep(&ts, null);
         }
     }
 }
