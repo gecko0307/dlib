@@ -117,3 +117,52 @@ struct Mutex
         else return 0;
     }
 }
+
+unittest
+{
+    import dlib.core.memory;
+    import dlib.core.thread;
+    
+    int x = 0;
+    Mutex mutex;
+    mutex.init();
+    
+    void add()
+    {
+        mutex.lock();
+        int local = x;
+        local = local + 1;
+        x = local;
+        mutex.unlock();
+    }
+    
+    void sub()
+    {
+        mutex.lock();
+        int local = x;
+        local = local - 1;
+        x = local;
+        mutex.unlock();
+    }
+    
+    Thread[100] threads;
+    
+    foreach(i; 0..threads.length/2)
+    {
+        threads[i] = New!Thread(&add);
+        threads[i].start();
+    }
+    
+    foreach(i; threads.length/2..threads.length)
+    {
+        threads[i] = New!Thread(&sub);
+        threads[i].start();
+    }
+    
+    foreach(t; threads)
+    {
+        t.join();
+    }
+    
+    assert(x == 0);
+}
