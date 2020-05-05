@@ -35,6 +35,11 @@ import dlib.text.utf8;
 import dlib.text.utils;
 import dlib.text.common;
 
+enum ushort UTF16_HI_SURROGATE = 0xD800;
+enum ushort UTF16_LO_SURROGATE = 0xDC00;
+enum ushort UTF16_BOM_LE = 0xfeff;
+enum ushort UTF16_BOM_BE = 0xfffe;
+
 // TODO: byte order
 struct UTF16Decoder
 {
@@ -99,13 +104,34 @@ struct UTF16Decoder
     }
 }
 
-// TODO: UTF16Encoder
+// Encodes a Unicode code point to UTF-16 LE into user-provided buffer.
+// Returns number of bytes written, or 0 at error.
+struct UTF16Encoder
+{
+    size_t encode(uint ch, char[] buffer)
+    {
+        wchar[] wbuffer = cast(wchar[])buffer;
+        if (ch > 0xFFFF)
+        {
+            wchar x = cast(wchar)ch;
+            wchar vh = cast(wchar)(UTF16_HI_SURROGATE | ((((ch >> 16) & ((1 << 5) - 1)) - 1) << 6) | (x >> 10));
+            wchar vl = cast(wchar)(UTF16_LO_SURROGATE | (x & ((1 << 10) - 1)));
+            wbuffer[0] = vh;
+            wbuffer[1] = vl;
+            return 4;
+        }
+        else
+        {
+            wbuffer[0] = cast(wchar)ch;
+            return 2;
+        }
+    }
+}
 
+// TODO: should be deprecated, 
+// use transcode!(UTF8Decoder, UTF16Encoder) instead
 wchar[] convertUTF8toUTF16(string s, bool nullTerm = false)
 {
-    enum ushort UTF16_HI_SURROGATE = 0xD800;
-    enum ushort UTF16_LO_SURROGATE = 0xDC00;
-
     DynamicArray!wchar array;
     wchar[] output;
 
