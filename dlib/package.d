@@ -32,6 +32,7 @@ public
 {
     import dlib.audio;
     import dlib.coding;
+    import dlib.concurrency;
     import dlib.container;
     import dlib.core;
     import dlib.filesystem;
