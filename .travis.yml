@@ -9,7 +9,7 @@ d:
  - dmd-2.091.1,dub
  - dmd-2.090.1,dub
  - ldc-1.21.0,dub
- - ldc-1.19.0,dub
+ - ldc-1.20.0,dub
  - gdc
 
 matrix:
