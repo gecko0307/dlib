@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2019 Timur Gafarov
+Copyright (c) 2013-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -64,6 +64,7 @@ public
 
     import dlib.image.render.cosplasma;
     import dlib.image.render.shapes;
+    import dlib.image.render.text;
 
     import dlib.image.resampling.nearest;
     import dlib.image.resampling.bilinear;
