@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2019 Timur Gafarov
+Copyright (c) 2011-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -30,33 +30,33 @@ module dlib.container.queue;
 
 private
 {
-    import dlib.container.linkedlist;
+    import dlib.container.array;
 }
 
 public:
 
 /**
- * Queue implementation based on LinkedList.
+ * Queue implementation based on DynamicArray.
  */
 struct Queue(T)
 {
 private:
-    LinkedList!(T, true) list;
+    DynamicArray!T array;
 public:
     /**
      * Check if stack has no elements.
      */
     @property bool empty()
     {
-        return list.empty;
+        return array.length == 0;
     }
 
     /**
      * Add element to queue.
      */
-    void enqueue(T v)
+    void enqueue(const(T) v)
     {
-        list.append(v);
+        array.insertBack(v);
     }
 
     /**
@@ -69,9 +69,24 @@ public:
         if (empty)
             throw new Exception("Queue!(T): queue is empty");
 
-        T res = list.head.datum;
-        list.removeBeginning();
+        T res = array[0];
+        array.removeFront(1);
         return res;
+    }
+    
+    /**
+     * Non-throwing version of dequeue.
+     * Returns: true on success, false on failure.
+     * Element is stored in value.
+     */
+    bool dequeue(ref T value) nothrow
+    {
+        if (empty)
+            return false;
+        
+        value = array[0];
+        array.removeFront(1);
+        return true;
     }
 
     /**
@@ -79,14 +94,14 @@ public:
      */
     void free()
     {
-        list.free();
+        array.free();
     }
 }
 
 ///
 unittest
 {
-    import std.exception : assertThrown;
+    import std.exception: assertThrown;
 
     Queue!int q;
     assertThrown(q.dequeue());
@@ -96,7 +111,9 @@ unittest
     q.enqueue(30);
     q.enqueue(900);
 
-    assert (q.dequeue() == 50);
+    int v;
+    q.dequeue(v);
+    assert (v == 50);
     assert (q.dequeue() == 30);
     assert (q.dequeue() == 900);
     assert (q.empty);
