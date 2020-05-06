@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2019 Timur Gafarov
+Copyright (c) 2015-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -37,6 +37,7 @@ import dlib.core.memory;
  */
 struct DynamicArray(T, size_t chunkSize = 32)
 {
+  private:
     T[chunkSize] staticStorage;
     T[] dynamicStorage;
     uint numChunks = 0;
@@ -45,7 +46,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     /**
      * Get pointer to stored data
      */
-    private T* storage()
+    private T* storage() nothrow
     {
         if (numChunks == 0)
             return staticStorage.ptr;
@@ -79,10 +80,16 @@ struct DynamicArray(T, size_t chunkSize = 32)
         assert(arr.length == 0);
     }
 
+  public:
+    @property bool isDynamic() const
+    {
+        return dynamicStorage.length > 0;
+    }
+    
     /**
      * Preallocate memory without resizing.
      */
-    void reserve(size_t amount)
+    void reserve(const(size_t) amount)
     {
         if (amount > pos && amount > staticStorage.length)
         {
@@ -113,7 +120,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     /**
      * Resize array and initialize newly added elements with initValue.
      */
-    void resize(size_t newLen, T initValue)
+    void resize(const(size_t) newLen, T initValue)
     {
         if (newLen > pos)
         {
@@ -177,7 +184,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
      * Does not change the size of array.
      * n of last elements becomes default initialized.
      */
-    void shiftLeft(uint n)
+    void shiftLeft(const(uint) n)
     {
         for(uint i = 0; i < pos; i++)
         {
@@ -355,7 +362,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
      * Remove n of elements from the end.
      * Returns: number of removed elements.
      */
-    uint removeBack(uint n)
+    uint removeBack(const(uint) n)
     {
         if (pos == n)
         {
@@ -369,9 +376,9 @@ struct DynamicArray(T, size_t chunkSize = 32)
         }
         else
         {
-            n = pos;
+            uint res = pos;
             pos = 0;
-            return n;
+            return res;
         }
     }
 
@@ -397,7 +404,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
      * Remove n of elements from the start.
      * Returns: number of removed elements.
      */
-    uint removeFront(uint n)
+    uint removeFront(const(uint) n)
     {
         if (pos == n)
         {
@@ -412,9 +419,9 @@ struct DynamicArray(T, size_t chunkSize = 32)
         }
         else
         {
-            n = pos;
+            uint res = pos;
             pos = 0;
-            return n;
+            return res;
         }
     }
 
@@ -439,7 +446,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
      * Inserts an element by a given index
      * (resizing an array and shifting elements).
      */
-    void insertKey(size_t i, T v)
+    void insertKey(const(size_t) i, T v)
     {
         if (i < pos)
         {
@@ -471,7 +478,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     /**
      * Removes an element by a given index.
      */
-    void removeKey(size_t i)
+    void removeKey(const(size_t) i)
     {
         if (i < pos)
         {
@@ -551,7 +558,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     /**
      * Get number of elements in array.
      */
-    size_t length()
+    size_t length() const nothrow
     {
         return pos;
     }
@@ -571,7 +578,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     /**
      * Get slice of data
      */
-    T[] data()
+    T[] data() nothrow
     {
         return storage[0..pos];
     }
@@ -592,7 +599,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     /**
      * Access element by index.
      */
-    T opIndex(size_t index)
+    T opIndex(const(size_t) index)
     {
         return data[index];
     }
@@ -600,7 +607,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     /**
      * Access by slice.
      */
-    T[] opSlice(size_t start, size_t end)
+    T[] opSlice(const(size_t) start, const(size_t) end)
     {
         return data[start..end];
     }
@@ -608,7 +615,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     /**
      * Set element t for index.
      */
-    T opIndexAssign(T t, size_t index)
+    T opIndexAssign(T t, const(size_t) index)
     {
         data[index] = t;
         return t;
@@ -689,7 +696,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     {
         int result = 0;
         
-        for(size_t i =  length; i-- > 0; )
+        for(size_t i = length; i-- > 0; )
         {
             result = dg(data[i]);
             if (result)
@@ -727,7 +734,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
 
 alias Array = DynamicArray;
 
-void reallocateArray(T)(ref T[] buffer, size_t len)
+void reallocateArray(T)(ref T[] buffer, const(size_t) len)
 {
     T[] buffer2 = New!(T[])(len);
     for(uint i = 0; i < buffer2.length; i++)

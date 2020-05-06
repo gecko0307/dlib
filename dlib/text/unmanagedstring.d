@@ -34,11 +34,11 @@ import dlib.text.utf8;
 import dlib.coding.hash;
 import dlib.core.stream;
 
-/*
-    GC-free UTF8 string type based on DynamicArray.
-    Stores up to 128 bytes without dynamic memory allocation,
-    so short strings are processed very fast.
-    String is always zero-terminated and directly compatible with C.
+/**
+ * GC-free UTF8 string type based on DynamicArray.
+ * Stores up to 128 bytes without dynamic memory allocation,
+ * so short strings are processed very fast.
+ * String is always zero-terminated and directly compatible with C.
  */
 struct String
 {  
@@ -54,14 +54,18 @@ struct String
         data.removeBack(1);
     }
 
-    // Construct from D string
+    /**
+     * Construct from D string
+     */
     this(string s)
     {
         data.insertBack(s);
         addZero();
     }
 
-    // Construct from zero-terminated C string (ASCII or UTF8)
+    /**
+     * Construct from zero-terminated C string (ASCII or UTF8)
+     */
     this(const(char)* cStr)
     {
         size_t offset = 0;
@@ -74,7 +78,9 @@ struct String
         addZero();
     }
 
-    // Construct from zero-terminated UTF-16 string
+    /**
+     * Construct from zero-terminated UTF-16 string
+     */
     this(const(wchar)* wStr)
     {
         wchar* utf16 = cast(wchar*)wStr;
@@ -114,7 +120,9 @@ struct String
         addZero();
     }
     
-    // Construct from an InputStream
+    /**
+     * Construct from an InputStream
+     */
     this(InputStream istrm)
     {
         data.resize(cast(size_t)istrm.size, 0);
@@ -187,11 +195,13 @@ struct String
 
     @property bool isDynamic()
     {
-        return data.dynamicStorage.length > 0;
+        return data.isDynamic;
     }
 
-    // Range interface that iterates the string by Unicode code point (dchar),
-    // i.e., foreach(dchar c; str.byDChar)
+    /**
+     * Range interface that iterates the string by Unicode code point (dchar),
+     * i.e., foreach(dchar c; str.byDChar)
+     */
     auto byDChar()
     {
         return UTF8Decoder(toString()).byDChar;
