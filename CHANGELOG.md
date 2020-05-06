@@ -2,6 +2,9 @@ dlib 0.19.0 beta1 - TBD
 -----------------------
 - **dlib.core**
   - New module `dlib.core.mutex`, a thin abstraction over platform-specific thread synchronization primitives.
+  - `Thread.sleep`
+- **dlib.concurrency**
+  - New package that implements a simple thread pool.
 - **dlib.math**
   - **Breaking change:** deprecated modules `dlib.math.easing`, `dlib.math.smoothstep` have been removed.
   - **Breaking change:** tuple constructor of `Vector` now implicitly extends the last argument to all remaining components if the tuple is smaller than vector. This ensures e.g. `Vector3f(0) == Vector3f(0, 0, 0)`.
@@ -9,7 +12,12 @@ dlib 0.19.0 beta1 - TBD
   - **Breaking change:** deprecated modules `dlib.geometry.bezier`, `dlib.geometry.hermite` have been removed.
 - **Breaking change:** deprecated package `dlib.functional` has been removed.
 - **dlib.text**
+  - `UTF16Encoder` in `dlib.text.utf16`.
   - `String` can now be constructed directly from `InputStream`.
+- **dlib.container**
+  - `Queue` now uses `DynamicArray` internally instead of `LinkedList`.
+- **Misc**
+  - Added latest DMD (2.091.1, 2.090.1) and LDC (1.21.0, 1.20.0) to Travis CI config.
 
 dlib 0.18.0 - 28 Feb, 2020
 --------------------------
