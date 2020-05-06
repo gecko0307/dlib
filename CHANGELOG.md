@@ -15,7 +15,7 @@ dlib 0.19.0 beta1 - TBD
   - `UTF16Encoder` in `dlib.text.utf16`.
   - `String` can now be constructed directly from `InputStream`.
 - **dlib.container**
-  - `Queue` now uses `DynamicArray` internally instead of `LinkedList`.
+  - `Queue` and `Stack` now use `DynamicArray` internally instead of `LinkedList`.
 - **Misc**
   - Added latest DMD (2.091.1, 2.090.1) and LDC (1.21.0, 1.20.0) to Travis CI config.
 
