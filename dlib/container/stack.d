@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2019 Timur Gafarov
+Copyright (c) 2011-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -30,17 +30,17 @@ module dlib.container.stack;
 
 private
 {
-    import dlib.container.linkedlist;
+    import dlib.container.array;
 }
 
 public:
 
 /**
- * Stack implementation based on LinkedList.
+ * Stack implementation based on DynamicArray.
  */
 struct Stack(T)
 {
-    private LinkedList!(T, true) list;
+    private DynamicArray!T array;
 
     public:
     /**
@@ -48,7 +48,7 @@ struct Stack(T)
      */
     void push(T v)
     {
-        list.insertBeginning(v);
+        array.insertBack(v);
     }
 
     /**
@@ -61,9 +61,24 @@ struct Stack(T)
         if (empty)
             throw new Exception("Stack!(T): underflow");
 
-        T res = list.head.datum;
-        list.removeBeginning();
+        T res = array[$-1];
+        array.removeBack(1);
         return res;
+    }
+    
+    /**
+     * Non-throwing version of pop.
+     * Returns: true on success, false on failure.
+     * Element is stored in value.
+     */
+    bool pop(ref T value)
+    {
+        if (empty)
+            return false;
+
+        value = array[$-1];
+        array.removeBack(1);
+        return true;
     }
 
     /**
@@ -72,20 +87,20 @@ struct Stack(T)
      */
     T top()
     {
-        return list.head.datum;
+        return array[$-1];
     }
 
     T* topPtr()
     {
-        return &(list.head.datum);
+        return &array.data[$-1];
     }
 
     /**
      * Check if stack has no elements.
      */
-    @property bool empty()
+    @property bool empty() nothrow
     {
-        return (list.head is null);
+        return array.length == 0;
     }
 
     /**
@@ -93,14 +108,14 @@ struct Stack(T)
      */
     void free()
     {
-        list.free();
+        array.free();
     }
 }
 
 ///
 unittest
 {
-    import std.exception : assertThrown;
+    import std.exception: assertThrown;
 
     Stack!int s;
     assertThrown(s.pop());
@@ -108,8 +123,11 @@ unittest
     s.push(3);
     s.push(76);
     assert(s.top() == 76);
-    assert(s.pop() == 76);
+    int v;
+    s.pop(v);
+    assert(v == 76);
     assert(s.pop() == 3);
     assert(s.pop() == 100);
+    assert(s.empty);
     s.free();
 }
