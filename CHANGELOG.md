@@ -5,6 +5,8 @@ dlib 0.19.0 beta1 - TBD
   - `Thread.sleep`
 - **dlib.concurrency**
   - New package that implements a simple thread pool.
+- **dlib.image**
+  - New module `dlib.image.render.text` that provides `drawText`, a function to render ASCII strings on images.
 - **dlib.math**
   - **Breaking change:** deprecated modules `dlib.math.easing`, `dlib.math.smoothstep` have been removed.
   - **Breaking change:** tuple constructor of `Vector` now implicitly extends the last argument to all remaining components if the tuple is smaller than vector. This ensures e.g. `Vector3f(0) == Vector3f(0, 0, 0)`.
