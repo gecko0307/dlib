@@ -1,5 +1,5 @@
-dlib 0.19.0 beta1 - TBD
------------------------
+dlib 0.19.0 beta1 - 8 May, 2020
+-------------------------------
 - **dlib.core**
   - New module `dlib.core.mutex`, a thin abstraction over platform-specific thread synchronization primitives.
   - `Thread.sleep`
@@ -16,6 +16,7 @@ dlib 0.19.0 beta1 - TBD
 - **dlib.text**
   - `UTF16Encoder` in `dlib.text.utf16`.
   - `String` can now be constructed directly from `InputStream`.
+  - **Breaking change:** deprecated property `String.cString` has been removed.
 - **dlib.container**
   - `Queue` and `Stack` now use `DynamicArray` internally instead of `LinkedList`.
 - **Misc**

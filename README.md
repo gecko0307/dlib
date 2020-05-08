@@ -32,6 +32,7 @@ Currently dlib consists of the following packages:
 * dlib.text - text processing, GC-free strings, Unicode decoding and encoding
 * dlib.serialization - data serialization (XML and JSON parsers)
 * dlib.coding - various data compression and coding algorithms
+* dlib.concurrency - a thread pool.
 
 Supported Compilers
 -------------------
