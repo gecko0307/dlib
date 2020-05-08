@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2019 Timur Gafarov
+Copyright (c) 2016-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -137,7 +137,9 @@ class StdPosixDirectory: Directory
 
     this(string path)
     {
-        dir = opendir(path.toStringz); // TODO: GC-free toStringz replacement
+        String pathz = String(path);
+        dir = opendir(pathz.ptr);
+        pathz.free();
     }
 
     ~this()

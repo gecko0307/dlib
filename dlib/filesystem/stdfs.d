@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2019 Timur Gafarov
+Copyright (c) 2015-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -36,6 +36,7 @@ import dlib.core.memory;
 import dlib.core.stream;
 import dlib.container.dict;
 import dlib.container.array;
+import dlib.text.unmanagedstring;
 import dlib.filesystem.filesystem;
 
 version(Posix)
@@ -296,7 +297,9 @@ class StdFileSystem: FileSystem
                 version (Posix)
                 {
                     stat_t st;
-                    stat_(toStringz(filename), &st); // TODO: GC-free toStringz replacement
+                    String filenamez = String(filename);
+                    stat_(filenamez.ptr, &st);
+                    filenamez.free();
 
                     isFile = S_ISREG(st.st_mode);
                     isDirectory = S_ISDIR(st.st_mode);
@@ -380,7 +383,9 @@ class StdFileSystem: FileSystem
     {
         version(Posix)
         {
-            FILE* file = fopen(filename.toStringz, "rb"); // TODO: GC-free toStringz replacement
+            String filenamez = String(filename);
+            FILE* file = fopen(filenamez.ptr, "rb");
+            filenamez.free();
         }
         version(Windows)
         {
@@ -397,7 +402,9 @@ class StdFileSystem: FileSystem
     {
         version(Posix)
         {
-            FILE* file = fopen(filename.toStringz, "wb"); // TODO: GC-free toStringz replacement
+            String filenamez = String(filename);
+            FILE* file = fopen(filenamez.ptr, "wb");
+            filenamez.free();
         }
         version(Windows)
         {
@@ -414,7 +421,9 @@ class StdFileSystem: FileSystem
     {
         version(Posix)
         {
-            FILE* file = fopen(filename.toStringz, "rb+"); // TODO: GC-free toStringz replacement
+            String filenamez = String(filename);
+            FILE* file = fopen(filename.ptr, "rb+");
+            filenamez.free();
         }
         version(Windows)
         {
@@ -460,7 +469,9 @@ class StdFileSystem: FileSystem
     {
         version(Posix)
         {
-            int res = mkdir(path.toStringz, 777); // TODO: GC-free toStringz replacement
+            String pathz = String(path);
+            int res = mkdir(pathz.ptr, 777);
+            pathz.free();
             return (res == 0);
         }
         version(Windows)
@@ -476,7 +487,9 @@ class StdFileSystem: FileSystem
     {
         version(Posix)
         {
-            int res = core.stdc.stdio.remove(path.toStringz); // TODO: GC-free toStringz replacement
+            String pathz = String(path);
+            int res = core.stdc.stdio.remove(pathz.ptr);
+            pathz.free();
             return (res == 0);
         }
         version(Windows)
@@ -525,8 +538,10 @@ T readStruct(T)(InputStream istrm) if (is(T == struct))
     istrm.readBytes(&res, T.sizeof);
     return res;
 }
+
 enum MAX_PATH_LEN = 4096;
 
+// TODO: use String
 struct PathBuilder
 {
     char[MAX_PATH_LEN] str;
