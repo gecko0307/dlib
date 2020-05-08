@@ -38,6 +38,7 @@ version(Posix)
 }
 import dlib.core.memory;
 import dlib.filesystem.filesystem;
+import dlib.text.unmanagedstring;
 
 version(Posix):
 
