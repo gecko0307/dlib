@@ -188,11 +188,6 @@ struct String
         return data.data.ptr;
     }
 
-    deprecated("use String.ptr instead") @property char* cString()
-    {
-        return ptr();
-    }
-
     @property bool isDynamic()
     {
         return data.isDynamic;
