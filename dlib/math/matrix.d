@@ -415,17 +415,12 @@ struct Matrix(T, size_t N)
         Vector!(T,3) opBinaryRight(string op) (Vector!(T,3) v) if (op == "*")
         do
         {
-            if (isAffine)
-            {
-                return Vector!(T,3)
-                (
-                    (v.x * a11) + (v.y * a12) + (v.z * a13) + a14,
-                    (v.x * a21) + (v.y * a22) + (v.z * a23) + a24,
-                    (v.x * a31) + (v.y * a32) + (v.z * a33) + a34
-                );
-            }
-            else
-                assert(0, "Cannot multiply Vector!(T,3) by non-affine Matrix!(T,4)");
+            return Vector!(T,3)
+            (
+                (v.x * a11) + (v.y * a12) + (v.z * a13) + a14,
+                (v.x * a21) + (v.y * a22) + (v.z * a23) + a24,
+                (v.x * a31) + (v.y * a32) + (v.z * a33) + a34
+            );
         }
     }
 
