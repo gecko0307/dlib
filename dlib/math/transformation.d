@@ -136,7 +136,10 @@ do
 Vector!(T,3) scaling(T) (Matrix!(T,4) m)
 do
 {
-    return Vector!(T,3)(m.a11, m.a22, m.a33);
+    T sx = Vector!(T,3)(m.a11, m.a12, m.a13).length;
+    T sy = Vector!(T,3)(m.a21, m.a22, m.a23).length;
+    T sz = Vector!(T,3)(m.a31, m.a32, m.a33).length;
+    return Vector!(T,3)(sx, sy, sz);
 }
 
 /*
