@@ -1,3 +1,9 @@
+dlib 0.19.0 beta2 - 22 May, 2020
+--------------------------------
+- **dlib.math**
+  - Transformation of a vector with 4x4 matrix now doesn't include affinity check.
+  - `dlib.math.transformation.scaling` fix.
+
 dlib 0.19.0 beta1 - 8 May, 2020
 -------------------------------
 - **dlib.core**
