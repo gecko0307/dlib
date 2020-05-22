@@ -559,7 +559,7 @@ struct PathBuilder
         length += s.length;
     }
 
-    string toString()
+    string toString() return
     {
         if (length)
             return cast(string)(str[0..length]);
