@@ -1,5 +1,14 @@
+dlib 0.19.0 - 31 May, 2020
+--------------------------
+Changes since beta2:
+- **dlib.coding**, **dlib.filesystem**
+  - Deprecation fixes
+- **Misc**
+  - Added latest DMD (2.092.0) to Travis CI config.
+
 dlib 0.19.0 beta2 - 22 May, 2020
 --------------------------------
+Changes since beta1:
 - **dlib.math**
   - Transformation of a vector with 4x4 matrix now doesn't include affinity check.
   - `dlib.math.transformation.scaling` fix.
