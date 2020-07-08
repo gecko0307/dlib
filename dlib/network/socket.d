@@ -34,7 +34,7 @@ DEALINGS IN THE SOFTWARE.
 module dlib.network.socket;
 
 import dlib.memory;
-import core.stdc.errno;
+import errno = core.stdc.errno;
 import core.time;
 import std.algorithm.comparison;
 import std.algorithm.searching;
@@ -46,7 +46,6 @@ import std.typecons;
 
 version (Posix)
 {
-    import core.stdc.errno;
     import core.sys.posix.fcntl;
     import core.sys.posix.netdb;
     import core.sys.posix.netinet.in_;
@@ -580,27 +579,27 @@ enum SocketError : int
     /// Unknown error
     unknown                = 0,
     /// Firewall rules forbid connection.
-    accessDenied           = EPERM,
+    accessDenied           = errno.EPERM,
     /// A socket operation was attempted on a non-socket.
-    notSocket              = EBADF,
+    notSocket              = errno.EBADF,
     /// The network is not available.
-    networkDown            = ECONNABORTED,
+    networkDown            = errno.ECONNABORTED,
     /// An invalid pointer address was detected by the underlying socket provider.
-    fault                  = EFAULT,
+    fault                  = errno.EFAULT,
     /// An invalid argument was supplied to a $(D_PSYMBOL Socket) member.
-    invalidArgument        = EINVAL,
+    invalidArgument        = errno.EINVAL,
     /// The limit on the number of open sockets has been reached.
-    tooManyOpenSockets     = ENFILE,
+    tooManyOpenSockets     = errno.ENFILE,
     /// No free buffer space is available for a Socket operation.
-    noBufferSpaceAvailable = ENOBUFS,
+    noBufferSpaceAvailable = errno.ENOBUFS,
     /// The address family is not supported by the protocol family.
-    operationNotSupported  = EOPNOTSUPP,
+    operationNotSupported  = errno.EOPNOTSUPP,
     /// The protocol is not implemented or has not been configured.
-    protocolNotSupported   = EPROTONOSUPPORT,
+    protocolNotSupported   = errno.EPROTONOSUPPORT,
     /// Protocol error.
-    protocolError          = EPROTOTYPE,
+    protocolError          = errno.EPROTOTYPE,
     /// The connection attempt timed out, or the connected host has failed to respond.
-    timedOut               = ETIMEDOUT,
+    timedOut               = errno.ETIMEDOUT,
     /// The support for the specified socket type does not exist in this address family.
     socketNotSupported     = ESOCKTNOSUPPORT,
 }
@@ -636,11 +635,11 @@ class SocketException : Exception
                 return;
             }
         }
-        if (lastError == ENOMEM)
+        if (lastError == errno.ENOMEM)
         {
             error = SocketError.noBufferSpaceAvailable;
         }
-        else if (lastError == EMFILE)
+        else if (lastError == errno.EMFILE)
         {
             error = SocketError.tooManyOpenSockets;
         }
