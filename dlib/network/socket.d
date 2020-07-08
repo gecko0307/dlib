@@ -1364,7 +1364,7 @@ bool wouldHaveBlocked() nothrow @trusted @nogc
 {
     version (Posix)
     {
-        return errno == err.EAGAIN || errno == err.EWOULDBLOCK;
+        return err.errno == err.EAGAIN || err.errno == err.EWOULDBLOCK;
     }
     else version (Windows)
     {
@@ -1384,6 +1384,6 @@ private @property int lastError() nothrow @safe @nogc
     }
     else
     {
-        return errno;
+        return err.errno;
     }
 }
