@@ -1,3 +1,8 @@
+dlib 0.19.1 - TBD
+-----------------
+- **dlib.network**
+  - Fixed compilation under Windows 
+
 dlib 0.19.0 - 31 May, 2020
 --------------------------
 Changes since beta2:

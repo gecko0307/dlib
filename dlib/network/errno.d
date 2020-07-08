@@ -36,7 +36,14 @@ version(Windows)
     
     enum: int
     {
-        ESOCKTNOSUPPORT = core.sys.windows.winsock2.ESOCKTNOSUPPORT
+        ECONNABORTED = core.sys.windows.winsock2.ECONNABORTED,
+        ENOBUFS = core.sys.windows.winsock2.ENOBUFS,
+        EOPNOTSUPP = core.sys.windows.winsock2.EOPNOTSUPP,
+        EPROTONOSUPPORT = core.sys.windows.winsock2.EPROTONOSUPPORT,
+        EPROTOTYPE = core.sys.windows.winsock2.EPROTOTYPE,
+        ESOCKTNOSUPPORT = core.sys.windows.winsock2.ESOCKTNOSUPPORT,
+        ETIMEDOUT = core.sys.windows.winsock2.ETIMEDOUT,
+        EWOULDBLOCK = core.sys.windows.winsock2.EWOULDBLOCK
     }
 }
 else version (OSX)
