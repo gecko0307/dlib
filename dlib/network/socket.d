@@ -34,7 +34,7 @@ DEALINGS IN THE SOFTWARE.
 module dlib.network.socket;
 
 import dlib.memory;
-import errno = dlib.network.errno;
+import err = dlib.network.errno;
 import core.time;
 import std.algorithm.comparison;
 import std.algorithm.searching;
@@ -554,29 +554,29 @@ enum SocketError : int
     /// Unknown error
     unknown                = 0,
     /// Firewall rules forbid connection.
-    accessDenied           = errno.EPERM,
+    accessDenied           = err.EPERM,
     /// A socket operation was attempted on a non-socket.
-    notSocket              = errno.EBADF,
+    notSocket              = err.EBADF,
     /// The network is not available.
-    networkDown            = errno.ECONNABORTED,
+    networkDown            = err.ECONNABORTED,
     /// An invalid pointer address was detected by the underlying socket provider.
-    fault                  = errno.EFAULT,
+    fault                  = err.EFAULT,
     /// An invalid argument was supplied to a $(D_PSYMBOL Socket) member.
-    invalidArgument        = errno.EINVAL,
+    invalidArgument        = err.EINVAL,
     /// The limit on the number of open sockets has been reached.
-    tooManyOpenSockets     = errno.ENFILE,
+    tooManyOpenSockets     = err.ENFILE,
     /// No free buffer space is available for a Socket operation.
-    noBufferSpaceAvailable = errno.ENOBUFS,
+    noBufferSpaceAvailable = err.ENOBUFS,
     /// The address family is not supported by the protocol family.
-    operationNotSupported  = errno.EOPNOTSUPP,
+    operationNotSupported  = err.EOPNOTSUPP,
     /// The protocol is not implemented or has not been configured.
-    protocolNotSupported   = errno.EPROTONOSUPPORT,
+    protocolNotSupported   = err.EPROTONOSUPPORT,
     /// Protocol error.
-    protocolError          = errno.EPROTOTYPE,
+    protocolError          = err.EPROTOTYPE,
     /// The connection attempt timed out, or the connected host has failed to respond.
-    timedOut               = errno.ETIMEDOUT,
+    timedOut               = err.ETIMEDOUT,
     /// The support for the specified socket type does not exist in this address family.
-    socketNotSupported     = errno.ESOCKTNOSUPPORT,
+    socketNotSupported     = err.ESOCKTNOSUPPORT,
 }
 
 /**
@@ -610,24 +610,24 @@ class SocketException : Exception
                 return;
             }
         }
-        if (lastError == errno.ENOMEM)
+        if (lastError == err.ENOMEM)
         {
             error = SocketError.noBufferSpaceAvailable;
         }
-        else if (lastError == errno.EMFILE)
+        else if (lastError == err.EMFILE)
         {
             error = SocketError.tooManyOpenSockets;
         }
         else version (linux)
         {
-            if (lastError == ENOSR)
+            if (lastError == err.ENOSR)
             {
                 error = SocketError.networkDown;
             }
         }
         else version (Posix)
         {
-            if (lastError == EPROTO)
+            if (lastError == err.EPROTO)
             {
                 error = SocketError.networkDown;
             }
@@ -1364,11 +1364,11 @@ bool wouldHaveBlocked() nothrow @trusted @nogc
 {
     version (Posix)
     {
-        return errno == EAGAIN || errno == EWOULDBLOCK;
+        return errno == err.EAGAIN || errno == err.EWOULDBLOCK;
     }
     else version (Windows)
     {
-        return WSAGetLastError() == ERROR_IO_PENDING || WSAGetLastError() == EWOULDBLOCK
+        return WSAGetLastError() == ERROR_IO_PENDING || WSAGetLastError() == err.EWOULDBLOCK
             || WSAGetLastError() == ERROR_IO_INCOMPLETE;
     }
 }
