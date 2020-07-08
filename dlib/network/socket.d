@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2019 Eugene Wissner
+Copyright (c) 2016-2020 Eugene Wissner
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -34,7 +34,7 @@ DEALINGS IN THE SOFTWARE.
 module dlib.network.socket;
 
 import dlib.memory;
-import errno = core.stdc.errno;
+import errno = dlib.network.errno;
 import core.time;
 import std.algorithm.comparison;
 import std.algorithm.searching;
@@ -521,31 +521,6 @@ version (linux)
     enum SOCK_NONBLOCK = O_NONBLOCK;
     extern(C) int accept4(int, sockaddr*, socklen_t*, int flags) @nogc nothrow;
 }
-else version (OSX)
-{
-    version = MacBSD;
-}
-else version (iOS)
-{
-    version = MacBSD;
-}
-else version (FreeBSD)
-{
-    version = MacBSD;
-}
-else version (OpenBSD)
-{
-    version = MacBSD;
-}
-else version (DragonFlyBSD)
-{
-    version = MacBSD;
-}
-
-version (MacBSD)
-{
-    enum ESOCKTNOSUPPORT = 44; /// Socket type not suppoted.
-}
 
 private immutable
 {
@@ -601,7 +576,7 @@ enum SocketError : int
     /// The connection attempt timed out, or the connected host has failed to respond.
     timedOut               = errno.ETIMEDOUT,
     /// The support for the specified socket type does not exist in this address family.
-    socketNotSupported     = ESOCKTNOSUPPORT,
+    socketNotSupported     = errno.ESOCKTNOSUPPORT,
 }
 
 /**
