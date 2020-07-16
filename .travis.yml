@@ -6,8 +6,8 @@ os:
  - linux
 
 d:
+ - dmd-2.093.0,dub
  - dmd-2.092.1,dub
- - dmd-2.091.1,dub
  - ldc-1.22.0,dub
  - ldc-1.21.0,dub
  - gdc
