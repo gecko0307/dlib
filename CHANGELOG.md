@@ -1,7 +1,9 @@
-dlib 0.19.1 - TBD
------------------
+dlib 0.19.1 - 20 July, 2020
+---------------------------
 - **dlib.network**
   - Fixed compilation under Windows 
+- **Misc**
+  - Added latest DMD (2.093.0) and LDC (1.22.0) to Travis CI config.
 
 dlib 0.19.0 - 31 May, 2020
 --------------------------
