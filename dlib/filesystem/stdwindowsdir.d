@@ -97,8 +97,8 @@ class StdWindowsDirEntryRange: InputRange!(DirEntry)
             }
             else
             {
-                bool isFile = false;
-                bool isDir = false;
+                bool isDir = cast(bool)(findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
+                bool isFile = !isDir;
                 frontEntry = DirEntry(name, isFile, isDir);
             }
         }
@@ -121,8 +121,8 @@ class StdWindowsDirEntryRange: InputRange!(DirEntry)
 
             if (success)
             {
-                bool isFile = false;
-                bool isDir = false;
+                bool isDir = cast(bool)(findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
+                bool isFile = !isDir;
                 frontEntry = DirEntry(name, isFile, isDir);
             }
         }
