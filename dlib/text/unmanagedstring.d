@@ -173,19 +173,19 @@ struct String
             return data.length - 1;
     }
 
-    @property string toString()
+    @property string toString() const
     {
         if (data.length == 0)
             return "";
         else 
-            return cast(string)data.data[0..$-1];
+            return cast(string)data.readOnlyData[0..$-1];
     }
 
     alias toString this;
 
-    @property char* ptr()
+    @property const(char)* ptr() const
     {
-        return data.data.ptr;
+        return data.readOnlyData.ptr;
     }
 
     @property bool isDynamic()

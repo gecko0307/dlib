@@ -53,6 +53,14 @@ struct DynamicArray(T, size_t chunkSize = 32)
         else
             return dynamicStorage.ptr;
     }
+    
+    private const(T)* readOnlyStorage() const nothrow
+    {
+        if (numChunks == 0)
+            return staticStorage.ptr;
+        else
+            return dynamicStorage.ptr;
+    }
 
     private void addChunk()
     {
@@ -581,6 +589,11 @@ struct DynamicArray(T, size_t chunkSize = 32)
     T[] data() nothrow
     {
         return storage[0..pos];
+    }
+    
+    const(T)[] readOnlyData() const nothrow
+    {
+        return readOnlyStorage[0..pos];
     }
 
     ///
