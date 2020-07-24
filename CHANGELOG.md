@@ -4,6 +4,10 @@ dlib 0.19.1 - 24 July, 2020
   - Fixed compilation under Windows
 - **dlib.filesystem**
   - `isFile`, `isDir` properties now work for `StdFileSystem` entries
+- **dlib.container**
+  - `DynamicArray.readOnlyData`
+- **dlib.text**
+  - `String.toString` and `String.ptr` are now `const`
 - **Misc**
   - Added latest DMD (2.093.0) and LDC (1.22.0) to Travis CI config.
 
