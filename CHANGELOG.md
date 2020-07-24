@@ -1,7 +1,9 @@
-dlib 0.19.1 - 20 July, 2020
+dlib 0.19.1 - 24 July, 2020
 ---------------------------
 - **dlib.network**
-  - Fixed compilation under Windows 
+  - Fixed compilation under Windows
+- **dlib.filesystem**
+  - `isFile`, `isDir` properties now work for `StdFileSystem` entries
 - **Misc**
   - Added latest DMD (2.093.0) and LDC (1.22.0) to Travis CI config.
 
