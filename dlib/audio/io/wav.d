@@ -28,18 +28,21 @@ DEALINGS IN THE SOFTWARE.
 
 module dlib.audio.io.wav;
 
-import std.stdio;
-import dlib.core.stream;
-import dlib.filesystem.local;
-import dlib.audio.sample;
-import dlib.audio.sound;
-
 /*
  * Simple RIFF/WAV decoder and encoder
  */
 
 // Uncomment to see debug messages
-//version = WAVDebug;
+version = WAVDebug;
+
+version(WAVDebug)
+{
+    import std.stdio;
+}
+import dlib.core.stream;
+import dlib.filesystem.local;
+import dlib.audio.sample;
+import dlib.audio.sound;
 
 GenericSound loadWAV(string filename)
 {
