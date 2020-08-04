@@ -241,8 +241,8 @@ class LocalFileSystem : FileSystem
             {
                 case read: flags = O_RDONLY; break;
                 case write: flags = O_WRONLY; break;
-                case read | write: flags = O_RDWR; break;
-                default: flags = 0;
+                case (read | write): flags = O_RDWR; break;
+                default: flags = 0; break;
             }
 
             if (creationFlags & FileSystem.create)
@@ -270,12 +270,13 @@ class LocalFileSystem : FileSystem
 
             DWORD creationMode;
 
-            final switch (creationFlags & (create | truncate))
+            switch (creationFlags & (create | truncate))
             {
                 case 0: creationMode = OPEN_EXISTING; break;
                 case create: creationMode = OPEN_ALWAYS; break;
                 case truncate: creationMode = TRUNCATE_EXISTING; break;
-                case create | truncate: creationMode = CREATE_ALWAYS; break;
+                case (create | truncate): creationMode = CREATE_ALWAYS; break;
+                default: creationMode = OPEN_EXISTING; break;
             }
 
             HANDLE file = CreateFileW(toUTF16z(filename), access, FILE_SHARE_READ, null, creationMode,
