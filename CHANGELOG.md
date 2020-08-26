@@ -1,3 +1,8 @@
+dlib 0.19.2 - 26 Aug, 2020
+--------------------------
+- A couple of fixes for LDC
+- New AppVeyor configuration.
+
 dlib 0.19.1 - 24 July, 2020
 ---------------------------
 - **dlib.network**
