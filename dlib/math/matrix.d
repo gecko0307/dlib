@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2019 Timur Gafarov, Martin Cejp
+Copyright (c) 2013-2020 Timur Gafarov, Martin Cejp
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,6 +26,11 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov, Martin Cejp 2013-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov, Martin Cejp
+ */
 module dlib.math.matrix;
 
 import std.math;
@@ -39,20 +44,22 @@ import dlib.math.utils;
 import dlib.math.decomposition;
 import dlib.math.linsolve;
 
-/*
- * Square (NxN) matrix.
- *
- * Implementation notes:
- * - The storage order is column-major;
- * - Affine vector of 4x4 matrix is in the 4th column (as in OpenGL);
- * - Elements are stored in a fixed manner, so it is impossible to change
- *   matrix size once it's created;
- * - Actual data is allocated as a static array, so no references, no GC touching.
- *   When you pass a Matrix by value, it will be safely copied;
- * - This implementation is not perfect (as for now) for dealing with really
- *   big matrices, but ideal for smaller ones, e.g. those which are meant to be
- *   manipulated in real-time (in game engines, rendering pipelines etc).
- *   This limitation may (but doesn't have to) be addressed in future.
+/**
+  Square (NxN) matrix.
+  
+  Description:
+  
+  Implementation notes:
+  * The storage order is column-major;
+  * Affine vector of 4x4 matrix is in the 4th column (as in OpenGL);
+  * Elements are stored in a fixed manner, so it is impossible to change
+    matrix size once it's created;
+  * Actual data is allocated as a static array, so no references, no GC touching.
+    When you pass a Matrix by value, it will be safely copied;
+  * This implementation is not perfect (as for now) for dealing with really
+    big matrices, but ideal for smaller ones, e.g. those which are meant to be
+    manipulated in real-time (in game engines, rendering pipelines etc).
+    This limitation may (but doesn't have to) be addressed in future.
  */
 struct Matrix(T, size_t N)
 {
@@ -69,7 +76,7 @@ struct Matrix(T, size_t N)
         return arrayof == that.arrayof;
     }
 
-   /*
+   /**
     * Return zero matrix
     */
     static zero()
@@ -81,7 +88,7 @@ struct Matrix(T, size_t N)
         return res;
     }
 
-   /*
+   /**
     * Return identity matrix
     */
     static identity()
@@ -92,7 +99,7 @@ struct Matrix(T, size_t N)
         return res;
     }
 
-   /*
+   /**
     * Set to identity
     */
     void setIdentity()
@@ -108,7 +115,7 @@ struct Matrix(T, size_t N)
         }
     }
 
-   /*
+   /**
     * Create matrix from array.
     * This is a convenient way to deal with arrays of "classic" layout:
     * the storage order in an array should be row-major
@@ -128,7 +135,7 @@ struct Matrix(T, size_t N)
         }
     }
 
-   /*
+   /**
     * T = Matrix[i, j]
     */
     T opIndex(in size_t i, in size_t j) const
@@ -137,7 +144,7 @@ struct Matrix(T, size_t N)
         return arrayof[j * N + i];
     }
 
-   /*
+   /**
     * Matrix[i, j] = T
     */
     T opIndexAssign(in T t, in size_t i, in size_t j)
@@ -146,7 +153,7 @@ struct Matrix(T, size_t N)
         return (arrayof[j * N + i] = t);
     }
 
-   /*
+   /**
     * T = Matrix[index]
     * Indices start with 0
     */
@@ -161,7 +168,7 @@ struct Matrix(T, size_t N)
         return arrayof[index];
     }
 
-   /*
+   /**
     * Matrix[index] = T
     * Indices start with 0
     */
@@ -176,7 +183,7 @@ struct Matrix(T, size_t N)
         return (arrayof[index] = t);
     }
 
-   /*
+   /**
     * Matrix4x4!(T)[index1..index2] = T
     */
     T[] opSliceAssign(in T t, in size_t index1, in size_t index2)
@@ -190,7 +197,7 @@ struct Matrix(T, size_t N)
         return (arrayof[index1..index2] = t);
     }
 
-   /*
+   /**
     * Matrix[] = T
     */
     T[] opSliceAssign(in T t)
@@ -199,7 +206,7 @@ struct Matrix(T, size_t N)
         return (arrayof[] = t);
     }
 
-   /*
+   /**
     * Matrix + Matrix
     */
     Matrix!(T,N) opBinary(string op)(Matrix!(T,N) mat) if (op == "+")
@@ -214,7 +221,7 @@ struct Matrix(T, size_t N)
         return res;
     }
 
-   /*
+   /**
     * Matrix - Matrix
     */
     Matrix!(T,N) opBinary(string op)(Matrix!(T,N) mat) if (op == "-")
@@ -229,7 +236,7 @@ struct Matrix(T, size_t N)
         return res;
     }
 
-   /*
+   /**
     * Matrix * Matrix
     */
     Matrix!(T,N) opBinary(string op)(Matrix!(T,N) mat) if (op == "*")
@@ -308,7 +315,7 @@ struct Matrix(T, size_t N)
         }
     }
 
-   /*
+   /**
     * Matrix += Matrix
     */
     Matrix!(T,N) opOpAssign(string op)(Matrix!(T,N) mat) if (op == "+")
@@ -318,7 +325,7 @@ struct Matrix(T, size_t N)
         return this;
     }
 
-   /*
+   /**
     * Matrix -= Matrix
     */
     Matrix!(T,N) opOpAssign(string op)(Matrix!(T,N) mat) if (op == "-")
@@ -328,7 +335,7 @@ struct Matrix(T, size_t N)
         return this;
     }
 
-   /*
+   /**
     * Matrix *= Matrix
     */
     Matrix!(T,N) opOpAssign(string op)(Matrix!(T,N) mat) if (op == "*")
@@ -338,7 +345,7 @@ struct Matrix(T, size_t N)
         return this;
     }
 
-   /*
+   /**
     * Matrix * T
     */
     Matrix!(T,N) opBinary(string op)(T k) if (op == "*")
@@ -350,7 +357,7 @@ struct Matrix(T, size_t N)
         return res;
     }
 
-   /*
+   /**
     * Matrix *= T
     */
     Matrix!(T,N) opOpAssign(string op)(T k) if (op == "*")
@@ -361,7 +368,7 @@ struct Matrix(T, size_t N)
         return this;
     }
 
-   /*
+   /**
     * Multiply column vector by the matrix
     */
     static if (N == 2)
@@ -407,7 +414,7 @@ struct Matrix(T, size_t N)
         }
     }
 
-   /*
+   /**
     * Multiply column 3D vector by the affine 4x4 matrix
     */
     static if (N == 4)
@@ -426,7 +433,7 @@ struct Matrix(T, size_t N)
 
     static if (N == 3 || N == 4)
     {
-       /*
+       /**
         * Rotate a vector by the 3x3 upper-left portion of the matrix
         */
         Vector!(T,3) rotate(Vector!(T,3) v)
@@ -440,7 +447,7 @@ struct Matrix(T, size_t N)
             );
         }
 
-       /*
+       /**
         * Rotate a vector by the inverse 3x3 upper-left portion of the matrix
         */
         Vector!(T,3) invRotate(Vector!(T,3) v)
@@ -455,9 +462,6 @@ struct Matrix(T, size_t N)
         }
     }
 
-   /*
-    * Determinant of an upper-left 3x3 portion
-    */
     static if (N == 4 || N == 3)
     {
         T determinant3x3()
@@ -469,11 +473,11 @@ struct Matrix(T, size_t N)
         }
     }
 
-   /*
-    * Determinant
-    */
     static if (N == 1)
     {
+       /**
+        * Determinant (of upper-left 3x3 portion for 4x4 matrices)
+        */
         T determinant()
         do
         {
@@ -496,9 +500,7 @@ struct Matrix(T, size_t N)
     }
     else
     {
-       /*
-        * Determinant of a given upper-left portion
-        */
+        // Determinant of a given upper-left portion
         T determinant(size_t n = N)
         do
         {
@@ -538,7 +540,7 @@ struct Matrix(T, size_t N)
 
     alias det = determinant;
 
-   /*
+   /**
     * Return true if matrix is singular
     */
     bool isSingular() @property
@@ -549,7 +551,7 @@ struct Matrix(T, size_t N)
 
     alias singular = isSingular;
 
-   /*
+   /**
     * Check if matrix represents affine transformation
     */
     static if (N == 4)
@@ -566,7 +568,7 @@ struct Matrix(T, size_t N)
         alias affine = isAffine;
     }
 
-   /*
+   /**
     * Transpose
     */
     void transpose()
@@ -575,7 +577,7 @@ struct Matrix(T, size_t N)
         this = transposed;
     }
 
-   /*
+   /**
     * Return the transposed matrix
     */
     Matrix!(T,N) transposed() @property
@@ -590,7 +592,7 @@ struct Matrix(T, size_t N)
         return res;
     }
 
-   /*
+   /**
     * Invert
     */
     void invert()
@@ -599,7 +601,7 @@ struct Matrix(T, size_t N)
         this = inverse;
     }
 
-   /*
+   /**
     * Inverse of a matrix
     */
     static if (N == 1)
@@ -699,7 +701,7 @@ struct Matrix(T, size_t N)
         }
     }
 
-   /*
+   /**
     * Adjugate and cofactor matrices
     */
     static if (N == 1)
@@ -782,7 +784,7 @@ struct Matrix(T, size_t N)
         }
     }
 
-   /*
+   /**
     * Negative matrix
     */
     Matrix!(T,N) negative() @property
@@ -791,7 +793,7 @@ struct Matrix(T, size_t N)
         return this * -1;
     }
 
-   /*
+   /**
     * Convert to string
     */
     string toString() @property
@@ -800,7 +802,7 @@ struct Matrix(T, size_t N)
         return matrixToStr(this);
     }
 
-   /*
+   /**
     * Symbolic element access
     */
     private static string elements(string letter) @property
@@ -815,7 +817,7 @@ struct Matrix(T, size_t N)
         return res;
     }
 
-   /*
+   /**
     * Row/column manipulations
     */
     Vector!(T,N) getRow(size_t i)
@@ -871,132 +873,33 @@ struct Matrix(T, size_t N)
         return transposed.arrayof;
     }
 
-   /*
+   /**
     * Matrix elements
     */
     union
     {
-       /*
+       /**
         * This auto-generated structure provides symbolic access
-        * to matrix elements, nearly like as in standard mathematic
-        * notation:
-        *
+        * to matrix elements, like in standard mathematic notation:
+        * ---
         *  a11 a12 a13 a14 .. a1N
         *  a21 a22 a23 a24 .. a2N
         *  a31 a32 a33 a34 .. a3N
         *  a41 a42 a43 a44 .. a4N
         *   :   :   :   :  .
         *  aN1 aN2 aN3 aN4  ' aNN
+        * ---
         */
         struct { mixin(elements("a")); }
 
-       /*
+       /**
         * Linear array representing elements column by column
         */
         T[N * N] arrayof;
     }
 }
 
-/*
- * Predefined matrix type aliases
- */
-alias Matrix!(float, 2) Matrix2x2f, Matrix2f;
-alias Matrix!(float, 3) Matrix3x3f, Matrix3f;
-alias Matrix!(float, 4) Matrix4x4f, Matrix4f;
-alias Matrix!(double, 2) Matrix2x2d, Matrix2d;
-alias Matrix!(double, 3) Matrix3x3d, Matrix3d;
-alias Matrix!(double, 4) Matrix4x4d, Matrix4d;
-
-/*
- * Short aliases
- */
-alias mat2 = Matrix2x2f;
-alias mat3 = Matrix3x3f;
-alias mat4 = Matrix4x4f;
-
-/*
- * Matrix factory function
- */
-auto matrixf(A...)(A arr)
-{
-    static assert(isPerfectSquare(arr.length),
-        "matrixf(A): input array length is not perfect square integer");
-    return Matrix!(float, cast(size_t)sqrt(cast(float)arr.length))([arr]);
-}
-
-/*
- * Conversions between 3x3 and 4x4 matrices.
- * 4x4 matrix defaults to identity
- */
-Matrix!(T,4) matrix3x3to4x4(T) (Matrix!(T,3) m)
-{
-    auto res = Matrix!(T,4).identity;
-    res.a11 = m.a11; res.a12 = m.a12; res.a13 = m.a13;
-    res.a21 = m.a21; res.a22 = m.a22; res.a23 = m.a23;
-    res.a31 = m.a31; res.a32 = m.a32; res.a33 = m.a33;
-    return res;
-}
-
-Matrix!(T,3) matrix4x4to3x3(T) (Matrix!(T,4) m)
-{
-    auto res = Matrix!(T,3).identity;
-    res.a11 = m.a11; res.a12 = m.a12; res.a13 = m.a13;
-    res.a21 = m.a21; res.a22 = m.a22; res.a23 = m.a23;
-    res.a31 = m.a31; res.a32 = m.a32; res.a33 = m.a33;
-    return res;
-}
-
-/*
- * Formatted matrix printer
- */
-string matrixToStr(T, size_t N)(Matrix!(T, N) m)
-{
-    uint width = 8;
-    string maxnum;
-    foreach(x; m.arrayof)
-    {
-        string num;
-        real frac, integ;
-        frac = modf(x, integ);
-        if (frac == 0.0f)
-        {
-            num = format("% s", to!long(integ));
-            if (num.length > width)
-                width = cast(uint)num.length;
-        }
-        else
-        {
-            num = format("% .4f", x);
-        }
-    }
-
-    auto writer = appender!string();
-    foreach (x; 0..N)
-    {
-        foreach (y; 0..N)
-        {
-            string s = format("% -*.4f", width, m.arrayof[y * N + x]);
-            uint n = 0;
-            foreach(i, c; s)
-            {
-                if (i < width)
-                {
-                    formattedWrite(writer, c.to!string);
-                    n++;
-                }
-            }
-
-            if (y < N-1)
-                formattedWrite(writer, "  ");
-        }
-
-        if (x < N-1)
-            formattedWrite(writer, "\n");
-    }
-
-    return writer.data;
-}
-
+///
 unittest
 {
     auto m1 = matrixf(
@@ -1069,4 +972,114 @@ unittest
       -16, -49, 113,  19,
      -158, 154, -89, -25)
     );
+}
+
+/*
+ * Predefined matrix type aliases
+ */
+/// Alias for single precision 2x2 Matrix
+alias Matrix!(float, 2) Matrix2x2f, Matrix2f;
+/// Alias for single precision 3x3 Matrix
+alias Matrix!(float, 3) Matrix3x3f, Matrix3f;
+/// Alias for single precision 4x4 Matrix
+alias Matrix!(float, 4) Matrix4x4f, Matrix4f;
+/// Alias for double precision 2x2 Matrix
+alias Matrix!(double, 2) Matrix2x2d, Matrix2d;
+/// Alias for double precision 3x3 Matrix
+alias Matrix!(double, 3) Matrix3x3d, Matrix3d;
+/// Alias for double precision 4x4 Matrix
+alias Matrix!(double, 4) Matrix4x4d, Matrix4d;
+
+/**
+ * Short aliases
+ */
+alias mat2 = Matrix2x2f;
+alias mat3 = Matrix3x3f;
+alias mat4 = Matrix4x4f;
+
+/**
+ * Matrix factory function
+ */
+auto matrixf(A...)(A arr)
+{
+    static assert(isPerfectSquare(arr.length),
+        "matrixf(A): input array length is not perfect square integer");
+    return Matrix!(float, cast(size_t)sqrt(cast(float)arr.length))([arr]);
+}
+
+/**
+ * Converts 3x3 matrix to 4x4 matrix.
+ * 4x4 matrix defaults to identity
+ */
+Matrix!(T,4) matrix3x3to4x4(T) (Matrix!(T,3) m)
+{
+    auto res = Matrix!(T,4).identity;
+    res.a11 = m.a11; res.a12 = m.a12; res.a13 = m.a13;
+    res.a21 = m.a21; res.a22 = m.a22; res.a23 = m.a23;
+    res.a31 = m.a31; res.a32 = m.a32; res.a33 = m.a33;
+    return res;
+}
+
+/**
+ * Converts 4x4 matrix to 3x3 matrix.
+ * 3x3 matrix defaults to identity
+ */
+Matrix!(T,3) matrix4x4to3x3(T) (Matrix!(T,4) m)
+{
+    auto res = Matrix!(T,3).identity;
+    res.a11 = m.a11; res.a12 = m.a12; res.a13 = m.a13;
+    res.a21 = m.a21; res.a22 = m.a22; res.a23 = m.a23;
+    res.a31 = m.a31; res.a32 = m.a32; res.a33 = m.a33;
+    return res;
+}
+
+/**
+ * Formatted matrix printer
+ */
+string matrixToStr(T, size_t N)(Matrix!(T, N) m)
+{
+    uint width = 8;
+    string maxnum;
+    foreach(x; m.arrayof)
+    {
+        string num;
+        real frac, integ;
+        frac = modf(x, integ);
+        if (frac == 0.0f)
+        {
+            num = format("% s", to!long(integ));
+            if (num.length > width)
+                width = cast(uint)num.length;
+        }
+        else
+        {
+            num = format("% .4f", x);
+        }
+    }
+
+    auto writer = appender!string();
+    foreach (x; 0..N)
+    {
+        foreach (y; 0..N)
+        {
+            string s = format("% -*.4f", width, m.arrayof[y * N + x]);
+            uint n = 0;
+            foreach(i, c; s)
+            {
+                if (i < width)
+                {
+                    formattedWrite(writer, c.to!string);
+                    n++;
+                }
+            }
+
+            if (y < N-1)
+                formattedWrite(writer, "  ");
+        }
+
+        if (x < N-1)
+            formattedWrite(writer, "\n");
+    }
+
+    return writer.data;
 }

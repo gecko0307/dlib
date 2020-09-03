@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2019 Timur Gafarov
+Copyright (c) 2011-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,20 +26,23 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2011-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.math.quaternion;
 
-private
-{
-    import std.math;
-    import std.traits;
+import std.math;
+import std.traits;
 
-    import dlib.math.vector;
-    import dlib.math.matrix;
-    import dlib.math.utils;
-}
+import dlib.math.vector;
+import dlib.math.matrix;
+import dlib.math.utils;
 
-public:
-
+/**
+ * Quaternion representation
+ */
 struct Quaternion(T)
 {
     Vector!(T,4) vectorof;
@@ -65,7 +68,7 @@ struct Quaternion(T)
         vectorof = Vector!(T,4)(v.x, v.y, v.z, neww);
     }
 
-   /*
+   /**
     * Identity quaternion
     */
     static Quaternion!(T) identity()
@@ -73,7 +76,7 @@ struct Quaternion(T)
         return Quaternion!(T)(T(0), T(0), T(0), T(1));
     }
 
-   /*
+   /**
     * Quaternion!(T) + Quaternion!(T)
     */
     Quaternion!(T) opBinary(string op)(Quaternion!(T) q) if (op == "+")
@@ -81,7 +84,7 @@ struct Quaternion(T)
         return Quaternion!(T)(x + q.x, y + q.y, z + q.z, w + q.w);
     }
 
-   /*
+   /**
     * Quaternion!(T) += Quaternion!(T)
     */
     Quaternion!(T) opOpAssign(string op)(Quaternion!(T) q) if (op == "+")
@@ -90,7 +93,7 @@ struct Quaternion(T)
         return this;
     }
 
-   /*
+   /**
     * Quaternion!(T) - Quaternion!(T)
     */
     Quaternion!(T) opBinary(string op)(Quaternion!(T) q) if (op == "-")
@@ -98,7 +101,7 @@ struct Quaternion(T)
         return Quaternion!(T)(x - q.x, y - q.y, z - q.z, w - q.w);
     }
 
-   /*
+   /**
     * Quaternion!(T) -= Quaternion!(T)
     */
     Quaternion!(T) opOpAssign(string op)(Quaternion!(T) q) if (op == "-")
@@ -107,7 +110,7 @@ struct Quaternion(T)
         return this;
     }
 
-   /*
+   /**
     * Quaternion!(T) * Quaternion!(T)
     */
     Quaternion!(T) opBinary(string op)(Quaternion!(T) q) if (op == "*")
@@ -121,7 +124,7 @@ struct Quaternion(T)
         );
     }
 
-   /*
+   /**
     * Quaternion!(T) *= Quaternion!(T)
     */
     Quaternion!(T) opOpAssign(string op)(Quaternion!(T) q) if (op == "*")
@@ -130,7 +133,7 @@ struct Quaternion(T)
         return this;
     }
 
-   /*
+   /**
     * Quaternion!(T) * T
     */
     Quaternion!(T) opBinary(string op)(T k) if (op == "*")
@@ -138,7 +141,7 @@ struct Quaternion(T)
         return Quaternion!(T)(x * k, y * k, z * k, w * k);
     }
 
-   /*
+   /**
     * Quaternion!(T) *= T
     */
     Quaternion!(T) opOpAssign(string op)(T k) if (op == "*")
@@ -150,7 +153,7 @@ struct Quaternion(T)
         return this;
     }
 
-   /*
+   /**
     * T * Quaternion!(T)
     */
     Quaternion!(T) opBinaryRight(string op) (T k) if (op == "*")
@@ -158,7 +161,7 @@ struct Quaternion(T)
         return Quaternion!(T)(x * k, y * k, z * k, w * k);
     }
 
-   /*
+   /**
     * Quaternion!(T) / T
     */
     Quaternion!(T) opBinary(string op)(T k) if (op == "/")
@@ -173,7 +176,7 @@ struct Quaternion(T)
         );
     }
 
-   /*
+   /**
     * Quaternion!(T) /= T
     */
     Quaternion!(T) opOpAssign(string op)(T k) if (op == "/")
@@ -186,7 +189,7 @@ struct Quaternion(T)
         return this;
     }
 
-   /*
+   /**
     * Quaternion!(T) * Vector!(T,3)
     */
     Quaternion!(T) opBinary(string op)(Vector!(T,3) v) if (op == "*")
@@ -200,7 +203,7 @@ struct Quaternion(T)
         );
     }
 
-   /*
+   /**
     * Quaternion!(T) *= Vector!(T,3)
     */
     Quaternion!(T) opOpAssign(string op)(Vector!(T,3) v) if (op == "*")
@@ -209,7 +212,7 @@ struct Quaternion(T)
         return this;
     }
 
-   /*
+   /**
     * Conjugate
     * A quaternion with the opposite rotation
     */
@@ -220,7 +223,7 @@ struct Quaternion(T)
 
     alias conj = conjugate;
 
-   /*
+   /**
     * Compute the W component of a unit length quaternion
     */
     void computeW()
@@ -232,7 +235,7 @@ struct Quaternion(T)
             w = -(t.sqrt);
     }
 
-   /*
+   /**
     * Rotate a point by quaternion
     */
     Vector!(T,3) rotate(Vector!(T,3) v)
@@ -250,7 +253,7 @@ struct Quaternion(T)
 
     static if (isNumeric!(T))
     {
-       /*
+       /**
         * Normalized version
         */
         Quaternion!(T) normalized()
@@ -260,7 +263,7 @@ struct Quaternion(T)
             return q;
         }
 
-       /*
+       /**
         * Convert to 4x4 matrix
         */
         Matrix!(T,4) toMatrix4x4()
@@ -291,7 +294,7 @@ struct Quaternion(T)
             return mat;
         }
 
-       /*
+       /**
         * Convert to 3x3 matrix
         */
         Matrix!(T,3) toMatrix3x3()
@@ -314,7 +317,7 @@ struct Quaternion(T)
             return mat;
         }
 
-       /*
+       /**
         * Setup the quaternion to perform a rotation,
         * given the angular displacement in matrix form
         */
@@ -364,7 +367,7 @@ struct Quaternion(T)
             return q;
         }
 
-       /*
+       /**
         * Setup the quaternion to perform a rotation,
         * given the orientation in XYZ-Euler angles format (in radians)
         */
@@ -388,7 +391,7 @@ struct Quaternion(T)
             return q;
         }
 
-       /*
+       /**
         * Setup the Euler angles, given a rotation Quaternion.
         * Returned x,y,z are in radians
         */
@@ -419,7 +422,7 @@ struct Quaternion(T)
             return e;
         }
 
-       /*
+       /**
         * Return the rotation angle (in radians)
         */
         T rotationAngle()
@@ -428,7 +431,7 @@ struct Quaternion(T)
             return 2.0 * acos(w);
         }
 
-       /*
+       /**
         * Return the rotation axis
         */
         Vector!(T,3) rotationAxis()
@@ -442,7 +445,7 @@ struct Quaternion(T)
                 return Vector!(T,3)(x / s, y / s, z / s);
         }
 
-       /*
+       /**
         * Quaternion as an angular velocity
         */
         Vector!(T,3) generator()
@@ -464,8 +467,8 @@ struct Quaternion(T)
     }
 }
 
-/*
- * Setup a quaternion to rotate about the specified axis.
+/**
+ * Setup a quaternion to rotate about world axis.
  * Theta must be in radians
  */
 Quaternion!(T) rotationQuaternion(T)(uint rotaxis, T theta)
@@ -503,6 +506,10 @@ Quaternion!(T) rotationQuaternion(T)(uint rotaxis, T theta)
     return res;
 }
 
+/**
+ * Setup a quaternion to rotate about specified axis.
+ * Theta must be in radians
+ */
 Quaternion!(T) rotationQuaternion(T)(Vector!(T,3) rotaxis, T theta)
 {
     Quaternion!(T) res;
@@ -517,7 +524,7 @@ Quaternion!(T) rotationQuaternion(T)(Vector!(T,3) rotaxis, T theta)
     return res;
 }
 
-/*
+/**
  * Setup a quaternion to represent rotation
  * between two unit-length vectors
  */
@@ -554,8 +561,8 @@ Quaternion!(T) rotationBetween(T)(Vector!(T,3) a, Vector!(T,3) b)
     return q;
 }
 
-/*
- * Logarithm
+/**
+ * Quaternion logarithm
  */
 Quaternion!(T) log(T)(Quaternion!(T) q)
 {
@@ -583,8 +590,8 @@ Quaternion!(T) log(T)(Quaternion!(T) q)
     return res;
 }
 
-/*
- * Exponential
+/**
+ * Quaternion exponential
  */
 Quaternion!(T) exp(T) (Quaternion!(T) q)
 {
@@ -610,8 +617,8 @@ Quaternion!(T) exp(T) (Quaternion!(T) q)
     return res;
 }
 
-/*
- * Exponentiation
+/**
+ * Quaternion exponentiation
  */
 Quaternion!(T) pow(T) (Quaternion!(T) q, T exponent)
 {
@@ -624,7 +631,7 @@ Quaternion!(T) pow(T) (Quaternion!(T) q, T exponent)
     return new Quaternion!(T)(n, cos(newAlpha));
 }
 
-/*
+/**
  * Spherical linear interpolation
  */
 Quaternion!(T) slerp(T)(
@@ -676,7 +683,7 @@ Quaternion!(T) slerp(T)(
     return res;
 }
 
-/*
+/**
  * Spherical cubic interpolation
  */
 Quaternion!(T) squad(T)(
@@ -692,7 +699,7 @@ Quaternion!(T) squad(T)(
     return slerp(slerp_q0, slerp_q1, slerp_t);
 }
 
-/*
+/**
  * Compute intermediate quaternions for building spline segments
  */
 Quaternion!(T) intermediate(T)(
@@ -723,5 +730,7 @@ do
 /*
  * Predefined quaternion type aliases
  */
+/// Alias for single precision Quaternion
 alias Quaternionf = Quaternion!(float);
+/// Alias for double precision Quaternion
 alias Quaterniond = Quaternion!(double);

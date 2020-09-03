@@ -26,30 +26,32 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2011-2019.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.math.vector;
 
-private
-{
-    import std.conv;
-    import std.math;
-    import std.random;
-    import std.range;
-    import std.format;
-    import std.traits;
-    import dlib.core.tuple;
+import std.conv;
+import std.math;
+import std.random;
+import std.range;
+import std.format;
+import std.traits;
+import dlib.core.tuple;
+import dlib.math.utils;
+import dlib.math.matrix;
 
-    import dlib.math.utils;
-    import dlib.math.matrix;
-}
-
-public:
-
+/**
+ * Vector representation
+ */
 struct Vector(T, int size)
 {
     public:
 
-   /*
-    * Vector constructor
+   /**
+    * Vector constructor.
     * Supports initializing from vector of arbitrary length and type
     */
     this (T2, int size2)(Vector!(T2, size2) v)
@@ -66,7 +68,7 @@ struct Vector(T, int size)
         }
     }
 
-   /*
+   /**
     * Array constructor
     */
     this (A)(A components) if (isDynamicArray!A && !isSomeString!A)
@@ -83,7 +85,7 @@ struct Vector(T, int size)
         }
     }
 
-   /*
+   /**
     * Static array constructor
     */
     this (T2, size_t arrSize)(T2[arrSize] components)
@@ -100,7 +102,7 @@ struct Vector(T, int size)
         }
     }
 
-   /*
+   /**
     * Tuple constructor
     */
     this (F...)(F components)
@@ -114,7 +116,7 @@ struct Vector(T, int size)
         }
     }
 
-   /*
+   /**
     * String constructor
     */
     this (S)(S str) if (isSomeString!S)
@@ -122,7 +124,7 @@ struct Vector(T, int size)
         arrayof = parse!(T[size])(str);
     }
 
-   /*
+   /**
     * Vector!(T,size) = Vector!(T,size2)
     */
     void opAssign(T2, int size2)(Vector!(T2,size2) v)
@@ -139,13 +141,15 @@ struct Vector(T, int size)
         }
     }
 
-    // Same, but for enums
+   /**
+    * Vector!(T,size) = Vector!(T,size2) for enums
+    */
     void opAssign(T2)(T2 ev) if (is(T2 == enum))
     {
         opAssign(cast(OriginalType!T2)ev);
     }
 
-   /*
+   /**
     * -Vector!(T,size)
     */
     Vector!(T,size) opUnary(string s) () const if (s == "-")
@@ -157,7 +161,7 @@ struct Vector(T, int size)
         return res;
     }
 
-   /*
+   /**
     * +Vector!(T,size)
     */
     Vector!(T,size) opUnary(string s) () const if (s == "+")
@@ -166,7 +170,7 @@ struct Vector(T, int size)
         return Vector!(T,size)(this);
     }
 
-   /*
+   /**
     * Vector!(T,size) + Vector!(T,size)
     */
     Vector!(T,size) opBinary(string op)(Vector!(T,size) v) const if (op == "+")
@@ -178,7 +182,7 @@ struct Vector(T, int size)
         return res;
     }
 
-   /*
+   /**
     * Vector!(T,size) - Vector!(T,size)
     */
     Vector!(T,size) opBinary(string op)(Vector!(T,size) v) const if (op == "-")
@@ -190,7 +194,7 @@ struct Vector(T, int size)
         return res;
     }
 
-   /*
+   /**
     * Vector!(T,size) * Vector!(T,size)
     */
     Vector!(T,size) opBinary(string op)(Vector!(T,size) v) const if (op == "*")
@@ -202,7 +206,7 @@ struct Vector(T, int size)
         return res;
     }
 
-   /*
+   /**
     * Vector!(T,size) / Vector!(T,size)
     */
     Vector!(T,size) opBinary(string op)(Vector!(T,size) v) const if (op == "/")
@@ -214,7 +218,7 @@ struct Vector(T, int size)
         return res;
     }
 
-   /*
+   /**
     * Vector!(T,size) + T
     */
     Vector!(T,size) opBinary(string op)(T t) const if (op == "+")
@@ -226,7 +230,7 @@ struct Vector(T, int size)
         return res;
     }
 
-   /*
+   /**
     * Vector!(T,size) - T
     */
     Vector!(T,size) opBinary(string op)(T t) const if (op == "-")
@@ -238,7 +242,7 @@ struct Vector(T, int size)
         return res;
     }
 
-   /*
+   /**
     * Vector!(T,size) * T
     */
     Vector!(T,size) opBinary(string op)(T t) const if (op == "*")
@@ -250,7 +254,7 @@ struct Vector(T, int size)
         return res;
     }
 
-   /*
+   /**
     * T * Vector!(T,size)
     */
     Vector!(T,size) opBinaryRight(string op) (T t) const
@@ -263,7 +267,7 @@ struct Vector(T, int size)
         return res;
     }
 
-   /*
+   /**
     * Vector!(T,size) / T
     */
     Vector!(T,size) opBinary(string op)(T t) const if (op == "/")
@@ -275,7 +279,7 @@ struct Vector(T, int size)
         return res;
     }
 
-   /*
+   /**
     * Vector!(T,size) % T
     */
     Vector!(T,size) opBinary(string op, T2) (T2 t) const if (op == "%")
@@ -287,115 +291,106 @@ struct Vector(T, int size)
         return res;
     }
 
-   /*
+   /**
     * Vector!(T,size) += Vector!(T,size)
     */
     Vector!(T,size) opOpAssign(string op)(Vector!(T,size) v) if (op == "+")
     do
     {
-        //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
             arrayof[i] += v.arrayof[i];
         return this;
     }
 
-   /*
+   /**
     * Vector!(T,size) -= Vector!(T,size)
     */
     Vector!(T,size) opOpAssign(string op)(Vector!(T,size) v) if (op == "-")
     do
     {
-        //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
             arrayof[i] -= v.arrayof[i];
         return this;
     }
 
-   /*
+   /**
     * Vector!(T,size) *= Vector!(T,size)
     */
     Vector!(T,size) opOpAssign(string op)(Vector!(T,size) v) if (op == "*")
     do
     {
-        //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
             arrayof[i] *= v.arrayof[i];
         return this;
     }
 
-   /*
+   /**
     * Vector!(T,size) /= Vector!(T,size)
     */
     Vector!(T,size) opOpAssign(string op)(Vector!(T,size) v) if (op == "/")
     do
     {
-        //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
             arrayof[i] /= v.arrayof[i];
         return this;
     }
 
-   /*
+   /**
     * Vector!(T,size) += T
     */
     Vector!(T,size) opOpAssign(string op)(T t) if (op == "+")
     do
     {
-        //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
             arrayof[i] += t;
         return this;
     }
 
-   /*
+   /**
     * Vector!(T,size) -= T
     */
     Vector!(T,size) opOpAssign(string op)(T t) if (op == "-")
     do
     {
-        //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
             arrayof[i] -= t;
         return this;
     }
 
-   /*
+   /**
     * Vector!(T,size) *= T
     */
     Vector!(T,size) opOpAssign(string op)(T t) if (op == "*")
     do
     {
-        //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
             arrayof[i] *= t;
         return this;
     }
 
-   /*
+   /**
     * Vector!(T,size) /= T
     */
     Vector!(T,size) opOpAssign(string op)(T t) if (op == "/")
     do
     {
-        //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
             arrayof[i] /= t;
         return this;
     }
 
-   /*
+   /**
     * Vector!(T,size) %= T
     */
     Vector!(T,size) opOpAssign(string op, T2)(T2 t) if (op == "%")
     do
     {
-        //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
             arrayof[i] %= t;
         return this;
     }
 
-   /*
+   /**
     * T = Vector!(T,size)[index]
     */
     auto ref T opIndex(this X)(size_t index)
@@ -409,7 +404,7 @@ struct Vector(T, int size)
         return arrayof[index];
     }
 
-   /*
+   /**
     * Vector!(T,size)[index] = T
     */
     void opIndexAssign(T n, size_t index)
@@ -423,7 +418,7 @@ struct Vector(T, int size)
         arrayof[index] = n;
     }
 
-   /*
+   /**
     * T[] = Vector!(T,size)[index1..index2]
     */
     auto opSlice(this X)(size_t index1, size_t index2)
@@ -437,7 +432,7 @@ struct Vector(T, int size)
         return arrayof[index1..index2];
     }
 
-   /*
+   /**
     * Vector!(T,size)[index1..index2] = T
     */
     T opSliceAssign(T t, size_t index1, size_t index2)
@@ -452,7 +447,7 @@ struct Vector(T, int size)
         return t;
     }
 
-   /*
+   /**
     * T = Vector!(T,size)[]
     */
     auto opSlice(this X)()
@@ -461,14 +456,12 @@ struct Vector(T, int size)
         return arrayof[];
     }
 
-   /*
+   /**
     * Vector!(T,size)[] = T
     */
     T opSliceAssign(T t)
     do
     {
-        //arrayof[] = t;
-        //foreach(i; 0..size)
         foreach(i; RangeTuple!(0, size))
             arrayof[i] = t;
         return t;
@@ -476,7 +469,7 @@ struct Vector(T, int size)
 
     static if (isNumeric!(T))
     {
-       /*
+       /**
         * Get vector length squared
         */
         @property T lengthsqr() const
@@ -488,7 +481,7 @@ struct Vector(T, int size)
             return res;
         }
 
-       /*
+       /**
         * Get vector length
         */
         @property T length() const
@@ -510,7 +503,7 @@ struct Vector(T, int size)
             }
         }
 
-       /*
+       /**
         * Set vector length to 1
         */
         void normalize()
@@ -538,7 +531,7 @@ struct Vector(T, int size)
             }
         }
 
-       /*
+       /**
         * Return normalized copy
         */
         @property Vector!(T,size) normalized() const
@@ -549,7 +542,7 @@ struct Vector(T, int size)
             return res;
         }
 
-       /*
+       /**
         * Return true if all components are zero
         */
         @property bool isZero() const
@@ -561,7 +554,7 @@ struct Vector(T, int size)
             return true;
         }
 
-       /*
+       /**
         * Clamp components to min/max value
         */
         void clamp(T minv, T maxv)
@@ -571,7 +564,7 @@ struct Vector(T, int size)
         }
     }
 
-   /*
+   /**
     * Convert to string
     */
     @property string toString() const
@@ -582,29 +575,11 @@ struct Vector(T, int size)
         return writer.data;
     }
 
-   /*
+   /**
     * Swizzling
     */
     template opDispatch(string s) if (valid(s))
     {
-    /*
-        static if (s.length == 1)
-        {
-            enum i = ["x":0, "y":1, "z":2, "w":3,
-                      "r":0, "g":1, "b":2, "a":3,
-                      "s":0, "t":1, "p":2, "q":3][s];
-
-            @property auto ref opDispatch(this X)()
-            {
-                return arrayof[i];
-            }
-
-            @property auto ref opDispatch(this X, V)(auto ref V v)
-            {
-                return arrayof[i] = v;
-            }
-        }
-        else*/
         static if (s.length <= 4)
         {
             @property auto ref opDispatch(this X)()
@@ -663,7 +638,7 @@ struct Vector(T, int size)
         return true;
     }
 
-   /*
+   /**
     * Symbolic element access
     */
     private static string elements(string[4] letters) @property
@@ -677,369 +652,29 @@ struct Vector(T, int size)
         return res;
     }
 
-   /*
+   /**
     * Vector components
     */
     union
     {
+        // Elements as static array
         T[size] arrayof;
+        
         static if (size < 5)
         {
+            /// Elements as x, y, z, w
             struct { mixin(elements(["x", "y", "z", "w"])); }
+            
+            /// Elements as r, g, b, a
             struct { mixin(elements(["r", "g", "b", "a"])); }
+            
+            /// Elements as s, t, p, q
             struct { mixin(elements(["s", "t", "p", "q"])); }
         }
     }
 }
 
-/*
- * Dot product
- */
-T dot(T, int size) (Vector!(T,size) a, Vector!(T,size) b)
-do
-{
-    static if (size == 1)
-    {
-        return a.x * b.x;
-    }
-    else
-    static if (size == 2)
-    {
-        return ((a.x * b.x) + (a.y * b.y));
-    }
-    else
-    static if (size == 3)
-    {
-        return ((a.x * b.x) + (a.y * b.y) + (a.z * b.z));
-    }
-    else
-    {
-        T d = 0;
-        //foreach (i; 0..size)
-        foreach(i; RangeTuple!(0, size))
-            d += a[i] * b[i];
-        return d;
-    }
-}
-
-/*
- * Cross product
- */
-Vector!(T,size) cross(T, int size) (Vector!(T,size) a, Vector!(T,size) b) if (size == 3)
-do
-{
-    return Vector!(T,size)
-    (
-        (a.y * b.z) - (a.z * b.y),
-        (a.z * b.x) - (a.x * b.z),
-        (a.x * b.y) - (a.y * b.x)
-    );
-}
-
-Vector!(T,size) cross(T, int size) (Vector!(T,size) a, Vector!(T,size) b, Vector!(T,size) c) if (size == 4)
-do
-{
-    return Vector!(T,size)
-    (
-        (a.y * b.z * c.w) - (a.y * b.w * c.z)
-      + (a.z * b.w * c.y) - (a.z * b.y * c.w)
-      + (a.w * b.y * c.z) - (a.w * b.z * c.y),
-
-        (a.z * b.w * c.x) - (a.z * b.x * c.w)
-      + (a.w * b.x * c.z) - (a.w * b.z * c.x)
-      + (a.x * b.z * c.w) - (a.x * b.w * c.z),
-
-        (a.w * b.x * c.y) - (a.w * b.y * c.x)
-      + (a.x * b.y * c.w) - (a.x * b.w * c.y)
-      + (a.y * b.w * c.x) - (a.y * b.x * c.w),
-
-        (a.x * b.y * c.z) - (a.x * b.z * c.y)
-      + (a.y * b.z * c.x) - (a.y * b.x * c.z)
-      + (a.z * b.x * c.y) - (a.z * b.y * c.x)
-    );
-}
-
-/*
- * Tensor product
- */
-Matrix!(T,N) tensorProduct(T, size_t N) (Vector!(T,N) u, Vector!(T,N) v)
-do
-{
-    Matrix!(T,N) res;
-    foreach(i; 0..N)
-    foreach(j; 0..N)
-    {
-        res[i, j] = u[i] * v[j];
-    }
-    return res;
-}
-
-alias outerProduct = tensorProduct;
-
-/*
- * Compute normal of a plane from three points
- */
-Vector!(T,3) planeNormal(T) (Vector!(T,3) p1, Vector!(T,3) p2, Vector!(T,3) p3)
-do
-{
-    Vector!(T,3) vec1 = Vector!(T,3)(p1 - p2);
-    Vector!(T,3) vec2 = Vector!(T,3)(p1 - p3);
-
-    Vector!(T,3) result = Vector!(T,3)(cross(vec1,vec2));
-    result.normalize();
-
-    return result;
-}
-
-void rotateAroundAxis(T) (ref Vector!(T,3) V, Vector!(T,3) P, Vector!(T,3) D, T angle)
-{
-    T axx,axy,axz,ax1;
-    T ayx,ayy,ayz,ay1;
-    T azx,azy,azz,az1;
-
-    T u,v,w;
-    T u2,v2,w2;
-    T a,b,c;
-
-    T sa,ca;
-
-    sa = sin(angle);
-    ca = cos(angle);
-
-    u = D.x;
-    v = D.y;
-    w = D.z;
-
-    u2 = u * u;
-    v2 = v * v;
-    w2 = w * w;
-
-    a = P.x;
-    b = P.y;
-    c = P.z;
-
-    axx = u2+(v2+w2)*ca;
-    axy = u*v*(1-ca)-w*sa;
-    axz = u*w*(1-ca)+v*sa;
-    ax1 = a*(v2+w2)-u*(b*v+c*w)+(u*(b*v+c*w)-a*(v2+w2))*ca+(b*w-c*v)*sa;
-
-    ayx = u*v*(1-ca)+w*sa;
-    ayy = v2+(u2+w2)*ca;
-    ayz = v*w*(1-ca)-u*sa;
-    ay1 = b*(u2+w2)-v*(a*u+c*w)+(v*(a*u+c*w)-b*(u2+w2))*ca+(c*u-a*w)*sa;
-
-    azx = u*w*(1-ca)-v*sa;
-    azy = v*w*(1-ca)+u*sa;
-    azz = w2+(u2+v2)*ca;
-
-    az1 = c*(u2+v2)-w*(a*u+b*v)+(w*(a*u+b*v)-c*(u2+v2))*ca+(a*v-b*u)*sa;
-
-    Vector!(T,3) W;
-    W.x = axx * V.x + axy * V.y + axz * V.z + ax1;
-    W.y = ayx * V.x + ayy * V.y + ayz * V.z + ay1;
-    W.z = azx * V.x + azy * V.y + azz * V.z + az1;
-
-    V = W;
-}
-
-/*
- * Compute distance between two points
- */
-T distance(T) (Vector!(T,2) a, Vector!(T,2) b)
-do
-{
-    T dx = a.x - b.x;
-    T dy = a.y - b.y;
-    return sqrt((dx * dx) + (dy * dy));
-}
-
-T distancesqr(T) (Vector!(T,2) a, Vector!(T,2) b)
-do
-{
-    T dx = a.x - b.x;
-    T dy = a.y - b.y;
-    return ((dx * dx) + (dy * dy));
-}
-
-T distance(T) (Vector!(T,3) a, Vector!(T,3) b)
-do
-{
-    T dx = a.x - b.x;
-    T dy = a.y - b.y;
-    T dz = a.z - b.z;
-    return sqrt((dx * dx) + (dy * dy) + (dz * dz));
-}
-
-T distancesqr(T) (Vector!(T,3) a, Vector!(T,3) b)
-do
-{
-    T dx = a.x - b.x;
-    T dy = a.y - b.y;
-    T dz = a.z - b.z;
-    return ((dx * dx) + (dy * dy) + (dz * dz));
-}
-
-/*
- * Random unit length vectors
- */
-Vector!(T,2) randomUnitVector2(T)()
-{
-    float azimuth = uniform(0.0, 1.0) * 2 * PI;
-    return Vector!(T,2)(cos(azimuth), sin(azimuth));
-}
-
-Vector!(T,3) randomUnitVector3(T)()
-{
-    float z = (2 * uniform(0.0, 1.0)) - 1;
-    Vector!(T,2) planar = randomUnitVector2!(T)() * sqrt(1 - z * z);
-    return Vector!(T,3)(planar.x, planar.y, z);
-}
-
-/*
- * Spherical linear interpolation
- * (simple lerp is in dlib.math.interpolation)
- */
-Vector!(T,3) slerp(T) (Vector!(T,3) a, Vector!(T,3) b, T t)
-{
-    T dp = dot(a, b);
-    dp = clamp(dp, -1.0, 1.0);
-    T theta = acos(dp) * t;
-    Vector!(T,3) relativeVec = b - a * dp;
-    relativeVec.normalize();
-    return ((a * cos(theta)) + (relativeVec * sin(theta)));
-}
-
-/*
- * Gradually decrease vector to zero length
- */
-Vector!(T,3) vectorDecreaseToZero(T) (Vector!(T,3) vector, T step)
-{
-    foreach (ref component; vector.arrayof)
-    {
-        if (component > 0.0)
-            component -= step;
-        if (component < 0.0)
-            component += step;
-    }
-    return vector;
-}
-
-/*
- * Almost zero
- */
-bool isAlmostZero(Vector3f v)
-{
-    return (isConsiderZero(v.x) &&
-            isConsiderZero(v.y) &&
-            isConsiderZero(v.z));
-}
-
-
-Vector!(T,3) reflect(T)(Vector!(T,3) I, Vector!(T,3) N)
-{
-    return I - N * dot(N, I) * 2.0;
-}
-
-Vector!(T,3) refract(T)(Vector!(T,3) I, Vector!(T,3) N, T r)
-{
-    T d = 1.0 - r * r * (1.0 - dot(N, I) * dot(N, I));
-    if (d < 0.0)
-        return Vector!(T,3)(0.0, 0.0, 0.0);
-    return I * r - N * (r * dot(N, I) + sqrt(d));
-}
-
-Vector!(T,3) faceforward(T)(Vector!(T,3) N, Vector!(T,3) I, Vector!(T,3) Nref)
-{
-    return dot(Nref, I) < 0.0 ? N : -N;
-}
-
-/*
- * Predefined vector types
- */
-alias Vector2i = Vector!(int, 2);
-alias Vector2u = Vector!(uint, 2);
-alias Vector2f = Vector!(float, 2);
-alias Vector2d = Vector!(double, 2);
-
-alias Vector3i = Vector!(int, 3);
-alias Vector3u = Vector!(uint, 3);
-alias Vector3f = Vector!(float, 3);
-alias Vector3d = Vector!(double, 3);
-
-alias Vector4i = Vector!(int, 4);
-alias Vector4u = Vector!(uint, 4);
-alias Vector4f = Vector!(float, 4);
-alias Vector4d = Vector!(double, 4);
-
-/*
- * GLSL-like short aliases
- */
-alias ivec2 = Vector2i;
-alias uvec2 = Vector2u;
-alias vec2 = Vector2f;
-alias dvec2 = Vector2d;
-
-alias ivec3 = Vector3i;
-alias uvec3 = Vector3u;
-alias vec3 = Vector3f;
-alias dvec3 = Vector3d;
-
-alias ivec4 = Vector4i;
-alias uvec4 = Vector4u;
-alias vec4 = Vector4f;
-alias dvec4 = Vector4d;
-
-/*
- * Axis vectors
- */
-static struct AxisVector
-{
-    Vector3f x = Vector3f(1.0f, 0.0f, 0.0f);
-    Vector3f y = Vector3f(0.0f, 1.0f, 0.0f);
-    Vector3f z = Vector3f(0.0f, 0.0f, 1.0f);
-}
-
-/*
- * Vector factory function
- */
-auto vectorf(T...)(T t) if (t.length > 0)
-{
-    return Vector!(float, t.length)(t);
-}
-
-/*
- * L-value pseudovector for assignment purposes.
- *
- * Usage example:
- *
- *  float a, b, c
- *  lvector(a, b, c) = Vector3f(10, 4, 2);
- */
-auto lvector(T...)(ref T x)
-{
-    struct Result(T, uint size)
-    {
-        T*[size] arrayof;
-
-        void opAssign(int size2)(Vector!(T,size2) v)
-        {
-            if (v.arrayof.length >= size)
-                foreach(i; 0..size)
-                    *arrayof[i] = v.arrayof[i];
-            else
-                foreach(i; 0..v.arrayof.length)
-                    *arrayof[i] = v.arrayof[i];
-        }
-    }
-
-    auto res = Result!(typeof(x[0]), x.length)();
-
-    foreach(i, ref v; x)
-        res.arrayof[i] = &v;
-
-    return res;
-}
-
+///
 unittest
 {
     {
@@ -1132,4 +767,391 @@ unittest
         Vector3f a = Vector3f(1, 2, 3, 4);
         assert(dot(a, a) == 14);
     }
+}
+
+/**
+ * Dot product
+ */
+T dot(T, int size) (Vector!(T,size) a, Vector!(T,size) b)
+do
+{
+    static if (size == 1)
+    {
+        return a.x * b.x;
+    }
+    else
+    static if (size == 2)
+    {
+        return ((a.x * b.x) + (a.y * b.y));
+    }
+    else
+    static if (size == 3)
+    {
+        return ((a.x * b.x) + (a.y * b.y) + (a.z * b.z));
+    }
+    else
+    {
+        T d = 0;
+        //foreach (i; 0..size)
+        foreach(i; RangeTuple!(0, size))
+            d += a[i] * b[i];
+        return d;
+    }
+}
+
+/**
+ * Cross product
+ */
+Vector!(T,size) cross(T, int size) (Vector!(T,size) a, Vector!(T,size) b) if (size == 3)
+do
+{
+    return Vector!(T,size)
+    (
+        (a.y * b.z) - (a.z * b.y),
+        (a.z * b.x) - (a.x * b.z),
+        (a.x * b.y) - (a.y * b.x)
+    );
+}
+
+/**
+ * Cross product for 4-vectors
+ */
+Vector!(T,size) cross(T, int size) (Vector!(T,size) a, Vector!(T,size) b, Vector!(T,size) c) if (size == 4)
+do
+{
+    return Vector!(T,size)
+    (
+        (a.y * b.z * c.w) - (a.y * b.w * c.z)
+      + (a.z * b.w * c.y) - (a.z * b.y * c.w)
+      + (a.w * b.y * c.z) - (a.w * b.z * c.y),
+
+        (a.z * b.w * c.x) - (a.z * b.x * c.w)
+      + (a.w * b.x * c.z) - (a.w * b.z * c.x)
+      + (a.x * b.z * c.w) - (a.x * b.w * c.z),
+
+        (a.w * b.x * c.y) - (a.w * b.y * c.x)
+      + (a.x * b.y * c.w) - (a.x * b.w * c.y)
+      + (a.y * b.w * c.x) - (a.y * b.x * c.w),
+
+        (a.x * b.y * c.z) - (a.x * b.z * c.y)
+      + (a.y * b.z * c.x) - (a.y * b.x * c.z)
+      + (a.z * b.x * c.y) - (a.z * b.y * c.x)
+    );
+}
+
+/**
+ * Tensor product
+ */
+Matrix!(T,N) tensorProduct(T, size_t N) (Vector!(T,N) u, Vector!(T,N) v)
+do
+{
+    Matrix!(T,N) res;
+    foreach(i; 0..N)
+    foreach(j; 0..N)
+    {
+        res[i, j] = u[i] * v[j];
+    }
+    return res;
+}
+
+alias outerProduct = tensorProduct;
+
+/**
+ * Compute normal of a plane from three points
+ */
+Vector!(T,3) planeNormal(T) (Vector!(T,3) p1, Vector!(T,3) p2, Vector!(T,3) p3)
+do
+{
+    Vector!(T,3) vec1 = Vector!(T,3)(p1 - p2);
+    Vector!(T,3) vec2 = Vector!(T,3)(p1 - p3);
+
+    Vector!(T,3) result = Vector!(T,3)(cross(vec1,vec2));
+    result.normalize();
+
+    return result;
+}
+
+/**
+ *
+ */
+void rotateAroundAxis(T) (ref Vector!(T,3) V, Vector!(T,3) P, Vector!(T,3) D, T angle)
+{
+    T axx,axy,axz,ax1;
+    T ayx,ayy,ayz,ay1;
+    T azx,azy,azz,az1;
+
+    T u,v,w;
+    T u2,v2,w2;
+    T a,b,c;
+
+    T sa,ca;
+
+    sa = sin(angle);
+    ca = cos(angle);
+
+    u = D.x;
+    v = D.y;
+    w = D.z;
+
+    u2 = u * u;
+    v2 = v * v;
+    w2 = w * w;
+
+    a = P.x;
+    b = P.y;
+    c = P.z;
+
+    axx = u2+(v2+w2)*ca;
+    axy = u*v*(1-ca)-w*sa;
+    axz = u*w*(1-ca)+v*sa;
+    ax1 = a*(v2+w2)-u*(b*v+c*w)+(u*(b*v+c*w)-a*(v2+w2))*ca+(b*w-c*v)*sa;
+
+    ayx = u*v*(1-ca)+w*sa;
+    ayy = v2+(u2+w2)*ca;
+    ayz = v*w*(1-ca)-u*sa;
+    ay1 = b*(u2+w2)-v*(a*u+c*w)+(v*(a*u+c*w)-b*(u2+w2))*ca+(c*u-a*w)*sa;
+
+    azx = u*w*(1-ca)-v*sa;
+    azy = v*w*(1-ca)+u*sa;
+    azz = w2+(u2+v2)*ca;
+
+    az1 = c*(u2+v2)-w*(a*u+b*v)+(w*(a*u+b*v)-c*(u2+v2))*ca+(a*v-b*u)*sa;
+
+    Vector!(T,3) W;
+    W.x = axx * V.x + axy * V.y + axz * V.z + ax1;
+    W.y = ayx * V.x + ayy * V.y + ayz * V.z + ay1;
+    W.z = azx * V.x + azy * V.y + azz * V.z + az1;
+
+    V = W;
+}
+
+/**
+ * Compute distance between two 2D points
+ */
+T distance(T) (Vector!(T,2) a, Vector!(T,2) b)
+do
+{
+    T dx = a.x - b.x;
+    T dy = a.y - b.y;
+    return sqrt((dx * dx) + (dy * dy));
+}
+
+/**
+ * Compute squared distance between two 2D points
+ */
+T distancesqr(T) (Vector!(T,2) a, Vector!(T,2) b)
+do
+{
+    T dx = a.x - b.x;
+    T dy = a.y - b.y;
+    return ((dx * dx) + (dy * dy));
+}
+
+/**
+ * Compute distance between two 3D points
+ */
+T distance(T) (Vector!(T,3) a, Vector!(T,3) b)
+do
+{
+    T dx = a.x - b.x;
+    T dy = a.y - b.y;
+    T dz = a.z - b.z;
+    return sqrt((dx * dx) + (dy * dy) + (dz * dz));
+}
+
+/**
+ * Compute squared distance between two 3D points
+ */
+T distancesqr(T) (Vector!(T,3) a, Vector!(T,3) b)
+do
+{
+    T dx = a.x - b.x;
+    T dy = a.y - b.y;
+    T dz = a.z - b.z;
+    return ((dx * dx) + (dy * dy) + (dz * dz));
+}
+
+/**
+ * Random unit length 2-vector
+ */
+Vector!(T,2) randomUnitVector2(T)()
+{
+    float azimuth = uniform(0.0, 1.0) * 2 * PI;
+    return Vector!(T,2)(cos(azimuth), sin(azimuth));
+}
+
+/**
+ * Random unit length 3-vector
+ */
+Vector!(T,3) randomUnitVector3(T)()
+{
+    float z = (2 * uniform(0.0, 1.0)) - 1;
+    Vector!(T,2) planar = randomUnitVector2!(T)() * sqrt(1 - z * z);
+    return Vector!(T,3)(planar.x, planar.y, z);
+}
+
+/**
+ * Spherical linear interpolation
+ * (simple lerp is in dlib.math.interpolation)
+ */
+Vector!(T,3) slerp(T) (Vector!(T,3) a, Vector!(T,3) b, T t)
+{
+    T dp = dot(a, b);
+    dp = clamp(dp, -1.0, 1.0);
+    T theta = acos(dp) * t;
+    Vector!(T,3) relativeVec = b - a * dp;
+    relativeVec.normalize();
+    return ((a * cos(theta)) + (relativeVec * sin(theta)));
+}
+
+/**
+ * Gradually decrease vector to zero length
+ */
+Vector!(T,3) vectorDecreaseToZero(T) (Vector!(T,3) vector, T step)
+{
+    foreach (ref component; vector.arrayof)
+    {
+        if (component > 0.0)
+            component -= step;
+        if (component < 0.0)
+            component += step;
+    }
+    return vector;
+}
+
+/**
+ * Is all elements almost zero
+ */
+bool isAlmostZero(Vector3f v)
+{
+    return (isConsiderZero(v.x) &&
+            isConsiderZero(v.y) &&
+            isConsiderZero(v.z));
+}
+
+/**
+ *
+ */
+Vector!(T,3) reflect(T)(Vector!(T,3) I, Vector!(T,3) N)
+{
+    return I - N * dot(N, I) * 2.0;
+}
+
+/**
+ *
+ */
+Vector!(T,3) refract(T)(Vector!(T,3) I, Vector!(T,3) N, T r)
+{
+    T d = 1.0 - r * r * (1.0 - dot(N, I) * dot(N, I));
+    if (d < 0.0)
+        return Vector!(T,3)(0.0, 0.0, 0.0);
+    return I * r - N * (r * dot(N, I) + sqrt(d));
+}
+
+/**
+ *
+ */
+Vector!(T,3) faceforward(T)(Vector!(T,3) N, Vector!(T,3) I, Vector!(T,3) Nref)
+{
+    return dot(Nref, I) < 0.0 ? N : -N;
+}
+
+/**
+ * Predefined vector types
+ */
+/// Alias for 2-vector of ints
+alias Vector2i = Vector!(int, 2);
+/// Alias for 2-vector of uints
+alias Vector2u = Vector!(uint, 2);
+/// Alias for 2-vector of floats
+alias Vector2f = Vector!(float, 2);
+/// Alias for 2-vector of doubles
+alias Vector2d = Vector!(double, 2);
+
+/// Alias for 3-vector of ints
+alias Vector3i = Vector!(int, 3);
+/// Alias for 3-vector of uints
+alias Vector3u = Vector!(uint, 3);
+/// Alias for 3-vector of floats
+alias Vector3f = Vector!(float, 3);
+/// Alias for 2-vector of doubles
+alias Vector3d = Vector!(double, 3);
+
+/// Alias for 4-vector of ints
+alias Vector4i = Vector!(int, 4);
+/// Alias for 4-vector of uints
+alias Vector4u = Vector!(uint, 4);
+/// Alias for 4-vector of floats
+alias Vector4f = Vector!(float, 4);
+/// Alias for 4-vector of doubles
+alias Vector4d = Vector!(double, 4);
+
+/**
+ * GLSL-like short aliases
+ */
+alias ivec2 = Vector2i;
+alias uvec2 = Vector2u;
+alias vec2 = Vector2f;
+alias dvec2 = Vector2d;
+
+alias ivec3 = Vector3i;
+alias uvec3 = Vector3u;
+alias vec3 = Vector3f;
+alias dvec3 = Vector3d;
+
+alias ivec4 = Vector4i;
+alias uvec4 = Vector4u;
+alias vec4 = Vector4f;
+alias dvec4 = Vector4d;
+
+/**
+ * Axis vectors
+ */
+static struct AxisVector
+{
+    Vector3f x = Vector3f(1.0f, 0.0f, 0.0f);
+    Vector3f y = Vector3f(0.0f, 1.0f, 0.0f);
+    Vector3f z = Vector3f(0.0f, 0.0f, 1.0f);
+}
+
+/**
+ * Vector factory function
+ */
+auto vectorf(T...)(T t) if (t.length > 0)
+{
+    return Vector!(float, t.length)(t);
+}
+
+/**
+ * L-value pseudovector for assignment purposes.
+ *
+ * Examples:
+ * --------------------
+ * float a, b, c;
+ * lvector(a, b, c) = Vector3f(10, 4, 2);
+ * --------------------
+ */
+auto lvector(T...)(ref T x)
+{
+    struct Result(T, uint size)
+    {
+        T*[size] arrayof;
+
+        void opAssign(int size2)(Vector!(T,size2) v)
+        {
+            if (v.arrayof.length >= size)
+                foreach(i; 0..size)
+                    *arrayof[i] = v.arrayof[i];
+            else
+                foreach(i; 0..v.arrayof.length)
+                    *arrayof[i] = v.arrayof[i];
+        }
+    }
+
+    auto res = Result!(typeof(x[0]), x.length)();
+
+    foreach(i, ref v; x)
+        res.arrayof[i] = &v;
+
+    return res;
 }

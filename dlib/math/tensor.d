@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2019 Timur Gafarov
+Copyright (c) 2016-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,6 +26,11 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2016-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.math.tensor;
 
 import std.traits;
@@ -61,35 +66,38 @@ template NTypeTuple(T, int n)
 
 enum MaxStaticTensorSize = double.sizeof * 16; // fit 4x4 matrix of doubles
 
-/*
- * Generic multi-dimensional array template.
- * It mainly serves as a base for creating various
- * more specialized algebraic objects via encapsulation.
- * Think of Tensor as a backend for e.g. Vector and Matrix.
- *
- * T - element type, usually numeric (float or double)
- * dim - number of dimensions (tensor order):
- *    0 - scalar
- *    1 - vector
- *    2 - matrix
- *    3 - 3D array
- *    (higer dimensions are also possible)
- * sizes - tuple defining sizes for each dimension:
- *    3 - 3-vector
- *    4,4 - 4x4 matrix
- *    etc.
- *
- * Data storage type (stack or heap) is statically selected: if given size(s)
- * imply data size larger than MaxStaticTensorSize, data is allocated
- * on heap (as dynamic array). Otherwise, data is allocated on stack (as static array).
+/**
+  Generic multi-dimensional array template
+  
+  Description:
+  This template mainly serves as a base for creating various
+  more specialized algebraic objects via encapsulation.
+  Think of Tensor as a backend for e.g. Vector and Matrix.
+
+  T - element type, usually numeric (float or double)
+  
+  dim - number of dimensions (tensor order):
+    0 - scalar,
+    1 - vector,
+    2 - matrix,
+    3 - 3D array,
+    (higer dimensions are also possible).
+  
+  sizes - tuple defining sizes for each dimension:
+    3 - 3-vector,
+    4,4 - 4x4 matrix,
+    etc.
+
+  Data storage type (stack or heap) is statically selected: if given size(s)
+  imply data size larger than MaxStaticTensorSize, data is allocated
+  on heap (as dynamic array). Otherwise, data is allocated on stack (as static array).
  */
-
-// TODO:
-// - External storage
-// - Component-wise addition, subtraction
-
 template Tensor(T, size_t dim, sizes...)
 {
+    // TODO:
+    // - External storage
+    // - Component-wise addition, subtraction
+
     struct Tensor
     {
         private enum size_t _dataLen = calcLen(sizes);
@@ -144,7 +152,7 @@ template Tensor(T, size_t dim, sizes...)
             }
         }
 
-       /*
+       /**
         * Single element constructor
         */
         this(T initVal)
@@ -158,7 +166,7 @@ template Tensor(T, size_t dim, sizes...)
                 v = initVal;
         }
 
-       /*
+       /**
         * Tensor constructor
         */
         this(Tensor!(T, order, sizes) t)
@@ -174,7 +182,7 @@ template Tensor(T, size_t dim, sizes...)
             }
         }
 
-       /*
+       /**
         * Tuple constructor
         */
         this(F...)(F components) if (F.length > 1)
@@ -213,7 +221,7 @@ template Tensor(T, size_t dim, sizes...)
             return res;
         }
 
-       /*
+       /**
         * T = Tensor[index]
         */
         auto ref T opIndex(this X)(size_t index)
@@ -227,7 +235,7 @@ template Tensor(T, size_t dim, sizes...)
             return arrayof[index];
         }
 
-       /*
+       /**
         * Tensor[index] = T
         */
         void opIndexAssign(T n, size_t index)
@@ -241,7 +249,7 @@ template Tensor(T, size_t dim, sizes...)
             arrayof[index] = n;
         }
 
-       /*
+       /**
         * T = Tensor[i, j, ...]
         */
         T opIndex(I...)(in I indices) const if (I.length == sizes.length)
@@ -256,7 +264,7 @@ template Tensor(T, size_t dim, sizes...)
             return arrayof[index];
         }
 
-       /*
+       /**
         * Tensor[i, j, ...] = T
         */
         T opIndexAssign(I...)(in T t, in I indices) if (I.length == sizes.length)
@@ -271,7 +279,7 @@ template Tensor(T, size_t dim, sizes...)
             return (arrayof[index] = t);
         }
 
-       /*
+       /**
         * Tensor = Tensor
         */
         void opAssign (Tensor!(T, order, sizes) t)
@@ -347,12 +355,6 @@ template Tensor(T, size_t dim, sizes...)
 
         static if (isVector)
         {
-           /*
-            * NOTE: unfortunately, the following cannot be
-            * moved to Vector struct because of conflicting
-            * opDispatch with alias this.
-            */
-
             private static bool valid(string s)
             {
                 if (s.length < 2)
@@ -383,7 +385,7 @@ template Tensor(T, size_t dim, sizes...)
 
             static if (size < 5)
             {
-               /*
+               /**
                 * Symbolic element access for vector
                 */
                 private static string vecElements(string[4] letters) @property
@@ -397,7 +399,7 @@ template Tensor(T, size_t dim, sizes...)
                 }
             }
 
-           /*
+           /**
             * Swizzling
             */
             template opDispatch(string s) if (valid(s))
@@ -482,17 +484,20 @@ template Tensor(T, size_t dim, sizes...)
     }
 }
 
-/*
+/**
+ * Tensor product
+ *
+ * Description:
  * Tensor product of two tensors of order N
  * and sizes S1 and S2 gives a tensor of order 2N
  * and sizes (S1,S2).
- *
- * TODO: ensure T1, t2 are Tensors
- * TODO: if T1 and T2 are scalars, use ordinary multiplication
- * TODO: if T1 and T2 are vectors, use optimized version
  */
 auto tensorProduct(T1, T2)(T1 t1, T2 t2)
 {
+    // TODO: ensure T1, t2 are Tensors
+    // TODO: if T1 and T2 are scalars, use ordinary multiplication
+    // TODO: if T1 and T2 are vectors, use optimized version
+ 
     static assert(T1.dimensions == T2.dimensions);
 
     alias T = T1.ElementType;

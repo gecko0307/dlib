@@ -26,6 +26,11 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2011-2019.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.math.utils;
 
 private
@@ -36,12 +41,12 @@ private
 
 public:
 
-/*
+/**
  * Very small value
  */
 enum EPSILON = 0.00000001;
 
-/*
+/**
  * Axes of Cartesian space
  */
 enum Axis
@@ -49,35 +54,40 @@ enum Axis
     x = 0, y = 1, z = 2
 }
 
-/*
+/**
  * Convert degrees to radians
- * and vice-versa
  */
 T degtorad(T) (T angle) nothrow
 {
     return (angle / 180.0) * PI;
 }
 
+/**
+ * Convert radians to degrees
+ */
 T radtodeg(T) (T angle) nothrow
 {
     return (angle / PI) * 180.0;
 }
 
-/*
- * Find maximum and minimum of two values
+/**
+ * Find maximum of two values
  */
 T max2(T) (T x, T y) nothrow
 {
     return (x > y)? x : y;
 }
 
+/**
+ * Find minimum of two values
+ */
 T min2(T) (T x, T y) nothrow
 {
     return (x < y)? x : y;
 }
 
-/*
- * Find maximum and minimum of three values
+/**
+ * Find maximum of three values
  */
 T max3(T) (T x, T y, T z) nothrow
 {
@@ -85,13 +95,16 @@ T max3(T) (T x, T y, T z) nothrow
     return (temp > z) ? temp : z;
 }
 
+/**
+ * Find minimum of three values
+ */
 T min3(T) (T x, T y, T z) nothrow
 {
     T temp = (x < y)? x : y;
     return (temp < z) ? temp : z;
 }
 
-/*
+/**
  * Limit to given range
  */
 static if (__traits(compiles, (){import std.algorithm: clamp;}))
@@ -111,22 +124,25 @@ else
     }
 }
 
-/*
- * Almost zero
+/**
+ * Is less than EPSILON
  */
 bool isConsiderZero(T) (T f) nothrow
 {
     return (abs(f) < EPSILON);
 }
 
-/*
- * Powers
+/**
+ * Is power of 2
  */
 bool isPowerOfTwo(T)(T x) nothrow
 {
     return (x != 0) && ((x & (x - 1)) == 0);
 }
 
+/**
+ * Round to next power of 2
+ */
 T nextPowerOfTwo(T) (T k) nothrow
 {
     if (k == 0)
@@ -137,13 +153,16 @@ T nextPowerOfTwo(T) (T k) nothrow
     return k + 1;
 }
 
+/**
+ * Round to next power of 10
+ */
 T nextPowerOfTen(T) (T k) nothrow
 {
     return pow(10, cast(int)ceil(log10(k)));
 }
 
-/*
- * Array operations
+/**
+ * Sum of all elements of an array
  */
 T sum(T) (T[] array...) nothrow
 {
@@ -153,6 +172,9 @@ T sum(T) (T[] array...) nothrow
     return result;
 }
 
+/**
+ * Negate all elements of an array
+ */
 T[] invertArray(T) (T[] array...) nothrow
 {
     auto result = new T[array.length];
@@ -161,6 +183,9 @@ T[] invertArray(T) (T[] array...) nothrow
     return result;
 }
 
+/**
+ * If all elements are zeros
+ */
 bool allIsZero(T) (T[] array...) nothrow
 {
     foreach(i, v; array)
@@ -168,6 +193,9 @@ bool allIsZero(T) (T[] array...) nothrow
     return true;
 }
 
+/**
+ * If at least one element is zero
+ */
 bool oneOfIsZero(T) (T[] array...) nothrow
 {
     foreach(i, v; array)
@@ -175,7 +203,7 @@ bool oneOfIsZero(T) (T[] array...) nothrow
     return false;
 }
 
-/*
+/**
  * Byte operations
  */
 version (BigEndian)
@@ -232,8 +260,8 @@ uint bytesToUint(ubyte[4] src) nothrow
     return (src[0] << 24 | src[1] << 16 | src[2] << 8 | src[3]);
 }
 
-/*
- * Field of view (FOV)
+/**
+ * Field of view angle Y from X
  */
 T fovYfromX(T) (T xfov, T aspectRatio) nothrow
 {
@@ -242,6 +270,9 @@ T fovYfromX(T) (T xfov, T aspectRatio) nothrow
     return radtodeg(yfov);
 }
 
+/**
+ * Field of view angle X from Y
+ */
 T fovXfromY(T) (T yfov, T aspectRatio) nothrow
 {
     yfov = degtorad(yfov);
@@ -249,15 +280,17 @@ T fovXfromY(T) (T yfov, T aspectRatio) nothrow
     return radtodeg(xfov);
 }
 
-/*
- * Misc functions
+/**
+ * Sign of a number
  */
-
 int sign(T)(T x) nothrow
 {
     return (x > 0) - (x < 0);
 }
 
+/**
+ * Swap values
+ */
 void swap(T)(T* a, T* b)
 {
     T c = *a;
@@ -265,6 +298,9 @@ void swap(T)(T* a, T* b)
     *b = c;
 }
 
+/**
+ * Is perfect square
+ */
 bool isPerfectSquare(float n) nothrow
 {
     float r = sqrt(n);

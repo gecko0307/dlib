@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2019 Timur Gafarov
+Copyright (c) 2015-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,6 +26,15 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * This module implements some frequently used vector and matrix operations
+ * using SSE instructions. Implementation is in WIP status.
+ * Module is compatible only with Digital Mars D Compiler.
+ *
+ * Copyright: Timur Gafarov 2015-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.math.sse;
 
 import dlib.math.vector;
@@ -36,12 +45,9 @@ version(GNU)
     pragma(msg, "Warning: dlib.math.sse is not compatible with GNU D Compiler");
 }
 
-/*
- * This module implements some frequently used vector and matrix operations
- * using SSE instructions. Implementation is in WIP status.
- */
 version(DMD)
 {
+    /// Vector addition
     Vector4f sseAdd4(Vector4f a, Vector4f b)
     {
         asm
@@ -55,6 +61,7 @@ version(DMD)
         return a;
     }
 
+    /// Vector subtraction
     Vector4f sseSub4(Vector4f a, Vector4f b)
     {
         asm
@@ -68,6 +75,7 @@ version(DMD)
         return a;
     }
 
+    /// Vector multiplication
     Vector4f sseMul4(Vector4f a, Vector4f b)
     {
         asm
@@ -81,6 +89,7 @@ version(DMD)
         return a;
     }
 
+    /// Vector division
     Vector4f sseDiv4(Vector4f a, Vector4f b)
     {
         asm
@@ -94,6 +103,7 @@ version(DMD)
         return a;
     }
 
+    /// Vector dot product
     float sseDot4(Vector4f a, Vector4f b)
     {
         asm
@@ -115,6 +125,7 @@ version(DMD)
         return a[0];
     }
 
+    /// Vector cross product
     Vector4f sseCross3(Vector4f a, Vector4f b)
     {
         asm
@@ -140,6 +151,7 @@ version(DMD)
         return a;
     }
 
+    /// Matrix multiplication
     Matrix4x4f sseMulMat4(Matrix4x4f a, Matrix4x4f b)
     {
         Matrix4x4f r;

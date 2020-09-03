@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2019 Timur Gafarov
+Copyright (c) 2013-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,15 +26,18 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2013-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.math.complex;
 
-private
-{
-    import std.math;
-    import std.range;
-    import std.format;
-}
+import std.math;
+import std.range;
+import std.format;
 
+/// Complex number representation
 struct Complex(T)
 {
     T re;
@@ -157,16 +160,19 @@ struct Complex(T)
     }
 }
 
+/// Complex abs
 T abs(T)(Complex!T x)
 {
     return sqrt(x.re * x.re + x.im * x.im);
 }
 
-T arg(T)(Complex!T x)
+/// Complex atan2
+T atan2(T)(Complex!T x)
 {
     return atan2(x.im, x.re);
 }
 
+/// Complex pow
 Complex!T pow(T)(Complex!T x, Complex!T n)
 {
     T r = abs(x);
@@ -181,6 +187,7 @@ Complex!T pow(T)(Complex!T x, Complex!T n)
     return res;
 }
 
+/// Complex exp
 Complex!T exp(T)(Complex!T s)
 {
     return Complex!T(
@@ -188,8 +195,8 @@ Complex!T exp(T)(Complex!T s)
         std.math.exp(s.re) * sin(s.im));
 }
 
-/*
- * Riemann zeta function
+/**
+ * Riemann zeta function:
  * ζ(s) = 1/1^s + 1/2^s + 1/3^s + ...
  */
 Complex!T zeta(T)(Complex!T s)
@@ -199,4 +206,5 @@ Complex!T zeta(T)(Complex!T s)
         Complex!T(1.0) / pow(Complex!T(2.0), s + Complex!T(1.0));
 }
 
+/// Alias for single precision Complex specialization
 alias Complexf = Complex!float;

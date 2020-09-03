@@ -26,21 +26,32 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Functions that return other functions.
+ * Copyright: Timur Gafarov 2011-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.math.hof;
 
+/**
+ * Functional composition. 
+ * Description:
+ * Returns a function that applies function f to the return value of function g
+ */
 T delegate(S) compose(T, U, S)(T function(U) f, U function(S) g)
 {
     return (S s) => f(g(s));
 }
 
-/+++
+/**
  Y combinator
  Description:
  We're all familiar with the idea of a function as something that takes some
  input value and returns some output value. Say, the function for squaring numbers:
-
+ ---
    f(x) = x*x;
-
+ ---
  The fixed points of a function are any input values for which f(x) is equal to x.
  So, the fixed points of f(x) = x*x are 0 and 1.
 
@@ -53,12 +64,12 @@ T delegate(S) compose(T, U, S)(T function(U) f, U function(S) g)
 
  Y (the Y combinator) is a special function that returns the fixed points of higher-order
  functions, that is to say:
-
+ ---
    f(Y(f)) = Y(f)
-
+ ---
  Y combinator is commonly use to allow anonymous recursion without assuming your host
  language supports it.
-+++/
+*/
 auto Y(R, P...) (R delegate(P) delegate(R delegate(P)) lambda)
 {
     struct RFunc {R delegate(P) delegate(RFunc) f;}
@@ -66,6 +77,7 @@ auto Y(R, P...) (R delegate(P) delegate(R delegate(P)) lambda)
     return r.f(r);
 }
 
+///
 unittest
 {
     import std.algorithm;

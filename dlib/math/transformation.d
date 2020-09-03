@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2019 Timur Gafarov, Martin Cejp
+Copyright (c) 2013-2020 Timur Gafarov, Martin Cejp
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,6 +26,11 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2013-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.math.transformation;
 
 import std.math;
@@ -35,7 +40,7 @@ import dlib.math.vector;
 import dlib.math.matrix;
 import dlib.math.quaternion;
 
-/*
+/**
  * Setup a rotation matrix, given Euler angles in radians
  */
 Matrix!(T,4) fromEuler(T) (Vector!(T,3) v)
@@ -67,7 +72,7 @@ Matrix!(T,4) fromEuler(T) (Vector!(T,3) v)
     return res;
 }
 
-/*
+/**
  * Setup the Euler angles in radians, given a rotation matrix
  */
 Vector!(T,3) toEuler(T) (Matrix!(T,4) m)
@@ -94,7 +99,7 @@ do
     return v;
 }
 
-/*
+/**
  * Right vector of the matrix
  */
 Vector!(T,3) right(T) (Matrix!(T,4) m)
@@ -103,7 +108,7 @@ do
     return Vector!(T,3)(m.a11, m.a21, m.a31);
 }
 
-/*
+/**
  * Up vector of the matrix
  */
 Vector!(T,3) up(T) (Matrix!(T,4) m)
@@ -112,7 +117,7 @@ do
     return Vector!(T,3)(m.a12, m.a22, m.a32);
 }
 
-/*
+/**
  * Forward vector of the matrix
  */
 Vector!(T,3) forward(T) (Matrix!(T,4) m)
@@ -121,7 +126,7 @@ do
     return Vector!(T,3)(m.a13, m.a23, m.a33);
 }
 
-/*
+/**
  * Translation vector of the matrix
  */
 Vector!(T,3) translation(T) (Matrix!(T,4) m)
@@ -130,7 +135,7 @@ do
     return Vector!(T,3)(m.a14, m.a24, m.a34);
 }
 
-/*
+/**
  * Scaling vector of the matrix
  */
 Vector!(T,3) scaling(T) (Matrix!(T,4) m)
@@ -142,7 +147,7 @@ do
     return Vector!(T,3)(sx, sy, sz);
 }
 
-/*
+/**
  * Create a matrix to perform a rotation about a world axis
  * (theta in radians)
  */
@@ -181,7 +186,7 @@ do
     return res;
 }
 
-/*
+/**
  * Create a translation matrix given a translation vector
  */
 Matrix!(T,4) translationMatrix(T) (Vector!(T,3) v)
@@ -194,7 +199,7 @@ do
     return res;
 }
 
-/*
+/**
  * Create a matrix to perform scale on each axis
  */
 Matrix!(T,4) scaleMatrix(T) (Vector!(T,3) v)
@@ -207,7 +212,7 @@ do
     return res;
 }
 
-/*
+/**
  * Setup the matrix to perform scale along an arbitrary axis
  */
 Matrix!(T,4) scaleAlongAxisMatrix(T) (Vector!(T,3) scaleAxis, T k)
@@ -235,14 +240,13 @@ do
     return res;
 }
 
-/*
+/**
  * Setup the matrix to perform a shear
- *
- * NOTE: needs test
  */
 Matrix!(T,4) shearMatrix(T) (uint shearAxis, T s, T t)
 do
 {
+    // NOTE: needs test
     auto res = Matrix!(T,4).identity;
 
     switch (shearAxis)
@@ -272,12 +276,10 @@ do
     return res;
 }
 
-/*
+/**
  * Setup the matrix to perform a projection onto a plane passing
  * through the origin. The plane is perpendicular to the
  * unit vector n.
- *
- * NOTE: needs test
  */
 Matrix!(T,4) projectionMatrix(T) (Vector!(T,3) n)
 in
@@ -286,6 +288,7 @@ in
 }
 do
 {
+    // NOTE: needs test
     auto res = Matrix!(T,4).identity;
 
     res.a11 = 1.0 - (n.x * n.x);
@@ -299,7 +302,7 @@ do
     return res;
 }
 
-/*
+/**
  * Setup the matrix to perform a reflection about a plane parallel
  * to a cardinal plane.
  */
@@ -335,7 +338,7 @@ do
     return res;
 }
 
-/*
+/**
  * Setup the matrix to perform a reflection about an arbitrary plane
  * through the origin.  The unit vector n is perpendicular to the plane.
  */
@@ -363,7 +366,7 @@ do
     return res;
 }
 
-/*
+/**
  * Setup the matrix to perform a "Look At" transformation
  * like a first person camera
  */
@@ -392,7 +395,7 @@ do
     return Result;
 }
 
-/*
+/**
  * Setup a frustum matrix given the left, right, bottom, top, near, and far
  * values for the frustum boundaries.
  */
@@ -433,7 +436,7 @@ do
     return res;
 }
 
-/*
+/**
  * Setup a perspective matrix given the field-of-view in the Y direction
  * in degrees, the aspect ratio of Y/X, and near and far plane distances
  */
@@ -473,7 +476,7 @@ do
     return res;
 }
 
-/*
+/**
  * Setup an orthographic Matrix4x4 given the left, right, bottom, top, near,
  * and far values for the frustum boundaries.
  */
@@ -509,7 +512,7 @@ do
     return res;
 }
 
-/*
+/**
  * Setup an orientation matrix using 3 basis normalized vectors
  */
 Matrix!(T,4) orthoNormalMatrix(T) (Vector!(T,3) xdir, Vector!(T,3) ydir, Vector!(T,3) zdir)
@@ -525,7 +528,7 @@ do
     return res;
 }
 
-/*
+/**
  * Setup a matrix that flattens geometry into a plane,
  * as if it were casting a shadow from a light
  */
@@ -558,7 +561,7 @@ Matrix!(T,4) shadowMatrix(T) (Vector!(T,4) groundplane, Vector!(T,4) lightpos)
     return res;
 }
 
-/*
+/**
  * Setup an orientation matrix using forward direction vector
  */
 Matrix!(T,4) directionToMatrix(T) (Vector!(T,3) zdir)
@@ -596,11 +599,11 @@ Matrix!(T,4) directionToMatrix(T) (Vector!(T,3) zdir)
     return m;
 }
 
-/*
+/**
  * Setup an orientation matrix that performs rotation
  * between two vectors
  *
- * NOTE: currently this is just a shortcut
+ * Currently this is just a shortcut
  * for dlib.math.quaternion.rotationBetween
  */
 Matrix!(T,4) rotationBetweenVectors(T) (Vector!(T,3) source, Vector!(T,3) target)
@@ -608,7 +611,7 @@ Matrix!(T,4) rotationBetweenVectors(T) (Vector!(T,3) source, Vector!(T,3) target
     return rotationBetween(source, target).toMatrix4x4;
 }
 
-/*
+/**
  * Affine transformations in 2D space
  */
  Vector!(T,2) affineTransform2D(T)(Vector!(T,2) v, Matrix!(T,3) m)
@@ -620,6 +623,9 @@ Matrix!(T,4) rotationBetweenVectors(T) (Vector!(T,3) source, Vector!(T,3) target
     );
 }
 
+/**
+ * Translation in 2D space
+ */
 Matrix!(T,3) translationMatrix2D(T) (Vector!(T,2) t)
 do
 {
@@ -630,6 +636,9 @@ do
     return res;
 }
 
+/**
+ * Rotation in 2D space
+ */
 Matrix!(T,3) rotationMatrix2D(T) (T theta)
 do
 {
@@ -642,6 +651,9 @@ do
     return res;
 }
 
+/**
+ * Scale in 2D space
+ */
 Matrix!(T,3) scaleMatrix2D(T) (Vector!(T,2) s)
 do
 {
@@ -652,6 +664,7 @@ do
     return res;
 }
 
+///
 unittest
 {
     bool isAlmostZero(Vector4f v)

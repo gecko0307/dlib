@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2019 Timur Gafarov
+Copyright (c) 2015-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,6 +26,11 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2015-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.math.dualquaternion;
 
 import std.math;
@@ -38,13 +43,13 @@ import dlib.math.quaternion;
 import dlib.math.transformation;
 import dlib.math.dual;
 
-/*
+/**
+ * Dual quaternion representation.
  * Dual quaternion is a generalization of quaternion to dual numbers field.
  * Similar to the way that simple quaternion represents rotation in 3D space,
  * dual quaternion represents rigid 3D transformation (translation + rotation),
  * so it can be used in kinematics.
  */
-
 struct DualQuaternion(T)
 {
     this(Quaternion!(T) q1, Quaternion!(T) q2)
@@ -115,7 +120,7 @@ struct DualQuaternion(T)
         return DualQuaternion!(T)(q1 - d.q1, q2 - d.q2);
     }
 
-   /*
+   /**
     * Rotation part
     */
     Quaternion!(T) rotation()
@@ -123,7 +128,7 @@ struct DualQuaternion(T)
         return q1;
     }
 
-   /*
+   /**
     * Translation part
     */
     Vector!(T,3) translation()
@@ -131,7 +136,7 @@ struct DualQuaternion(T)
         return (2.0 * q2 * q1.conj).xyz;
     }
 
-   /*
+   /**
     * Convert to 4x4 matrix
     */
     Matrix!(T,4) toMatrix4x4()
@@ -140,7 +145,7 @@ struct DualQuaternion(T)
         return translationMatrix(translation) * rotation.toMatrix4x4;
     }
 
-   /*
+   /**
     * Dual quaternion norm
     */
     Dual!(T) norm()
@@ -149,7 +154,7 @@ struct DualQuaternion(T)
         return Dual!(T)(qq.q1.lengthsqr, qq.q2.lengthsqr).sqrt;
     }
 
-   /*
+   /**
     * Set norm to 1
     */
     DualQuaternion!(T) normalized()
@@ -158,7 +163,7 @@ struct DualQuaternion(T)
         return DualQuaternion!(T)(q1 / n.re, q2 / n.re);
     }
 
-   /*
+   /**
     * Convert to string
     */
     string toString()
@@ -168,20 +173,27 @@ struct DualQuaternion(T)
         return writer.data;
     }
 
+   /**
+    * Elements union
+    */
     union
     {
         struct
         {
-            Quaternion!(T) q1; // rotation
-            Quaternion!(T) q2; // translation
+            /// Rotation part
+            Quaternion!(T) q1;
+            
+            /// Translation part
+            Quaternion!(T) q2;
         }
 
+        /// Elements as static array
         T[8] arrayof;
     }
 }
 
-/*
- * Predefined dual quaternion type aliases
- */
+/// Alias for single precision DualQuaternion specialization
 alias DualQuaternionf = DualQuaternion!(float);
+
+/// Alias for double precision DualQuaternion specialization
 alias DualQuaterniond = DualQuaternion!(double);
