@@ -26,6 +26,12 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * GC-free filesystem
+ * Copyright: Timur Gafarov 2015-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.filesystem.stdfs;
 
 import core.stdc.stdio;
@@ -63,6 +69,7 @@ version(Windows)
    extern(Windows) int RemoveDirectoryW(const wchar*);
 }
 
+/// InputStream that wraps FILE
 class StdInFileStream: InputStream
 {
     FILE* file;
@@ -125,6 +132,7 @@ class StdInFileStream: InputStream
     }
 }
 
+/// OutputStream that wraps FILE
 class StdOutFileStream: OutputStream
 {
     FILE* file;
@@ -185,6 +193,7 @@ class StdOutFileStream: OutputStream
     }
 }
 
+/// IOStream that wraps FILE
 class StdIOStream: IOStream
 {
     FILE* file;
@@ -267,6 +276,7 @@ class StdIOStream: IOStream
     }
 }
 
+/// FileSystem that wraps libc filesystem functions + some Posix and WinAPI parts for additional functionality
 class StdFileSystem: FileSystem
 {
     Dict!(Directory, string) openedDirs;
@@ -524,6 +534,7 @@ class StdFileSystem: FileSystem
     }
 }
 
+/// Reads string from InputStream and stores it in unmanaged memory
 string readText(InputStream istrm)
 {
     ubyte[] arr = New!(ubyte[])(cast(size_t)istrm.size);
@@ -532,6 +543,7 @@ string readText(InputStream istrm)
     return cast(string)arr;
 }
 
+/// Reads struct from InputStream
 T readStruct(T)(InputStream istrm) if (is(T == struct))
 {
     T res;
@@ -541,9 +553,9 @@ T readStruct(T)(InputStream istrm) if (is(T == struct))
 
 enum MAX_PATH_LEN = 4096;
 
-// TODO: use String
 struct PathBuilder
 {
+    // TODO: use dlib.text.unmanaged.String instead
     char[MAX_PATH_LEN] str;
     uint length = 0;
 
@@ -647,6 +659,7 @@ struct RecursiveFileIterator
     }
 }
 
+/// Enumerate directory contents, optionally recursive
 RecursiveFileIterator traverseDir(ReadOnlyFileSystem rofs, string baseDir, bool recursive)
 {
     FileStat s;

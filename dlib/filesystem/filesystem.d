@@ -26,6 +26,11 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Martin Cejp, Timur Gafarov 2014-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Martin Cejp, Timur Gafarov
+ */
 module dlib.filesystem.filesystem;
 
 import std.datetime;
@@ -56,6 +61,7 @@ struct FileStat
     int permissions;
 }
 
+/// A filesystem entry - file or directory
 struct DirEntry
 {
     ///
@@ -116,10 +122,11 @@ interface ReadOnlyFileSystem
     Directory openDir(string path);
 }
 
-// TODO: Use exceptions or not?
 /// A file system with read/write access.
 interface FileSystem: ReadOnlyFileSystem
 {
+    // TODO: Use exceptions or not?
+    
     /// File access flags.
     enum
     {
@@ -169,7 +176,7 @@ interface FileSystem: ReadOnlyFileSystem
 }
 
 /**
-    Find files in the specified directory, conforming to the specified filter. (if any)
+    Find files in the specified directory, conforming to the specified filter (if any)
     Params:
     baseDir = path to the base directory (if empty, defaults to current working directory)
     recursive = if true, the search will recurse into subdirectories

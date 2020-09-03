@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2019 Martin Cejp, Timur Gafarov
+Copyright (c) 2014-2020 Martin Cejp, Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,9 +26,15 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Martin Cejp, Timur Gafarov 2014-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Martin Cejp, Timur Gafarov
+ */
 module dlib.filesystem.dirrange;
 
 import dlib.filesystem.delegaterange;
 import dlib.filesystem.filesystem;
 
+/// A DelegateInputRange of DirEntry values
 alias DirRange = DelegateInputRange!DirEntry;

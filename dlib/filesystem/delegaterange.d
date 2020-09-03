@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2019 Martin Cejp
+Copyright (c) 2014-2020 Martin Cejp
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,10 +26,18 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Martin Cejp 2014-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Martin Cejp
+ */
 module dlib.filesystem.delegaterange;
 
 private import std.range;
 
+/**
+ * An input range that enumerates items by obtaining them from a delegate until it returns 0
+ */
 class DelegateInputRange(T) : InputRange!T
 {
     bool delegate(out T t) fetch;

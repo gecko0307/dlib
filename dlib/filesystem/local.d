@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2019 Martin Cejp
+Copyright (c) 2014-2020 Martin Cejp
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,6 +26,11 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Martin Cejp 2014-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Martin Cejp
+ */
 module dlib.filesystem.local;
 
 import std.array;
@@ -231,8 +236,6 @@ class LocalFileSystem : FileSystem
 
     IOStream openFile(string filename, uint accessFlags, uint creationFlags)
     {
-        // TODO: Windows implementation
-
         version(Posix)
         {
             int flags;
@@ -293,8 +296,6 @@ class LocalFileSystem : FileSystem
 
     bool remove(string path, bool isDirectory, bool recursive)
     {
-        // TODO: Windows implementation
-
         if (isDirectory && recursive)
         {
             // Remove contents
