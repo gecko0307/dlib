@@ -26,6 +26,12 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2011-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
+deprecated("use std.digest instead")
 module dlib.coding.hash;
 
 public:
@@ -42,8 +48,6 @@ pure int stringHash(string key, int tableSize = 5381)
 
 unittest
 {
-
     int h = stringHash("Hello!");
     assert(h == -4720);
 }
-
