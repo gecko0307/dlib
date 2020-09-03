@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2018-2019 Timur Gafarov
+Copyright (c) 2018-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,11 +26,19 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2018-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.text.encodings;
 
 import dlib.container.array;
 import dlib.text.utils;
 
+/**
+ * Converts a string from one encoding to another
+ */
 string transcode(Decoder, Encoder)(string input)
 {
     DynamicArray!char array;

@@ -26,6 +26,11 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2018-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.text.unmanagedstring;
 
 import dlib.core.memory;
@@ -81,7 +86,7 @@ struct String
     }
 
     /**
-     * Construct from zero-terminated UTF-16 string
+     * Construct from zero-terminated UTF-16 LE string
      */
     this(const(wchar)* wStr)
     {

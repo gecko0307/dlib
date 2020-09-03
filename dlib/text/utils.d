@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2019 Timur Gafarov
+Copyright (c) 2016-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,11 +26,16 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2016-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.text.utils;
 
 import dlib.core.memory;
 
-/// Make an unmanaged copy of a string
+/// Make an copy of a string in unmanaged memory
 T[] copy(T)(T[] b)
 {
     auto res = New!(T[])(b.length);
@@ -39,6 +44,7 @@ T[] copy(T)(T[] b)
     return res;
 }
 
+/// Make an immutable copy of a string in unmanaged memory
 immutable(T)[] immutableCopy(T)(immutable(T)[] b)
 {
     auto res = New!(T[])(b.length);
@@ -56,7 +62,7 @@ unittest
     Delete(c);
 }
 
-/// Concatenates two strings to a new unmanaged string
+/// Concatenates two strings to a new string in unmanaged memory
 string catStr(string s1, string s2)
 {
     char[] buffer = New!(char[])(s1.length + s2.length);

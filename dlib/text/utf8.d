@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2019 Timur Gafarov
+Copyright (c) 2015-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,17 +26,23 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2015-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov, Roman Chistokhodov
+ */
 module dlib.text.utf8;
 
 import dlib.text.common;
 
-///Constant to return from UTF8Decoder on the end of string.
+/// Constant to return from UTF8Decoder on the end of string.
 enum UTF8_END = DECODE_END;
-///Constant to return from UTF8Decoder when error occurs.
+
+/// Constant to return from UTF8Decoder when error occurs.
 enum UTF8_ERROR = DECODE_ERROR;
 
 /**
- * Simple and pretty fast UTF-8 decoder
+ * UTF-8 decoder
  */
 struct UTF8Decoder
 {
@@ -219,8 +225,10 @@ unittest
     }
 }
 
-// Encoder a Unicode code point to UTF-8 into user-provided buffer.
-// Returns number of bytes written, or 0 at error.
+/**
+ * Encodes a Unicode code point to UTF-8 into user-provided buffer.
+ *  Returns number of bytes written, or 0 at error.
+ */
 struct UTF8Encoder
 {
     size_t encode(uint c, char[] buffer)

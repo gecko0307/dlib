@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2019 Timur Gafarov
+Copyright (c) 2016-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,6 +26,11 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2016-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov, Roman Chistokhodov
+ */
 module dlib.text.utf16;
 
 import core.stdc.stdio;
@@ -40,9 +45,13 @@ enum ushort UTF16_LO_SURROGATE = 0xDC00;
 enum ushort UTF16_BOM_LE = 0xfeff;
 enum ushort UTF16_BOM_BE = 0xfffe;
 
-// TODO: byte order
+/**
+ * UTF-16 LE decoder
+ */
 struct UTF16Decoder
 {
+    // TODO: byte order
+    
     size_t index = 0;
     int character = 0;
     string input;
@@ -104,8 +113,10 @@ struct UTF16Decoder
     }
 }
 
-// Encodes a Unicode code point to UTF-16 LE into user-provided buffer.
-// Returns number of bytes written, or 0 at error.
+/**
+ * Encodes a Unicode code point to UTF-16 LE into user-provided buffer.
+ * Returns number of bytes written, or 0 at error.
+ */
 struct UTF16Encoder
 {
     size_t encode(uint ch, char[] buffer)
@@ -128,8 +139,10 @@ struct UTF16Encoder
     }
 }
 
-// TODO: should be deprecated, 
-// use transcode!(UTF8Decoder, UTF16Encoder) instead
+/**
+ * Converts UTF8 to UTF8
+ * Will be deprecated soon, use transcode!(UTF8Decoder, UTF16Encoder) instead
+ */
 wchar[] convertUTF8toUTF16(string s, bool nullTerm = false)
 {
     DynamicArray!wchar array;
@@ -181,6 +194,9 @@ wchar[] convertUTF8toUTF16(string s, bool nullTerm = false)
     return output;
 }
 
+/**
+ * Converts UTF16 zero-terminated string to UTF8
+ */
 char[] convertUTF16ztoUTF8(wchar* s, bool nullTerm = false)
 {
     DynamicArray!char array;
