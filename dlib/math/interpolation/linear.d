@@ -26,17 +26,22 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Linear interpolation
+ *
+ * Copyright: Timur Gafarov 2013-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.math.interpolation.linear;
 
-private
-{
-    import std.math;
-}
+import std.math;
 
+/// Linear interpolation
 T interpLinear(T) (T a, T b, float t)
 {
     return a + (b - a) * t;
 }
 
+/// ditto
 alias lerp = interpLinear;
-

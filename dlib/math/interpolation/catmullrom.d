@@ -26,13 +26,20 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Catmull-Rom interpolation functions
+ *
+ * Copyright: Timur Gafarov 2011-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.math.interpolation.catmullrom;
 
-private
-{
-    import std.math;
-}
+import std.math;
 
+/**
+ * Catmull-Rom curve
+ */
 T interpCatmullRom(T) (T p0, T p1, T p2, T p3, float t)
 {
     return 0.5 * ((2 * p1) +
@@ -41,6 +48,9 @@ T interpCatmullRom(T) (T p0, T p1, T p2, T p3, float t)
                   (-p0 + 3 * p1 - 3 * p2 + p3) * t^^3);
 }
 
+/**
+ * Catmull-Rom curve derivative
+ */
 T interpCatmullRomDerivative(T) (T p0, T p1, T p2, T p3, float t)
 {
     return 0.5 * ((2 * p1) +

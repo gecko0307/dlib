@@ -26,13 +26,18 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Nearest-neighbour interpolation
+ *
+ * Copyright: Timur Gafarov 2011-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.math.interpolation.nearest;
 
-private
-{
-    import std.math;
-}
+import std.math;
 
+/// Nearest-neighbour interpolation
 T interpNearest(T) (T x, T y, float t)
 {
     if (t < 0.5f)

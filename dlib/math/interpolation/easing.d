@@ -26,18 +26,27 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Easing functions
+ * Copyright: Timur Gafarov 2019-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.math.interpolation.easing;
-   
+
+/// Quadratic ease in
 T easeInQuad(T)(T t)
 {
     return t * t;
 }
-    
+
+/// Quadratic ease out
 T easeOutQuad(T)(T t)
 {
     return -t * (t - 2);
 }
 
+/// Quadratic ease in-out
 T easeInOutQuad(T)(T t)
 {
     t /= 0.5;
@@ -46,13 +55,15 @@ T easeInOutQuad(T)(T t)
     t--;
     return -0.5 * (t * (t - 2.0) - 1.0);
 }
-    
+
+/// Back ease in
 T easeInBack(T)(T t)
 {
     enum T s = 1.70158;
     return t * t * ((s + 1) * t - s);
 }
-    
+
+/// Back ease out
 T easeOutBack(T)(T t)
 {
     enum T s = 1.70158;
@@ -60,6 +71,7 @@ T easeOutBack(T)(T t)
     return (t * t * ((s + 1) * t + s) + 1.0);
 }
 
+/// Back ease in-out
 T easeInOutBack(T)(T t)
 {
     float s = 1.70158;
@@ -74,6 +86,7 @@ T easeInOutBack(T)(T t)
     return 0.5 * (t * t * ((s + 1.0) * t + s) + 2.0);
 }
 
+/// Bounce ease out
 T easeOutBounce(T)(T t)
 {
     if (t < (1.0 / 2.75))

@@ -1,5 +1,6 @@
 *.a
 *.lib
+*.exe
 
 # Backup files
 *~
@@ -11,3 +12,7 @@ dub.selections.json
 # Dub test files
 __test__library__
 tests
+
+# Documentation
+docs
+docs.json

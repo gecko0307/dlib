@@ -26,8 +26,16 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Hermite interpolation functions
+ *
+ * Copyright: Timur Gafarov 2013-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.math.interpolation.hermite;
 
+/// Hermite curve
 T interpHermite(T) (T x, T tx, T y, T ty, float t)
 {
     T h1 = 2 * t^^3 - 3 * t^^2 + 1;
@@ -37,16 +45,4 @@ T interpHermite(T) (T x, T tx, T y, T ty, float t)
     return h1 * x + h3 * tx + h2 * y + h4 * ty;
 }
 
-// FIXME: redundant?
-V hermiteCurve(T, V)(V p1, V t1, V p2, V t2, T s)
-{
-    T a = s * s;
-    T b = a * s;
-
-    T h1 = cast(T)( 2.0) * b - cast(T)(3.0) * a + cast(T)(1.0);
-    T h2 = cast(T)(-2.0) * b + cast(T)(3.0) * a;
-    T h3 = b - cast(T)(2.0) * a + s;
-    T h4 = b - a;
-
-    return p1 * h1 + p2 * h2 + t1 * h3 + t2 * h4;
-}
+// TODO: interpHermiteDerivative

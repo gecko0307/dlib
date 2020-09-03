@@ -26,13 +26,20 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Bézier interpolation functions
+ *
+ * Copyright: Timur Gafarov 2013-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.math.interpolation.bezier;
 
-private
-{
-    import dlib.math.vector;
-}
+import dlib.math.vector;
 
+/**
+ * Computes cubic Bézier curve 
+ */
 T bezierCubic(T) (T A, T B, T C, T D, T t)
 {
     T s = cast(T)1.0 - t;
@@ -44,6 +51,12 @@ T bezierCubic(T) (T A, T B, T C, T D, T t)
            t * t * t * D;
 }
 
+/// ditto
+alias bezier = bezierCubic;
+
+/**
+ * Computes cubic Bézier curve tangent
+ */
 T bezierCubicTangent(T)(T a, T b, T c, T d, T t)
 {
     T c1 = (d - (3.0 * c) + (3.0 * b) - a);
@@ -52,9 +65,12 @@ T bezierCubicTangent(T)(T a, T b, T c, T d, T t)
     return ((3.0 * c1 * t * t) + (2.0 * c2 * t) + c3);
 }
 
-alias bezier = bezierCubic;
+/// ditto
 alias bezierTangent = bezierCubicTangent;
 
+/**
+ * Computes cubic Bézier curve in 2D space
+ */
 Vector!(T,2) bezierVector2(T)(
     Vector!(T,2) a,
     Vector!(T,2) b,
@@ -69,6 +85,9 @@ Vector!(T,2) bezierVector2(T)(
     );
 }
 
+/**
+ * Computes cubic Bézier curve in 3D space
+ */
 Vector!(T,3) bezierVector3(T)(
     Vector!(T,3) a,
     Vector!(T,3) b,
@@ -84,7 +103,9 @@ Vector!(T,3) bezierVector3(T)(
     );
 }
 
-// Tangent is not normalized!
+/**
+ * Computes cubic Bézier curve tangent in 2D space
+ */
 Vector!(T,2) bezierTangentVector2(T)(
     Vector!(T,2) a,
     Vector!(T,2) b,
@@ -99,7 +120,9 @@ Vector!(T,2) bezierTangentVector2(T)(
     );
 }
 
-// Tangent is not normalized!
+/**
+ * Computes cubic Bézier curve tangent in 3D space
+ */
 Vector!(T,3) bezierTangentVector3(T)(
     Vector!(T,3) a,
     Vector!(T,3) b,
