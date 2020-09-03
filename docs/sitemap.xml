@@ -906,6 +906,14 @@
 <url><loc>http://127.0.0.1/dlib/network/url/URL.scheme.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/network/url/URL.this.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/network/url/URL.user.html</loc></url>
+<url><loc>http://127.0.0.1/dlib/serialization/json.html</loc></url>
+<url><loc>http://127.0.0.1/dlib/serialization/json/JSONArray.html</loc></url>
+<url><loc>http://127.0.0.1/dlib/serialization/json/JSONDocument.html</loc></url>
+<url><loc>http://127.0.0.1/dlib/serialization/json/JSONError.html</loc></url>
+<url><loc>http://127.0.0.1/dlib/serialization/json/JSONObject.html</loc></url>
+<url><loc>http://127.0.0.1/dlib/serialization/json/JSONResult.html</loc></url>
+<url><loc>http://127.0.0.1/dlib/serialization/json/JSONType.html</loc></url>
+<url><loc>http://127.0.0.1/dlib/serialization/json/JSONValue.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/text/common.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/text/common/DECODE_END.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/text/common/DECODE_ERROR.html</loc></url>
@@ -948,6 +956,7 @@
 <url><loc>http://127.0.0.1/dlib/geometry.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/math.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/memory.html</loc></url>
+<url><loc>http://127.0.0.1/dlib/serialization.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/text.html</loc></url>
 <url><loc>http://127.0.0.1/dlib.html</loc></url>
 </urlset>
