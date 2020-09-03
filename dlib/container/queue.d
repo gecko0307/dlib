@@ -26,23 +26,24 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2011-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov, Andrey Penechko, Roman Chistokhodov
+ */
 module dlib.container.queue;
 
-private
-{
-    import dlib.container.array;
-}
-
-public:
+import dlib.container.array;
 
 /**
  * Queue implementation based on DynamicArray.
  */
 struct Queue(T)
 {
-private:
+    private:
     DynamicArray!T array;
-public:
+    
+    public:
     /**
      * Check if stack has no elements.
      */

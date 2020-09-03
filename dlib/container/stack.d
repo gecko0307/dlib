@@ -26,14 +26,14 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2011-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov, Andrey Penechko, Roman Chistokhodov
+ */
 module dlib.container.stack;
 
-private
-{
-    import dlib.container.array;
-}
-
-public:
+import dlib.container.array;
 
 /**
  * Stack implementation based on DynamicArray.
@@ -90,6 +90,10 @@ struct Stack(T)
         return array[$-1];
     }
 
+    /**
+     * Pointer to top stack element.
+     * Note: Stack must be non-empty.
+     */
     T* topPtr()
     {
         return &array.data[$-1];
