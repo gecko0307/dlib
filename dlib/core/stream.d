@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2019 Martin Cejp
+Copyright (c) 2014-2020 Martin Cejp
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,6 +26,12 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * I/O streams
+ * Copyright: Martin Cejp 2014-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Martin Cejp, Timur Gafarov
+ */
 module dlib.core.stream;
 
 import std.bitmanip;
@@ -89,6 +95,7 @@ interface Stream : Seekable
     bool seekable();
 }
 
+/// Stream with read methods
 interface InputStream : Stream
 {
     // Won't throw on EOF, may throw on a more serious error.
@@ -129,6 +136,7 @@ interface InputStream : Stream
     }
 }
 
+/// Stream with write methods
 interface OutputStream : Stream
 {
     // Won't throw on full disk, may throw on a more serious error.
@@ -172,10 +180,12 @@ interface OutputStream : Stream
     }
 }
 
+/// Stream with both read and write methods
 interface IOStream : InputStream, OutputStream
 {
 }
 
+/// Copy data from an InputStream to an OutputStream
 StreamSize copyFromTo(InputStream input, OutputStream output)
 {
     ubyte[0x1000] buffer;
@@ -195,9 +205,11 @@ StreamSize copyFromTo(InputStream input, OutputStream output)
     return total;
 }
 
-// TODO: Add OutputStream methods
+/// InputStream that reads from an array
 class ArrayStream : InputStream
 {
+    // TODO: Add OutputStream methods
+    
     import std.algorithm;
 
     this()
@@ -266,36 +278,9 @@ class ArrayStream : InputStream
         return size_;
     }
 
-    //mixin ManualModeImpl;
-    //mixin FreeImpl;
-
     private:
     size_t pos = 0, size_ = 0;
     ubyte[] data;       // data.length is capacity
-}
-
-struct BufferedStreamReader
-{
-    InputStream stream;
-    ubyte[] buffer;
-    ubyte[] front;
-    
-    this(InputStream istrm, ubyte[] buffer)
-    {
-        stream = istrm;
-        this.buffer = buffer;
-        popFront();
-    }
-    
-    bool empty = false;
-    
-    void popFront()
-    {
-        empty = !stream.readable();
-        size_t readLen = stream.readBytes(buffer.ptr, buffer.length);
-        if (readLen > 0)
-            front = buffer[0..readLen];
-    }
 }
 
 ///
@@ -331,4 +316,29 @@ unittest
 
     stream.close();
     assert(!stream.readable);
+}
+
+/// An input range that reads data from InputStream by fixed chunks, storing them in user-provided array
+struct BufferedStreamReader
+{
+    InputStream stream;
+    ubyte[] buffer;
+    ubyte[] front;
+    
+    this(InputStream istrm, ubyte[] buffer)
+    {
+        stream = istrm;
+        this.buffer = buffer;
+        popFront();
+    }
+    
+    bool empty = false;
+    
+    void popFront()
+    {
+        empty = !stream.readable();
+        size_t readLen = stream.readBytes(buffer.ptr, buffer.length);
+        if (readLen > 0)
+            front = buffer[0..readLen];
+    }
 }

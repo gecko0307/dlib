@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2019 Timur Gafarov
+Copyright (c) 2015-2020Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,6 +26,12 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Tools for manual memory management
+ * Copyright: Timur Gafarov 2015-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.core.memory;
 
 import std.stdio;
@@ -38,10 +44,6 @@ import core.exception: onOutOfMemoryError;
 
 import dlib.memory;
 
-/*
- * Tools for manual memory management
- */
-
 private __gshared ulong _allocatedMemory = 0;
 
 ulong allocatedMemory()
@@ -52,6 +54,9 @@ ulong allocatedMemory()
 private __gshared Mallocator _defaultGlobalAllocator; 
 private __gshared Allocator _globalAllocator;
 
+/**
+ * Returns current global Allocator used by New and Delete
+ */
 Allocator globalAllocator()
 {
     if (_globalAllocator is null)
@@ -63,6 +68,9 @@ Allocator globalAllocator()
     return _globalAllocator;
 }
 
+/**
+ * Sets global Allocator used by New and Delete
+ */
 void globalAllocator(Allocator a)
 {
     _globalAllocator = a;
@@ -296,5 +304,12 @@ void deallocate(T)(T* obj)
     }
 }
 
+/**
+ * Allocates arrays, classes and structs on a heap using currently set globalAllocator
+ */
 alias New = allocate;
+
+/**
+ * Releases arrays, classes and structs previously allocated with New
+ */
 alias Delete = deallocate;

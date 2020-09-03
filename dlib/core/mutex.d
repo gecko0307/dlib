@@ -26,6 +26,11 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.core.mutex;
 
 version(Windows)
@@ -37,6 +42,10 @@ else version(Posix)
     import core.sys.posix.pthread;
 }
 
+/**
+ * Platform-independent mutex wrapper. 
+ * Uses CRITICAL_SECTION under Windows, pthread_mutex_t under Posix
+ */
 struct Mutex
 {
     version(Windows)
@@ -48,6 +57,7 @@ struct Mutex
         pthread_mutex_t _mutex;
     }
     
+    /// Initialize the mutex
     int init()
     {
         version(Windows)
@@ -62,6 +72,7 @@ struct Mutex
         else return 0;
     }
     
+    /// Enter critical section. If the mutex is already locked, block the thread until it becomes available
     int lock()
     {
         version(Windows)
@@ -76,6 +87,7 @@ struct Mutex
         else return 0;
     }
     
+    /// Try to enter critical section. Return immediately if the mutex is already locked
     int tryLock()
     {
         version(Windows)
@@ -89,6 +101,7 @@ struct Mutex
         else return 0;
     }
     
+    /// Leave critical section
     int unlock()
     {
         version(Windows)
@@ -103,6 +116,7 @@ struct Mutex
         else return 0;
     }
     
+    /// Destroy the mutex
     int destroy()
     {
         version(Windows)
@@ -118,6 +132,7 @@ struct Mutex
     }
 }
 
+///
 unittest
 {
     import dlib.core.memory;

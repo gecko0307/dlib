@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2017-2019 Timur Gafarov
+Copyright (c) 2017-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,30 +26,46 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Class-based object ownership system
+ * Copyright: Timur Gafarov 2017-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.core.ownership;
 
 import dlib.core.memory;
 import dlib.container.array;
 
+/**
+ * Interface for objects that can be owned, but not own other objects
+ */
 interface Owned
 {
 }
 
+/**
+ * Basic owner object class. 
+ * When you delete it, all owned object are automatically deleted
+ */
 class Owner: Owned
 {
     protected DynamicArray!Owned ownedObjects;
 
+    /// Constructor. owner can be null
     this(Owner owner)
     {
         if (owner)
             owner.addOwnedObject(this);
     }
 
+    /// Add owned object. Usually you don't have to do it explicitly, just pass the owner to constructor
     void addOwnedObject(Owned obj)
     {
         ownedObjects.append(obj);
     }
 
+    /// Delete owned object without deleting object itself
     void clearOwnedObjects()
     {
         foreach(i, obj; ownedObjects)
@@ -57,6 +73,7 @@ class Owner: Owned
         ownedObjects.free();
     }
 
+    /// Delete particular owned object, if it is there
     void deleteOwnedObject(Owned obj)
     {
         if (ownedObjects.removeFirst(obj))
@@ -65,6 +82,7 @@ class Owner: Owned
         }
     }
 
+    /// Destructor
     ~this()
     {
         clearOwnedObjects();

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2019 Timur Gafarov
+Copyright (c) 2011-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,13 +26,20 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2011-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.core.tuple;
 
+/// Create a tuple
 template Tuple(E...)
 {
     alias Tuple = E;
 }
 
+/// Create a tuple ranging from 0 to stop
 template RangeTuple(int stop)
 {
     static if (stop <= 0)
@@ -41,6 +48,7 @@ template RangeTuple(int stop)
         alias RangeTuple = Tuple!(RangeTuple!(stop-1), stop-1);
 }
 
+/// Create a tuple ranging from start to stop
 template RangeTuple(int start, int stop)
 {
     static if (stop <= start)
@@ -49,6 +57,7 @@ template RangeTuple(int start, int stop)
         alias RangeTuple = Tuple!(RangeTuple!(start, stop-1), stop-1);
 }
 
+/// Create a tuple ranging from start to stop with a specified increment
 template RangeTuple(int start, int stop, int step)
 {
     static assert(step != 0, "RangeTuple: step must be != 0");

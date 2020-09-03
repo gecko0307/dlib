@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2019 Timur Gafarov
+Copyright (c) 2015-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,33 +26,50 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.core.bitio;
-
-/*
+/**
  * Bit-level manipulations
+ * Copyright: Timur Gafarov 2015-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
  */
-
+module dlib.core.bitio;
+ 
+/**
+ * Endianness
+ */
 enum Endian
 {
     Little,
     Big
 }
 
+/**
+ * Returns high 4 bits of a byte
+ */
 T hiNibble(T)(T b)
 {
     return ((b >> 4) & 0x0F);
 }
 
+/**
+ * Returns low 4 bits of a byte
+ */
 T loNibble(T)(T b)
 {
     return (b & 0x0F);
 }
 
+/**
+ * Swap endianness of a 16-bit integer
+ */
 T swapEndian16(T)(T n)
 {
     return cast(T)((n >> 8) | (n << 8));
 }
 
+/**
+ * Sets particular bit of an integer
+ */
 T setBit(T)(T b, uint pos, bool state)
 {
     if (state)
@@ -61,6 +78,9 @@ T setBit(T)(T b, uint pos, bool state)
         return cast(T)(b & ~(1 << pos));
 }
 
+/**
+ * Gets particular bit of an integer
+ */
 bool getBit(T)(T b, uint pos)
 {
     return ((b & (1 << pos)) != 0);

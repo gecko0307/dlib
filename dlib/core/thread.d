@@ -26,12 +26,12 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.core.thread;
-
-/*
- * GC-free, Phobos-independent thread module.
- * Inspired by core.thread, with an additional support for thread termination.
+/**
+ * Copyright: Timur Gafarov 2015-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
  */
+module dlib.core.thread;
 
 version(Windows)
 {
@@ -96,6 +96,10 @@ else version(Posix)
     import core.sys.posix.signal;
 }
 
+/**
+ * GC-free, Phobos-independent thread module.
+ * Inspired by core.thread, with an additional support for thread termination.
+ */
 class Thread
 {
     private void function() func;
@@ -114,18 +118,21 @@ class Thread
         private bool running = false;
     }
 
+    /// Constructor. Initializes Thread using a function
     this(void function() func)
     {
         this.func = func;
         callFunc = true;
     }
 
+    /// Constructor. Initializes Thread using a delegate
     this(void delegate() dlgt)
     {
         this.dlgt = dlgt;
         callFunc = false;
     }
 
+    /// Destructor
     ~this()
     {
         version(Windows)
@@ -141,6 +148,7 @@ class Thread
         }
     }
 
+    /// Starts the thread
     void start()
     {
         version(Windows)
@@ -162,6 +170,7 @@ class Thread
         }
     }
 
+    /// Blocks until thread finishes
     void join()
     {
         version(Windows)
@@ -175,6 +184,7 @@ class Thread
         }
     }
 
+    /// Checks if thread is running
     bool isRunning()
     {
         version(Windows)
@@ -190,6 +200,7 @@ class Thread
         }
     }
 
+    /// Stops the thread
     void terminate()
     {
         version(Windows)

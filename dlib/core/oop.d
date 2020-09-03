@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2019 Timur Gafarov
+Copyright (c) 2015-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,19 +26,21 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.core.oop;
-
-import std.traits;
-
-/*
+/**
  * Prototype-based OOP system for structs.
  * Uses some template black magic to implement:
  * - Multiple inheritance
  * - Parametric polymorphism (struct interfaces)
  * - Interface inheritance
+ * Copyright: Timur Gafarov 2015-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
  */
+module dlib.core.oop;
 
-/*
+import std.traits;
+
+/**
  * Inheritance mixin
  */
 mixin template Inherit(PT...)
@@ -73,7 +75,7 @@ mixin template Inherit(PT...)
     }
 }
 
-/*
+/**
  * Returns index of a tuple element which has specified member (s)
  */
 size_t tupleElemWithMember(string s, T...)()
@@ -86,7 +88,7 @@ size_t tupleElemWithMember(string s, T...)()
     assert(0);
 }
 
-/*
+/**
  * Test if type (T) has specified method (m), local or derived
  */
 bool hasMethod(T, string m)()
@@ -117,8 +119,8 @@ bool hasMethod(T, string m)()
     }
 }
 
-/*
- * Test if given type (T) corresponds to given signature (I)
+/**
+ * Check if given type (T) corresponds to given signature (I)
  */
 bool implements(T, I)()
 {
@@ -154,7 +156,7 @@ bool implements(T, I)()
     return true;
 }
 
-/*
+/**
  * Test if F is a method
  */
 template isMethod(alias F)
@@ -165,6 +167,7 @@ template isMethod(alias F)
           !isDelegate!F;
 }
 
+///
 unittest
 {
     struct Foo
