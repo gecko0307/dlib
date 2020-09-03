@@ -26,12 +26,20 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2016-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.audio.unmanaged;
 
 import dlib.core.memory;
 import dlib.audio.sample;
 import dlib.audio.sound;
 
+/**
+ * An implementation of GenericSound that doesn't use garbage collector
+ */
 class UnmanagedGenericSound: GenericSound
 {
     this(Sound ras)
@@ -80,6 +88,9 @@ class UnmanagedGenericSound: GenericSound
     }
 }
 
+/**
+ * GenericSoundFactory implementation for UnmanagedGenericSound class
+ */
 class UnmanagedGenericSoundFactory: GenericSoundFactory
 {
     UnmanagedGenericSound createSound(

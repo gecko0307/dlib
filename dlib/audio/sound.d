@@ -26,76 +26,81 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2016-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.audio.sound;
 
 import std.math;
 import dlib.audio.sample;
 
-/*
+/**
  * Generalized sound stream class.
  * This can be used to implement any type of sound,
  * including compressed audio streams.
  */
 abstract class StreamedSound
 {
-    // Number of channels per sample
+    /// Number of channels per sample
     @property uint channels();
 
-    // Number of samples per second, in Hz
+    /// Number of samples per second, in Hz
     @property uint sampleRate();
 
-    // Number of bits in each sample channel
+    /// Number of bits in each sample channel
     @property uint bitDepth();
 
-    // Number of bytes in each sample (bitDepth / 8 * channels)
+    /// Number of bytes in each sample (bitDepth / 8 * channels)
     @property uint sampleSize()
     {
         return (bitDepth / 8) * channels;
     }
 
-    // Sample format
+    /// Sample format
     @property SampleFormat sampleFormat();
 
-    // Fill in the buffer with next portion of sound data.
-    // Function returns actual number of bytes written.
-    // At the end of a stream, zero is returned.
+    /// Fill in the buffer with next portion of sound data.
+    /// Function returns actual number of bytes written.
+    /// At the end of a stream, zero is returned.
     ulong stream(ubyte[] buffer);
 
-    // Return to the start of a stream
+    /// Return to the start of a stream
     void reset();
 }
 
-/*
+/**
  * Sound that can be seeked
  */
 abstract class SeekableSound: StreamedSound
 {
-    // Number of samples
+    /// Number of samples
     @property ulong size();
 
-    // Duration, in seconds
+    /// Duration, in seconds
     @property double duration();
 
     float opIndex(uint chan, ulong pos);
     float opIndexAssign(float sample, uint chan, ulong pos);
 }
 
-/*
+/**
  * Sound that is fully kept in memory
  */
 abstract class Sound: SeekableSound
 {
-    // Raw byte data
+    /// Raw byte data
     @property ref ubyte[] data();
 
-    // Make exact copy of the sound
+    /// Make exact copy of the sound
     @property Sound dup();
 
-    // Make empty sound of the same format
+    /// Make empty sound of the same format
     Sound createSameFormat(uint ch, double dur);
 }
 
-/*
+/**
  * Generic Sound implementation
  */
 class GenericSound: Sound
@@ -254,6 +259,9 @@ class GenericSound: Sound
     }
 }
 
+/**
+ * GenericSound object factory
+ */
 interface GenericSoundFactory
 {
     GenericSound createSound(
@@ -266,6 +274,9 @@ interface GenericSoundFactory
         SampleFormat f);
 }
 
+/**
+ * GenericSoundFactory implementation for Sound class
+ */
 class DefaultGenericSoundFactory: GenericSoundFactory
 {
     GenericSound createSound(
@@ -291,6 +302,9 @@ class DefaultGenericSoundFactory: GenericSoundFactory
 
 private __gshared DefaultGenericSoundFactory _defaultGenericSoundFactory;
 
+/**
+ * GenericSoundFactory singleton
+ */
 DefaultGenericSoundFactory defaultGenericSoundFactory()
 {
     if (!_defaultGenericSoundFactory)

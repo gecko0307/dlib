@@ -26,13 +26,18 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2016-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.audio.synth;
 
 import std.math;
 import std.random;
 import dlib.audio.sound;
 
-/*
+/**
  * An interface for a synthesizer that maps sample position to -1..1 sample value
  */
 interface Synth
@@ -40,7 +45,7 @@ interface Synth
     float eval(Sound sound, ulong position, float frequency);
 }
 
-/*
+/**
  * Sine wave synthesizer
  */
 class SineWaveSynth: Synth
@@ -53,7 +58,7 @@ class SineWaveSynth: Synth
     }
 }
 
-/*
+/**
  * Square wave synthesizer
  */
 class SquareWaveSynth: Synth
@@ -67,7 +72,7 @@ class SquareWaveSynth: Synth
     }
 }
 
-/*
+/**
  * Sawtooth wave synthesizer
  */
 class SawtoothWaveSynth: Synth
@@ -81,7 +86,7 @@ class SawtoothWaveSynth: Synth
     }
 }
 
-/*
+/**
  * Triangle wave synthesizer
  */
 class TriangleWaveSynth: Synth
@@ -95,7 +100,7 @@ class TriangleWaveSynth: Synth
     }
 }
 
-/*
+/**
  * Frequency modulation synthesizer
  */
 class FMSynth: Synth
@@ -120,15 +125,16 @@ class FMSynth: Synth
 
 // TODO: EnvelopeSynth
 
-/*
+/**
  * Fill a given portion of a sound with a signal from specified synthesizer.
- * sound - a sound object to write to
- * channel - channel to fill (beginning from 0)
- * synth - synthesizer object
- * freq - synthesizer frequency
- * startTime - start time of a signal in seconds
- * duration - duration of a signal in seconds
- * amplitude - volume coefficient of a signal
+ * Params:
+ *   sound = a sound object to write to
+ *   channel = channel to fill (beginning from 0)
+ *   synth = synthesizer object
+ *   freq = synthesizer frequency
+ *   startTime = start time of a signal in seconds
+ *   duration = duration of a signal in seconds
+ *   amplitude = volume coefficient of a signal
  */
 void fillSynth(Sound sound, uint channel, Synth synth, float freq, double startTime, double duration, float amplitude)
 {
@@ -143,15 +149,15 @@ void fillSynth(Sound sound, uint channel, Synth synth, float freq, double startT
     }
 }
 
-/*
+/**
  * Additively mix a signal from specified synthesizer to a given portion of a sound.
- * sound - a sound object to write to
- * channel - channel to fill (beginning from 0)
- * synth - synthesizer object
- * freq - synthesizer frequency
- * startTime - start time of a signal in seconds
- * duration - duration of a signal in seconds
- * amplitude - volume coefficient of a signal
+ *   sound = a sound object to write to
+ *   channel = channel to fill (beginning from 0)
+ *   synth = synthesizer object
+ *   freq = synthesizer frequency
+ *   startTime = start time of a signal in seconds
+ *   duration = duration of a signal in seconds
+ *   amplitude = volume coefficient of a signal
  */
 void mixSynth(Sound sound, uint channel, Synth synth, float freq, double startTime, double duration, float amplitude)
 {
@@ -167,10 +173,10 @@ void mixSynth(Sound sound, uint channel, Synth synth, float freq, double startTi
     }
 }
 
-/*
+/**
  * Generate random audio signal.
- * snd - sound
- * ch - channel to fill (beginning from 0)
+ *   snd = sound
+ *   ch = channel to fill (beginning from 0)
  */
 void whiteNoise(Sound snd, uint ch)
 {
@@ -180,11 +186,11 @@ void whiteNoise(Sound snd, uint ch)
     }
 }
 
-/*
+/**
  * Fill the sound with simple sine wave tone.
- * snd - sound
- * ch - channel to fill (beginning from 0)
- * freq - frequency in Hz. For example, a dial tone in Europe is usually 425 Hz
+ *   snd = sound
+ *   ch = channel to fill (beginning from 0)
+ *   freq = frequency in Hz. For example, a dial tone in Europe is usually 425 Hz
  */
 void sineWave(Sound snd, uint ch, float freq)
 {

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2019 Timur Gafarov
+Copyright (c) 2015-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,14 +26,14 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2015-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.audio.io.wav;
 
-/*
- * Simple RIFF/WAV decoder and encoder
- */
-
-// Uncomment to see debug messages
-version = WAVDebug;
+//version = WAVDebug; // Uncomment to see debug messages
 
 version(WAVDebug)
 {
@@ -44,19 +44,9 @@ import dlib.filesystem.local;
 import dlib.audio.sample;
 import dlib.audio.sound;
 
-GenericSound loadWAV(string filename)
-{
-    auto istrm = openForInput(filename);
-    auto snd = loadWAV(istrm);
-    istrm.close();
-    return snd;
-}
-
-GenericSound loadWAV(InputStream istrm)
-{
-    return loadWAV(istrm, defaultGenericSoundFactory);
-}
-
+/**
+ * Simple RIFF/WAV decoder. Decodes WAV from stream using provided sound factory
+ */
 GenericSound loadWAV(InputStream istrm, GenericSoundFactory gsf)
 {
     char[4] magic;
@@ -149,13 +139,28 @@ GenericSound loadWAV(InputStream istrm, GenericSoundFactory gsf)
     return gs;
 }
 
-void saveWAV(Sound snd, string filename)
+/**
+ * Decodes WAV from stream using default sound factory
+ */
+GenericSound loadWAV(InputStream istrm)
 {
-    auto ostrm = openForOutput(filename);
-    saveWAV(snd, ostrm);
-    ostrm.close();
+    return loadWAV(istrm, defaultGenericSoundFactory);
 }
 
+/**
+ * Decodes WAV from file
+ */
+GenericSound loadWAV(string filename)
+{
+    auto istrm = openForInput(filename);
+    auto snd = loadWAV(istrm);
+    istrm.close();
+    return snd;
+}
+
+/**
+ * Simple RIFF/WAV encoder. Encodes WAV to stream
+ */
 void saveWAV(Sound snd, OutputStream ostrm)
 {
     string magic = "RIFF";
@@ -202,4 +207,14 @@ void saveWAV(Sound snd, OutputStream ostrm)
     int dataSubchunkSize = cast(int)snd.data.length;
     ostrm.writeLE(dataSubchunkSize);
     ostrm.writeArray(snd.data);
+}
+
+/**
+ * Encodes WAV to file
+ */
+void saveWAV(Sound snd, string filename)
+{
+    auto ostrm = openForOutput(filename);
+    saveWAV(snd, ostrm);
+    ostrm.close();
 }

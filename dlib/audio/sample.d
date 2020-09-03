@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2019 Timur Gafarov
+Copyright (c) 2016-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,31 +26,35 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2016-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.audio.sample;
 
-/*
- * dlib.audio defines four integer sample formats:
- * S8  - signed 8-bit
- * S16 - signed 16-bit
- * U8  - unsigned 8-bit
- * U16 - unsigned 16-bit
- */
-
-enum SampleFormat
-{
-    S8,
-    S16,
-    U8,
-    U16
-}
-
-/*
- * Integer formats are for storage only: all sound processing and sample I/O
+/**
+ * dlib.audio defines four integer sample formats: signed 8-bit, signed 16-bit,
+ * unsigned 8-bit, unsigned 16-bit.
+ * They are for storage only: all sound processing and sample I/O
  * should be done in floating point numbers. Floating point sample is signed and
  * ranges from -1.0f to 1.0f.
  */
+enum SampleFormat
+{
+    /// signed 8-bit
+    S8,
+    /// signed 16-bit
+    S16,
+    /// unsigned 8-bit
+    U8,
+    /// unsigned 16-bit
+    U16
+}
 
-// Convert integer sample to floating point
+/**
+ * Convert integer sample to floating point sample
+ */
 float toFloatSample(ubyte* ptr, SampleFormat format)
 {
     float res;
@@ -80,7 +84,9 @@ float toFloatSample(ubyte* ptr, SampleFormat format)
     return res;
 }
 
-// Convert floating point sample to integer
+/**
+ * Convert floating point sample to integer sample
+ */
 void fromFloatSample(ubyte* ptr, SampleFormat format, float s)
 {
     switch (format)
