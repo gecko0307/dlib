@@ -36,5 +36,6 @@
             "sourceFiles-posix": ["libdlib.a"],
             "sourceFiles-windows": ["dlib.lib"]
         }
-    ]
+    ],
+    "-ddoxTool": "scod"
 }

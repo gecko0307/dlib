@@ -40,7 +40,7 @@ dlib is automatically tested for compatibility with latest two releases of DMD a
 
 Documentation
 -------------
-Please, refer to [the wiki](https://github.com/gecko0307/dlib/wiki). Be aware that documentation is currently incomplete. I'm currently running a [Patreon campaign](https://www.patreon.com/gecko0307) to reach $100 funding per month - help me get there to finish the documentation.
+Please, refer to [the wiki](https://github.com/gecko0307/dlib/wiki). Also documentation can be generated from source code using Dub (`dub build --build=ddox`). Be aware that documentation is currently incomplete. I'm currently running a [Patreon campaign](https://www.patreon.com/gecko0307) to reach $100 funding per month - help me get there to finish the documentation.
 
 For quick support and overall discussions, use [Gitter chat room](https://gitter.im/gecko0307/dlib).
 
