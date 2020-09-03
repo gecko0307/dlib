@@ -26,6 +26,11 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2019-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.concurrency.threadpool;
 
 import std.functional;
@@ -34,6 +39,9 @@ import dlib.core.mutex;
 import dlib.concurrency.workerthread;
 import dlib.concurrency.taskqueue;
 
+/**
+ * An object that manages worker threads and runs tasks on them
+ */
 class ThreadPool
 {
     protected:

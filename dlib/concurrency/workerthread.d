@@ -26,12 +26,20 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2019-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.concurrency.workerthread;
 
 import dlib.core.thread;
 import dlib.concurrency.threadpool;
 import dlib.concurrency.taskqueue;
 
+/**
+ * A thread that is created by ThreadPool
+ */
 class WorkerThread: Thread
 {
     size_t id;

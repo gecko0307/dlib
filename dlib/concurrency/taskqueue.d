@@ -26,18 +26,29 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2019-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.concurrency.taskqueue;
 
 import dlib.core.mutex;
 import dlib.container.array;
 import dlib.concurrency.workerthread;
 
+/*
+ * State of a Task
+ */
 enum TaskState
 {
     Valid = 0,
     Invalid = 1
 }
 
+/**
+ * Task object that encapsulates a delegate
+ */
 struct Task
 {
     TaskState state = TaskState.Invalid;
@@ -52,6 +63,9 @@ struct Task
     }
 }
 
+/**
+ * Asynchronous task queue
+ */
 class TaskQueue
 {
     protected:
