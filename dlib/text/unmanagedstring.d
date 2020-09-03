@@ -31,7 +31,6 @@ module dlib.text.unmanagedstring;
 import dlib.core.memory;
 import dlib.container.array;
 import dlib.text.utf8;
-import dlib.coding.hash;
 import dlib.core.stream;
 
 /**
@@ -41,7 +40,10 @@ import dlib.core.stream;
  * String is always zero-terminated and directly compatible with C.
  */
 struct String
-{  
+{
+    /**
+     * Underlying array of characters
+     */
     DynamicArray!(char, 128) data;
     
     private void addZero()
