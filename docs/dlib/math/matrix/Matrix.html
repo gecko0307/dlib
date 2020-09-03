@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
+		<title>Struct Matrix</title>
+		<link rel="stylesheet" href="../../../css/style.min.css"/>
+		<script type="text/javascript" src="../../../js/script.min.js"></script>
+	</head>
+	<body onload="setupDdox();">
+		<header></header>
+		<nav id="main-nav">
+			<div>
+				<noscript>
+					<p style="color: red">The search functionality needs JavaScript enabled</p>
+				</noscript>
+				<div id="symbolSearchPane" style="display: none">
+					<form action="#" method="GET">
+						<input id="symbolSearch" type="text" name="q" placeholder="Search for symbols" autocomplete="off" onchange="performSymbolSearch(24);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" autofocus/>
+					</form>
+					<ul id="symbolSearchResults" class="symbolList" style="display: none"></ul><script type="application/javascript" src="../../../symbols.js"></script><script type="application/javascript">var symbolSearchRootDir = "../../../";
+document.getElementById('symbolSearchPane').style.display = 'block';</script>
+				</div>
+				<ul class="tree-view">
+					<li class="tree-view ">
+						<div class="package ">
+							<a href="../../../dlib.html">dlib</a>
+						</div>
+				<ul class="tree-view">
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/audio.html">audio</a>
+						</div>
+				<ul class="tree-view">
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/audio/io.html">io</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/audio/io/wav.html">wav</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/audio/sample.html">sample</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/audio/sound.html">sound</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/audio/synth.html">synth</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/audio/unmanaged.html">unmanaged</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/coding.html">coding</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/coding/hash.html">hash</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/coding/varint.html">varint</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/coding/zlib.html">zlib</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/concurrency.html">concurrency</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/concurrency/taskqueue.html">taskqueue</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/concurrency/threadpool.html">threadpool</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/concurrency/workerthread.html">workerthread</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/container.html">container</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/container/array.html">array</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/container/bst.html">bst</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/container/buffer.html">buffer</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/container/dict.html">dict</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/container/linkedlist.html">linkedlist</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/container/queue.html">queue</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/container/stack.html">stack</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/core.html">core</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/core/bitio.html">bitio</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/core/compound.html">compound</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/core/memory.html">memory</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/core/mutex.html">mutex</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/core/oop.html">oop</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/core/ownership.html">ownership</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/core/stream.html">stream</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/core/thread.html">thread</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/core/tuple.html">tuple</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/filesystem.html">filesystem</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/filesystem/delegaterange.html">delegaterange</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/filesystem/dirrange.html">dirrange</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/filesystem/filesystem.html">filesystem</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/filesystem/local.html">local</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/filesystem/stdfs.html">stdfs</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/geometry.html">geometry</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/geometry/aabb.html">aabb</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/geometry/frustum.html">frustum</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/geometry/intersection.html">intersection</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/geometry/obb.html">obb</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/geometry/plane.html">plane</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/geometry/ray.html">ray</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/geometry/sphere.html">sphere</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/geometry/triangle.html">triangle</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/geometry/trimesh.html">trimesh</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/geometry/utils.html">utils</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view ">
+						<div class="package ">
+							<a href="../../../dlib/math.html">math</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/combinatorics.html">combinatorics</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/complex.html">complex</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/decomposition.html">decomposition</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/diff.html">diff</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/dual.html">dual</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/dualquaternion.html">dualquaternion</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/fft.html">fft</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/hof.html">hof</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/linsolve.html">linsolve</a>
+						</div>
+					</li>
+					<li>
+						<div class="module selected">
+							<a href="../../../dlib/math/matrix.html">matrix</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/quaternion.html">quaternion</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/sse.html">sse</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/tensor.html">tensor</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/transformation.html">transformation</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/utils.html">utils</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/vector.html">vector</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/memory.html">memory</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/memory/allocator.html">allocator</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/memory/mallocator.html">mallocator</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/memory/mmappool.html">mmappool</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">network
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/network/socket.html">socket</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/network/url.html">url</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/text.html">text</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/text/common.html">common</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/text/encodings.html">encodings</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/text/lexer.html">lexer</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/text/unmanagedstring.html">unmanagedstring</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/text/utf16.html">utf16</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/text/utf8.html">utf8</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/text/utils.html">utils</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+				</ul>
+					</li>
+				</ul>
+			</div>
+			<p id="main-nav-footer">
+				Built with
+				<a href="https://github.com/MartinNowak/scod">scod</a>
+			</p>
+		</nav>
+		<div id="main-contents">
+			<div>
+				<h1>Struct Matrix</h1><p>Square (NxN) matrix.
+</p>
+				<div class="prototype">
+					<code class="lang-d">
+						<div class="single-prototype">
+				<span class="kwd">struct</span> <span class="typ">Matrix</span>(T, <span class="typ">ulong</span> N)
+				<span class="pun">;</span>
+						</div>
+					</code>
+				</div>
+				<section></section>
+
+				<section><h2>Constructors</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th><th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.this.html" class="public">
+									<code>this</code>
+								</a>
+								<span class="tableEntryAnnotation">(arr)</span>
+							</td>
+							<td>Create matrix from array.
+ This is a convenient way to deal with arrays of "classic" layout:
+ the storage order in an array should be row-major
+</td>
+						</tr>
+					</table>
+				</section>
+				<section><h2>Fields</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th><th>Type</th><th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.arrayof.html" class="public"><code>arrayof</code></a>
+							</td>
+							<td class="typecol"><code class="prettyprint lang-d"><span class="pln">T</span><span class="pun">[</span><span class="pln">N</span><span class="pun">*</span><span class="pln">N</span><span class="pun">]</span></code></td><td>Linear array representing elements column by column
+</td>
+						</tr>
+					</table>
+				</section>
+				<section><h2>Properties</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th><th>Type</th><th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.adjugate.html" class="public property"><code>adjugate</code></a><span class="tableEntryAnnotation">[get]</span>
+							</td>
+							<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/math/matrix/Matrix.html"><span class="typ">Matrix</span></a>!(T,N)</code></td><td>Adjugate and cofactor matrices
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.cofactor.html" class="public property"><code>cofactor</code></a><span class="tableEntryAnnotation">[get]</span>
+							</td>
+							<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/math/matrix/Matrix.html"><span class="typ">Matrix</span></a>!(T,N)</code></td><td>Adjugate and cofactor matrices
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.elements.html" class="public property"><code>elements</code></a><span class="tableEntryAnnotation">[set]</span>
+							</td>
+							<td class="typecol"><code class="prettyprint lang-d"><span class="typ">string</span></code></td><td>Symbolic element access
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.inverse.html" class="public property"><code>inverse</code></a><span class="tableEntryAnnotation">[get]</span>
+							</td>
+							<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/math/matrix/Matrix.html"><span class="typ">Matrix</span></a>!(T,N)</code></td><td>Inverse of a matrix
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.isAffine.html" class="public property"><code>isAffine</code></a><span class="tableEntryAnnotation">[get]</span>
+							</td>
+							<td class="typecol"><code class="prettyprint lang-d"><span class="typ">bool</span></code></td><td>Check if matrix represents affine transformation
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.isSingular.html" class="public property"><code>isSingular</code></a><span class="tableEntryAnnotation">[get]</span>
+							</td>
+							<td class="typecol"><code class="prettyprint lang-d"><span class="typ">bool</span></code></td><td>Return true if matrix is singular
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.negative.html" class="public property"><code>negative</code></a><span class="tableEntryAnnotation">[get]</span>
+							</td>
+							<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/math/matrix/Matrix.html"><span class="typ">Matrix</span></a>!(T,N)</code></td><td>Negative matrix
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.toString.html" class="public property"><code>toString</code></a><span class="tableEntryAnnotation">[get]</span>
+							</td>
+							<td class="typecol"><code class="prettyprint lang-d"><span class="typ">string</span></code></td><td>Convert to string
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.transposed.html" class="public property"><code>transposed</code></a><span class="tableEntryAnnotation">[get]</span>
+							</td>
+							<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/math/matrix/Matrix.html"><span class="typ">Matrix</span></a>!(T,N)</code></td><td>Return the transposed matrix
+</td>
+						</tr>
+					</table>
+				</section>
+				<section><h2>Methods</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th><th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.determinant.html" class="public">
+									<code>determinant</code>
+								</a>
+								<span class="tableEntryAnnotation">()</span>
+							</td>
+							<td>Determinant (of upper-left 3x3 portion for 4x4 matrices)
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.getRow.html" class="public">
+									<code>getRow</code>
+								</a>
+								<span class="tableEntryAnnotation">(i)</span>
+							</td>
+							<td>Row/column manipulations
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.identity.html" class="public">
+									<code>identity</code>
+								</a>
+								<span class="tableEntryAnnotation">()</span>
+							</td>
+							<td>Return identity matrix
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.invert.html" class="public">
+									<code>invert</code>
+								</a>
+								<span class="tableEntryAnnotation">()</span>
+							</td>
+							<td>Invert
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.invRotate.html" class="public">
+									<code>invRotate</code>
+								</a>
+								<span class="tableEntryAnnotation">(v)</span>
+							</td>
+							<td>Rotate a vector by the inverse 3x3 upper-left portion of the matrix
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.opBinary.html" class="public">
+									<code>opBinary</code>
+								</a>
+								<span class="tableEntryAnnotation">(mat)</span>
+							</td>
+							<td>Matrix + Matrix
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.opBinary.html" class="public">
+									<code>opBinary</code>
+								</a>
+								<span class="tableEntryAnnotation">(mat)</span>
+							</td>
+							<td>Matrix - Matrix
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.opBinary.html" class="public">
+									<code>opBinary</code>
+								</a>
+								<span class="tableEntryAnnotation">(mat)</span>
+							</td>
+							<td>Matrix * Matrix
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.opBinary.html" class="public">
+									<code>opBinary</code>
+								</a>
+								<span class="tableEntryAnnotation">(k)</span>
+							</td>
+							<td>Matrix * T
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.opBinaryRight.html" class="public">
+									<code>opBinaryRight</code>
+								</a>
+								<span class="tableEntryAnnotation">(v)</span>
+							</td>
+							<td>Multiply column vector by the matrix
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.opBinaryRight.html" class="public">
+									<code>opBinaryRight</code>
+								</a>
+								<span class="tableEntryAnnotation">(v)</span>
+							</td>
+							<td>Multiply column 3D vector by the affine 4x4 matrix
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.opEquals.html" class="public">
+									<code>opEquals</code>
+								</a>
+								<span class="tableEntryAnnotation">(that)</span>
+							</td>
+							<td>Compare two matrices.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.opIndex.html" class="public">
+									<code>opIndex</code>
+								</a>
+								<span class="tableEntryAnnotation">(i, j)</span>
+							</td>
+							<td>T = Matrix[i, j]
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.opIndex.html" class="public">
+									<code>opIndex</code>
+								</a>
+								<span class="tableEntryAnnotation">(index)</span>
+							</td>
+							<td>T = Matrix[index]
+ Indices start with 0
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.opIndexAssign.html" class="public">
+									<code>opIndexAssign</code>
+								</a>
+								<span class="tableEntryAnnotation">(t, i, j)</span>
+							</td>
+							<td>Matrix[i, j] = T
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.opIndexAssign.html" class="public">
+									<code>opIndexAssign</code>
+								</a>
+								<span class="tableEntryAnnotation">(t, index)</span>
+							</td>
+							<td>Matrix[index] = T
+ Indices start with 0
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.opOpAssign.html" class="public">
+									<code>opOpAssign</code>
+								</a>
+								<span class="tableEntryAnnotation">(mat)</span>
+							</td>
+							<td>Matrix += Matrix
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.opOpAssign.html" class="public">
+									<code>opOpAssign</code>
+								</a>
+								<span class="tableEntryAnnotation">(mat)</span>
+							</td>
+							<td>Matrix -= Matrix
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.opOpAssign.html" class="public">
+									<code>opOpAssign</code>
+								</a>
+								<span class="tableEntryAnnotation">(mat)</span>
+							</td>
+							<td>Matrix *= Matrix
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.opOpAssign.html" class="public">
+									<code>opOpAssign</code>
+								</a>
+								<span class="tableEntryAnnotation">(k)</span>
+							</td>
+							<td>Matrix *= T
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.opSliceAssign.html" class="public">
+									<code>opSliceAssign</code>
+								</a>
+								<span class="tableEntryAnnotation">(t, index1, index2)</span>
+							</td>
+							<td>Matrix4x4!(T)[index1..index2] = T
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.opSliceAssign.html" class="public">
+									<code>opSliceAssign</code>
+								</a>
+								<span class="tableEntryAnnotation">(t)</span>
+							</td>
+							<td>Matrix[] = T
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.rotate.html" class="public">
+									<code>rotate</code>
+								</a>
+								<span class="tableEntryAnnotation">(v)</span>
+							</td>
+							<td>Rotate a vector by the 3x3 upper-left portion of the matrix
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.setIdentity.html" class="public">
+									<code>setIdentity</code>
+								</a>
+								<span class="tableEntryAnnotation">()</span>
+							</td>
+							<td>Set to identity
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.transpose.html" class="public">
+									<code>transpose</code>
+								</a>
+								<span class="tableEntryAnnotation">()</span>
+							</td>
+							<td>Transpose
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.zero.html" class="public">
+									<code>zero</code>
+								</a>
+								<span class="tableEntryAnnotation">()</span>
+							</td>
+							<td>Return zero matrix
+</td>
+						</tr>
+					</table>
+				</section>
+				<section><h2>Aliases</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th><th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/math/matrix/Matrix.affine.html" class="public">
+									<code>affine</code>
+								</a>
+							</td>
+							<td>Check if matrix represents affine transformation
+</td>
+						</tr>
+					</table>
+				</section>
+				<section><h2>Description</h2>
+<p>Implementation notes:
+ The storage order is column-major;
+ Affine vector of 4x4 matrix is in the 4th column (as in OpenGL);
+ Elements are stored in a fixed manner, so it is impossible to change
+    matrix size once it's created;
+ Actual data is allocated as a static array, so no references, no GC touching.
+    When you pass a Matrix by value, it will be safely copied;
+ This implementation is not perfect (as for now) for dealing with really
+    big matrices, but ideal for smaller ones, e.g. those which are meant to be
+    manipulated in real-time (in game engines, rendering pipelines etc).
+    This limitation may (but doesn't have to) be addressed in future.
+</p>
+</section>
+<section><h2>Example</h2>
+
+<pre class="code"><code class="lang-d"><span class="kwd">auto </span><span class="pln">m1 </span><span class="pun">= <a href="../../../dlib/math/matrix/matrixf.html"></span><span class="pln">matrixf</span></a><span class="pun">(
+    </span><span class="lit">1</span><span class="pun">, </span><span class="lit">2</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">6</span><span class="pun">,
+    </span><span class="lit">4</span><span class="pun">, </span><span class="lit">6</span><span class="pun">, </span><span class="lit">3</span><span class="pun">, </span><span class="lit">1</span><span class="pun">,
+    </span><span class="lit">2</span><span class="pun">, </span><span class="lit">7</span><span class="pun">, </span><span class="lit">8</span><span class="pun">, </span><span class="lit">2</span><span class="pun">,
+    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">5</span><span class="pun">, </span><span class="lit">2</span><span class="pun">, </span><span class="lit">1
+</span><span class="pun">);
+</span><span class="kwd">auto </span><span class="pln">m2 </span><span class="pun">= <a href="../../../dlib/math/matrix/matrixf.html"></span><span class="pln">matrixf</span></a><span class="pun">(
+    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">3</span><span class="pun">, </span><span class="lit">7</span><span class="pun">, </span><span class="lit">1</span><span class="pun">,
+    </span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">2</span><span class="pun">, </span><span class="lit">5</span><span class="pun">,
+    </span><span class="lit">1</span><span class="pun">, </span><span class="lit">9</span><span class="pun">, </span><span class="lit">2</span><span class="pun">, </span><span class="lit">6</span><span class="pun">,
+    </span><span class="lit">5</span><span class="pun">, </span><span class="lit">2</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0
+</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">m1 </span><span class="pun">* </span><span class="pln">m2 </span><span class="pun">== <a href="../../../dlib/math/matrix/matrixf.html"></span><span class="pln">matrixf</span></a><span class="pun">(
+    </span><span class="lit">32</span><span class="pun">, </span><span class="lit">15</span><span class="pun">, </span><span class="lit">11</span><span class="pun">, </span><span class="lit">11</span><span class="pun">,
+    </span><span class="lit">14</span><span class="pun">, </span><span class="lit">41</span><span class="pun">, </span><span class="lit">46</span><span class="pun">, </span><span class="lit">52</span><span class="pun">,
+    </span><span class="lit">25</span><span class="pun">, </span><span class="lit">82</span><span class="pun">, </span><span class="lit">44</span><span class="pun">, </span><span class="lit">85</span><span class="pun">,
+    </span><span class="lit">12</span><span class="pun">, </span><span class="lit">20</span><span class="pun">, </span><span class="lit">14</span><span class="pun">, </span><span class="lit">37</span><span class="pun">)
+);
+
+</span><span class="kwd">auto </span><span class="pln">m3 </span><span class="pun">= </span><span class="typ">Matrix4f<wbr/></span><span class="pun">.</span><span class="pln">identity</span><span class="pun">;
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">m3 </span><span class="pun">== <a href="../../../dlib/math/matrix/matrixf.html"></span><span class="pln">matrixf</span></a><span class="pun">(
+    </span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
+    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
+    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
+    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">)
+);
+
+</span><span class="pln">m3<wbr/></span><span class="pun">.</span><span class="pln">a14 </span><span class="pun">= </span><span class="lit">1</span><span class="pun">;
+</span><span class="pln">m3<wbr/></span><span class="pun">.</span><span class="pln">a24 </span><span class="pun">= </span><span class="lit">2</span><span class="pun">;
+</span><span class="pln">m3<wbr/></span><span class="pun">.</span><span class="pln">a34 </span><span class="pun">= </span><span class="lit">3</span><span class="pun">;
+
+</span><span class="com">/*
+// This will compile, but fail to link for some wierd reason
+auto v = Vector3f(2.0f, 4.0f, 6.0f);
+assert(Vector3f(1.0f, 2.0f, 3.0f) * m3 == v);
+*/
+
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">m1<wbr/></span><span class="pun">.</span><span class="pln">determinant3x3 </span><span class="pun">== -</span><span class="lit">25</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">m1<wbr/></span><span class="pun">.</span><span class="pln">determinant </span><span class="pun">== </span><span class="lit">567</span><span class="pun">);
+
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">m1<wbr/></span><span class="pun">.</span><span class="pln">singular </span><span class="pun">== </span><span class="kwd">false</span><span class="pun">);
+
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">m1<wbr/></span><span class="pun">.</span><span class="pln">affine </span><span class="pun">== </span><span class="kwd">false</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">m3<wbr/></span><span class="pun">.</span><span class="pln">affine </span><span class="pun">== </span><span class="kwd">true</span><span class="pun">);
+
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">m1<wbr/></span><span class="pun">.</span><span class="pln">transposed </span><span class="pun">== <a href="../../../dlib/math/matrix/matrixf.html"></span><span class="pln">matrixf</span></a><span class="pun">(
+    </span><span class="lit">1</span><span class="pun">, </span><span class="lit">4</span><span class="pun">, </span><span class="lit">2</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
+    </span><span class="lit">2</span><span class="pun">, </span><span class="lit">6</span><span class="pun">, </span><span class="lit">7</span><span class="pun">, </span><span class="lit">5</span><span class="pun">,
+    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">3</span><span class="pun">, </span><span class="lit">8</span><span class="pun">, </span><span class="lit">2</span><span class="pun">,
+    </span><span class="lit">6</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">2</span><span class="pun">, </span><span class="lit">1</span><span class="pun">)
+);
+
+</span><span class="kwd">auto </span><span class="pln">m4 </span><span class="pun">= <a href="../../../dlib/math/matrix/matrixf.html"></span><span class="pln">matrixf</span></a><span class="pun">(
+    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">3</span><span class="pun">, </span><span class="lit">2</span><span class="pun">,
+    </span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">8</span><span class="pun">,
+    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">0
+</span><span class="pun">);
+
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">m4<wbr/></span><span class="pun">.</span><span class="pln">inverse </span><span class="pun">== <a href="../../../dlib/math/matrix/matrixf.html"></span><span class="pln">matrixf</span></a><span class="pun">(
+    -</span><span class="lit">4</span><span class="pun">,   </span><span class="lit">1</span><span class="pun">, </span><span class="lit">12</span><span class="pun">,
+    -</span><span class="lit">0</span><span class="pun">,   </span><span class="lit">0</span><span class="pun">,  </span><span class="lit">1</span><span class="pun">,
+     </span><span class="lit">0.5</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, -</span><span class="lit">1.5</span><span class="pun">)
+);
+
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">m1<wbr/></span><span class="pun">.</span><span class="pln">cofactor </span><span class="pun">== <a href="../../../dlib/math/matrix/matrixf.html"></span><span class="pln">matrixf</span></a><span class="pun">(
+    </span><span class="lit">7</span><span class="pun">, -</span><span class="lit">14</span><span class="pun">, -</span><span class="lit">14</span><span class="pun">,  </span><span class="lit">98</span><span class="pun">,
+  </span><span class="lit">148</span><span class="pun">,  </span><span class="lit">28</span><span class="pun">, -</span><span class="lit">53</span><span class="pun">, -</span><span class="lit">34</span><span class="pun">,
+  -</span><span class="lit">16</span><span class="pun">, -</span><span class="lit">49</span><span class="pun">, </span><span class="lit">113</span><span class="pun">,  </span><span class="lit">19</span><span class="pun">,
+ -</span><span class="lit">158</span><span class="pun">, </span><span class="lit">154</span><span class="pun">, -</span><span class="lit">89</span><span class="pun">, -</span><span class="lit">25</span><span class="pun">)
+);
+</span></code></pre>
+</section>
+
+			</div>
+			<footer>
+				<div id="license-info">
+					<p>Timur Gafarov, Martin Cejp
+</p>
+
+					<p>Timur Gafarov, Martin Cejp 2013-2020.
+</p>
+
+					<p><a href="boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+</p>
+
+				</div>
+			</footer>
+		</div>
+	</body>
+</html>

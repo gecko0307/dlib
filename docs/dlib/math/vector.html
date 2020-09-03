@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
+		<title>Module dlib.math.vector</title>
+		<link rel="stylesheet" href="../../css/style.min.css"/>
+		<script type="text/javascript" src="../../js/script.min.js"></script>
+	</head>
+	<body onload="setupDdox();">
+		<header></header>
+		<nav id="main-nav">
+			<div>
+				<noscript>
+					<p style="color: red">The search functionality needs JavaScript enabled</p>
+				</noscript>
+				<div id="symbolSearchPane" style="display: none">
+					<form action="#" method="GET">
+						<input id="symbolSearch" type="text" name="q" placeholder="Search for symbols" autocomplete="off" onchange="performSymbolSearch(24);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" autofocus/>
+					</form>
+					<ul id="symbolSearchResults" class="symbolList" style="display: none"></ul><script type="application/javascript" src="../../symbols.js"></script><script type="application/javascript">var symbolSearchRootDir = "../../";
+document.getElementById('symbolSearchPane').style.display = 'block';</script>
+				</div>
+				<ul class="tree-view">
+					<li class="tree-view ">
+						<div class="package ">
+							<a href="../../dlib.html">dlib</a>
+						</div>
+				<ul class="tree-view">
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../dlib/audio.html">audio</a>
+						</div>
+				<ul class="tree-view">
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../dlib/audio/io.html">io</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../dlib/audio/io/wav.html">wav</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/audio/sample.html">sample</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/audio/sound.html">sound</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/audio/synth.html">synth</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/audio/unmanaged.html">unmanaged</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../dlib/coding.html">coding</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../dlib/coding/hash.html">hash</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/coding/varint.html">varint</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/coding/zlib.html">zlib</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../dlib/concurrency.html">concurrency</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../dlib/concurrency/taskqueue.html">taskqueue</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/concurrency/threadpool.html">threadpool</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/concurrency/workerthread.html">workerthread</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../dlib/container.html">container</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../dlib/container/array.html">array</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/container/bst.html">bst</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/container/buffer.html">buffer</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/container/dict.html">dict</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/container/linkedlist.html">linkedlist</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/container/queue.html">queue</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/container/stack.html">stack</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../dlib/core.html">core</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../dlib/core/bitio.html">bitio</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/core/compound.html">compound</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/core/memory.html">memory</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/core/mutex.html">mutex</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/core/oop.html">oop</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/core/ownership.html">ownership</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/core/stream.html">stream</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/core/thread.html">thread</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/core/tuple.html">tuple</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../dlib/filesystem.html">filesystem</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../dlib/filesystem/delegaterange.html">delegaterange</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/filesystem/dirrange.html">dirrange</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/filesystem/filesystem.html">filesystem</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/filesystem/local.html">local</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/filesystem/stdfs.html">stdfs</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../dlib/geometry.html">geometry</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../dlib/geometry/aabb.html">aabb</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/geometry/frustum.html">frustum</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/geometry/intersection.html">intersection</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/geometry/obb.html">obb</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/geometry/plane.html">plane</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/geometry/ray.html">ray</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/geometry/sphere.html">sphere</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/geometry/triangle.html">triangle</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/geometry/trimesh.html">trimesh</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/geometry/utils.html">utils</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view ">
+						<div class="package ">
+							<a href="../../dlib/math.html">math</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/combinatorics.html">combinatorics</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/complex.html">complex</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/decomposition.html">decomposition</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/diff.html">diff</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/dual.html">dual</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/dualquaternion.html">dualquaternion</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/fft.html">fft</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/hof.html">hof</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/linsolve.html">linsolve</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/matrix.html">matrix</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/quaternion.html">quaternion</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/sse.html">sse</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/tensor.html">tensor</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/transformation.html">transformation</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/utils.html">utils</a>
+						</div>
+					</li>
+					<li>
+						<div class="module selected">
+							<a href="../../dlib/math/vector.html">vector</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../dlib/memory.html">memory</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../dlib/memory/allocator.html">allocator</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/memory/mallocator.html">mallocator</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/memory/mmappool.html">mmappool</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">network
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../dlib/network/socket.html">socket</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/network/url.html">url</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../dlib/text.html">text</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../dlib/text/common.html">common</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/text/encodings.html">encodings</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/text/lexer.html">lexer</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/text/unmanagedstring.html">unmanagedstring</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/text/utf16.html">utf16</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/text/utf8.html">utf8</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/text/utils.html">utils</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+				</ul>
+					</li>
+				</ul>
+			</div>
+			<p id="main-nav-footer">
+				Built with
+				<a href="https://github.com/MartinNowak/scod">scod</a>
+			</p>
+		</nav>
+		<div id="main-contents">
+			<div>
+				<h1>Module dlib.math.vector</h1><p></p>
+				<section></section>
+				<section>
+					<h2>Functions</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th><th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="cross" class="public" href="../../dlib/math/vector/cross.html">cross</a><span class="tableEntryAnnotation">(a, b)</span>
+								</code>
+							</td>
+							<td>Cross product
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="cross" class="public" href="../../dlib/math/vector/cross.html">cross</a><span class="tableEntryAnnotation">(a, b, c)</span>
+								</code>
+							</td>
+							<td>Cross product for 4-vectors
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="distance" class="public" href="../../dlib/math/vector/distance.html">distance</a><span class="tableEntryAnnotation">(a, b)</span>
+								</code>
+							</td>
+							<td>Compute distance between two 2D points
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="distance" class="public" href="../../dlib/math/vector/distance.html">distance</a><span class="tableEntryAnnotation">(a, b)</span>
+								</code>
+							</td>
+							<td>Compute distance between two 3D points
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="distancesqr" class="public" href="../../dlib/math/vector/distancesqr.html">distancesqr</a><span class="tableEntryAnnotation">(a, b)</span>
+								</code>
+							</td>
+							<td>Compute squared distance between two 2D points
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="distancesqr" class="public" href="../../dlib/math/vector/distancesqr.html">distancesqr</a><span class="tableEntryAnnotation">(a, b)</span>
+								</code>
+							</td>
+							<td>Compute squared distance between two 3D points
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="dot" class="public" href="../../dlib/math/vector/dot.html">dot</a><span class="tableEntryAnnotation">(a, b)</span>
+								</code>
+							</td>
+							<td>Dot product
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="faceforward" class="public" href="../../dlib/math/vector/faceforward.html">faceforward</a><span class="tableEntryAnnotation">(N, I, Nref)</span>
+								</code>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="isAlmostZero" class="public" href="../../dlib/math/vector/isAlmostZero.html">isAlmostZero</a><span class="tableEntryAnnotation">(v)</span>
+								</code>
+							</td>
+							<td>Is all elements almost zero
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="lvector" class="public" href="../../dlib/math/vector/lvector.html">lvector</a><span class="tableEntryAnnotation">(x)</span>
+								</code>
+							</td>
+							<td>L-value pseudovector for assignment purposes.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="planeNormal" class="public" href="../../dlib/math/vector/planeNormal.html">planeNormal</a><span class="tableEntryAnnotation">(p1, p2, p3)</span>
+								</code>
+							</td>
+							<td>Compute normal of a plane from three points
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="randomUnitVector2" class="public" href="../../dlib/math/vector/randomUnitVector2.html">randomUnitVector2</a><span class="tableEntryAnnotation">()</span>
+								</code>
+							</td>
+							<td>Random unit length 2-vector
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="randomUnitVector3" class="public" href="../../dlib/math/vector/randomUnitVector3.html">randomUnitVector3</a><span class="tableEntryAnnotation">()</span>
+								</code>
+							</td>
+							<td>Random unit length 3-vector
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="reflect" class="public" href="../../dlib/math/vector/reflect.html">reflect</a><span class="tableEntryAnnotation">(I, N)</span>
+								</code>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="refract" class="public" href="../../dlib/math/vector/refract.html">refract</a><span class="tableEntryAnnotation">(I, N, r)</span>
+								</code>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="rotateAroundAxis" class="public" href="../../dlib/math/vector/rotateAroundAxis.html">rotateAroundAxis</a><span class="tableEntryAnnotation">(V, P, D, angle)</span>
+								</code>
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="slerp" class="public" href="../../dlib/math/vector/slerp.html">slerp</a><span class="tableEntryAnnotation">(a, b, t)</span>
+								</code>
+							</td>
+							<td>Spherical linear interpolation
+ (simple lerp is in dlib.math.interpolation)
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="tensorProduct" class="public" href="../../dlib/math/vector/tensorProduct.html">tensorProduct</a><span class="tableEntryAnnotation">(u, v)</span>
+								</code>
+							</td>
+							<td>Tensor product
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="vectorDecreaseToZero" class="public" href="../../dlib/math/vector/vectorDecreaseToZero.html">vectorDecreaseToZero</a><span class="tableEntryAnnotation">(vector, step)</span>
+								</code>
+							</td>
+							<td>Gradually decrease vector to zero length
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="vectorf" class="public" href="../../dlib/math/vector/vectorf.html">vectorf</a><span class="tableEntryAnnotation">(t)</span>
+								</code>
+							</td>
+							<td>Vector factory function
+</td>
+						</tr>
+					</table>
+				</section>
+				<section>
+					<h2>Structs</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th><th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="AxisVector" class="public" href="../../dlib/math/vector/AxisVector.html">AxisVector</a>
+								</code>
+							</td>
+							<td>Axis vectors
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="Vector" class="public" href="../../dlib/math/vector/Vector.html">Vector</a>
+								</code>
+							</td>
+							<td>Vector representation
+</td>
+						</tr>
+					</table>
+				</section>
+				<section>
+					<h2>Aliases</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th><th>Type</th><th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<a id="ivec2" class="public" href="../../dlib/math/vector/ivec2.html">
+									<code>ivec2</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../../dlib/math/vector/Vector.html"><span class="typ">Vector</span></a>!(int,2)</code>
+							</td>
+							<td>GLSL-like short aliases
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="Vector2d" class="public" href="../../dlib/math/vector/Vector2d.html">
+									<code>Vector2d</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../../dlib/math/vector/Vector.html"><span class="typ">Vector</span></a>!(double,2)</code>
+							</td>
+							<td>Alias for 2-vector of doubles
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="Vector2f" class="public" href="../../dlib/math/vector/Vector2f.html">
+									<code>Vector2f</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../../dlib/math/vector/Vector.html"><span class="typ">Vector</span></a>!(float,2)</code>
+							</td>
+							<td>Alias for 2-vector of floats
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="Vector2i" class="public" href="../../dlib/math/vector/Vector2i.html">
+									<code>Vector2i</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../../dlib/math/vector/Vector.html"><span class="typ">Vector</span></a>!(int,2)</code>
+							</td>
+							<td>Predefined vector types
+Alias for 2-vector of ints
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="Vector2u" class="public" href="../../dlib/math/vector/Vector2u.html">
+									<code>Vector2u</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../../dlib/math/vector/Vector.html"><span class="typ">Vector</span></a>!(uint,2)</code>
+							</td>
+							<td>Alias for 2-vector of uints
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="Vector3d" class="public" href="../../dlib/math/vector/Vector3d.html">
+									<code>Vector3d</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../../dlib/math/vector/Vector.html"><span class="typ">Vector</span></a>!(double,3)</code>
+							</td>
+							<td>Alias for 2-vector of doubles
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="Vector3f" class="public" href="../../dlib/math/vector/Vector3f.html">
+									<code>Vector3f</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../../dlib/math/vector/Vector.html"><span class="typ">Vector</span></a>!(float,3)</code>
+							</td>
+							<td>Alias for 3-vector of floats
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="Vector3i" class="public" href="../../dlib/math/vector/Vector3i.html">
+									<code>Vector3i</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../../dlib/math/vector/Vector.html"><span class="typ">Vector</span></a>!(int,3)</code>
+							</td>
+							<td>Alias for 3-vector of ints
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="Vector3u" class="public" href="../../dlib/math/vector/Vector3u.html">
+									<code>Vector3u</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../../dlib/math/vector/Vector.html"><span class="typ">Vector</span></a>!(uint,3)</code>
+							</td>
+							<td>Alias for 3-vector of uints
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="Vector4d" class="public" href="../../dlib/math/vector/Vector4d.html">
+									<code>Vector4d</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../../dlib/math/vector/Vector.html"><span class="typ">Vector</span></a>!(double,4)</code>
+							</td>
+							<td>Alias for 4-vector of doubles
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="Vector4f" class="public" href="../../dlib/math/vector/Vector4f.html">
+									<code>Vector4f</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../../dlib/math/vector/Vector.html"><span class="typ">Vector</span></a>!(float,4)</code>
+							</td>
+							<td>Alias for 4-vector of floats
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="Vector4i" class="public" href="../../dlib/math/vector/Vector4i.html">
+									<code>Vector4i</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../../dlib/math/vector/Vector.html"><span class="typ">Vector</span></a>!(int,4)</code>
+							</td>
+							<td>Alias for 4-vector of ints
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="Vector4u" class="public" href="../../dlib/math/vector/Vector4u.html">
+									<code>Vector4u</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><a href="../../dlib/math/vector/Vector.html"><span class="typ">Vector</span></a>!(uint,4)</code>
+							</td>
+							<td>Alias for 4-vector of uints
+</td>
+						</tr>
+					</table>
+				</section>
+			</div>
+			<footer>
+				<div id="license-info">
+					<p>Timur Gafarov
+</p>
+
+					<p>Timur Gafarov 2011-2019.
+</p>
+
+					<p><a href="boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+</p>
+
+				</div>
+			</footer>
+		</div>
+	</body>
+</html>

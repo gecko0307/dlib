@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
+		<title>Module dlib.math.transformation</title>
+		<link rel="stylesheet" href="../../css/style.min.css"/>
+		<script type="text/javascript" src="../../js/script.min.js"></script>
+	</head>
+	<body onload="setupDdox();">
+		<header></header>
+		<nav id="main-nav">
+			<div>
+				<noscript>
+					<p style="color: red">The search functionality needs JavaScript enabled</p>
+				</noscript>
+				<div id="symbolSearchPane" style="display: none">
+					<form action="#" method="GET">
+						<input id="symbolSearch" type="text" name="q" placeholder="Search for symbols" autocomplete="off" onchange="performSymbolSearch(24);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" autofocus/>
+					</form>
+					<ul id="symbolSearchResults" class="symbolList" style="display: none"></ul><script type="application/javascript" src="../../symbols.js"></script><script type="application/javascript">var symbolSearchRootDir = "../../";
+document.getElementById('symbolSearchPane').style.display = 'block';</script>
+				</div>
+				<ul class="tree-view">
+					<li class="tree-view ">
+						<div class="package ">
+							<a href="../../dlib.html">dlib</a>
+						</div>
+				<ul class="tree-view">
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../dlib/audio.html">audio</a>
+						</div>
+				<ul class="tree-view">
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../dlib/audio/io.html">io</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../dlib/audio/io/wav.html">wav</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/audio/sample.html">sample</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/audio/sound.html">sound</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/audio/synth.html">synth</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/audio/unmanaged.html">unmanaged</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../dlib/coding.html">coding</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../dlib/coding/hash.html">hash</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/coding/varint.html">varint</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/coding/zlib.html">zlib</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../dlib/concurrency.html">concurrency</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../dlib/concurrency/taskqueue.html">taskqueue</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/concurrency/threadpool.html">threadpool</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/concurrency/workerthread.html">workerthread</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../dlib/container.html">container</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../dlib/container/array.html">array</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/container/bst.html">bst</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/container/buffer.html">buffer</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/container/dict.html">dict</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/container/linkedlist.html">linkedlist</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/container/queue.html">queue</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/container/stack.html">stack</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../dlib/core.html">core</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../dlib/core/bitio.html">bitio</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/core/compound.html">compound</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/core/memory.html">memory</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/core/mutex.html">mutex</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/core/oop.html">oop</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/core/ownership.html">ownership</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/core/stream.html">stream</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/core/thread.html">thread</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/core/tuple.html">tuple</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../dlib/filesystem.html">filesystem</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../dlib/filesystem/delegaterange.html">delegaterange</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/filesystem/dirrange.html">dirrange</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/filesystem/filesystem.html">filesystem</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/filesystem/local.html">local</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/filesystem/stdfs.html">stdfs</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../dlib/geometry.html">geometry</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../dlib/geometry/aabb.html">aabb</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/geometry/frustum.html">frustum</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/geometry/intersection.html">intersection</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/geometry/obb.html">obb</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/geometry/plane.html">plane</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/geometry/ray.html">ray</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/geometry/sphere.html">sphere</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/geometry/triangle.html">triangle</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/geometry/trimesh.html">trimesh</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/geometry/utils.html">utils</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view ">
+						<div class="package ">
+							<a href="../../dlib/math.html">math</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/combinatorics.html">combinatorics</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/complex.html">complex</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/decomposition.html">decomposition</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/diff.html">diff</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/dual.html">dual</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/dualquaternion.html">dualquaternion</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/fft.html">fft</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/hof.html">hof</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/linsolve.html">linsolve</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/matrix.html">matrix</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/quaternion.html">quaternion</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/sse.html">sse</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/tensor.html">tensor</a>
+						</div>
+					</li>
+					<li>
+						<div class="module selected">
+							<a href="../../dlib/math/transformation.html">transformation</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/utils.html">utils</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/math/vector.html">vector</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../dlib/memory.html">memory</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../dlib/memory/allocator.html">allocator</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/memory/mallocator.html">mallocator</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/memory/mmappool.html">mmappool</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">network
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../dlib/network/socket.html">socket</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/network/url.html">url</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../dlib/text.html">text</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../dlib/text/common.html">common</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/text/encodings.html">encodings</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/text/lexer.html">lexer</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/text/unmanagedstring.html">unmanagedstring</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/text/utf16.html">utf16</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/text/utf8.html">utf8</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/text/utils.html">utils</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+				</ul>
+					</li>
+				</ul>
+			</div>
+			<p id="main-nav-footer">
+				Built with
+				<a href="https://github.com/MartinNowak/scod">scod</a>
+			</p>
+		</nav>
+		<div id="main-contents">
+			<div>
+				<h1>Module dlib.math.transformation</h1><p></p>
+				<section></section>
+				<section>
+					<h2>Functions</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th><th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="affineTransform2D" class="public" href="../../dlib/math/transformation/affineTransform2D.html">affineTransform2D</a><span class="tableEntryAnnotation">(v, m)</span>
+								</code>
+							</td>
+							<td>Affine transformations in 2D space
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="axisReflectionMatrix" class="public" href="../../dlib/math/transformation/axisReflectionMatrix.html">axisReflectionMatrix</a><span class="tableEntryAnnotation">(n)</span>
+								</code>
+							</td>
+							<td>Setup the matrix to perform a reflection about an arbitrary plane
+ through the origin.  The unit vector n is perpendicular to the plane.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="directionToMatrix" class="public" href="../../dlib/math/transformation/directionToMatrix.html">directionToMatrix</a><span class="tableEntryAnnotation">(zdir)</span>
+								</code>
+							</td>
+							<td>Setup an orientation matrix using forward direction vector
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="forward" class="public" href="../../dlib/math/transformation/forward.html">forward</a><span class="tableEntryAnnotation">(m)</span>
+								</code>
+							</td>
+							<td>Forward vector of the matrix
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="fromEuler" class="public" href="../../dlib/math/transformation/fromEuler.html">fromEuler</a><span class="tableEntryAnnotation">(v)</span>
+								</code>
+							</td>
+							<td>Setup a rotation matrix, given Euler angles in radians
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="frustumMatrix" class="public" href="../../dlib/math/transformation/frustumMatrix.html">frustumMatrix</a><span class="tableEntryAnnotation">(l, r, b, t, n, f)</span>
+								</code>
+							</td>
+							<td>Setup a frustum matrix given the left, right, bottom, top, near, and far
+ values for the frustum boundaries.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="lookAtMatrix" class="public" href="../../dlib/math/transformation/lookAtMatrix.html">lookAtMatrix</a><span class="tableEntryAnnotation">(eye, center, up)</span>
+								</code>
+							</td>
+							<td>Setup the matrix to perform a "Look At" transformation
+ like a first person camera
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="orthoMatrix" class="public" href="../../dlib/math/transformation/orthoMatrix.html">orthoMatrix</a><span class="tableEntryAnnotation">(l, r, b, t, n, f)</span>
+								</code>
+							</td>
+							<td>Setup an orthographic Matrix4x4 given the left, right, bottom, top, near,
+ and far values for the frustum boundaries.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="orthoNormalMatrix" class="public" href="../../dlib/math/transformation/orthoNormalMatrix.html">orthoNormalMatrix</a><span class="tableEntryAnnotation">(xdir, ydir, zdir)</span>
+								</code>
+							</td>
+							<td>Setup an orientation matrix using 3 basis normalized vectors
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="perspectiveMatrix" class="public" href="../../dlib/math/transformation/perspectiveMatrix.html">perspectiveMatrix</a><span class="tableEntryAnnotation">(fovY, aspect, n, f)</span>
+								</code>
+							</td>
+							<td>Setup a perspective matrix given the field-of-view in the Y direction
+ in degrees, the aspect ratio of Y/X, and near and far plane distances
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="projectionMatrix" class="public" href="../../dlib/math/transformation/projectionMatrix.html">projectionMatrix</a><span class="tableEntryAnnotation">(n)</span>
+								</code>
+							</td>
+							<td>Setup the matrix to perform a projection onto a plane passing
+ through the origin. The plane is perpendicular to the
+ unit vector n.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="reflectionMatrix" class="public" href="../../dlib/math/transformation/reflectionMatrix.html">reflectionMatrix</a><span class="tableEntryAnnotation">(reflectionAxis, k)</span>
+								</code>
+							</td>
+							<td>Setup the matrix to perform a reflection about a plane parallel
+ to a cardinal plane.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="right" class="public" href="../../dlib/math/transformation/right.html">right</a><span class="tableEntryAnnotation">(m)</span>
+								</code>
+							</td>
+							<td>Right vector of the matrix
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="rotationBetweenVectors" class="public" href="../../dlib/math/transformation/rotationBetweenVectors.html">rotationBetweenVectors</a><span class="tableEntryAnnotation">(source, target)</span>
+								</code>
+							</td>
+							<td>Setup an orientation matrix that performs rotation
+ between two vectors
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="rotationMatrix" class="public" href="../../dlib/math/transformation/rotationMatrix.html">rotationMatrix</a><span class="tableEntryAnnotation">(rotaxis, theta)</span>
+								</code>
+							</td>
+							<td>Create a matrix to perform a rotation about a world axis
+ (theta in radians)
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="rotationMatrix2D" class="public" href="../../dlib/math/transformation/rotationMatrix2D.html">rotationMatrix2D</a><span class="tableEntryAnnotation">(theta)</span>
+								</code>
+							</td>
+							<td>Rotation in 2D space
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="scaleAlongAxisMatrix" class="public" href="../../dlib/math/transformation/scaleAlongAxisMatrix.html">scaleAlongAxisMatrix</a><span class="tableEntryAnnotation">(scaleAxis, k)</span>
+								</code>
+							</td>
+							<td>Setup the matrix to perform scale along an arbitrary axis
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="scaleMatrix" class="public" href="../../dlib/math/transformation/scaleMatrix.html">scaleMatrix</a><span class="tableEntryAnnotation">(v)</span>
+								</code>
+							</td>
+							<td>Create a matrix to perform scale on each axis
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="scaleMatrix2D" class="public" href="../../dlib/math/transformation/scaleMatrix2D.html">scaleMatrix2D</a><span class="tableEntryAnnotation">(s)</span>
+								</code>
+							</td>
+							<td>Scale in 2D space
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="scaling" class="public" href="../../dlib/math/transformation/scaling.html">scaling</a><span class="tableEntryAnnotation">(m)</span>
+								</code>
+							</td>
+							<td>Scaling vector of the matrix
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="shadowMatrix" class="public" href="../../dlib/math/transformation/shadowMatrix.html">shadowMatrix</a><span class="tableEntryAnnotation">(groundplane, lightpos)</span>
+								</code>
+							</td>
+							<td>Setup a matrix that flattens geometry into a plane,
+ as if it were casting a shadow from a light
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="shearMatrix" class="public" href="../../dlib/math/transformation/shearMatrix.html">shearMatrix</a><span class="tableEntryAnnotation">(shearAxis, s, t)</span>
+								</code>
+							</td>
+							<td>Setup the matrix to perform a shear
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="toEuler" class="public" href="../../dlib/math/transformation/toEuler.html">toEuler</a><span class="tableEntryAnnotation">(m)</span>
+								</code>
+							</td>
+							<td>Setup the Euler angles in radians, given a rotation matrix
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="translation" class="public" href="../../dlib/math/transformation/translation.html">translation</a><span class="tableEntryAnnotation">(m)</span>
+								</code>
+							</td>
+							<td>Translation vector of the matrix
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="translationMatrix" class="public" href="../../dlib/math/transformation/translationMatrix.html">translationMatrix</a><span class="tableEntryAnnotation">(v)</span>
+								</code>
+							</td>
+							<td>Create a translation matrix given a translation vector
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="translationMatrix2D" class="public" href="../../dlib/math/transformation/translationMatrix2D.html">translationMatrix2D</a><span class="tableEntryAnnotation">(t)</span>
+								</code>
+							</td>
+							<td>Translation in 2D space
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="up" class="public" href="../../dlib/math/transformation/up.html">up</a><span class="tableEntryAnnotation">(m)</span>
+								</code>
+							</td>
+							<td>Up vector of the matrix
+</td>
+						</tr>
+					</table>
+				</section>
+			</div>
+			<footer>
+				<div id="license-info">
+					<p>Timur Gafarov
+</p>
+
+					<p>Timur Gafarov 2013-2020.
+</p>
+
+					<p><a href="boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+</p>
+
+				</div>
+			</footer>
+		</div>
+	</body>
+</html>
