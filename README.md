@@ -58,6 +58,7 @@ Users
 * [dmech](https://github.com/gecko0307/dmech) - physics engine
 * [Atrium](https://github.com/gecko0307/atrium) - work-in-progress first person puzzle game
 * [DlangUI](https://github.com/buggins/dlangui) - native UI toolkit for D
+* [rengfx](https://github.com/xdrie/rengfx) - game engine based on raylib
 * [Voxelman](https://github.com/MrSmith33/voxelman) - voxel-based game engine
 * [Laser Patriarch](http://ludumdare.com/compo/ludum-dare-36/?action=preview&uid=14310) - Ludum Dare 36 participant, a rougelike with random maps
 * [Anchovy](https://github.com/MrSmith33/anchovy) - multimedia library for games and graphics apps
