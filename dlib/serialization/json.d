@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2018-2019 Timur Gafarov
+Copyright (c) 2018-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,6 +26,13 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * JSON parser
+ *
+ * Copyright: Timur Gafarov 2018-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.serialization.json;
 
 import std.stdio;
@@ -151,6 +158,7 @@ class JSONLexer
     }
 }
 
+/// JSON types enum
 enum JSONType
 {
     Null,
@@ -160,9 +168,13 @@ enum JSONType
     Object
 }
 
+/// JSON array
 alias JSONArray = DynamicArray!JSONValue;
+
+/// JSON object
 alias JSONObject = Dict!(JSONValue, string);
 
+/// JSON value
 class JSONValue
 {
     JSONType type;
@@ -210,13 +222,16 @@ class JSONValue
     }
 }
 
+/// JSON parsing result
 alias JSONResult = Compound!(bool, string);
 
+/// JSON parsing errors enum
 enum JSONError
 {
     EOI = JSONResult(false, "unexpected end of input")
 }
 
+/// JSON document
 class JSONDocument
 {
     public:
