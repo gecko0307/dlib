@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2019 Timur Gafarov
+Copyright (c) 2013-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,15 +26,18 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2013-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.geometry.obb;
 
-private
-{
-    import dlib.math.vector;
-    import dlib.math.matrix;
-    import dlib.math.transformation;
-}
+import dlib.math.vector;
+import dlib.math.matrix;
+import dlib.math.transformation;
 
+/// Oriented bounding box
 struct OBB
 {
     Vector3f extent;
@@ -57,7 +60,6 @@ struct OBB
         Vector3f center(Vector3f v)
         do
         {
-            //transform.translation = v;
             transform.a41 = v.x;
             transform.a42 = v.y;
             transform.a43 = v.z;

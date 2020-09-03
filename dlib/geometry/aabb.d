@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2019 Timur Gafarov
+Copyright (c) 2011-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,16 +26,19 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2011-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.geometry.aabb;
 
-private
-{
-    import std.math;
-    import std.algorithm;
-    import dlib.math.vector;
-    import dlib.geometry.sphere;
-}
+import std.math;
+import std.algorithm;
+import dlib.math.vector;
+import dlib.geometry.sphere;
 
+/// Axis-aligned bounding box
 struct AABB
 {
     Vector3f center;
@@ -173,6 +176,7 @@ struct AABB
     }
 }
 
+/// Creates AABB from minimum and maximum points
 AABB boxFromMinMaxPoints(Vector3f mi, Vector3f ma)
 {
     AABB box;

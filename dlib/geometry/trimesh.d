@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2019 Timur Gafarov
+Copyright (c) 2013-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,18 +26,20 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2013-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.geometry.trimesh;
 
-private
-{
-    import std.stdio;
-    import std.math;
-    
-    import dlib.core.memory;
-    import dlib.container.array;
-    import dlib.math.vector;
-    import dlib.geometry.triangle;
-}
+import std.stdio;
+import std.math;
+  
+import dlib.core.memory;
+import dlib.container.array;
+import dlib.math.vector;
+import dlib.geometry.triangle;
 
 struct Index
 {
@@ -62,6 +64,7 @@ struct FaceGroup
     }
 }
 
+/// Triangle mesh
 class TriMesh
 {
     DynamicArray!(Vector3f) verticesArray;
@@ -177,8 +180,9 @@ class TriMesh
         return tri;
     }
 
-    // Read-only triangle aggregate:
-    // foreach(tri; mesh) ...
+    /**
+     * Read-only triangle aggregate
+     */
     int opApply(scope int delegate(ref Triangle) dg)
     {
         int result = 0;
@@ -270,20 +274,6 @@ class TriMesh
             Vector3f tangent = (t - n * dot(n, t));
             tangent.normalize();
             tangentsArray[i] = tangent;
-
-            /*
-            tangents[i].x = tangent.x;
-            tangents[i].y = tangent.y;
-            tangents[i].z = tangent.z;
-            */
-            
-            // Calculate handedness
-            /*
-            if (dot(cross(n, t), tTan[i]) < 0.0f)
-                tangents[i].w = -1.0f;
-            else
-                tangents[i].w = 1.0f;
-            */
         }
         
         Delete(sTan);

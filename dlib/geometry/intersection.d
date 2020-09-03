@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2019 Timur Gafarov
+Copyright (c) 2011-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,20 +26,23 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2011-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.geometry.intersection;
 
-private
-{
-    import std.math;
-    import dlib.math.vector;
-    import dlib.math.utils;
-    import dlib.math.transformation;
-    import dlib.geometry.sphere;
-    import dlib.geometry.plane;
-    import dlib.geometry.triangle;
-    import dlib.geometry.obb;
-}
+import std.math;
+import dlib.math.vector;
+import dlib.math.utils;
+import dlib.math.transformation;
+import dlib.geometry.sphere;
+import dlib.geometry.plane;
+import dlib.geometry.triangle;
+import dlib.geometry.obb;
 
+/// Stores intersection data
 struct Intersection
 {
     bool fact = false;
@@ -48,6 +51,7 @@ struct Intersection
     float penetrationDepth;
 }
 
+/// Checks two spheres for intersection
 Intersection intrSphereVsSphere(ref Sphere sphere1, ref Sphere sphere2)
 {
     Intersection res;
@@ -67,6 +71,7 @@ Intersection intrSphereVsSphere(ref Sphere sphere1, ref Sphere sphere2)
     return res;
 }
 
+/// Checks sphere and plane for intersection
 Intersection intrSphereVsPlane(ref Sphere sphere, ref Plane plane)
 {
     Intersection res;
@@ -142,6 +147,7 @@ void measureSphereAndTriEdge(
     }
 }
 
+/// Checks sphere and triangle for intersection
 Intersection intrSphereVsTriangle(ref Sphere sphere, ref Triangle tri)
 {
     Intersection result;
@@ -202,6 +208,7 @@ Intersection intrSphereVsTriangle(ref Sphere sphere, ref Triangle tri)
     return result;
 }
 
+/// Checks sphere and OBB for intersection
 Intersection intrSphereVsOBB(ref Sphere s, ref OBB b)
 {
     Intersection intr;

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2019 Timur Gafarov
+Copyright (c) 2011-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,36 +26,33 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2011-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.geometry.plane;
 
-private
-{
-    import std.math;
-    import dlib.math.vector;
-    import dlib.math.utils;
-}
+import std.math;
+import dlib.math.vector;
+import dlib.math.utils;
 
+/// Infinite plane
 struct Plane
 {
-   /*
-    * Return a Plane with all values at zero
-    */
+    /// Return a Plane with all values at zero
     static Plane opCall()
     {
         return Plane(0.0f, 0.0f, 0.0f, 0.0f);
     }
 
-   /*
-    * Return a Plane with the Vec3f component of n and distance of d
-    */
+    /// Return a Plane with the Vec3f component of n and distance of d
     static Plane opCall(Vector3f n, float d)
     {
         return Plane(n.x, n.y, n.z, d);
     }
 
-   /*
-    * Return a Plane with a Vec3f component of x, y, z and distance of d
-    */
+    /// Return a Plane with a Vec3f component of x, y, z and distance of d
     static Plane opCall(float x, float y, float z, float d)
     {
         Plane p;
@@ -108,7 +105,7 @@ struct Plane
         return Plane(x / len, y / len, z / len, d / len);
     }
 
-   /*
+   /**
     * Get the distance from the center of the plane to the given point.
     * This is useful for determining which side of the plane the point is on.
     */
@@ -139,7 +136,7 @@ struct Plane
         return false;
     }
 
-   /*
+   /**
     * Calculate the intersection between this plane and a line
     * If the plane and the line are parallel, false is returned
     */
