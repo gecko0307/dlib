@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2019 Timur Gafarov
+Copyright (c) 2015-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,12 +26,16 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2015-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.coding.varint;
 
-/*
+/**
  * Protobuf-style variable-sized integers
  */
-
 struct Varint
 {
     ubyte[8] buffer;
@@ -43,6 +47,9 @@ struct Varint
     }
 }
 
+/**
+ * Returns size in bytes necessary to store an integer
+ */
 size_t getVarintSize(ulong n)
 {
     enum ulong N1 = 128;
@@ -66,6 +73,9 @@ size_t getVarintSize(ulong n)
     );
 }
 
+/**
+ * Encode a fixed-size integer to Varint
+ */
 Varint encodeVarint(ulong n)
 {
     Varint res;
@@ -84,6 +94,9 @@ Varint encodeVarint(ulong n)
     return res;
 }
 
+/**
+ * Decode Varing to fixed-size integer
+ */
 ulong decodeVarint(Varint vint)
 {
     ulong result = 0;

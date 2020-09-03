@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2019 Timur Gafarov
+Copyright (c) 2011-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,14 +26,20 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Copyright: Timur Gafarov 2011-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.coding.zlib;
 
-private
-{
-    import etc.c.zlib;
-    import dlib.core.memory;
-}
+import etc.c.zlib;
+import dlib.core.memory;
 
+/**
+ * Zlib encoder that uses provided fixed-length buffer to store results.
+ * Doesn't use garbage collector
+ */
 struct ZlibBufferedEncoder
 {
     z_stream zlibStream;
@@ -41,6 +47,7 @@ struct ZlibBufferedEncoder
     ubyte[] input;
     bool ended = true;
 
+    /// Constructor
     this(ubyte[] buf, ubyte[] inp)
     {
         buffer = buf;
@@ -59,6 +66,7 @@ struct ZlibBufferedEncoder
         ended = false;
     }
 
+    /// Encodes the next portion of data and returns a number of bytes written
     size_t encode()
     {
         zlibStream.next_out = buffer.ptr;
@@ -86,6 +94,10 @@ struct ZlibBufferedEncoder
     }
 }
 
+/**
+ * Zlib decoder that uses provided buffer to store results
+ * Doesn't use garbage collector
+ */
 struct ZlibDecoder
 {
     z_stream zlibStream;
@@ -95,6 +107,7 @@ struct ZlibDecoder
     bool isInitialized = false;
     bool hasEnded = false;
 
+    /// Constructor
     this(ubyte[] buf)
     {
         buffer = buf;
@@ -103,6 +116,10 @@ struct ZlibDecoder
         zlibStream.data_type = Z_BINARY;
     }
 
+    /**
+     * Decodes a stream. Returns true on success, false on error. 
+     * Decoded data is stored in buffer field, the buffer is resized if necessary
+     */
     bool decode(ubyte[] input)
     {
         zlibStream.next_in = input.ptr;
@@ -155,6 +172,7 @@ struct ZlibDecoder
         buffer = buffer2;
     }
 
+    /// Call this when you don't need decoded buffer anymore
     void free()
     {
         Delete(buffer);
