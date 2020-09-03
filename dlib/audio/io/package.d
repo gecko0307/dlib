@@ -53,7 +53,7 @@ void saveSound(GenericSound snd, string filename)
     switch(filename.extension)
     {
         case ".wav", ".WAV":
-            img.saveWAV(filename);
+            snd.saveWAV(filename);
             break;
         default:
             assert(0, "Sound I/O error: unsupported sound format or illegal extension");
