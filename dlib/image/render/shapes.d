@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2019 Oleg Baharev, Timur Gafarov
+Copyright (c) 2015-2020 Oleg Baharev, Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,6 +26,13 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Render simple geometric shapes
+ *
+ * Copyright: Oleg Baharev, Timur Gafarov 2015-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Oleg Baharev, Timur Gafarov
+ */
 module dlib.image.render.shapes;
 
 import std.math;
@@ -35,6 +42,7 @@ import dlib.image.color;
 enum Black = Color4f(0, 0, 0, 1);
 enum White = Color4f(1, 1, 1, 1);
 
+/// Fill image with solid color
 void fillColor(SuperImage simg, Color4f col)
 {
     foreach(y; simg.col)
@@ -42,6 +50,7 @@ void fillColor(SuperImage simg, Color4f col)
         simg[x, y] = col;
 }
 
+/// Draw a line segment
 void drawLine(SuperImage img, Color4f color, int x1, int y1, int x2, int y2)
 {
     int dx = x2 - x1;
@@ -86,6 +95,7 @@ void drawLine(SuperImage img, Color4f color, int x1, int y1, int x2, int y2)
     }
 }
 
+/// Draw a filled circle
 void drawCircle(SuperImage img, Color4f col, int x0, int y0, uint r)
 {
     int f = 1 - r;

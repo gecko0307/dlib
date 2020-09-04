@@ -48,33 +48,8 @@ public
     import dlib.image.signal2d;
     import dlib.image.unmanaged;
     import dlib.image.transform;
-
-    import dlib.image.filters.boxblur;
-    import dlib.image.filters.chromakey;
-    import dlib.image.filters.convolution;
-    import dlib.image.filters.desaturate;
-    import dlib.image.filters.edgedetect;
-    import dlib.image.filters.lens;
-    import dlib.image.filters.morphology;
-    import dlib.image.filters.normalmap;
-    import dlib.image.filters.sharpen;
-    import dlib.image.filters.contrast;
-    import dlib.image.filters.histogram;
-    import dlib.image.filters.binarization;
-
+    import dlib.image.filters;
     import dlib.image.io;
-    import dlib.image.io.bmp;
-    import dlib.image.io.png;
-    import dlib.image.io.tga;
-    import dlib.image.io.jpeg;
-    import dlib.image.io.hdr;
-
-    import dlib.image.render.cosplasma;
-    import dlib.image.render.shapes;
-    import dlib.image.render.text;
-
-    import dlib.image.resampling.nearest;
-    import dlib.image.resampling.bilinear;
-    import dlib.image.resampling.bicubic;
-    import dlib.image.resampling.lanczos;
+    import dlib.image.render;
+    import dlib.image.resampling;
 }

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2019 Eugene Wissner
+Copyright (c) 2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -27,31 +27,26 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
- * Allocators and memory management functions
+ * Image filtering
  *
- * Copyright: Eugene Wissner 2016-2019.
+ * Copyright: Timur Gafarov 2020.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
- * Authors: Eugene Wissner
+ * Authors: Timur Gafarov
  */
-module dlib.memory;
+module dlib.image.filters;
 
 public
 {
-    import dlib.memory.allocator;
-    import dlib.memory.gcallocator;
-    import dlib.memory.mallocator;
-    import dlib.memory.mmappool;
-
-    import std.experimental.allocator : make, dispose, shrinkArray, expandArray, makeArray, dispose;
-}
-
-Allocator allocator;
-
-@property Allocator defaultAllocator()
-{
-    if (allocator is null)
-    {
-        allocator = Mallocator.instance;
-    }
-    return allocator;
+    import dlib.image.filters.boxblur;
+    import dlib.image.filters.chromakey;
+    import dlib.image.filters.convolution;
+    import dlib.image.filters.desaturate;
+    import dlib.image.filters.edgedetect;
+    import dlib.image.filters.lens;
+    import dlib.image.filters.morphology;
+    import dlib.image.filters.normalmap;
+    import dlib.image.filters.sharpen;
+    import dlib.image.filters.contrast;
+    import dlib.image.filters.histogram;
+    import dlib.image.filters.binarization;
 }

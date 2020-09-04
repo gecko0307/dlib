@@ -27,6 +27,8 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
+ * Linear algebra and numerical analysis
+ *
  * Description:
  * dlib.math brings vector and matrix types to D, as well as some numerical 
  * analysis functionality. dlib.math is great as a math library for games, 

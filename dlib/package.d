@@ -27,7 +27,15 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
- * Copyright: Timur Gafarov 2015-2020.
+ * dlib - general purpose library
+ *
+ * Description:
+ * dlib is a high-level general purpose library for D language intended to 
+ * game engine developers. It provides basic building blocks for writing
+ * graphics-intensive applications: containers, data streams, linear algebra 
+ * and image decoders.
+ *
+ * Copyright: Timur Gafarov 2011-2020.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */

@@ -26,14 +26,19 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Draw ASCII text
+ *
+ * Copyright: Oleg Baharev, Timur Gafarov 2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Oleg Baharev, Timur Gafarov
+ */
 module dlib.image.render.text;
 
-private
-{
-    import dlib.image.color;
-    import dlib.image.image;
-}
+import dlib.image.color;
+import dlib.image.image;
 
+/// Draw text on an image
 void drawText(SuperImage img, string s, int x, int y, Color4f color)
 {
     foreach(i, c; s)
