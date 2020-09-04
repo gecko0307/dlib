@@ -649,6 +649,11 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					</li>
 					<li>
 						<div class="module ">
+							<a href="../../dlib/memory/gcallocator.html">gcallocator</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
 							<a href="../../dlib/memory/mallocator.html">mallocator</a>
 						</div>
 					</li>
@@ -686,6 +691,11 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 							<a href="../../dlib/serialization/json.html">json</a>
 						</div>
 					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/serialization/xml.html">xml</a>
+						</div>
+					</li>
 				</ul>
 					</li>
 					<li class="tree-view ">
@@ -693,11 +703,6 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 							<a href="../../dlib/text.html">text</a>
 						</div>
 				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../dlib/text/common.html">common</a>
-						</div>
-					</li>
 					<li>
 						<div class="module ">
 							<a href="../../dlib/text/encodings.html">encodings</a>
@@ -741,8 +746,18 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 		</nav>
 		<div id="main-contents">
 			<div>
-				<h1>Module dlib.text.lexer</h1><p></p>
-				<section></section>
+				<h1>Module dlib.text.lexer</h1><p>General-purpose non-allocating lexical analyzer.
+</p><section></section>
+
+				<section><section><h2>Description</h2>
+<p>Breaks the input string to a stream of lexemes according to a given delimiter dictionary.
+ Delimiters are symbols that separate sequences of characters (e.g. operators).
+ Lexemes are slices of the input string.
+ Assumes UTF-8 input.
+ Treats \r\n as a single \n.
+</p>
+</section>
+</section>
 				<section>
 					<h2>Classes</h2>
 					<table>
@@ -756,12 +771,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 									<a id="Lexer" class="public" href="../../dlib/text/lexer/Lexer.html">Lexer</a>
 								</code>
 							</td>
-							<td>General-purpose non-allocating lexical analyzer.
- Breaks the input string to a stream of lexemes according to a given delimiter dictionary.
- Delimiters are symbols that separate sequences of characters (e.g. operators).
- Lexemes are slices of the input string.
- Assumes UTF-8 input.
- Treats \r\n as a single \n.
+							<td>Lexical analyzer class
 </td>
 						</tr>
 					</table>

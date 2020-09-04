@@ -649,6 +649,11 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					</li>
 					<li>
 						<div class="module ">
+							<a href="../../../dlib/memory/gcallocator.html">gcallocator</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
 							<a href="../../../dlib/memory/mallocator.html">mallocator</a>
 						</div>
 					</li>
@@ -686,6 +691,11 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 							<a href="../../../dlib/serialization/json.html">json</a>
 						</div>
 					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/serialization/xml.html">xml</a>
+						</div>
+					</li>
 				</ul>
 					</li>
 					<li class="tree-view ">
@@ -693,11 +703,6 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 							<a href="../../../dlib/text.html">text</a>
 						</div>
 				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/text/common.html">common</a>
-						</div>
-					</li>
 					<li>
 						<div class="module ">
 							<a href="../../../dlib/text/encodings.html">encodings</a>
@@ -741,8 +746,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 		</nav>
 		<div id="main-contents">
 			<div>
-				<h1>Struct UTF16Encoder</h1><p>Encodes a Unicode code point to UTF-16 LE into user-provided buffer.
- Returns number of bytes written, or 0 at error.
+				<h1>Struct UTF16Encoder</h1><p>UTF-16 LE encoder to use with dlib.text.encodings.transcode
 </p>
 				<div class="prototype">
 					<code class="lang-d">
@@ -753,6 +757,25 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					</code>
 				</div>
 				
+				<section><h2>Methods</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th><th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/text/utf16/UTF16Encoder.encode.html" class="public">
+									<code>encode</code>
+								</a>
+								<span class="tableEntryAnnotation">(ch, buffer)</span>
+							</td>
+							<td>Encodes a Unicode code point to UTF-16 LE into user-provided buffer.
+ Returns number of bytes written, or 0 at error.
+</td>
+						</tr>
+					</table>
+				</section>
 				
 			</div>
 			<footer>

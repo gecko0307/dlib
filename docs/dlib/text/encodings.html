@@ -649,6 +649,11 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					</li>
 					<li>
 						<div class="module ">
+							<a href="../../dlib/memory/gcallocator.html">gcallocator</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
 							<a href="../../dlib/memory/mallocator.html">mallocator</a>
 						</div>
 					</li>
@@ -686,6 +691,11 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 							<a href="../../dlib/serialization/json.html">json</a>
 						</div>
 					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/serialization/xml.html">xml</a>
+						</div>
+					</li>
 				</ul>
 					</li>
 					<li class="tree-view ">
@@ -693,11 +703,6 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 							<a href="../../dlib/text.html">text</a>
 						</div>
 				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../dlib/text/common.html">common</a>
-						</div>
-					</li>
 					<li>
 						<div class="module selected">
 							<a href="../../dlib/text/encodings.html">encodings</a>
@@ -741,8 +746,28 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 		</nav>
 		<div id="main-contents">
 			<div>
-				<h1>Module dlib.text.encodings</h1><p></p>
-				<section></section>
+				<h1>Module dlib.text.encodings</h1><p>Generic encoding tools
+</p><section></section>
+
+				<section><section><h2>Description</h2>
+<p>This module works with any encoder and decoder structs that implement
+ the following basic interfaces:
+</p>
+<pre class="code"><code class="lang-d"><span class="kwd">struct </span><span class="typ">Encoder
+</span><span class="pun">{
+    </span><span class="com">// Encodes a Unicode code point to user-provided buffer.
+    // Should return bytes written or 0 at error
+    </span><span class="pln">size_t encode</span><span class="pun">(</span><span class="typ">uint </span><span class="pln">codePoint</span><span class="pun">, </span><span class="typ">char</span><span class="pun">[] </span><span class="pln">buffer</span><span class="pun">)
+}
+
+</span><span class="kwd">struct </span><span class="typ">Decoder
+</span><span class="pun">{
+    </span><span class="com">// An input range that iterates characters of a string,
+    // decoding them to Unicode code points
+    </span><span class="kwd">auto </span><span class="pln">decode</span><span class="pun">(</span><span class="typ">string </span><span class="pln">input</span><span class="pun">)
+}</span></code></pre>
+</section>
+</section>
 				<section>
 					<h2>Functions</h2>
 					<table>
@@ -756,7 +781,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 									<a id="transcode" class="public" href="../../dlib/text/encodings/transcode.html">transcode</a><span class="tableEntryAnnotation">(input)</span>
 								</code>
 							</td>
-							<td>Converts a string from one encoding to another
+							<td>Converts a string from one encoding to another.
+ Decoder and encoder are specified at compile time
 </td>
 						</tr>
 					</table>

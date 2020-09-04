@@ -649,6 +649,11 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					</li>
 					<li>
 						<div class="module ">
+							<a href="../../dlib/memory/gcallocator.html">gcallocator</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
 							<a href="../../dlib/memory/mallocator.html">mallocator</a>
 						</div>
 					</li>
@@ -686,6 +691,11 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 							<a href="../../dlib/serialization/json.html">json</a>
 						</div>
 					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/serialization/xml.html">xml</a>
+						</div>
+					</li>
 				</ul>
 					</li>
 					<li class="tree-view ">
@@ -693,11 +703,6 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 							<a href="../../dlib/text.html">text</a>
 						</div>
 				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../dlib/text/common.html">common</a>
-						</div>
-					</li>
 					<li>
 						<div class="module ">
 							<a href="../../dlib/text/encodings.html">encodings</a>
@@ -741,7 +746,9 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 		</nav>
 		<div id="main-contents">
 			<div>
-				<h1>Module dlib.text.utf16</h1><p></p>
+				<h1>Module dlib.text.utf16</h1><p>UTF-16 decoder and encoder
+</p><section></section>
+
 				<section></section>
 				<section>
 					<h2>Functions</h2>
@@ -756,7 +763,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 									<a id="convertUTF16ztoUTF8" class="public" href="../../dlib/text/utf16/convertUTF16ztoUTF8.html">convertUTF16ztoUTF8</a><span class="tableEntryAnnotation">(s, nullTerm)</span>
 								</code>
 							</td>
-							<td>Converts UTF16 zero-terminated string to UTF8
+							<td>Converts UTF-16 zero-terminated string to UTF-8
 </td>
 						</tr>
 						<tr>
@@ -765,7 +772,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 									<a id="convertUTF8toUTF16" class="public" href="../../dlib/text/utf16/convertUTF8toUTF16.html">convertUTF8toUTF16</a><span class="tableEntryAnnotation">(s, nullTerm)</span>
 								</code>
 							</td>
-							<td>Converts UTF8 to UTF8
+							<td>Converts UTF-8 to UTF-16
  Will be deprecated soon, use transcode!(UTF8Decoder, UTF16Encoder) instead
 </td>
 						</tr>
@@ -784,7 +791,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 									<a id="UTF16Decoder" class="public" href="../../dlib/text/utf16/UTF16Decoder.html">UTF16Decoder</a>
 								</code>
 							</td>
-							<td>UTF-16 LE decoder
+							<td>UTF-16 LE decoder to use with dlib.text.encodings.transcode
 </td>
 						</tr>
 						<tr>
@@ -793,8 +800,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 									<a id="UTF16Encoder" class="public" href="../../dlib/text/utf16/UTF16Encoder.html">UTF16Encoder</a>
 								</code>
 							</td>
-							<td>Encodes a Unicode code point to UTF-16 LE into user-provided buffer.
- Returns number of bytes written, or 0 at error.
+							<td>UTF-16 LE encoder to use with dlib.text.encodings.transcode
 </td>
 						</tr>
 					</table>

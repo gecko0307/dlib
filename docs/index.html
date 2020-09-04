@@ -649,6 +649,11 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					</li>
 					<li>
 						<div class="module ">
+							<a href="./dlib/memory/gcallocator.html">gcallocator</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
 							<a href="./dlib/memory/mallocator.html">mallocator</a>
 						</div>
 					</li>
@@ -686,6 +691,11 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 							<a href="./dlib/serialization/json.html">json</a>
 						</div>
 					</li>
+					<li>
+						<div class="module ">
+							<a href="./dlib/serialization/xml.html">xml</a>
+						</div>
+					</li>
 				</ul>
 					</li>
 					<li class="tree-view collapsed">
@@ -693,11 +703,6 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 							<a href="./dlib/text.html">text</a>
 						</div>
 				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="./dlib/text/common.html">common</a>
-						</div>
-					</li>
 					<li>
 						<div class="module ">
 							<a href="./dlib/text/encodings.html">encodings</a>
@@ -1682,7 +1687,17 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<a href="./dlib/memory/allocator.html">dlib.memory.allocator</a>
 					</td>
 					<td>
-						
+						Abstract allocator interface
+
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<a href="./dlib/memory/gcallocator.html">dlib.memory.gcallocator</a>
+					</td>
+					<td>
+						Allocator based on D's built-in garbage collector
+
 					</td>
 				</tr>
 				<tr>
@@ -1690,7 +1705,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<a href="./dlib/memory/mallocator.html">dlib.memory.mallocator</a>
 					</td>
 					<td>
-						
+						Allocator based on malloc/realloc/free
+
 					</td>
 				</tr>
 				<tr>
@@ -1698,7 +1714,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<a href="./dlib/memory/mmappool.html">dlib.memory.mmappool</a>
 					</td>
 					<td>
-						
+						Fast block-based allocator
+
 					</td>
 				</tr>
 				<tr>
@@ -1706,7 +1723,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<a href="./dlib/network/socket.html">dlib.network.socket</a>
 					</td>
 					<td>
-						
+						Platform-independent socket API
+
 					</td>
 				</tr>
 				<tr>
@@ -1714,7 +1732,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<a href="./dlib/network/url.html">dlib.network.url</a>
 					</td>
 					<td>
-						
+						URL parser
+
 					</td>
 				</tr>
 				<tr>
@@ -1728,10 +1747,11 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 				</tr>
 				<tr>
 					<td>
-						<a href="./dlib/text/common.html">dlib.text.common</a>
+						<a href="./dlib/serialization/xml.html">dlib.serialization.xml</a>
 					</td>
 					<td>
-						
+						GC-free parser for a subset of XML.
+
 					</td>
 				</tr>
 				<tr>
@@ -1739,7 +1759,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<a href="./dlib/text/encodings.html">dlib.text.encodings</a>
 					</td>
 					<td>
-						
+						Generic encoding tools
+
 					</td>
 				</tr>
 				<tr>
@@ -1747,7 +1768,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<a href="./dlib/text/lexer.html">dlib.text.lexer</a>
 					</td>
 					<td>
-						
+						General-purpose non-allocating lexical analyzer.
+
 					</td>
 				</tr>
 				<tr>
@@ -1755,7 +1777,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<a href="./dlib/text/unmanagedstring.html">dlib.text.unmanagedstring</a>
 					</td>
 					<td>
-						
+						GC-free UTF-8 string type
+
 					</td>
 				</tr>
 				<tr>
@@ -1763,7 +1786,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<a href="./dlib/text/utf16.html">dlib.text.utf16</a>
 					</td>
 					<td>
-						
+						UTF-16 decoder and encoder
+
 					</td>
 				</tr>
 				<tr>
@@ -1771,7 +1795,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<a href="./dlib/text/utf8.html">dlib.text.utf8</a>
 					</td>
 					<td>
-						
+						UTF-8 encoder and decoder
+
 					</td>
 				</tr>
 				<tr>
@@ -1779,7 +1804,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<a href="./dlib/text/utils.html">dlib.text.utils</a>
 					</td>
 					<td>
-						
+						Text processing utils
+
 					</td>
 				</tr>
 				<tr>

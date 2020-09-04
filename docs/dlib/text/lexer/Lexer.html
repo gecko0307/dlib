@@ -649,6 +649,11 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					</li>
 					<li>
 						<div class="module ">
+							<a href="../../../dlib/memory/gcallocator.html">gcallocator</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
 							<a href="../../../dlib/memory/mallocator.html">mallocator</a>
 						</div>
 					</li>
@@ -686,6 +691,11 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 							<a href="../../../dlib/serialization/json.html">json</a>
 						</div>
 					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/serialization/xml.html">xml</a>
+						</div>
+					</li>
 				</ul>
 					</li>
 					<li class="tree-view ">
@@ -693,11 +703,6 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 							<a href="../../../dlib/text.html">text</a>
 						</div>
 				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/text/common.html">common</a>
-						</div>
-					</li>
 					<li>
 						<div class="module ">
 							<a href="../../../dlib/text/encodings.html">encodings</a>
@@ -741,12 +746,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 		</nav>
 		<div id="main-contents">
 			<div>
-				<h1>Class Lexer</h1><p>General-purpose non-allocating lexical analyzer.
- Breaks the input string to a stream of lexemes according to a given delimiter dictionary.
- Delimiters are symbols that separate sequences of characters (e.g. operators).
- Lexemes are slices of the input string.
- Assumes UTF-8 input.
- Treats \r\n as a single \n.
+				<h1>Class Lexer</h1><p>Lexical analyzer class
 </p>
 				<div class="prototype">
 					<code class="lang-d">
@@ -758,7 +758,31 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					</code>
 				</div>
 				
-				
+				<section><h2>Example</h2>
+
+<pre class="code"><code class="lang-d"><span class="typ">string</span><span class="pun">[] </span><span class="pln">delims </span><span class="pun">= [</span><span class="str">"("</span><span class="pun">, </span><span class="str">")"</span><span class="pun">, </span><span class="str">";"</span><span class="pun">, </span><span class="str">" "</span><span class="pun">, </span><span class="str">"{"</span><span class="pun">, </span><span class="str">"}"</span><span class="pun">, </span><span class="str">"."</span><span class="pun">, </span><span class="str">"\n"</span><span class="pun">, </span><span class="str">"\r"</span><span class="pun">, </span><span class="str">"="</span><span class="pun">, </span><span class="str">"++"</span><span class="pun">, </span><span class="str">"&lt;"</span><span class="pun">];
+</span><span class="kwd">auto </span><span class="pln">input </span><span class="pun">= </span><span class="str">"for (int i=0; i&lt;arr.length; ++i)\r\n{doThing();}\n"</span><span class="pun">;
+</span><span class="kwd">auto </span><span class="pln">lexer </span><span class="pun">= </span><span class="kwd">new </span><span class="typ">Lexer</span><span class="pun">(</span><span class="pln">input</span><span class="pun">, </span><span class="pln">delims</span><span class="pun">);
+
+</span><span class="typ">string</span><span class="pun">[] </span><span class="pln">arr</span><span class="pun">;
+</span><span class="kwd">while</span><span class="pun">(</span><span class="kwd">true</span><span class="pun">) {
+    </span><span class="kwd">auto </span><span class="pln">lexeme </span><span class="pun">= </span><span class="pln">lexer<wbr/></span><span class="pun">.</span><span class="pln">getLexeme</span><span class="pun">();
+    </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">lexeme<wbr/></span><span class="pun">.</span><span class="pln">length </span><span class="pun">== </span><span class="lit">0</span><span class="pun">) {
+        </span><span class="kwd">break</span><span class="pun">;
+    }
+    </span><span class="pln">arr </span><span class="pun">~= </span><span class="pln">lexeme</span><span class="pun">;
+}
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">arr </span><span class="pun">== [
+    </span><span class="str">"for"</span><span class="pun">, </span><span class="str">" "</span><span class="pun">, </span><span class="str">"("</span><span class="pun">, </span><span class="str">"int"</span><span class="pun">, </span><span class="str">" "</span><span class="pun">, </span><span class="str">"i"</span><span class="pun">, </span><span class="str">"="</span><span class="pun">, </span><span class="str">"0"</span><span class="pun">, </span><span class="str">";"</span><span class="pun">, </span><span class="str">" "</span><span class="pun">, </span><span class="str">"i"</span><span class="pun">, </span><span class="str">"&lt;"</span><span class="pun">,
+    </span><span class="str">"arr"</span><span class="pun">, </span><span class="str">"."</span><span class="pun">, </span><span class="str">"length"</span><span class="pun">, </span><span class="str">";"</span><span class="pun">, </span><span class="str">" "</span><span class="pun">, </span><span class="str">"++"</span><span class="pun">, </span><span class="str">"i"</span><span class="pun">, </span><span class="str">")"</span><span class="pun">, </span><span class="str">"\n"</span><span class="pun">, </span><span class="str">"{"</span><span class="pun">, </span><span class="str">"doThing"</span><span class="pun">,
+    </span><span class="str">"("</span><span class="pun">, </span><span class="str">")"</span><span class="pun">, </span><span class="str">";"</span><span class="pun">, </span><span class="str">"}"</span><span class="pun">, </span><span class="str">"\n" </span><span class="pun">]);
+
+</span><span class="pln">input </span><span class="pun">= </span><span class="str">""</span><span class="pun">;
+</span><span class="pln">lexer </span><span class="pun">= </span><span class="kwd">new </span><span class="typ">Lexer</span><span class="pun">(</span><span class="pln">input</span><span class="pun">, </span><span class="pln">delims</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">lexer<wbr/></span><span class="pun">.</span><span class="pln">getLexeme</span><span class="pun">()<wbr/>.</span><span class="pln">length </span><span class="pun">== </span><span class="lit">0</span><span class="pun">);
+</span></code></pre>
+</section>
+
 			</div>
 			<footer>
 				<div id="license-info">

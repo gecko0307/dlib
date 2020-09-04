@@ -649,6 +649,11 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					</li>
 					<li>
 						<div class="module ">
+							<a href="../../dlib/memory/gcallocator.html">gcallocator</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
 							<a href="../../dlib/memory/mallocator.html">mallocator</a>
 						</div>
 					</li>
@@ -686,6 +691,11 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 							<a href="../../dlib/serialization/json.html">json</a>
 						</div>
 					</li>
+					<li>
+						<div class="module ">
+							<a href="../../dlib/serialization/xml.html">xml</a>
+						</div>
+					</li>
 				</ul>
 					</li>
 					<li class="tree-view ">
@@ -693,11 +703,6 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 							<a href="../../dlib/text.html">text</a>
 						</div>
 				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../dlib/text/common.html">common</a>
-						</div>
-					</li>
 					<li>
 						<div class="module ">
 							<a href="../../dlib/text/encodings.html">encodings</a>
@@ -741,7 +746,9 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 		</nav>
 		<div id="main-contents">
 			<div>
-				<h1>Module dlib.text.unmanagedstring</h1><p></p>
+				<h1>Module dlib.text.unmanagedstring</h1><p>GC-free UTF-8 string type
+</p><section></section>
+
 				<section></section>
 				<section>
 					<h2>Structs</h2>
@@ -756,7 +763,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 									<a id="String" class="public" href="../../dlib/text/unmanagedstring/String.html">String</a>
 								</code>
 							</td>
-							<td>GC-free UTF8 string type based on DynamicArray.
+							<td>GC-free UTF-8 string type based on DynamicArray.
  Stores up to 128 bytes without dynamic memory allocation,
  so short strings are processed very fast.
  String is always zero-terminated and directly compatible with C.
