@@ -26,6 +26,13 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Simple 2D rendering engine
+ *
+ * Copyright: Timur Gafarov 2018-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.image.canvas;
 
 import std.math;
@@ -41,6 +48,7 @@ import dlib.image.image;
 import dlib.image.render.shapes;
 import dlib.core.memory;
 
+/// General options for drawing things
 struct CanvasState
 {
     Matrix3x3f transformation;
@@ -49,12 +57,14 @@ struct CanvasState
     float lineWidth;
 }
 
+/// Type of a path segment
 enum SegmentType
 {
     Line,
     BezierCubic
 }
 
+/// Path segment
 struct ContourSegment
 {
     Vector2f p1;
@@ -65,12 +75,11 @@ struct ContourSegment
     SegmentType type;
 }
 
-/*
+/**
  * A simple 2D vector engine inspired by HTML5 canvas.
  * Supports rendering arbitrary polygons and cubic Bezier paths, filled and outlined.
- * Not real-time, best suited for offline graph plotting.
+ * Not real-time.
  */
-
 class Canvas
 {
    protected:

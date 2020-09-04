@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2019 Timur Gafarov
+Copyright (c) 2013-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,6 +26,13 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * 2D signal consisting of complex number data
+ *
+ * Copyright: Timur Gafarov 2013-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.image.signal2d;
 
 private
@@ -38,12 +45,16 @@ private
     import dlib.image.color;
 }
 
+/// Signal domain
 enum SignalDomain
 {
     Spatial,
     Frequency
 }
 
+/**
+ * 2D signal consisting of complex number data
+ */
 class Signal2D
 {
     Complexf[] data;
@@ -198,6 +209,7 @@ class Signal2D
     }
 }
 
+/// Convert Signal2D to SuperImage
 void signalToImage(Signal2D chRed, Signal2D chGreen, Signal2D chBlue, SuperImage img)
 {
     float maxIntensityR = 0.0f;

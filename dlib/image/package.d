@@ -26,6 +26,13 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Image processing
+ *
+ * Copyright: Timur Gafarov 2013-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.image;
 
 public
@@ -55,8 +62,8 @@ public
     import dlib.image.filters.histogram;
     import dlib.image.filters.binarization;
 
+    import dlib.image.io;
     import dlib.image.io.bmp;
-    import dlib.image.io.io;
     import dlib.image.io.png;
     import dlib.image.io.tga;
     import dlib.image.io.jpeg;

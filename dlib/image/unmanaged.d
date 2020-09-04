@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2019 Timur Gafarov
+Copyright (c) 2015-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,15 +26,21 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * GC-free SuperImage implementation
+ *
+ * Copyright: Timur Gafarov 2015-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.image.unmanaged;
 
 import dlib.image.image;
 import dlib.core.memory;
 
-/*
- * This module provides GC-free SuperImage implementation
+/**
+ * Image that uses dlib.core.memory instead of GC
  */
-
 class UnmanagedImage(PixelFormat fmt): Image!(fmt)
 {
     override @property SuperImage dup()
@@ -70,16 +76,27 @@ class UnmanagedImage(PixelFormat fmt): Image!(fmt)
     }
 }
 
+/// Specialization of UnmanagedImage for 8-bit luminance pixel format
 alias UnmanagedImageL8 = UnmanagedImage!(PixelFormat.L8);
+/// Specialization of UnmanagedImage for 8-bit luminance-alpha pixel format
 alias UnmanagedImageLA8 = UnmanagedImage!(PixelFormat.LA8);
+/// Specialization of UnmanagedImage for 8-bit RGB pixel format
 alias UnmanagedImageRGB8 = UnmanagedImage!(PixelFormat.RGB8);
+/// Specialization of UnmanagedImage for 8-bit RGBA pixel format
 alias UnmanagedImageRGBA8 = UnmanagedImage!(PixelFormat.RGBA8);
 
+/// Specialization of UnmanagedImage for 16-bit luminance pixel format
 alias UnmanagedImageL16 = UnmanagedImage!(PixelFormat.L16);
+/// Specialization of UnmanagedImage for 16-bit luminance-alpha pixel format
 alias UnmanagedImageLA16 = UnmanagedImage!(PixelFormat.LA16);
+/// Specialization of UnmanagedImage for 16-bit RGB pixel format
 alias UnmanagedImageRGB16 = UnmanagedImage!(PixelFormat.RGB16);
+/// Specialization of UnmanagedImage for 16-bit RGBA pixel format
 alias UnmanagedImageRGBA16 = UnmanagedImage!(PixelFormat.RGBA16);
 
+/**
+ * UnmanagedImage factory class
+ */
 class UnmanagedImageFactory: SuperImageFactory
 {
     SuperImage createImage(uint w, uint h, uint channels, uint bitDepth, uint numFrames = 1)
@@ -88,6 +105,9 @@ class UnmanagedImageFactory: SuperImageFactory
     }
 }
 
+/**
+ * UnmanagedImage factory function
+ */
 SuperImage unmanagedImage(uint w, uint h, uint channels = 3, uint bitDepth = 8)
 in
 {

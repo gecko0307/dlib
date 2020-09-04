@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2019 Timur Gafarov
+Copyright (c) 2014-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,19 +26,24 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * High dynamic range images
+ *
+ * Copyright: Timur Gafarov 2013-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.image.hdri;
 
-private
-{
-    import core.stdc.string;
-    import std.math;
-    import dlib.core.memory;
-    import dlib.image.image;
-    import dlib.image.color;
-    import dlib.math.vector;
-    import dlib.math.utils;
-}
+import core.stdc.string;
+import std.math;
+import dlib.core.memory;
+import dlib.image.image;
+import dlib.image.color;
+import dlib.math.vector;
+import dlib.math.utils;
 
+/// Floating-point pixel formats
 enum FloatPixelFormat: uint
 {
     RGBAF32 = 8
@@ -47,6 +52,9 @@ enum FloatPixelFormat: uint
     //RGBAF16 = 10
 }
 
+/**
+ * HDR image interface
+ */
 abstract class SuperHDRImage: SuperImage
 {
     override @property uint pixelFormat()
@@ -55,6 +63,9 @@ abstract class SuperHDRImage: SuperImage
     }
 }
 
+/**
+ * Extension of standard Image that is based on FloatPixelFormat.RGBAF32
+ */
 class HDRImage: SuperHDRImage
 {
     public:
@@ -163,6 +174,7 @@ class HDRImage: SuperHDRImage
     ubyte[] _data;
 }
 
+/// Clamp pixels luminance to a specified range
 SuperImage clamp(SuperImage img, float minv, float maxv)
 {
     foreach(x; 0..img.width)
@@ -174,11 +186,17 @@ SuperImage clamp(SuperImage img, float minv, float maxv)
     return img;
 }
 
+/**
+ * Factory interface for HDR images
+ */
 interface SuperHDRImageFactory
 {
     SuperHDRImage createImage(uint w, uint h);
 }
 
+/**
+ * Factory class for HDR images
+ */
 class HDRImageFactory: SuperHDRImageFactory
 {
     SuperHDRImage createImage(uint w, uint h)
@@ -189,6 +207,9 @@ class HDRImageFactory: SuperHDRImageFactory
 
 private SuperHDRImageFactory _defaultHDRImageFactory;
 
+/**
+ * Get default SuperHDRImageFactory singleton
+ */
 SuperHDRImageFactory defaultHDRImageFactory()
 {
     if (!_defaultHDRImageFactory)
@@ -196,6 +217,9 @@ SuperHDRImageFactory defaultHDRImageFactory()
     return _defaultHDRImageFactory;
 }
 
+/**
+ * HDRImage that uses dlib.core.memory instead of GC
+ */
 class UnmanagedHDRImage: HDRImage
 {
     override @property SuperImage dup()
@@ -231,6 +255,9 @@ class UnmanagedHDRImage: HDRImage
     }
 }
 
+/**
+ * Factory class for UnmanagedHDRImageFactory
+ */
 class UnmanagedHDRImageFactory: SuperHDRImageFactory
 {
     SuperHDRImage createImage(uint w, uint h)
@@ -239,11 +266,7 @@ class UnmanagedHDRImageFactory: SuperHDRImageFactory
     }
 }
 
-SuperImage hdrTonemapGamma(SuperHDRImage img, float gamma)
-{
-    return hdrTonemapGamma(img, null, gamma);
-}
-
+/// Simple exponentiation tonal compression
 SuperImage hdrTonemapGamma(SuperHDRImage img, SuperImage output, float gamma)
 {
     SuperImage res;
@@ -265,11 +288,13 @@ SuperImage hdrTonemapGamma(SuperHDRImage img, SuperImage output, float gamma)
     return res;
 }
 
-SuperImage hdrTonemapReinhard(SuperHDRImage img, float exposure, float gamma)
+/// ditto
+SuperImage hdrTonemapGamma(SuperHDRImage img, float gamma)
 {
-    return hdrTonemapReinhard(img, null, exposure, gamma);
+    return hdrTonemapGamma(img, null, gamma);
 }
 
+/// Reinhard tonal compression
 SuperImage hdrTonemapReinhard(SuperHDRImage img, SuperImage output, float exposure, float gamma)
 {
     SuperImage res;
@@ -293,11 +318,13 @@ SuperImage hdrTonemapReinhard(SuperHDRImage img, SuperImage output, float exposu
     return res;
 }
 
-SuperImage hdrTonemapHable(SuperHDRImage img, float exposure, float gamma)
+/// ditto
+SuperImage hdrTonemapReinhard(SuperHDRImage img, float exposure, float gamma)
 {
-    return hdrTonemapHable(img, null, exposure, gamma);
+    return hdrTonemapReinhard(img, null, exposure, gamma);
 }
 
+/// Hable (Uncharted 2) tonal compression
 SuperImage hdrTonemapHable(SuperHDRImage img, SuperImage output, float exposure, float gamma)
 {
     SuperImage res;
@@ -323,16 +350,18 @@ SuperImage hdrTonemapHable(SuperHDRImage img, SuperImage output, float exposure,
     return res;
 }
 
+/// ditto
+SuperImage hdrTonemapHable(SuperHDRImage img, float exposure, float gamma)
+{
+    return hdrTonemapHable(img, null, exposure, gamma);
+}
+
 Vector3f hableFunc(Vector3f x)
 {
    return ((x * (x * 0.15f + 0.1f * 0.5f) + 0.2f * 0.02f) / (x * (x * 0.15f + 0.5f) + 0.2f * 0.3f)) - 0.02f / 0.3f;
 }
 
-SuperImage hdrTonemapACES(SuperHDRImage img, float exposure, float gamma)
-{
-    return hdrTonemapACES(img, null, exposure, gamma);
-}
-
+/// ACES curve tonal compression
 SuperImage hdrTonemapACES(SuperHDRImage img, SuperImage output, float exposure, float gamma)
 {
     SuperImage res;
@@ -352,7 +381,7 @@ SuperImage hdrTonemapACES(SuperHDRImage img, SuperImage output, float exposure, 
     {
         Color4f col = img[x, y];
         Color4f v = col * exposure * 0.6;
-        v = ((v*(v*a+b))/(v*(v*c+d)+e)).clamped(0.0, 1.0);
+        v = ((v * (v * a + b)) / (v * (v * c + d) + e)).clamped(0.0, 1.0);
         res[x, y] = Color4f(
             v.r ^^ gamma, 
             v.g ^^ gamma, 
@@ -363,11 +392,13 @@ SuperImage hdrTonemapACES(SuperHDRImage img, SuperImage output, float exposure, 
     return res;
 }
 
-SuperImage hdrTonemapAverageLuminance(SuperHDRImage img, float a, float gamma)
+/// ditto
+SuperImage hdrTonemapACES(SuperHDRImage img, float exposure, float gamma)
 {
-    return hdrTonemapAverageLuminance(img, null, a, gamma);
+    return hdrTonemapACES(img, null, exposure, gamma);
 }
 
+/// Average luminance tonal compression
 SuperImage hdrTonemapAverageLuminance(SuperHDRImage img, SuperImage output, float a, float gamma)
 {
     SuperImage res;
@@ -395,6 +426,12 @@ SuperImage hdrTonemapAverageLuminance(SuperHDRImage img, SuperImage output, floa
     }
 
     return res;
+}
+
+/// ditto
+SuperImage hdrTonemapAverageLuminance(SuperHDRImage img, float a, float gamma)
+{
+    return hdrTonemapAverageLuminance(img, null, a, gamma);
 }
 
 float averageLuminance(SuperHDRImage img)

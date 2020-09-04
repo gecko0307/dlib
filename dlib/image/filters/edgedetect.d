@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2019 Timur Gafarov, Oleg Baharev
+Copyright (c) 2011-2020 Timur Gafarov, Oleg Baharev
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,28 +26,26 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Detect edges on an image
+ *
+ * Copyright: Timur Gafarov 2011-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.image.filters.edgedetect;
 
-private
-{
-    import std.math;
-    
-    import dlib.math.vector;
-    
-    import dlib.image.image;
-    import dlib.image.color;
-    import dlib.image.arithmetics;
-    import dlib.image.filters.contrast;
-    import dlib.image.filters.boxblur;
-    import dlib.image.filters.morphology;
-    import dlib.image.filters.convolution;
-}
+import std.math;
+import dlib.math.vector;
+import dlib.image.image;
+import dlib.image.color;
+import dlib.image.arithmetics;
+import dlib.image.filters.contrast;
+import dlib.image.filters.boxblur;
+import dlib.image.filters.morphology;
+import dlib.image.filters.convolution;
 
-SuperImage edgeDetectDoG(SuperImage src, int radius1, int radius2, float amount, bool inv = true)
-{
-    return edgeDetectDoG(src, null, radius1, radius2, amount, inv);
-}
-
+/// Difference of Gaussians
 SuperImage edgeDetectDoG(SuperImage src, SuperImage outp, int radius1, int radius2, float amount, bool inv = true)
 {
     if (outp is null)
@@ -67,11 +65,13 @@ SuperImage edgeDetectDoG(SuperImage src, SuperImage outp, int radius1, int radiu
         return highcon;
 }
 
-SuperImage edgeDetectGradient(SuperImage src)
+/// ditto
+SuperImage edgeDetectDoG(SuperImage src, int radius1, int radius2, float amount, bool inv = true)
 {
-    return edgeDetectGradient(src, null);
+    return edgeDetectDoG(src, null, radius1, radius2, amount, inv);
 }
 
+/// Morphologic edge detection
 SuperImage edgeDetectGradient(SuperImage src, SuperImage outp)
 {
     if (outp is null)
@@ -80,11 +80,13 @@ SuperImage edgeDetectGradient(SuperImage src, SuperImage outp)
     return gradient(src, outp);
 }
 
-SuperImage edgeDetectLaplace(SuperImage src)
+/// ditto
+SuperImage edgeDetectGradient(SuperImage src)
 {
-    return edgeDetectLaplace(src, null);
+    return edgeDetectGradient(src, null);
 }
 
+/// Laplace edge detection
 SuperImage edgeDetectLaplace(SuperImage src, SuperImage outp)
 {
     if (outp is null)
@@ -93,11 +95,13 @@ SuperImage edgeDetectLaplace(SuperImage src, SuperImage outp)
     return convolve(src, outp, Kernel.Laplace, 3, 3, 1.0f, 0.0f, false);
 }
 
-SuperImage edgeDetectSobel(SuperImage src, float normFactor = 1.0f / 8.0f)
+/// ditto
+SuperImage edgeDetectLaplace(SuperImage src)
 {
-    return edgeDetectSobel(src, null, normFactor);
+    return edgeDetectLaplace(src, null);
 }
 
+/// Sobel edge detection
 SuperImage edgeDetectSobel(SuperImage src, SuperImage outp, float normFactor = 1.0f / 8.0f)
 {
     if (outp is null)
@@ -132,4 +136,10 @@ SuperImage edgeDetectSobel(SuperImage src, SuperImage outp, float normFactor = 1
     }
     
     return outp;
+}
+
+/// ditto
+SuperImage edgeDetectSobel(SuperImage src, float normFactor = 1.0f / 8.0f)
+{
+    return edgeDetectSobel(src, null, normFactor);
 }

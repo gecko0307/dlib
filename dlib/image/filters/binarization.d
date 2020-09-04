@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2018-2019 Timur Gafarov, Oleg Baharev
+Copyright (c) 2018-2020 Oleg Baharev, Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,6 +26,13 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Image binarization
+ *
+ * Copyright: Oleg Baharev, Timur Gafarov 2018-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Oleg Baharev, Timur Gafarov
+ */
 module dlib.image.filters.binarization;
 
 import dlib.image.image;
@@ -76,6 +83,7 @@ int otsuThreshold(SuperImage img)
     return bestThreshold;
 }
 
+/// Otsu binarization
 auto otsuBinarization(SuperImage img)
 {
 	SuperImage res = img.createSameFormat(img.width, img.height);

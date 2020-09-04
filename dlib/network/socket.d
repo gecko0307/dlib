@@ -800,7 +800,7 @@ abstract class Socket
      * Params:
      *     level  = Protocol level at that the option exists.
      *     option = Option.
-     *     result = Option value.
+     *     value = Option value.
      *
      * Throws: $(D_PSYMBOL SocketException) on error.
      */

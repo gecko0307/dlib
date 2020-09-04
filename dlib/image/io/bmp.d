@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2019 Timur Gafarov, Roman Chistokhodov
+Copyright (c) 2014-2020 Timur Gafarov, Roman Chistokhodov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,20 +26,24 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Decode and encode BMP images
+ *
+ * Copyright: Timur Gafarov, Roman Chistokhodov 2014-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov, Roman Chistokhodov
+ */
 module dlib.image.io.bmp;
 
-private
-{
-    import std.stdio;
-    import dlib.core.stream;
-    import dlib.core.memory;
-    import dlib.core.compound;
-    import dlib.image.image;
-    import dlib.image.color;
-    import dlib.image.io.io;
-    import dlib.image.io.utils;
-    import dlib.filesystem.local;
-}
+import std.stdio;
+import dlib.core.stream;
+import dlib.core.memory;
+import dlib.core.compound;
+import dlib.image.image;
+import dlib.image.color;
+import dlib.image.io;
+import dlib.image.io.utils;
+import dlib.filesystem.local;
 
 // uncomment this to see debug messages:
 //version = BMPDebug;
@@ -163,7 +167,7 @@ private bool checkIndex(uint index, const(ubyte)[] colormap) nothrow pure {
     return index + 2 < colormap.length;
 }
 
-/*
+/**
  * Load BMP from file using local FileSystem.
  * Causes GC allocation
  */
@@ -185,7 +189,7 @@ SuperImage loadBMP(string filename)
     }
 }
 
-/*
+/**
  * Load BMP from stream using default image factory.
  * Causes GC allocation
  */
@@ -199,7 +203,7 @@ SuperImage loadBMP(InputStream istrm)
         return res[0];
 }
 
-/*
+/**
  * Load BMP from stream using specified image factory.
  * GC-free
  */
@@ -616,7 +620,7 @@ Compound!(SuperImage, string) loadBMP(
     return compound(img, "");
 }
 
-
+///
 unittest
 {
     import dlib.core.stream;
@@ -785,6 +789,10 @@ unittest
     assert(img[6,2].convert(8) == Color4(0,128,0,255));
 }
 
+/**
+ * Save BMP to file using local FileSystem.
+ * Causes GC allocation
+ */
 void saveBMP(SuperImage img, string filename)
 {
     OutputStream output = openForOutput(filename);
@@ -796,6 +804,10 @@ void saveBMP(SuperImage img, string filename)
         throw new BMPLoadException(res[1]);
 }
 
+/**
+ * Save BMP to stream.
+ * GC-free
+ */
 Compound!(bool, string) saveBMP(SuperImage img, OutputStream output)
 {
     Compound!(bool, string) error(string errorMsg)

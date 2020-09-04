@@ -27,6 +27,8 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
+ * Fast Fourier transform
+ *
  * Copyright: Timur Gafarov 2013-2020.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
@@ -40,7 +42,7 @@ private
     import dlib.math.complex;
 }
 
-/// Fourier transform. data must be power of two length
+/// Forward or backward fast Fourier transform. Data must be power of two in length
 void fastFourierTransform(Complex!(float)[] data, bool forward)
 {
     assert(isPowerOfTwo(data.length));

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2019 Timur Gafarov
+Copyright (c) 2011-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,19 +26,19 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Per-pixel image arithmetics
+ *
+ * Copyright: Timur Gafarov 2011-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.image.arithmetics;
 
-private
-{
-    import dlib.image.image;
-    import dlib.image.color;
-}
+import dlib.image.image;
+import dlib.image.color;
 
-SuperImage add(SuperImage a, SuperImage b, float t = 1.0f)
-{
-    return add(a, b, null, 1.0f);
-}
-
+/// Add two images
 SuperImage add(SuperImage a, SuperImage b, SuperImage outp, float t = 1.0f)
 in
 {
@@ -66,11 +66,13 @@ do
     return img;
 }
 
-SuperImage subtract(SuperImage a, SuperImage b, float t = 1.0f)
+/// ditto
+SuperImage add(SuperImage a, SuperImage b, float t = 1.0f)
 {
-    return subtract(a, b, null, 1.0f);
+    return add(a, b, null, t);
 }
 
+/// Subtract image b from image a
 SuperImage subtract(SuperImage a, SuperImage b, SuperImage outp, float t = 1.0f)
 in
 {
@@ -98,11 +100,13 @@ do
     return img;
 }
 
-SuperImage multiply(SuperImage a, SuperImage b, float t = 1.0f)
+/// ditto
+SuperImage subtract(SuperImage a, SuperImage b, float t = 1.0f)
 {
-    return multiply(a, b, null, 1.0f);
+    return subtract(a, b, null, t);
 }
 
+/// Multiply two images
 SuperImage multiply(SuperImage a, SuperImage b, SuperImage outp, float t = 1.0f)
 in
 {
@@ -130,11 +134,13 @@ do
     return img;
 }
 
-SuperImage divide(SuperImage a, SuperImage b, float t = 1.0f)
+/// ditto
+SuperImage multiply(SuperImage a, SuperImage b, float t = 1.0f)
 {
-    return divide(a, b, null, 1.0f);
+    return multiply(a, b, null, t);
 }
 
+/// Divide two images
 SuperImage divide(SuperImage a, SuperImage b, SuperImage outp, float t = 1.0f)
 in
 {
@@ -162,11 +168,13 @@ do
     return img;
 }
 
-SuperImage invert(SuperImage a)
+/// ditto
+SuperImage divide(SuperImage a, SuperImage b, float t = 1.0f)
 {
-    return invert(a, null);
+    return divide(a, b, null, t);
 }
 
+/// Invert image
 SuperImage invert(SuperImage a, SuperImage outp)
 {
     SuperImage img;
@@ -182,4 +190,10 @@ SuperImage invert(SuperImage a, SuperImage outp)
     }
 
     return img;
+}
+
+/// ditto
+SuperImage invert(SuperImage a)
+{
+    return invert(a, null);
 }

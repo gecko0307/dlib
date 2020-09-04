@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2019 Timur Gafarov
+Copyright (c) 2013-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,15 +26,20 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * HSV color space
+ *
+ * Copyright: Timur Gafarov 2013-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.image.hsv;
 
-private
-{
-    import std.algorithm;
-    import dlib.math.utils;
-    import dlib.image.color;
-}
+import std.algorithm;
+import dlib.math.utils;
+import dlib.image.color;
 
+/// HSV color channel
 enum HSVAChannel
 {
     H = 0,
@@ -43,6 +48,9 @@ enum HSVAChannel
     A = 3
 }
 
+/**
+ * HSV floating-point color representation
+ */
 struct ColorHSVAf
 {
     union
@@ -197,6 +205,7 @@ struct ColorHSVAf
     }
 }
 
+/// RGBA from HSV[A] 
 Color4f hsv(float h, float s, float v, float a = 1.0f)
 {
     return ColorHSVAf(h, s, v, a).rgba;

@@ -27,6 +27,9 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
+ * SSE-based optimizations for common vector and matrix operations
+ *
+ * Description:
  * This module implements some frequently used vector and matrix operations
  * using SSE instructions. Implementation is in WIP status.
  * Module is compatible only with Digital Mars D Compiler.

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2019 Timur Gafarov
+Copyright (c) 2011-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,25 +26,26 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Adjust contrast
+ *
+ * Copyright: Timur Gafarov 2011-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.image.filters.contrast;
 
-private
-{
-    import dlib.image.image;
-    import dlib.image.color;
-}
+import dlib.image.image;
+import dlib.image.color;
 
+/// Contrast method
 enum ContrastMethod
 {
     AverageGray,
     AverageImage,
 }
 
-SuperImage contrast(SuperImage a, float k, ContrastMethod method = ContrastMethod.AverageGray)
-{
-    return contrast(a, null, k, method);
-}
-
+/// Adjust contrast
 SuperImage contrast(SuperImage img, SuperImage outp, float k, ContrastMethod method = ContrastMethod.AverageGray)
 {
     SuperImage res;
@@ -79,4 +80,10 @@ SuperImage contrast(SuperImage img, SuperImage outp, float k, ContrastMethod met
     }
 
     return res;
+}
+
+/// ditto
+SuperImage contrast(SuperImage a, float k, ContrastMethod method = ContrastMethod.AverageGray)
+{
+    return contrast(a, null, k, method);
 }

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2019 Timur Gafarov, Roman Chistokhodov
+Copyright (c) 2014-2020 Timur Gafarov, Roman Chistokhodov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,23 +26,26 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Decode JPEG images
+ *
+ * Copyright: Timur Gafarov, Roman Chistokhodov 2014-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov, Roman Chistokhodov
+ */
 module dlib.image.io.tga;
 
-private
-{
-    import std.stdio;
-    import std.file;
-    import std.conv;
-
-    import dlib.core.memory;
-    import dlib.core.stream;
-    import dlib.core.compound;
-    import dlib.image.color;
-    import dlib.image.image;
-    import dlib.image.io.io;
-    import dlib.image.io.utils;
-    import dlib.filesystem.local;
-}
+import std.stdio;
+import std.file;
+import std.conv;
+import dlib.core.memory;
+import dlib.core.stream;
+import dlib.core.compound;
+import dlib.image.color;
+import dlib.image.image;
+import dlib.image.io;
+import dlib.image.io.utils;
+import dlib.filesystem.local;
 
 // uncomment this to see debug messages:
 //version = TGADebug;
@@ -88,7 +91,7 @@ class TGALoadException: ImageLoadException
     }
 }
 
-/*
+/**
  * Load PNG from file using local FileSystem.
  * Causes GC allocation
  */
@@ -110,7 +113,7 @@ SuperImage loadTGA(string filename)
     }
 }
 
-/*
+/**
  * Load TGA from stream using default image factory.
  * Causes GC allocation
  */
@@ -124,7 +127,7 @@ SuperImage loadTGA(InputStream istrm)
         return res[0];
 }
 
-/*
+/**
  * Load TGA from stream using specified image factory.
  * GC-free
  */
@@ -306,6 +309,10 @@ void swapRGB(SuperImage img)
     }
 }
 
+/**
+ * Save TGA to file using local FileSystem.
+ * Causes GC allocation
+ */
 void saveTGA(SuperImage img, string filename)
 {
     OutputStream output = openForOutput(filename);
@@ -316,6 +323,10 @@ void saveTGA(SuperImage img, string filename)
         throw new TGALoadException(res[1]);
 }
 
+/**
+ * Save TGA to stream.
+ * GC-free
+ */
 Compound!(bool, string) saveTGA(SuperImage img, OutputStream output)
 {
     Compound!(bool, string) error(string errorMsg)

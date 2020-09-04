@@ -35,7 +35,11 @@ module dlib.audio.io;
 
 import std.path: extension;
 import dlib.audio.sound;
-import dlib.audio.io.wav;
+
+public
+{
+    import dlib.audio.io.wav;
+}
 
 class SoundLoadException: Exception
 {

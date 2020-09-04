@@ -27,8 +27,9 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
- * This module implements various linear equation system solvers.
+ * Linear equation system solvers
  *
+ * Description:
  * A system is given in matrix form: 
  * ---
  * Ax = b
@@ -53,6 +54,7 @@ DEALINGS IN THE SOFTWARE.
  * ---
  * [x, y, z]
  * ---
+ *
  * Copyright: Timur Gafarov 2013-2020.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov

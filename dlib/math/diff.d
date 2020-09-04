@@ -27,6 +27,8 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
+ * Automatic differentiation
+ *
  * Copyright: Timur Gafarov 2013-2020.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
@@ -37,7 +39,13 @@ import dlib.math.dual;
 import dlib.core.compound;
 
 /**
- * Differentiate a function of a single argument: auto r = diff!f(x)
+ * Differentiate a function of a single argument
+ * Examples:
+ * ---
+ * auto r = diff!f(x);
+ * r[0] // = f(x)
+ * r[1] // = f'(x)
+ * ---
  */
 auto diff(alias F, T)(T x)
 {

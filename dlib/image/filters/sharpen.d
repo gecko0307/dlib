@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2019 Timur Gafarov
+Copyright (c) 2011-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,22 +26,22 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Image sharpening
+ *
+ * Copyright: Timur Gafarov 2011-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.image.filters.sharpen;
 
-private
-{
-    import dlib.image.image;
-    import dlib.image.color;
-    import dlib.image.arithmetics;
-    import dlib.image.filters.contrast;
-    import dlib.image.filters.boxblur;
-}
+import dlib.image.image;
+import dlib.image.color;
+import dlib.image.arithmetics;
+import dlib.image.filters.contrast;
+import dlib.image.filters.boxblur;
 
-SuperImage sharpen(SuperImage src, int radius, float amount)
-{
-    return sharpen(src, null, radius, amount);
-}
-
+/// Sharpen an image
 SuperImage sharpen(SuperImage src, SuperImage outp, int radius, float amount)
 {
     if (outp is null)
@@ -51,4 +51,10 @@ SuperImage sharpen(SuperImage src, SuperImage outp, int radius, float amount)
     auto mask = subtract(src, blurred, outp, 1.0f);
     auto highcon = contrast(mask, outp, amount, ContrastMethod.AverageImage);
     return add(src, highcon, outp, 0.25f);
+}
+
+/// ditto
+SuperImage sharpen(SuperImage src, int radius, float amount)
+{
+    return sharpen(src, null, radius, amount);
 }

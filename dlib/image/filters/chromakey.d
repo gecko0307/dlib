@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2019 Timur Gafarov
+Copyright (c) 2013-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,28 +26,23 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Filters that remove background from images 
+ *
+ * Copyright: Timur Gafarov 2013-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.image.filters.chromakey;
 
-private
-{
-    import dlib.math.utils;
-    import dlib.image.image;
-    import dlib.image.color;
-    import dlib.image.hsv;
+import dlib.math.utils;
+import dlib.image.image;
+import dlib.image.color;
+import dlib.image.hsv;
+import dlib.math.vector;
+import dlib.math.utils;
 
-    import dlib.math.vector;
-    import dlib.math.utils;
-}
-
-SuperImage chromaKeyEuclidean(
-    SuperImage img,
-    Color4f keyColor,
-    float minDist,
-    float maxDist)
-{
-    return chromaKeyEuclidean(img, null, keyColor, minDist, maxDist);
-}
-
+/// Euclidean distance chroma key
 SuperImage chromaKeyEuclidean(
     SuperImage img,
     SuperImage outp,
@@ -77,17 +72,17 @@ SuperImage chromaKeyEuclidean(
     return res;
 }
 
-SuperImage chromaKey(
+/// ditto
+SuperImage chromaKeyEuclidean(
     SuperImage img,
-    float hue,
-    float hueToleranceMin = -20.0f,
-    float hueToleranceMax = 20.0f,
-    float satThres = 0.2f,
-    float valThres = 0.3f)
+    Color4f keyColor,
+    float minDist,
+    float maxDist)
 {
-    return chromaKey(img, null, hue, hueToleranceMin, hueToleranceMax, satThres, valThres);
+    return chromaKeyEuclidean(img, null, keyColor, minDist, maxDist);
 }
 
+/// HSV selective scale chroma key
 SuperImage chromaKey(
     SuperImage img,
     SuperImage outp,
@@ -125,10 +120,8 @@ SuperImage chromaKey(
     return res;
 }
 
-/*
- * Turns image into b&w where only one color left
- */
-SuperImage colorPass(
+/// ditto
+SuperImage chromaKey(
     SuperImage img,
     float hue,
     float hueToleranceMin = -20.0f,
@@ -136,9 +129,10 @@ SuperImage colorPass(
     float satThres = 0.2f,
     float valThres = 0.3f)
 {
-    return colorPass(img, null, hue, hueToleranceMin, hueToleranceMax, satThres, valThres);
+    return chromaKey(img, null, hue, hueToleranceMin, hueToleranceMax, satThres, valThres);
 }
 
+/// Turns image into b&w where only one color left, using HSV selective scale
 SuperImage colorPass(
     SuperImage img,
     SuperImage outp,
@@ -178,6 +172,18 @@ do
     }
 
     return res;
+}
+
+/// ditto
+SuperImage colorPass(
+    SuperImage img,
+    float hue,
+    float hueToleranceMin = -20.0f,
+    float hueToleranceMax = 20.0f,
+    float satThres = 0.2f,
+    float valThres = 0.3f)
+{
+    return colorPass(img, null, hue, hueToleranceMin, hueToleranceMax, satThres, valThres);
 }
 
 private:

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2019 Timur Gafarov
+Copyright (c) 2016-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,6 +26,13 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Geometric ransformations of images
+ *
+ * Copyright: Timur Gafarov 2016-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.image.transform;
 
 import dlib.math.vector;
@@ -36,14 +43,7 @@ import dlib.math.utils;
 import dlib.image.image;
 import dlib.image.color;
 
-/*
- * Tranforms an image with affine 3x3 matrix
- */
-SuperImage affineTransformImage(SuperImage img, Matrix3x3f m)
-{
-    return affineTransformImage(img, null, m);
-}
-
+/// Tranforms an image with affine 3x3 matrix
 SuperImage affineTransformImage(SuperImage img, SuperImage outp, Matrix3x3f m)
 {
     SuperImage res;
@@ -62,29 +62,26 @@ SuperImage affineTransformImage(SuperImage img, SuperImage outp, Matrix3x3f m)
     return res;
 }
 
-/*
- * Translates an image (positive x goes right, positive y goes down)
- */
-SuperImage translateImage(SuperImage img, Vector2f t)
+/// ditto
+SuperImage affineTransformImage(SuperImage img, Matrix3x3f m)
 {
-    return translateImage(img, null, t);
+    return affineTransformImage(img, null, m);
 }
 
+/// Translates an image (positive x goes right, positive y goes down)
 SuperImage translateImage(SuperImage img, SuperImage outp, Vector2f t)
 {
     Matrix3x3f m = translationMatrix2D(-t);
     return affineTransformImage(img, outp, m);
 }
 
-/*
- * Rotates an image clockwise around its center.
- * angle is in degrees.
- */
-SuperImage rotateImage(SuperImage img, float angle)
+/// ditto
+SuperImage translateImage(SuperImage img, Vector2f t)
 {
-    return rotateImage(img, null, angle);
+    return translateImage(img, null, t);
 }
 
+/// Rotates an image clockwise around its center. Angle is in degrees.
 SuperImage rotateImage(SuperImage img, SuperImage outp, float angle)
 {
     Vector2f center = Vector2f(img.width, img.height) * 0.5f;
@@ -95,31 +92,35 @@ SuperImage rotateImage(SuperImage img, SuperImage outp, float angle)
     return affineTransformImage(img, outp, m);
 }
 
-/*
- * Scales an image
- */
-SuperImage scaleImage(SuperImage img, Vector2f s)
+/// ditto
+SuperImage rotateImage(SuperImage img, float angle)
 {
-    return scaleImage(img, null, s);
+    return rotateImage(img, null, angle);
 }
 
+/// Scales an image
 SuperImage scaleImage(SuperImage img, SuperImage outp, Vector2f s)
 {
     Matrix3x3f m = scaleMatrix2D(Vector2f(1, 1) / s);
     return affineTransformImage(img, outp, m);
 }
 
-/*
- * Uniformly scales an image
- */
-SuperImage scaleImage(SuperImage img, float s)
+/// ditto
+SuperImage scaleImage(SuperImage img, Vector2f s)
 {
     return scaleImage(img, null, s);
 }
 
+/// Uniformly scales an image
 SuperImage scaleImage(SuperImage img, SuperImage outp, float s)
 {
     float sinv = 1.0f / s;
     Matrix3x3f m = scaleMatrix2D(Vector2f(sinv, sinv));
     return affineTransformImage(img, outp, m);
+}
+
+/// ditto
+SuperImage scaleImage(SuperImage img, float s)
+{
+    return scaleImage(img, null, s);
 }

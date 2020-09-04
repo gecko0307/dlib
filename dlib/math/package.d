@@ -27,6 +27,13 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
+ * Description:
+ * dlib.math brings vector and matrix types to D, as well as some numerical 
+ * analysis functionality. dlib.math is great as a math library for games, 
+ * graphics/physics engines and rendering pipelines. All types are POD and 
+ * OpenGL-friendly: you can pass your 4x4 matrices to OpenGL functions directly, 
+ * without any conversion.
+ *
  * Copyright: Timur Gafarov 2013-2020.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov

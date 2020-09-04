@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2019 Timur Gafarov
+Copyright (c) 2011-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,28 +26,20 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Image convolution
+ *
+ * Copyright: Timur Gafarov 2011-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.image.filters.convolution;
 
-private
-{
-    import std.algorithm;
+import std.algorithm;
+import dlib.image.image;
+import dlib.image.color;
 
-    import dlib.image.image;
-    import dlib.image.color;
-}
-
-SuperImage convolve(SuperImage img,
-                    float[] kernel,
-                    uint kw = 3,
-                    uint kh = 3,
-                    float divisor = 1.0f,
-                    float offset = 0.5f,
-                    bool normalize = true,
-                    bool useAlpha = true)
-{
-    return convolve(img, null, kernel, kw, kh, divisor, offset, normalize, useAlpha);
-}
-
+/// Convolve an image with a kernel
 SuperImage convolve(SuperImage img,
                     SuperImage outp,
                     float[] kernel,
@@ -126,7 +118,20 @@ do
     return res;
 }
 
-// Various convolution kernels
+/// ditto
+SuperImage convolve(SuperImage img,
+                    float[] kernel,
+                    uint kw = 3,
+                    uint kh = 3,
+                    float divisor = 1.0f,
+                    float offset = 0.5f,
+                    bool normalize = true,
+                    bool useAlpha = true)
+{
+    return convolve(img, null, kernel, kw, kh, divisor, offset, normalize, useAlpha);
+}
+
+/// Various built-in convolution kernels
 struct Kernel
 {
     enum float[]

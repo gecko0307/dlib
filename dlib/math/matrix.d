@@ -27,6 +27,8 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
+ * Square matrices with static memory allocation
+ *
  * Copyright: Timur Gafarov, Martin Cejp 2013-2020.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov, Martin Cejp

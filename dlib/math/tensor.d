@@ -27,6 +27,8 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
+ * N-dimensional numeric data structure
+ *
  * Copyright: Timur Gafarov 2016-2020.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov

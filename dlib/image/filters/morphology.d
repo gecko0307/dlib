@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2019 Timur Gafarov
+Copyright (c) 2011-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,31 +26,38 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Morphologic filters
+ *
+ * Copyright: Timur Gafarov 2011-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.image.filters.morphology;
 
-private
-{
-    import dlib.image.color;
-    import dlib.image.image;
-    import dlib.image.arithmetics;
-}
+import dlib.image.color;
+import dlib.image.image;
+import dlib.image.arithmetics;
 
+/// Morphologic operation
 enum MorphOperation
 {
     Dilate,
     Erode
 }
 
-// TODO:
-// add support for other structuring elements
-// other than box (disk, diamond, etc)
-SuperImage morphOp(MorphOperation op) (SuperImage img, SuperImage outp)
+/// Apply morphologic operation
+SuperImage morphOp(MorphOperation op)(SuperImage img, SuperImage outp)
 in
 {
-    assert (img.data.length);
+    assert(img.data.length);
 }
 do
 {
+    // TODO:
+    // add support for other structuring elements
+    // other than box (disk, diamond, etc)
+    
     SuperImage res;
     if (outp)
         res = outp;
@@ -106,40 +113,24 @@ do
     return res;
 }
 
+/// Ditto
 SuperImage morph(MorphOperation op) (SuperImage img)
 {
     return morphOp!(op)(img, null);
 }
 
+/// Dilate
 alias dilate = morph!(MorphOperation.Dilate);
+/// Erode
 alias erode = morph!(MorphOperation.Erode);
 
+/// Morphologic open
 SuperImage open(SuperImage img)
 {
     return dilate(erode(img));
 }
 
-SuperImage close(SuperImage img)
-{
-    return erode(dilate(img));
-}
-
-SuperImage gradient(SuperImage img)
-{
-    return subtract(dilate(img), erode(img));
-}
-
-SuperImage topHatWhite(SuperImage img)
-{
-    return subtract(img, open(img));
-}
-
-SuperImage topHatBlack(SuperImage img)
-{
-    return subtract(img, close(img));
-}
-
-// GC-free overloads:
+/// ditto
 SuperImage open(SuperImage img, SuperImage outp)
 {
     if (outp is null)
@@ -152,6 +143,13 @@ SuperImage open(SuperImage img, SuperImage outp)
     return d;
 }
 
+/// Morphologic close
+SuperImage close(SuperImage img)
+{
+    return erode(dilate(img));
+}
+
+/// ditto
 SuperImage close(SuperImage img, SuperImage outp)
 {
     if (outp is null)
@@ -164,6 +162,13 @@ SuperImage close(SuperImage img, SuperImage outp)
     return e;
 }
 
+/// Morphologic gradient
+SuperImage gradient(SuperImage img)
+{
+    return subtract(dilate(img), erode(img));
+}
+
+/// ditto
 SuperImage gradient(SuperImage img, SuperImage outp)
 {
     if (outp is null)
@@ -177,6 +182,13 @@ SuperImage gradient(SuperImage img, SuperImage outp)
     return s;
 }
 
+/// White top-hat transform
+SuperImage topHatWhite(SuperImage img)
+{
+    return subtract(img, open(img));
+}
+
+/// ditto
 SuperImage topHatWhite(SuperImage img, SuperImage outp)
 {
     if (outp is null)
@@ -186,6 +198,13 @@ SuperImage topHatWhite(SuperImage img, SuperImage outp)
     return s;
 }
 
+/// Black top-hat transform
+SuperImage topHatBlack(SuperImage img)
+{
+    return subtract(img, close(img));
+}
+
+/// ditto
 SuperImage topHatBlack(SuperImage img, SuperImage outp)
 {
     if (outp is null)

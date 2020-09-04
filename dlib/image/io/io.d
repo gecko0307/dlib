@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2019 Timur Gafarov, Martin Cejp
+Copyright (c) 2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,104 +26,6 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib.image.io.io;
+deprecated("use dlib.image.io instead") module dlib.image.io.io;
 
-private
-{
-    import std.path;
-
-    import dlib.image.image;
-    import dlib.image.animation;
-    import dlib.image.hdri;
-    import dlib.image.io.bmp;
-    import dlib.image.io.hdr;
-    import dlib.image.io.png;
-    import dlib.image.io.tga;
-    import dlib.image.io.jpeg;
-}
-
-class ImageLoadException : Exception
-{
-    this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null)
-    {
-        super(msg, file, line, next);
-    }
-}
-
-void saveImage(SuperImage img, string filename)
-{
-    switch(filename.extension)
-    {
-        case ".png", ".PNG":
-            img.savePNG(filename);
-            break;
-        case ".bmp", ".BMP":
-            img.saveBMP(filename);
-            break;
-        case ".tga", ".TGA":
-            img.saveTGA(filename);
-            break;
-        default:
-            assert(0, "Image I/O error: unsupported image format or illegal extension");
-    }
-}
-
-SuperImage loadImage(string filename)
-{
-    switch(filename.extension)
-    {
-        case ".bmp", ".BMP":
-            return loadBMP(filename);
-        case ".hdr", ".HDR":
-            return loadHDR(filename);
-        case ".jpg", ".JPG", ".jpeg", ".JPEG":
-            return loadJPEG(filename);
-        case ".png", ".PNG":
-            return loadPNG(filename);
-        case ".tga", ".TGA":
-            return loadTGA(filename);
-        default:
-            assert(0, "Image I/O error: unsupported image format or illegal extension");
-    }
-}
-
-SuperAnimatedImage loadAnimatedImage(string filename)
-{
-    switch(filename.extension)
-    {
-        case ".png", ".apng", ".PNG", ".APNG":
-            return loadAPNG(filename);
-        default:
-            assert(0, "Image I/O error: unsupported image format or illegal extension");
-    }
-}
-
-void saveAnimatedImage(SuperAnimatedImage img, string filename)
-{
-    switch(filename.extension)
-    {
-        case ".png", ".PNG", ".apng", ".APNG":
-            img.saveAPNG(filename);
-            break;
-        default:
-            assert(0, "Image I/O error: unsupported image format or illegal extension");
-    }
-}
-
-void saveHDRImage(SuperHDRImage img, string filename)
-{
-    switch(filename.extension)
-    {
-        case ".hdr", ".HDR":
-            img.saveHDR(filename);
-            break;
-        default:
-            assert(0, "Image I/O error: unsupported image format or illegal extension");
-    }
-}
-
-alias save = saveImage;
-alias load = loadImage;
-
-alias loadAnimated = loadAnimatedImage;
-alias saveAnimated = saveAnimatedImage;
+public import dlib.image.io;

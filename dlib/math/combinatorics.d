@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2019 Nick Papanastasiou
+Copyright (c) 2015-2020 Nick Papanastasiou
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,8 +26,13 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-/// Authors: Nick Papanastasiou
-
+/**
+ * Combinatorics
+ *
+ * Copyright: Nick Papanastasiou 2015-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Nick Papanastasiou
+ */
 module dlib.math.combinatorics;
 
 import std.functional: memoize;

@@ -664,7 +664,7 @@ class WriteBuffer : Buffer
      *
      * $(D_PSYMBOL buffer) may return only part of the data. You may need
      * to call it (and set $(D_KEYWORD +=) several times until
-     * $(D_PSYMBOL length) is 0. If all the data can be written,
+     * $(D_PSYMBOL length) is 0). If all the data can be written,
      * maximally 3 calls are required.
      *
      * Returns: A chunk of data buffer.
@@ -711,7 +711,7 @@ class WriteBuffer : Buffer
      *
      * $(D_PSYMBOL buffer) may return only part of the data. You may need
      * to call it (and set $(D_KEYWORD +=) several times until
-     * $(D_PSYMBOL length) is 0. If all the data can be written,
+     * $(D_PSYMBOL length) is 0). If all the data can be written,
      * maximally 3 calls are required.
      *
      * Returns: A chunk of data buffer.

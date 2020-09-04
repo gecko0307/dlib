@@ -47,7 +47,7 @@ interface Allocator
      * Allocates $(D_PARAM size) bytes of memory.
      *
      * Params:
-     *     s = Amount of memory to allocate.
+     *     size = Amount of memory to allocate.
      *
      * Returns: The pointer to the new allocated memory.
      */
@@ -72,7 +72,7 @@ interface Allocator
      *
      * Returns: Whether the reallocation was successful.
      */
-    bool reallocate(ref void[] p, size_t s);
+    bool reallocate(ref void[] p, size_t size);
 
     /**
      * Returns: The alignment offered.

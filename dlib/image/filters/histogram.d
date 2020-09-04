@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2018-2019 Timur Gafarov, Oleg Baharev
+Copyright (c) 2018-2019 Oleg Baharev, Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,11 +26,19 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Generate histogram of an image
+ *
+ * Copyright: Oleg Baharev, Timur Gafarov 2018-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Oleg Baharev, Timur Gafarov
+ */
 module dlib.image.filters.histogram;
 
 import dlib.image.image;
 import dlib.image.color;
 
+/// Obtain histogram
 int[256] createHistogram(SuperImage img)
 {
 	int[256] histogram;
@@ -45,6 +53,7 @@ int[256] createHistogram(SuperImage img)
 	return histogram;
 }
 
+/// Generate histogram image
 SuperImage histogramImage(SuperImage img, Color4f background, Color4f diagram)
 {
     SuperImage res = img.createSameFormat(256, 256);
@@ -73,4 +82,3 @@ SuperImage histogramImage(SuperImage img, Color4f background, Color4f diagram)
     }
     return res;
 }
-

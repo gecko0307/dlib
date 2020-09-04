@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2017-2019 Timur Gafarov
+Copyright (c) 2017-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,11 +26,21 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Animated images
+ *
+ * Copyright: Timur Gafarov 2017-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.image.animation;
 
 import dlib.core.memory;
 import dlib.image.image;
 
+/**
+ * Animated image interface 
+ */
 interface SuperAnimatedImage: SuperImage
 {
     @property size_t frameSize();
@@ -40,9 +50,11 @@ interface SuperAnimatedImage: SuperImage
     uint advanceFrame();
 }
 
-/*
- * AnimatedImage is an extension of standard Image that handles animation.
- * It can store more than one frame of pixel data.
+/**
+ * Extension of standard Image that handles animation
+ *
+ * Description:
+ * AnimatedImage can store more than one frame of pixel data.
  * Current frame can be switched with currentFrame property.
  * All usual image operations work on current frame, so
  * you can use this class with any existing dlib.image
@@ -118,16 +130,27 @@ class AnimatedImage(PixelFormat fmt): Image!(fmt), SuperAnimatedImage
     }
 }
 
+/// Specialization of AnimatedImage for 8-bit luminance pixel format
 alias AnimatedImageL8 = AnimatedImage!(PixelFormat.L8);
+/// Specialization of AnimatedImage for 8-bit luminance-alpha pixel format
 alias AnimatedImageLA8 = AnimatedImage!(PixelFormat.LA8);
+/// Specialization of AnimatedImage for 8-bit RGB pixel format
 alias AnimatedImageRGB8 = AnimatedImage!(PixelFormat.RGB8);
+/// Specialization of AnimatedImage for 8-bit RGBA pixel format
 alias AnimatedImageRGBA8 = AnimatedImage!(PixelFormat.RGBA8);
 
+/// Specialization of AnimatedImage for 16-bit luminance pixel format
 alias AnimatedImageL16 = AnimatedImage!(PixelFormat.L16);
+/// Specialization of AnimatedImage for 16-bit luminance-alpha pixel format
 alias AnimatedImageLA16 = AnimatedImage!(PixelFormat.LA16);
+/// Specialization of AnimatedImage for 16-bit RGB pixel format
 alias AnimatedImageRGB16 = AnimatedImage!(PixelFormat.RGB16);
+/// Specialization of AnimatedImage for 16-bit RGBA pixel format
 alias AnimatedImageRGBA16 = AnimatedImage!(PixelFormat.RGBA16);
 
+/**
+ * Factory class for animated images
+ */
 class AnimatedImageFactory: SuperImageFactory
 {
     SuperImage createImage(uint w, uint h, uint channels, uint bitDepth, uint numFrames = 1)
@@ -138,6 +161,9 @@ class AnimatedImageFactory: SuperImageFactory
 
 private AnimatedImageFactory _defaultAnimatedImageFactory;
 
+/**
+ * Get default AnimatedImageFactory singleton
+ */
 AnimatedImageFactory animatedImageFactory()
 {
     if (!_defaultAnimatedImageFactory)
@@ -145,6 +171,9 @@ AnimatedImageFactory animatedImageFactory()
     return _defaultAnimatedImageFactory;
 }
 
+/**
+ * Factory function for animated images
+ */
 SuperImage animatedImage(uint w, uint h, uint channels, uint bitDepth, uint numFrames = 1)
 in
 {
@@ -188,6 +217,9 @@ do
     }
 }
 
+/**
+ * AnimatedImage that uses dlib.core.memory instead of GC
+ */
 class UnmanagedAnimatedImage(PixelFormat fmt): AnimatedImage!(fmt)
 {
     override @property SuperImage dup()
@@ -223,16 +255,27 @@ class UnmanagedAnimatedImage(PixelFormat fmt): AnimatedImage!(fmt)
     }
 }
 
+/// Specialization of UnmanagedAnimatedImage for 8-bit luminance pixel format
 alias UnmanagedAnimatedImageL8 = UnmanagedAnimatedImage!(PixelFormat.L8);
+/// Specialization of UnmanagedAnimatedImage for 8-bit luminance-alpha pixel format
 alias UnmanagedAnimatedImageLA8 = UnmanagedAnimatedImage!(PixelFormat.LA8);
+/// Specialization of UnmanagedAnimatedImage for 8-bit RGB pixel format
 alias UnmanagedAnimatedImageRGB8 = UnmanagedAnimatedImage!(PixelFormat.RGB8);
+/// Specialization of UnmanagedAnimatedImage for 8-bit RGBA pixel format
 alias UnmanagedAnimatedImageRGBA8 = UnmanagedAnimatedImage!(PixelFormat.RGBA8);
 
+/// Specialization of UnmanagedAnimatedImage for 16-bit luminance pixel format
 alias UnmanagedAnimatedImageL16 = UnmanagedAnimatedImage!(PixelFormat.L16);
+/// Specialization of UnmanagedAnimatedImage for 16-bit luminance-alpha pixel format
 alias UnmanagedAnimatedImageLA16 = UnmanagedAnimatedImage!(PixelFormat.LA16);
+/// Specialization of UnmanagedAnimatedImage for 16-bit RGB pixel format
 alias UnmanagedAnimatedImageRGB16 = UnmanagedAnimatedImage!(PixelFormat.RGB16);
+/// Specialization of UnmanagedAnimatedImage for 16-bit RGBA pixel format
 alias UnmanagedAnimatedImageRGBA16 = UnmanagedAnimatedImage!(PixelFormat.RGBA16);
 
+/**
+ * Factory class for UnmanagedAnimatedImage
+ */
 class UnmanagedAnimatedImageFactory: SuperImageFactory
 {
     SuperImage createImage(uint w, uint h, uint channels, uint bitDepth, uint numFrames = 1)
@@ -241,6 +284,9 @@ class UnmanagedAnimatedImageFactory: SuperImageFactory
     }
 }
 
+/**
+ * Factory function for UnmanagedAnimatedImage
+ */
 SuperImage unmanagedAnimatedImage(uint w, uint h, uint channels, uint bitDepth, uint numFrames = 1)
 in
 {

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2019 Timur Gafarov
+Copyright (c) 2011-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,30 +26,20 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Normal map generation
+ *
+ * Copyright: Timur Gafarov 2011-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.image.filters.normalmap;
 
-private
-{
-    import dlib.image.image;
-    import dlib.image.color;
-    import dlib.math.vector;
-}
+import dlib.image.image;
+import dlib.image.color;
+import dlib.math.vector;
 
-/*
- * Generate normal map from height map
- * using Sobel operator
- *
- * TODO: optionally transfer height data to alpha channel
- */
-
-SuperImage heightToNormal(
-    SuperImage img,
-    Channel channel = Channel.R,
-    float strength = 2.0f)
-{
-    return heightToNormal(img, null, channel, strength);
-}
-
+/// Generate normal map from height map using Sobel operator
 SuperImage heightToNormal(
     SuperImage img,
     SuperImage outp,
@@ -61,6 +51,7 @@ in
 }
 do
 {
+    // TODO: optionally transfer height data to alpha channel
     SuperImage res;
     if (outp)
         res = outp;
@@ -112,4 +103,13 @@ do
     }
 
     return res;
+}
+
+/// ditto
+SuperImage heightToNormal(
+    SuperImage img,
+    Channel channel = Channel.R,
+    float strength = 2.0f)
+{
+    return heightToNormal(img, null, channel, strength);
 }

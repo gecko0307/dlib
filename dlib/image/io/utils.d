@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2019 Timur Gafarov
+Copyright (c) 2014-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,15 +26,18 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Image I/O utility functions
+ *
+ * Copyright: Timur Gafarov, Roman Chistokhodov 2014-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov, Roman Chistokhodov
+ */
 module dlib.image.io.utils;
 
-private
-{
-    import std.stdio;
-    import std.conv;
-
-    import dlib.core.stream;
-}
+import std.stdio;
+import std.conv;
+import dlib.core.stream;
 
 T readStruct(T)(File* f, bool bigEndian = false)
 {

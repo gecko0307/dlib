@@ -176,11 +176,12 @@ interface FileSystem: ReadOnlyFileSystem
 }
 
 /**
-    Find files in the specified directory, conforming to the specified filter (if any)
+    Find files in the specified directory
+
     Params:
+    rofs = filesystem to scan
     baseDir = path to the base directory (if empty, defaults to current working directory)
     recursive = if true, the search will recurse into subdirectories
-    filter = a delegate to be called for each entry found to decide whether it should be returned as part of the collection (optional)
 
     Examples:
     ---

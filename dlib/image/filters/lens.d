@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2019 Timur Gafarov
+Copyright (c) 2014-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,20 +26,19 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Lens distortion filter
+ *
+ * Copyright: Timur Gafarov 2014-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.image.filters.lens;
 
 import std.math;
 import dlib.image.image;
 
-SuperImage lensDistortion(
-    SuperImage img,
-    float strength,
-    float zoom,
-    bool interpolation = true)
-{
-    return lensDistortion(img, null, strength, zoom, interpolation);
-}
-
+/// Apply lens distortion filter
 SuperImage lensDistortion(
     SuperImage img,
     SuperImage outp,
@@ -83,4 +82,14 @@ SuperImage lensDistortion(
     }
 
     return res;
+}
+
+/// ditto
+SuperImage lensDistortion(
+    SuperImage img,
+    float strength,
+    float zoom,
+    bool interpolation = true)
+{
+    return lensDistortion(img, null, strength, zoom, interpolation);
 }

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2019 Timur Gafarov
+Copyright (c) 2015-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,15 +26,22 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Turn image to black and white
+ *
+ * Copyright: Timur Gafarov 2015-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.image.filters.desaturate;
 
 import dlib.image.image;
 import dlib.image.color;
 
-// Default desaturate filter
+/// Default desaturate filter
 alias desaturate = desaturate709;
 
-// ITU-R recommendation BT.709
+/// ITU-R recommendation BT.709
 SuperImage desaturate709(SuperImage img, SuperImage outp = null)
 {
     SuperImage res;
@@ -54,7 +61,7 @@ SuperImage desaturate709(SuperImage img, SuperImage outp = null)
     return res;
 }
 
-// ITU-R recommendation BT.601
+/// ITU-R recommendation BT.601
 SuperImage desaturate601(SuperImage img, SuperImage outp = null)
 {
     SuperImage res;

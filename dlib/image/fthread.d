@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2019 Timur Gafarov
+Copyright (c) 2013-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,12 +26,22 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Threaded image filtering
+ *
+ * Copyright: Timur Gafarov 2013-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.image.fthread;
 
 import dlib.core.memory;
 import dlib.core.thread;
 import dlib.image.image;
 
+/**
+ * An object that applies a filter function to an image in a separate thread
+ */
 class FilteringThread
 {
     Thread thread;
@@ -64,8 +74,12 @@ class FilteringThread
         return output;
     }
 
-    // override these:
-    void run() {} // this method is called in a second thread
-    void onRunning() {} // this method is called in main thread in a loop while second thread is running
-    void onFinished() {} // this method is called in main thread once when second thread finishes 
+    /// Called in a second thread. Override it
+    void run() {}
+    
+    /// Called in main thread in a loop while second thread is running. Override it
+    void onRunning() {}
+    
+    /// Called in main thread once when second thread finishes. Override it
+    void onFinished() {}
 }

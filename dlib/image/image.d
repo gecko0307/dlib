@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2019 Timur Gafarov
+Copyright (c) 2011-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,19 +26,24 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Generic image interface and its implementations for integer pixel formats
+ *
+ * Copyright: Timur Gafarov 2011-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.image.image;
 
-private
-{
-    import std.math;
-    import std.conv;
-    import std.range;
-    import dlib.core.memory;
-    import dlib.math.vector;
-    import dlib.math.interpolation;
-    import dlib.image.color;
-}
+import std.math;
+import std.conv;
+import std.range;
+import dlib.core.memory;
+import dlib.math.vector;
+import dlib.math.interpolation;
+import dlib.image.color;
 
+/// Integer pixel formats
 enum PixelFormat: uint
 {
     L8 = 0,
@@ -51,6 +56,9 @@ enum PixelFormat: uint
     RGBA16 = 7
 }
 
+/**
+ * Abstract image interface
+ */
 interface SuperImage: Freeable
 {
     @property uint width();
@@ -59,9 +67,11 @@ interface SuperImage: Freeable
     @property uint channels();
     @property uint pixelSize();
 
-    // This is compatible with PixelFormat and other internal format enums in dlib.
-    // Values from 0 to 255 are reserved for dlib.
-    // Values 256 and above are application-specific and can be used for custom SuperImage implementations.
+    /**
+     * This is compatible with PixelFormat and other internal format enums in dlib.
+     * Values from 0 to 255 are reserved for dlib.
+     * Values 256 and above are application-specific and can be used for custom SuperImage implementations.
+     */
     @property uint pixelFormat();
 
     @property ubyte[] data();
@@ -107,6 +117,9 @@ interface SuperImage: Freeable
     }
 }
 
+/**
+ * SuperImage implementation template for integer pixel formats
+ */
 class Image(PixelFormat fmt): SuperImage
 {
     public:
@@ -348,24 +361,35 @@ class Image(PixelFormat fmt): SuperImage
     ubyte[] _data;
 }
 
+/// Specialization of Image for 8-bit luminance pixel format
 alias ImageL8 = Image!(PixelFormat.L8);
+/// Specialization of Image for 8-bit luminance-alpha pixel format
 alias ImageLA8 = Image!(PixelFormat.LA8);
+/// Specialization of Image for 8-bit RGB pixel format
 alias ImageRGB8 = Image!(PixelFormat.RGB8);
+/// Specialization of Image for 8-bit RGBA pixel format
 alias ImageRGBA8 = Image!(PixelFormat.RGBA8);
 
+/// Specialization of Image for 16-bit luminance pixel format
 alias ImageL16 = Image!(PixelFormat.L16);
+/// Specialization of Image for 16-bit luminance-alpha pixel format
 alias ImageLA16 = Image!(PixelFormat.LA16);
+/// Specialization of Image for 16-bit RGB pixel format
 alias ImageRGB16 = Image!(PixelFormat.RGB16);
+/// Specialization of Image for 16-bit RGBA pixel format
 alias ImageRGBA16 = Image!(PixelFormat.RGBA16);
 
-/*
- * All-in-one image factory
+/**
+ * All-in-one image factory interface
  */
 interface SuperImageFactory
 {
     SuperImage createImage(uint w, uint h, uint channels, uint bitDepth, uint numFrames = 1);
 }
 
+/**
+ * All-in-one image factory class
+ */
 class ImageFactory: SuperImageFactory
 {
     SuperImage createImage(uint w, uint h, uint channels, uint bitDepth, uint numFrames = 1)
@@ -376,6 +400,9 @@ class ImageFactory: SuperImageFactory
 
 private SuperImageFactory _defaultImageFactory;
 
+/**
+ * Get default image factory singleton
+ */
 SuperImageFactory defaultImageFactory()
 {
     if (!_defaultImageFactory)
@@ -383,6 +410,7 @@ SuperImageFactory defaultImageFactory()
     return _defaultImageFactory;
 }
 
+/// Create an image with specified parameters
 SuperImage image(uint w, uint h, uint channels = 3, uint bitDepth = 8)
 in
 {
@@ -426,9 +454,7 @@ do
     }
 }
 
-/*
- * Convert image to specified pixel format
- */
+/// Convert image to specified pixel format
 T convert(T)(SuperImage img)
 {
     auto res = new T(img.width, img.height);
@@ -438,9 +464,7 @@ T convert(T)(SuperImage img)
     return res;
 }
 
-/*
- * Get interpolated pixel value from an image
- */
+/// Get interpolated pixel value from an image
 Color4f bilinearPixel(SuperImage img, float x, float y)
 {
     real intX;
@@ -460,7 +484,7 @@ Color4f bilinearPixel(SuperImage img, float x, float y)
     return ic3;
 }
 
-/*
+/**
  * Rectangular region of an image that can be iterated with foreach
  */
 struct ImageRegion
@@ -498,13 +522,14 @@ struct ImageRegion
     }
 }
 
+/// ImageRegion factory function
 ImageRegion region(SuperImage img, uint x, uint y, uint width, uint height)
 {
     return ImageRegion(img, x, y, width, height);
 }
 
-/*
- * An InputRange of windows (regions around pixels) of an image that can be iterated with foreach
+/**
+ An InputRange of windows (regions around pixels) of an image that can be iterated with foreach
  */
 struct ImageWindowRange
 {
@@ -576,25 +601,29 @@ struct ImageWindowRange
     }
 }
 
+/**
+ ImageWindowRange factory function
+ 
+ Examples:
+ ---
+ // Convolution with emboss kernel
+ 
+ float[3][3] kernel = [
+     [-1, -1,  0],
+     [-1,  0,  1],
+     [ 0,  1,  1],
+ ];
+
+ foreach(window, x, y; inputImage.windows(3, 3))
+ {
+     Color4f sum = Color4f(0, 0, 0);
+     foreach(ref Color4f pixel, x, y; window)
+         sum += pixel * kernel[y][x];
+     outputImage[x, y] = sum / 4.0f + 0.5f;
+ }
+ ---
+ */
 ImageWindowRange windows(SuperImage img, uint width, uint height)
 {
     return ImageWindowRange(img, width, height);
 }
-
-/*
-    ImageWindowRange usage example (convolution with emboss kernel):
-
-    float[3][3] kernel = [
-        [-1, -1,  0],
-        [-1,  0,  1],
-        [ 0,  1,  1],
-    ];
-
-    foreach(window, x, y; inputImage.windows(3, 3))
-    {
-        Color4f sum = Color4f(0, 0, 0);
-        foreach(ref Color4f pixel, x, y; window)
-            sum += pixel * kernel[y][x];
-        outputImage[x, y] = sum / 4.0f + 0.5f;
-    }
-*/

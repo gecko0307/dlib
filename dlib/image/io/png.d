@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2019 Timur Gafarov, Martin Cejp, Vadim Lopatin
+Copyright (c) 2011-2020 Timur Gafarov, Martin Cejp, Vadim Lopatin
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,27 +26,30 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Decode and encode PNG/APNG images
+ *
+ * Copyright: Timur Gafarov, Martin Cejp, Vadim Lopatin 2011-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov, Martin Cejp, Vadim Lopatin
+ */
 module dlib.image.io.png;
 
-private
-{
-    import std.stdio;
-    import std.math;
-    import std.string;
-    import std.range;
-
-    import dlib.core.memory;
-    import dlib.core.stream;
-    import dlib.core.compound;
-    import dlib.filesystem.local;
-    import dlib.math.utils;
-    import dlib.math.interpolation;
-    import dlib.coding.zlib;
-    import dlib.image.color;
-    import dlib.image.image;
-    import dlib.image.animation;
-    import dlib.image.io.io;
-}
+import std.stdio;
+import std.math;
+import std.string;
+import std.range;
+import dlib.core.memory;
+import dlib.core.stream;
+import dlib.core.compound;
+import dlib.filesystem.local;
+import dlib.math.utils;
+import dlib.math.interpolation;
+import dlib.coding.zlib;
+import dlib.image.color;
+import dlib.image.image;
+import dlib.image.animation;
+import dlib.image.io;
 
 // uncomment this to see debug messages:
 //version = PNGDebug;
@@ -312,7 +315,7 @@ class PNGLoadException: ImageLoadException
     }
 }
 
-/*
+/**
  * Load PNG from file using local FileSystem.
  * Causes GC allocation
  */
@@ -324,7 +327,7 @@ SuperImage loadPNG(string filename)
     return img;
 }
 
-/*
+/**
  * Load animated PNG (APNG) from file using local FileSystem.
  * Causes GC allocation
  */
@@ -336,7 +339,7 @@ SuperAnimatedImage loadAPNG(string filename)
     return img;
 }
 
-/*
+/**
  * Save PNG to file using local FileSystem.
  * Causes GC allocation
  */
@@ -350,7 +353,7 @@ void savePNG(SuperImage img, string filename)
         throw new PNGLoadException(res[1]);
 }
 
-/*
+/**
  * Save APNG to file using local FileSystem.
  * Causes GC allocation
  */
@@ -364,7 +367,7 @@ void saveAPNG(SuperAnimatedImage img, string filename)
         throw new PNGLoadException(res[1]);
 }
 
-/*
+/**
  * Load PNG from stream using default image factory.
  * Causes GC allocation
  */
@@ -378,7 +381,33 @@ SuperImage loadPNG(InputStream istrm)
         return res[0];
 }
 
-/*
+///
+unittest
+{
+    import std.base64;
+
+    InputStream png() {
+        string minimal =
+            "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADklEQVR42mL4z8AAEGAAAwEBAGb9nyQAAAAASUVORK5CYII=";
+
+        ubyte[] bytes = Base64.decode(minimal);
+        return new ArrayStream(bytes, bytes.length);
+    }
+
+    SuperImage img = loadPNG(png());
+
+    assert(img.width == 1);
+    assert(img.height == 1);
+    assert(img.channels == 3);
+    assert(img.pixelSize == 3);
+    assert(img.data == [0xff, 0x00, 0x00]);
+
+    createDir("tests", false);
+    savePNG(img, "tests/minimal.png");
+    loadPNG("tests/minimal.png");
+}
+
+/**
  * Load animated PNG (APNG) from stream using default animated image factory.
  * Causes GC allocation
  */
@@ -392,7 +421,7 @@ SuperAnimatedImage loadAPNG(InputStream istrm)
         return cast(SuperAnimatedImage)res[0];
 }
 
-/*
+/**
  * Load PNG from stream using specified image factory.
  * GC-free
  */
@@ -657,7 +686,7 @@ Compound!(SuperImage, string) loadPNG(
     return compound(img, "");
 }
 
-/*
+/**
  * Load animated PNG (APNG) from stream using specified image factory.
  * GC-free
  */
@@ -672,7 +701,7 @@ Compound!(SuperAnimatedImage, string) loadAPNG(
     return compound(img, res[1]);
 }
 
-/*
+/**
  * Save APNG to stream.
  * GC-free
  */
@@ -867,7 +896,7 @@ do
     return compound(true, "");
 }
 
-/*
+/**
  * Save PNG to stream.
  * GC-free
  */
@@ -1451,29 +1480,4 @@ uint crc32(R)(R range, uint inCrc = 0) if (isInputRange!R)
         crc = (crc >> 8) ^ table[(crc ^ v) & 0xFF];
 
     return (crc ^ 0xFFFFFFFF);
-}
-
-unittest
-{
-    import std.base64;
-
-    InputStream png() {
-        string minimal =
-            "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADklEQVR42mL4z8AAEGAAAwEBAGb9nyQAAAAASUVORK5CYII=";
-
-        ubyte[] bytes = Base64.decode(minimal);
-        return new ArrayStream(bytes, bytes.length);
-    }
-
-    SuperImage img = loadPNG(png());
-
-    assert(img.width == 1);
-    assert(img.height == 1);
-    assert(img.channels == 3);
-    assert(img.pixelSize == 3);
-    assert(img.data == [0xff, 0x00, 0x00]);
-
-    createDir("tests", false);
-    savePNG(img, "tests/minimal.png");
-    loadPNG("tests/minimal.png");
 }

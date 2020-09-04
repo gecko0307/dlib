@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2019 Timur Gafarov
+Copyright (c) 2016-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,6 +26,13 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Decode and encode Radiance HDR/RGBE images
+ *
+ * Copyright: Timur Gafarov 2016-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.image.io.hdr;
 
 import std.stdio;
@@ -38,12 +45,8 @@ import dlib.filesystem.local;
 import dlib.image.color;
 import dlib.image.image;
 import dlib.image.hdri;
-import dlib.image.io.io;
+import dlib.image.io;
 import dlib.math.utils;
-
-/*
- * Radiance HDR/RGBE decoder and encoder
- */
 
 struct ColorRGBE
 {
@@ -106,7 +109,7 @@ class HDRLoadException: ImageLoadException
     }
 }
 
-/*
+/**
  * Load HDR from file using local FileSystem.
  * Causes GC allocation
  */
@@ -118,7 +121,7 @@ SuperHDRImage loadHDR(string filename)
     return img;
 }
 
-/*
+/**
  * Load HDR from stream using default image factory.
  * Causes GC allocation
  */
@@ -132,7 +135,7 @@ SuperHDRImage loadHDR(InputStream istrm)
         return res[0];
 }
 
-/*
+/**
  * Load HDR from stream using specified image factory.
  * GC-free
  */
@@ -294,7 +297,7 @@ Compound!(SuperHDRImage, string) loadHDR(
     return compound(img, "");
 }
 
-/*
+/**
  * Save HDR to file using local FileSystem.
  * Causes GC allocation
  */
@@ -305,7 +308,7 @@ void saveHDR(SuperHDRImage img, string filename)
     output.close();
 }
 
-/*
+/**
  * Save HDR to stream.
  * GC-free
  */

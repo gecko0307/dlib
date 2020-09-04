@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2019 Timur Gafarov
+Copyright (c) 2011-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,14 +26,19 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * RGBA color space
+ *
+ * Copyright: Timur Gafarov 2011-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.image.color;
 
-private
-{
-    import dlib.math.vector;
-    import dlib.math.utils;
-}
+import dlib.math.vector;
+import dlib.math.utils;
 
+/// RGBA color channel
 enum Channel
 {
     R = 0,
@@ -42,7 +47,10 @@ enum Channel
     A = 3
 }
 
+/// RGBA 16-bit integer color representation (a vector of ushorts)
 alias Color4 = Vector!(ushort, 4);
+
+/// ditto
 alias ColorRGBA = Color4;
 
 Color4 invert(Color4 c)
@@ -54,6 +62,10 @@ Color4 invert(Color4 c)
         c.a);
 }
 
+/**
+ * RGBA floating-point color representation,
+ * encapsulates Vector4f
+ */
 struct Color4f
 {
     Vector4f vec;
@@ -196,7 +208,7 @@ struct Color4f
         );
     }
 
-    // Converts color to linear space
+    /// Converts color from gamma space to linear space
     Color4f toLinear(float gamma = 2.2f)
     {
         float lr = r ^^ gamma;
@@ -205,7 +217,7 @@ struct Color4f
         return Color4f(lr, lg, lb, a);
     }
 
-    // Converts color to gamma space
+    /// Converts color from linear space to gamma space
     Color4f toGamma(float gamma = 2.2f)
     {
         float invGamma = 1.0f / gamma;
@@ -216,16 +228,16 @@ struct Color4f
     }
 }
 
+/// ditto
+alias ColorRGBAf = Color4f;
+
+/// Encode a normal vector to color
 Color4f packNormal(Vector3f n)
 {
     return Color4f((n + 1.0f) * 0.5f);
 }
 
-alias ColorRGBAf = Color4f;
-
-/*
- * 32-bit color unpacking
- */
+/// 24-bit integer color unpacking
 Color4f color3(int hex)
 {
     ubyte r = (hex >> 16) & 255;
@@ -237,6 +249,7 @@ Color4f color3(int hex)
         cast(float)b / 255.0f);
 }
 
+/// 32-bit integer color unpacking
 Color4f color4(int hex)
 {
     ubyte r = (hex >> 24) & 255;
@@ -250,9 +263,7 @@ Color4f color4(int hex)
         cast(float)a / 255.0f);
 }
 
-/*
- * Blend two colors taking transparency into account
- */
+/// Blend two colors taking transparency into account
 Color4f alphaOver(Color4f c1, Color4f c2)
 {
     Color4f c;
