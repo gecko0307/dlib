@@ -27,6 +27,8 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
+ * UTF-8 encoder and decoder
+ *
  * Copyright: Timur Gafarov 2015-2020.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov, Roman Chistokhodov
@@ -42,14 +44,22 @@ enum UTF8_END = DECODE_END;
 enum UTF8_ERROR = DECODE_ERROR;
 
 /**
- * UTF-8 decoder
+ * UTF-8 decoder to use with dlib.text.encodings.transcode
  */
 struct UTF8Decoder
 {
-    size_t index = 0;
-    int character = 0;
+    public:
+    
+    /// Input string. Set it before decoding
     string input;
+    
+    /// Current index in an input string
+    size_t index = 0;
+    
+    /// Current character index
+    int character = 0;
 
+    private:
     int get()
     {
         if (index >= input.length)
@@ -65,14 +75,7 @@ struct UTF8Decoder
         return ((c & 0xC0) == 0x80) ? (c & 0x3F): UTF8_ERROR;
     }
 
-    ///
-    this(string str)
-    {
-        index = 0;
-        character = 0;
-        input = str;
-    }
-
+    public:
     /**
      * Decode next character.
      * Returns: decoded code point, or UTF8_ERROR if error occured, or UTF8_END if input has no more characters.
@@ -127,7 +130,7 @@ struct UTF8Decoder
 
         return UTF8_ERROR;
     }
-
+    
     /**
      * Check if decoder is in the end of input.
      */
@@ -139,28 +142,37 @@ struct UTF8Decoder
     /**
      * Range interface.
      */
-    auto byDChar()
+    auto decode(string s)
     {
+        input = s;
+        
         static struct ByDchar
         {
-        private:
+            private:
+            
             UTF8Decoder _decoder;
             dchar _lastRead;
-        public:
-            this(UTF8Decoder decoder) {
+            
+            public:
+            
+            this(UTF8Decoder decoder)
+            {
                 _decoder = decoder;
                 _lastRead = cast(dchar)_decoder.decodeNext();
             }
 
-            bool empty() {
+            bool empty()
+            {
                 return _lastRead == UTF8_END || _lastRead == UTF8_ERROR;
             }
 
-            dchar front() {
+            dchar front()
+            {
                 return _lastRead;
             }
 
-            void popFront() {
+            void popFront()
+            {
                 _lastRead = cast(dchar)_decoder.decodeNext();
             }
 
@@ -171,15 +183,27 @@ struct UTF8Decoder
 
         return ByDchar(this);
     }
+    
+    /// ditto
+    auto decode()
+    {
+        return decode(input);
+    }
+    
+    deprecated("use UTF8Decoder.decode instead")
+    auto byDChar()
+    {
+        return decode();
+    }
 
     ///
     unittest
     {
         auto decoder = UTF8Decoder("Eng 日本語 Кир ©€");
-        import std.algorithm : equal;
-        assert(equal(decoder.byDChar(), "Eng 日本語 Кир ©€"d));
+        import std.algorithm: equal;
+        assert(equal(decoder.decode(), "Eng 日本語 Кир ©€"d));
 
-        auto range = decoder.byDChar();
+        auto range = decoder.decode();
         auto saved = range.save;
 
         range.popFront();
@@ -226,11 +250,14 @@ unittest
 }
 
 /**
- * Encodes a Unicode code point to UTF-8 into user-provided buffer.
- *  Returns number of bytes written, or 0 at error.
+ * UTF-8 encoder to use with dlib.text.encodings.transcode
  */
 struct UTF8Encoder
 {
+    /**
+     * Encodes a Unicode code point to UTF-8 into user-provided buffer.
+     * Returns number of bytes written, or 0 at error.
+     */
     size_t encode(uint c, char[] buffer)
     {
         if (c <= 0x7F)

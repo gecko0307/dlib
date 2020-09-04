@@ -27,6 +27,8 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
+ * UTF-16 decoder and encoder
+ *
  * Copyright: Timur Gafarov 2016-2020.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov, Roman Chistokhodov
@@ -46,23 +48,26 @@ enum ushort UTF16_BOM_LE = 0xfeff;
 enum ushort UTF16_BOM_BE = 0xfffe;
 
 /**
- * UTF-16 LE decoder
+ * UTF-16 LE decoder to use with dlib.text.encodings.transcode
  */
 struct UTF16Decoder
 {
     // TODO: byte order
+    public:
     
-    size_t index = 0;
-    int character = 0;
+    /// Input string. Set it before decoding
     string input;
+    
+    /// Current index in an input string
+    size_t index = 0;
+    
+    /// Current character index
+    int character = 0;
 
-    this(string str)
-    {
-        index = 0;
-        character = 0;
-        input = str;
-    }
-
+    /**
+     * Decode next character.
+     * Returns: decoded code point, or UTF8_ERROR if error occured, or UTF8_END if input has no more characters.
+     */
     int decodeNext()
     {
         if (index >= input.length)
@@ -73,13 +78,21 @@ struct UTF16Decoder
         return c;
     }
 
+    /**
+     * Check if decoder is in the end of input.
+     */
     bool eos()
     {
         return (index >= input.length);
     }
 
-    auto byDChar()
+    /**
+     * Range interface.
+     */
+    auto decode(string s)
     {
+        input = s;
+        
         static struct ByDchar
         {
             private:
@@ -111,14 +124,29 @@ struct UTF16Decoder
 
         return ByDchar(this);
     }
+    
+    /// ditto
+    auto decode()
+    {
+        return decode(input);
+    }
+    
+    deprecated("use UTF16Decoder.decode instead") 
+    auto byDChar()
+    {
+        return decode();
+    }
 }
 
 /**
- * Encodes a Unicode code point to UTF-16 LE into user-provided buffer.
- * Returns number of bytes written, or 0 at error.
+ * UTF-16 LE encoder to use with dlib.text.encodings.transcode
  */
 struct UTF16Encoder
 {
+    /**
+     * Encodes a Unicode code point to UTF-16 LE into user-provided buffer.
+     * Returns number of bytes written, or 0 at error.
+     */
     size_t encode(uint ch, char[] buffer)
     {
         wchar[] wbuffer = cast(wchar[])buffer;
@@ -140,7 +168,7 @@ struct UTF16Encoder
 }
 
 /**
- * Converts UTF8 to UTF8
+ * Converts UTF-8 to UTF-16
  * Will be deprecated soon, use transcode!(UTF8Decoder, UTF16Encoder) instead
  */
 wchar[] convertUTF8toUTF16(string s, bool nullTerm = false)
@@ -150,7 +178,7 @@ wchar[] convertUTF8toUTF16(string s, bool nullTerm = false)
 
     UTF8Decoder dec = UTF8Decoder(s);
 
-    while(!dec.eos)
+    while (!dec.eos)
     {
         int code = dec.decodeNext();
 
@@ -171,13 +199,6 @@ wchar[] convertUTF8toUTF16(string s, bool nullTerm = false)
             array.append(cast(wchar)vh);
             array.append(cast(wchar)vl);
         }
-        /*
-        else if (ch >= 0xD800 && ch <= 0xDFFF)
-        {
-            // Between possible UTF-16 surrogates (invalid!)
-            array[pos++] = UTF_REPLACEMENT_CHARACTER;
-        }
-        */
         else
         {
             array.append(cast(wchar)ch);
@@ -195,7 +216,7 @@ wchar[] convertUTF8toUTF16(string s, bool nullTerm = false)
 }
 
 /**
- * Converts UTF16 zero-terminated string to UTF8
+ * Converts UTF-16 zero-terminated string to UTF-8
  */
 char[] convertUTF16ztoUTF8(wchar* s, bool nullTerm = false)
 {

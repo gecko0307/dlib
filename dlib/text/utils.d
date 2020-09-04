@@ -27,6 +27,8 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
+ * Text processing utils
+ *
  * Copyright: Timur Gafarov 2016-2020.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
@@ -44,15 +46,6 @@ T[] copy(T)(T[] b)
     return res;
 }
 
-/// Make an immutable copy of a string in unmanaged memory
-immutable(T)[] immutableCopy(T)(immutable(T)[] b)
-{
-    auto res = New!(T[])(b.length);
-    foreach(i, c; b)
-        res[i] = c;
-    return cast(immutable(T)[])res;
-}
-
 ///
 unittest
 {
@@ -60,6 +53,15 @@ unittest
     auto c = copy(str);
     assert(c == str);
     Delete(c);
+}
+
+/// Make an immutable copy of a string in unmanaged memory
+immutable(T)[] immutableCopy(T)(immutable(T)[] b)
+{
+    auto res = New!(T[])(b.length);
+    foreach(i, c; b)
+        res[i] = c;
+    return cast(immutable(T)[])res;
 }
 
 /// Concatenates two strings to a new string in unmanaged memory

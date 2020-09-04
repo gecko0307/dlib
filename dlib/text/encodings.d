@@ -27,6 +27,27 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
+ * Generic encoding tools
+ *
+ * Description:
+ * This module works with any encoder and decoder structs that implement 
+ * the following basic interfaces:
+ * ---
+ * struct Encoder
+ * {
+ *     // Encodes a Unicode code point to user-provided buffer.
+ *     // Should return bytes written or 0 at error
+ *     size_t encode(uint codePoint, char[] buffer)
+ * }
+ *
+ * struct Decoder
+ * {
+ *     // An input range that iterates characters of a string, 
+ *     // decoding them to Unicode code points
+ *     auto decode(string input)
+ * }
+ * ---
+ *
  * Copyright: Timur Gafarov 2018-2020.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
@@ -36,16 +57,29 @@ module dlib.text.encodings;
 import dlib.container.array;
 import dlib.text.utils;
 
+public
+{
+    import dlib.text.utf8;
+    import dlib.text.utf16;
+}
+
 /**
- * Converts a string from one encoding to another
+ * Converts a string from one encoding to another.
+ * Decoder and encoder are specified at compile time
+ *
+ * Examples:
+ * ---
+ * string s = transcode!(UTF16Decoder, UTF8Encoder)(input);
+ * ---
  */
 string transcode(Decoder, Encoder)(string input)
 {
     DynamicArray!char array;
 	
+    auto decoder = Decoder();
 	auto encoder = Encoder();
     
-    foreach(c; Decoder(input).byDChar)
+    foreach(c; decoder.decode(input))
     {
         char[4] buffer;
         size_t len = encoder.encode(c, buffer);

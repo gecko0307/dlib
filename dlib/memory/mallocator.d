@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2019 Eugene Wissner
+Copyright (c) 2016-2020 Eugene Wissner
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -27,7 +27,9 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
- * Copyright: Eugene Wissner 2016-2019.
+ * Allocator based on malloc/realloc/free
+ *
+ * Copyright: Eugene Wissner 2016-2020.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Eugene Wissner
  */
@@ -192,4 +194,3 @@ class Mallocator : Allocator
 
     private static __gshared Mallocator instance_;
 }
-

@@ -27,6 +27,8 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
+ * GC-free UTF-8 string type
+ *
  * Copyright: Timur Gafarov 2018-2020.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
@@ -39,7 +41,7 @@ import dlib.text.utf8;
 import dlib.core.stream;
 
 /**
- * GC-free UTF8 string type based on DynamicArray.
+ * GC-free UTF-8 string type based on DynamicArray.
  * Stores up to 128 bytes without dynamic memory allocation,
  * so short strings are processed very fast.
  * String is always zero-terminated and directly compatible with C.
@@ -204,9 +206,15 @@ struct String
      * Range interface that iterates the string by Unicode code point (dchar),
      * i.e., foreach(dchar c; str.byDChar)
      */
+    auto decode()
+    {
+        return UTF8Decoder().decode(toString());
+    }
+    
+    deprecated("use String.decode instead")
     auto byDChar()
     {
-        return UTF8Decoder(toString()).byDChar;
+        return decode();
     }
 }
 

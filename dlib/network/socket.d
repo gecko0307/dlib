@@ -27,7 +27,9 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
- * Copyright: Eugene Wissner 2016-2019.
+ * Platform-independent socket API
+ *
+ * Copyright: Eugene Wissner 2016-2020.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Eugene Wissner
  */
@@ -38,9 +40,9 @@ import err = dlib.network.errno;
 import core.time;
 import std.algorithm.comparison;
 import std.algorithm.searching;
-public import std.socket : AddressException, socket_t, Linger, SocketOptionLevel,
-                           SocketType, AddressFamily, AddressInfo,
-                           SocketOption;
+public import std.socket: AddressException, socket_t, Linger, SocketOptionLevel,
+                          SocketType, AddressFamily, AddressInfo,
+                          SocketOption;
 import std.traits;
 import std.typecons;
 

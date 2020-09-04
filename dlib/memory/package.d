@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2019 Eugene Wissner
+Copyright (c) 2016-2020 Eugene Wissner
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Allocators and memory management functions
  *
- * Copyright: Eugene Wissner 2016-2019.
+ * Copyright: Eugene Wissner 2016-2020.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Eugene Wissner
  */
@@ -42,11 +42,12 @@ public
     import dlib.memory.mallocator;
     import dlib.memory.mmappool;
 
-    import std.experimental.allocator : make, dispose, shrinkArray, expandArray, makeArray, dispose;
+    import std.experimental.allocator: make, dispose, shrinkArray, expandArray, makeArray, dispose;
 }
 
 Allocator allocator;
 
+/// Get default allocator (Mallocator)
 @property Allocator defaultAllocator()
 {
     if (allocator is null)

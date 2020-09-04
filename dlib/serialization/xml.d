@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2019 Timur Gafarov
+Copyright (c) 2015-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,6 +26,18 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ GC-free parser for a subset of XML.
+ 
+ Description:
+ Has the following limitations:
+ - supports only ASCII and UTF-8 encodings
+ - doesn't support DOCTYPE and some other special tags
+ 
+ Copyright: Timur Gafarov 2015-2020.
+ License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ Authors: Timur Gafarov
+ */
 module dlib.serialization.xml;
 
 import std.stdio;
@@ -37,13 +49,6 @@ import dlib.container.dict;
 import dlib.container.stack;
 import dlib.text.lexer;
 import dlib.text.utils;
-
-/*
- * GC-free parser for a subset of XML.
- * Has the following limitations:
- * - supports only ASCII and UTF-8 encodings
- * - doesn't support DOCTYPE and some other special tags
- */
 
 string[] xmlDelims =
 [

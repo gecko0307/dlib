@@ -27,6 +27,15 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
+ * General-purpose non-allocating lexical analyzer.
+ *
+ * Description:
+ * Breaks the input string to a stream of lexemes according to a given delimiter dictionary.
+ * Delimiters are symbols that separate sequences of characters (e.g. operators).
+ * Lexemes are slices of the input string.
+ * Assumes UTF-8 input.
+ * Treats \r\n as a single \n.
+ *
  * Copyright: Timur Gafarov 2016-2020.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov, Eugene Wissner, Roman Chistokhodov, ijet
@@ -38,12 +47,7 @@ import std.range.interfaces;
 import dlib.text.utf8;
 
 /**
- * General-purpose non-allocating lexical analyzer.
- * Breaks the input string to a stream of lexemes according to a given delimiter dictionary.
- * Delimiters are symbols that separate sequences of characters (e.g. operators).
- * Lexemes are slices of the input string.
- * Assumes UTF-8 input.
- * Treats \r\n as a single \n.
+ * Lexical analyzer class
  */
 class Lexer: InputRange!string
 {
@@ -64,7 +68,7 @@ class Lexer: InputRange!string
     {
         this.input = input;
         this.delims = delims;
-        this.dec = UTF8Decoder(this.input);
+        this.dec.input = this.input;
         this.index = 0;
         advance();
     }
@@ -354,6 +358,7 @@ class Lexer: InputRange!string
     }
 }
 
+///
 unittest
 {
     string[] delims = ["(", ")", ";", " ", "{", "}", ".", "\n", "\r", "=", "++", "<"];

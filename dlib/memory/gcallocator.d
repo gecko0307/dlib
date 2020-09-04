@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2017-2019 Timur Gafarov
+Copyright (c) 2017-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,6 +26,13 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Allocator based on D's built-in garbage collector
+ *
+ * Copyright: Timur Gafarov 2017-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.memory.gcallocator;
 
 import core.exception;
@@ -33,7 +40,7 @@ import core.memory;
 import std.algorithm.comparison;
 import dlib.memory.allocator;
 
-/*
+/**
  * Allocator based on D's built-in garbage collector
  */
 class GCallocator: Allocator
@@ -80,4 +87,3 @@ class GCallocator: Allocator
 
     private static __gshared GCallocator instance_;
 }
-
