@@ -2,6 +2,8 @@ dlib 0.20.0 beta1 - TBD
 -----------------------
 - **dlib.image**
   - `dlib.image.io.io` is deprecated, import `dlib.image.io` instead
+- **dlib.audio**
+  - New package: `dlib.audio.io`
 - **dlib.text**
   - `String.byDChar` is deprecated, use `String.decode` instead
   - `UTF8Decoder.byDChar` is deprecated, use `UTF8Decoder.decode` instead
@@ -9,7 +11,7 @@ dlib 0.20.0 beta1 - TBD
 - **dlib.coding**
   - `dlib.coding.hash` is deprecated, use `std.digest` instead
 - **Documentation**
-  - Deploy-ready documentation for dlib now can be generated from source code using `dub --build=ddox`. It is hosted [here](https://gecko0307.github.io/dlib/docs/dlib.html).
+  - Deploy-ready ddoc documentation for dlib now can be generated from source code using `dub --build=ddox`. It uses [scod](https://code.dlang.org/packages/scod) generator and is hosted [here](https://gecko0307.github.io/dlib/docs/dlib.html). Harbored-mod support has been dropped.
   - Many modules are now documented better.
 - **Misc**
   - Added latest DMD (2.093.1) and LDC (1.23.0) to Travis CI config.
