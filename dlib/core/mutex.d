@@ -27,8 +27,10 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
+ * Cross-platform thread synchronization primitive
+ *
  * Copyright: Timur Gafarov 2020.
- * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * License: $(LINK2 https://boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
 module dlib.core.mutex;
@@ -43,7 +45,7 @@ else version(Posix)
 }
 
 /**
- * Platform-independent mutex wrapper. 
+ * Mutex structure. 
  * Uses CRITICAL_SECTION under Windows, pthread_mutex_t under Posix
  */
 struct Mutex

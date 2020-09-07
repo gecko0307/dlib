@@ -28,8 +28,9 @@ DEALINGS IN THE SOFTWARE.
 
 /**
  * Bit-level manipulations
+ *
  * Copyright: Timur Gafarov 2015-2020.
- * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * License: $(LINK2 https://boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
 module dlib.core.bitio;
@@ -60,7 +61,7 @@ T loNibble(T)(T b)
 }
 
 /**
- * Swap endianness of a 16-bit integer
+ * Returns 16-bit integer n with swapped endianness
  */
 T swapEndian16(T)(T n)
 {
@@ -68,7 +69,7 @@ T swapEndian16(T)(T n)
 }
 
 /**
- * Sets particular bit of an integer
+ * Sets bit at position pos in integer b to state
  */
 T setBit(T)(T b, uint pos, bool state)
 {
@@ -79,7 +80,7 @@ T setBit(T)(T b, uint pos, bool state)
 }
 
 /**
- * Gets particular bit of an integer
+ * Returns bit at position pos in integer b
  */
 bool getBit(T)(T b, uint pos)
 {

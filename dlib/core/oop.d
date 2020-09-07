@@ -28,12 +28,13 @@ DEALINGS IN THE SOFTWARE.
 
 /**
  * Prototype-based OOP system for structs.
- * Uses some template black magic to implement:
- * - Multiple inheritance
- * - Parametric polymorphism (struct interfaces)
- * - Interface inheritance
+ *
+ * Description:
+ * Supports multiple inheritance, parametric polymorphism (struct interfaces),
+ * interface inheritance
+ *
  * Copyright: Timur Gafarov 2015-2020.
- * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * License: $(LINK2 https://boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
 module dlib.core.oop;
@@ -42,6 +43,11 @@ import std.traits;
 
 /**
  * Inheritance mixin
+ *
+ * Description:
+ * Inserts structs specified by PT type tuple as members and a dispatcher method
+ * that statically transfers any method calls and member accesses to corresponding
+ * child struct.
  */
 mixin template Inherit(PT...)
 {
@@ -73,6 +79,38 @@ mixin template Inherit(PT...)
             }
         }
     }
+}
+
+///
+unittest
+{
+    struct Foo
+    {
+        int x = 100;
+        int foo() { return 11; }
+    }
+
+    struct Bar
+    {
+        int y = 99;
+        int bar() { return 22; }
+    }
+
+    struct TestObj
+    {
+        mixin Inherit!(Foo, Bar);
+    }
+
+    TestObj obj;
+
+    obj.x *= 2;
+    obj.y = 10;
+
+    assert(obj.x == 200);
+    assert(obj.y == 10);
+
+    assert(obj.foo() == 11);
+    assert(obj.bar() == 22);
 }
 
 /**
@@ -121,6 +159,10 @@ bool hasMethod(T, string m)()
 
 /**
  * Check if given type (T) corresponds to given signature (I)
+ * 
+ * Description:
+ * Returns true if struct T has the same members and methods as struct I. 
+ * This allows to use structs as static interfaces in generic code.
  */
 bool implements(T, I)()
 {
@@ -166,36 +208,3 @@ template isMethod(alias F)
           !isFunctionPointer!F &&
           !isDelegate!F;
 }
-
-///
-unittest
-{
-    struct Foo
-    {
-        int x = 100;
-        int foo() { return 11; }
-    }
-
-    struct Bar
-    {
-        int y = 99;
-        int bar() { return 22; }
-    }
-
-    struct TestObj
-    {
-        mixin Inherit!(Foo, Bar);
-    }
-
-    TestObj obj;
-
-    obj.x *= 2;
-    obj.y = 10;
-
-    assert(obj.x == 200);
-    assert(obj.y == 10);
-
-    assert(obj.foo() == 11);
-    assert(obj.bar() == 22);
-}
-

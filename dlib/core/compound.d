@@ -27,14 +27,22 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
+ * Tuple + struct hybrid
+ *
+ * Description:
+ * This template can be used to construct data types on-the-fly 
+ * and return them from functions, which cannot be done with pure tuples.
+ * One possible use case for such types is returning result and error message 
+ * from function instead of throwing an exception.
+ *
  * Copyright: Timur Gafarov 2011-2020.
- * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * License: $(LINK2 htpps://boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
 module dlib.core.compound;
 
 /**
- * Struct + tuple hybrid. A struct that can be generated on the fly from a list of types
+ * A struct that consists of a tuple T. Allows square bracket access to the members of a tuple
  */
 struct Compound(T...)
 {
@@ -43,9 +51,18 @@ struct Compound(T...)
 }
 
 /**
- * Compound consructor
+ * Returns a Compound consisting of args
  */
 Compound!(T) compound(T...)(T args)
 {
     return Compound!(T)(args);
+}
+
+///
+unittest
+{
+    auto c = compound(true, 0.5f, "hello");
+    assert(c[0] == true);
+    assert(c[1] == 0.5f);
+    assert(c[2] == "hello");
 }
