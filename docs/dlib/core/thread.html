@@ -746,8 +746,24 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 		</nav>
 		<div id="main-contents">
 			<div>
-				<h1>Module dlib.core.thread</h1><p></p>
-				<section></section>
+				<h1>Module dlib.core.thread</h1><p>Cross-platform thread class. Supports Windows and Posix
+</p><section></section>
+
+				<section><section><h2>Description</h2>
+<p>This module provides a platform-independent multithreading API.
+ For now, it supports Windows and Posix threads (pthreads). The interface
+ is greatly inspired by core.thread from Phobos, but dlib.core.thread
+ is fully GC-free and can be used with dlib.core.memory allocators.
+</p>
+
+<p> Implementation notes:
+ No TLS support, sorry. Any global variables should be marked with
+ _gshared for correct access from threads.
+ Internals of Thread class are platform-dependent, so be aware of that
+ when inheriting.
+</p>
+</section>
+</section>
 				<section>
 					<h2>Classes</h2>
 					<table>
@@ -761,8 +777,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 									<a id="Thread" class="public" href="../../dlib/core/thread/Thread.html">Thread</a>
 								</code>
 							</td>
-							<td>GC-free, Phobos-independent thread module.
- Inspired by core.thread, with an additional support for thread termination.
+							<td>Base class for creating threads
 </td>
 						</tr>
 					</table>
@@ -776,7 +791,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					<p>Timur Gafarov 2015-2020.
 </p>
 
-					<p><a href="boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+					<p><a href="https://boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
 </p>
 
 				</div>

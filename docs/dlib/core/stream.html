@@ -746,8 +746,9 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 		</nav>
 		<div id="main-contents">
 			<div>
-				<h1>Module dlib.core.stream</h1><p>I/O streams
-</p>
+				<h1>Module dlib.core.stream</h1><p>Binary I/O stream interfaces
+</p><section></section>
+
 				<section></section>
 				<section>
 					<h2>Functions</h2>
@@ -762,7 +763,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 									<a id="copyFromTo" class="public" href="../../dlib/core/stream/copyFromTo.html">copyFromTo</a><span class="tableEntryAnnotation">(input, output)</span>
 								</code>
 							</td>
-							<td>Copy data from an InputStream to an OutputStream
+							<td>While input is readable, reads data from input and writes it to output.
+ Returns number of bytes read
 </td>
 						</tr>
 					</table>
@@ -780,7 +782,9 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 									<a id="InputStream" class="public" href="../../dlib/core/stream/InputStream.html">InputStream</a>
 								</code>
 							</td>
-							<td>Stream with read methods
+							<td>A stream inteface that allows to read data from it.
+ Reading any data implies position advance by corresponding number of bytes.
+ Methods shouldn't throw on EOF, may throw on a more serious error
 </td>
 						</tr>
 						<tr>
@@ -789,7 +793,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 									<a id="IOStream" class="public" href="../../dlib/core/stream/IOStream.html">IOStream</a>
 								</code>
 							</td>
-							<td>Stream with both read and write methods
+							<td>A stream that allows both reading and writing data
 </td>
 						</tr>
 						<tr>
@@ -798,7 +802,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 									<a id="OutputStream" class="public" href="../../dlib/core/stream/OutputStream.html">OutputStream</a>
 								</code>
 							</td>
-							<td>Stream with write methods
+							<td>A stream interface that allows to write data into it.
+ Methods shouldn't throw on full disk, may throw on a more serious error
 </td>
 						</tr>
 						<tr>
@@ -807,7 +812,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 									<a id="Seekable" class="public" href="../../dlib/core/stream/Seekable.html">Seekable</a>
 								</code>
 							</td>
-							<td>Seekable
+							<td>Seekable stream interface
 </td>
 						</tr>
 						<tr>
@@ -816,7 +821,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 									<a id="Stream" class="public" href="../../dlib/core/stream/Stream.html">Stream</a>
 								</code>
 							</td>
-							<td>Stream
+							<td>A parent interface for all stream types
 </td>
 						</tr>
 					</table>
@@ -834,7 +839,16 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 									<a id="ArrayStream" class="public" href="../../dlib/core/stream/ArrayStream.html">ArrayStream</a>
 								</code>
 							</td>
-							<td>InputStream that reads from an array
+							<td>An InputStream that encapsulates contents of an array
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="SeekException" class="public" href="../../dlib/core/stream/SeekException.html">SeekException</a>
+								</code>
+							</td>
+							<td>An exception which is throwed on stream errors
 </td>
 						</tr>
 					</table>
@@ -852,7 +866,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 									<a id="BufferedStreamReader" class="public" href="../../dlib/core/stream/BufferedStreamReader.html">BufferedStreamReader</a>
 								</code>
 							</td>
-							<td>An input range that reads data from InputStream by fixed chunks, storing them in user-provided array
+							<td>An input range that reads data from InputStream by fixed chunks,
+ storing them in user-provided array
 </td>
 						</tr>
 					</table>
@@ -866,7 +881,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					<p>Martin Cejp 2014-2020.
 </p>
 
-					<p><a href="boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+					<p><a href="https://boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
 </p>
 
 				</div>

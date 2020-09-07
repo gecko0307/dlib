@@ -747,7 +747,17 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 		<div id="main-contents">
 			<div>
 				<h1>Module dlib.core.memory</h1><p>Tools for manual memory management
+</p><section><p>New/Delete for classes, structs and arrays. It utilizes dlib.memory
+ for actual memory allocation, so it is possible to switch allocator that is
+ being used. By default, dlib.memory.mallocator.Mallocator is used.
 </p>
+
+<p> Module includes a simple memory profiler that can be turned on with enableMemoryProfiler
+ function. If active, it will store information about every allocation (type and size),
+ and will mark those which are leaked (haven't been deleted).
+</p>
+</section>
+
 				<section></section>
 				<section>
 					<h2>Functions</h2>
@@ -759,10 +769,19 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<tr>
 							<td>
 								<code>
-									<a id="globalAllocator" class="public" href="../../dlib/core/memory/globalAllocator.html">globalAllocator</a><span class="tableEntryAnnotation">(a)</span>
+									<a id="allocatedMemory" class="public" href="../../dlib/core/memory/allocatedMemory.html">allocatedMemory</a><span class="tableEntryAnnotation">()</span>
 								</code>
 							</td>
-							<td>Sets global Allocator used by New and Delete
+							<td>Returns current amount of allocated memory in bytes. This is 0 at program start
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="enableMemoryProfiler" class="public" href="../../dlib/core/memory/enableMemoryProfiler.html">enableMemoryProfiler</a><span class="tableEntryAnnotation">(mode)</span>
+								</code>
+							</td>
+							<td>Enables or disables memory profiler
 </td>
 						</tr>
 						<tr>
@@ -771,7 +790,34 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 									<a id="globalAllocator" class="public" href="../../dlib/core/memory/globalAllocator.html">globalAllocator</a><span class="tableEntryAnnotation">()</span>
 								</code>
 							</td>
-							<td>Returns current global Allocator used by New and Delete
+							<td>Returns current global Allocator that is used by New and Delete
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="globalAllocator" class="public" href="../../dlib/core/memory/globalAllocator.html">globalAllocator</a><span class="tableEntryAnnotation">(a)</span>
+								</code>
+							</td>
+							<td>Sets global Allocator that is used by New and Delete
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="printMemoryLeaks" class="public" href="../../dlib/core/memory/printMemoryLeaks.html">printMemoryLeaks</a><span class="tableEntryAnnotation">()</span>
+								</code>
+							</td>
+							<td>Prints leaked allocations if memory profiler is enabled, otherwise does nothing
+</td>
+						</tr>
+						<tr>
+							<td>
+								<code>
+									<a id="printMemoryLog" class="public" href="../../dlib/core/memory/printMemoryLog.html">printMemoryLog</a><span class="tableEntryAnnotation">()</span>
+								</code>
+							</td>
+							<td>Prints full allocation list if memory profiler is enabled, otherwise does nothing
 </td>
 						</tr>
 					</table>
@@ -792,7 +838,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 							<td>
 								<code class="prettyprint lang-d"></code>
 							</td>
-							<td>Releases arrays, classes and structs previously allocated with New
+							<td>Destroys an object of type T previously created by New and calls
+  its destructor if necessary.
 </td>
 						</tr>
 						<tr>
@@ -804,7 +851,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 							<td>
 								<code class="prettyprint lang-d"></code>
 							</td>
-							<td>Allocates arrays, classes and structs on a heap using currently set globalAllocator
+							<td>Creates an object of type T and calls its constructor if necessary.
 </td>
 						</tr>
 					</table>
@@ -818,7 +865,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					<p>Timur Gafarov 2015-2020.
 </p>
 
-					<p><a href="boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+					<p><a href="https://boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
 </p>
 
 				</div>

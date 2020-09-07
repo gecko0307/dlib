@@ -747,8 +747,19 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 		<div id="main-contents">
 			<div>
 				<h1>Module dlib.core.ownership</h1><p>Class-based object ownership system
+</p><section></section>
+
+				<section><section><h2>Description</h2>
+<p>Object ownership system similar to Delphi's. All classes deriving from Owner
+ can store references to objects implementing Owned interface (and other Owner
+ objects as well). When an owner is deleted, its owned objects are also deleted.
 </p>
-				<section></section>
+
+<p> This module is not compatible with GC-collected objects. It can be used only with
+ dlib.core.memory. Using it with objects allocated any other way will cause application to crash.
+</p>
+</section>
+</section>
 				<section>
 					<h2>Interfaces</h2>
 					<table>
@@ -795,7 +806,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					<p>Timur Gafarov 2017-2020.
 </p>
 
-					<p><a href="boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+					<p><a href="https://boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
 </p>
 
 				</div>

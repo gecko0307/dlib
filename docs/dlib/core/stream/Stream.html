@@ -746,7 +746,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 		</nav>
 		<div id="main-contents">
 			<div>
-				<h1>Interface Stream</h1><p>Stream
+				<h1>Interface Stream</h1><p>A parent interface for all stream types
 </p>
 				<div class="prototype">
 					<code class="lang-d">
@@ -758,6 +758,93 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					</code>
 				</div>
 				
+				<section><h2>Properties</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th><th>Type</th><th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/core/stream/Seekable.getPosition.html" class="public inherited property"><code>getPosition</code></a><span class="tableEntryAnnotation">[get]</span>
+							</td>
+							<td class="typecol"><code class="prettyprint lang-d"><span class="typ">ulong</span></code></td><td>Returns current position
+</td>
+						</tr>
+					</table>
+				</section>
+				<section><h2>Methods</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th><th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/core/stream/Stream.close.html" class="public">
+									<code>close</code>
+								</a>
+								<span class="tableEntryAnnotation">()</span>
+							</td>
+							<td>Closes the stream. Closed stream cannot be read or written any more
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/core/stream/Stream.seekable.html" class="public">
+									<code>seekable</code>
+								</a>
+								<span class="tableEntryAnnotation">()</span>
+							</td>
+							<td>Returns true if it is legal to use Seekable functionality on this stream
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/core/stream/Seekable.position.html" class="public inherited">
+									<code>position</code>
+								</a>
+								<span class="tableEntryAnnotation">(pos)</span>
+							</td>
+							<td>Attempts to set current position to pos.
+ Throws SeekException on failure
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/core/stream/Seekable.seek.html" class="public inherited">
+									<code>seek</code>
+								</a>
+								<span class="tableEntryAnnotation">(amount)</span>
+							</td>
+							<td>Relatively changes position.
+ amount defines an offset from the current position (can be negative).
+ Throws SeekException on failure
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/core/stream/Seekable.setPosition.html" class="public inherited">
+									<code>setPosition</code>
+								</a>
+								<span class="tableEntryAnnotation">(pos)</span>
+							</td>
+							<td>Attempts to set current position to pos.
+ Returns true on success, false on failure
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/core/stream/Seekable.size.html" class="public inherited">
+									<code>size</code>
+								</a>
+								<span class="tableEntryAnnotation">()</span>
+							</td>
+							<td>Returns the size of a stream in bytes
+</td>
+						</tr>
+					</table>
+				</section>
 				
 			</div>
 			<footer>
@@ -768,7 +855,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					<p>Martin Cejp 2014-2020.
 </p>
 
-					<p><a href="boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+					<p><a href="https://boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
 </p>
 
 				</div>

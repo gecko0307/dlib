@@ -746,7 +746,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 		</nav>
 		<div id="main-contents">
 			<div>
-				<h1>Class ArrayStream</h1><p>InputStream that reads from an array
+				<h1>Class ArrayStream</h1><p>An InputStream that encapsulates contents of an array
 </p>
 				<div class="prototype">
 					<code class="lang-d">
@@ -758,6 +758,60 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					</code>
 				</div>
 				
+				<section><h2>Constructors</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th><th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/core/stream/ArrayStream.this.html" class="public">
+									<code>this</code>
+								</a>
+								<span class="tableEntryAnnotation">()</span>
+							</td>
+							<td>Constructor. Initializes stream as empty
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/core/stream/ArrayStream.this.html" class="public">
+									<code>this</code>
+								</a>
+								<span class="tableEntryAnnotation">(data, size)</span>
+							</td>
+							<td>Constructor. Initializes stream with an array of bytes.
+ size delimits maximum read size
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/core/stream/ArrayStream.this.html" class="public">
+									<code>this</code>
+								</a>
+								<span class="tableEntryAnnotation">(data)</span>
+							</td>
+							<td>Constructor. Initializes stream with an array of bytes
+</td>
+						</tr>
+					</table>
+				</section>
+				<section><h2>Properties</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th><th>Type</th><th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/core/stream/Seekable.getPosition.html" class="public inherited property"><code>getPosition</code></a><span class="tableEntryAnnotation">[get]</span>
+							</td>
+							<td class="typecol"><code class="prettyprint lang-d"><span class="typ">ulong</span></code></td><td>Returns current position
+</td>
+						</tr>
+					</table>
+				</section>
 				<section><h2>Methods</h2>
 					<table>
 						<col class="caption"/>
@@ -766,12 +820,44 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						</tr>
 						<tr>
 							<td>
+								<a href="../../../dlib/core/stream/Stream.close.html" class="public inherited">
+									<code>close</code>
+								</a>
+								<span class="tableEntryAnnotation">()</span>
+							</td>
+							<td>Closes the stream. Closed stream cannot be read or written any more
+</td>
+						</tr>
+						<tr>
+							<td>
 								<a href="../../../dlib/core/stream/InputStream.fillArray.html" class="public inherited">
 									<code>fillArray</code>
 								</a>
 								<span class="tableEntryAnnotation">(array)</span>
 							</td>
-							<td>Read array.length elements into an pre-allocated array.
+							<td>Attempts to fill an array with raw data from stream.
+ Returns true if the array was filled, false otherwise
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/core/stream/Seekable.position.html" class="public inherited">
+									<code>position</code>
+								</a>
+								<span class="tableEntryAnnotation">(pos)</span>
+							</td>
+							<td>Attempts to set current position to pos.
+ Throws SeekException on failure
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/core/stream/InputStream.readable.html" class="public inherited">
+									<code>readable</code>
+								</a>
+								<span class="tableEntryAnnotation">()</span>
+							</td>
+							<td>Returns true if there are any data to read. false means end of the stream.
 </td>
 						</tr>
 						<tr>
@@ -781,7 +867,19 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 								</a>
 								<span class="tableEntryAnnotation">(value)</span>
 							</td>
-							<td>Read an integer in big-endian encoding
+							<td>Reads big-endian integer, converts to native-endian
+ and stores in value
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/core/stream/InputStream.readBytes.html" class="public inherited">
+									<code>readBytes</code>
+								</a>
+								<span class="tableEntryAnnotation">(buffer, count)</span>
+							</td>
+							<td>Attempts to read count bytes from stream and stores them in memory
+ pointing by buffer. Returns number of bytes actually read
 </td>
 						</tr>
 						<tr>
@@ -791,7 +889,51 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 								</a>
 								<span class="tableEntryAnnotation">(value)</span>
 							</td>
-							<td>Read an integer in little-endian encoding
+							<td>Reads little-endian integer, converts to native-endian
+ and stores in value
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/core/stream/Seekable.seek.html" class="public inherited">
+									<code>seek</code>
+								</a>
+								<span class="tableEntryAnnotation">(amount)</span>
+							</td>
+							<td>Relatively changes position.
+ amount defines an offset from the current position (can be negative).
+ Throws SeekException on failure
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/core/stream/Stream.seekable.html" class="public inherited">
+									<code>seekable</code>
+								</a>
+								<span class="tableEntryAnnotation">()</span>
+							</td>
+							<td>Returns true if it is legal to use Seekable functionality on this stream
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/core/stream/Seekable.setPosition.html" class="public inherited">
+									<code>setPosition</code>
+								</a>
+								<span class="tableEntryAnnotation">(pos)</span>
+							</td>
+							<td>Attempts to set current position to pos.
+ Returns true on success, false on failure
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/core/stream/Seekable.size.html" class="public inherited">
+									<code>size</code>
+								</a>
+								<span class="tableEntryAnnotation">()</span>
+							</td>
+							<td>Returns the size of a stream in bytes
 </td>
 						</tr>
 					</table>
@@ -840,7 +982,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					<p>Martin Cejp 2014-2020.
 </p>
 
-					<p><a href="boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+					<p><a href="https://boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
 </p>
 
 				</div>

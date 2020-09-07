@@ -746,7 +746,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 		</nav>
 		<div id="main-contents">
 			<div>
-				<h1>Alias New</h1><p>Allocates arrays, classes and structs on a heap using currently set globalAllocator
+				<h1>Alias New</h1><p>Creates an object of type T and calls its constructor if necessary.
 </p>
 				<div class="prototype">
 					<code class="lang-d">
@@ -756,8 +756,24 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						</div>
 					</code>
 				</div>
-				
-				
+				<section></section>
+
+				<section><h2>Description</h2>
+<p>This is an equivalent for D's new opetator. It allocates arrays,
+  classes and structs on a heap using currently set globalAllocator.
+  Arguments to this function are passed to constructor.
+</p>
+</section>
+<section><h2>Examples</h2>
+<pre class="code"><code class="lang-d"><span class="typ">MyClass </span><span class="pln">c </span><span class="pun">= </span><span class="typ">New</span><span class="pun">!</span><span class="typ">MyClass</span><span class="pun">(</span><span class="lit">10</span><span class="pun">, </span><span class="lit">4</span><span class="pun">, </span><span class="lit">5</span><span class="pun">);
+</span><span class="typ">int</span><span class="pun">[] </span><span class="pln">arr </span><span class="pun">= </span><span class="typ">New</span><span class="pun">!(</span><span class="typ">int</span><span class="pun">[])(</span><span class="lit">100</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">arr<wbr/></span><span class="pun">.</span><span class="pln">length </span><span class="pun">== </span><span class="lit">100</span><span class="pun">);
+</span><span class="typ">MyStruct</span><span class="pun">* </span><span class="pln">s </span><span class="pun">= </span><span class="typ">New</span><span class="pun">!</span><span class="typ">MyStruct</span><span class="pun">;
+<a href="../../../dlib/core/memory/Delete.html"></span><span class="typ">Delete</span></a><span class="pun">(</span><span class="pln">c</span><span class="pun">);
+<a href="../../../dlib/core/memory/Delete.html"></span><span class="typ">Delete</span></a><span class="pun">(</span><span class="pln">arr</span><span class="pun">);
+<a href="../../../dlib/core/memory/Delete.html"></span><span class="typ">Delete</span></a><span class="pun">(</span><span class="pln">s</span><span class="pun">);</span></code></pre>
+</section>
+
 			</div>
 			<footer>
 				<div id="license-info">
@@ -767,7 +783,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					<p>Timur Gafarov 2015-2020.
 </p>
 
-					<p><a href="boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+					<p><a href="https://boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
 </p>
 
 				</div>

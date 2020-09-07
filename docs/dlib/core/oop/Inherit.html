@@ -756,8 +756,46 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						</div>
 					</code>
 				</div>
-				
-				
+				<section></section>
+
+				<section><h2>Description</h2>
+<p>Inserts structs specified by PT type tuple as members and a dispatcher method
+ that statically transfers any method calls and member accesses to corresponding
+ child struct.
+</p>
+</section>
+<section><h2>Example</h2>
+
+<pre class="code"><code class="lang-d"><span class="kwd">struct </span><span class="typ">Foo
+</span><span class="pun">{
+    </span><span class="typ">int </span><span class="pln">x </span><span class="pun">= </span><span class="lit">100</span><span class="pun">;
+    </span><span class="typ">int </span><span class="pln">foo</span><span class="pun">() { </span><span class="kwd">return </span><span class="lit">11</span><span class="pun">; }
+}
+
+</span><span class="kwd">struct </span><span class="typ">Bar
+</span><span class="pun">{
+    </span><span class="typ">int </span><span class="pln">y </span><span class="pun">= </span><span class="lit">99</span><span class="pun">;
+    </span><span class="typ">int </span><span class="pln">bar</span><span class="pun">() { </span><span class="kwd">return </span><span class="lit">22</span><span class="pun">; }
+}
+
+</span><span class="kwd">struct </span><span class="typ">TestObj
+</span><span class="pun">{
+    </span><span class="kwd">mixin </span><span class="typ">Inherit</span><span class="pun">!(</span><span class="typ">Foo</span><span class="pun">, </span><span class="typ">Bar</span><span class="pun">);
+}
+
+</span><span class="typ">TestObj </span><span class="pln">obj</span><span class="pun">;
+
+</span><span class="pln">obj<wbr/></span><span class="pun">.</span><span class="pln">x </span><span class="pun">*= </span><span class="lit">2</span><span class="pun">;
+</span><span class="pln">obj<wbr/></span><span class="pun">.</span><span class="pln">y </span><span class="pun">= </span><span class="lit">10</span><span class="pun">;
+
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">obj<wbr/></span><span class="pun">.</span><span class="pln">x </span><span class="pun">== </span><span class="lit">200</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">obj<wbr/></span><span class="pun">.</span><span class="pln">y </span><span class="pun">== </span><span class="lit">10</span><span class="pun">);
+
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">obj<wbr/></span><span class="pun">.</span><span class="pln">foo</span><span class="pun">() == </span><span class="lit">11</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">obj<wbr/></span><span class="pun">.</span><span class="pln">bar</span><span class="pun">() == </span><span class="lit">22</span><span class="pun">);
+</span></code></pre>
+</section>
+
 			</div>
 			<footer>
 				<div id="license-info">
@@ -767,7 +805,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					<p>Timur Gafarov 2015-2020.
 </p>
 
-					<p><a href="boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+					<p><a href="https://boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
 </p>
 
 				</div>

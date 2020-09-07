@@ -772,7 +772,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 								</a>
 								<span class="tableEntryAnnotation">(owner)</span>
 							</td>
-							<td>Constructor. owner can be null
+							<td>Constructor. owner can be null, in this case object won't have an owner.
+ Such objects are called root owners and should be deleted manually.
 </td>
 						</tr>
 					</table>
@@ -825,7 +826,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					<p>Timur Gafarov 2017-2020.
 </p>
 
-					<p><a href="boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+					<p><a href="https://boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
 </p>
 
 				</div>

@@ -746,7 +746,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 		</nav>
 		<div id="main-contents">
 			<div>
-				<h1>Function Owner.this</h1><p>Constructor. owner can be null
+				<h1>Function Owner.this</h1><p>Constructor. owner can be null, in this case object won't have an owner.
+ Such objects are called root owners and should be deleted manually.
 </p>
 				<div class="prototype">
 					<code class="lang-d">
@@ -771,7 +772,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					<p>Timur Gafarov 2017-2020.
 </p>
 
-					<p><a href="boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+					<p><a href="https://boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
 </p>
 
 				</div>

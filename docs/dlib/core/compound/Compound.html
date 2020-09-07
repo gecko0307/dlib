@@ -746,7 +746,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 		</nav>
 		<div id="main-contents">
 			<div>
-				<h1>Function compound</h1><p>Compound consructor
+				<h1>Function compound</h1><p>Returns a Compound consisting of args
 </p>
 				<div class="prototype">
 					<code class="lang-d">
@@ -761,7 +761,15 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					</code>
 				</div>
 				
-				
+				<section><h2>Example</h2>
+
+<pre class="code"><code class="lang-d"><span class="kwd">auto </span><span class="pln">c </span><span class="pun">= </span><span class="pln">compound</span><span class="pun">(</span><span class="kwd">true</span><span class="pun">, </span><span class="lit">0.5f</span><span class="pun">, </span><span class="str">"hello"</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">c</span><span class="pun">[</span><span class="lit">0</span><span class="pun">] == </span><span class="kwd">true</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">c</span><span class="pun">[</span><span class="lit">1</span><span class="pun">] == </span><span class="lit">0.5f</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">c</span><span class="pun">[</span><span class="lit">2</span><span class="pun">] == </span><span class="str">"hello"</span><span class="pun">);
+</span></code></pre>
+</section>
+
 			</div>
 			<footer>
 				<div id="license-info">
@@ -771,7 +779,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					<p>Timur Gafarov 2011-2020.
 </p>
 
-					<p><a href="boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+					<p><a href="htpps://boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
 </p>
 
 				</div>

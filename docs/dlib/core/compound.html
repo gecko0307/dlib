@@ -746,8 +746,17 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 		</nav>
 		<div id="main-contents">
 			<div>
-				<h1>Module dlib.core.compound</h1><p></p>
-				<section></section>
+				<h1>Module dlib.core.compound</h1><p>Tuple + struct hybrid
+</p><section></section>
+
+				<section><section><h2>Description</h2>
+<p>This template can be used to construct data types on-the-fly
+ and return them from functions, which cannot be done with pure tuples.
+ One possible use case for such types is returning result and error message
+ from function instead of throwing an exception.
+</p>
+</section>
+</section>
 				<section>
 					<h2>Functions</h2>
 					<table>
@@ -761,7 +770,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 									<a id="compound" class="public" href="../../dlib/core/compound/compound.html">compound</a><span class="tableEntryAnnotation">(args)</span>
 								</code>
 							</td>
-							<td>Compound consructor
+							<td>Returns a Compound consisting of args
 </td>
 						</tr>
 					</table>
@@ -779,7 +788,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 									<a id="Compound" class="public" href="../../dlib/core/compound/Compound.html">Compound</a>
 								</code>
 							</td>
-							<td>Struct + tuple hybrid. A struct that can be generated on the fly from a list of types
+							<td>A struct that consists of a tuple T. Allows square bracket access to the members of a tuple
 </td>
 						</tr>
 					</table>
@@ -793,7 +802,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					<p>Timur Gafarov 2011-2020.
 </p>
 
-					<p><a href="boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+					<p><a href="htpps://boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
 </p>
 
 				</div>

@@ -746,8 +746,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 		</nav>
 		<div id="main-contents">
 			<div>
-				<h1>Class Thread</h1><p>GC-free, Phobos-independent thread module.
- Inspired by core.thread, with an additional support for thread termination.
+				<h1>Class Thread</h1><p>Base class for creating threads
 </p>
 				<div class="prototype">
 					<code class="lang-d">
@@ -771,7 +770,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 								</a>
 								<span class="tableEntryAnnotation">(func)</span>
 							</td>
-							<td>Constructor. Initializes Thread using a function
+							<td>Constructor. Initializes Thread using a function pointer
 </td>
 						</tr>
 						<tr>
@@ -809,7 +808,17 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 								</a>
 								<span class="tableEntryAnnotation">()</span>
 							</td>
-							<td>Blocks until thread finishes
+							<td>Waits for the thread to terminate
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/core/thread/Thread.sleep.html" class="public">
+									<code>sleep</code>
+								</a>
+								<span class="tableEntryAnnotation">(msec)</span>
+							</td>
+							<td>Wait for specified amout of milliseconds
 </td>
 						</tr>
 						<tr>
@@ -829,7 +838,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 								</a>
 								<span class="tableEntryAnnotation">()</span>
 							</td>
-							<td>Stops the thread
+							<td>Stops the thread immediately. This functionality is unsafe, use with care
 </td>
 						</tr>
 					</table>
@@ -844,7 +853,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					<p>Timur Gafarov 2015-2020.
 </p>
 
-					<p><a href="boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+					<p><a href="https://boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
 </p>
 
 				</div>
