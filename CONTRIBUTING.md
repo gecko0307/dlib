@@ -65,7 +65,7 @@ DEALINGS IN THE SOFTWARE.
 */
 ```
 
-If you document your code, use [ddoc syntax](https://dlang.org/spec/ddoc.html). Each documented module should be accompanied by a description block (if you don't do that, documentation generators may ignore the module):
+It is not strictly necessary to document the code, but if you do, use [ddoc syntax](https://dlang.org/spec/ddoc.html). Each documented module should be accompanied by a description block (if you don't do that, documentation generators may ignore the module):
 ```d
 /**
  * <One-line description of the module>
