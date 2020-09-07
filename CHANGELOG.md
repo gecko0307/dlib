@@ -1,3 +1,19 @@
+dlib 0.20.0 beta1 - TBD
+-----------------------
+- **dlib.image**
+  - `dlib.image.io.io` is deprecated, import `dlib.image.io` instead
+- **dlib.text**
+  - `String.byDChar` is deprecated, use `String.decode` instead
+  - `UTF8Decoder.byDChar` is deprecated, use `UTF8Decoder.decode` instead
+  - `UTF16Decoder.byDChar` is deprecated, use `UTF16Decoder.decode` instead
+- **dlib.coding**
+  - `dlib.coding.hash` is deprecated, use `std.digest` instead
+- **Documentation**
+  - Deploy-ready documentation for dlib now can be generated from source code using `dub --build=ddox`. It is hosted [here](https://gecko0307.github.io/dlib/docs/dlib.html).
+  - Many modules are now documented better.
+- **Misc**
+  - Added latest DMD (2.093.1) and LDC (1.23.0) to Travis CI config.
+
 dlib 0.19.2 - 26 Aug, 2020
 --------------------------
 - A couple of fixes for LDC
