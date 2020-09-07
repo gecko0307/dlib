@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2020Timur Gafarov
+Copyright (c) 2015-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -28,8 +28,17 @@ DEALINGS IN THE SOFTWARE.
 
 /**
  * Tools for manual memory management
+ *
+ * New/Delete for classes, structs and arrays. It utilizes dlib.memory 
+ * for actual memory allocation, so it is possible to switch allocator that is 
+ * being used. By default, dlib.memory.mallocator.Mallocator is used.
+ *
+ * Module includes a simple memory profiler that can be turned on with enableMemoryProfiler 
+ * function. If active, it will store information about every allocation (type and size), 
+ * and will mark those which are leaked (haven't been deleted).
+ *
  * Copyright: Timur Gafarov 2015-2020.
- * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * License: $(LINK2 https://boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
 module dlib.core.memory;
@@ -46,6 +55,9 @@ import dlib.memory;
 
 private __gshared ulong _allocatedMemory = 0;
 
+/**
+ * Returns current amount of allocated memory in bytes. This is 0 at program start
+ */
 ulong allocatedMemory()
 {
     return _allocatedMemory;
@@ -55,7 +67,7 @@ private __gshared Mallocator _defaultGlobalAllocator;
 private __gshared Allocator _globalAllocator;
 
 /**
- * Returns current global Allocator used by New and Delete
+ * Returns current global Allocator that is used by New and Delete
  */
 Allocator globalAllocator()
 {
@@ -69,7 +81,7 @@ Allocator globalAllocator()
 }
 
 /**
- * Sets global Allocator used by New and Delete
+ * Sets global Allocator that is used by New and Delete
  */
 void globalAllocator(Allocator a)
 {
@@ -105,11 +117,17 @@ private
     }
 }
 
+/**
+ * Enables or disables memory profiler
+ */
 void enableMemoryProfiler(bool mode)
 {
     memoryProfilerEnabled = mode;
 }
 
+/**
+ * Prints full allocation list if memory profiler is enabled, otherwise does nothing
+ */
 void printMemoryLog()
 {
     writeln("----------------------------------------------------");
@@ -129,7 +147,10 @@ void printMemoryLog()
     writefln("Total amount of allocated memory: %s byte(s)", _allocatedMemory);
     writeln("----------------------------------------------------");
 }
-    
+
+/**
+ * Prints leaked allocations if memory profiler is enabled, otherwise does nothing
+ */
 void printMemoryLeaks()
 {
     writeln("----------------------------------------------------");
@@ -305,11 +326,39 @@ void deallocate(T)(T* obj)
 }
 
 /**
- * Allocates arrays, classes and structs on a heap using currently set globalAllocator
+  Creates an object of type T and calls its constructor if necessary. 
+
+  Description:
+  This is an equivalent for D's new opetator. It allocates arrays, 
+  classes and structs on a heap using currently set globalAllocator.
+  Arguments to this function are passed to constructor.
+
+  Examples:
+  ----
+  MyClass c = New!MyClass(10, 4, 5);
+  int[] arr = New!(int[])(100);
+  assert(arr.length == 100);
+  MyStruct* s = New!MyStruct;
+  Delete(c);
+  Delete(arr);
+  Delete(s);
+  ----
  */
 alias New = allocate;
 
 /**
- * Releases arrays, classes and structs previously allocated with New
+  Destroys an object of type T previously created by New and calls 
+  its destructor if necessary.
+  
+  Examples:
+  ----
+  MyClass c = New!MyClass(10, 4, 5);
+  int[] arr = New!(int[])(100);
+  assert(arr.length == 100);
+  MyStruct* s = New!MyStruct;
+  Delete(c);
+  Delete(arr);
+  Delete(s);
+  ----
  */
 alias Delete = deallocate;

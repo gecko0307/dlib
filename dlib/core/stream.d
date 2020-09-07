@@ -27,9 +27,10 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
- * I/O streams
+ * Binary I/O stream interfaces
+ *
  * Copyright: Martin Cejp 2014-2020.
- * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * License: $(LINK2 https://boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Martin Cejp, Timur Gafarov
  */
 module dlib.core.stream;
@@ -44,6 +45,7 @@ alias StreamPos = uint64_t;
 alias StreamSize = uint64_t;
 alias StreamOffset = int64_t;
 
+/// An exception which is throwed on stream errors
 class SeekException : Exception
 {
     this(string msg, string file = __FILE__, size_t line = __LINE__, Throwable next = null)
@@ -52,31 +54,49 @@ class SeekException : Exception
     }
 }
 
-/// Seekable
+/**
+ * Seekable stream interface
+ *
+ * Description:
+ * Represents a stream container that knows the size of a stream 
+ * and allows to change byte position within the stream.
+ */
 interface Seekable
 {
-    // Won't throw on invalid position, may throw on a more serious error.
-
+    /// Returns current position
     StreamPos getPosition() @property;
+    
+    /**
+     * Attempts to set current position to pos.
+     * Returns true on success, false on failure
+     */
     bool setPosition(StreamPos pos);
+    
+    /// Returns the size of a stream in bytes
     StreamSize size();
 
-    // Throw-on-error wrappers
-
+    /**
+     * Attempts to set current position to pos.
+     * Throws SeekException on failure
+     */
     final StreamPos position(StreamPos pos)
     {
         if (!setPosition(pos))
             throw new SeekException("Cannot set Seekable position to " ~ pos.to!string);
-
         return pos;
     }
 
+    /// ditto
     final StreamPos position()
     {
         return getPosition();
     }
 
-    // TODO: Non-throwing version
+    /**
+     * Relatively changes position.
+     * amount defines an offset from the current position (can be negative).
+     * Throws SeekException on failure
+     */
     final StreamPos seek(StreamOffset amount)
     {
         immutable StreamPos seekTo = getPosition() + amount;
@@ -88,30 +108,48 @@ interface Seekable
     }
 }
 
-/// Stream
-interface Stream : Seekable
+/**
+ * A parent interface for all stream types
+ */
+interface Stream: Seekable
 {
+    /// Closes the stream. Closed stream cannot be read or written any more
     void close();
+    
+    /// Returns true if it is legal to use Seekable functionality on this stream
     bool seekable();
 }
 
-/// Stream with read methods
-interface InputStream : Stream
+/**
+ * A stream inteface that allows to read data from it.
+ * Reading any data implies position advance by corresponding number of bytes.
+ * Methods shouldn't throw on EOF, may throw on a more serious error
+ */
+interface InputStream: Stream
 {
-    // Won't throw on EOF, may throw on a more serious error.
-
+    /// Returns true if there are any data to read. false means end of the stream.
     bool readable();
+    
+    /**
+     * Attempts to read count bytes from stream and stores them in memory 
+     * pointing by buffer. Returns number of bytes actually read
+     */
     size_t readBytes(void* buffer, size_t count);
 
-    /// Read array.length elements into an pre-allocated array.
-    /// Returns: true if all elements were read, false otherwise
+    /**
+     * Attempts to fill an array with raw data from stream. 
+     * Returns true if the array was filled, false otherwise
+     */
     final bool fillArray(T)(T[] array)
     {
         immutable size_t len = array.length * T.sizeof;
         return readBytes(array.ptr, len) == len;
     }
 
-    /// Read an integer in little-endian encoding
+    /**
+     * Reads little-endian integer, converts to native-endian 
+     * and stores in value
+     */
     final bool readLE(T)(T* value)
     {
         ubyte[T.sizeof] buffer;
@@ -123,7 +161,10 @@ interface InputStream : Stream
         return true;
     }
 
-    /// Read an integer in big-endian encoding
+    /**
+     * Reads big-endian integer, converts to native-endian
+     * and stores in value
+     */
     final bool readBE(T)(T* value)
     {
         ubyte[T.sizeof] buffer;
@@ -136,25 +177,38 @@ interface InputStream : Stream
     }
 }
 
-/// Stream with write methods
-interface OutputStream : Stream
+/**
+ * A stream interface that allows to write data into it.
+ * Methods shouldn't throw on full disk, may throw on a more serious error
+ */
+interface OutputStream: Stream
 {
-    // Won't throw on full disk, may throw on a more serious error.
-
+    /// Implementation-specific method. Usually it writes any unwritten data from output buffer
     void flush();
+    
+    /// Returns true if stream can be written to, false otherwise
     bool writeable();
+    
+    /**
+     * Attempts to write count bytes from the memory pointed by buffer. 
+     * Returns number of bytes actually written
+     */
     size_t writeBytes(const void* buffer, size_t count);
 
-    /// Write array.length elements from array.
-    /// Returns: true if all elements were written, false otherwise
+    /** 
+     * Attempts to write an array.
+     * Returns true if all elements were written, false otherwise
+     */
     final bool writeArray(T)(const T[] array)
     {
         immutable size_t len = array.length * T.sizeof;
         return writeBytes(array.ptr, len) == len;
     }
 
-    /// Write a string as zero-terminated
-    /// Returns: true on success, false otherwise
+    /**
+     * Attempts to write a string as zero-terminated. 
+     * Returns true if entire string was written, false otherwise
+     */
     final bool writeStringz(string text)
     {
         ubyte[1] zero = [0];
@@ -163,7 +217,7 @@ interface OutputStream : Stream
             && writeBytes(zero.ptr, zero.length);
     }
 
-    /// Write an integer in little-endian encoding
+    /// Writes an integer in little-endian encoding
     final bool writeLE(T)(const T value)
     {
         ubyte[T.sizeof] buffer = nativeToLittleEndian!T(value);
@@ -171,7 +225,7 @@ interface OutputStream : Stream
         return writeBytes(buffer.ptr, buffer.length) == buffer.length;
     }
 
-    /// Write an integer in big-endian encoding
+    /// Writes an integer in big-endian encoding
     final bool writeBE(T)(const T value)
     {
         ubyte[T.sizeof] buffer = nativeToBigEndian!T(value);
@@ -180,12 +234,17 @@ interface OutputStream : Stream
     }
 }
 
-/// Stream with both read and write methods
-interface IOStream : InputStream, OutputStream
+/**
+ * A stream that allows both reading and writing data
+ */
+interface IOStream: InputStream, OutputStream
 {
 }
 
-/// Copy data from an InputStream to an OutputStream
+/**
+ * While input is readable, reads data from input and writes it to output. 
+ * Returns number of bytes read
+ */
 StreamSize copyFromTo(InputStream input, OutputStream output)
 {
     ubyte[0x1000] buffer;
@@ -205,17 +264,24 @@ StreamSize copyFromTo(InputStream input, OutputStream output)
     return total;
 }
 
-/// InputStream that reads from an array
-class ArrayStream : InputStream
+/**
+ * An InputStream that encapsulates contents of an array
+ */
+class ArrayStream: InputStream
 {
     // TODO: Add OutputStream methods
     
     import std.algorithm;
 
+    /// Constructor. Initializes stream as empty
     this()
     {
     }
 
+    /**
+     * Constructor. Initializes stream with an array of bytes.
+     * size delimits maximum read size
+     */
     this(ubyte[] data, size_t size)
     {
         assert(size_ <= data.length);
@@ -224,6 +290,9 @@ class ArrayStream : InputStream
         this.data = data;
     }
 
+    /**
+     * Constructor. Initializes stream with an array of bytes
+     */
     this(ubyte[] data)
     {
         this(data, data.length);
@@ -318,13 +387,17 @@ unittest
     assert(!stream.readable);
 }
 
-/// An input range that reads data from InputStream by fixed chunks, storing them in user-provided array
+/**
+ * An input range that reads data from InputStream by fixed chunks, 
+ * storing them in user-provided array
+ */
 struct BufferedStreamReader
 {
     InputStream stream;
     ubyte[] buffer;
     ubyte[] front;
     
+    /// Constructor. Initializes range with a stream and a buffer
     this(InputStream istrm, ubyte[] buffer)
     {
         stream = istrm;

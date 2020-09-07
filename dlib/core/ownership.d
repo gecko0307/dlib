@@ -28,8 +28,17 @@ DEALINGS IN THE SOFTWARE.
 
 /**
  * Class-based object ownership system
+ *
+ * Description:
+ * Object ownership system similar to Delphi's. All classes deriving from Owner 
+ * can store references to objects implementing Owned interface (and other Owner 
+ * objects as well). When an owner is deleted, its owned objects are also deleted.
+ *
+ * This module is not compatible with GC-collected objects. It can be used only with 
+ * dlib.core.memory. Using it with objects allocated any other way will cause application to crash.
+ *
  * Copyright: Timur Gafarov 2017-2020.
- * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * License: $(LINK2 https://boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
 module dlib.core.ownership;
@@ -52,7 +61,10 @@ class Owner: Owned
 {
     protected DynamicArray!Owned ownedObjects;
 
-    /// Constructor. owner can be null
+    /**
+     * Constructor. owner can be null, in this case object won't have an owner. 
+     * Such objects are called root owners and should be deleted manually.
+     */
     this(Owner owner)
     {
         if (owner)

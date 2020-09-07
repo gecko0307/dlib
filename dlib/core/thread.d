@@ -27,8 +27,22 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
+ * Cross-platform thread class. Supports Windows and Posix
+ *
+ * Description:
+ * This module provides a platform-independent multithreading API. 
+ * For now, it supports Windows and Posix threads (pthreads). The interface 
+ * is greatly inspired by core.thread from Phobos, but dlib.core.thread 
+ * is fully GC-free and can be used with dlib.core.memory allocators.
+ *
+ * Implementation notes:
+ * No TLS support, sorry. Any global variables should be marked with 
+ * __gshared for correct access from threads.
+ * Internals of Thread class are platform-dependent, so be aware of that 
+ * when inheriting.
+ *
  * Copyright: Timur Gafarov 2015-2020.
- * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * License: $(LINK2 https://boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
 module dlib.core.thread;
@@ -97,8 +111,7 @@ else version(Posix)
 }
 
 /**
- * GC-free, Phobos-independent thread module.
- * Inspired by core.thread, with an additional support for thread termination.
+ * Base class for creating threads
  */
 class Thread
 {
@@ -118,7 +131,7 @@ class Thread
         private bool running = false;
     }
 
-    /// Constructor. Initializes Thread using a function
+    /// Constructor. Initializes Thread using a function pointer
     this(void function() func)
     {
         this.func = func;
@@ -170,7 +183,7 @@ class Thread
         }
     }
 
-    /// Blocks until thread finishes
+    /// Waits for the thread to terminate
     void join()
     {
         version(Windows)
@@ -200,7 +213,7 @@ class Thread
         }
     }
 
-    /// Stops the thread
+    /// Stops the thread immediately. This functionality is unsafe, use with care
     void terminate()
     {
         version(Windows)
@@ -242,16 +255,14 @@ class Thread
         }
     }
     
-    version(Windows)
+    /// Wait for specified amout of milliseconds
+    static void sleep(uint msec)
     {
-        static void sleep(uint msec)
+        version(Windows)
         {
             Sleep(msec);
         }
-    }
-    else version(Posix)
-    {
-        static void sleep(uint msec)
+        else version(Posix)
         {
             timespec ts;
             ts.tv_sec = msec / 1000;
