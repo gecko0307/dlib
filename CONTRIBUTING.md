@@ -35,7 +35,7 @@ dlib follows [D style](https://dlang.org/dstyle.html). Essential rules are the f
 All modules in dlib should belong to a package (`dlib.core`, `dlib.math`, `dlib.image`, etc.). Keep package and module names short and informative. Modules with related functionality can be combined to subpackages (such as `dlib.image.io`). Provide a package import module (`package.d` with public imports) for each subpackage.
 
 Each D module should start with a Boost license block prepended with a copyright notice:
-```
+```d
 /*
 Copyright (c) 2020 <author's name here>
 
@@ -63,4 +63,19 @@ FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
+```
+
+If you document your code, use [ddoc syntax](https://dlang.org/spec/ddoc.html). Each documented module should be accompanied by a description block (if you don't do that, documentation generators may ignore the module):
+```d
+/**
+ * <One-line description of the module>
+ *
+ * Description:
+ * <more in-depth information (optional)>
+ *
+ * Copyright: Your Name 2020.
+ * License: $(LINK2 https://boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Your Name
+ */
+module dlib.something.something;
 ```
