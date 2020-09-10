@@ -1,0 +1,1 @@
+dub build --build=release --compiler=ldc2 --arch=wasm32-unknown-unknown-wasm --config=web

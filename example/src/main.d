@@ -4,6 +4,11 @@ import dcore;
 version(WebAssembly)
 {
     extern(C) void _start() {}
+    
+    extern(C) int test()
+    {
+        return 1000;
+    }
 }
 
 extern(C) void main()

@@ -24,6 +24,7 @@
         {
             "name": "web",
             "targetType": "executable",
+            "targetPath": "./dist",
             "dflags": ["-link-internally", "-L-allow-undefined", "-L--export-dynamic"]
         }
     ]

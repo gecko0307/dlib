@@ -11,3 +11,6 @@ dub.selections.json
 # Dub test files
 __test__library__
 tests
+
+# Node.js
+node_modules
