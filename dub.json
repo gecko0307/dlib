@@ -41,23 +41,6 @@
             "name": "unittest",
             "importPaths": ["src"],
             "sourcePaths": ["src"]
-        },
-        {
-            "name": "desktop",
-            "targetType": "executable",
-            "importPaths": ["src", "demo"],
-            "sourcePaths": ["src", "demo"],
-            "dflags": ["-betterC"],
-            "mainSourceFile": "demo/main.d",
-        },
-        {
-            "name": "web",
-            "targetType": "executable",
-            "importPaths": ["src", "demo"],
-            "sourcePaths": ["src", "demo"],
-            "dflags": ["-betterC", "-mtriple=wasm32-unknown-unknown-wasm", "-link-internally", "-L-allow-undefined", "-L--export-dynamic"],
-            "postBuildCommands-windows": ["move dlib2.exe dlib2.wasm"],
-            "postBuildCommands-posix": ["mv dlib2 dlib2.wasm"]
         }
     ]
 }

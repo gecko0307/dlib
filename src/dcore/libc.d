@@ -52,6 +52,9 @@ else
             int putchar(int c);
             int puts(const char* s);
             int printf(const char* fmt, ...);
+            
+            double sin(double x);
+            double cos(double x);
         }
     }
 }
