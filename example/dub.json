@@ -24,9 +24,7 @@
         {
             "name": "web",
             "targetType": "executable",
-            "dflags": ["-mtriple=wasm32-unknown-unknown-wasm", "-link-internally", "-L-allow-undefined", "-L--export-dynamic"],
-            "postBuildCommands-windows": ["move main.exe main.wasm"],
-            "postBuildCommands-posix": ["mv main main.wasm"]
+            "dflags": ["-link-internally", "-L-allow-undefined", "-L--export-dynamic"]
         }
     ]
 }
