@@ -20,6 +20,7 @@
     "buildRequirements":[
         "allowWarnings"
     ],
+    "dflags": ["-vgc"],
     "lflags-linux-gdc": ["-lz"],
     "configurations": [
         {

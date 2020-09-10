@@ -44,20 +44,30 @@ T allocate(T) (size_t length) if (isArray!T)
 void deallocate(T)(ref T obj) if (isArray!T)
 {
     void* p = cast(void*)obj.ptr;
-    free(cast(uint)p);
+    version(WebAssembly)
+        free(cast(uint)p);
+    else
+        free(p);
+    obj = [];
 }
 
 void deallocate(T)(T obj) if (is(T == class) || is(T == interface))
 {
     Object o = cast(Object)obj;
     void* p = cast(void*)o;
-    free(cast(uint)p);
+    version(WebAssembly)
+        free(cast(uint)p);
+    else
+        free(p);
 }
 
 void deallocate(T)(T* obj)
 {
     void* p = cast(void*)obj;
-    free(cast(uint)p);
+    version(WebAssembly)
+        free(cast(uint)p);
+    else
+        free(p);
 }
 
 alias New = allocate;
@@ -67,4 +77,6 @@ unittest
 {
     int[] arr = New!(int[])(100);
     assert(arr.length == 100);
+    Delete(arr);
+    assert(arr.length == 0);
 }

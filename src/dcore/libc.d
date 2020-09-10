@@ -2,11 +2,27 @@ module dcore.libc;
 
 version(WebAssembly)
 {
+    alias StdPtr = uint;
+    alias StdSize = uint;
+}
+else
+{
+    alias StdPtr = void*;
+    alias StdSize = size_t;
+}
+
+extern(C) nothrow @nogc
+{
+    StdPtr malloc(StdSize size);
+    void free(StdPtr mem);
+}
+
+version(WebAssembly)
+{
     extern(C) nothrow @nogc
     {
-        uint malloc(uint size);
-        void free(uint mem);
-
+        // Fallbacks for C stdio
+        
         int putchar(int c)
         {
             return 0;
@@ -21,8 +37,6 @@ version(WebAssembly)
         {
             return 0;
         }
-
-        public import dcore.math._trig;
     }
 }
 else
@@ -35,20 +49,14 @@ else
     {
         extern(C) nothrow @nogc
         {
-            void* malloc(size_t size);
-            void free(void* mem);
-
             int putchar(int c);
             int puts(const char* s);
             int printf(const char* fmt, ...);
-
-            double sin(double x);
-            double cos(double x);
         }
     }
 }
 
-void* memset(void* ptr, int value, size_t num)
+void* memset(void* ptr, int value, size_t num) pure nothrow @nogc
 {
     for (size_t i = 0; i < num; i++)
     {
