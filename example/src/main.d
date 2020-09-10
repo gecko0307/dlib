@@ -10,13 +10,15 @@ version(WebAssembly)
         return 1000;
     }
 }
-
-extern(C) void main()
+else
 {
-    int[] arr = New!(int[])(100);
-	printf("arr.length = %d\n", arr.length);
-    Delete(arr);
-    
-    float x = cos(PI * 0.5f);
-    printf("x = %f\n".ptr, x);
+    extern(C) void main()
+    {
+        int[] arr = New!(int[])(100);
+        printf("arr.length = %d\n", arr.length);
+        Delete(arr);
+        
+        float x = cos(PI * 0.5f);
+        printf("x = %f\n".ptr, x);
+    }
 }
