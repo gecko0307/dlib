@@ -100,3 +100,34 @@ class Owner: Owned
         clearOwnedObjects();
     }
 }
+
+///
+unittest
+{
+    class Test: Owner
+    {
+        string name;
+        static bool[string] available;
+
+        this(string name, Owner o = null)
+        {
+            super(o);
+            this.name = name;
+            available[name] = true;
+        }
+
+        ~this()
+        {
+            available[name] = false;
+        }
+    }
+
+    Test obj1 = New!Test("obj1", null);
+    Test obj2 = New!Test("obj2", obj1);
+    Test obj3 = New!Test("obj3", obj2);
+    obj2.deleteOwnedObject(obj3);
+    assert(!Test.available["obj3"]);
+    Delete(obj1);
+    assert(!Test.available["obj2"]);
+    assert(!Test.available["obj1"]);
+}
