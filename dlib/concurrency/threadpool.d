@@ -57,7 +57,7 @@ class ThreadPool
         this.maxThreads = maxThreads;
         workerThreads = New!(WorkerThread[])(maxThreads);
         taskQueue = New!TaskQueue();
-        
+
         mutex.init();
 
         foreach(i, ref t; workerThreads)
@@ -72,16 +72,16 @@ class ThreadPool
         mutex.lock();
         running = false;
         mutex.unlock();
-        
+
         foreach(i, ref t; workerThreads)
         {
             t.join();
             Delete(t);
         }
-        
+
         Delete(taskQueue);
         Delete(workerThreads);
-        
+
         mutex.destroy();
     }
 
@@ -94,17 +94,17 @@ class ThreadPool
         }
         return task;
     }
-    
+
     Task submit(void function() taskFunc)
     {
         return submit(toDelegate(taskFunc));
     }
-    
+
     Task request()
     {
         return taskQueue.dequeue();
     }
-    
+
     bool isRunning()
     {
         return running;
@@ -119,10 +119,41 @@ class ThreadPool
                 if (t.busy)
                     return false;
             }
-            
+
             return true;
         }
         else
             return false;
     }
+}
+
+///
+unittest
+{
+    int x = 0;
+    int y = 0;
+
+    void task1()
+    {
+        while(x < 100)
+            x += 1;
+    }
+
+    void task2()
+    {
+        while(y < 100)
+            y += 1;
+    }
+
+    ThreadPool threadPool = New!ThreadPool(2);
+
+    threadPool.submit(&task1);
+    threadPool.submit(&task2);
+
+    while(!threadPool.tasksDone) {}
+
+    assert(x == 100);
+    assert(y == 100);
+
+    Delete(threadPool);
 }
