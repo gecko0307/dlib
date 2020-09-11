@@ -365,8 +365,15 @@ alias Delete = deallocate;
 
 unittest
 {
+    auto mem = allocatedMemory();
     int[] arr = New!(int[])(100);
     assert(arr.length == 100);
+    assert(allocatedMemory() - mem == uint.sizeof * 100);
     Delete(arr);
     assert(arr.length == 0);
+
+    struct Foo { int a; }
+    Foo* foo = New!Foo(10);
+    assert(foo.a == 10);
+    Delete(foo);
 }
