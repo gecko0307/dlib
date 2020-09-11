@@ -30,15 +30,15 @@ DEALINGS IN THE SOFTWARE.
  * Cross-platform thread class. Supports Windows and Posix
  *
  * Description:
- * This module provides a platform-independent multithreading API. 
- * For now, it supports Windows and Posix threads (pthreads). The interface 
- * is greatly inspired by core.thread from Phobos, but dlib.core.thread 
+ * This module provides a platform-independent multithreading API.
+ * For now, it supports Windows and Posix threads (pthreads). The interface
+ * is greatly inspired by core.thread from Phobos, but dlib.core.thread
  * is fully GC-free and can be used with dlib.core.memory allocators.
  *
  * Implementation notes:
- * No TLS support, sorry. Any global variables should be marked with 
+ * No TLS support, sorry. Any global variables should be marked with
  * __gshared for correct access from threads.
- * Internals of Thread class are platform-dependent, so be aware of that 
+ * Internals of Thread class are platform-dependent, so be aware of that
  * when inheriting.
  *
  * Copyright: Timur Gafarov 2015-2020.
@@ -254,7 +254,7 @@ class Thread
             return null;
         }
     }
-    
+
     /// Wait for specified amout of milliseconds
     static void sleep(uint msec)
     {
@@ -269,5 +269,12 @@ class Thread
             ts.tv_nsec = (msec % 1000) * 1000000;
             nanosleep(&ts, null);
         }
+    }
+
+    ///
+    unittest
+    {
+        Thread.sleep(100);
+        assert(true);
     }
 }

@@ -154,9 +154,9 @@ unittest
 
     while(!threadPool.tasksDone) {}
 
-    writeln(x);
-    writeln(y);
-    
+    if (x != 100) writeln(x);
+    if (y != 100) writeln(y);
+
     assert(x == 100);
     assert(y == 100);
 
