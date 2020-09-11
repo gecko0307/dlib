@@ -130,6 +130,8 @@ class ThreadPool
 ///
 unittest
 {
+    import std.stdio;
+
     int x = 0;
     int y = 0;
 
@@ -152,6 +154,9 @@ unittest
 
     while(!threadPool.tasksDone) {}
 
+    writeln(x);
+    writeln(y);
+    
     assert(x == 100);
     assert(y == 100);
 

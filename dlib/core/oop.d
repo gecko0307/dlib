@@ -159,9 +159,9 @@ bool hasMethod(T, string m)()
 
 /**
  * Check if given type (T) corresponds to given signature (I)
- * 
+ *
  * Description:
- * Returns true if struct T has the same members and methods as struct I. 
+ * Returns true if struct T has the same members and methods as struct I.
  * This allows to use structs as static interfaces in generic code.
  */
 bool implements(T, I)()
