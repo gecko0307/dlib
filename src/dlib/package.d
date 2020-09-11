@@ -30,5 +30,5 @@ module dlib;
 
 public
 {
-
+    import dcore;
 }

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019 Timur Gafarov
+Copyright (c) 2019-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -28,5 +28,12 @@ DEALINGS IN THE SOFTWARE.
 
 module dcore.stdio;
 
-import std.traits;
-public import dcore.libc;
+public
+{
+    import dcore.libc: printf;
+}
+
+void printStr(string s) nothrow @nogc
+{
+    printf("%.*s\n", s.length, s.ptr);
+}

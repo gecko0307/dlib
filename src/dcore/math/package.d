@@ -28,16 +28,8 @@ DEALINGS IN THE SOFTWARE.
 
 module dcore.math;
 
-public import dcore.math._basemath;
-
-version(FreeStanding) version = UseFallbackFunctions;
-else version(WebAssembly) version = UseFallbackFunctions;
-
-version(UseFallbackFunctions)
+public
 {
-    public import dcore.math._trig;
-}
-else
-{
-    public import dcore.libc;
+    import dcore.math.base;
+    import dcore.libc: sin, cos;
 }

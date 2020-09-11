@@ -3,10 +3,7 @@ module dcore.memory;
 import std.traits;
 import dcore.libc;
 
-enum psize = 8;
-__gshared ulong _allocatedMemory = 0;
-
-T allocate(T, A...) (A args) if (is(T == class))
+T allocate(T, A...) (A args) nothrow @nogc if (is(T == class))
 {
     enum size = __traits(classInstanceSize, T);
     void* p = cast(void*)malloc(size);
@@ -18,7 +15,7 @@ T allocate(T, A...) (A args) if (is(T == class))
     return c;
 }
 
-T* allocate(T, A...) (A args) if (is(T == struct))
+T* allocate(T, A...) (A args) nothrow @nogc if (is(T == struct))
 {
     enum size = T.sizeof;
     void* p = cast(void*)malloc(size);
@@ -30,7 +27,7 @@ T* allocate(T, A...) (A args) if (is(T == struct))
     return c;
 }
 
-T allocate(T) (size_t length) if (isArray!T)
+T allocate(T) (size_t length) nothrow @nogc if (isArray!T)
 {
     alias AT = ForeachType!T;
     size_t size = length * AT.sizeof;
@@ -41,7 +38,7 @@ T allocate(T) (size_t length) if (isArray!T)
     return arr;
 }
 
-void deallocate(T)(ref T obj) if (isArray!T)
+void deallocate(T)(ref T obj) nothrow @nogc if (isArray!T)
 {
     void* p = cast(void*)obj.ptr;
     version(WebAssembly)
@@ -51,7 +48,7 @@ void deallocate(T)(ref T obj) if (isArray!T)
     obj = [];
 }
 
-void deallocate(T)(T obj) if (is(T == class) || is(T == interface))
+void deallocate(T)(T obj) nothrow @nogc if (is(T == class) || is(T == interface))
 {
     Object o = cast(Object)obj;
     void* p = cast(void*)o;
@@ -61,7 +58,7 @@ void deallocate(T)(T obj) if (is(T == class) || is(T == interface))
         free(p);
 }
 
-void deallocate(T)(T* obj)
+void deallocate(T)(T* obj) nothrow @nogc
 {
     void* p = cast(void*)obj;
     version(WebAssembly)

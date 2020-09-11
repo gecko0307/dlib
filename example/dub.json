@@ -1,17 +1,17 @@
 {
-	"authors": [
-		"Timur Gafarov"
-	],
-	"copyright": "Copyright © 2020, Timur Gafarov",
-	"dependencies": {
-		"dlib2": {
+    "authors": [
+        "Timur Gafarov"
+    ],
+    "copyright": "Copyright © 2020, Timur Gafarov",
+    "dependencies": {
+        "dlib2": {
             "version": "~dlib2",
             "path": "../"
         }
-	},
-	"description": "dlib2 example",
-	"license": "BSL-1.0",
-	"name": "main",
+    },
+    "description": "dlib2 example",
+    "license": "BSL-1.0",
+    "name": "main",
     "importPaths": ["src"],
     "sourcePaths": ["src"],
     "mainSourceFile": "src/main.d",
@@ -19,13 +19,7 @@
     "configurations": [
         {
             "name": "application",
-            "targetType": "executable",
-        },
-        {
-            "name": "web",
-            "targetType": "executable",
-            "targetPath": "./dist",
-            "dflags": ["-link-internally", "-L-allow-undefined", "-L--export-dynamic"]
+            "targetType": "executable"
         }
     ]
 }

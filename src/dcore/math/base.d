@@ -26,7 +26,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dcore.math._basemath;
+module dcore.math.base;
 
 enum float PI = 3.141593f;
 enum float HALFPI = 1.570796f;

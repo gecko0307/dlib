@@ -6,7 +6,7 @@ Project goals
 -------------
 * `betterC` compliancy
 * Become a minimal standard library: include standard I/O, math, data manipulation, etc.
-* WebAssembly support
+* WebAssembly support?
 * ARM/Android support?
 * Extensive unit testing
 
