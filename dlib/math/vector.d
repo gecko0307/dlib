@@ -800,11 +800,6 @@ unittest
         a.clamp(-1, 1);
         assert(a == Vector3f(1, -1, 0));
     }
-
-    {
-        Vector3f a = Vector3f(1, 2, 3, 4);
-        assert(dot(a, a) == 14);
-    }
 }
 
 /**
@@ -835,6 +830,16 @@ do
             d += a[i] * b[i];
         return d;
     }
+}
+
+///
+unittest
+{
+    Vector3f v = Vector3f(1, 0, 0);
+    assert(dot(v, v) == 1);
+
+    Vector3f a = Vector3f(1, 2, 3, 4);
+    assert(dot(a, a) == 14);
 }
 
 /**
