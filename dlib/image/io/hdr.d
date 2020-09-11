@@ -85,7 +85,7 @@ ColorRGBE floatToRGBE(Color4f c)
     return rgbe;
 }
 
-void readLineFromStream(InputStream istrm, ref DynamicArray!char line)
+void readLineFromStream(InputStream istrm, ref Array!char line)
 {
     char c;
     do
@@ -168,7 +168,7 @@ Compound!(SuperHDRImage, string) loadHDR(
     }
 
     // Read header
-    DynamicArray!char line;
+    Array!char line;
     do
     {
         line.free();
@@ -358,7 +358,7 @@ Compound!(bool, string) saveHDR(SuperHDRImage img, OutputStream output)
     }
 
     Delete(scanline);
-    
+
     return compound(true, "");
 }
 
@@ -402,7 +402,7 @@ void writeBufferRLE(OutputStream output, ubyte[] data)
         while(cur < beg_run)
         {
             nonrun_count = beg_run - cur;
-            if (nonrun_count > 128) 
+            if (nonrun_count > 128)
 	            nonrun_count = 128;
             buf[0] = cast(ubyte)nonrun_count;
             output.writeBytes(buf.ptr, 1);

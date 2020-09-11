@@ -36,13 +36,13 @@ module dlib.container.queue;
 import dlib.container.array;
 
 /**
- * Queue implementation based on DynamicArray.
+ * Queue implementation based on Array.
  */
 struct Queue(T)
 {
     private:
-    DynamicArray!T array;
-    
+    Array!T array;
+
     public:
     /**
      * Check if stack has no elements.
@@ -74,7 +74,7 @@ struct Queue(T)
         array.removeFront(1);
         return res;
     }
-    
+
     /**
      * Non-throwing version of dequeue.
      * Returns: true on success, false on failure.
@@ -84,7 +84,7 @@ struct Queue(T)
     {
         if (empty)
             return false;
-        
+
         value = array[0];
         array.removeFront(1);
         return true;

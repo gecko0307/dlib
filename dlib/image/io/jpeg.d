@@ -123,9 +123,9 @@ struct HuffmanTableEntry
     ubyte value;
 }
 
-DynamicArray!char bitString(T)(T n, uint len = 1) if (isIntegral!T)
+Array!char bitString(T)(T n, uint len = 1) if (isIntegral!T)
 {
-    DynamicArray!char arr;
+    Array!char arr;
 
     const int size = T.sizeof * 8;
 
@@ -204,7 +204,7 @@ HuffmanTreeNode* emptyNode()
     return New!HuffmanTreeNode(null, null, cast(ubyte)0, 0, false);
 }
 
-HuffmanTreeNode* treeFromTable(DynamicArray!(HuffmanTableEntry) table)
+HuffmanTreeNode* treeFromTable(Array!(HuffmanTableEntry) table)
 {
     HuffmanTreeNode* root = emptyNode();
 
@@ -327,7 +327,7 @@ struct JPEGImage
     {
         ubyte clas;
         ubyte tableId;
-        DynamicArray!HuffmanTableEntry huffmanTable;
+        Array!HuffmanTableEntry huffmanTable;
         HuffmanTreeNode* huffmanTree;
 
         void free()

@@ -96,7 +96,7 @@ class Trie(T, K)
     T value;
     K key;
     ubyte symbol;
-    DynamicArray!(Trie!(T, K)) children;
+    Array!(Trie!(T, K)) children;
     bool active = false;
     size_t length = 0;
 

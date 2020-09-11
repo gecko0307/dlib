@@ -280,7 +280,7 @@ class StdIOStream: IOStream
 class StdFileSystem: FileSystem
 {
     Dict!(Directory, string) openedDirs;
-    DynamicArray!string openedDirPaths;
+    Array!string openedDirPaths;
 
     this()
     {
@@ -346,9 +346,9 @@ class StdFileSystem: FileSystem
                     sizeInBytes = (cast(FileSize) data.nFileSizeHigh << 32) | data.nFileSizeLow;
                     creationTimestamp = SysTime(FILETIMEToStdTime(&data.ftCreationTime));
                     modificationTimestamp = SysTime(FILETIMEToStdTime(&data.ftLastWriteTime));
-                    
+
                     permissions = 0;
-                    
+
                     PACL pacl;
                     PSECURITY_DESCRIPTOR secDesc;
                     TRUSTEE_W trustee;
@@ -362,7 +362,7 @@ class StdFileSystem: FileSystem
                     {
                         uint access;
                         GetEffectiveRightsFromAcl(pacl, &trustee, &access);
-                        
+
                         if (access & ACTRL_FILE_READ)
                             permissions |= PRead;
                         if ((access & ACTRL_FILE_WRITE) && !(data.dwFileAttributes & FILE_ATTRIBUTE_READONLY))
@@ -663,7 +663,7 @@ struct RecursiveFileIterator
 RecursiveFileIterator traverseDir(ReadOnlyFileSystem rofs, string baseDir, bool recursive)
 {
     FileStat s;
-    if (!rofs.stat(baseDir, s))  
+    if (!rofs.stat(baseDir, s))
         return RecursiveFileIterator(null, baseDir, recursive);
     else
         return RecursiveFileIterator(rofs, baseDir, recursive);

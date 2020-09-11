@@ -35,7 +35,7 @@ module dlib.geometry.trimesh;
 
 import std.stdio;
 import std.math;
-  
+
 import dlib.core.memory;
 import dlib.container.array;
 import dlib.math.vector;
@@ -48,16 +48,16 @@ struct Index
 
 struct FaceGroup
 {
-    DynamicArray!Index indicesArray;
+    Array!Index indicesArray;
     int materialIndex;
-    
+
     @property Index[] indices() { return indicesArray.data; }
-      
+
     void addFace(uint a, uint b, uint c)
     {
         indicesArray.insertBack(Index(a, b, c));
     }
-    
+
     void addFaces(Index[] inds)
     {
         indicesArray.insertBack(inds);
@@ -67,75 +67,75 @@ struct FaceGroup
 /// Triangle mesh
 class TriMesh
 {
-    DynamicArray!(Vector3f) verticesArray;
-    DynamicArray!(Vector3f) normalsArray;
-    DynamicArray!(Vector3f) tangentsArray;
-    DynamicArray!(Vector2f) texcoordsArray;
+    Array!(Vector3f) verticesArray;
+    Array!(Vector3f) normalsArray;
+    Array!(Vector3f) tangentsArray;
+    Array!(Vector2f) texcoordsArray;
 
-    DynamicArray!FaceGroup facegroupsArray;
-    
+    Array!FaceGroup facegroupsArray;
+
     @property Vector3f[] vertices()   { return verticesArray.data; }
     @property Vector3f[] normals()    { return normalsArray.data; }
     @property Vector3f[] tangents()   { return tangentsArray.data; }
     @property Vector2f[] texcoords()  { return texcoordsArray.data; }
     @property FaceGroup[] facegroups() { return facegroupsArray.data; }
-    
+
     this()
     {
     }
-    
+
     ~this()
     {
         verticesArray.free();
         normalsArray.free();
         tangentsArray.free();
         texcoordsArray.free();
-        
+
         foreach(fc; facegroupsArray)
             fc.indicesArray.free();
         facegroupsArray.free();
     }
-    
+
     void addVertex(Vector3f v)
     {
         verticesArray.insertBack(v);
     }
-    
+
     void addNormal(Vector3f n)
     {
         normalsArray.insertBack(n);
     }
-    
+
     void addTangent(Vector3f t)
     {
         tangentsArray.insertBack(t);
     }
-    
+
     void addTexcoord(Vector2f t)
     {
         texcoordsArray.insertBack(t);
     }
-    
+
     void addVertices(Vector3f[] verts)
     {
         verticesArray.insertBack(verts);
     }
-    
+
     void addNormals(Vector3f[] norms)
     {
         normalsArray.insertBack(norms);
     }
-    
+
     void addTangents(Vector3f[] tans)
     {
         tangentsArray.insertBack(tans);
     }
-    
+
     void addTexcoords(Vector2f[] texs)
     {
         texcoordsArray.insertBack(texs);
     }
-    
+
     FaceGroup* addFacegroup()
     {
         FaceGroup fg;
@@ -200,7 +200,7 @@ class TriMesh
     void genTangents()
     {
         tangentsArray.free();
-    
+
         Vector3f[] sTan = New!(Vector3f[])(verticesArray.length);
         Vector3f[] tTan = New!(Vector3f[])(verticesArray.length);
 
@@ -275,7 +275,7 @@ class TriMesh
             tangent.normalize();
             tangentsArray[i] = tangent;
         }
-        
+
         Delete(sTan);
         Delete(tTan);
     }

@@ -89,7 +89,7 @@ class Canvas
     // TODO: state stack
     CanvasState state;
 
-    DynamicArray!ContourSegment contour;
+    Array!ContourSegment contour;
     Vector2f penPosition;
 
     float tesselationStep = 1.0f / 40.0f;
@@ -246,8 +246,8 @@ class Canvas
 
     void fillShape()
     {
-        DynamicArray!Vector2f poly;
-        DynamicArray!size_t polyBounds;
+        Array!Vector2f poly;
+        Array!size_t polyBounds;
         Vector2f startP, endP, wayP1, wayP2;
 
         foreach(ref p; contour.data)
@@ -500,4 +500,3 @@ float pointInPolygonAAFast(Vector2f p, Vector2f[] poly)
     float cd = 1.0f - clamp(sqrt(minDistance), 0.0f, 1.0f);
     return max2(cast(float)inside, cd);
 }
-

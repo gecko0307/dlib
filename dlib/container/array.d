@@ -40,7 +40,7 @@ import dlib.core.memory;
  * GC-free dynamic array implementation.
  * Very efficient for small-sized arrays.
  */
-struct DynamicArray(T, size_t chunkSize = 32)
+struct Array(T, size_t chunkSize = 32)
 {
   private:
     T[chunkSize] staticStorage;
@@ -58,7 +58,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
         else
             return dynamicStorage.ptr;
     }
-    
+
     private const(T)* readOnlyStorage() const nothrow
     {
         if (numChunks == 0)
@@ -85,7 +85,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     ///
     unittest
     {
-        DynamicArray!int arr;
+        Array!int arr;
         scope(exit) arr.free();
 
         assert(arr.length == 0);
@@ -94,11 +94,14 @@ struct DynamicArray(T, size_t chunkSize = 32)
     }
 
   public:
+    /**
+     * Returns true if the array uses dynamic memory.
+     */
     @property bool isDynamic() const
     {
         return dynamicStorage.length > 0;
     }
-    
+
     /**
      * Preallocate memory without resizing.
      */
@@ -124,7 +127,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     ///
     unittest
     {
-        DynamicArray!int arr;
+        Array!int arr;
         arr.reserve(100);
         assert(arr.length == 0);
         assert(arr.dynamicStorage.length == 100);
@@ -150,7 +153,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     ///
     unittest
     {
-        DynamicArray!int arr;
+        Array!int arr;
         arr.resize(100, 1);
         assert(arr.length == 100);
         assert(arr[50] == 1);
@@ -174,7 +177,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     ///
     unittest
     {
-        DynamicArray!int arr;
+        Array!int arr;
         scope(exit) arr.free();
 
         arr.shiftRight();
@@ -211,7 +214,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     ///
     unittest
     {
-        DynamicArray!int arr;
+        Array!int arr;
         scope(exit) arr.free();
 
         arr.shiftLeft(1);
@@ -257,7 +260,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     ///
     unittest
     {
-        DynamicArray!int arr;
+        Array!int arr;
         scope(exit) arr.free();
 
         foreach(i; 0..16) {
@@ -281,7 +284,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     ///
     unittest
     {
-        DynamicArray!int arr;
+        Array!int arr;
         scope(exit) arr.free();
 
         arr.insertFront(1);
@@ -302,7 +305,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     ///
     unittest
     {
-        DynamicArray!int arr;
+        Array!int arr;
         scope(exit) arr.free();
 
         arr.insertBack([1,2,3,4]);
@@ -323,7 +326,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     ///
     unittest
     {
-        DynamicArray!int arr;
+        Array!int arr;
         scope(exit) arr.free();
 
         arr.insertFront([5,6,7,8]);
@@ -344,7 +347,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     ///
     unittest
     {
-        DynamicArray!int arr;
+        Array!int arr;
         scope(exit) arr.free();
 
         arr ~= 1;
@@ -364,7 +367,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     ///
     unittest
     {
-        DynamicArray!int arr;
+        Array!int arr;
         scope(exit) arr.free();
 
         arr ~= [1,2,3];
@@ -398,7 +401,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     ///
     unittest
     {
-        DynamicArray!int arr;
+        Array!int arr;
         scope(exit) arr.free();
 
         arr.insertBack([1,2,3]);
@@ -441,7 +444,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     ///
     unittest
     {
-        DynamicArray!int arr;
+        Array!int arr;
         scope(exit) arr.free();
 
         arr.insertBack([1,2,3]);
@@ -478,7 +481,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
 
     unittest
     {
-        DynamicArray!int arr;
+        Array!int arr;
         scope(exit) arr.free();
 
         arr.insertBack([1, 4, 5]);
@@ -507,7 +510,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
 
     unittest
     {
-        DynamicArray!int arr;
+        Array!int arr;
         scope(exit) arr.free();
 
         arr.insertBack([1, 4, 5]);
@@ -581,7 +584,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     ///
     unittest
     {
-        DynamicArray!int arr;
+        Array!int arr;
         scope(exit) arr.free();
 
         arr.insertBack([1,2,3]);
@@ -595,7 +598,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     {
         return storage[0..pos];
     }
-    
+
     const(T)[] readOnlyData() const nothrow
     {
         return readOnlyStorage[0..pos];
@@ -604,7 +607,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     ///
     unittest
     {
-        DynamicArray!(int,4) arr;
+        Array!(int,4) arr;
         scope(exit) arr.free();
 
         foreach(i; 0..6) {
@@ -655,14 +658,14 @@ struct DynamicArray(T, size_t chunkSize = 32)
 
         return result;
     }
-    
+
     /**
      * Iterating over array via foreach_reverse.
      */
     int opApplyReverse(scope int delegate(size_t i, ref T) dg)
     {
         int result = 0;
-        
+
         for(size_t i =  length; i-- > 0; )
         {
             result = dg(i, data[i]);
@@ -672,11 +675,11 @@ struct DynamicArray(T, size_t chunkSize = 32)
 
         return result;
     }
-    
+
     ///
     unittest
     {
-        DynamicArray!(int,4) arr;
+        Array!(int,4) arr;
         scope(exit) arr.free();
 
         int[4] values;
@@ -706,14 +709,14 @@ struct DynamicArray(T, size_t chunkSize = 32)
 
         return 0;
     }
-    
+
      /**
      * Iterating over array via foreach_reverse.
      */
     int opApplyReverse(scope int delegate(ref T) dg)
     {
         int result = 0;
-        
+
         for(size_t i = length; i-- > 0; )
         {
             result = dg(data[i]);
@@ -723,11 +726,11 @@ struct DynamicArray(T, size_t chunkSize = 32)
 
         return result;
     }
-    
+
     ///
     unittest
     {
-        DynamicArray!(int,4) arr;
+        Array!(int,4) arr;
         scope(exit) arr.free();
 
         int[] values;
@@ -750,7 +753,7 @@ struct DynamicArray(T, size_t chunkSize = 32)
     }
 }
 
-alias Array = DynamicArray;
+deprecated("use Array instead") alias DynamicArray = Array;
 
 void reallocateArray(T)(ref T[] buffer, const(size_t) len)
 {

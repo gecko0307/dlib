@@ -53,7 +53,7 @@ struct Task
 {
     TaskState state = TaskState.Invalid;
     void delegate() func;
-    
+
     void run()
     {
         if (func !is null)
@@ -70,7 +70,7 @@ class TaskQueue
 {
     protected:
     enum size_t MaxTasks = 64;
-    DynamicArray!(Task, MaxTasks) tasks;
+    Array!(Task, MaxTasks) tasks;
     Mutex mutex;
 
     public:
@@ -84,7 +84,7 @@ class TaskQueue
         tasks.free();
         mutex.destroy();
     }
-    
+
     size_t count()
     {
         return tasks.length;

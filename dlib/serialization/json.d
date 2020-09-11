@@ -56,13 +56,13 @@ class JSONLexer
     string currentLexeme = "";
     String internalString;
     UTF8Encoder encoder;
-    
+
     enum delimiters = [
         "{", "}", "[", "]", ",", ":", "\n", " ", "\"", "\'", "`",
         "\\a", "\\b", "\\f", "\\n", "\\r", "\\t", "\\v", "\\\"", "\\\'", "\\\\", "\\?",
         "\\u"
     ];
-    
+
     this(string text)
     {
         this.text = text;
@@ -70,13 +70,13 @@ class JSONLexer
         lexer = New!Lexer(this.text, delimiters);
         nextLexeme();
     }
-    
+
     ~this()
     {
         Delete(lexer);
         internalString.free();
     }
-    
+
     void nextLexeme()
     {
         string lexeme;
@@ -100,7 +100,7 @@ class JSONLexer
                     while (lexeme.length)
                     {
                         lexeme = lexer.getLexeme();
-                        
+
                         if (lexeme == "\\a") internalString ~= "\a";
                         else if (lexeme == "\\b") internalString ~= "\b";
                         else if (lexeme == "\\f") internalString ~= "\f";
@@ -137,23 +137,23 @@ class JSONLexer
             }
         }
     }
-    
+
     bool isWhitespace(string lexeme)
     {
         return isWhite(lexeme[0]);
     }
-    
+
     size_t hexToUTF8(string input, ref char[4] buffer)
     {
         uint codepoint = '\u0000';
-        
+
         // TODO: invalid codepoint should be an error
         if (input.length >= 4)
         {
             string hex = input[0..4];
             codepoint = std.conv.parse!(uint, string)(hex, 16);
         }
-        
+
         return encoder.encode(codepoint, buffer);
     }
 }
@@ -169,7 +169,7 @@ enum JSONType
 }
 
 /// JSON array
-alias JSONArray = DynamicArray!JSONValue;
+alias JSONArray = Array!JSONValue;
 
 /// JSON object
 alias JSONObject = Dict!(JSONValue, string);
@@ -182,20 +182,20 @@ class JSONValue
     string asString;
     JSONArray asArray;
     JSONObject asObject;
-    
+
     this()
     {
         asNumber = 0.0;
         asString = "";
         asObject = null;
     }
-    
+
     void addArrayElement(JSONValue element)
     {
         type = JSONType.Array;
         asArray.append(element);
     }
-    
+
     void addField(string name, JSONValue element)
     {
         if (asObject is null)
@@ -203,7 +203,7 @@ class JSONValue
         type = JSONType.Object;
         asObject[name] = element;
     }
-    
+
     ~this()
     {
         if (asArray.length)
@@ -212,7 +212,7 @@ class JSONValue
                 Delete(e);
             asArray.free();
         }
-        
+
         if (asObject)
         {
             foreach(name, e; asObject)
@@ -237,42 +237,42 @@ class JSONDocument
     public:
     bool isValid;
     JSONValue root;
-    
+
     this(string input)
     {
         root = New!JSONValue();
         root.type = JSONType.Object;
-        lexer = New!JSONLexer(input);        
+        lexer = New!JSONLexer(input);
         JSONResult res = parseValue(root);
         isValid = res[0];
         if (!isValid)
             writeln(res[1]);
     }
-    
+
     ~this()
     {
         Delete(root);
         Delete(lexer);
     }
-    
+
     protected:
-    
+
     JSONLexer lexer;
     string currentLexeme() @property
     {
         return lexer.currentLexeme;
     }
-    
+
     void nextLexeme()
     {
         lexer.nextLexeme();
     }
-    
+
     JSONResult parseValue(JSONValue value)
     {
         if (!currentLexeme.length)
             return JSONError.EOI;
-        
+
         if (currentLexeme == "{")
         {
             nextLexeme();
@@ -284,21 +284,21 @@ class JSONDocument
                 if (identifier[0] != '\"' || identifier[$-1] != '\"')
                     return JSONResult(false, format("illegal identifier \"%s\"", identifier));
                 identifier = identifier[1..$-1];
-                
+
                 nextLexeme();
                 if (currentLexeme != ":")
                     return JSONResult(false, format("\":\" expected, got \"%s\"", currentLexeme));
-                
+
                 nextLexeme();
                 JSONValue newValue = New!JSONValue();
                 JSONResult res = parseValue(newValue);
                 if (!res[0])
                     return res;
-                
+
                 value.addField(identifier, newValue);
-                
+
                 nextLexeme();
-                
+
                 if (currentLexeme == ",")
                     nextLexeme();
                 else if (currentLexeme != "}")
@@ -314,11 +314,11 @@ class JSONDocument
                 JSONResult res = parseValue(newValue);
                 if (!res[0])
                     return res;
-                
+
                 value.addArrayElement(newValue);
-                
+
                 nextLexeme();
-                
+
                 if (currentLexeme == ",")
                     nextLexeme();
                 else if (currentLexeme != "]")
@@ -342,7 +342,7 @@ class JSONDocument
                 value.asNumber = data.to!double;
             }
         }
-        
+
         return JSONResult(true, "");
     }
 }

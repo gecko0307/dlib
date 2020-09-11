@@ -30,11 +30,11 @@ DEALINGS IN THE SOFTWARE.
  * Class-based object ownership system
  *
  * Description:
- * Object ownership system similar to Delphi's. All classes deriving from Owner 
- * can store references to objects implementing Owned interface (and other Owner 
+ * Object ownership system similar to Delphi's. All classes deriving from Owner
+ * can store references to objects implementing Owned interface (and other Owner
  * objects as well). When an owner is deleted, its owned objects are also deleted.
  *
- * This module is not compatible with GC-collected objects. It can be used only with 
+ * This module is not compatible with GC-collected objects. It can be used only with
  * dlib.core.memory. Using it with objects allocated any other way will cause application to crash.
  *
  * Copyright: Timur Gafarov 2017-2020.
@@ -54,15 +54,15 @@ interface Owned
 }
 
 /**
- * Basic owner object class. 
+ * Basic owner object class.
  * When you delete it, all owned object are automatically deleted
  */
 class Owner: Owned
 {
-    protected DynamicArray!Owned ownedObjects;
+    protected Array!Owned ownedObjects;
 
     /**
-     * Constructor. owner can be null, in this case object won't have an owner. 
+     * Constructor. owner can be null, in this case object won't have an owner.
      * Such objects are called root owners and should be deleted manually.
      */
     this(Owner owner)
@@ -100,4 +100,3 @@ class Owner: Owned
         clearOwnedObjects();
     }
 }
-

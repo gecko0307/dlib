@@ -125,6 +125,8 @@ unittest
     assert(p is null);
 }
 
-enum bool isFinalizable(T) = is(T == class) || is(T == interface)
-                           || hasElaborateDestructor!T || isDynamicArray!T;
-
+enum bool isFinalizable(T) =
+    is(T == class) ||
+    is(T == interface) ||
+    hasElaborateDestructor!T ||
+    isDynamicArray!T;

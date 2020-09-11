@@ -10,6 +10,8 @@ dlib 0.20.0 beta1 - TBD
   - `UTF16Decoder.byDChar` is deprecated, use `UTF16Decoder.decode` instead
 - **dlib.coding**
   - `dlib.coding.hash` is deprecated, use `std.digest` instead
+- **dlib.container**
+  - `dlib.container.array.DynamicArray` is deprecated, use `dlib.container.array.Array` instead
 - **Documentation**
   - Deploy-ready ddoc documentation for dlib now can be generated from source code using `dub --build=ddox`. It uses [scod](https://code.dlang.org/packages/scod) generator and is hosted [here](https://gecko0307.github.io/dlib/docs/dlib.html). Harbored-mod support has been dropped.
   - Many modules are now documented better.
@@ -121,7 +123,7 @@ No changes since dlib 0.16.0 beta1.
 dlib 0.16.0 beta1 - 4 Mar, 2019
 -------------------------------
 - **dlib.core**
-  - `dlib.core.memory`: Memory profiler now reports file and line of each allocation. Now it is enabled in runtime using `enableMemoryProfiler` function. 
+  - `dlib.core.memory`: Memory profiler now reports file and line of each allocation. Now it is enabled in runtime using `enableMemoryProfiler` function.
   - `dlib.core.memory`: `Owner.deleteOwnedObject`.
 - **dlib.text**
   - `dlib.text.lexer`: `Lexer.position`.
@@ -188,10 +190,10 @@ dlib 0.14.0 beta1 - 8 Jul, 2018
 
 - **dlib.image**
   - **Breaking change:** `SuperImage.pixelFormat` now returns `uint` instead of `PixelFormat`. This allows extending dlib with custom pixel formats while maintaining compatibility with `PixelFormat`. Values from 0 to 255 are reserved for dlib, values 256 and above are application-specific. This change is just a new convention and will not break any existing logics, though explicit cast to `PixelFormat` may be required in some cases. Comparisons such as `img.pixelFormat == PixelFormat.RGB8` will work fine.
-  - `PixelFormat.RGBA_FLOAT` is now deprecated, use `FloatPixelFormat.RGBAF32` from `dlib.image.hdri` instead. 
-  - Saving to HDR is now supported (`saveHDR` functions in `dlib.image.io.hdr`). 
+  - `PixelFormat.RGBA_FLOAT` is now deprecated, use `FloatPixelFormat.RGBAF32` from `dlib.image.hdri` instead.
+  - Saving to HDR is now supported (`saveHDR` functions in `dlib.image.io.hdr`).
   - New filters: `dlib.image.filters.histogram` (generates an image histogram) and `dlib.image.filters.binarization` (image thresholding using Otsu's method).
-  - ACES tonemapper (`hdrTonemapACES`) and average luminance function (`averageLuminance`) in `dlib.image.hdri`. 
+  - ACES tonemapper (`hdrTonemapACES`) and average luminance function (`averageLuminance`) in `dlib.image.hdri`.
   - Improved `dlib.image.canvas`. Path rasterizer now natively does anti-aliasing. Fixed bug with rendering on non-square images.
 - **dlib.audio**
   - Synthesizer framework (`dlib.audio.synth`). It allows to write synthesizers and use them to 'render' sounds, like in DAWs. Three built-in synthesizers are available: `SineWaveSynth`, `SquareWaveSynth`, `FMSynth`. To write actual data to `Sound` objects, two functions are available: `fillSynth` and `mixSynth`.
@@ -270,7 +272,7 @@ dlib 0.11.1 - 24 May, 2017
 --------------------------
 * Added `alphaOver` in `dlib.image.color`
 * Fixed memory leak in `dlib.image.io.png`
-* Deprecation fix: use `dlib.math.transformation` everywhere instead of `dlib.math.affine`. 
+* Deprecation fix: use `dlib.math.transformation` everywhere instead of `dlib.math.affine`.
 
 dlib 0.11.0 - 3 May, 2017
 -------------------------
@@ -297,12 +299,12 @@ dlib 0.11.0 beta1 - 25 Apr, 2017
 - **Misc**
   - Removed deprecated `dlib.xml` package. `dlib.serialization.xml` should be used instead.
   - Added latest DMD (2.074.0) and LDC (1.2.0) to Travis CI config.
-  - A new logo and homepage for the project: https://gecko0307.github.io/dlib. 
+  - A new logo and homepage for the project: https://gecko0307.github.io/dlib.
 
 dlib 0.10.1 - 14 Mar, 2017
 --------------------------
 * Animated images and basic APNG support (unfinished, without dispose and blend operations, saving to APNG is also missing)
-* Fixed some bugs in `dlib.text.slicelexer` and `dlib.serialization.xml`. `dlib.text.lexer.Lexer` is now an alias to `dlib.text.slicelexer.SliceLexer` 
+* Fixed some bugs in `dlib.text.slicelexer` and `dlib.serialization.xml`. `dlib.text.lexer.Lexer` is now an alias to `dlib.text.slicelexer.SliceLexer`
 * Added latest DMD (2.073.2) and LDC (1.1.0) to Travis CI config.
 
 dlib 0.10.0 - 23 Jan, 2017
@@ -369,7 +371,7 @@ dlib 0.9.0 beta1 - 14 May, 2016
   - Improved `LinkedList`, added range interface. Added unittests for `LinkedList` and `DynamicArray`
 - dlib.text
   - `UTF8Decoder` and `Lexer` now support range interface. Added unittests for both
-- Other improvements 
+- Other improvements
   - Added latest DMD (2.071.0) to Travis CI config, added DUB service files to .gitignore.
 
 dlib 0.8.1 - 13 Feb, 2016
@@ -396,7 +398,7 @@ dlib 0.8.0 beta1 - 7 Feb, 2016
   * Fixed erroneous deleting uninitialized thread in `dlib.core.thread`
 * dlib.filesystem
   * Implemented missing methods in `dlib.filesystem.stdfs.StdFileSystem`: `openForIO`, `openDir`, `createDir`, `remove`. There is a known issue with `remove`: it doesn't delete directories under Windows
-* Other improvements 
+* Other improvements
   * Added [HTML documentation generator](https://github.com/gecko0307/dlib/tree/master/gendoc).
 
 dlib 0.7.1 - 2 Dec, 2015

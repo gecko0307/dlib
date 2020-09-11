@@ -36,11 +36,11 @@ module dlib.container.stack;
 import dlib.container.array;
 
 /**
- * Stack implementation based on DynamicArray.
+ * Stack implementation based on Array.
  */
 struct Stack(T)
 {
-    private DynamicArray!T array;
+    private Array!T array;
 
     public:
     /**
@@ -65,7 +65,7 @@ struct Stack(T)
         array.removeBack(1);
         return res;
     }
-    
+
     /**
      * Non-throwing version of pop.
      * Returns: true on success, false on failure.

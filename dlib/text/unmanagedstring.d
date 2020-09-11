@@ -30,7 +30,7 @@ DEALINGS IN THE SOFTWARE.
  * GC-free UTF-8 string type
  *
  * Copyright: Timur Gafarov 2018-2020.
- * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * License: $(LINK2 https://boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
 module dlib.text.unmanagedstring;
@@ -41,7 +41,7 @@ import dlib.text.utf8;
 import dlib.core.stream;
 
 /**
- * GC-free UTF-8 string type based on DynamicArray.
+ * GC-free UTF-8 string type based on dlib.container.array.
  * Stores up to 128 bytes without dynamic memory allocation,
  * so short strings are processed very fast.
  * String is always zero-terminated and directly compatible with C.
@@ -51,13 +51,13 @@ struct String
     /**
      * Underlying array of characters
      */
-    DynamicArray!(char, 128) data;
-    
+    Array!(char, 128) data;
+
     private void addZero()
     {
         data.insertBack('\0');
     }
-    
+
     private void removeZero()
     {
         data.removeBack(1);
@@ -128,7 +128,7 @@ struct String
         while(utf16char);
         addZero();
     }
-    
+
     /**
      * Construct from an InputStream
      */
@@ -186,7 +186,7 @@ struct String
     {
         if (data.length == 0)
             return "";
-        else 
+        else
             return cast(string)data.readOnlyData[0..$-1];
     }
 
@@ -210,7 +210,7 @@ struct String
     {
         return UTF8Decoder().decode(toString());
     }
-    
+
     deprecated("use String.decode instead")
     auto byDChar()
     {

@@ -54,13 +54,13 @@ struct UTF16Decoder
 {
     // TODO: byte order
     public:
-    
+
     /// Input string. Set it before decoding
     string input;
-    
+
     /// Current index in an input string
     size_t index = 0;
-    
+
     /// Current character index
     int character = 0;
 
@@ -92,7 +92,7 @@ struct UTF16Decoder
     auto decode(string s)
     {
         input = s;
-        
+
         static struct ByDchar
         {
             private:
@@ -124,14 +124,14 @@ struct UTF16Decoder
 
         return ByDchar(this);
     }
-    
+
     /// ditto
     auto decode()
     {
         return decode(input);
     }
-    
-    deprecated("use UTF16Decoder.decode instead") 
+
+    deprecated("use UTF16Decoder.decode instead")
     auto byDChar()
     {
         return decode();
@@ -173,7 +173,7 @@ struct UTF16Encoder
  */
 wchar[] convertUTF8toUTF16(string s, bool nullTerm = false)
 {
-    DynamicArray!wchar array;
+    Array!wchar array;
     wchar[] output;
 
     UTF8Decoder dec = UTF8Decoder(s);
@@ -220,7 +220,7 @@ wchar[] convertUTF8toUTF16(string s, bool nullTerm = false)
  */
 char[] convertUTF16ztoUTF8(wchar* s, bool nullTerm = false)
 {
-    DynamicArray!char array;
+    Array!char array;
     char[] output;
     wchar* utf16 = s;
 

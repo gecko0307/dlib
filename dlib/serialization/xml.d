@@ -28,12 +28,12 @@ DEALINGS IN THE SOFTWARE.
 
 /**
  GC-free parser for a subset of XML.
- 
+
  Description:
  Has the following limitations:
  - supports only ASCII and UTF-8 encodings
  - doesn't support DOCTYPE and some other special tags
- 
+
  Copyright: Timur Gafarov 2015-2020.
  License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  Authors: Timur Gafarov
@@ -100,7 +100,7 @@ string appendChar(string s, dchar ch)
 class XmlNode
 {
     XmlNode parent;
-    DynamicArray!XmlNode children;
+    Array!XmlNode children;
     string name;
     string text;
     Dict!(string, string) properties;
@@ -165,7 +165,7 @@ class XmlNode
 
     string getTextUnmanaged()
     {
-        DynamicArray!char res;
+        Array!char res;
         res.append(text);
         foreach(n; children)
         {
@@ -258,7 +258,7 @@ XmlDocument parseXMLUnmanaged(string text)
     bool lastCharWasWhitespace = false;
 
     string tmpPropName;
-    DynamicArray!char tmpPropValue;
+    Array!char tmpPropValue;
 
     bool finished = false;
 
