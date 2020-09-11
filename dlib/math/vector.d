@@ -584,15 +584,20 @@ struct Vector(T, int size)
     {
         static if (s.length <= 4)
         {
+            private static auto extend(string s)
+            {
+                while (s.length < 4)
+                    s ~= s[$-1];
+                return s;
+            }
+
+            unittest
+            {
+                assert(extend("x") == "xxxx");
+            }
+
             @property auto ref opDispatch(this X)()
             {
-                auto extend(string s)
-                {
-                    while (s.length < 4)
-                        s ~= s[$-1];
-                    return s;
-                }
-
                 enum p = extend(s);
                 enum i = (char c) => ['x':0, 'y':1, 'z':2, 'w':3,
                                       'r':0, 'g':1, 'b':2, 'a':3,
@@ -640,6 +645,16 @@ struct Vector(T, int size)
         return true;
     }
 
+    unittest
+    {
+        static if (size == 3)
+        {
+            assert(valid("xyz"));
+            assert(valid("rgb"));
+            assert(valid("stp"));
+        }
+    }
+
    /**
     * Symbolic element access
     */
@@ -654,6 +669,14 @@ struct Vector(T, int size)
         return res;
     }
 
+    unittest
+    {
+        static if (size == 3)
+        {
+            assert(elements(["x", "y", "z", "w"]) == "T x; T y; T z; ");
+        }
+    }
+
    /**
     * Vector components
     */
@@ -661,15 +684,15 @@ struct Vector(T, int size)
     {
         // Elements as static array
         T[size] arrayof;
-        
+
         static if (size < 5)
         {
             /// Elements as x, y, z, w
             struct { mixin(elements(["x", "y", "z", "w"])); }
-            
+
             /// Elements as r, g, b, a
             struct { mixin(elements(["r", "g", "b", "a"])); }
-            
+
             /// Elements as s, t, p, q
             struct { mixin(elements(["s", "t", "p", "q"])); }
         }
@@ -686,6 +709,10 @@ unittest
         const vec3 d = a * b / c;
 
         assert(isAlmostZero(to!vec3(c.toString()) - c));
+
+        const vec3 v = vec3(10, 10, 10);
+        const vec3 vRes = (v / 10) * 2 - 1 + 5;
+        assert(isAlmostZero(vRes - vec3(6, 6, 6)));
 
         ivec2 ab = ivec2(5, 15);
         ab += ivec2(20, 30);
@@ -871,6 +898,17 @@ do
     result.normalize();
 
     return result;
+}
+
+///
+unittest
+{
+    Vector3f n = planeNormal(
+        Vector3f(0, 0, 0),
+        Vector3f(0, 0, 1),
+        Vector3f(1, 0, 0)
+    );
+    assert(isAlmostZero(n - Vector3f(0, 1, 0)));
 }
 
 /**
