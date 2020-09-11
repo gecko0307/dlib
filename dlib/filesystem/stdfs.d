@@ -42,7 +42,7 @@ import dlib.core.memory;
 import dlib.core.stream;
 import dlib.container.dict;
 import dlib.container.array;
-import dlib.text.unmanagedstring;
+import dlib.text.str;
 import dlib.filesystem.filesystem;
 
 version(Posix)

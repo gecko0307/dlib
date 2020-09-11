@@ -37,7 +37,7 @@ module dlib.text;
 
 public
 {
-    import dlib.text.unmanagedstring;
+    import dlib.text.str;
     import dlib.text.utils;
     import dlib.text.utf8;
     import dlib.text.utf16;

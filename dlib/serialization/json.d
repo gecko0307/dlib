@@ -47,7 +47,7 @@ import dlib.container.dict;
 import dlib.text.utils;
 import dlib.text.utf8;
 import dlib.text.lexer;
-import dlib.text.unmanagedstring;
+import dlib.text.str;
 
 class JSONLexer
 {

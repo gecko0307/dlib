@@ -5,6 +5,7 @@ dlib 0.20.0 beta1 - TBD
 - **dlib.audio**
   - New package: `dlib.audio.io`
 - **dlib.text**
+  - `dlib.text.unmanagedstring` is deprecated, use `dlib.text.str` instead
   - `String.byDChar` is deprecated, use `String.decode` instead
   - `UTF8Decoder.byDChar` is deprecated, use `UTF8Decoder.decode` instead
   - `UTF16Decoder.byDChar` is deprecated, use `UTF16Decoder.decode` instead
