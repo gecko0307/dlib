@@ -652,6 +652,14 @@ struct Vector(T, int size)
             assert(valid("xyz"));
             assert(valid("rgb"));
             assert(valid("stp"));
+            assert(!valid("m"));
+            assert(!valid("km"));
+        }
+        else static if (size == 3)
+        {
+            assert(valid("xyzw"));
+            assert(valid("rgba"));
+            assert(valid("stpq"));
         }
     }
 
@@ -713,6 +721,7 @@ unittest
         const vec3 v = vec3(10, 10, 10);
         const vec3 vRes = (v / 10) * 2 - 1 + 5;
         assert(isAlmostZero(vRes - vec3(6, 6, 6)));
+        assert(!vRes.isZero);
 
         ivec2 ab = ivec2(5, 15);
         ab += ivec2(20, 30);
