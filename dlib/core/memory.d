@@ -29,12 +29,12 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Tools for manual memory management
  *
- * New/Delete for classes, structs and arrays. It utilizes dlib.memory 
- * for actual memory allocation, so it is possible to switch allocator that is 
+ * New/Delete for classes, structs and arrays. It utilizes dlib.memory
+ * for actual memory allocation, so it is possible to switch allocator that is
  * being used. By default, dlib.memory.mallocator.Mallocator is used.
  *
- * Module includes a simple memory profiler that can be turned on with enableMemoryProfiler 
- * function. If active, it will store information about every allocation (type and size), 
+ * Module includes a simple memory profiler that can be turned on with enableMemoryProfiler
+ * function. If active, it will store information about every allocation (type and size),
  * and will mark those which are leaked (haven't been deleted).
  *
  * Copyright: Timur Gafarov 2015-2020.
@@ -63,7 +63,7 @@ ulong allocatedMemory()
     return _allocatedMemory;
 }
 
-private __gshared Mallocator _defaultGlobalAllocator; 
+private __gshared Mallocator _defaultGlobalAllocator;
 private __gshared Allocator _globalAllocator;
 
 /**
@@ -326,10 +326,10 @@ void deallocate(T)(T* obj)
 }
 
 /**
-  Creates an object of type T and calls its constructor if necessary. 
+  Creates an object of type T and calls its constructor if necessary.
 
   Description:
-  This is an equivalent for D's new opetator. It allocates arrays, 
+  This is an equivalent for D's new opetator. It allocates arrays,
   classes and structs on a heap using currently set globalAllocator.
   Arguments to this function are passed to constructor.
 
@@ -347,9 +347,9 @@ void deallocate(T)(T* obj)
 alias New = allocate;
 
 /**
-  Destroys an object of type T previously created by New and calls 
+  Destroys an object of type T previously created by New and calls
   its destructor if necessary.
-  
+
   Examples:
   ----
   MyClass c = New!MyClass(10, 4, 5);
@@ -362,3 +362,11 @@ alias New = allocate;
   ----
  */
 alias Delete = deallocate;
+
+unittest
+{
+    int[] arr = New!(int[])(100);
+    assert(arr.length == 100);
+    Delete(arr);
+    assert(arr.length == 0);
+}
