@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2020 Timur Gafarov
+Copyright (c) 2015-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,11 +26,11 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dlib;
+/**
+ * Copyright: Timur Gafarov 2015-2020.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov, Roman Vlasov, Andrey Penechko, Eugene Wissner, Roman Chistokhodov, aferust, ijet
+ */
+module dlib.container.array;
 
-public
-{
-    import dcore;
-    import dlib.core;
-    import dlib.container;
-}
+public import dcore.container.array;
