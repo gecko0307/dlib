@@ -10,6 +10,14 @@ Project goals
 * ARM/Android support?
 * Extensive unit testing
 
+Progress
+--------
+* [ ] dcore.container
+* [ ] dcore.math
+* [x] dcore.memory
+* [ ] dcore.stdio
+* [ ] dcore.text
+
 Architecture
 ------------
 dlib2 will consist of two main packages, `dcore` and `dlib`. `dcore` will be minimal low-level standard library replacement with standard I/O, math, data manipulation, etc. `dlib` will be a compatibility layer that implements classic dlib API on top of `dcore`.
