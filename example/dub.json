@@ -4,7 +4,7 @@
     ],
     "copyright": "Copyright © 2020, Timur Gafarov",
     "dependencies": {
-        "dlib2": {
+        "dlib": {
             "version": "~dlib2",
             "path": "../"
         }
@@ -15,7 +15,7 @@
     "importPaths": ["src"],
     "sourcePaths": ["src"],
     "mainSourceFile": "src/main.d",
-    "dflags": ["-vgc", "-betterC"],
+    "dflags": ["-betterC"],
     "configurations": [
         {
             "name": "application",
