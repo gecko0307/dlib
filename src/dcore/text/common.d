@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019-2020 Timur Gafarov
+Copyright (c) 2018-2020 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,14 +26,10 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dcore;
+module dcore.text.common;
 
-public
-{
-    import dcore.container;
-    import dcore.internal;
-    import dcore.math;
-    import dcore.memory;
-    import dcore.stdio;
-    import dcore.text;
-}
+/// Denotes an end of data
+enum DECODE_END = -1;
+
+/// Denotes an error while decoding
+enum DECODE_ERROR = -2;

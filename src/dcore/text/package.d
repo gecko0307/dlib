@@ -26,14 +26,10 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dcore;
+module dcore.text;
 
 public
 {
-    import dcore.container;
-    import dcore.internal;
-    import dcore.math;
-    import dcore.memory;
-    import dcore.stdio;
-    import dcore.text;
+    import dcore.text.common;
+    import dcore.text.utf8;
 }
