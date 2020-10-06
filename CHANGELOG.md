@@ -17,7 +17,7 @@ dlib 0.20.0 beta1 - TBD
   - Deploy-ready ddoc documentation for dlib now can be generated from source code using `dub --build=ddox`. It uses [scod](https://code.dlang.org/packages/scod) generator and is hosted [here](https://gecko0307.github.io/dlib/docs/dlib.html). Harbored-mod support has been dropped.
   - Many modules are now documented better.
 - **Misc**
-  - Added latest DMD (2.093.1) and LDC (1.23.0) to Travis CI config.
+  - Added latest DMD (2.094.0, 2.093.1) and LDC (1.23.0) to Travis CI config.
 
 dlib 0.19.2 - 26 Aug, 2020
 --------------------------
