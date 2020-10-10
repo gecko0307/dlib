@@ -1,5 +1,5 @@
-dlib 0.20.0 beta1 - TBD
------------------------
+dlib 0.20.0 beta1 - 10 Oct, 2020
+--------------------------------
 - **dlib.image**
   - `dlib.image.io.io` is deprecated, import `dlib.image.io` instead
 - **dlib.audio**

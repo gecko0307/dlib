@@ -36,7 +36,7 @@ Currently dlib consists of the following packages:
 
 Supported Compilers
 -------------------
-dlib is automatically tested for compatibility with latest two releases of DMD and LDC. Older releases formally are not supported, but in practice usually are, to some extent. Minimal compiler frontend version required is 2.079.0 (DMD 2.079.0, LDC 1.9.0). There's no guaranteed support for GDC and other D compilers.
+dlib is automatically tested for compatibility with latest two releases of DMD and LDC. Older releases formally are not supported, but in practice usually are, to some extent. There's no guaranteed support for GDC and other D compilers.
 
 Documentation
 -------------
