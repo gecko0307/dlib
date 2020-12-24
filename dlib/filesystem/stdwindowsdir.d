@@ -41,7 +41,6 @@ version(Windows)
 
 import dlib.core.memory;
 import dlib.filesystem.filesystem;
-//import dlib.text.utils;
 import dlib.text.utf16;
 
 version(Windows):

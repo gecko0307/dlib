@@ -46,22 +46,24 @@ import dlib.math.utils;
 import dlib.math.decomposition;
 import dlib.math.linsolve;
 
-/**
-  Square (NxN) matrix.
-  
-  Description:
-  
-  Implementation notes:
-  * The storage order is column-major;
-  * Affine vector of 4x4 matrix is in the 4th column (as in OpenGL);
-  * Elements are stored in a fixed manner, so it is impossible to change
-    matrix size once it's created;
-  * Actual data is allocated as a static array, so no references, no GC touching.
-    When you pass a Matrix by value, it will be safely copied;
-  * This implementation is not perfect (as for now) for dealing with really
-    big matrices, but ideal for smaller ones, e.g. those which are meant to be
-    manipulated in real-time (in game engines, rendering pipelines etc).
-    This limitation may (but doesn't have to) be addressed in future.
+/***********************************
+ * Square (NxN) matrix.
+ * 
+ * Implementation notes:
+ * 
+ * - The storage order is column-major.
+ *
+ * - Affine vector of 4x4 matrix is in the 4th column (as in OpenGL).
+ *
+ * - Elements are stored in a fixed manner, so it is impossible to change
+ *   matrix size once it's created.
+ *
+ * - Actual data is allocated as a static array, so no references, no GC touching.
+ *   When you pass a Matrix by value, it will be safely copied.
+ *
+ * - This implementation is not perfect (as for now) for dealing with really
+ *   big matrices, but ideal for smaller ones, e.g. those which are meant to be
+ *   manipulated in real-time (in game engines, rendering pipelines etc).
  */
 struct Matrix(T, size_t N)
 {

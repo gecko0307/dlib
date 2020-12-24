@@ -42,38 +42,57 @@ import std.string;
 import dlib.core.stream;
 import dlib.filesystem.dirrange;
 
+/// File size type
 alias FileSize = StreamSize;
 
+/// If a file is readable, FileStat.permissions will have PRead bits set
 enum PRead = 0x01;
+
+/// If a file is writable, FileStat.permissions will have PWrite bits set
 enum PWrite = 0x02;
+
+/// If a file is executable, FileStat.permissions will have PExecute bits set
 enum PExecute = 0x04;
 
 /// Holds general information about a file or directory.
 struct FileStat
 {
-    ///
-    bool isFile, isDirectory;
-    /// valid if isFile is true
+    /// True if a file is not a directory
+    bool isFile;
+    
+    /// True if a file is a directory
+    bool isDirectory;
+    
+    /// File size. Valid only if isFile is true
     FileSize sizeInBytes;
-    ///
-    SysTime creationTimestamp, modificationTimestamp;
-    ///
+    
+    /// File creation date/time
+    SysTime creationTimestamp;
+    
+    /// File modification date/time
+    SysTime modificationTimestamp;
+    
+    /// Permissions of a file in a given filesystem. Bit combination of PRead, PWrite, PExecute
     int permissions;
 }
 
 /// A filesystem entry - file or directory
 struct DirEntry
 {
-    ///
+    /// Entry base name (relative to its containing directory)
     string name;
-    ///
-    bool isFile, isDirectory;
+    
+    /// True if an entry is a file
+    bool isFile;
+    
+    /// True if an entry is a directory
+    bool isDirectory;
 }
 
 /// A directory in the file system.
 interface Directory
 {
-    ///
+    /// 
     void close();
 
     /// Get directory contents as a range.
@@ -82,7 +101,7 @@ interface Directory
     InputRange!DirEntry contents();
 }
 
-/// A file system limited to read access.
+/// A filesystem limited to read access.
 interface ReadOnlyFileSystem
 {
     /** Get file or directory stats.
@@ -166,8 +185,6 @@ interface FileSystem: ReadOnlyFileSystem
     bool createDir(string path, bool recursive);
 
     // BROKEN API. Must define semantics for non-atomic move cases (e.g. moving a file to a different drive)
-    /** Rename or move a file.
-    */
     //bool move(string path, string newPath);
 
     /** Permanently delete a file or directory.
