@@ -50,7 +50,7 @@ enum ushort UTF16_BOM_BE = 0xfffe;
 /**
  * UTF-16 LE decoder to use with dlib.text.encodings.transcode
  */
-struct UTF16Decoder
+struct UTF16LEDecoder
 {
     // TODO: byte order
     public:
@@ -96,11 +96,11 @@ struct UTF16Decoder
         static struct ByDchar
         {
             private:
-            UTF16Decoder _decoder;
+            UTF16LEDecoder _decoder;
             dchar _lastRead;
 
             public:
-            this(UTF16Decoder decoder) {
+            this(UTF16LEDecoder decoder) {
                 _decoder = decoder;
                 _lastRead = cast(dchar)_decoder.decodeNext();
             }
@@ -138,10 +138,12 @@ struct UTF16Decoder
     }
 }
 
+deprecated("use UTF16LEDecoder instead") alias UTF16Decoder = UTF16LEDecoder;
+
 /**
  * UTF-16 LE encoder to use with dlib.text.encodings.transcode
  */
-struct UTF16Encoder
+struct UTF16LEEncoder
 {
     /**
      * Encodes a Unicode code point to UTF-16 LE into user-provided buffer.
@@ -167,9 +169,11 @@ struct UTF16Encoder
     }
 }
 
+deprecated("use UTF16LEEncoder instead") alias UTF16Encoder = UTF16LEEncoder;
+
 /**
  * Converts UTF-8 to UTF-16
- * Will be deprecated soon, use transcode!(UTF8Decoder, UTF16Encoder) instead
+ * Will be deprecated soon, use transcode!(UTF8Decoder, UTF16LEEncoder) instead
  */
 wchar[] convertUTF8toUTF16(string s, bool nullTerm = false)
 {
