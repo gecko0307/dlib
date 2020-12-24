@@ -1,3 +1,15 @@
+dlib 1.0.0 alpha1 - TBD
+-----------------------
+- **dlib.text**
+  - **Breaking change:** deprecated module `dlib.text.unmanagedstring` has been removed
+  - `UTF16Decoder` and `UTF16Encoder` are deprecated, use `UTF16LEDecoder` and `UTF16LEEncoder` instead
+- **dlib.image**
+  - **Breaking change:** deprecated module `dlib.image.io.io` has been removed
+- **dlib.coding**
+  - **Breaking change:** deprecated module `dlib.coding.hash` has been removed
+- **Misc**
+  - Added latest DMD (2.094.2) and LDC (1.24.0) to Travis CI config.
+
 dlib 0.20.0 - 16 Oct, 2020
 --------------------------
 No changes since dlib 0.20.0 beta1.
