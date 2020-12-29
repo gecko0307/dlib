@@ -1,12 +1,17 @@
-dlib 1.0.0 alpha1 - TBD
+dlib 0.21.0 beta1 - TBD
 -----------------------
 - **dlib.text**
   - **Breaking change:** deprecated module `dlib.text.unmanagedstring` has been removed
   - `UTF16Decoder` and `UTF16Encoder` are deprecated, use `UTF16LEDecoder` and `UTF16LEEncoder` instead
 - **dlib.image**
   - **Breaking change:** deprecated module `dlib.image.io.io` has been removed
+  - `load` and `save` are deprecated, use `loadImage` and `saveImage` instead
+  - `loadAnimated` and `saveAnimated` are deprecated, use `loadAnimatedImage` and `saveAnimatedImage` instead
+  - `loadHDRI` and `saveHDRI` are deprecated, use `loadHDRImage` and `saveHDRImage` instead
 - **dlib.coding**
   - **Breaking change:** deprecated module `dlib.coding.hash` has been removed
+- **dlib.audio**
+  - `load` and `save` are deprecated, use `loadSound` and `saveSound` instead
 - **Misc**
   - Added latest DMD (2.094.2) and LDC (1.24.0) to Travis CI config.
 
