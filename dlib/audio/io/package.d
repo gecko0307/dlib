@@ -78,5 +78,5 @@ GenericSound loadSound(string filename)
     }
 }
 
-alias save = saveSound;
-alias load = loadSound;
+deprecated("use saveSound instead") alias save = saveSound;
+deprecated("use loadSound instead") alias load = loadSound;

@@ -158,11 +158,11 @@ void saveHDRImage(SuperHDRImage img, string filename)
     }
 }
 
-alias save = saveImage;
-alias load = loadImage;
+deprecated("use saveImage instead") alias save = saveImage;
+deprecated("use loadImage instead") alias load = loadImage;
 
-alias loadAnimated = loadAnimatedImage;
-alias saveAnimated = saveAnimatedImage;
+deprecated("use loadAnimatedImage instead") alias loadAnimated = loadAnimatedImage;
+deprecated("use saveAnimatedImage instead") alias saveAnimated = saveAnimatedImage;
 
-alias loadHDRI = loadHDRImage;
-alias saveHDRI = saveHDRImage;
+deprecated("use loadHDRImage instead") alias loadHDRI = loadHDRImage;
+deprecated("use saveHDRImage instead") alias saveHDRI = saveHDRImage;
