@@ -753,8 +753,6 @@ struct Array(T, size_t chunkSize = 32)
     }
 }
 
-deprecated("use Array instead") alias DynamicArray = Array;
-
 void reallocateArray(T)(ref T[] buffer, const(size_t) len)
 {
     T[] buffer2 = New!(T[])(len);

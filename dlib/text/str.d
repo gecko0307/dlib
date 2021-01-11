@@ -204,17 +204,11 @@ struct String
 
     /**
      * Range interface that iterates the string by Unicode code point (dchar),
-     * i.e., foreach(dchar c; str.byDChar)
+     * i.e., foreach(dchar c; str.decode)
      */
     auto decode()
     {
         return UTF8Decoder().decode(toString());
-    }
-
-    deprecated("use String.decode instead")
-    auto byDChar()
-    {
-        return decode();
     }
 }
 

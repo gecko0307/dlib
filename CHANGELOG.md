@@ -2,12 +2,15 @@ dlib 0.21.0 beta1 - TBD
 -----------------------
 - **dlib.text**
   - **Breaking change:** deprecated module `dlib.text.unmanagedstring` has been removed
+  - **Breaking change:** deprecated method `String.byDChar` has been removed
   - `UTF16Decoder` and `UTF16Encoder` are deprecated, use `UTF16LEDecoder` and `UTF16LEEncoder` instead
 - **dlib.image**
   - **Breaking change:** deprecated module `dlib.image.io.io` has been removed
   - `load` and `save` are deprecated, use `loadImage` and `saveImage` instead
   - `loadAnimated` and `saveAnimated` are deprecated, use `loadAnimatedImage` and `saveAnimatedImage` instead
   - `loadHDRI` and `saveHDRI` are deprecated, use `loadHDRImage` and `saveHDRImage` instead
+- **dlib.container**
+  - **Breaking change:** deprecated alias `DynamicArray` has been removed
 - **dlib.coding**
   - **Breaking change:** deprecated module `dlib.coding.hash` has been removed
 - **dlib.audio**
