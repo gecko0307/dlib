@@ -16,10 +16,10 @@ jobs:
         dc: [dmd-latest, ldc-latest, dmd-2.094.2, ldc-1.23.0]
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v2
-    - name: Install D compiler
-      - uses: dlang-community/setup-dlang@v1
-        with:
-          compiler: ${{ matrix.dc }}
-    - name: Run tests
-      run: dub -q test
+      - uses: actions/checkout@v2
+      - name: Install D compiler
+        - uses: dlang-community/setup-dlang@v1
+          with:
+            compiler: ${{ matrix.dc }}
+      - name: Run tests
+        run: dub -q test
