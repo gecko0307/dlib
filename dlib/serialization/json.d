@@ -83,10 +83,11 @@ class JSONLexer
         while (true)
         {
             lexeme = lexer.getLexeme();
+            
             if (lexeme.length == 0)
             {
                 internalString ~= lexeme;
-                currentLexeme = cast(string)(internalString.data[$-lexeme.length..$]);
+                currentLexeme = cast(string)(internalString.data[$-1-lexeme.length..$-1]);
                 return;
             }
             else if (lexeme != "\n" && !isWhitespace(lexeme))
@@ -131,7 +132,7 @@ class JSONLexer
                 else
                 {
                     internalString ~= lexeme;
-                    currentLexeme = cast(string)(internalString.data[$-lexeme.length..$]);
+                    currentLexeme = cast(string)(internalString.data[$-1-lexeme.length..$-1]);
                     return;
                 }
             }
