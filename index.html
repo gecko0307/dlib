@@ -120,6 +120,44 @@ void main()
 }
 </code></pre>
       </p>
+      
+      <p>Working with filesystem without garbage collection:</p>
+      <p>
+<pre><code>
+import dlib.core.memory;
+import dlib.filesystem;
+import dlib.text.str;
+import json;
+
+void main()
+{
+    StdFileSystem fs = New!StdFileSystem();
+    
+    foreach(path, entry; fs.traverseDir("./", true))
+    {
+        writeln(path);
+        writeln(entry.isFile);
+    }
+    
+    FileStat s;
+    if (fs.stat("dub.json", s)) // otherwise doesn't exist
+    {
+        writeln(s.creationTimestamp);
+        if (s.permissions &#38; PRead)
+        {
+            StdInFileStream strm = fs.openForInput("dub.json");
+            String text = String(strm);
+            Delete(strm);
+            writeln(text);
+            text.free();
+        }
+    }
+    
+    Delete(fs);
+}
+</code></pre>
+      </p>
+
       <h2>Documentation</h2>
       <p>There are <a href="/dlib/docs">ddox documentation</a> generated from source code and <a href="https://github.com/gecko0307/dlib/wiki" target="_blank">GitHub wiki</a>. 
       Be aware that documentation is currently incomplete. For support and overall discussions, use our <a href="https://gitter.im/gecko0307/dlib" target="_blank">Gitter chat room</a>.
