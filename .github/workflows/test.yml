@@ -1,0 +1,22 @@
+name: CI
+
+on: 
+  push:
+    paths:
+    - 'dlib/*'
+    - 'dub.json'
+    - '.github/workflows/*'
+
+jobs:
+  test:
+    name: Test on ${{ matrix.os }}
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install dependencies
+      run: |
+        sudo snap install --classic dmd
+        sudo snap install --classic dub
+        sudo chown root:root /
+    - name: Run dub test
+      run: dub test
