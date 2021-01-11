@@ -16,7 +16,7 @@ dlib 0.21.0 beta1 - TBD
 - **dlib.audio**
   - `load` and `save` are deprecated, use `loadSound` and `saveSound` instead
 - **Misc**
-  - Added latest DMD (2.094.2) and LDC (1.24.0) to Travis CI config.
+  - Switched from Travis CI to GitHub Actions for running integration tests.
 
 dlib 0.20.0 - 16 Oct, 2020
 --------------------------
