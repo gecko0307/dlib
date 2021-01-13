@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2020 Nick Papanastasiou
+Copyright (c) 2015-2021 Nick Papanastasiou
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Combinatorics
  *
- * Copyright: Nick Papanastasiou 2015-2020.
+ * Copyright: Nick Papanastasiou 2015-2021.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Nick Papanastasiou
  */

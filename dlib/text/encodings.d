@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2018-2020 Timur Gafarov
+Copyright (c) 2018-2021 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -48,7 +48,7 @@ DEALINGS IN THE SOFTWARE.
  * }
  * ---
  *
- * Copyright: Timur Gafarov 2018-2020.
+ * Copyright: Timur Gafarov 2018-2021.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */

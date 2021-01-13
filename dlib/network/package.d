@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2020 Eugene Wissner, Timur Gafarov
+Copyright (c) 2016-2021 Eugene Wissner, Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Networking and web functionality
  *
- * Copyright: Eugene Wissner, Timur Gafarov 2016-2020.
+ * Copyright: Eugene Wissner, Timur Gafarov 2016-2021.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Eugene Wissner, Timur Gafarov
  */

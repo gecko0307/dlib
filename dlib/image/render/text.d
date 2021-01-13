@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2020 Oleg Baharev, Timur Gafarov
+Copyright (c) 2021 Oleg Baharev, Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Draw ASCII text
  *
- * Copyright: Oleg Baharev, Timur Gafarov 2020.
+ * Copyright: Oleg Baharev, Timur Gafarov 2021.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Oleg Baharev, Timur Gafarov
  */
