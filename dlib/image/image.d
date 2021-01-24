@@ -35,6 +35,7 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.image.image;
 
+import std.stdio;
 import std.math;
 import std.conv;
 import std.range;
@@ -191,12 +192,28 @@ class Image(PixelFormat fmt): SuperImage
         ][fmt];
 
         _pixelSize = (_bitDepth / 8) * _channels;
+        
+        enum maxDimension = int.max;
+        
+        if (w > maxDimension)
+        {
+            writeln("Image data is not allocated. Exceeded maximum image width ", maxDimension);
+            return;
+        }
+        
+        if (h > maxDimension)
+        {
+            writeln("Image data is not allocated. Exceeded maximum image height ", maxDimension);
+            return;
+        }
+            
         allocateData();
     }
 
     protected void allocateData()
     {
-        _data = new ubyte[_width * _height * _pixelSize];
+        size_t size = cast(size_t)_width * cast(size_t)_height * cast(size_t)_pixelSize;
+        _data = new ubyte[size];
     }
 
     public Color4 getPixel(int x, int y)
@@ -209,7 +226,7 @@ class Image(PixelFormat fmt): SuperImage
         if (y >= height) y = height-1;
         else if (y < 0) y = 0;
 
-        auto index = (y * _width + x) * _pixelSize;
+        size_t index = (cast(size_t)y * cast(size_t)_width + cast(size_t)x) * cast(size_t)_pixelSize;
 
         auto maxv = (2 ^^ bitDepth) - 1;
 
@@ -268,10 +285,10 @@ class Image(PixelFormat fmt): SuperImage
     {
         ubyte[] pixData = data();
 
-        if(x >= width || y >= height || x < 0 || y < 0)
+        if (x >= width || y >= height || x < 0 || y < 0)
             return c;
 
-        size_t index = (y * _width + x) * _pixelSize;
+        size_t index = (cast(size_t)y * cast(size_t)_width + cast(size_t)x) * cast(size_t)_pixelSize;
 
         static if (fmt == PixelFormat.L8)
         {
