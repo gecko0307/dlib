@@ -1,5 +1,5 @@
-dlib 0.21.0 beta1 - TBD
------------------------
+dlib 0.21.0 beta1 - 22 Feb, 2021
+--------------------------------
 - **dlib.text**
   - **Breaking change:** deprecated module `dlib.text.unmanagedstring` has been removed
   - **Breaking change:** deprecated method `String.byDChar` has been removed
@@ -9,12 +9,15 @@ dlib 0.21.0 beta1 - TBD
   - `load` and `save` are deprecated, use `loadImage` and `saveImage` instead
   - `loadAnimated` and `saveAnimated` are deprecated, use `loadAnimatedImage` and `saveAnimatedImage` instead
   - `loadHDRI` and `saveHDRI` are deprecated, use `loadHDRImage` and `saveHDRImage` instead
+  - Fix integer overflow in `Image.getPixel` and `Image.setPixel`
 - **dlib.container**
   - **Breaking change:** deprecated alias `DynamicArray` has been removed
 - **dlib.coding**
   - **Breaking change:** deprecated module `dlib.coding.hash` has been removed
 - **dlib.audio**
   - `load` and `save` are deprecated, use `loadSound` and `saveSound` instead
+- **dlib.serialization**
+  - Fix a bug in JSON decoder
 - **Misc**
   - Switched from Travis CI to GitHub Actions for running integration tests.
 
