@@ -27,6 +27,8 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
+ * Sample types and conversion utilities
+ *
  * Copyright: Timur Gafarov 2016-2021.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
