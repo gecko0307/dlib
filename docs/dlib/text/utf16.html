@@ -73,11 +73,6 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 				<ul class="tree-view">
 					<li>
 						<div class="module ">
-							<a href="../../dlib/coding/hash.html">hash</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
 							<a href="../../dlib/coding/varint.html">varint</a>
 						</div>
 					</li>
@@ -715,7 +710,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					</li>
 					<li>
 						<div class="module ">
-							<a href="../../dlib/text/unmanagedstring.html">unmanagedstring</a>
+							<a href="../../dlib/text/str.html">str</a>
 						</div>
 					</li>
 					<li>
@@ -773,7 +768,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 								</code>
 							</td>
 							<td>Converts UTF-8 to UTF-16
- Will be deprecated soon, use transcode!(UTF8Decoder, UTF16Encoder) instead
+ Will be deprecated soon, use transcode!(UTF8Decoder, UTF16LEEncoder) instead
 </td>
 						</tr>
 					</table>
@@ -788,7 +783,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<tr>
 							<td>
 								<code>
-									<a id="UTF16Decoder" class="public" href="../../dlib/text/utf16/UTF16Decoder.html">UTF16Decoder</a>
+									<a id="UTF16LEDecoder" class="public" href="../../dlib/text/utf16/UTF16LEDecoder.html">UTF16LEDecoder</a>
 								</code>
 							</td>
 							<td>UTF-16 LE decoder to use with dlib.text.encodings.transcode
@@ -797,7 +792,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<tr>
 							<td>
 								<code>
-									<a id="UTF16Encoder" class="public" href="../../dlib/text/utf16/UTF16Encoder.html">UTF16Encoder</a>
+									<a id="UTF16LEEncoder" class="public" href="../../dlib/text/utf16/UTF16LEEncoder.html">UTF16LEEncoder</a>
 								</code>
 							</td>
 							<td>UTF-16 LE encoder to use with dlib.text.encodings.transcode
@@ -811,7 +806,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					<p>Timur Gafarov, Roman Chistokhodov
 </p>
 
-					<p>Timur Gafarov 2016-2020.
+					<p>Timur Gafarov 2016-2021.
 </p>
 
 					<p><a href="boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.

@@ -73,11 +73,6 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 				<ul class="tree-view">
 					<li>
 						<div class="module ">
-							<a href="../../../dlib/coding/hash.html">hash</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
 							<a href="../../../dlib/coding/varint.html">varint</a>
 						</div>
 					</li>
@@ -715,7 +710,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					</li>
 					<li>
 						<div class="module ">
-							<a href="../../../dlib/text/unmanagedstring.html">unmanagedstring</a>
+							<a href="../../../dlib/text/str.html">str</a>
 						</div>
 					</li>
 					<li>
@@ -1226,6 +1221,11 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 
     </span><span class="kwd">assert</span><span class="pun">(<a href="../../../dlib/math/vector/isAlmostZero.html"></span><span class="pln">isAlmostZero</span></a><span class="pun">(</span><span class="pln">to</span><span class="pun">!</span><span class="pln">vec3</span><span class="pun">(</span><span class="pln">c<wbr/></span><span class="pun">.</span><span class="pln">toString</span><span class="pun">()) - </span><span class="pln">c</span><span class="pun">));
 
+    </span><span class="kwd">const </span><span class="pln">vec3 v </span><span class="pun">= </span><span class="pln">vec3</span><span class="pun">(</span><span class="lit">10</span><span class="pun">, </span><span class="lit">10</span><span class="pun">, </span><span class="lit">10</span><span class="pun">);
+    </span><span class="kwd">const </span><span class="pln">vec3 vRes </span><span class="pun">= (</span><span class="pln">v </span><span class="pun">/ </span><span class="lit">10</span><span class="pun">) * </span><span class="lit">2 </span><span class="pun">- </span><span class="lit">1 </span><span class="pun">+ </span><span class="lit">5</span><span class="pun">;
+    </span><span class="kwd">assert</span><span class="pun">(<a href="../../../dlib/math/vector/isAlmostZero.html"></span><span class="pln">isAlmostZero</span></a><span class="pun">(</span><span class="pln">vRes </span><span class="pun">- </span><span class="pln">vec3</span><span class="pun">(</span><span class="lit">6</span><span class="pun">, </span><span class="lit">6</span><span class="pun">, </span><span class="lit">6</span><span class="pun">)));
+    </span><span class="kwd">assert</span><span class="pun">(!</span><span class="pln">vRes<wbr/></span><span class="pun">.</span><span class="pln">isZero</span><span class="pun">);
+
     <a href="../../../dlib/math/vector/ivec2.html"></span><span class="pln">ivec2</span></a><span class="pln"> ab </span><span class="pun">= <a href="../../../dlib/math/vector/ivec2.html"></span><span class="pln">ivec2</span></a><span class="pun">(</span><span class="lit">5</span><span class="pun">, </span><span class="lit">15</span><span class="pun">);
     </span><span class="pln">ab </span><span class="pun">+= <a href="../../../dlib/math/vector/ivec2.html"></span><span class="pln">ivec2</span></a><span class="pun">(</span><span class="lit">20</span><span class="pun">, </span><span class="lit">30</span><span class="pun">);
     </span><span class="pln">ab </span><span class="pun">*= </span><span class="lit">3</span><span class="pun">;
@@ -1303,11 +1303,6 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
     </span><span class="pln">a<wbr/></span><span class="pun">.</span><span class="pln">clamp</span><span class="pun">(-</span><span class="lit">1</span><span class="pun">, </span><span class="lit">1</span><span class="pun">);
     </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">a </span><span class="pun">== <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">1</span><span class="pun">, -</span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">));
 }
-
-{
-    <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pln"> a </span><span class="pun">= <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">1</span><span class="pun">, </span><span class="lit">2</span><span class="pun">, </span><span class="lit">3</span><span class="pun">, </span><span class="lit">4</span><span class="pun">);
-    </span><span class="kwd">assert</span><span class="pun">(<a href="../../../dlib/math/vector/dot.html"></span><span class="pln">dot</span></a><span class="pun">(</span><span class="pln">a</span><span class="pun">, </span><span class="pln">a</span><span class="pun">) == </span><span class="lit">14</span><span class="pun">);
-}
 </span></code></pre>
 </section>
 
@@ -1317,7 +1312,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					<p>Timur Gafarov
 </p>
 
-					<p>Timur Gafarov 2011-2019.
+					<p>Timur Gafarov 2011-2021.
 </p>
 
 					<p><a href="boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.

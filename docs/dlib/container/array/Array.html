@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
+		<title>Struct Array</title>
+		<link rel="stylesheet" href="../../../css/style.min.css"/>
+		<script type="text/javascript" src="../../../js/script.min.js"></script>
+	</head>
+	<body onload="setupDdox();">
+		<header></header>
+		<nav id="main-nav">
+			<div>
+				<noscript>
+					<p style="color: red">The search functionality needs JavaScript enabled</p>
+				</noscript>
+				<div id="symbolSearchPane" style="display: none">
+					<form action="#" method="GET">
+						<input id="symbolSearch" type="text" name="q" placeholder="Search for symbols" autocomplete="off" onchange="performSymbolSearch(24);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" autofocus/>
+					</form>
+					<ul id="symbolSearchResults" class="symbolList" style="display: none"></ul><script type="application/javascript" src="../../../symbols.js"></script><script type="application/javascript">var symbolSearchRootDir = "../../../";
+document.getElementById('symbolSearchPane').style.display = 'block';</script>
+				</div>
+				<ul class="tree-view">
+					<li class="tree-view ">
+						<div class="package ">
+							<a href="../../../dlib.html">dlib</a>
+						</div>
+				<ul class="tree-view">
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/audio.html">audio</a>
+						</div>
+				<ul class="tree-view">
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/audio/io.html">io</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/audio/io/wav.html">wav</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/audio/sample.html">sample</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/audio/sound.html">sound</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/audio/synth.html">synth</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/audio/unmanaged.html">unmanaged</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/coding.html">coding</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/coding/varint.html">varint</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/coding/zlib.html">zlib</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/concurrency.html">concurrency</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/concurrency/taskqueue.html">taskqueue</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/concurrency/threadpool.html">threadpool</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/concurrency/workerthread.html">workerthread</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view ">
+						<div class="package ">
+							<a href="../../../dlib/container.html">container</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module selected">
+							<a href="../../../dlib/container/array.html">array</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/container/bst.html">bst</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/container/buffer.html">buffer</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/container/dict.html">dict</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/container/linkedlist.html">linkedlist</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/container/queue.html">queue</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/container/stack.html">stack</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/core.html">core</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/core/bitio.html">bitio</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/core/compound.html">compound</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/core/memory.html">memory</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/core/mutex.html">mutex</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/core/oop.html">oop</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/core/ownership.html">ownership</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/core/stream.html">stream</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/core/thread.html">thread</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/core/tuple.html">tuple</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/filesystem.html">filesystem</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/filesystem/delegaterange.html">delegaterange</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/filesystem/dirrange.html">dirrange</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/filesystem/filesystem.html">filesystem</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/filesystem/local.html">local</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/filesystem/stdfs.html">stdfs</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/geometry.html">geometry</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/geometry/aabb.html">aabb</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/geometry/frustum.html">frustum</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/geometry/intersection.html">intersection</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/geometry/obb.html">obb</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/geometry/plane.html">plane</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/geometry/ray.html">ray</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/geometry/sphere.html">sphere</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/geometry/triangle.html">triangle</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/geometry/trimesh.html">trimesh</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/geometry/utils.html">utils</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/image.html">image</a>
+						</div>
+				<ul class="tree-view">
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/image/filters.html">filters</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/filters/binarization.html">binarization</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/filters/boxblur.html">boxblur</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/filters/chromakey.html">chromakey</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/filters/contrast.html">contrast</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/filters/convolution.html">convolution</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/filters/desaturate.html">desaturate</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/filters/edgedetect.html">edgedetect</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/filters/histogram.html">histogram</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/filters/lens.html">lens</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/filters/morphology.html">morphology</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/filters/normalmap.html">normalmap</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/filters/sharpen.html">sharpen</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/image/io.html">io</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/io/bmp.html">bmp</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/io/hdr.html">hdr</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/io/jpeg.html">jpeg</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/io/png.html">png</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/io/tga.html">tga</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/io/utils.html">utils</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/image/render.html">render</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/render/cosplasma.html">cosplasma</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/render/shapes.html">shapes</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/render/text.html">text</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/image/resampling.html">resampling</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/resampling/bicubic.html">bicubic</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/resampling/bilinear.html">bilinear</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/resampling/lanczos.html">lanczos</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/resampling/nearest.html">nearest</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/animation.html">animation</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/arithmetics.html">arithmetics</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/canvas.html">canvas</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/color.html">color</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/fthread.html">fthread</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/hdri.html">hdri</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/hsv.html">hsv</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/image.html">image</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/signal2d.html">signal2d</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/transform.html">transform</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/image/unmanaged.html">unmanaged</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/math.html">math</a>
+						</div>
+				<ul class="tree-view">
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/math/interpolation.html">interpolation</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/interpolation/bezier.html">bezier</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/interpolation/catmullrom.html">catmullrom</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/interpolation/easing.html">easing</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/interpolation/hermite.html">hermite</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/interpolation/linear.html">linear</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/interpolation/nearest.html">nearest</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/interpolation/smoothstep.html">smoothstep</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/combinatorics.html">combinatorics</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/complex.html">complex</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/decomposition.html">decomposition</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/diff.html">diff</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/dual.html">dual</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/dualquaternion.html">dualquaternion</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/fft.html">fft</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/hof.html">hof</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/linsolve.html">linsolve</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/matrix.html">matrix</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/quaternion.html">quaternion</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/sse.html">sse</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/tensor.html">tensor</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/transformation.html">transformation</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/utils.html">utils</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/math/vector.html">vector</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/memory.html">memory</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/memory/allocator.html">allocator</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/memory/gcallocator.html">gcallocator</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/memory/mallocator.html">mallocator</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/memory/mmappool.html">mmappool</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/network.html">network</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/network/socket.html">socket</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/network/url.html">url</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/serialization.html">serialization</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/serialization/json.html">json</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/serialization/xml.html">xml</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+					<li class="tree-view collapsed">
+						<div class="package ">
+							<a href="../../../dlib/text.html">text</a>
+						</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/text/encodings.html">encodings</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/text/lexer.html">lexer</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/text/str.html">str</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/text/utf16.html">utf16</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/text/utf8.html">utf8</a>
+						</div>
+					</li>
+					<li>
+						<div class="module ">
+							<a href="../../../dlib/text/utils.html">utils</a>
+						</div>
+					</li>
+				</ul>
+					</li>
+				</ul>
+					</li>
+				</ul>
+			</div>
+			<p id="main-nav-footer">
+				Built with
+				<a href="https://github.com/MartinNowak/scod">scod</a>
+			</p>
+		</nav>
+		<div id="main-contents">
+			<div>
+				<h1>Struct Array</h1><p>GC-free dynamic array implementation.
+ Very efficient for small-sized arrays.
+</p>
+				<div class="prototype">
+					<code class="lang-d">
+						<div class="single-prototype">
+				<span class="kwd">struct</span> <span class="typ">Array</span>(T, <span class="typ">ulong</span> chunkSize<span class="pln"> </span><span class="pun">= </span><span class="lit">32</span>)
+				<span class="pun">;</span>
+						</div>
+					</code>
+				</div>
+				
+				<section><h2>Properties</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th><th>Type</th><th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/container/array/Array.isDynamic.html" class="public property"><code>isDynamic</code></a><span class="tableEntryAnnotation">[get]</span>
+							</td>
+							<td class="typecol"><code class="prettyprint lang-d"><span class="typ">bool</span></code></td><td>Returns true if the array uses dynamic memory.
+</td>
+						</tr>
+					</table>
+				</section>
+				<section><h2>Methods</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th><th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/container/array/Array.data.html" class="public">
+									<code>data</code>
+								</a>
+								<span class="tableEntryAnnotation">()</span>
+							</td>
+							<td>Get slice of data
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/container/array/Array.free.html" class="public">
+									<code>free</code>
+								</a>
+								<span class="tableEntryAnnotation">()</span>
+							</td>
+							<td>Free dynamically allocated memory used by array.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/container/array/Array.insertBack.html" class="public">
+									<code>insertBack</code>
+								</a>
+								<span class="tableEntryAnnotation">(c)</span>
+							</td>
+							<td>Append single element c to the end.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/container/array/Array.insertBack.html" class="public">
+									<code>insertBack</code>
+								</a>
+								<span class="tableEntryAnnotation">(s)</span>
+							</td>
+							<td>Append all elements of slice s to the end.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/container/array/Array.insertFront.html" class="public">
+									<code>insertFront</code>
+								</a>
+								<span class="tableEntryAnnotation">(c)</span>
+							</td>
+							<td>Append element to the start.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/container/array/Array.insertFront.html" class="public">
+									<code>insertFront</code>
+								</a>
+								<span class="tableEntryAnnotation">(s)</span>
+							</td>
+							<td>Append all elements of slice s to the start.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/container/array/Array.insertKey.html" class="public">
+									<code>insertKey</code>
+								</a>
+								<span class="tableEntryAnnotation">(i, v)</span>
+							</td>
+							<td>Inserts an element by a given index
+ (resizing an array and shifting elements).
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/container/array/Array.length.html" class="public">
+									<code>length</code>
+								</a>
+								<span class="tableEntryAnnotation">()</span>
+							</td>
+							<td>Get number of elements in array.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/container/array/Array.opApply.html" class="public">
+									<code>opApply</code>
+								</a>
+								<span class="tableEntryAnnotation">(dg)</span>
+							</td>
+							<td>Iterating over array via foreach.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/container/array/Array.opApply.html" class="public">
+									<code>opApply</code>
+								</a>
+								<span class="tableEntryAnnotation">(dg)</span>
+							</td>
+							<td>Iterating over array via foreach.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/container/array/Array.opApplyReverse.html" class="public">
+									<code>opApplyReverse</code>
+								</a>
+								<span class="tableEntryAnnotation">(dg)</span>
+							</td>
+							<td>Iterating over array via foreach_reverse.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/container/array/Array.opApplyReverse.html" class="public">
+									<code>opApplyReverse</code>
+								</a>
+								<span class="tableEntryAnnotation">(dg)</span>
+							</td>
+							<td>Iterating over array via foreach_reverse.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/container/array/Array.opIndex.html" class="public">
+									<code>opIndex</code>
+								</a>
+								<span class="tableEntryAnnotation">(index)</span>
+							</td>
+							<td>Access element by index.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/container/array/Array.opIndexAssign.html" class="public">
+									<code>opIndexAssign</code>
+								</a>
+								<span class="tableEntryAnnotation">(t, index)</span>
+							</td>
+							<td>Set element t for index.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/container/array/Array.opOpAssign.html" class="public">
+									<code>opOpAssign</code>
+								</a>
+								<span class="tableEntryAnnotation">(c)</span>
+							</td>
+							<td>Same as insertBack, but in operator form.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/container/array/Array.opOpAssign.html" class="public">
+									<code>opOpAssign</code>
+								</a>
+								<span class="tableEntryAnnotation">(s)</span>
+							</td>
+							<td>Same as insertBack, but in operator form.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/container/array/Array.opSlice.html" class="public">
+									<code>opSlice</code>
+								</a>
+								<span class="tableEntryAnnotation">(start, end)</span>
+							</td>
+							<td>Access by slice.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/container/array/Array.removeBack.html" class="public">
+									<code>removeBack</code>
+								</a>
+								<span class="tableEntryAnnotation">(n)</span>
+							</td>
+							<td>Remove n of elements from the end.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/container/array/Array.removeFirst.html" class="public">
+									<code>removeFirst</code>
+								</a>
+								<span class="tableEntryAnnotation">(obj)</span>
+							</td>
+							<td>If obj is in array, remove its first occurence and return true.
+ Otherwise do nothing and return false.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/container/array/Array.removeFront.html" class="public">
+									<code>removeFront</code>
+								</a>
+								<span class="tableEntryAnnotation">(n)</span>
+							</td>
+							<td>Remove n of elements from the start.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/container/array/Array.removeKey.html" class="public">
+									<code>removeKey</code>
+								</a>
+								<span class="tableEntryAnnotation">(i)</span>
+							</td>
+							<td>Removes an element by a given index.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/container/array/Array.reserve.html" class="public">
+									<code>reserve</code>
+								</a>
+								<span class="tableEntryAnnotation">(amount)</span>
+							</td>
+							<td>Preallocate memory without resizing.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/container/array/Array.resize.html" class="public">
+									<code>resize</code>
+								</a>
+								<span class="tableEntryAnnotation">(newLen, initValue)</span>
+							</td>
+							<td>Resize array and initialize newly added elements with initValue.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/container/array/Array.shiftLeft.html" class="public">
+									<code>shiftLeft</code>
+								</a>
+								<span class="tableEntryAnnotation">(n)</span>
+							</td>
+							<td>Shift contents of array to the left by n positions.
+ Does not change the size of array.
+ n of last elements becomes default initialized.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/container/array/Array.shiftRight.html" class="public">
+									<code>shiftRight</code>
+								</a>
+								<span class="tableEntryAnnotation">()</span>
+							</td>
+							<td>Shift contents of array to the right.
+ It inreases the size of array by 1.
+ The first element becomes default initialized.
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../../../dlib/container/array/Array.storage.html" class="public">
+									<code>storage</code>
+								</a>
+								<span class="tableEntryAnnotation">()</span>
+							</td>
+							<td>Get pointer to stored data
+</td>
+						</tr>
+					</table>
+				</section>
+				<section><h2>Example</h2>
+
+<pre class="code"><code class="lang-d"><span class="kwd">auto </span><span class="pln">arr </span><span class="pun">= </span><span class="typ">New</span><span class="pun">!(</span><span class="typ">int</span><span class="pun">[])(</span><span class="lit">3</span><span class="pun">);
+</span><span class="pln">arr</span><span class="pun">[</span><span class="lit">0</span><span class="pun">] = </span><span class="lit">1</span><span class="pun">; </span><span class="pln">arr</span><span class="pun">[</span><span class="lit">1</span><span class="pun">] = </span><span class="lit">2</span><span class="pun">; </span><span class="pln">arr</span><span class="pun">[</span><span class="lit">2</span><span class="pun">] = </span><span class="lit">3</span><span class="pun">;
+
+</span><span class="pln">reallocateArray</span><span class="pun">(</span><span class="pln">arr</span><span class="pun">, </span><span class="lit">2</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">arr<wbr/></span><span class="pun">.</span><span class="pln">length </span><span class="pun">== </span><span class="lit">2</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">arr</span><span class="pun">[</span><span class="lit">0</span><span class="pun">] == </span><span class="lit">1</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">arr</span><span class="pun">[</span><span class="lit">1</span><span class="pun">] == </span><span class="lit">2</span><span class="pun">);
+
+</span><span class="pln">reallocateArray</span><span class="pun">(</span><span class="pln">arr</span><span class="pun">, </span><span class="lit">4</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">arr<wbr/></span><span class="pun">.</span><span class="pln">length </span><span class="pun">== </span><span class="lit">4</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">arr</span><span class="pun">[</span><span class="lit">0</span><span class="pun">] == </span><span class="lit">1</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">arr</span><span class="pun">[</span><span class="lit">1</span><span class="pun">] == </span><span class="lit">2</span><span class="pun">);
+</span></code></pre>
+</section>
+
+			</div>
+			<footer>
+				<div id="license-info">
+					<p>Timur Gafarov, Roman Vlasov, Andrey Penechko, Eugene Wissner, Roman Chistokhodov, aferust, ijet
+</p>
+
+					<p>Timur Gafarov 2015-2021.
+</p>
+
+					<p><a href="boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+</p>
+
+				</div>
+			</footer>
+		</div>
+	</body>
+</html>

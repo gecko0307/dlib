@@ -73,11 +73,6 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 				<ul class="tree-view">
 					<li>
 						<div class="module ">
-							<a href="./dlib/coding/hash.html">hash</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
 							<a href="./dlib/coding/varint.html">varint</a>
 						</div>
 					</li>
@@ -715,7 +710,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					</li>
 					<li>
 						<div class="module ">
-							<a href="./dlib/text/unmanagedstring.html">unmanagedstring</a>
+							<a href="./dlib/text/str.html">str</a>
 						</div>
 					</li>
 					<li>
@@ -757,7 +752,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<a href="./dlib/audio/io/wav.html">dlib.audio.io.wav</a>
 					</td>
 					<td>
-						
+						Uncompressed RIFF/WAV encoder and decoder
+
 					</td>
 				</tr>
 				<tr>
@@ -773,7 +769,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<a href="./dlib/audio/sample.html">dlib.audio.sample</a>
 					</td>
 					<td>
-						
+						Sample types and conversion utilities
+
 					</td>
 				</tr>
 				<tr>
@@ -781,7 +778,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<a href="./dlib/audio/sound.html">dlib.audio.sound</a>
 					</td>
 					<td>
-						
+						Generic sound interfaces and their implementations
+
 					</td>
 				</tr>
 				<tr>
@@ -789,7 +787,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<a href="./dlib/audio/synth.html">dlib.audio.synth</a>
 					</td>
 					<td>
-						
+						Simplest waveform synthesizers
+
 					</td>
 				</tr>
 				<tr>
@@ -797,15 +796,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<a href="./dlib/audio/unmanaged.html">dlib.audio.unmanaged</a>
 					</td>
 					<td>
-						
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/coding/hash.html">dlib.coding.hash</a>
-					</td>
-					<td>
-						
+						GC-free sound class
+
 					</td>
 				</tr>
 				<tr>
@@ -813,7 +805,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<a href="./dlib/coding/varint.html">dlib.coding.varint</a>
 					</td>
 					<td>
-						
+						Variable-sized integer type
+
 					</td>
 				</tr>
 				<tr>
@@ -821,7 +814,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<a href="./dlib/coding/zlib.html">dlib.coding.zlib</a>
 					</td>
 					<td>
-						
+						Zlib compression and decompression
+
 					</td>
 				</tr>
 				<tr>
@@ -853,7 +847,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<a href="./dlib/container/array.html">dlib.container.array</a>
 					</td>
 					<td>
-						
+						Dynamic (expandable) array with random access
+
 					</td>
 				</tr>
 				<tr>
@@ -861,7 +856,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<a href="./dlib/container/bst.html">dlib.container.bst</a>
 					</td>
 					<td>
-						
+						Binary search tree
+
 					</td>
 				</tr>
 				<tr>
@@ -877,7 +873,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<a href="./dlib/container/dict.html">dlib.container.dict</a>
 					</td>
 					<td>
-						
+						Trie-based dictionary (associative array) that can use any type as a key
+
 					</td>
 				</tr>
 				<tr>
@@ -885,7 +882,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<a href="./dlib/container/linkedlist.html">dlib.container.linkedlist</a>
 					</td>
 					<td>
-						
+						Singly linked list
+
 					</td>
 				</tr>
 				<tr>
@@ -893,7 +891,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<a href="./dlib/container/queue.html">dlib.container.queue</a>
 					</td>
 					<td>
-						
+						Queue (based on linked list)
+
 					</td>
 				</tr>
 				<tr>
@@ -901,7 +900,8 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<a href="./dlib/container/stack.html">dlib.container.stack</a>
 					</td>
 					<td>
-						
+						Stack (based on Array)
+
 					</td>
 				</tr>
 				<tr>
@@ -1774,7 +1774,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 				</tr>
 				<tr>
 					<td>
-						<a href="./dlib/text/unmanagedstring.html">dlib.text.unmanagedstring</a>
+						<a href="./dlib/text/str.html">dlib.text.str</a>
 					</td>
 					<td>
 						GC-free UTF-8 string type
@@ -1813,7 +1813,11 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<a href="./dlib/audio.html">dlib.audio</a>
 					</td>
 					<td>
-						Sound processing
+						This package provides basic tools for sound processing. It currently supports
+ bit depths 8 and 16 (signed and unsigned), as well as arbitrary sample rate and
+ number of channels. All sample I/O and processing is meant to be done in floating
+ point numbers ranging from -1.0 to 1.0. Design principles of dlib.audio are closely
+ akin to dlib.image.
 
 					</td>
 				</tr>
@@ -1840,7 +1844,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						<a href="./dlib/container.html">dlib.container</a>
 					</td>
 					<td>
-						Containers and data structures
+						Containers
 
 					</td>
 				</tr>

@@ -73,11 +73,6 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 				<ul class="tree-view">
 					<li>
 						<div class="module ">
-							<a href="../../dlib/coding/hash.html">hash</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
 							<a href="../../dlib/coding/varint.html">varint</a>
 						</div>
 					</li>
@@ -715,7 +710,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					</li>
 					<li>
 						<div class="module ">
-							<a href="../../dlib/text/unmanagedstring.html">unmanagedstring</a>
+							<a href="../../dlib/text/str.html">str</a>
 						</div>
 					</li>
 					<li>
@@ -797,7 +792,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 									<a id="ReadOnlyFileSystem" class="public" href="../../dlib/filesystem/filesystem/ReadOnlyFileSystem.html">ReadOnlyFileSystem</a>
 								</code>
 							</td>
-							<td>A file system limited to read access.
+							<td>A filesystem limited to read access.
 </td>
 						</tr>
 					</table>
@@ -829,13 +824,76 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						</tr>
 					</table>
 				</section>
+				<section>
+					<h2>Manifest constants</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th><th>Type</th><th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<a id="PExecute" class="public" href="../../dlib/filesystem/filesystem/PExecute.html">
+									<code>PExecute</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>If a file is executable, FileStat.permissions will have PExecute bits set
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="PRead" class="public" href="../../dlib/filesystem/filesystem/PRead.html">
+									<code>PRead</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>If a file is readable, FileStat.permissions will have PRead bits set
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a id="PWrite" class="public" href="../../dlib/filesystem/filesystem/PWrite.html">
+									<code>PWrite</code>
+								</a>
+							</td>
+							<td>
+							</td>
+							<td>If a file is writable, FileStat.permissions will have PWrite bits set
+</td>
+						</tr>
+					</table>
+				</section>
+				<section>
+					<h2>Aliases</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th><th>Type</th><th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<a id="FileSize" class="public" href="../../dlib/filesystem/filesystem/FileSize.html">
+									<code>FileSize</code>
+								</a>
+							</td>
+							<td>
+								<code class="prettyprint lang-d"><span class="typ">ulong</span></code>
+							</td>
+							<td>File size type
+</td>
+						</tr>
+					</table>
+				</section>
 			</div>
 			<footer>
 				<div id="license-info">
 					<p>Martin Cejp, Timur Gafarov
 </p>
 
-					<p>Martin Cejp, Timur Gafarov 2014-2020.
+					<p>Martin Cejp, Timur Gafarov 2014-2021.
 </p>
 
 					<p><a href="boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.

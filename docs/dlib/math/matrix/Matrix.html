@@ -73,11 +73,6 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 				<ul class="tree-view">
 					<li>
 						<div class="module ">
-							<a href="../../../dlib/coding/hash.html">hash</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
 							<a href="../../../dlib/coding/varint.html">varint</a>
 						</div>
 					</li>
@@ -715,7 +710,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					</li>
 					<li>
 						<div class="module ">
-							<a href="../../../dlib/text/unmanagedstring.html">unmanagedstring</a>
+							<a href="../../../dlib/text/str.html">str</a>
 						</div>
 					</li>
 					<li>
@@ -756,7 +751,28 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						</div>
 					</code>
 				</div>
-				<section></section>
+				<section><p>Implementation notes:
+</p>
+
+<p> - The storage order is column-major.
+</p>
+
+<p> - Affine vector of 4x4 matrix is in the 4th column (as in OpenGL).
+</p>
+
+<p> - Elements are stored in a fixed manner, so it is impossible to change
+   matrix size once it's created.
+</p>
+
+<p> - Actual data is allocated as a static array, so no references, no GC touching.
+   When you pass a Matrix by value, it will be safely copied.
+</p>
+
+<p> - This implementation is not perfect (as for now) for dealing with really
+   big matrices, but ideal for smaller ones, e.g. those which are meant to be
+   manipulated in real-time (in game engines, rendering pipelines etc).
+</p>
+</section>
 
 				<section><h2>Constructors</h2>
 					<table>
@@ -1151,21 +1167,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 						</tr>
 					</table>
 				</section>
-				<section><h2>Description</h2>
-<p>Implementation notes:
- The storage order is column-major;
- Affine vector of 4x4 matrix is in the 4th column (as in OpenGL);
- Elements are stored in a fixed manner, so it is impossible to change
-    matrix size once it's created;
- Actual data is allocated as a static array, so no references, no GC touching.
-    When you pass a Matrix by value, it will be safely copied;
- This implementation is not perfect (as for now) for dealing with really
-    big matrices, but ideal for smaller ones, e.g. those which are meant to be
-    manipulated in real-time (in game engines, rendering pipelines etc).
-    This limitation may (but doesn't have to) be addressed in future.
-</p>
-</section>
-<section><h2>Example</h2>
+				<section><h2>Example</h2>
 
 <pre class="code"><code class="lang-d"><span class="kwd">auto </span><span class="pln">m1 </span><span class="pun">= <a href="../../../dlib/math/matrix/matrixf.html"></span><span class="pln">matrixf</span></a><span class="pun">(
     </span><span class="lit">1</span><span class="pun">, </span><span class="lit">2</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">6</span><span class="pun">,
@@ -1246,7 +1248,7 @@ assert(Vector3f(1.0f, 2.0f, 3.0f) * m3 == v);
 					<p>Timur Gafarov, Martin Cejp
 </p>
 
-					<p>Timur Gafarov, Martin Cejp 2013-2020.
+					<p>Timur Gafarov, Martin Cejp 2013-2021.
 </p>
 
 					<p><a href="boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.

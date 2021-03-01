@@ -73,11 +73,6 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 				<ul class="tree-view">
 					<li>
 						<div class="module ">
-							<a href="../../../dlib/coding/hash.html">hash</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
 							<a href="../../../dlib/coding/varint.html">varint</a>
 						</div>
 					</li>
@@ -715,7 +710,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					</li>
 					<li>
 						<div class="module ">
-							<a href="../../../dlib/text/unmanagedstring.html">unmanagedstring</a>
+							<a href="../../../dlib/text/str.html">str</a>
 						</div>
 					</li>
 					<li>
@@ -757,14 +752,49 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					</code>
 				</div>
 				
-				
+				<section><h2>Example</h2>
+
+<pre class="code"><code class="lang-d"><span class="kwd">import </span><span class="pln">std<wbr/></span><span class="pun">.</span><span class="pln">stdio</span><span class="pun">;
+
+</span><span class="typ">int </span><span class="pln">x </span><span class="pun">= </span><span class="lit">0</span><span class="pun">;
+</span><span class="typ">int </span><span class="pln">y </span><span class="pun">= </span><span class="lit">0</span><span class="pun">;
+
+</span><span class="typ">void </span><span class="pln">task1</span><span class="pun">()
+{
+    </span><span class="kwd">while</span><span class="pun">(</span><span class="pln">x </span><span class="pun">&lt; </span><span class="lit">100</span><span class="pun">)
+        </span><span class="pln">x </span><span class="pun">+= </span><span class="lit">1</span><span class="pun">;
+}
+
+</span><span class="typ">void </span><span class="pln">task2</span><span class="pun">()
+{
+    </span><span class="kwd">while</span><span class="pun">(</span><span class="pln">y </span><span class="pun">&lt; </span><span class="lit">100</span><span class="pun">)
+        </span><span class="pln">y </span><span class="pun">+= </span><span class="lit">1</span><span class="pun">;
+}
+
+</span><span class="typ">ThreadPool </span><span class="pln">threadPool </span><span class="pun">= </span><span class="typ">New</span><span class="pun">!</span><span class="typ">ThreadPool</span><span class="pun">(</span><span class="lit">2</span><span class="pun">);
+
+</span><span class="pln">threadPool<wbr/></span><span class="pun">.</span><span class="pln">submit</span><span class="pun">(&amp;</span><span class="pln">task1</span><span class="pun">);
+</span><span class="pln">threadPool<wbr/></span><span class="pun">.</span><span class="pln">submit</span><span class="pun">(&amp;</span><span class="pln">task2</span><span class="pun">);
+
+</span><span class="kwd">while</span><span class="pun">(!</span><span class="pln">threadPool<wbr/></span><span class="pun">.</span><span class="pln">tasksDone</span><span class="pun">) {}
+
+</span><span class="kwd">if </span><span class="pun">(</span><span class="pln">x </span><span class="pun">!= </span><span class="lit">100</span><span class="pun">) </span><span class="pln">writeln</span><span class="pun">(</span><span class="pln">x</span><span class="pun">);
+</span><span class="kwd">if </span><span class="pun">(</span><span class="pln">y </span><span class="pun">!= </span><span class="lit">100</span><span class="pun">) </span><span class="pln">writeln</span><span class="pun">(</span><span class="pln">y</span><span class="pun">);
+
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">x </span><span class="pun">== </span><span class="lit">100</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">y </span><span class="pun">== </span><span class="lit">100</span><span class="pun">);
+
+</span><span class="typ">Delete</span><span class="pun">(</span><span class="pln">threadPool</span><span class="pun">);
+</span></code></pre>
+</section>
+
 			</div>
 			<footer>
 				<div id="license-info">
 					<p>Timur Gafarov
 </p>
 
-					<p>Timur Gafarov 2019-2020.
+					<p>Timur Gafarov 2019-2021.
 </p>
 
 					<p><a href="boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.

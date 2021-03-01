@@ -73,11 +73,6 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 				<ul class="tree-view">
 					<li>
 						<div class="module ">
-							<a href="../../../dlib/coding/hash.html">hash</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
 							<a href="../../../dlib/coding/varint.html">varint</a>
 						</div>
 					</li>
@@ -715,7 +710,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					</li>
 					<li>
 						<div class="module ">
-							<a href="../../../dlib/text/unmanagedstring.html">unmanagedstring</a>
+							<a href="../../../dlib/text/str.html">str</a>
 						</div>
 					</li>
 					<li>
@@ -767,37 +762,42 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 							<td>
 								<a href="../../../dlib/filesystem/filesystem/FileStat.creationTimestamp.html" class="public"><code>creationTimestamp</code></a>
 							</td>
-							<td class="typecol"><code class="prettyprint lang-d"><span class="pln">std<wbr/></span><span class="pun">.</span><span class="pln">datetime<wbr/></span><span class="pun">.</span><span class="pln">systime<wbr/></span><span class="pun">.</span><span class="typ">SysTime</span></code></td><td></td>
+							<td class="typecol"><code class="prettyprint lang-d"><span class="pln">std<wbr/></span><span class="pun">.</span><span class="pln">datetime<wbr/></span><span class="pun">.</span><span class="pln">systime<wbr/></span><span class="pun">.</span><span class="typ">SysTime</span></code></td><td>File creation date/time
+</td>
 						</tr>
 						<tr>
 							<td>
 								<a href="../../../dlib/filesystem/filesystem/FileStat.isDirectory.html" class="public"><code>isDirectory</code></a>
 							</td>
-							<td class="typecol"><code class="prettyprint lang-d"><span class="typ">bool</span></code></td><td></td>
+							<td class="typecol"><code class="prettyprint lang-d"><span class="typ">bool</span></code></td><td>True if a file is a directory
+</td>
 						</tr>
 						<tr>
 							<td>
 								<a href="../../../dlib/filesystem/filesystem/FileStat.isFile.html" class="public"><code>isFile</code></a>
 							</td>
-							<td class="typecol"><code class="prettyprint lang-d"><span class="typ">bool</span></code></td><td></td>
+							<td class="typecol"><code class="prettyprint lang-d"><span class="typ">bool</span></code></td><td>True if a file is not a directory
+</td>
 						</tr>
 						<tr>
 							<td>
 								<a href="../../../dlib/filesystem/filesystem/FileStat.modificationTimestamp.html" class="public"><code>modificationTimestamp</code></a>
 							</td>
-							<td class="typecol"><code class="prettyprint lang-d"><span class="pln">std<wbr/></span><span class="pun">.</span><span class="pln">datetime<wbr/></span><span class="pun">.</span><span class="pln">systime<wbr/></span><span class="pun">.</span><span class="typ">SysTime</span></code></td><td></td>
+							<td class="typecol"><code class="prettyprint lang-d"><span class="pln">std<wbr/></span><span class="pun">.</span><span class="pln">datetime<wbr/></span><span class="pun">.</span><span class="pln">systime<wbr/></span><span class="pun">.</span><span class="typ">SysTime</span></code></td><td>File modification date/time
+</td>
 						</tr>
 						<tr>
 							<td>
 								<a href="../../../dlib/filesystem/filesystem/FileStat.permissions.html" class="public"><code>permissions</code></a>
 							</td>
-							<td class="typecol"><code class="prettyprint lang-d"><span class="typ">int</span></code></td><td></td>
+							<td class="typecol"><code class="prettyprint lang-d"><span class="typ">int</span></code></td><td>Permissions of a file in a given filesystem. Bit combination of PRead, PWrite, PExecute
+</td>
 						</tr>
 						<tr>
 							<td>
 								<a href="../../../dlib/filesystem/filesystem/FileStat.sizeInBytes.html" class="public"><code>sizeInBytes</code></a>
 							</td>
-							<td class="typecol"><code class="prettyprint lang-d"><span class="typ">ulong</span></code></td><td>valid if isFile is true
+							<td class="typecol"><code class="prettyprint lang-d"><span class="typ">ulong</span></code></td><td>File size. Valid only if isFile is true
 </td>
 						</tr>
 					</table>
@@ -809,7 +809,7 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 					<p>Martin Cejp, Timur Gafarov
 </p>
 
-					<p>Martin Cejp, Timur Gafarov 2014-2020.
+					<p>Martin Cejp, Timur Gafarov 2014-2021.
 </p>
 
 					<p><a href="boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
