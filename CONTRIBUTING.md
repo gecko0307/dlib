@@ -6,6 +6,15 @@ Open an issue at [GitHub issue tracker](https://github.com/gecko0307/dlib/issues
 
 Note that macOS compatibility issues are not considered bugs. dlib intentionally doesn't support macOS anymore. Read more [here](https://github.com/gecko0307/dlib/wiki/Why-doesn't-dlib-support-macOS).
 
+Bugs that have not been reproduced or discussed for 6 months or longer are marked as `wontfix` and closed.
+
+We also use several other labels:
+* Breaking change. Self-descriptive: an improvement that breaks backward compatibility
+* Bug. A bug that should be fixed without API change
+* Enhancement. A non-breaking improvement of existing functionality (optimization or a new feature)
+* Missing. Appears when existing functionality is removed due to regressions and needs to be rewritten, or when some implementation is not complete
+* New functionality. Self-descriptive: a new functionality request.
+
 ####  Bug fixing 
 
 Open a new GitHub pull request with your patch. Provide a description of the problem and solution. Follow our [code style](#code-style-and-standards). Please, try to avoid solutions that break library API and semantics - such changes should be made very carefully. If the problem can't be solved without breaking changes, explicitly state that in the description.
@@ -37,7 +46,7 @@ All modules in dlib should belong to a package (`dlib.core`, `dlib.math`, `dlib.
 Each D module should start with a Boost license block prepended with a copyright notice:
 ```d
 /*
-Copyright (c) 2020 <author's name here>
+Copyright (c) 2021 <author's name here>
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
