@@ -44,8 +44,8 @@ import dlib.math.vector;
 import dlib.math.interpolation;
 import dlib.image.color;
 
-/// Integer pixel formats
-enum PixelFormat: uint
+/// sRGBa integer pixel formats, 8 and 16 bits per channel
+enum IntegerPixelFormat: uint
 {
     L8 = 0,
     LA8 = 1,
@@ -57,43 +57,94 @@ enum PixelFormat: uint
     RGBA16 = 7
 }
 
+alias PixelFormat = IntegerPixelFormat;
+
 /**
  * Abstract image interface
  */
 interface SuperImage: Freeable
 {
+    /**
+     * Image width in pixels
+     */
     @property uint width();
+
+    /**
+     * Image height in pixels
+     */
     @property uint height();
+    
+    /**
+     * Bits per channel
+     */
     @property uint bitDepth();
+    
+    /**
+     * Number of channels
+     */
     @property uint channels();
+    
+    /**
+     * Bytes per pixel
+     */
     @property uint pixelSize();
 
     /**
      * This is compatible with PixelFormat and other internal format enums in dlib.
      * Values from 0 to 255 are reserved for dlib.
-     * Values 256 and above are application-specific and can be used for custom SuperImage implementations.
+     * Values 256 and above are application-specific and can be used for custom SuperImage implementations
      */
     @property uint pixelFormat();
 
+    /**
+     * Returns raw buffer of image data in scan order.
+     * Pixel layout is specified by pixelFormat
+     */
     @property ubyte[] data();
 
-    @property SuperImage dup();
-
+    /**
+     * Pixel access operator.
+     * Should always return floating-point sRGBa or linear RGBa,
+     * depending on format family (IntegerPixelFormat or FloatPixelFormat)
+     */
     Color4f opIndex(int x, int y);
+    
+    /**
+     * Pixel assignment operator.
+     * Accepts floating-point sRGBa or linear RGBa,
+     * depending on format family (IntegerPixelFormat or FloatPixelFormat)
+     */
     Color4f opIndexAssign(Color4f c, int x, int y);
 
+    /**
+     * Makes a copy of the image
+     */
+    @property SuperImage dup();
+
+    /**
+     * Makes a blank image of the same format
+     */
     SuperImage createSameFormat(uint w, uint h);
 
+    /**
+     * Range of x pixel indices
+     */
     final @property auto row()
     {
         return iota(0, width);
     }
 
+    /**
+     * Range of y pixel indices
+     */
     final @property auto col()
     {
         return iota(0, height);
     }
 
+    /**
+     * Enumerates all pixels of the image in scan order
+     */
     final int opApply(scope int delegate(ref Color4f p, uint x, uint y) dg)
     {
         int result = 0;

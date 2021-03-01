@@ -43,7 +43,7 @@ import dlib.image.color;
 import dlib.math.vector;
 import dlib.math.utils;
 
-/// Floating-point pixel formats
+/// Linear floating-point pixel formats
 enum FloatPixelFormat: uint
 {
     RGBAF32 = 8
