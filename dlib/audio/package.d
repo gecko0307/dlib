@@ -29,9 +29,7 @@ DEALINGS IN THE SOFTWARE.
 /**
  * This package provides basic tools for sound processing. It currently supports 
  * bit depths 8 and 16 (signed and unsigned), as well as arbitrary sample rate and 
- * number of channels. All sample I/O and processing is meant to be done in floating 
- * point numbers ranging from -1.0 to 1.0. Design principles of dlib.audio are closely 
- * akin to dlib.image.
+ * number of channels. Design principles of dlib.audio are closely akin to dlib.image.
  *
  * Copyright: Timur Gafarov 2016-2021.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).

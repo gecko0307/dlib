@@ -44,6 +44,14 @@ import dlib.audio.sound;
  */
 interface Synth
 {
+    /**
+     * Evaluate a sample.
+     * 
+     * Params:
+     *   sound = a sound object which parameters are used to discretize a sample
+     *   position = sample index
+     *   frequency = signal frequency in Hz
+     */
     float eval(Sound sound, ulong position, float frequency);
 }
 
@@ -52,6 +60,14 @@ interface Synth
  */
 class SineWaveSynth: Synth
 {
+    /**
+     * Evaluate a sine wave sample.
+     * 
+     * Params:
+     *   sound = a sound object which parameters are used to discretize a sample
+     *   position = sample index
+     *   frequency = signal frequency in Hz
+     */
     float eval(Sound sound, ulong position, float frequency)
     {
         double samplePeriod = 1.0 / cast(double)sound.sampleRate;
@@ -65,6 +81,14 @@ class SineWaveSynth: Synth
  */
 class SquareWaveSynth: Synth
 {
+    /**
+     * Evaluate square wave sample.
+     * 
+     * Params:
+     *   sound = a sound object which parameters are used to discretize a sample
+     *   position = sample index
+     *   frequency = signal frequency in Hz
+     */
     float eval(Sound sound, ulong position, float frequency)
     {
         double samplePeriod = 1.0 / cast(double)sound.sampleRate;
@@ -79,6 +103,14 @@ class SquareWaveSynth: Synth
  */
 class SawtoothWaveSynth: Synth
 {
+    /**
+     * Evaluate sawtooth wave sample.
+     * 
+     * Params:
+     *   sound = a sound object which parameters are used to discretize a sample
+     *   position = sample index
+     *   frequency = signal frequency in Hz
+     */
     float eval(Sound sound, ulong position, float frequency)
     {
         double samplePeriod = 1.0 / cast(double)sound.sampleRate;
@@ -93,6 +125,14 @@ class SawtoothWaveSynth: Synth
  */
 class TriangleWaveSynth: Synth
 {
+    /**
+     * Evaluate triangle wave sample.
+     * 
+     * Params:
+     *   sound = a sound object which parameters are used to discretize a sample
+     *   position = sample index
+     *   frequency = signal frequency in Hz
+     */
     float eval(Sound sound, ulong position, float frequency)
     {
         double samplePeriod = 1.0 / cast(double)sound.sampleRate;
@@ -111,6 +151,14 @@ class FMSynth: Synth
     Synth modulator;
     float frequencyRatio;
 
+    /**
+     * Constructor.
+     * 
+     * Params:
+     *   carrier = carrier waveform
+     *   modulator = modulator waveform
+     *   frequencyRatio = frequency multiplier for modulator
+     */
     this(Synth carrier, Synth modulator, float frequencyRatio)
     {
         this.carrier = carrier;
@@ -118,6 +166,14 @@ class FMSynth: Synth
         this.frequencyRatio = frequencyRatio;
     }
 
+    /**
+     * Evaluate FM sample.
+     * 
+     * Params:
+     *   sound = a sound object which parameters are used to discretize a sample
+     *   position = sample index
+     *   frequency = signal frequency in Hz
+     */
     float eval(Sound sound, ulong position, float frequency)
     {
         float m = modulator.eval(sound, position, frequency * frequencyRatio);

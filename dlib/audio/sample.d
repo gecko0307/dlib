@@ -38,7 +38,7 @@ module dlib.audio.sample;
 /**
  * dlib.audio defines four integer sample formats: signed 8-bit, signed 16-bit,
  * unsigned 8-bit, unsigned 16-bit.
- * They are for storage only: all sound processing and sample I/O
+ * They are for storage only. All sound processing and sample I/O
  * should be done in floating point numbers. Floating point sample is signed and
  * ranges from -1.0f to 1.0f.
  */
