@@ -27,6 +27,8 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
+ * Dynamic (expandable) array with random access
+ *
  * Copyright: Timur Gafarov 2015-2021.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov, Roman Vlasov, Andrey Penechko, Eugene Wissner, Roman Chistokhodov, aferust, ijet

@@ -27,6 +27,8 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
+ * Variable-sized integer type
+ *
  * Copyright: Timur Gafarov 2015-2021.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
@@ -34,7 +36,7 @@ DEALINGS IN THE SOFTWARE.
 module dlib.coding.varint;
 
 /**
- * Protobuf-style variable-sized integers
+ * Protobuf-style variable-sized integer
  */
 struct Varint
 {

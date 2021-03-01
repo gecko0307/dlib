@@ -27,7 +27,12 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
- * Containers and data structures
+ * Containers
+ *
+ * Description:
+ * This package implements generic GC-free data containers, such as linked list, 
+ * dynamic array, dictionary, etc. They are based on dlib.core.memory allocators.
+ * dlib.container is useful when writing applications with manual memory management.
  *
  * Copyright: Timur Gafarov 2013-2021.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
