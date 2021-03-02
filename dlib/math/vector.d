@@ -855,6 +855,13 @@ unittest
         float d = dot(a, b);
         assert(d == 96.0f);
     }
+    
+    {
+        Vector2f a = Vector2f(1, 2);
+        Vector2f b = Vector2f(2, 1);
+        float d = dot(a, b);
+        assert(d == 4.0f);
+    }
 }
 
 /**

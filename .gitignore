@@ -17,3 +17,6 @@ tests
 # Documentation
 docs
 docs.json
+
+# Coverage files
+*.lst
