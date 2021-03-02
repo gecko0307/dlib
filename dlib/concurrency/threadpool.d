@@ -52,6 +52,8 @@ class ThreadPool
     Mutex mutex;
 
     public:
+    
+    /// Constructor
     this(uint maxThreads)
     {
         this.maxThreads = maxThreads;
@@ -85,6 +87,7 @@ class ThreadPool
         mutex.destroy();
     }
 
+    /// Create a task from delegate
     Task submit(void delegate() taskDele)
     {
         Task task = Task(TaskState.Valid, taskDele);
@@ -95,6 +98,7 @@ class ThreadPool
         return task;
     }
 
+    /// Create a task from function pointer
     Task submit(void function() taskFunc)
     {
         return submit(toDelegate(taskFunc));
@@ -110,6 +114,7 @@ class ThreadPool
         return running;
     }
 
+    /// Returns true if all tasks are finished
     bool tasksDone()
     {
         if (taskQueue.count == 0)

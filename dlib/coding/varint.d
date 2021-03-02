@@ -43,6 +43,7 @@ struct Varint
     ubyte[8] buffer;
     size_t size;
 
+    /// Returns bytes of an integer
     ubyte[] bytes() return
     {
         return buffer[0..size];

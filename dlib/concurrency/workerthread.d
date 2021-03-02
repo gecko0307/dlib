@@ -46,6 +46,7 @@ class WorkerThread: Thread
     ThreadPool pool;
     protected bool _busy = false;
 
+    /// Constructor
     this(size_t id, ThreadPool pool)
     {
         super(&threadFunc);

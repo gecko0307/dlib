@@ -37,7 +37,7 @@ import dlib.core.mutex;
 import dlib.container.array;
 import dlib.concurrency.workerthread;
 
-/*
+/**
  * State of a Task
  */
 enum TaskState
@@ -74,6 +74,8 @@ class TaskQueue
     Mutex mutex;
 
     public:
+    
+    /// Constructor
     this()
     {
         mutex.init();
@@ -85,11 +87,13 @@ class TaskQueue
         mutex.destroy();
     }
 
+    /// Number of queued tasks
     size_t count()
     {
         return tasks.length;
     }
 
+    /// Add a task to queue
     bool enqueue(Task task)
     {
         if (tasks.length < MaxTasks)
@@ -103,6 +107,7 @@ class TaskQueue
             return false;
     }
 
+    /// Remove a task from queue
     Task dequeue()
     {
         if (tasks.length)
