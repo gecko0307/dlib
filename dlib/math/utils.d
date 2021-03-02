@@ -80,12 +80,24 @@ T max2(T) (T x, T y) nothrow
     return (x > y)? x : y;
 }
 
+///
+unittest
+{
+    assert(max2(2, 1) == 2);
+}
+
 /**
  * Find minimum of two values
  */
 T min2(T) (T x, T y) nothrow
 {
     return (x < y)? x : y;
+}
+
+///
+unittest
+{
+    assert(min2(2, 1) == 1);
 }
 
 /**
@@ -97,6 +109,12 @@ T max3(T) (T x, T y, T z) nothrow
     return (temp > z) ? temp : z;
 }
 
+///
+unittest
+{
+    assert(max3(3, 2, 1) == 3);
+}
+
 /**
  * Find minimum of three values
  */
@@ -104,6 +122,12 @@ T min3(T) (T x, T y, T z) nothrow
 {
     T temp = (x < y)? x : y;
     return (temp < z) ? temp : z;
+}
+
+///
+unittest
+{
+    assert(min3(3, 2, 1) == 1);
 }
 
 /**
@@ -142,6 +166,13 @@ bool isPowerOfTwo(T)(T x) nothrow
     return (x != 0) && ((x & (x - 1)) == 0);
 }
 
+///
+unittest
+{
+    assert(isPowerOfTwo(16));
+    assert(!isPowerOfTwo(20));
+}
+
 /**
  * Round to next power of 2
  */
@@ -155,12 +186,24 @@ T nextPowerOfTwo(T) (T k) nothrow
     return k + 1;
 }
 
+///
+unittest
+{
+    assert(nextPowerOfTwo(5) == 8);
+}
+
 /**
  * Round to next power of 10
  */
 T nextPowerOfTen(T) (T k) nothrow
 {
     return pow(10, cast(int)ceil(log10(k)));
+}
+
+///
+unittest
+{
+    assert(nextPowerOfTen(80) == 100);
 }
 
 /**
@@ -262,6 +305,12 @@ uint bytesToUint(ubyte[4] src) nothrow
     return (src[0] << 24 | src[1] << 16 | src[2] << 8 | src[3]);
 }
 
+///
+unittest
+{
+    assert(bytesToUint([0xee, 0x10, 0xab, 0xff]) == 0xee10abff);
+}
+
 /**
  * Field of view angle Y from X
  */
@@ -307,4 +356,10 @@ bool isPerfectSquare(float n) nothrow
 {
     float r = sqrt(n);
     return(r * r == n);
+}
+
+///
+unittest
+{
+    assert(isPerfectSquare(64.0f));
 }
