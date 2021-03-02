@@ -800,6 +800,53 @@ unittest
         a.clamp(-1, 1);
         assert(a == Vector3f(1, -1, 0));
     }
+    
+    {
+        Vector3f a = Vector3f(2, 5, 7);
+        Vector4f b = Vector4f(a);
+        assert(b == Vector4f(2, 5, 7, float.nan));
+    }
+    
+    {
+        Vector3f a = Vector3f([0, 1]);
+        assert(a == Vector3f(0, 1, float.nan));
+        
+        Vector4f b = a.xyy;
+        assert(b == Vector4f(0, 1, 1, float.nan));
+    }
+    
+    {
+        Vector3f a = Vector3f(1, 2, 3);
+        a = a + 1;
+        assert(a == Vector3f(2, 3, 4));
+        a = a * 2;
+        assert(a == Vector3f(4, 6, 8));
+        a = a - 2;
+        assert(a == Vector3f(2, 4, 6));
+        a = a / 2;
+        assert(a == Vector3f(1, 2, 3));
+        
+        Vector3f b = Vector3f(3, 2, 1);
+        b += a;
+        assert(b == Vector3f(4, 4, 4));
+        b *= b;
+        assert(b == Vector3f(16, 16, 16));
+        b /= Vector3f(8, 4, 2);
+        assert(b == Vector3f(2, 4, 8));
+        b -= a;
+        assert(b == Vector3f(1, 2, 5));
+    }
+    
+    {
+        Vector3f v = Vector3f(0, 0, 0);
+        v[0] = 5;
+        v[1] = 2;
+        assert(v == Vector3f(5, 2, 0));
+        v[1..3] = 12;
+        assert(v == Vector3f(5, 12, 12));
+        v[] = 0;
+        assert(v == Vector3f(0, 0, 0));
+    }
 }
 
 /**
