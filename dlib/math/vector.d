@@ -847,6 +847,14 @@ unittest
         v[] = 0;
         assert(v == Vector3f(0, 0, 0));
     }
+    
+    {
+        Vector4f a = Vector4f(2, 4, 6, 8);
+        Vector4f b = a.wxyz;
+        assert(b == Vector4f(8, 2, 4, 6));
+        float d = dot(a, b);
+        assert(d == 96.0f);
+    }
 }
 
 /**
