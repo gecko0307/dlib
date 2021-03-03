@@ -25,6 +25,5 @@ jobs:
       - name: Run code coverage
         if: success()
         run: |
-          curl -s https://codecov.io/bash -o codecov.bash
-          ./codecov.bash
-
+          curl https://codecov.io/bash > codecov.sh
+          bash codecov.sh
