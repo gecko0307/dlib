@@ -1,9 +1,5 @@
 Boost Software License - Version 1.0 - August 17th, 2003
 
-Copyright (c) 2011-2021 Timur Gafarov, Martin Cejp, Andrey Penechko, Vadim Lopatin,
-Nick Papanastasiou, Oleg Baharev, Roman Chistokhodov, Eugene Wissner, Roman Vlasov, 
-Basile Burg, Valeriy Fedotov, Ferhat Kurtulmuş.
-
 Permission is hereby granted, free of charge, to any person or organization
 obtaining a copy of the software and accompanying documentation covered by
 this license (the "Software") to use, reproduce, display, distribute,
