@@ -5,7 +5,6 @@ dlib is a high-level general purpose library for D language intended to game eng
 dlib has no external dependencies aside D's standard library. dlib is created and maintained by [Timur Gafarov](https://github.com/gecko0307).
 
 [![GitHub Actions CI Status](https://github.com/gecko0307/dlib/workflows/CI/badge.svg)](https://github.com/gecko0307/dlib/actions?query=workflow%3ACI)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/90mrqd6hq7i2twap?svg=true)](https://ci.appveyor.com/project/gecko0307/dlib)
 [![DUB Package](https://img.shields.io/dub/v/dlib.svg)](https://code.dlang.org/packages/dlib)
 [![DUB Downloads](https://img.shields.io/dub/dm/dlib.svg)](https://code.dlang.org/packages/dlib)
 [![License](http://img.shields.io/badge/license-boost-blue.svg)](http://www.boost.org/LICENSE_1_0.txt)
