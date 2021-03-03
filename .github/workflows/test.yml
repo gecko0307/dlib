@@ -23,4 +23,8 @@ jobs:
       - name: Run tests
         run: dub test --build=unittest-cov
       - name: Run code coverage
-        run: bash <(curl -s https://codecov.io/bash)
+        if: success()
+        run: |
+          curl -s https://codecov.io/bash -o codecov.bash
+          ./codecov.bash
+
