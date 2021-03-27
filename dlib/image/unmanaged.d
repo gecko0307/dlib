@@ -41,7 +41,7 @@ import dlib.core.memory;
 /**
  * Image that uses dlib.core.memory instead of GC
  */
-class UnmanagedImage(PixelFormat fmt): Image!(fmt)
+class UnmanagedImage(IntegerPixelFormat fmt): Image!(fmt)
 {
     override @property SuperImage dup()
     {
@@ -77,22 +77,22 @@ class UnmanagedImage(PixelFormat fmt): Image!(fmt)
 }
 
 /// Specialization of UnmanagedImage for 8-bit luminance pixel format
-alias UnmanagedImageL8 = UnmanagedImage!(PixelFormat.L8);
+alias UnmanagedImageL8 = UnmanagedImage!(IntegerPixelFormat.L8);
 /// Specialization of UnmanagedImage for 8-bit luminance-alpha pixel format
-alias UnmanagedImageLA8 = UnmanagedImage!(PixelFormat.LA8);
+alias UnmanagedImageLA8 = UnmanagedImage!(IntegerPixelFormat.LA8);
 /// Specialization of UnmanagedImage for 8-bit RGB pixel format
-alias UnmanagedImageRGB8 = UnmanagedImage!(PixelFormat.RGB8);
+alias UnmanagedImageRGB8 = UnmanagedImage!(IntegerPixelFormat.RGB8);
 /// Specialization of UnmanagedImage for 8-bit RGBA pixel format
-alias UnmanagedImageRGBA8 = UnmanagedImage!(PixelFormat.RGBA8);
+alias UnmanagedImageRGBA8 = UnmanagedImage!(IntegerPixelFormat.RGBA8);
 
 /// Specialization of UnmanagedImage for 16-bit luminance pixel format
-alias UnmanagedImageL16 = UnmanagedImage!(PixelFormat.L16);
+alias UnmanagedImageL16 = UnmanagedImage!(IntegerPixelFormat.L16);
 /// Specialization of UnmanagedImage for 16-bit luminance-alpha pixel format
-alias UnmanagedImageLA16 = UnmanagedImage!(PixelFormat.LA16);
+alias UnmanagedImageLA16 = UnmanagedImage!(IntegerPixelFormat.LA16);
 /// Specialization of UnmanagedImage for 16-bit RGB pixel format
-alias UnmanagedImageRGB16 = UnmanagedImage!(PixelFormat.RGB16);
+alias UnmanagedImageRGB16 = UnmanagedImage!(IntegerPixelFormat.RGB16);
 /// Specialization of UnmanagedImage for 16-bit RGBA pixel format
-alias UnmanagedImageRGBA16 = UnmanagedImage!(PixelFormat.RGBA16);
+alias UnmanagedImageRGBA16 = UnmanagedImage!(IntegerPixelFormat.RGBA16);
 
 /**
  * UnmanagedImage factory class

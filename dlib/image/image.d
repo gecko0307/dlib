@@ -57,6 +57,7 @@ enum IntegerPixelFormat: uint
     RGBA16 = 7
 }
 
+deprecated("use IntegerPixelFormat instead")
 alias PixelFormat = IntegerPixelFormat;
 
 /**
@@ -90,7 +91,7 @@ interface SuperImage: Freeable
     @property uint pixelSize();
 
     /**
-     * This is compatible with PixelFormat and other internal format enums in dlib.
+     * This is compatible with IntegerPixelFormat and other internal format enums in dlib.
      * Values from 0 to 255 are reserved for dlib.
      * Values 256 and above are application-specific and can be used for custom SuperImage implementations
      */
@@ -172,7 +173,7 @@ interface SuperImage: Freeable
 /**
  * SuperImage implementation template for integer pixel formats
  */
-class Image(PixelFormat fmt): SuperImage
+class Image(IntegerPixelFormat fmt): SuperImage
 {
     public:
 
@@ -229,17 +230,17 @@ class Image(PixelFormat fmt): SuperImage
         _height = h;
 
         _bitDepth = [
-            PixelFormat.L8:     8, PixelFormat.LA8:     8,
-            PixelFormat.RGB8:   8, PixelFormat.RGBA8:   8,
-            PixelFormat.L16:   16, PixelFormat.LA16:   16,
-            PixelFormat.RGB16: 16, PixelFormat.RGBA16: 16
+            IntegerPixelFormat.L8:     8, IntegerPixelFormat.LA8:     8,
+            IntegerPixelFormat.RGB8:   8, IntegerPixelFormat.RGBA8:   8,
+            IntegerPixelFormat.L16:   16, IntegerPixelFormat.LA16:   16,
+            IntegerPixelFormat.RGB16: 16, IntegerPixelFormat.RGBA16: 16
         ][fmt];
 
         _channels = [
-            PixelFormat.L8:    1, PixelFormat.LA8:    2,
-            PixelFormat.RGB8:  3, PixelFormat.RGBA8:  4,
-            PixelFormat.L16:   1, PixelFormat.LA16:   2,
-            PixelFormat.RGB16: 3, PixelFormat.RGBA16: 4
+            IntegerPixelFormat.L8:    1, IntegerPixelFormat.LA8:    2,
+            IntegerPixelFormat.RGB8:  3, IntegerPixelFormat.RGBA8:  4,
+            IntegerPixelFormat.L16:   1, IntegerPixelFormat.LA16:   2,
+            IntegerPixelFormat.RGB16: 3, IntegerPixelFormat.RGBA16: 4
         ][fmt];
 
         _pixelSize = (_bitDepth / 8) * _channels;
@@ -281,36 +282,36 @@ class Image(PixelFormat fmt): SuperImage
 
         auto maxv = (2 ^^ bitDepth) - 1;
 
-        static if (fmt == PixelFormat.L8)
+        static if (fmt == IntegerPixelFormat.L8)
         {
             auto v = pixData[index];
             return Color4(v, v, v);
         }
-        else if (fmt == PixelFormat.LA8)
+        else if (fmt == IntegerPixelFormat.LA8)
         {
             auto v = pixData[index];
             return Color4(v, v, v, pixData[index+1]);
         }
-        else if (fmt == PixelFormat.RGB8)
+        else if (fmt == IntegerPixelFormat.RGB8)
         {
             return Color4(pixData[index], pixData[index+1], pixData[index+2], cast(ubyte)maxv);
         }
-        else if (fmt == PixelFormat.RGBA8)
+        else if (fmt == IntegerPixelFormat.RGBA8)
         {
             return Color4(pixData[index], pixData[index+1], pixData[index+2], pixData[index+3]);
         }
-        else if (fmt == PixelFormat.L16)
+        else if (fmt == IntegerPixelFormat.L16)
         {
             ushort v = pixData[index] << 8 | pixData[index+1];
             return Color4(v, v, v);
         }
-        else if (fmt == PixelFormat.LA16)
+        else if (fmt == IntegerPixelFormat.LA16)
         {
             ushort v = pixData[index]   << 8 | pixData[index+1];
             ushort a = pixData[index+2] << 8 | pixData[index+3];
             return Color4(v, v, v, a);
         }
-        else if (fmt == PixelFormat.RGB16)
+        else if (fmt == IntegerPixelFormat.RGB16)
         {
             ushort r = pixData[index]   << 8 | pixData[index+1];
             ushort g = pixData[index+2] << 8 | pixData[index+3];
@@ -318,7 +319,7 @@ class Image(PixelFormat fmt): SuperImage
             ushort a = cast(ushort)maxv;
             return Color4(r, g, b, a);
         }
-        else if (fmt == PixelFormat.RGBA16)
+        else if (fmt == IntegerPixelFormat.RGBA16)
         {
             ushort r = pixData[index]   << 8 | pixData[index+1];
             ushort g = pixData[index+2] << 8 | pixData[index+3];
@@ -328,7 +329,7 @@ class Image(PixelFormat fmt): SuperImage
         }
         else
         {
-            assert (0, "Image.opIndex is not implemented for PixelFormat." ~ to!string(fmt));
+            assert (0, "Image.opIndex is not implemented for IntegerPixelFormat." ~ to!string(fmt));
         }
     }
 
@@ -341,41 +342,41 @@ class Image(PixelFormat fmt): SuperImage
 
         size_t index = (cast(size_t)y * cast(size_t)_width + cast(size_t)x) * cast(size_t)_pixelSize;
 
-        static if (fmt == PixelFormat.L8)
+        static if (fmt == IntegerPixelFormat.L8)
         {
             pixData[index] = cast(ubyte)c.r;
         }
-        else if (fmt == PixelFormat.LA8)
+        else if (fmt == IntegerPixelFormat.LA8)
         {
             pixData[index] = cast(ubyte)c.r;
             pixData[index+1] = cast(ubyte)c.a;
         }
-        else if (fmt == PixelFormat.RGB8)
+        else if (fmt == IntegerPixelFormat.RGB8)
         {
             pixData[index] = cast(ubyte)c.r;
             pixData[index+1] = cast(ubyte)c.g;
             pixData[index+2] = cast(ubyte)c.b;
         }
-        else if (fmt == PixelFormat.RGBA8)
+        else if (fmt == IntegerPixelFormat.RGBA8)
         {
             pixData[index] = cast(ubyte)c.r;
             pixData[index+1] = cast(ubyte)c.g;
             pixData[index+2] = cast(ubyte)c.b;
             pixData[index+3] = cast(ubyte)c.a;
         }
-        else if (fmt == PixelFormat.L16)
+        else if (fmt == IntegerPixelFormat.L16)
         {
             pixData[index] = cast(ubyte)(c.r >> 8);
             pixData[index+1] = cast(ubyte)(c.r & 0xFF);
         }
-        else if (fmt == PixelFormat.LA16)
+        else if (fmt == IntegerPixelFormat.LA16)
         {
             pixData[index] = cast(ubyte)(c.r >> 8);
             pixData[index+1] = cast(ubyte)(c.r & 0xFF);
             pixData[index+2] = cast(ubyte)(c.a >> 8);
             pixData[index+3] = cast(ubyte)(c.a & 0xFF);
         }
-        else if (fmt == PixelFormat.RGB16)
+        else if (fmt == IntegerPixelFormat.RGB16)
         {
             pixData[index] = cast(ubyte)(c.r >> 8);
             pixData[index+1] = cast(ubyte)(c.r & 0xFF);
@@ -384,7 +385,7 @@ class Image(PixelFormat fmt): SuperImage
             pixData[index+4] = cast(ubyte)(c.b >> 8);
             pixData[index+5] = cast(ubyte)(c.b & 0xFF);
         }
-        else if (fmt == PixelFormat.RGBA16)
+        else if (fmt == IntegerPixelFormat.RGBA16)
         {
             pixData[index] = cast(ubyte)(c.r >> 8);
             pixData[index+1] = cast(ubyte)(c.r & 0xFF);
@@ -397,7 +398,7 @@ class Image(PixelFormat fmt): SuperImage
         }
         else
         {
-            assert (0, "Image.opIndexAssign is not implemented for PixelFormat." ~ to!string(fmt));
+            assert (0, "Image.opIndexAssign is not implemented for IntegerPixelFormat." ~ to!string(fmt));
         }
 
         return c;
@@ -430,22 +431,22 @@ class Image(PixelFormat fmt): SuperImage
 }
 
 /// Specialization of Image for 8-bit luminance pixel format
-alias ImageL8 = Image!(PixelFormat.L8);
+alias ImageL8 = Image!(IntegerPixelFormat.L8);
 /// Specialization of Image for 8-bit luminance-alpha pixel format
-alias ImageLA8 = Image!(PixelFormat.LA8);
+alias ImageLA8 = Image!(IntegerPixelFormat.LA8);
 /// Specialization of Image for 8-bit RGB pixel format
-alias ImageRGB8 = Image!(PixelFormat.RGB8);
+alias ImageRGB8 = Image!(IntegerPixelFormat.RGB8);
 /// Specialization of Image for 8-bit RGBA pixel format
-alias ImageRGBA8 = Image!(PixelFormat.RGBA8);
+alias ImageRGBA8 = Image!(IntegerPixelFormat.RGBA8);
 
 /// Specialization of Image for 16-bit luminance pixel format
-alias ImageL16 = Image!(PixelFormat.L16);
+alias ImageL16 = Image!(IntegerPixelFormat.L16);
 /// Specialization of Image for 16-bit luminance-alpha pixel format
-alias ImageLA16 = Image!(PixelFormat.LA16);
+alias ImageLA16 = Image!(IntegerPixelFormat.LA16);
 /// Specialization of Image for 16-bit RGB pixel format
-alias ImageRGB16 = Image!(PixelFormat.RGB16);
+alias ImageRGB16 = Image!(IntegerPixelFormat.RGB16);
 /// Specialization of Image for 16-bit RGBA pixel format
-alias ImageRGBA16 = Image!(PixelFormat.RGBA16);
+alias ImageRGBA16 = Image!(IntegerPixelFormat.RGBA16);
 
 /**
  * All-in-one image factory interface

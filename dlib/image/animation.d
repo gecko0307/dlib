@@ -60,7 +60,7 @@ interface SuperAnimatedImage: SuperImage
  * you can use this class with any existing dlib.image
  * functionality: save to file, apply filters, etc.
  */
-class AnimatedImage(PixelFormat fmt): Image!(fmt), SuperAnimatedImage
+class AnimatedImage(IntegerPixelFormat fmt): Image!(fmt), SuperAnimatedImage
 {
     protected:
     uint _numFrames;
@@ -131,22 +131,22 @@ class AnimatedImage(PixelFormat fmt): Image!(fmt), SuperAnimatedImage
 }
 
 /// Specialization of AnimatedImage for 8-bit luminance pixel format
-alias AnimatedImageL8 = AnimatedImage!(PixelFormat.L8);
+alias AnimatedImageL8 = AnimatedImage!(IntegerPixelFormat.L8);
 /// Specialization of AnimatedImage for 8-bit luminance-alpha pixel format
-alias AnimatedImageLA8 = AnimatedImage!(PixelFormat.LA8);
+alias AnimatedImageLA8 = AnimatedImage!(IntegerPixelFormat.LA8);
 /// Specialization of AnimatedImage for 8-bit RGB pixel format
-alias AnimatedImageRGB8 = AnimatedImage!(PixelFormat.RGB8);
+alias AnimatedImageRGB8 = AnimatedImage!(IntegerPixelFormat.RGB8);
 /// Specialization of AnimatedImage for 8-bit RGBA pixel format
-alias AnimatedImageRGBA8 = AnimatedImage!(PixelFormat.RGBA8);
+alias AnimatedImageRGBA8 = AnimatedImage!(IntegerPixelFormat.RGBA8);
 
 /// Specialization of AnimatedImage for 16-bit luminance pixel format
-alias AnimatedImageL16 = AnimatedImage!(PixelFormat.L16);
+alias AnimatedImageL16 = AnimatedImage!(IntegerPixelFormat.L16);
 /// Specialization of AnimatedImage for 16-bit luminance-alpha pixel format
-alias AnimatedImageLA16 = AnimatedImage!(PixelFormat.LA16);
+alias AnimatedImageLA16 = AnimatedImage!(IntegerPixelFormat.LA16);
 /// Specialization of AnimatedImage for 16-bit RGB pixel format
-alias AnimatedImageRGB16 = AnimatedImage!(PixelFormat.RGB16);
+alias AnimatedImageRGB16 = AnimatedImage!(IntegerPixelFormat.RGB16);
 /// Specialization of AnimatedImage for 16-bit RGBA pixel format
-alias AnimatedImageRGBA16 = AnimatedImage!(PixelFormat.RGBA16);
+alias AnimatedImageRGBA16 = AnimatedImage!(IntegerPixelFormat.RGBA16);
 
 /**
  * Factory class for animated images
@@ -220,7 +220,7 @@ do
 /**
  * AnimatedImage that uses dlib.core.memory instead of GC
  */
-class UnmanagedAnimatedImage(PixelFormat fmt): AnimatedImage!(fmt)
+class UnmanagedAnimatedImage(IntegerPixelFormat fmt): AnimatedImage!(fmt)
 {
     override @property SuperImage dup()
     {
@@ -256,22 +256,22 @@ class UnmanagedAnimatedImage(PixelFormat fmt): AnimatedImage!(fmt)
 }
 
 /// Specialization of UnmanagedAnimatedImage for 8-bit luminance pixel format
-alias UnmanagedAnimatedImageL8 = UnmanagedAnimatedImage!(PixelFormat.L8);
+alias UnmanagedAnimatedImageL8 = UnmanagedAnimatedImage!(IntegerPixelFormat.L8);
 /// Specialization of UnmanagedAnimatedImage for 8-bit luminance-alpha pixel format
-alias UnmanagedAnimatedImageLA8 = UnmanagedAnimatedImage!(PixelFormat.LA8);
+alias UnmanagedAnimatedImageLA8 = UnmanagedAnimatedImage!(IntegerPixelFormat.LA8);
 /// Specialization of UnmanagedAnimatedImage for 8-bit RGB pixel format
-alias UnmanagedAnimatedImageRGB8 = UnmanagedAnimatedImage!(PixelFormat.RGB8);
+alias UnmanagedAnimatedImageRGB8 = UnmanagedAnimatedImage!(IntegerPixelFormat.RGB8);
 /// Specialization of UnmanagedAnimatedImage for 8-bit RGBA pixel format
-alias UnmanagedAnimatedImageRGBA8 = UnmanagedAnimatedImage!(PixelFormat.RGBA8);
+alias UnmanagedAnimatedImageRGBA8 = UnmanagedAnimatedImage!(IntegerPixelFormat.RGBA8);
 
 /// Specialization of UnmanagedAnimatedImage for 16-bit luminance pixel format
-alias UnmanagedAnimatedImageL16 = UnmanagedAnimatedImage!(PixelFormat.L16);
+alias UnmanagedAnimatedImageL16 = UnmanagedAnimatedImage!(IntegerPixelFormat.L16);
 /// Specialization of UnmanagedAnimatedImage for 16-bit luminance-alpha pixel format
-alias UnmanagedAnimatedImageLA16 = UnmanagedAnimatedImage!(PixelFormat.LA16);
+alias UnmanagedAnimatedImageLA16 = UnmanagedAnimatedImage!(IntegerPixelFormat.LA16);
 /// Specialization of UnmanagedAnimatedImage for 16-bit RGB pixel format
-alias UnmanagedAnimatedImageRGB16 = UnmanagedAnimatedImage!(PixelFormat.RGB16);
+alias UnmanagedAnimatedImageRGB16 = UnmanagedAnimatedImage!(IntegerPixelFormat.RGB16);
 /// Specialization of UnmanagedAnimatedImage for 16-bit RGBA pixel format
-alias UnmanagedAnimatedImageRGBA16 = UnmanagedAnimatedImage!(PixelFormat.RGBA16);
+alias UnmanagedAnimatedImageRGBA16 = UnmanagedAnimatedImage!(IntegerPixelFormat.RGBA16);
 
 /**
  * Factory class for UnmanagedAnimatedImage
