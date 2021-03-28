@@ -1,5 +1,5 @@
-dlib 0.21.0 beta2 - TBD
------------------------
+dlib 0.21.0 beta2 - 28 Mar, 2021
+--------------------------------
 Changes since dlib 0.21.0 beta1:
 - **dlib.image**
   - `PixelFormat` is deprecated, use `IntegerPixelFormat` instead.
