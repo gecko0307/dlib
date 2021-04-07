@@ -1,3 +1,7 @@
+dlib 0.21.0 - 7 Apr, 2021
+-------------------------
+No changes since dlib 0.21.0 beta2.
+
 dlib 0.21.0 beta2 - 28 Mar, 2021
 --------------------------------
 Changes since dlib 0.21.0 beta1:
