@@ -57,9 +57,6 @@ enum IntegerPixelFormat: uint
     RGBA16 = 7
 }
 
-deprecated("use IntegerPixelFormat instead")
-alias PixelFormat = IntegerPixelFormat;
-
 /**
  * Abstract image interface
  */

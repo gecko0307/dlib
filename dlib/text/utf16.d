@@ -130,15 +130,7 @@ struct UTF16LEDecoder
     {
         return decode(input);
     }
-
-    deprecated("use UTF16Decoder.decode instead")
-    auto byDChar()
-    {
-        return decode();
-    }
 }
-
-deprecated("use UTF16LEDecoder instead") alias UTF16Decoder = UTF16LEDecoder;
 
 /**
  * UTF-16 LE encoder to use with dlib.text.encodings.transcode
@@ -168,8 +160,6 @@ struct UTF16LEEncoder
         }
     }
 }
-
-deprecated("use UTF16LEEncoder instead") alias UTF16Encoder = UTF16LEEncoder;
 
 /**
  * Converts UTF-8 to UTF-16

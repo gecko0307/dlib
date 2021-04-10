@@ -157,12 +157,3 @@ void saveHDRImage(SuperHDRImage img, string filename)
             assert(0, "Image I/O error: unsupported image format or illegal extension");
     }
 }
-
-deprecated("use saveImage instead") alias save = saveImage;
-deprecated("use loadImage instead") alias load = loadImage;
-
-deprecated("use loadAnimatedImage instead") alias loadAnimated = loadAnimatedImage;
-deprecated("use saveAnimatedImage instead") alias saveAnimated = saveAnimatedImage;
-
-deprecated("use loadHDRImage instead") alias loadHDRI = loadHDRImage;
-deprecated("use saveHDRImage instead") alias saveHDRI = saveHDRImage;

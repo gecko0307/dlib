@@ -189,12 +189,6 @@ struct UTF8Decoder
     {
         return decode(input);
     }
-    
-    deprecated("use UTF8Decoder.decode instead")
-    auto byDChar()
-    {
-        return decode();
-    }
 
     ///
     unittest

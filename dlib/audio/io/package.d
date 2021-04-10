@@ -77,6 +77,3 @@ GenericSound loadSound(string filename)
             assert(0, "Sound I/O error: unsupported sound format or illegal extension");
     }
 }
-
-deprecated("use saveSound instead") alias save = saveSound;
-deprecated("use loadSound instead") alias load = loadSound;
