@@ -137,6 +137,21 @@ do
     return Vector!(T,3)(m.a14, m.a24, m.a34);
 }
 
+///
+unittest
+{
+    Matrix4f tm = matrixf(
+        1.0f, 0.0f, 0.0f, 3.0f,
+        0.0f, 1.0f, 0.0f, 5.0f,
+        0.0f, 0.0f, 1.0f, 2.5f,
+        0.0f, 0.0f, 0.0f, 1.0f,
+    );
+    
+    Vector3f t = translation(tm);
+    
+    assert(t == Vector3f(3.0f, 5.0f, 2.5f));
+}
+
 /**
  * Scaling vector of the matrix
  */
@@ -199,6 +214,14 @@ do
     res.a24 = v.y;
     res.a34 = v.z;
     return res;
+}
+
+///
+unittest
+{
+    Matrix4f tm = translationMatrix(Vector3f(3.0f, 5.0f, 2.5f));
+    Vector3f t = translation(tm);
+    assert(t == Vector3f(3.0f, 5.0f, 2.5f));
 }
 
 /**
