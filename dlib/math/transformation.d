@@ -636,6 +636,43 @@ Matrix!(T,4) rotationBetweenVectors(T) (Vector!(T,3) source, Vector!(T,3) target
     return rotationBetween(source, target).toMatrix4x4;
 }
 
+///
+unittest
+{
+    bool isAlmostZero4(Vector4f v)
+    {
+        float e = 0.002f;
+
+        return abs(v.x) < e &&
+               abs(v.y) < e &&
+               abs(v.z) < e &&
+               abs(v.w) < e;
+    }
+
+    // build ModelView (World to Camera)
+    vec3 center = vec3(0.0f, 0.0f, 0.0f);
+    vec3 eye = center + vec3(0.0f, 1.0f, 1.0f);
+    vec3 up = vec3(0.0f, -0.707f, 0.707f);
+
+    Matrix4f modelView = lookAtMatrix(eye, center, up);
+
+    // build Projection (Camera to Eye)
+    Matrix4f projection = perspectiveMatrix(45.0f, 16.0f / 9.0f, 1.0f, 100.0f);
+
+    // compose into one transformation
+    Matrix4f projectionModelView = projection * modelView;
+
+    vec4 positionInWorld = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+    vec4 transformed1 =
+        positionInWorld * projectionModelView;
+
+    vec4 transformed2 =
+        (positionInWorld * modelView) * projection;
+
+    assert(isAlmostZero4(transformed1 - transformed2));
+}
+
 /**
  * Affine transformations in 2D space
  */
@@ -692,36 +729,16 @@ do
 ///
 unittest
 {
-    bool isAlmostZero(Vector4f v)
+    bool isAlmostZero2(Vector2f v)
     {
         float e = 0.002f;
 
         return abs(v.x) < e &&
-               abs(v.y) < e &&
-               abs(v.z) < e &&
-               abs(v.w) < e;
+               abs(v.y) < e;
     }
-
-    // build ModelView (World to Camera)
-    vec3 center = vec3(0.0f, 0.0f, 0.0f);
-    vec3 eye = center + vec3(0.0f, 1.0f, 1.0f);
-    vec3 up = vec3(0.0f, -0.707f, 0.707f);
-
-    Matrix4f modelView = lookAtMatrix(eye, center, up);
-
-    // build Projection (Camera to Eye)
-    Matrix4f projection = perspectiveMatrix(45.0f, 16.0f / 9.0f, 1.0f, 100.0f);
-
-    // compose into one transformation
-    Matrix4f projectionModelView = projection * modelView;
-
-    vec4 positionInWorld = vec4(0.0f, 0.0f, 0.0f, 1.0f);
-
-    vec4 transformed1 =
-        positionInWorld * projectionModelView;
-
-    vec4 transformed2 =
-        (positionInWorld * modelView) * projection;
-
-    assert(isAlmostZero(transformed1 - transformed2));
+    
+    vec2 v = vec2(1, 0);
+    Matrix3f tm = translationMatrix2D(vec2(2, 3));
+    vec2 vt = affineTransform2D(v, tm);
+    assert(isAlmostZero2(vt - vec2(3, 3)));
 }
