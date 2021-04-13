@@ -365,7 +365,7 @@ do
 
 /**
  * Setup the matrix to perform a reflection about an arbitrary plane
- * through the origin.  The unit vector n is perpendicular to the plane.
+ * through the origin. The unit vector n is perpendicular to the plane.
  */
 Matrix!(T,4) axisReflectionMatrix(T) (Vector!(T,3) n)
 in
@@ -698,6 +698,8 @@ do
     return res;
 }
 
+alias translation2 = translationMatrix2D;
+
 /**
  * Rotation in 2D space
  */
@@ -713,6 +715,8 @@ do
     return res;
 }
 
+alias rotation2 = rotationMatrix2D;
+
 /**
  * Scale in 2D space
  */
@@ -725,6 +729,8 @@ do
     res.a31 = 0;   res.a32 = 0;   res.a33 = 1;
     return res;
 }
+
+alias scale2 = scaleMatrix2D;
 
 ///
 unittest
@@ -741,4 +747,12 @@ unittest
     Matrix3f tm = translationMatrix2D(vec2(2, 3));
     vec2 vt = affineTransform2D(v, tm);
     assert(isAlmostZero2(vt - vec2(3, 3)));
+    
+    Matrix3f rm = rotationMatrix2D(cast(float)PI);
+    vt = affineTransform2D(v, rm);
+    assert(isAlmostZero2(vt - vec2(-1, 0)));
+    
+    Matrix3f sm = scaleMatrix2D(vec2(2, 2));
+    vt = affineTransform2D(v, sm);
+    assert(isAlmostZero2(vt - vec2(2, 0)));
 }

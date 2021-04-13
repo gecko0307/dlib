@@ -209,6 +209,7 @@ unittest
 /**
  * Sum of all elements of an array
  */
+deprecated("use reduce!((a, b) => a + b) instead")
 T sum(T) (T[] array...) nothrow
 {
     T result = 0;
@@ -220,6 +221,7 @@ T sum(T) (T[] array...) nothrow
 /**
  * Negate all elements of an array
  */
+deprecated("use map!(a => -a) instead")
 T[] invertArray(T) (T[] array...) nothrow
 {
     auto result = new T[array.length];
@@ -231,6 +233,7 @@ T[] invertArray(T) (T[] array...) nothrow
 /**
  * If all elements are zeros
  */
+deprecated("use reduce!((a, b) => a + b == 0) instead")
 bool allIsZero(T) (T[] array...) nothrow
 {
     foreach(i, v; array)
