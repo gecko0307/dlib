@@ -75,7 +75,7 @@ struct Matrix(T, size_t N)
      *
      * Returns: $(D_KEYWORD true) if dimensions are equal, $(D_KEYWORD false) otherwise.
      */
-    bool opEquals(Matrix!(T, N) that)
+    bool opEquals(Matrix!(T, N) that) const
     {
         return arrayof == that.arrayof;
     }
@@ -213,7 +213,7 @@ struct Matrix(T, size_t N)
    /**
     * Matrix + Matrix
     */
-    Matrix!(T,N) opBinary(string op)(Matrix!(T,N) mat) if (op == "+")
+    Matrix!(T,N) opBinary(string op)(Matrix!(T,N) mat) const if (op == "+")
     do
     {
         auto res = Matrix!(T,N)();
@@ -228,7 +228,7 @@ struct Matrix(T, size_t N)
    /**
     * Matrix - Matrix
     */
-    Matrix!(T,N) opBinary(string op)(Matrix!(T,N) mat) if (op == "-")
+    Matrix!(T,N) opBinary(string op)(Matrix!(T,N) mat) const if (op == "-")
     do
     {
         auto res = Matrix!(T,N)();
@@ -243,7 +243,7 @@ struct Matrix(T, size_t N)
    /**
     * Matrix * Matrix
     */
-    Matrix!(T,N) opBinary(string op)(Matrix!(T,N) mat) if (op == "*")
+    Matrix!(T,N) opBinary(string op)(Matrix!(T,N) mat) const if (op == "*")
     do
     {
         static if (N == 2)
@@ -352,7 +352,7 @@ struct Matrix(T, size_t N)
    /**
     * Matrix * T
     */
-    Matrix!(T,N) opBinary(string op)(T k) if (op == "*")
+    Matrix!(T,N) opBinary(string op)(T k) const if (op == "*")
     do
     {
         auto res = Matrix!(T,N)();
@@ -377,7 +377,7 @@ struct Matrix(T, size_t N)
     */
     static if (N == 2)
     {
-        Vector!(T,2) opBinaryRight(string op) (Vector!(T,2) v) if (op == "*")
+        Vector!(T,2) opBinaryRight(string op) (Vector!(T,2) v) const if (op == "*")
         do
         {
             return Vector!(T,2)
@@ -390,7 +390,7 @@ struct Matrix(T, size_t N)
     else
     static if (N == 3)
     {
-        Vector!(T,3) opBinaryRight(string op) (Vector!(T,3) v) if (op == "*")
+        Vector!(T,3) opBinaryRight(string op) (Vector!(T,3) v) const if (op == "*")
         do
         {
             return Vector!(T,3)
@@ -403,7 +403,7 @@ struct Matrix(T, size_t N)
     }
     else
     {
-        Vector!(T,N) opBinaryRight(string op) (Vector!(T,N) v) if (op == "*")
+        Vector!(T,N) opBinaryRight(string op) (Vector!(T,N) v) const if (op == "*")
         do
         {
             Vector!(T,N) res;
@@ -423,7 +423,7 @@ struct Matrix(T, size_t N)
     */
     static if (N == 4)
     {
-        Vector!(T,3) opBinaryRight(string op) (Vector!(T,3) v) if (op == "*")
+        Vector!(T,3) opBinaryRight(string op) (Vector!(T,3) v) const if (op == "*")
         do
         {
             return Vector!(T,3)
@@ -440,7 +440,7 @@ struct Matrix(T, size_t N)
        /**
         * Rotate a vector by the 3x3 upper-left portion of the matrix
         */
-        Vector!(T,3) rotate(Vector!(T,3) v)
+        Vector!(T,3) rotate(Vector!(T,3) v) const
         do
         {
             return Vector!(T,3)
@@ -454,7 +454,7 @@ struct Matrix(T, size_t N)
        /**
         * Rotate a vector by the inverse 3x3 upper-left portion of the matrix
         */
-        Vector!(T,3) invRotate(Vector!(T,3) v)
+        Vector!(T,3) invRotate(Vector!(T,3) v) const
         do
         {
             return Vector!(T,3)
@@ -468,7 +468,7 @@ struct Matrix(T, size_t N)
 
     static if (N == 4 || N == 3)
     {
-        T determinant3x3()
+        T determinant3x3() const
         do
         {
             return a11 * (a33 * a22 - a32 * a23)
@@ -482,7 +482,7 @@ struct Matrix(T, size_t N)
        /**
         * Determinant (of upper-left 3x3 portion for 4x4 matrices)
         */
-        T determinant()
+        T determinant() const
         do
         {
             return a11;
@@ -491,7 +491,7 @@ struct Matrix(T, size_t N)
     else
     static if (N == 2)
     {
-        T determinant()
+        T determinant() const
         do
         {
             return a11 * a22 - a12 * a21;
@@ -505,7 +505,7 @@ struct Matrix(T, size_t N)
     else
     {
         // Determinant of a given upper-left portion
-        T determinant(size_t n = N)
+        T determinant(size_t n = N) const
         do
         {
             T d = 0;
