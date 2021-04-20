@@ -2,1946 +2,2077 @@
 <html>
 	<head>
 		<meta charset="UTF-8"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
 		<title>API documentation</title>
-		<link rel="stylesheet" href="./css/style.min.css"/>
-		<script type="text/javascript" src="./js/script.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="./styles/ddox.css"/>
+		<link rel="stylesheet" href="./prettify/prettify.css" type="text/css"/>
+		<script type="text/javascript" src="./scripts/jquery.js">/**/</script><script type="text/javascript" src="./scripts/ddox.js">/**/</script>
 	</head>
 	<body onload="setupDdox();">
-		<header></header>
 		<nav id="main-nav">
-			<div>
-				<noscript>
-					<p style="color: red">The search functionality needs JavaScript enabled</p>
-				</noscript>
-				<div id="symbolSearchPane" style="display: none">
-					<form action="#" method="GET">
-						<input id="symbolSearch" type="text" name="q" placeholder="Search for symbols" autocomplete="off" onchange="performSymbolSearch(24);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" autofocus/>
-					</form>
-					<ul id="symbolSearchResults" class="symbolList" style="display: none"></ul><script type="application/javascript" src="./symbols.js"></script><script type="application/javascript">var symbolSearchRootDir = "./";
-document.getElementById('symbolSearchPane').style.display = 'block';</script>
-				</div>
-				<ul class="tree-view">
-					<li class="tree-view ">
-						<div class="package ">
-							<a href="./dlib.html">dlib</a>
-						</div>
-				<ul class="tree-view">
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="./dlib/audio.html">audio</a>
-						</div>
-				<ul class="tree-view">
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="./dlib/audio/io.html">io</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="./dlib/audio/io/wav.html">wav</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/audio/sample.html">sample</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/audio/sound.html">sound</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/audio/synth.html">synth</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/audio/unmanaged.html">unmanaged</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="./dlib/coding.html">coding</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="./dlib/coding/varint.html">varint</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/coding/zlib.html">zlib</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="./dlib/concurrency.html">concurrency</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="./dlib/concurrency/taskqueue.html">taskqueue</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/concurrency/threadpool.html">threadpool</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/concurrency/workerthread.html">workerthread</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="./dlib/container.html">container</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="./dlib/container/array.html">array</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/container/bst.html">bst</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/container/buffer.html">buffer</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/container/dict.html">dict</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/container/linkedlist.html">linkedlist</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/container/queue.html">queue</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/container/stack.html">stack</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="./dlib/core.html">core</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="./dlib/core/bitio.html">bitio</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/core/compound.html">compound</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/core/memory.html">memory</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/core/mutex.html">mutex</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/core/oop.html">oop</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/core/ownership.html">ownership</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/core/stream.html">stream</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/core/thread.html">thread</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/core/tuple.html">tuple</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="./dlib/filesystem.html">filesystem</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="./dlib/filesystem/delegaterange.html">delegaterange</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/filesystem/dirrange.html">dirrange</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/filesystem/filesystem.html">filesystem</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/filesystem/local.html">local</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/filesystem/stdfs.html">stdfs</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="./dlib/geometry.html">geometry</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="./dlib/geometry/aabb.html">aabb</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/geometry/frustum.html">frustum</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/geometry/intersection.html">intersection</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/geometry/obb.html">obb</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/geometry/plane.html">plane</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/geometry/ray.html">ray</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/geometry/sphere.html">sphere</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/geometry/triangle.html">triangle</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/geometry/trimesh.html">trimesh</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/geometry/utils.html">utils</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="./dlib/image.html">image</a>
-						</div>
-				<ul class="tree-view">
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="./dlib/image/filters.html">filters</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/filters/binarization.html">binarization</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/filters/boxblur.html">boxblur</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/filters/chromakey.html">chromakey</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/filters/contrast.html">contrast</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/filters/convolution.html">convolution</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/filters/desaturate.html">desaturate</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/filters/edgedetect.html">edgedetect</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/filters/histogram.html">histogram</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/filters/lens.html">lens</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/filters/morphology.html">morphology</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/filters/normalmap.html">normalmap</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/filters/sharpen.html">sharpen</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="./dlib/image/io.html">io</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/io/bmp.html">bmp</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/io/hdr.html">hdr</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/io/jpeg.html">jpeg</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/io/png.html">png</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/io/tga.html">tga</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/io/utils.html">utils</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="./dlib/image/render.html">render</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/render/cosplasma.html">cosplasma</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/render/shapes.html">shapes</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/render/text.html">text</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="./dlib/image/resampling.html">resampling</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/resampling/bicubic.html">bicubic</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/resampling/bilinear.html">bilinear</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/resampling/lanczos.html">lanczos</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/resampling/nearest.html">nearest</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/animation.html">animation</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/arithmetics.html">arithmetics</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/canvas.html">canvas</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/color.html">color</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/fthread.html">fthread</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/hdri.html">hdri</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/hsv.html">hsv</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/image.html">image</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/signal2d.html">signal2d</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/transform.html">transform</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/image/unmanaged.html">unmanaged</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="./dlib/math.html">math</a>
-						</div>
-				<ul class="tree-view">
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="./dlib/math/interpolation.html">interpolation</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="./dlib/math/interpolation/bezier.html">bezier</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/math/interpolation/catmullrom.html">catmullrom</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/math/interpolation/easing.html">easing</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/math/interpolation/hermite.html">hermite</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/math/interpolation/linear.html">linear</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/math/interpolation/nearest.html">nearest</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/math/interpolation/smoothstep.html">smoothstep</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/math/combinatorics.html">combinatorics</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/math/complex.html">complex</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/math/decomposition.html">decomposition</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/math/diff.html">diff</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/math/dual.html">dual</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/math/dualquaternion.html">dualquaternion</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/math/fft.html">fft</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/math/hof.html">hof</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/math/linsolve.html">linsolve</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/math/matrix.html">matrix</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/math/quaternion.html">quaternion</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/math/sse.html">sse</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/math/tensor.html">tensor</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/math/transformation.html">transformation</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/math/utils.html">utils</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/math/vector.html">vector</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="./dlib/memory.html">memory</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="./dlib/memory/allocator.html">allocator</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/memory/gcallocator.html">gcallocator</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/memory/mallocator.html">mallocator</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/memory/mmappool.html">mmappool</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="./dlib/network.html">network</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="./dlib/network/socket.html">socket</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/network/url.html">url</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="./dlib/serialization.html">serialization</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="./dlib/serialization/json.html">json</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/serialization/xml.html">xml</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="./dlib/text.html">text</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="./dlib/text/encodings.html">encodings</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/text/lexer.html">lexer</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/text/str.html">str</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/text/utf16.html">utf16</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/text/utf8.html">utf8</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="./dlib/text/utils.html">utils</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-				</ul>
-					</li>
-				</ul>
+			<noscript>
+				<p style="color: red">The search functionality needs JavaScript enabled</p>
+			</noscript>
+			<div id="symbolSearchPane" style="display: none">
+				<form action="#" method="GET">
+					<input id="symbolSearch" type="text" name="q" placeholder="Search for symbols" autocomplete="off" onchange="performSymbolSearch(40);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();"/>
+				</form>
+				<ul id="symbolSearchResults" class="symbolList" style="display: none"></ul><script type="application/javascript" src="./symbols.js"></script><script type="application/javascript">var symbolSearchRootDir = "./";
+$('#symbolSearchPane').show();</script>
 			</div>
-			<p id="main-nav-footer">
-				Built with
-				<a href="https://github.com/MartinNowak/scod">scod</a>
-			</p>
+			<ul class="tree-view">
+				<li class="tree-view ">
+					<div class="package ">
+						<a href="./dlib.html">dlib</a>
+					</div>
+			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="./dlib/audio.html">audio</a>
+					</div>
+			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="./dlib/audio/io.html">io</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="./dlib/audio/io/wav.html">wav</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/audio/sample.html">sample</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/audio/sound.html">sound</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/audio/synth.html">synth</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/audio/unmanaged.html">unmanaged</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="./dlib/coding.html">coding</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="./dlib/coding/varint.html">varint</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/coding/zlib.html">zlib</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="./dlib/concurrency.html">concurrency</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="./dlib/concurrency/taskqueue.html">taskqueue</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/concurrency/threadpool.html">threadpool</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/concurrency/workerthread.html">workerthread</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="./dlib/container.html">container</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="./dlib/container/array.html">array</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/container/bst.html">bst</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/container/buffer.html">buffer</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/container/dict.html">dict</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/container/linkedlist.html">linkedlist</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/container/queue.html">queue</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/container/stack.html">stack</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="./dlib/core.html">core</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="./dlib/core/bitio.html">bitio</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/core/compound.html">compound</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/core/memory.html">memory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/core/mutex.html">mutex</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/core/oop.html">oop</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/core/ownership.html">ownership</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/core/stream.html">stream</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/core/thread.html">thread</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/core/tuple.html">tuple</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="./dlib/filesystem.html">filesystem</a>
+					</div>
+			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">posix
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="./dlib/filesystem/posix/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/filesystem/posix/directory.html">directory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/filesystem/posix/file.html">file</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">windows
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="./dlib/filesystem/windows/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/filesystem/windows/directory.html">directory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/filesystem/windows/file.html">file</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/filesystem/delegaterange.html">delegaterange</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/filesystem/dirrange.html">dirrange</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/filesystem/filesystem.html">filesystem</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/filesystem/local.html">local</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/filesystem/stdfs.html">stdfs</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/filesystem/stdposixdir.html">stdposixdir</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="./dlib/geometry.html">geometry</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="./dlib/geometry/aabb.html">aabb</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/geometry/frustum.html">frustum</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/geometry/intersection.html">intersection</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/geometry/obb.html">obb</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/geometry/plane.html">plane</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/geometry/ray.html">ray</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/geometry/sphere.html">sphere</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/geometry/triangle.html">triangle</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/geometry/trimesh.html">trimesh</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/geometry/utils.html">utils</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="./dlib/image.html">image</a>
+					</div>
+			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="./dlib/image/filters.html">filters</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/filters/binarization.html">binarization</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/filters/boxblur.html">boxblur</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/filters/chromakey.html">chromakey</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/filters/contrast.html">contrast</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/filters/convolution.html">convolution</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/filters/desaturate.html">desaturate</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/filters/edgedetect.html">edgedetect</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/filters/histogram.html">histogram</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/filters/lens.html">lens</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/filters/morphology.html">morphology</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/filters/normalmap.html">normalmap</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/filters/sharpen.html">sharpen</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="./dlib/image/io.html">io</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/io/bmp.html">bmp</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/io/hdr.html">hdr</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/io/jpeg.html">jpeg</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/io/png.html">png</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/io/tga.html">tga</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/io/utils.html">utils</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="./dlib/image/render.html">render</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/render/cosplasma.html">cosplasma</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/render/shapes.html">shapes</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/render/text.html">text</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="./dlib/image/resampling.html">resampling</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/resampling/bicubic.html">bicubic</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/resampling/bilinear.html">bilinear</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/resampling/lanczos.html">lanczos</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/resampling/nearest.html">nearest</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/animation.html">animation</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/arithmetics.html">arithmetics</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/canvas.html">canvas</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/color.html">color</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/fthread.html">fthread</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/hdri.html">hdri</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/hsv.html">hsv</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/image.html">image</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/signal2d.html">signal2d</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/transform.html">transform</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/image/unmanaged.html">unmanaged</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="./dlib/math.html">math</a>
+					</div>
+			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="./dlib/math/interpolation.html">interpolation</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="./dlib/math/interpolation/bezier.html">bezier</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/math/interpolation/catmullrom.html">catmullrom</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/math/interpolation/easing.html">easing</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/math/interpolation/hermite.html">hermite</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/math/interpolation/linear.html">linear</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/math/interpolation/nearest.html">nearest</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/math/interpolation/smoothstep.html">smoothstep</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/math/combinatorics.html">combinatorics</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/math/complex.html">complex</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/math/decomposition.html">decomposition</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/math/diff.html">diff</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/math/dual.html">dual</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/math/dualquaternion.html">dualquaternion</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/math/fft.html">fft</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/math/hof.html">hof</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/math/linsolve.html">linsolve</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/math/matrix.html">matrix</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/math/quaternion.html">quaternion</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/math/sse.html">sse</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/math/tensor.html">tensor</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/math/transformation.html">transformation</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/math/utils.html">utils</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/math/vector.html">vector</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="./dlib/memory.html">memory</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="./dlib/memory/allocator.html">allocator</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/memory/gcallocator.html">gcallocator</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/memory/mallocator.html">mallocator</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/memory/mmappool.html">mmappool</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="./dlib/network.html">network</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="./dlib/network/errno.html">errno</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/network/socket.html">socket</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/network/url.html">url</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="./dlib/serialization.html">serialization</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="./dlib/serialization/json.html">json</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/serialization/xml.html">xml</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="./dlib/text.html">text</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="./dlib/text/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/text/encodings.html">encodings</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/text/lexer.html">lexer</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/text/str.html">str</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/text/utf16.html">utf16</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/text/utf8.html">utf8</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="./dlib/text/utils.html">utils</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+			</ul>
+				</li>
+			</ul>
 		</nav>
 		<div id="main-contents">
-			<div>
-				<h1>API documentation</h1>
-				<table>
-					<col class="caption"/>
-					<tr>
-						<th>Module</th><th>Description</th>
-					</tr>
-				<tr>
-					<td>
-						<a href="./dlib/audio/io/wav.html">dlib.audio.io.wav</a>
-					</td>
-					<td>
-						Uncompressed RIFF/WAV encoder and decoder
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/audio/io.html">dlib.audio.io</a>
-					</td>
-					<td>
-						
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/audio/sample.html">dlib.audio.sample</a>
-					</td>
-					<td>
-						Sample types and conversion utilities
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/audio/sound.html">dlib.audio.sound</a>
-					</td>
-					<td>
-						Generic sound interfaces and their implementations
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/audio/synth.html">dlib.audio.synth</a>
-					</td>
-					<td>
-						Simplest waveform synthesizers
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/audio/unmanaged.html">dlib.audio.unmanaged</a>
-					</td>
-					<td>
-						GC-free sound class
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/coding/varint.html">dlib.coding.varint</a>
-					</td>
-					<td>
-						Variable-sized integer type
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/coding/zlib.html">dlib.coding.zlib</a>
-					</td>
-					<td>
-						Zlib compression and decompression
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/concurrency/taskqueue.html">dlib.concurrency.taskqueue</a>
-					</td>
-					<td>
-						
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/concurrency/threadpool.html">dlib.concurrency.threadpool</a>
-					</td>
-					<td>
-						
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/concurrency/workerthread.html">dlib.concurrency.workerthread</a>
-					</td>
-					<td>
-						
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/container/array.html">dlib.container.array</a>
-					</td>
-					<td>
-						Dynamic (expandable) array with random access
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/container/bst.html">dlib.container.bst</a>
-					</td>
-					<td>
-						Binary search tree
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/container/buffer.html">dlib.container.buffer</a>
-					</td>
-					<td>
-						
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/container/dict.html">dlib.container.dict</a>
-					</td>
-					<td>
-						Trie-based dictionary (associative array) that can use any type as a key
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/container/linkedlist.html">dlib.container.linkedlist</a>
-					</td>
-					<td>
-						Singly linked list
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/container/queue.html">dlib.container.queue</a>
-					</td>
-					<td>
-						Queue (based on linked list)
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/container/stack.html">dlib.container.stack</a>
-					</td>
-					<td>
-						Stack (based on Array)
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/core/bitio.html">dlib.core.bitio</a>
-					</td>
-					<td>
-						Bit-level manipulations
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/core/compound.html">dlib.core.compound</a>
-					</td>
-					<td>
-						Tuple + struct hybrid
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/core/memory.html">dlib.core.memory</a>
-					</td>
-					<td>
-						Tools for manual memory management
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/core/mutex.html">dlib.core.mutex</a>
-					</td>
-					<td>
-						Cross-platform thread synchronization primitive
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/core/oop.html">dlib.core.oop</a>
-					</td>
-					<td>
-						Prototype-based OOP system for structs.
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/core/ownership.html">dlib.core.ownership</a>
-					</td>
-					<td>
-						Class-based object ownership system
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/core/stream.html">dlib.core.stream</a>
-					</td>
-					<td>
-						Binary I/O stream interfaces
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/core/thread.html">dlib.core.thread</a>
-					</td>
-					<td>
-						Cross-platform thread class. Supports Windows and Posix
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/core/tuple.html">dlib.core.tuple</a>
-					</td>
-					<td>
-						Templates that construct tuples of numeric values
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/filesystem/delegaterange.html">dlib.filesystem.delegaterange</a>
-					</td>
-					<td>
-						
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/filesystem/dirrange.html">dlib.filesystem.dirrange</a>
-					</td>
-					<td>
-						
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/filesystem/filesystem.html">dlib.filesystem.filesystem</a>
-					</td>
-					<td>
-						
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/filesystem/local.html">dlib.filesystem.local</a>
-					</td>
-					<td>
-						
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/filesystem/stdfs.html">dlib.filesystem.stdfs</a>
-					</td>
-					<td>
-						GC-free filesystem
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/geometry/aabb.html">dlib.geometry.aabb</a>
-					</td>
-					<td>
-						
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/geometry/frustum.html">dlib.geometry.frustum</a>
-					</td>
-					<td>
-						
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/geometry/intersection.html">dlib.geometry.intersection</a>
-					</td>
-					<td>
-						
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/geometry/obb.html">dlib.geometry.obb</a>
-					</td>
-					<td>
-						
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/geometry/plane.html">dlib.geometry.plane</a>
-					</td>
-					<td>
-						
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/geometry/ray.html">dlib.geometry.ray</a>
-					</td>
-					<td>
-						
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/geometry/sphere.html">dlib.geometry.sphere</a>
-					</td>
-					<td>
-						
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/geometry/triangle.html">dlib.geometry.triangle</a>
-					</td>
-					<td>
-						
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/geometry/trimesh.html">dlib.geometry.trimesh</a>
-					</td>
-					<td>
-						
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/geometry/utils.html">dlib.geometry.utils</a>
-					</td>
-					<td>
-						
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/filters/binarization.html">dlib.image.filters.binarization</a>
-					</td>
-					<td>
-						Image binarization
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/filters/boxblur.html">dlib.image.filters.boxblur</a>
-					</td>
-					<td>
-						Box blur
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/filters/chromakey.html">dlib.image.filters.chromakey</a>
-					</td>
-					<td>
-						Filters that remove background from images
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/filters/contrast.html">dlib.image.filters.contrast</a>
-					</td>
-					<td>
-						Adjust contrast
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/filters/convolution.html">dlib.image.filters.convolution</a>
-					</td>
-					<td>
-						Image convolution
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/filters/desaturate.html">dlib.image.filters.desaturate</a>
-					</td>
-					<td>
-						Turn image to black and white
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/filters/edgedetect.html">dlib.image.filters.edgedetect</a>
-					</td>
-					<td>
-						Detect edges on an image
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/filters/histogram.html">dlib.image.filters.histogram</a>
-					</td>
-					<td>
-						Generate histogram of an image
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/filters/lens.html">dlib.image.filters.lens</a>
-					</td>
-					<td>
-						Lens distortion filter
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/filters/morphology.html">dlib.image.filters.morphology</a>
-					</td>
-					<td>
-						Morphologic filters
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/filters/normalmap.html">dlib.image.filters.normalmap</a>
-					</td>
-					<td>
-						Normal map generation
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/filters/sharpen.html">dlib.image.filters.sharpen</a>
-					</td>
-					<td>
-						Image sharpening
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/io/bmp.html">dlib.image.io.bmp</a>
-					</td>
-					<td>
-						Decode and encode BMP images
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/io/hdr.html">dlib.image.io.hdr</a>
-					</td>
-					<td>
-						Decode and encode Radiance HDR/RGBE images
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/io/jpeg.html">dlib.image.io.jpeg</a>
-					</td>
-					<td>
-						Decode JPEG images
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/io/png.html">dlib.image.io.png</a>
-					</td>
-					<td>
-						Decode and encode PNG/APNG images
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/io/tga.html">dlib.image.io.tga</a>
-					</td>
-					<td>
-						Decode JPEG images
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/io/utils.html">dlib.image.io.utils</a>
-					</td>
-					<td>
-						Image I/O utility functions
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/render/cosplasma.html">dlib.image.render.cosplasma</a>
-					</td>
-					<td>
-						Render cosine plasma pattern
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/render/shapes.html">dlib.image.render.shapes</a>
-					</td>
-					<td>
-						Render simple geometric shapes
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/render/text.html">dlib.image.render.text</a>
-					</td>
-					<td>
-						Draw ASCII text
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/resampling/bicubic.html">dlib.image.resampling.bicubic</a>
-					</td>
-					<td>
-						Bicubic resampling
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/resampling/bilinear.html">dlib.image.resampling.bilinear</a>
-					</td>
-					<td>
-						Bilinear resampling
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/resampling/lanczos.html">dlib.image.resampling.lanczos</a>
-					</td>
-					<td>
-						Lanczos resampling
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/resampling/nearest.html">dlib.image.resampling.nearest</a>
-					</td>
-					<td>
-						Nearest-neighbor resampling
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/animation.html">dlib.image.animation</a>
-					</td>
-					<td>
-						Animated images
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/arithmetics.html">dlib.image.arithmetics</a>
-					</td>
-					<td>
-						Per-pixel image arithmetics
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/canvas.html">dlib.image.canvas</a>
-					</td>
-					<td>
-						Simple 2D rendering engine
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/color.html">dlib.image.color</a>
-					</td>
-					<td>
-						RGBA color space
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/filters.html">dlib.image.filters</a>
-					</td>
-					<td>
-						Image filtering
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/fthread.html">dlib.image.fthread</a>
-					</td>
-					<td>
-						Threaded image filtering
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/hdri.html">dlib.image.hdri</a>
-					</td>
-					<td>
-						High dynamic range images
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/hsv.html">dlib.image.hsv</a>
-					</td>
-					<td>
-						HSV color space
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/image.html">dlib.image.image</a>
-					</td>
-					<td>
-						Generic image interface and its implementations for integer pixel formats
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/io.html">dlib.image.io</a>
-					</td>
-					<td>
-						Load and save images
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/render.html">dlib.image.render</a>
-					</td>
-					<td>
-						Image synthesis tools
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/resampling.html">dlib.image.resampling</a>
-					</td>
-					<td>
-						Image resizing algorithms
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/signal2d.html">dlib.image.signal2d</a>
-					</td>
-					<td>
-						2D signal consisting of complex number data
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/transform.html">dlib.image.transform</a>
-					</td>
-					<td>
-						Geometric ransformations of images
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image/unmanaged.html">dlib.image.unmanaged</a>
-					</td>
-					<td>
-						GC-free SuperImage implementation
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/math/interpolation/bezier.html">dlib.math.interpolation.bezier</a>
-					</td>
-					<td>
-						Bézier interpolation functions
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/math/interpolation/catmullrom.html">dlib.math.interpolation.catmullrom</a>
-					</td>
-					<td>
-						Catmull-Rom interpolation functions
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/math/interpolation/easing.html">dlib.math.interpolation.easing</a>
-					</td>
-					<td>
-						Easing functions
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/math/interpolation/hermite.html">dlib.math.interpolation.hermite</a>
-					</td>
-					<td>
-						Hermite interpolation functions
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/math/interpolation/linear.html">dlib.math.interpolation.linear</a>
-					</td>
-					<td>
-						Linear interpolation
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/math/interpolation/nearest.html">dlib.math.interpolation.nearest</a>
-					</td>
-					<td>
-						Nearest-neighbour interpolation
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/math/interpolation/smoothstep.html">dlib.math.interpolation.smoothstep</a>
-					</td>
-					<td>
-						Sigmoid-like functions for clamping and non-linear interpolation of values in [0, 1] range.
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/math/combinatorics.html">dlib.math.combinatorics</a>
-					</td>
-					<td>
-						Combinatorics
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/math/complex.html">dlib.math.complex</a>
-					</td>
-					<td>
-						Complex numbers
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/math/decomposition.html">dlib.math.decomposition</a>
-					</td>
-					<td>
-						Matrix decomposition
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/math/diff.html">dlib.math.diff</a>
-					</td>
-					<td>
-						Automatic differentiation
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/math/dual.html">dlib.math.dual</a>
-					</td>
-					<td>
-						Dual numbers
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/math/dualquaternion.html">dlib.math.dualquaternion</a>
-					</td>
-					<td>
-						Dual quaternions
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/math/fft.html">dlib.math.fft</a>
-					</td>
-					<td>
-						Fast Fourier transform
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/math/hof.html">dlib.math.hof</a>
-					</td>
-					<td>
-						Functions that return other functions
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/math/interpolation.html">dlib.math.interpolation</a>
-					</td>
-					<td>
-						Interpolation functions
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/math/linsolve.html">dlib.math.linsolve</a>
-					</td>
-					<td>
-						Linear equation system solvers
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/math/matrix.html">dlib.math.matrix</a>
-					</td>
-					<td>
-						Square matrices with static memory allocation
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/math/quaternion.html">dlib.math.quaternion</a>
-					</td>
-					<td>
-						Quaternions
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/math/sse.html">dlib.math.sse</a>
-					</td>
-					<td>
-						SSE-based optimizations for common vector and matrix operations
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/math/tensor.html">dlib.math.tensor</a>
-					</td>
-					<td>
-						N-dimensional numeric data structure
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/math/transformation.html">dlib.math.transformation</a>
-					</td>
-					<td>
-						Matrix-based geometric transformations
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/math/utils.html">dlib.math.utils</a>
-					</td>
-					<td>
-						Utility math functions
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/math/vector.html">dlib.math.vector</a>
-					</td>
-					<td>
-						Vectors of Euclidean space
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/memory/allocator.html">dlib.memory.allocator</a>
-					</td>
-					<td>
-						Abstract allocator interface
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/memory/gcallocator.html">dlib.memory.gcallocator</a>
-					</td>
-					<td>
-						Allocator based on D's built-in garbage collector
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/memory/mallocator.html">dlib.memory.mallocator</a>
-					</td>
-					<td>
-						Allocator based on malloc/realloc/free
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/memory/mmappool.html">dlib.memory.mmappool</a>
-					</td>
-					<td>
-						Fast block-based allocator
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/network/socket.html">dlib.network.socket</a>
-					</td>
-					<td>
-						Platform-independent socket API
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/network/url.html">dlib.network.url</a>
-					</td>
-					<td>
-						URL parser
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/serialization/json.html">dlib.serialization.json</a>
-					</td>
-					<td>
-						JSON parser
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/serialization/xml.html">dlib.serialization.xml</a>
-					</td>
-					<td>
-						GC-free parser for a subset of XML.
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/text/encodings.html">dlib.text.encodings</a>
-					</td>
-					<td>
-						Generic encoding tools
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/text/lexer.html">dlib.text.lexer</a>
-					</td>
-					<td>
-						General-purpose non-allocating lexical analyzer.
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/text/str.html">dlib.text.str</a>
-					</td>
-					<td>
-						GC-free UTF-8 string type
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/text/utf16.html">dlib.text.utf16</a>
-					</td>
-					<td>
-						UTF-16 decoder and encoder
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/text/utf8.html">dlib.text.utf8</a>
-					</td>
-					<td>
-						UTF-8 encoder and decoder
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/text/utils.html">dlib.text.utils</a>
-					</td>
-					<td>
-						Text processing utils
-
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/audio.html">dlib.audio</a>
-					</td>
-					<td>
-						This package provides basic tools for sound processing. It currently supports
+			<h1>API documentation</h1>
+			<table>
+				<col class="caption"/>
+				<tr>
+					<th>Module</th><th>Description</th>
+				</tr>
+			<tr>
+				<td>
+					<a href="./dlib/audio/io/wav.html">dlib.audio.io.wav</a>
+				</td>
+				<td>
+					Uncompressed RIFF/WAV encoder and decoder
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/audio/io.html">dlib.audio.io</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/audio/sample.html">dlib.audio.sample</a>
+				</td>
+				<td>
+					Sample types and conversion utilities
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/audio/sound.html">dlib.audio.sound</a>
+				</td>
+				<td>
+					Generic sound interfaces and their implementations
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/audio/synth.html">dlib.audio.synth</a>
+				</td>
+				<td>
+					Simplest waveform synthesizers
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/audio/unmanaged.html">dlib.audio.unmanaged</a>
+				</td>
+				<td>
+					GC-free sound class
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/coding/varint.html">dlib.coding.varint</a>
+				</td>
+				<td>
+					Variable-sized integer type
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/coding/zlib.html">dlib.coding.zlib</a>
+				</td>
+				<td>
+					Zlib compression and decompression
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/concurrency/taskqueue.html">dlib.concurrency.taskqueue</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/concurrency/threadpool.html">dlib.concurrency.threadpool</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/concurrency/workerthread.html">dlib.concurrency.workerthread</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/container/array.html">dlib.container.array</a>
+				</td>
+				<td>
+					Dynamic (expandable) array with random access
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/container/bst.html">dlib.container.bst</a>
+				</td>
+				<td>
+					Binary search tree
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/container/buffer.html">dlib.container.buffer</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/container/dict.html">dlib.container.dict</a>
+				</td>
+				<td>
+					Trie-based dictionary (associative array) that can use any type as a key
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/container/linkedlist.html">dlib.container.linkedlist</a>
+				</td>
+				<td>
+					Singly linked list
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/container/queue.html">dlib.container.queue</a>
+				</td>
+				<td>
+					Queue (based on linked list)
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/container/stack.html">dlib.container.stack</a>
+				</td>
+				<td>
+					Stack (based on Array)
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/core/bitio.html">dlib.core.bitio</a>
+				</td>
+				<td>
+					Bit-level manipulations
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/core/compound.html">dlib.core.compound</a>
+				</td>
+				<td>
+					Tuple + struct hybrid
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/core/memory.html">dlib.core.memory</a>
+				</td>
+				<td>
+					Tools for manual memory management
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/core/mutex.html">dlib.core.mutex</a>
+				</td>
+				<td>
+					Cross-platform thread synchronization primitive
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/core/oop.html">dlib.core.oop</a>
+				</td>
+				<td>
+					Prototype-based OOP system for structs.
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/core/ownership.html">dlib.core.ownership</a>
+				</td>
+				<td>
+					Class-based object ownership system
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/core/stream.html">dlib.core.stream</a>
+				</td>
+				<td>
+					Binary I/O stream interfaces
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/core/thread.html">dlib.core.thread</a>
+				</td>
+				<td>
+					Cross-platform thread class. Supports Windows and Posix
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/core/tuple.html">dlib.core.tuple</a>
+				</td>
+				<td>
+					Templates that construct tuples of numeric values
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/filesystem/posix/common.html">dlib.filesystem.posix.common</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/filesystem/posix/directory.html">dlib.filesystem.posix.directory</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/filesystem/posix/file.html">dlib.filesystem.posix.file</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/filesystem/windows/common.html">dlib.filesystem.windows.common</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/filesystem/windows/directory.html">dlib.filesystem.windows.directory</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/filesystem/windows/file.html">dlib.filesystem.windows.file</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/filesystem/delegaterange.html">dlib.filesystem.delegaterange</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/filesystem/dirrange.html">dlib.filesystem.dirrange</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/filesystem/filesystem.html">dlib.filesystem.filesystem</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/filesystem/local.html">dlib.filesystem.local</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/filesystem/stdfs.html">dlib.filesystem.stdfs</a>
+				</td>
+				<td>
+					GC-free filesystem
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/filesystem/stdposixdir.html">dlib.filesystem.stdposixdir</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/filesystem/stdwindowsdir.html">dlib.filesystem.stdwindowsdir</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/geometry/aabb.html">dlib.geometry.aabb</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/geometry/frustum.html">dlib.geometry.frustum</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/geometry/intersection.html">dlib.geometry.intersection</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/geometry/obb.html">dlib.geometry.obb</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/geometry/plane.html">dlib.geometry.plane</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/geometry/ray.html">dlib.geometry.ray</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/geometry/sphere.html">dlib.geometry.sphere</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/geometry/triangle.html">dlib.geometry.triangle</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/geometry/trimesh.html">dlib.geometry.trimesh</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/geometry/utils.html">dlib.geometry.utils</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/filters/binarization.html">dlib.image.filters.binarization</a>
+				</td>
+				<td>
+					Image binarization
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/filters/boxblur.html">dlib.image.filters.boxblur</a>
+				</td>
+				<td>
+					Box blur
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/filters/chromakey.html">dlib.image.filters.chromakey</a>
+				</td>
+				<td>
+					Filters that remove background from images
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/filters/contrast.html">dlib.image.filters.contrast</a>
+				</td>
+				<td>
+					Adjust contrast
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/filters/convolution.html">dlib.image.filters.convolution</a>
+				</td>
+				<td>
+					Image convolution
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/filters/desaturate.html">dlib.image.filters.desaturate</a>
+				</td>
+				<td>
+					Turn image to black and white
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/filters/edgedetect.html">dlib.image.filters.edgedetect</a>
+				</td>
+				<td>
+					Detect edges on an image
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/filters/histogram.html">dlib.image.filters.histogram</a>
+				</td>
+				<td>
+					Generate histogram of an image
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/filters/lens.html">dlib.image.filters.lens</a>
+				</td>
+				<td>
+					Lens distortion filter
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/filters/morphology.html">dlib.image.filters.morphology</a>
+				</td>
+				<td>
+					Morphologic filters
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/filters/normalmap.html">dlib.image.filters.normalmap</a>
+				</td>
+				<td>
+					Normal map generation
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/filters/sharpen.html">dlib.image.filters.sharpen</a>
+				</td>
+				<td>
+					Image sharpening
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/io/bmp.html">dlib.image.io.bmp</a>
+				</td>
+				<td>
+					Decode and encode BMP images
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/io/hdr.html">dlib.image.io.hdr</a>
+				</td>
+				<td>
+					Decode and encode Radiance HDR/RGBE images
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/io/jpeg.html">dlib.image.io.jpeg</a>
+				</td>
+				<td>
+					Decode JPEG images
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/io/png.html">dlib.image.io.png</a>
+				</td>
+				<td>
+					Decode and encode PNG/APNG images
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/io/tga.html">dlib.image.io.tga</a>
+				</td>
+				<td>
+					Decode JPEG images
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/io/utils.html">dlib.image.io.utils</a>
+				</td>
+				<td>
+					Image I/O utility functions
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/render/cosplasma.html">dlib.image.render.cosplasma</a>
+				</td>
+				<td>
+					Render cosine plasma pattern
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/render/shapes.html">dlib.image.render.shapes</a>
+				</td>
+				<td>
+					Render simple geometric shapes
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/render/text.html">dlib.image.render.text</a>
+				</td>
+				<td>
+					Draw ASCII text
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/resampling/bicubic.html">dlib.image.resampling.bicubic</a>
+				</td>
+				<td>
+					Bicubic resampling
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/resampling/bilinear.html">dlib.image.resampling.bilinear</a>
+				</td>
+				<td>
+					Bilinear resampling
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/resampling/lanczos.html">dlib.image.resampling.lanczos</a>
+				</td>
+				<td>
+					Lanczos resampling
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/resampling/nearest.html">dlib.image.resampling.nearest</a>
+				</td>
+				<td>
+					Nearest-neighbor resampling
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/animation.html">dlib.image.animation</a>
+				</td>
+				<td>
+					Animated images
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/arithmetics.html">dlib.image.arithmetics</a>
+				</td>
+				<td>
+					Per-pixel image arithmetics
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/canvas.html">dlib.image.canvas</a>
+				</td>
+				<td>
+					Simple 2D rendering engine
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/color.html">dlib.image.color</a>
+				</td>
+				<td>
+					RGBA color space
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/filters.html">dlib.image.filters</a>
+				</td>
+				<td>
+					Image filtering
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/fthread.html">dlib.image.fthread</a>
+				</td>
+				<td>
+					Threaded image filtering
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/hdri.html">dlib.image.hdri</a>
+				</td>
+				<td>
+					High dynamic range images
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/hsv.html">dlib.image.hsv</a>
+				</td>
+				<td>
+					HSV color space
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/image.html">dlib.image.image</a>
+				</td>
+				<td>
+					Generic image interface and its implementations for integer pixel formats
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/io.html">dlib.image.io</a>
+				</td>
+				<td>
+					Load and save images
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/render.html">dlib.image.render</a>
+				</td>
+				<td>
+					Image synthesis tools
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/resampling.html">dlib.image.resampling</a>
+				</td>
+				<td>
+					Image resizing algorithms
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/signal2d.html">dlib.image.signal2d</a>
+				</td>
+				<td>
+					2D signal consisting of complex number data
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/transform.html">dlib.image.transform</a>
+				</td>
+				<td>
+					Geometric ransformations of images
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image/unmanaged.html">dlib.image.unmanaged</a>
+				</td>
+				<td>
+					GC-free SuperImage implementation
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/math/interpolation/bezier.html">dlib.math.interpolation.bezier</a>
+				</td>
+				<td>
+					Bézier interpolation functions
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/math/interpolation/catmullrom.html">dlib.math.interpolation.catmullrom</a>
+				</td>
+				<td>
+					Catmull-Rom interpolation functions
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/math/interpolation/easing.html">dlib.math.interpolation.easing</a>
+				</td>
+				<td>
+					Easing functions
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/math/interpolation/hermite.html">dlib.math.interpolation.hermite</a>
+				</td>
+				<td>
+					Hermite interpolation functions
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/math/interpolation/linear.html">dlib.math.interpolation.linear</a>
+				</td>
+				<td>
+					Linear interpolation
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/math/interpolation/nearest.html">dlib.math.interpolation.nearest</a>
+				</td>
+				<td>
+					Nearest-neighbour interpolation
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/math/interpolation/smoothstep.html">dlib.math.interpolation.smoothstep</a>
+				</td>
+				<td>
+					Sigmoid-like functions for clamping and non-linear interpolation of values in [0, 1] range.
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/math/combinatorics.html">dlib.math.combinatorics</a>
+				</td>
+				<td>
+					Combinatorics
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/math/complex.html">dlib.math.complex</a>
+				</td>
+				<td>
+					Complex numbers
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/math/decomposition.html">dlib.math.decomposition</a>
+				</td>
+				<td>
+					Matrix decomposition
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/math/diff.html">dlib.math.diff</a>
+				</td>
+				<td>
+					Automatic differentiation
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/math/dual.html">dlib.math.dual</a>
+				</td>
+				<td>
+					Dual numbers
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/math/dualquaternion.html">dlib.math.dualquaternion</a>
+				</td>
+				<td>
+					Dual quaternions
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/math/fft.html">dlib.math.fft</a>
+				</td>
+				<td>
+					Fast Fourier transform
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/math/hof.html">dlib.math.hof</a>
+				</td>
+				<td>
+					Functions that return other functions
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/math/interpolation.html">dlib.math.interpolation</a>
+				</td>
+				<td>
+					Interpolation functions
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/math/linsolve.html">dlib.math.linsolve</a>
+				</td>
+				<td>
+					Linear equation system solvers
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/math/matrix.html">dlib.math.matrix</a>
+				</td>
+				<td>
+					Square matrices with static memory allocation
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/math/quaternion.html">dlib.math.quaternion</a>
+				</td>
+				<td>
+					Quaternions
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/math/sse.html">dlib.math.sse</a>
+				</td>
+				<td>
+					SSE-based optimizations for common vector and matrix operations
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/math/tensor.html">dlib.math.tensor</a>
+				</td>
+				<td>
+					N-dimensional numeric data structure
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/math/transformation.html">dlib.math.transformation</a>
+				</td>
+				<td>
+					Matrix-based geometric transformations
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/math/utils.html">dlib.math.utils</a>
+				</td>
+				<td>
+					Utility math functions
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/math/vector.html">dlib.math.vector</a>
+				</td>
+				<td>
+					Vectors of Euclidean space
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/memory/allocator.html">dlib.memory.allocator</a>
+				</td>
+				<td>
+					Abstract allocator interface
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/memory/gcallocator.html">dlib.memory.gcallocator</a>
+				</td>
+				<td>
+					Allocator based on D's built-in garbage collector
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/memory/mallocator.html">dlib.memory.mallocator</a>
+				</td>
+				<td>
+					Allocator based on malloc/realloc/free
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/memory/mmappool.html">dlib.memory.mmappool</a>
+				</td>
+				<td>
+					Fast block-based allocator
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/network/errno.html">dlib.network.errno</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/network/socket.html">dlib.network.socket</a>
+				</td>
+				<td>
+					Platform-independent socket API
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/network/url.html">dlib.network.url</a>
+				</td>
+				<td>
+					URL parser
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/serialization/json.html">dlib.serialization.json</a>
+				</td>
+				<td>
+					JSON parser
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/serialization/xml.html">dlib.serialization.xml</a>
+				</td>
+				<td>
+					GC-free parser for a subset of XML.
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/text/common.html">dlib.text.common</a>
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/text/encodings.html">dlib.text.encodings</a>
+				</td>
+				<td>
+					Generic encoding tools
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/text/lexer.html">dlib.text.lexer</a>
+				</td>
+				<td>
+					General-purpose non-allocating lexical analyzer.
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/text/str.html">dlib.text.str</a>
+				</td>
+				<td>
+					GC-free UTF-8 string type
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/text/utf16.html">dlib.text.utf16</a>
+				</td>
+				<td>
+					UTF-16 decoder and encoder
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/text/utf8.html">dlib.text.utf8</a>
+				</td>
+				<td>
+					UTF-8 encoder and decoder
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/text/utils.html">dlib.text.utils</a>
+				</td>
+				<td>
+					Text processing utils
+
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/audio.html">dlib.audio</a>
+				</td>
+				<td>
+					This package provides basic tools for sound processing. It currently supports
  bit depths 8 and 16 (signed and unsigned), as well as arbitrary sample rate and
- number of channels. All sample I/O and processing is meant to be done in floating
- point numbers ranging from -1.0 to 1.0. Design principles of dlib.audio are closely
- akin to dlib.image.
+ number of channels. Design principles of dlib.audio are closely akin to dlib.image.
 
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/coding.html">dlib.coding</a>
-					</td>
-					<td>
-						Data coding and compression algorithms
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/coding.html">dlib.coding</a>
+				</td>
+				<td>
+					Data coding and compression algorithms
 
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/concurrency.html">dlib.concurrency</a>
-					</td>
-					<td>
-						A thread pool for running tasks in parallel
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/concurrency.html">dlib.concurrency</a>
+				</td>
+				<td>
+					A thread pool for running tasks in parallel
 
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/container.html">dlib.container</a>
-					</td>
-					<td>
-						Containers
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/container.html">dlib.container</a>
+				</td>
+				<td>
+					Containers
 
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/core.html">dlib.core</a>
-					</td>
-					<td>
-						Provides functionality that is used by all other dlib packages
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/core.html">dlib.core</a>
+				</td>
+				<td>
+					Provides functionality that is used by all other dlib packages
 
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/filesystem.html">dlib.filesystem</a>
-					</td>
-					<td>
-						Abstract FS interface and its implementations for Windows and POSIX filesystems
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/filesystem.html">dlib.filesystem</a>
+				</td>
+				<td>
+					Abstract FS interface and its implementations for Windows and POSIX filesystems
 
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/geometry.html">dlib.geometry</a>
-					</td>
-					<td>
-						Computational geometry
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/geometry.html">dlib.geometry</a>
+				</td>
+				<td>
+					Computational geometry
 
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/image.html">dlib.image</a>
-					</td>
-					<td>
-						Image processing
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/image.html">dlib.image</a>
+				</td>
+				<td>
+					Image processing
 
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/math.html">dlib.math</a>
-					</td>
-					<td>
-						Linear algebra and numerical analysis
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/math.html">dlib.math</a>
+				</td>
+				<td>
+					Linear algebra and numerical analysis
 
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/memory.html">dlib.memory</a>
-					</td>
-					<td>
-						Allocators and memory management functions
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/memory.html">dlib.memory</a>
+				</td>
+				<td>
+					Allocators and memory management functions
 
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/network.html">dlib.network</a>
-					</td>
-					<td>
-						Networking and web functionality
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/network.html">dlib.network</a>
+				</td>
+				<td>
+					Networking and web functionality
 
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/serialization.html">dlib.serialization</a>
-					</td>
-					<td>
-						Data serialization
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/serialization.html">dlib.serialization</a>
+				</td>
+				<td>
+					Data serialization
 
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib/text.html">dlib.text</a>
-					</td>
-					<td>
-						Text processing
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib/text.html">dlib.text</a>
+				</td>
+				<td>
+					Text processing
 
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<a href="./dlib.html">dlib</a>
-					</td>
-					<td>
-						dlib - general purpose library
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<a href="./dlib.html">dlib</a>
+				</td>
+				<td>
+					dlib - general purpose library
 
-					</td>
-				</tr>
-				</table>
-			</div>
+				</td>
+			</tr>
+			</table>
 			<footer>
-				<div id="license-info"></div>
+				<p class="faint">Generated using the DDOX documentation generator</p>
 			</footer>
 		</div>
 	</body>

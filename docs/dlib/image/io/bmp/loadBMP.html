@@ -2,996 +2,897 @@
 <html>
 	<head>
 		<meta charset="UTF-8"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
 		<title>loadBMP - multiple declarations</title>
-		<link rel="stylesheet" href="../../../../css/style.min.css"/>
-		<script type="text/javascript" src="../../../../js/script.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="../../../../styles/ddox.css"/>
+		<link rel="stylesheet" href="../../../../prettify/prettify.css" type="text/css"/>
+		<script type="text/javascript" src="../../../../scripts/jquery.js">/**/</script><script type="text/javascript" src="../../../../scripts/ddox.js">/**/</script>
 	</head>
 	<body onload="setupDdox();">
-		<header></header>
 		<nav id="main-nav">
-			<div>
-				<noscript>
-					<p style="color: red">The search functionality needs JavaScript enabled</p>
-				</noscript>
-				<div id="symbolSearchPane" style="display: none">
-					<form action="#" method="GET">
-						<input id="symbolSearch" type="text" name="q" placeholder="Search for symbols" autocomplete="off" onchange="performSymbolSearch(24);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" autofocus/>
-					</form>
-					<ul id="symbolSearchResults" class="symbolList" style="display: none"></ul><script type="application/javascript" src="../../../../symbols.js"></script><script type="application/javascript">var symbolSearchRootDir = "../../../../";
-document.getElementById('symbolSearchPane').style.display = 'block';</script>
-				</div>
-				<ul class="tree-view">
-					<li class="tree-view ">
-						<div class="package ">
-							<a href="../../../../dlib.html">dlib</a>
-						</div>
-				<ul class="tree-view">
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../../dlib/audio.html">audio</a>
-						</div>
-				<ul class="tree-view">
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../../dlib/audio/io.html">io</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/audio/io/wav.html">wav</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/audio/sample.html">sample</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/audio/sound.html">sound</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/audio/synth.html">synth</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/audio/unmanaged.html">unmanaged</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../../dlib/coding.html">coding</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/coding/varint.html">varint</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/coding/zlib.html">zlib</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../../dlib/concurrency.html">concurrency</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/concurrency/taskqueue.html">taskqueue</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/concurrency/threadpool.html">threadpool</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/concurrency/workerthread.html">workerthread</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../../dlib/container.html">container</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/container/array.html">array</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/container/bst.html">bst</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/container/buffer.html">buffer</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/container/dict.html">dict</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/container/linkedlist.html">linkedlist</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/container/queue.html">queue</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/container/stack.html">stack</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../../dlib/core.html">core</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/core/bitio.html">bitio</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/core/compound.html">compound</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/core/memory.html">memory</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/core/mutex.html">mutex</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/core/oop.html">oop</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/core/ownership.html">ownership</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/core/stream.html">stream</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/core/thread.html">thread</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/core/tuple.html">tuple</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../../dlib/filesystem.html">filesystem</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/filesystem/delegaterange.html">delegaterange</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/filesystem/dirrange.html">dirrange</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/filesystem/filesystem.html">filesystem</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/filesystem/local.html">local</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/filesystem/stdfs.html">stdfs</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../../dlib/geometry.html">geometry</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/geometry/aabb.html">aabb</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/geometry/frustum.html">frustum</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/geometry/intersection.html">intersection</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/geometry/obb.html">obb</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/geometry/plane.html">plane</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/geometry/ray.html">ray</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/geometry/sphere.html">sphere</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/geometry/triangle.html">triangle</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/geometry/trimesh.html">trimesh</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/geometry/utils.html">utils</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view ">
-						<div class="package ">
-							<a href="../../../../dlib/image.html">image</a>
-						</div>
-				<ul class="tree-view">
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../../dlib/image/filters.html">filters</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/filters/binarization.html">binarization</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/filters/boxblur.html">boxblur</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/filters/chromakey.html">chromakey</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/filters/contrast.html">contrast</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/filters/convolution.html">convolution</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/filters/desaturate.html">desaturate</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/filters/edgedetect.html">edgedetect</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/filters/histogram.html">histogram</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/filters/lens.html">lens</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/filters/morphology.html">morphology</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/filters/normalmap.html">normalmap</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/filters/sharpen.html">sharpen</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view ">
-						<div class="package ">
-							<a href="../../../../dlib/image/io.html">io</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module selected">
-							<a href="../../../../dlib/image/io/bmp.html">bmp</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/io/hdr.html">hdr</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/io/jpeg.html">jpeg</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/io/png.html">png</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/io/tga.html">tga</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/io/utils.html">utils</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../../dlib/image/render.html">render</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/render/cosplasma.html">cosplasma</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/render/shapes.html">shapes</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/render/text.html">text</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../../dlib/image/resampling.html">resampling</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/resampling/bicubic.html">bicubic</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/resampling/bilinear.html">bilinear</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/resampling/lanczos.html">lanczos</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/resampling/nearest.html">nearest</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/animation.html">animation</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/arithmetics.html">arithmetics</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/canvas.html">canvas</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/color.html">color</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/fthread.html">fthread</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/hdri.html">hdri</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/hsv.html">hsv</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/image.html">image</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/signal2d.html">signal2d</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/transform.html">transform</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/image/unmanaged.html">unmanaged</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../../dlib/math.html">math</a>
-						</div>
-				<ul class="tree-view">
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../../dlib/math/interpolation.html">interpolation</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/math/interpolation/bezier.html">bezier</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/math/interpolation/catmullrom.html">catmullrom</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/math/interpolation/easing.html">easing</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/math/interpolation/hermite.html">hermite</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/math/interpolation/linear.html">linear</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/math/interpolation/nearest.html">nearest</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/math/interpolation/smoothstep.html">smoothstep</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/math/combinatorics.html">combinatorics</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/math/complex.html">complex</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/math/decomposition.html">decomposition</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/math/diff.html">diff</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/math/dual.html">dual</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/math/dualquaternion.html">dualquaternion</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/math/fft.html">fft</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/math/hof.html">hof</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/math/linsolve.html">linsolve</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/math/matrix.html">matrix</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/math/quaternion.html">quaternion</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/math/sse.html">sse</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/math/tensor.html">tensor</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/math/transformation.html">transformation</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/math/utils.html">utils</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/math/vector.html">vector</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../../dlib/memory.html">memory</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/memory/allocator.html">allocator</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/memory/gcallocator.html">gcallocator</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/memory/mallocator.html">mallocator</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/memory/mmappool.html">mmappool</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../../dlib/network.html">network</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/network/socket.html">socket</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/network/url.html">url</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../../dlib/serialization.html">serialization</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/serialization/json.html">json</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/serialization/xml.html">xml</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../../dlib/text.html">text</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/text/encodings.html">encodings</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/text/lexer.html">lexer</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/text/str.html">str</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/text/utf16.html">utf16</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/text/utf8.html">utf8</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../../dlib/text/utils.html">utils</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-				</ul>
-					</li>
-				</ul>
+			<noscript>
+				<p style="color: red">The search functionality needs JavaScript enabled</p>
+			</noscript>
+			<div id="symbolSearchPane" style="display: none">
+				<form action="#" method="GET">
+					<input id="symbolSearch" type="text" name="q" placeholder="Search for symbols" autocomplete="off" onchange="performSymbolSearch(40);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();"/>
+				</form>
+				<ul id="symbolSearchResults" class="symbolList" style="display: none"></ul><script type="application/javascript" src="../../../../symbols.js"></script><script type="application/javascript">var symbolSearchRootDir = "../../../../";
+$('#symbolSearchPane').show();</script>
 			</div>
-			<p id="main-nav-footer">
-				Built with
-				<a href="https://github.com/MartinNowak/scod">scod</a>
-			</p>
+			<ul class="tree-view">
+				<li class="tree-view ">
+					<div class="package ">
+						<a href="../../../../dlib.html">dlib</a>
+					</div>
+			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../../dlib/audio.html">audio</a>
+					</div>
+			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../../dlib/audio/io.html">io</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/audio/io/wav.html">wav</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/audio/sample.html">sample</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/audio/sound.html">sound</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/audio/synth.html">synth</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/audio/unmanaged.html">unmanaged</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../../dlib/coding.html">coding</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/coding/varint.html">varint</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/coding/zlib.html">zlib</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../../dlib/concurrency.html">concurrency</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/concurrency/taskqueue.html">taskqueue</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/concurrency/threadpool.html">threadpool</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/concurrency/workerthread.html">workerthread</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../../dlib/container.html">container</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/container/array.html">array</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/container/bst.html">bst</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/container/buffer.html">buffer</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/container/dict.html">dict</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/container/linkedlist.html">linkedlist</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/container/queue.html">queue</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/container/stack.html">stack</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../../dlib/core.html">core</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/core/bitio.html">bitio</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/core/compound.html">compound</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/core/memory.html">memory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/core/mutex.html">mutex</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/core/oop.html">oop</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/core/ownership.html">ownership</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/core/stream.html">stream</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/core/thread.html">thread</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/core/tuple.html">tuple</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../../dlib/filesystem.html">filesystem</a>
+					</div>
+			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">posix
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/filesystem/posix/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/filesystem/posix/directory.html">directory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/filesystem/posix/file.html">file</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">windows
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/filesystem/windows/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/filesystem/windows/directory.html">directory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/filesystem/windows/file.html">file</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/filesystem/delegaterange.html">delegaterange</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/filesystem/dirrange.html">dirrange</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/filesystem/filesystem.html">filesystem</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/filesystem/local.html">local</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/filesystem/stdfs.html">stdfs</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../../dlib/geometry.html">geometry</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/geometry/aabb.html">aabb</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/geometry/frustum.html">frustum</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/geometry/intersection.html">intersection</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/geometry/obb.html">obb</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/geometry/plane.html">plane</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/geometry/ray.html">ray</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/geometry/sphere.html">sphere</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/geometry/triangle.html">triangle</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/geometry/trimesh.html">trimesh</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/geometry/utils.html">utils</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view ">
+					<div class="package ">
+						<a href="../../../../dlib/image.html">image</a>
+					</div>
+			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../../dlib/image/filters.html">filters</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/filters/binarization.html">binarization</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/filters/boxblur.html">boxblur</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/filters/chromakey.html">chromakey</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/filters/contrast.html">contrast</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/filters/convolution.html">convolution</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/filters/desaturate.html">desaturate</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/filters/edgedetect.html">edgedetect</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/filters/histogram.html">histogram</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/filters/lens.html">lens</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/filters/morphology.html">morphology</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/filters/normalmap.html">normalmap</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/filters/sharpen.html">sharpen</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view ">
+					<div class="package ">
+						<a href="../../../../dlib/image/io.html">io</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module selected">
+						<a href="../../../../dlib/image/io/bmp.html">bmp</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/io/hdr.html">hdr</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/io/jpeg.html">jpeg</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/io/png.html">png</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/io/tga.html">tga</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/io/utils.html">utils</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../../dlib/image/render.html">render</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/render/cosplasma.html">cosplasma</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/render/shapes.html">shapes</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/render/text.html">text</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../../dlib/image/resampling.html">resampling</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/resampling/bicubic.html">bicubic</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/resampling/bilinear.html">bilinear</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/resampling/lanczos.html">lanczos</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/resampling/nearest.html">nearest</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/animation.html">animation</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/arithmetics.html">arithmetics</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/canvas.html">canvas</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/color.html">color</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/fthread.html">fthread</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/hdri.html">hdri</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/hsv.html">hsv</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/image.html">image</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/signal2d.html">signal2d</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/transform.html">transform</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/image/unmanaged.html">unmanaged</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../../dlib/math.html">math</a>
+					</div>
+			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../../dlib/math/interpolation.html">interpolation</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/math/interpolation/bezier.html">bezier</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/math/interpolation/catmullrom.html">catmullrom</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/math/interpolation/easing.html">easing</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/math/interpolation/hermite.html">hermite</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/math/interpolation/linear.html">linear</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/math/interpolation/nearest.html">nearest</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/math/interpolation/smoothstep.html">smoothstep</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/math/combinatorics.html">combinatorics</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/math/complex.html">complex</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/math/decomposition.html">decomposition</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/math/diff.html">diff</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/math/dual.html">dual</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/math/dualquaternion.html">dualquaternion</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/math/fft.html">fft</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/math/hof.html">hof</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/math/linsolve.html">linsolve</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/math/matrix.html">matrix</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/math/quaternion.html">quaternion</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/math/sse.html">sse</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/math/tensor.html">tensor</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/math/transformation.html">transformation</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/math/utils.html">utils</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/math/vector.html">vector</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../../dlib/memory.html">memory</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/memory/allocator.html">allocator</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/memory/gcallocator.html">gcallocator</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/memory/mallocator.html">mallocator</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/memory/mmappool.html">mmappool</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../../dlib/network.html">network</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/network/errno.html">errno</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/network/socket.html">socket</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/network/url.html">url</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../../dlib/serialization.html">serialization</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/serialization/json.html">json</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/serialization/xml.html">xml</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../../dlib/text.html">text</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/text/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/text/encodings.html">encodings</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/text/lexer.html">lexer</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/text/str.html">str</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/text/utf16.html">utf16</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/text/utf8.html">utf8</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../../dlib/text/utils.html">utils</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+			</ul>
+				</li>
+			</ul>
 		</nav>
 		<div id="main-contents">
-			<div>
-				<h1>loadBMP - multiple declarations</h1>
-				<nav class="page-nav">
-					<ul>
-						<li>
-							<a href="#0">
-								Function <code>loadBMP</code>
-							</a>
-						</li>
-						<li>
-							<a href="#1">
-								Function <code>loadBMP</code>
-							</a>
-						</li>
-						<li>
-							<a href="#2">
-								Function <code>loadBMP</code>
-							</a>
-						</li>
-					</ul>
-				</nav><h2 id="0">Function loadBMP</h2><p>Load BMP from file using local FileSystem.
+			<h1>loadBMP - multiple declarations</h1>
+			<nav class="page-nav">
+				<ul>
+					<li>
+						<a href="#0">
+							Function <code>loadBMP</code>
+						</a>
+					</li>
+					<li>
+						<a href="#1">
+							Function <code>loadBMP</code>
+						</a>
+					</li>
+					<li>
+						<a href="#2">
+							Function <code>loadBMP</code>
+						</a>
+					</li>
+				</ul>
+			</nav><h2 id="0">Function loadBMP</h2><p>Load BMP from file using local FileSystem.
  Causes GC allocation
 </p>
-				<div class="prototype">
-					<code class="lang-d">
-						<div class="single-prototype">
-				<a href="../../../../dlib/image/image/SuperImage.html"><span class="typ">SuperImage</span></a> <span class="pln">loadBMP</span>
-				<span class="pun">(</span>
-				<br/>
-				&nbsp;&nbsp;<span class="typ">string</span> <span class="pln">filename</span>
-				<br/>
-				<span class="pun">)</span><span class="pun">;</span>
-						</div>
-					</code>
-				</div>
-				
-				<h2 id="1">Function loadBMP</h2><p>Load BMP from stream using default image factory.
+			<div class="prototype">
+				<code class="lang-d">
+					<div class="single-prototype">
+			<a href="../../../../dlib/image/image/SuperImage.html"><span class="typ">SuperImage</span></a> <span class="pln">loadBMP</span>
+			<span class="pun">(</span>
+			<br/>
+			&nbsp;&nbsp;<span class="typ">string</span> <span class="pln">filename</span>
+			<br/>
+			<span class="pun">)</span><span class="pun">;</span>
+					</div>
+				</code>
+			</div>
+			
+			<h2 id="1">Function loadBMP</h2><p>Load BMP from stream using default image factory.
  Causes GC allocation
 </p>
-				<div class="prototype">
-					<code class="lang-d">
-						<div class="single-prototype">
-				<a href="../../../../dlib/image/image/SuperImage.html"><span class="typ">SuperImage</span></a> <span class="pln">loadBMP</span>
-				<span class="pun">(</span>
-				<br/>
-				&nbsp;&nbsp;<a href="../../../../dlib/core/stream/InputStream.html"><span class="typ">InputStream</span></a> <span class="pln">istrm</span>
-				<br/>
-				<span class="pun">)</span><span class="pun">;</span>
-						</div>
-					</code>
-				</div>
-				
-				<h2 id="2">Function loadBMP</h2><p>Load BMP from stream using specified image factory.
+			<div class="prototype">
+				<code class="lang-d">
+					<div class="single-prototype">
+			<a href="../../../../dlib/image/image/SuperImage.html"><span class="typ">SuperImage</span></a> <span class="pln">loadBMP</span>
+			<span class="pun">(</span>
+			<br/>
+			&nbsp;&nbsp;<a href="../../../../dlib/core/stream/InputStream.html"><span class="typ">InputStream</span></a> <span class="pln">istrm</span>
+			<br/>
+			<span class="pun">)</span><span class="pun">;</span>
+					</div>
+				</code>
+			</div>
+			
+			<h2 id="2">Function loadBMP</h2><p>Load BMP from stream using specified image factory.
  GC-free
 </p>
-				<div class="prototype">
-					<code class="lang-d">
-						<div class="single-prototype">
-				<a href="../../../../dlib/core/compound/Compound.html"><span class="typ">Compound</span></a>!(dlib.image.image.SuperImage,string) <span class="pln">loadBMP</span>
-				<span class="pun">(</span>
-				<br/>
-				&nbsp;&nbsp;<a href="../../../../dlib/core/stream/InputStream.html"><span class="typ">InputStream</span></a> <span class="pln">istrm</span><span class="pun">,</span>
-				<br/>
-				&nbsp;&nbsp;<a href="../../../../dlib/image/image/SuperImageFactory.html"><span class="typ">SuperImageFactory</span></a> <span class="pln">imgFac</span>
-				<br/>
-				<span class="pun">)</span><span class="pun">;</span>
-						</div>
-					</code>
-				</div>
-				
-				<section><h3>Example</h3>
-
-<pre class="code"><code class="lang-d"><span class="kwd">import <a href="../../../../dlib/core/stream.html"></span><span class="pln">dlib<wbr/></span><span class="pun">.</span><span class="pln">core<wbr/></span><span class="pun">.</span><span class="pln">stream</span></a><span class="pun">;
-</span><span class="kwd">import </span><span class="pln">std<wbr/></span><span class="pun">.</span><span class="pln">stdio</span><span class="pun">;
-
-</span><span class="typ">SuperImage </span><span class="pln">img</span><span class="pun">;
-
-</span><span class="com">//32 bit with bitfield masks
-</span><span class="typ">ubyte</span><span class="pun">[] </span><span class="pln">bmpData32 </span><span class="pun">= [
-    </span><span class="lit">66</span><span class="pun">, </span><span class="lit">77</span><span class="pun">, </span><span class="lit">72</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">70</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">56</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">8</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">8</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
-    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">32</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">3</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">2</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">18</span><span class="pun">, </span><span class="lit">11</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">18</span><span class="pun">, </span><span class="lit">11</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
-    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">255</span><span class="pun">,
-    </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">245</span><span class="pun">, </span><span class="lit">235</span><span class="pun">, </span><span class="lit">224</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">229</span><span class="pun">, </span><span class="lit">199</span><span class="pun">, </span><span class="lit">154</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">248</span><span class="pun">, </span><span class="lit">227</span><span class="pun">, </span><span class="lit">185</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">229</span><span class="pun">,
-    </span><span class="lit">181</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">236</span><span class="pun">, </span><span class="lit">203</span><span class="pun">, </span><span class="lit">152</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">244</span><span class="pun">, </span><span class="lit">234</span><span class="pun">, </span><span class="lit">223</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">244</span><span class="pun">, </span><span class="lit">234</span><span class="pun">, </span><span class="lit">224</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
-    </span><span class="lit">202</span><span class="pun">, </span><span class="lit">139</span><span class="pun">, </span><span class="lit">76</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">242</span><span class="pun">, </span><span class="lit">199</span><span class="pun">, </span><span class="lit">126</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">202</span><span class="pun">, </span><span class="lit">217</span><span class="pun">, </span><span class="lit">187</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">117</span><span class="pun">, </span><span class="lit">190</span><span class="pun">, </span><span class="lit">218</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">167</span><span class="pun">,
-    </span><span class="lit">177</span><span class="pun">, </span><span class="lit">160</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">209</span><span class="pun">, </span><span class="lit">140</span><span class="pun">, </span><span class="lit">72</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">243</span><span class="pun">, </span><span class="lit">231</span><span class="pun">, </span><span class="lit">221</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">196</span><span class="pun">, </span><span class="lit">149</span><span class="pun">, </span><span class="lit">107</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">166</span><span class="pun">, </span><span class="lit">97</span><span class="pun">, </span><span class="lit">16</span><span class="pun">,
-    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">208</span><span class="pun">, </span><span class="lit">143</span><span class="pun">, </span><span class="lit">34</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">161</span><span class="pun">, </span><span class="lit">188</span><span class="pun">, </span><span class="lit">160</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">59</span><span class="pun">, </span><span class="lit">207</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">52</span><span class="pun">, </span><span class="lit">168</span><span class="pun">, </span><span class="lit">228</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">182</span><span class="pun">,
-    </span><span class="lit">115</span><span class="pun">, </span><span class="lit">42</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">196</span><span class="pun">, </span><span class="lit">144</span><span class="pun">, </span><span class="lit">97</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">196</span><span class="pun">, </span><span class="lit">151</span><span class="pun">, </span><span class="lit">116</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">192</span><span class="pun">, </span><span class="lit">136</span><span class="pun">, </span><span class="lit">51</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">226</span><span class="pun">, </span><span class="lit">169</span><span class="pun">, </span><span class="lit">71</span><span class="pun">,
-    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">231</span><span class="pun">, </span><span class="lit">202</span><span class="pun">, </span><span class="lit">160</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">170</span><span class="pun">, </span><span class="lit">199</span><span class="pun">, </span><span class="lit">178</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">101</span><span class="pun">, </span><span class="lit">178</span><span class="pun">, </span><span class="lit">172</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">176</span><span class="pun">, </span><span class="lit">156</span><span class="pun">, </span><span class="lit">116</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">201</span><span class="pun">,
-    </span><span class="lit">153</span><span class="pun">, </span><span class="lit">112</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">204</span><span class="pun">, </span><span class="lit">162</span><span class="pun">, </span><span class="lit">127</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">185</span><span class="pun">, </span><span class="lit">156</span><span class="pun">, </span><span class="lit">134</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">136</span><span class="pun">, </span><span class="lit">155</span><span class="pun">, </span><span class="lit">170</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">153</span><span class="pun">, </span><span class="lit">201</span><span class="pun">,
-    </span><span class="lit">201</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">161</span><span class="pun">, </span><span class="lit">211</span><span class="pun">, </span><span class="lit">186</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">69</span><span class="pun">, </span><span class="lit">179</span><span class="pun">, </span><span class="lit">136</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">123</span><span class="pun">, </span><span class="lit">151</span><span class="pun">, </span><span class="lit">103</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">210</span><span class="pun">, </span><span class="lit">164</span><span class="pun">, </span><span class="lit">133</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
-    </span><span class="lit">215</span><span class="pun">, </span><span class="lit">183</span><span class="pun">, </span><span class="lit">153</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">201</span><span class="pun">, </span><span class="lit">174</span><span class="pun">, </span><span class="lit">166</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">34</span><span class="pun">, </span><span class="lit">94</span><span class="pun">, </span><span class="lit">208</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">29</span><span class="pun">, </span><span class="lit">132</span><span class="pun">, </span><span class="lit">228</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">125</span><span class="pun">, </span><span class="lit">188</span><span class="pun">,
-    </span><span class="lit">190</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">112</span><span class="pun">, </span><span class="lit">178</span><span class="pun">, </span><span class="lit">134</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">120</span><span class="pun">, </span><span class="lit">144</span><span class="pun">, </span><span class="lit">104</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">213</span><span class="pun">, </span><span class="lit">181</span><span class="pun">, </span><span class="lit">154</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">246</span><span class="pun">, </span><span class="lit">240</span><span class="pun">, </span><span class="lit">233</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
-    </span><span class="lit">221</span><span class="pun">, </span><span class="lit">193</span><span class="pun">, </span><span class="lit">168</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">167</span><span class="pun">, </span><span class="lit">168</span><span class="pun">, </span><span class="lit">213</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">127</span><span class="pun">, </span><span class="lit">147</span><span class="pun">, </span><span class="lit">220</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">220</span><span class="pun">, </span><span class="lit">224</span><span class="pun">, </span><span class="lit">236</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">255</span><span class="pun">,
-    </span><span class="lit">239</span><span class="pun">, </span><span class="lit">232</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">220</span><span class="pun">, </span><span class="lit">191</span><span class="pun">, </span><span class="lit">169</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">245</span><span class="pun">, </span><span class="lit">238</span><span class="pun">, </span><span class="lit">230</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">247</span><span class="pun">, </span><span class="lit">240</span><span class="pun">,
-    </span><span class="lit">233</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">235</span><span class="pun">, </span><span class="lit">213</span><span class="pun">, </span><span class="lit">186</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">252</span><span class="pun">, </span><span class="lit">237</span><span class="pun">, </span><span class="lit">216</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">245</span><span class="pun">, </span><span class="lit">231</span><span class="pun">, </span><span class="lit">217</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">231</span><span class="pun">, </span><span class="lit">212</span><span class="pun">, </span><span class="lit">193</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
-    </span><span class="lit">246</span><span class="pun">, </span><span class="lit">239</span><span class="pun">, </span><span class="lit">230</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0
-</span><span class="pun">];
-</span><span class="kwd">auto </span><span class="pln">bmpStream32 </span><span class="pun">= </span><span class="kwd">new </span><span class="typ">ArrayStream</span><span class="pun">(</span><span class="pln">bmpData32</span><span class="pun">);
-</span><span class="pln">img </span><span class="pun">= <a href="../../../../dlib/image/io/bmp/loadBMP.html"></span><span class="pln">loadBMP</span></a><span class="pun">(</span><span class="pln">bmpStream32</span><span class="pun">);
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">img</span><span class="pun">[</span><span class="lit">2</span><span class="pun">,</span><span class="lit">2</span><span class="pun">]<wbr/>.</span><span class="pln">convert</span><span class="pun">(</span><span class="lit">8</span><span class="pun">) == </span><span class="typ">Color4</span><span class="pun">(</span><span class="lit">208</span><span class="pun">, </span><span class="lit">94</span><span class="pun">, </span><span class="lit">34</span><span class="pun">, </span><span class="lit">255</span><span class="pun">));
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">img</span><span class="pun">[</span><span class="lit">5</span><span class="pun">,</span><span class="lit">2</span><span class="pun">]<wbr/>.</span><span class="pln">convert</span><span class="pun">(</span><span class="lit">8</span><span class="pun">) == </span><span class="typ">Color4</span><span class="pun">(</span><span class="lit">134</span><span class="pun">, </span><span class="lit">178</span><span class="pun">, </span><span class="lit">112</span><span class="pun">, </span><span class="lit">255</span><span class="pun">));
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">img</span><span class="pun">[</span><span class="lit">2</span><span class="pun">,</span><span class="lit">5</span><span class="pun">]<wbr/>.</span><span class="pln">convert</span><span class="pun">(</span><span class="lit">8</span><span class="pun">) == </span><span class="typ">Color4</span><span class="pun">(</span><span class="lit">34</span><span class="pun">, </span><span class="lit">143</span><span class="pun">, </span><span class="lit">208</span><span class="pun">, </span><span class="lit">255</span><span class="pun">));
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">img</span><span class="pun">[</span><span class="lit">5</span><span class="pun">,</span><span class="lit">5</span><span class="pun">]<wbr/>.</span><span class="pln">convert</span><span class="pun">(</span><span class="lit">8</span><span class="pun">) == </span><span class="typ">Color4</span><span class="pun">(</span><span class="lit">228</span><span class="pun">, </span><span class="lit">168</span><span class="pun">, </span><span class="lit">52</span><span class="pun">, </span><span class="lit">255</span><span class="pun">));
-
-</span><span class="com">//32 bit with transparency
-</span><span class="typ">ubyte</span><span class="pun">[] </span><span class="pln">bmpData32_alpha </span><span class="pun">= [
-    </span><span class="lit">66</span><span class="pun">, </span><span class="lit">77</span><span class="pun">, </span><span class="lit">122</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">122</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">108</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">8</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">8</span><span class="pun">,
-    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">32</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">3</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">109</span><span class="pun">, </span><span class="lit">11</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">109</span><span class="pun">, </span><span class="lit">11</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
-    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">1</span><span class="pun">,
-    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
-    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">255</span><span class="pun">,
-    </span><span class="lit">249</span><span class="pun">, </span><span class="lit">173</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">206</span><span class="pun">, </span><span class="lit">142</span><span class="pun">, </span><span class="lit">67</span><span class="pun">, </span><span class="lit">52</span><span class="pun">, </span><span class="lit">231</span><span class="pun">, </span><span class="lit">194</span><span class="pun">, </span><span class="lit">127</span><span class="pun">, </span><span class="lit">176</span><span class="pun">, </span><span class="lit">248</span><span class="pun">, </span><span class="lit">229</span><span class="pun">, </span><span class="lit">183</span><span class="pun">, </span><span class="lit">239</span><span class="pun">, </span><span class="lit">249</span><span class="pun">,
-    </span><span class="lit">229</span><span class="pun">, </span><span class="lit">182</span><span class="pun">, </span><span class="lit">240</span><span class="pun">, </span><span class="lit">235</span><span class="pun">, </span><span class="lit">196</span><span class="pun">, </span><span class="lit">126</span><span class="pun">, </span><span class="lit">179</span><span class="pun">, </span><span class="lit">207</span><span class="pun">, </span><span class="lit">143</span><span class="pun">, </span><span class="lit">68</span><span class="pun">, </span><span class="lit">55</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">238</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">168</span><span class="pun">, </span><span class="lit">86</span><span class="pun">,
-    </span><span class="lit">17</span><span class="pun">, </span><span class="lit">50</span><span class="pun">, </span><span class="lit">198</span><span class="pun">, </span><span class="lit">128</span><span class="pun">, </span><span class="lit">57</span><span class="pun">, </span><span class="lit">207</span><span class="pun">, </span><span class="lit">230</span><span class="pun">, </span><span class="lit">188</span><span class="pun">, </span><span class="lit">116</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">200</span><span class="pun">, </span><span class="lit">211</span><span class="pun">, </span><span class="lit">179</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">131</span><span class="pun">, </span><span class="lit">192</span><span class="pun">,
-    </span><span class="lit">209</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">164</span><span class="pun">, </span><span class="lit">172</span><span class="pun">, </span><span class="lit">153</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">199</span><span class="pun">, </span><span class="lit">131</span><span class="pun">, </span><span class="lit">60</span><span class="pun">, </span><span class="lit">211</span><span class="pun">, </span><span class="lit">171</span><span class="pun">, </span><span class="lit">88</span><span class="pun">, </span><span class="lit">18</span><span class="pun">, </span><span class="lit">55</span><span class="pun">, </span><span class="lit">162</span><span class="pun">, </span><span class="lit">88</span><span class="pun">, </span><span class="lit">23</span><span class="pun">,
-    </span><span class="lit">171</span><span class="pun">, </span><span class="lit">171</span><span class="pun">, </span><span class="lit">103</span><span class="pun">, </span><span class="lit">22</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">203</span><span class="pun">, </span><span class="lit">147</span><span class="pun">, </span><span class="lit">48</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">165</span><span class="pun">, </span><span class="lit">188</span><span class="pun">, </span><span class="lit">159</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">78</span><span class="pun">, </span><span class="lit">202</span><span class="pun">, </span><span class="lit">251</span><span class="pun">,
-    </span><span class="lit">255</span><span class="pun">, </span><span class="lit">71</span><span class="pun">, </span><span class="lit">168</span><span class="pun">, </span><span class="lit">211</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">174</span><span class="pun">, </span><span class="lit">119</span><span class="pun">, </span><span class="lit">55</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">166</span><span class="pun">, </span><span class="lit">89</span><span class="pun">, </span><span class="lit">21</span><span class="pun">, </span><span class="lit">179</span><span class="pun">, </span><span class="lit">190</span><span class="pun">, </span><span class="lit">142</span><span class="pun">, </span><span class="lit">100</span><span class="pun">,
-    </span><span class="lit">233</span><span class="pun">, </span><span class="lit">191</span><span class="pun">, </span><span class="lit">137</span><span class="pun">, </span><span class="lit">58</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">215</span><span class="pun">, </span><span class="lit">167</span><span class="pun">, </span><span class="lit">81</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">216</span><span class="pun">, </span><span class="lit">198</span><span class="pun">, </span><span class="lit">158</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">162</span><span class="pun">, </span><span class="lit">198</span><span class="pun">, </span><span class="lit">181</span><span class="pun">,
-    </span><span class="lit">255</span><span class="pun">, </span><span class="lit">106</span><span class="pun">, </span><span class="lit">177</span><span class="pun">, </span><span class="lit">169</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">171</span><span class="pun">, </span><span class="lit">153</span><span class="pun">, </span><span class="lit">111</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">193</span><span class="pun">, </span><span class="lit">142</span><span class="pun">, </span><span class="lit">98</span><span class="pun">, </span><span class="lit">239</span><span class="pun">, </span><span class="lit">198</span><span class="pun">, </span><span class="lit">155</span><span class="pun">, </span><span class="lit">120</span><span class="pun">,
-    </span><span class="lit">232</span><span class="pun">, </span><span class="lit">184</span><span class="pun">, </span><span class="lit">154</span><span class="pun">, </span><span class="lit">130</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">140</span><span class="pun">, </span><span class="lit">155</span><span class="pun">, </span><span class="lit">166</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">149</span><span class="pun">, </span><span class="lit">194</span><span class="pun">, </span><span class="lit">197</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">153</span><span class="pun">, </span><span class="lit">206</span><span class="pun">, </span><span class="lit">185</span><span class="pun">,
-    </span><span class="lit">255</span><span class="pun">, </span><span class="lit">84</span><span class="pun">, </span><span class="lit">180</span><span class="pun">, </span><span class="lit">141</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">129</span><span class="pun">, </span><span class="lit">151</span><span class="pun">, </span><span class="lit">106</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">198</span><span class="pun">, </span><span class="lit">154</span><span class="pun">, </span><span class="lit">121</span><span class="pun">, </span><span class="lit">238</span><span class="pun">, </span><span class="lit">196</span><span class="pun">, </span><span class="lit">152</span><span class="pun">, </span><span class="lit">117</span><span class="pun">,
-    </span><span class="lit">168</span><span class="pun">, </span><span class="lit">191</span><span class="pun">, </span><span class="lit">166</span><span class="pun">, </span><span class="lit">157</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">59</span><span class="pun">, </span><span class="lit">109</span><span class="pun">, </span><span class="lit">202</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">51</span><span class="pun">, </span><span class="lit">140</span><span class="pun">, </span><span class="lit">222</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">127</span><span class="pun">, </span><span class="lit">188</span><span class="pun">, </span><span class="lit">190</span><span class="pun">,
-    </span><span class="lit">255</span><span class="pun">, </span><span class="lit">119</span><span class="pun">, </span><span class="lit">179</span><span class="pun">, </span><span class="lit">141</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">129</span><span class="pun">, </span><span class="lit">146</span><span class="pun">, </span><span class="lit">106</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">188</span><span class="pun">, </span><span class="lit">149</span><span class="pun">, </span><span class="lit">117</span><span class="pun">, </span><span class="lit">175</span><span class="pun">, </span><span class="lit">193</span><span class="pun">, </span><span class="lit">147</span><span class="pun">, </span><span class="lit">111</span><span class="pun">,
-    </span><span class="lit">47</span><span class="pun">, </span><span class="lit">213</span><span class="pun">, </span><span class="lit">186</span><span class="pun">, </span><span class="lit">167</span><span class="pun">, </span><span class="lit">203</span><span class="pun">, </span><span class="lit">164</span><span class="pun">, </span><span class="lit">163</span><span class="pun">, </span><span class="lit">201</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">138</span><span class="pun">, </span><span class="lit">156</span><span class="pun">, </span><span class="lit">216</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">212</span><span class="pun">, </span><span class="lit">216</span><span class="pun">, </span><span class="lit">226</span><span class="pun">,
-    </span><span class="lit">255</span><span class="pun">, </span><span class="lit">237</span><span class="pun">, </span><span class="lit">225</span><span class="pun">, </span><span class="lit">212</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">213</span><span class="pun">, </span><span class="lit">189</span><span class="pun">, </span><span class="lit">168</span><span class="pun">, </span><span class="lit">207</span><span class="pun">, </span><span class="lit">190</span><span class="pun">, </span><span class="lit">148</span><span class="pun">, </span><span class="lit">112</span><span class="pun">, </span><span class="lit">52</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">,
-    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">212</span><span class="pun">, </span><span class="lit">179</span><span class="pun">, </span><span class="lit">149</span><span class="pun">, </span><span class="lit">47</span><span class="pun">, </span><span class="lit">236</span><span class="pun">, </span><span class="lit">218</span><span class="pun">, </span><span class="lit">201</span><span class="pun">, </span><span class="lit">169</span><span class="pun">, </span><span class="lit">247</span><span class="pun">, </span><span class="lit">237</span><span class="pun">, </span><span class="lit">227</span><span class="pun">, </span><span class="lit">233</span><span class="pun">, </span><span class="lit">246</span><span class="pun">, </span><span class="lit">237</span><span class="pun">, </span><span class="lit">229</span><span class="pun">,
-    </span><span class="lit">234</span><span class="pun">, </span><span class="lit">233</span><span class="pun">, </span><span class="lit">217</span><span class="pun">, </span><span class="lit">203</span><span class="pun">, </span><span class="lit">172</span><span class="pun">, </span><span class="lit">214</span><span class="pun">, </span><span class="lit">182</span><span class="pun">, </span><span class="lit">154</span><span class="pun">, </span><span class="lit">50</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">0
-</span><span class="pun">];
-</span><span class="kwd">auto </span><span class="pln">bmpStream32_alpha </span><span class="pun">= </span><span class="kwd">new </span><span class="typ">ArrayStream</span><span class="pun">(</span><span class="pln">bmpData32_alpha</span><span class="pun">);
-</span><span class="pln">img </span><span class="pun">= <a href="../../../../dlib/image/io/bmp/loadBMP.html"></span><span class="pln">loadBMP</span></a><span class="pun">(</span><span class="pln">bmpStream32_alpha</span><span class="pun">);
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">img</span><span class="pun">[</span><span class="lit">1</span><span class="pun">,</span><span class="lit">1</span><span class="pun">]<wbr/>.</span><span class="pln">convert</span><span class="pun">(</span><span class="lit">8</span><span class="pun">) == </span><span class="typ">Color4</span><span class="pun">(</span><span class="lit">167</span><span class="pun">, </span><span class="lit">186</span><span class="pun">, </span><span class="lit">213</span><span class="pun">, </span><span class="lit">203</span><span class="pun">));
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">img</span><span class="pun">[</span><span class="lit">1</span><span class="pun">,</span><span class="lit">6</span><span class="pun">]<wbr/>.</span><span class="pln">convert</span><span class="pun">(</span><span class="lit">8</span><span class="pun">) == </span><span class="typ">Color4</span><span class="pun">(</span><span class="lit">57</span><span class="pun">, </span><span class="lit">128</span><span class="pun">, </span><span class="lit">198</span><span class="pun">, </span><span class="lit">207</span><span class="pun">));
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">img</span><span class="pun">[</span><span class="lit">2</span><span class="pun">,</span><span class="lit">2</span><span class="pun">]<wbr/>.</span><span class="pln">convert</span><span class="pun">(</span><span class="lit">8</span><span class="pun">) == </span><span class="typ">Color4</span><span class="pun">(</span><span class="lit">202</span><span class="pun">, </span><span class="lit">109</span><span class="pun">, </span><span class="lit">59</span><span class="pun">, </span><span class="lit">255</span><span class="pun">));
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">img</span><span class="pun">[</span><span class="lit">5</span><span class="pun">,</span><span class="lit">5</span><span class="pun">]<wbr/>.</span><span class="pln">convert</span><span class="pun">(</span><span class="lit">8</span><span class="pun">) == </span><span class="typ">Color4</span><span class="pun">(</span><span class="lit">211</span><span class="pun">, </span><span class="lit">168</span><span class="pun">, </span><span class="lit">71</span><span class="pun">, </span><span class="lit">255</span><span class="pun">));
-
-</span><span class="com">//24 bit
-</span><span class="typ">ubyte</span><span class="pun">[] </span><span class="pln">bmpData24 </span><span class="pun">= [
-    </span><span class="lit">66</span><span class="pun">, </span><span class="lit">77</span><span class="pun">, </span><span class="lit">248</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">54</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">40</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">8</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">8</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
-    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">24</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">194</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">18</span><span class="pun">, </span><span class="lit">11</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">18</span><span class="pun">, </span><span class="lit">11</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
-    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">245</span><span class="pun">, </span><span class="lit">235</span><span class="pun">, </span><span class="lit">224</span><span class="pun">, </span><span class="lit">229</span><span class="pun">, </span><span class="lit">199</span><span class="pun">, </span><span class="lit">154</span><span class="pun">, </span><span class="lit">248</span><span class="pun">, </span><span class="lit">227</span><span class="pun">, </span><span class="lit">185</span><span class="pun">,
-    </span><span class="lit">255</span><span class="pun">, </span><span class="lit">229</span><span class="pun">, </span><span class="lit">181</span><span class="pun">, </span><span class="lit">236</span><span class="pun">, </span><span class="lit">203</span><span class="pun">, </span><span class="lit">152</span><span class="pun">, </span><span class="lit">244</span><span class="pun">, </span><span class="lit">234</span><span class="pun">, </span><span class="lit">223</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">244</span><span class="pun">, </span><span class="lit">234</span><span class="pun">, </span><span class="lit">224</span><span class="pun">, </span><span class="lit">202</span><span class="pun">,
-    </span><span class="lit">139</span><span class="pun">, </span><span class="lit">76</span><span class="pun">, </span><span class="lit">242</span><span class="pun">, </span><span class="lit">199</span><span class="pun">, </span><span class="lit">126</span><span class="pun">, </span><span class="lit">202</span><span class="pun">, </span><span class="lit">217</span><span class="pun">, </span><span class="lit">187</span><span class="pun">, </span><span class="lit">117</span><span class="pun">, </span><span class="lit">190</span><span class="pun">, </span><span class="lit">218</span><span class="pun">, </span><span class="lit">167</span><span class="pun">, </span><span class="lit">177</span><span class="pun">, </span><span class="lit">160</span><span class="pun">, </span><span class="lit">209</span><span class="pun">, </span><span class="lit">140</span><span class="pun">,
-    </span><span class="lit">72</span><span class="pun">, </span><span class="lit">243</span><span class="pun">, </span><span class="lit">231</span><span class="pun">, </span><span class="lit">221</span><span class="pun">, </span><span class="lit">196</span><span class="pun">, </span><span class="lit">149</span><span class="pun">, </span><span class="lit">107</span><span class="pun">, </span><span class="lit">166</span><span class="pun">, </span><span class="lit">97</span><span class="pun">, </span><span class="lit">16</span><span class="pun">, </span><span class="lit">208</span><span class="pun">, </span><span class="lit">143</span><span class="pun">, </span><span class="lit">34</span><span class="pun">, </span><span class="lit">161</span><span class="pun">, </span><span class="lit">188</span><span class="pun">, </span><span class="lit">160</span><span class="pun">, </span><span class="lit">59</span><span class="pun">,
-    </span><span class="lit">207</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">52</span><span class="pun">, </span><span class="lit">168</span><span class="pun">, </span><span class="lit">228</span><span class="pun">, </span><span class="lit">182</span><span class="pun">, </span><span class="lit">115</span><span class="pun">, </span><span class="lit">42</span><span class="pun">, </span><span class="lit">196</span><span class="pun">, </span><span class="lit">144</span><span class="pun">, </span><span class="lit">97</span><span class="pun">, </span><span class="lit">196</span><span class="pun">, </span><span class="lit">151</span><span class="pun">, </span><span class="lit">116</span><span class="pun">, </span><span class="lit">192</span><span class="pun">, </span><span class="lit">136</span><span class="pun">,
-    </span><span class="lit">51</span><span class="pun">, </span><span class="lit">226</span><span class="pun">, </span><span class="lit">169</span><span class="pun">, </span><span class="lit">71</span><span class="pun">, </span><span class="lit">231</span><span class="pun">, </span><span class="lit">202</span><span class="pun">, </span><span class="lit">160</span><span class="pun">, </span><span class="lit">170</span><span class="pun">, </span><span class="lit">199</span><span class="pun">, </span><span class="lit">178</span><span class="pun">, </span><span class="lit">101</span><span class="pun">, </span><span class="lit">178</span><span class="pun">, </span><span class="lit">172</span><span class="pun">, </span><span class="lit">176</span><span class="pun">, </span><span class="lit">156</span><span class="pun">, </span><span class="lit">116</span><span class="pun">,
-    </span><span class="lit">201</span><span class="pun">, </span><span class="lit">153</span><span class="pun">, </span><span class="lit">112</span><span class="pun">, </span><span class="lit">204</span><span class="pun">, </span><span class="lit">162</span><span class="pun">, </span><span class="lit">127</span><span class="pun">, </span><span class="lit">185</span><span class="pun">, </span><span class="lit">156</span><span class="pun">, </span><span class="lit">134</span><span class="pun">, </span><span class="lit">136</span><span class="pun">, </span><span class="lit">155</span><span class="pun">, </span><span class="lit">170</span><span class="pun">, </span><span class="lit">153</span><span class="pun">, </span><span class="lit">201</span><span class="pun">, </span><span class="lit">201</span><span class="pun">, </span><span class="lit">161</span><span class="pun">,
-    </span><span class="lit">211</span><span class="pun">, </span><span class="lit">186</span><span class="pun">, </span><span class="lit">69</span><span class="pun">, </span><span class="lit">179</span><span class="pun">, </span><span class="lit">136</span><span class="pun">, </span><span class="lit">123</span><span class="pun">, </span><span class="lit">151</span><span class="pun">, </span><span class="lit">103</span><span class="pun">, </span><span class="lit">210</span><span class="pun">, </span><span class="lit">164</span><span class="pun">, </span><span class="lit">133</span><span class="pun">, </span><span class="lit">215</span><span class="pun">, </span><span class="lit">183</span><span class="pun">, </span><span class="lit">153</span><span class="pun">, </span><span class="lit">201</span><span class="pun">, </span><span class="lit">174</span><span class="pun">,
-    </span><span class="lit">166</span><span class="pun">, </span><span class="lit">34</span><span class="pun">, </span><span class="lit">94</span><span class="pun">, </span><span class="lit">208</span><span class="pun">, </span><span class="lit">29</span><span class="pun">, </span><span class="lit">132</span><span class="pun">, </span><span class="lit">228</span><span class="pun">, </span><span class="lit">125</span><span class="pun">, </span><span class="lit">188</span><span class="pun">, </span><span class="lit">190</span><span class="pun">, </span><span class="lit">112</span><span class="pun">, </span><span class="lit">178</span><span class="pun">, </span><span class="lit">134</span><span class="pun">, </span><span class="lit">120</span><span class="pun">, </span><span class="lit">144</span><span class="pun">, </span><span class="lit">104</span><span class="pun">,
-    </span><span class="lit">213</span><span class="pun">, </span><span class="lit">181</span><span class="pun">, </span><span class="lit">154</span><span class="pun">, </span><span class="lit">246</span><span class="pun">, </span><span class="lit">240</span><span class="pun">, </span><span class="lit">233</span><span class="pun">, </span><span class="lit">221</span><span class="pun">, </span><span class="lit">193</span><span class="pun">, </span><span class="lit">168</span><span class="pun">, </span><span class="lit">167</span><span class="pun">, </span><span class="lit">168</span><span class="pun">, </span><span class="lit">213</span><span class="pun">, </span><span class="lit">127</span><span class="pun">, </span><span class="lit">147</span><span class="pun">, </span><span class="lit">220</span><span class="pun">, </span><span class="lit">220</span><span class="pun">,
-    </span><span class="lit">224</span><span class="pun">, </span><span class="lit">236</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">239</span><span class="pun">, </span><span class="lit">232</span><span class="pun">, </span><span class="lit">220</span><span class="pun">, </span><span class="lit">191</span><span class="pun">, </span><span class="lit">169</span><span class="pun">, </span><span class="lit">245</span><span class="pun">, </span><span class="lit">238</span><span class="pun">, </span><span class="lit">230</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">247</span><span class="pun">, </span><span class="lit">240</span><span class="pun">,
-    </span><span class="lit">233</span><span class="pun">, </span><span class="lit">235</span><span class="pun">, </span><span class="lit">213</span><span class="pun">, </span><span class="lit">186</span><span class="pun">, </span><span class="lit">252</span><span class="pun">, </span><span class="lit">237</span><span class="pun">, </span><span class="lit">216</span><span class="pun">, </span><span class="lit">245</span><span class="pun">, </span><span class="lit">231</span><span class="pun">, </span><span class="lit">217</span><span class="pun">, </span><span class="lit">231</span><span class="pun">, </span><span class="lit">212</span><span class="pun">, </span><span class="lit">193</span><span class="pun">, </span><span class="lit">246</span><span class="pun">, </span><span class="lit">239</span><span class="pun">, </span><span class="lit">230</span><span class="pun">,
-    </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0
-</span><span class="pun">];
-</span><span class="kwd">auto </span><span class="pln">bmpStream24 </span><span class="pun">= </span><span class="kwd">new </span><span class="typ">ArrayStream</span><span class="pun">(</span><span class="pln">bmpData24</span><span class="pun">);
-</span><span class="pln">img </span><span class="pun">= <a href="../../../../dlib/image/io/bmp/loadBMP.html"></span><span class="pln">loadBMP</span></a><span class="pun">(</span><span class="pln">bmpStream24</span><span class="pun">);
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">img</span><span class="pun">[</span><span class="lit">2</span><span class="pun">,</span><span class="lit">2</span><span class="pun">]<wbr/>.</span><span class="pln">convert</span><span class="pun">(</span><span class="lit">8</span><span class="pun">) == </span><span class="typ">Color4</span><span class="pun">(</span><span class="lit">208</span><span class="pun">, </span><span class="lit">94</span><span class="pun">, </span><span class="lit">34</span><span class="pun">, </span><span class="lit">255</span><span class="pun">));
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">img</span><span class="pun">[</span><span class="lit">5</span><span class="pun">,</span><span class="lit">5</span><span class="pun">]<wbr/>.</span><span class="pln">convert</span><span class="pun">(</span><span class="lit">8</span><span class="pun">) == </span><span class="typ">Color4</span><span class="pun">(</span><span class="lit">228</span><span class="pun">, </span><span class="lit">168</span><span class="pun">, </span><span class="lit">52</span><span class="pun">, </span><span class="lit">255</span><span class="pun">));
-
-</span><span class="com">//16 bit X1 R5 G5 B5
-</span><span class="typ">ubyte</span><span class="pun">[] </span><span class="pln">bmpData16_1_5_5_5 </span><span class="pun">= [
-    </span><span class="lit">66</span><span class="pun">, </span><span class="lit">77</span><span class="pun">, </span><span class="lit">184</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">54</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">40</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">8</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">8</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
-    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">16</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">130</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">18</span><span class="pun">, </span><span class="lit">11</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">18</span><span class="pun">, </span><span class="lit">11</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
-    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">127</span><span class="pun">, </span><span class="lit">190</span><span class="pun">, </span><span class="lit">111</span><span class="pun">, </span><span class="lit">28</span><span class="pun">, </span><span class="lit">79</span><span class="pun">, </span><span class="lit">158</span><span class="pun">, </span><span class="lit">91</span><span class="pun">, </span><span class="lit">159</span><span class="pun">, </span><span class="lit">91</span><span class="pun">, </span><span class="lit">61</span><span class="pun">, </span><span class="lit">75</span><span class="pun">, </span><span class="lit">158</span><span class="pun">,
-    </span><span class="lit">111</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">127</span><span class="pun">, </span><span class="lit">158</span><span class="pun">, </span><span class="lit">111</span><span class="pun">, </span><span class="lit">57</span><span class="pun">, </span><span class="lit">38</span><span class="pun">, </span><span class="lit">29</span><span class="pun">, </span><span class="lit">63</span><span class="pun">, </span><span class="lit">89</span><span class="pun">, </span><span class="lit">95</span><span class="pun">, </span><span class="lit">238</span><span class="pun">, </span><span class="lit">110</span><span class="pun">, </span><span class="lit">212</span><span class="pun">, </span><span class="lit">78</span><span class="pun">, </span><span class="lit">57</span><span class="pun">, </span><span class="lit">38</span><span class="pun">,
-    </span><span class="lit">158</span><span class="pun">, </span><span class="lit">111</span><span class="pun">, </span><span class="lit">88</span><span class="pun">, </span><span class="lit">54</span><span class="pun">, </span><span class="lit">148</span><span class="pun">, </span><span class="lit">9</span><span class="pun">, </span><span class="lit">57</span><span class="pun">, </span><span class="lit">18</span><span class="pun">, </span><span class="lit">244</span><span class="pun">, </span><span class="lit">78</span><span class="pun">, </span><span class="lit">39</span><span class="pun">, </span><span class="lit">127</span><span class="pun">, </span><span class="lit">134</span><span class="pun">, </span><span class="lit">114</span><span class="pun">, </span><span class="lit">214</span><span class="pun">, </span><span class="lit">21</span><span class="pun">, </span><span class="lit">88</span><span class="pun">, </span><span class="lit">50</span><span class="pun">,
-    </span><span class="lit">88</span><span class="pun">, </span><span class="lit">58</span><span class="pun">, </span><span class="lit">55</span><span class="pun">, </span><span class="lit">26</span><span class="pun">, </span><span class="lit">187</span><span class="pun">, </span><span class="lit">38</span><span class="pun">, </span><span class="lit">60</span><span class="pun">, </span><span class="lit">79</span><span class="pun">, </span><span class="lit">21</span><span class="pun">, </span><span class="lit">91</span><span class="pun">, </span><span class="lit">204</span><span class="pun">, </span><span class="lit">86</span><span class="pun">, </span><span class="lit">117</span><span class="pun">, </span><span class="lit">58</span><span class="pun">, </span><span class="lit">120</span><span class="pun">, </span><span class="lit">58</span><span class="pun">, </span><span class="lit">153</span><span class="pun">, </span><span class="lit">62</span><span class="pun">,
-    </span><span class="lit">118</span><span class="pun">, </span><span class="lit">66</span><span class="pun">, </span><span class="lit">113</span><span class="pun">, </span><span class="lit">86</span><span class="pun">, </span><span class="lit">19</span><span class="pun">, </span><span class="lit">99</span><span class="pun">, </span><span class="lit">84</span><span class="pun">, </span><span class="lit">95</span><span class="pun">, </span><span class="lit">200</span><span class="pun">, </span><span class="lit">70</span><span class="pun">, </span><span class="lit">79</span><span class="pun">, </span><span class="lit">54</span><span class="pun">, </span><span class="lit">154</span><span class="pun">, </span><span class="lit">66</span><span class="pun">, </span><span class="lit">218</span><span class="pun">, </span><span class="lit">78</span><span class="pun">, </span><span class="lit">184</span><span class="pun">, </span><span class="lit">82</span><span class="pun">,
-    </span><span class="lit">100</span><span class="pun">, </span><span class="lit">101</span><span class="pun">, </span><span class="lit">4</span><span class="pun">, </span><span class="lit">114</span><span class="pun">, </span><span class="lit">239</span><span class="pun">, </span><span class="lit">94</span><span class="pun">, </span><span class="lit">206</span><span class="pun">, </span><span class="lit">66</span><span class="pun">, </span><span class="lit">79</span><span class="pun">, </span><span class="lit">54</span><span class="pun">, </span><span class="lit">218</span><span class="pun">, </span><span class="lit">78</span><span class="pun">, </span><span class="lit">190</span><span class="pun">, </span><span class="lit">115</span><span class="pun">, </span><span class="lit">251</span><span class="pun">, </span><span class="lit">82</span><span class="pun">, </span><span class="lit">148</span><span class="pun">,
-    </span><span class="lit">106</span><span class="pun">, </span><span class="lit">79</span><span class="pun">, </span><span class="lit">110</span><span class="pun">, </span><span class="lit">123</span><span class="pun">, </span><span class="lit">119</span><span class="pun">, </span><span class="lit">191</span><span class="pun">, </span><span class="lit">115</span><span class="pun">, </span><span class="lit">251</span><span class="pun">, </span><span class="lit">86</span><span class="pun">, </span><span class="lit">190</span><span class="pun">, </span><span class="lit">115</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">127</span><span class="pun">, </span><span class="lit">190</span><span class="pun">, </span><span class="lit">115</span><span class="pun">, </span><span class="lit">93</span><span class="pun">,
-    </span><span class="lit">95</span><span class="pun">, </span><span class="lit">191</span><span class="pun">, </span><span class="lit">107</span><span class="pun">, </span><span class="lit">158</span><span class="pun">, </span><span class="lit">107</span><span class="pun">, </span><span class="lit">92</span><span class="pun">, </span><span class="lit">95</span><span class="pun">, </span><span class="lit">190</span><span class="pun">, </span><span class="lit">115</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">127</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0
-</span><span class="pun">];
-</span><span class="kwd">auto </span><span class="pln">bmpStream16_1_5_5_5 </span><span class="pun">= </span><span class="kwd">new </span><span class="typ">ArrayStream</span><span class="pun">(</span><span class="pln">bmpData16_1_5_5_5</span><span class="pun">);
-</span><span class="pln">img </span><span class="pun">= <a href="../../../../dlib/image/io/bmp/loadBMP.html"></span><span class="pln">loadBMP</span></a><span class="pun">(</span><span class="pln">bmpStream16_1_5_5_5</span><span class="pun">);
-
-</span><span class="com">/*TODO: pixel comparisons
- * GIMP shows slightly different pixel values on the same images.
- */
-
-//16 bit X4 R4 G4 B4
-</span><span class="typ">ubyte</span><span class="pun">[] </span><span class="pln">bmpData16_4_4_4_4 </span><span class="pun">= [
-    </span><span class="lit">66</span><span class="pun">, </span><span class="lit">77</span><span class="pun">, </span><span class="lit">200</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">70</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">56</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">8</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">8</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
-    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">16</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">3</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">130</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">18</span><span class="pun">, </span><span class="lit">11</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">18</span><span class="pun">, </span><span class="lit">11</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
-    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">15</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">240</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">15</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">15</span><span class="pun">,
-    </span><span class="lit">238</span><span class="pun">, </span><span class="lit">13</span><span class="pun">, </span><span class="lit">205</span><span class="pun">, </span><span class="lit">9</span><span class="pun">, </span><span class="lit">223</span><span class="pun">, </span><span class="lit">11</span><span class="pun">, </span><span class="lit">223</span><span class="pun">, </span><span class="lit">11</span><span class="pun">, </span><span class="lit">206</span><span class="pun">, </span><span class="lit">9</span><span class="pun">, </span><span class="lit">238</span><span class="pun">, </span><span class="lit">13</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">15</span><span class="pun">, </span><span class="lit">238</span><span class="pun">, </span><span class="lit">13</span><span class="pun">, </span><span class="lit">140</span><span class="pun">, </span><span class="lit">4</span><span class="pun">,
-    </span><span class="lit">206</span><span class="pun">, </span><span class="lit">7</span><span class="pun">, </span><span class="lit">220</span><span class="pun">, </span><span class="lit">11</span><span class="pun">, </span><span class="lit">183</span><span class="pun">, </span><span class="lit">13</span><span class="pun">, </span><span class="lit">170</span><span class="pun">, </span><span class="lit">9</span><span class="pun">, </span><span class="lit">140</span><span class="pun">, </span><span class="lit">4</span><span class="pun">, </span><span class="lit">238</span><span class="pun">, </span><span class="lit">13</span><span class="pun">, </span><span class="lit">156</span><span class="pun">, </span><span class="lit">6</span><span class="pun">, </span><span class="lit">106</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">140</span><span class="pun">, </span><span class="lit">2</span><span class="pun">, </span><span class="lit">185</span><span class="pun">,
-    </span><span class="lit">9</span><span class="pun">, </span><span class="lit">195</span><span class="pun">, </span><span class="lit">15</span><span class="pun">, </span><span class="lit">163</span><span class="pun">, </span><span class="lit">13</span><span class="pun">, </span><span class="lit">123</span><span class="pun">, </span><span class="lit">2</span><span class="pun">, </span><span class="lit">140</span><span class="pun">, </span><span class="lit">6</span><span class="pun">, </span><span class="lit">156</span><span class="pun">, </span><span class="lit">7</span><span class="pun">, </span><span class="lit">139</span><span class="pun">, </span><span class="lit">3</span><span class="pun">, </span><span class="lit">173</span><span class="pun">, </span><span class="lit">4</span><span class="pun">, </span><span class="lit">206</span><span class="pun">, </span><span class="lit">9</span><span class="pun">, </span><span class="lit">202</span><span class="pun">, </span><span class="lit">10</span><span class="pun">,
-    </span><span class="lit">166</span><span class="pun">, </span><span class="lit">10</span><span class="pun">, </span><span class="lit">154</span><span class="pun">, </span><span class="lit">7</span><span class="pun">, </span><span class="lit">156</span><span class="pun">, </span><span class="lit">7</span><span class="pun">, </span><span class="lit">172</span><span class="pun">, </span><span class="lit">7</span><span class="pun">, </span><span class="lit">155</span><span class="pun">, </span><span class="lit">8</span><span class="pun">, </span><span class="lit">152</span><span class="pun">, </span><span class="lit">10</span><span class="pun">, </span><span class="lit">201</span><span class="pun">, </span><span class="lit">12</span><span class="pun">, </span><span class="lit">201</span><span class="pun">, </span><span class="lit">11</span><span class="pun">, </span><span class="lit">180</span><span class="pun">, </span><span class="lit">8</span><span class="pun">,
-    </span><span class="lit">151</span><span class="pun">, </span><span class="lit">6</span><span class="pun">, </span><span class="lit">172</span><span class="pun">, </span><span class="lit">8</span><span class="pun">, </span><span class="lit">189</span><span class="pun">, </span><span class="lit">9</span><span class="pun">, </span><span class="lit">172</span><span class="pun">, </span><span class="lit">10</span><span class="pun">, </span><span class="lit">98</span><span class="pun">, </span><span class="lit">12</span><span class="pun">, </span><span class="lit">130</span><span class="pun">, </span><span class="lit">13</span><span class="pun">, </span><span class="lit">183</span><span class="pun">, </span><span class="lit">11</span><span class="pun">, </span><span class="lit">167</span><span class="pun">, </span><span class="lit">8</span><span class="pun">, </span><span class="lit">135</span><span class="pun">, </span><span class="lit">6</span><span class="pun">, </span><span class="lit">189</span><span class="pun">,
-    </span><span class="lit">9</span><span class="pun">, </span><span class="lit">238</span><span class="pun">, </span><span class="lit">14</span><span class="pun">, </span><span class="lit">189</span><span class="pun">, </span><span class="lit">10</span><span class="pun">, </span><span class="lit">170</span><span class="pun">, </span><span class="lit">13</span><span class="pun">, </span><span class="lit">151</span><span class="pun">, </span><span class="lit">13</span><span class="pun">, </span><span class="lit">221</span><span class="pun">, </span><span class="lit">14</span><span class="pun">, </span><span class="lit">239</span><span class="pun">, </span><span class="lit">14</span><span class="pun">, </span><span class="lit">189</span><span class="pun">, </span><span class="lit">10</span><span class="pun">, </span><span class="lit">238</span><span class="pun">, </span><span class="lit">14</span><span class="pun">, </span><span class="lit">255</span><span class="pun">,
-    </span><span class="lit">15</span><span class="pun">, </span><span class="lit">239</span><span class="pun">, </span><span class="lit">14</span><span class="pun">, </span><span class="lit">222</span><span class="pun">, </span><span class="lit">11</span><span class="pun">, </span><span class="lit">239</span><span class="pun">, </span><span class="lit">13</span><span class="pun">, </span><span class="lit">238</span><span class="pun">, </span><span class="lit">13</span><span class="pun">, </span><span class="lit">206</span><span class="pun">, </span><span class="lit">11</span><span class="pun">, </span><span class="lit">238</span><span class="pun">, </span><span class="lit">14</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">15</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0
-</span><span class="pun">];
-</span><span class="kwd">auto </span><span class="pln">bmpStream16_4_4_4_4 </span><span class="pun">= </span><span class="kwd">new </span><span class="typ">ArrayStream</span><span class="pun">(</span><span class="pln">bmpData16_4_4_4_4</span><span class="pun">);
-</span><span class="pln">img </span><span class="pun">= <a href="../../../../dlib/image/io/bmp/loadBMP.html"></span><span class="pln">loadBMP</span></a><span class="pun">(</span><span class="pln">bmpStream16_4_4_4_4</span><span class="pun">);
-
-</span><span class="com">/*TODO: pixel comparisons
- * GIMP shows slightly different pixel values on the same images.
- */
-
-//16 bit R5 G6 B5
-</span><span class="typ">ubyte</span><span class="pun">[] </span><span class="pln">bmpData16_5_6_5 </span><span class="pun">= [
-    </span><span class="lit">66</span><span class="pun">, </span><span class="lit">77</span><span class="pun">, </span><span class="lit">200</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">70</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">56</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">8</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">8</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
-    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">16</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">3</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">130</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">18</span><span class="pun">, </span><span class="lit">11</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">18</span><span class="pun">, </span><span class="lit">11</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
-    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">248</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">224</span><span class="pun">, </span><span class="lit">7</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">31</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">255</span><span class="pun">,
-    </span><span class="lit">255</span><span class="pun">, </span><span class="lit">94</span><span class="pun">, </span><span class="lit">223</span><span class="pun">, </span><span class="lit">60</span><span class="pun">, </span><span class="lit">158</span><span class="pun">, </span><span class="lit">30</span><span class="pun">, </span><span class="lit">183</span><span class="pun">, </span><span class="lit">63</span><span class="pun">, </span><span class="lit">183</span><span class="pun">, </span><span class="lit">93</span><span class="pun">, </span><span class="lit">150</span><span class="pun">, </span><span class="lit">94</span><span class="pun">, </span><span class="lit">223</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">94</span><span class="pun">, </span><span class="lit">223</span><span class="pun">,
-    </span><span class="lit">89</span><span class="pun">, </span><span class="lit">76</span><span class="pun">, </span><span class="lit">61</span><span class="pun">, </span><span class="lit">126</span><span class="pun">, </span><span class="lit">217</span><span class="pun">, </span><span class="lit">190</span><span class="pun">, </span><span class="lit">238</span><span class="pun">, </span><span class="lit">221</span><span class="pun">, </span><span class="lit">148</span><span class="pun">, </span><span class="lit">157</span><span class="pun">, </span><span class="lit">121</span><span class="pun">, </span><span class="lit">76</span><span class="pun">, </span><span class="lit">62</span><span class="pun">, </span><span class="lit">223</span><span class="pun">, </span><span class="lit">184</span><span class="pun">, </span><span class="lit">108</span><span class="pun">, </span><span class="lit">20</span><span class="pun">,
-    </span><span class="lit">19</span><span class="pun">, </span><span class="lit">121</span><span class="pun">, </span><span class="lit">36</span><span class="pun">, </span><span class="lit">212</span><span class="pun">, </span><span class="lit">157</span><span class="pun">, </span><span class="lit">103</span><span class="pun">, </span><span class="lit">254</span><span class="pun">, </span><span class="lit">70</span><span class="pun">, </span><span class="lit">229</span><span class="pun">, </span><span class="lit">150</span><span class="pun">, </span><span class="lit">43</span><span class="pun">, </span><span class="lit">152</span><span class="pun">, </span><span class="lit">100</span><span class="pun">, </span><span class="lit">184</span><span class="pun">, </span><span class="lit">116</span><span class="pun">, </span><span class="lit">87</span><span class="pun">, </span><span class="lit">52</span><span class="pun">,
-    </span><span class="lit">91</span><span class="pun">, </span><span class="lit">77</span><span class="pun">, </span><span class="lit">92</span><span class="pun">, </span><span class="lit">158</span><span class="pun">, </span><span class="lit">53</span><span class="pun">, </span><span class="lit">182</span><span class="pun">, </span><span class="lit">140</span><span class="pun">, </span><span class="lit">173</span><span class="pun">, </span><span class="lit">245</span><span class="pun">, </span><span class="lit">116</span><span class="pun">, </span><span class="lit">216</span><span class="pun">, </span><span class="lit">116</span><span class="pun">, </span><span class="lit">25</span><span class="pun">, </span><span class="lit">125</span><span class="pun">, </span><span class="lit">246</span><span class="pun">, </span><span class="lit">132</span><span class="pun">, </span><span class="lit">209</span><span class="pun">,
-    </span><span class="lit">172</span><span class="pun">, </span><span class="lit">83</span><span class="pun">, </span><span class="lit">198</span><span class="pun">, </span><span class="lit">148</span><span class="pun">, </span><span class="lit">190</span><span class="pun">, </span><span class="lit">136</span><span class="pun">, </span><span class="lit">141</span><span class="pun">, </span><span class="lit">175</span><span class="pun">, </span><span class="lit">108</span><span class="pun">, </span><span class="lit">58</span><span class="pun">, </span><span class="lit">133</span><span class="pun">, </span><span class="lit">186</span><span class="pun">, </span><span class="lit">157</span><span class="pun">, </span><span class="lit">120</span><span class="pun">, </span><span class="lit">165</span><span class="pun">, </span><span class="lit">228</span><span class="pun">,
-    </span><span class="lit">202</span><span class="pun">, </span><span class="lit">36</span><span class="pun">, </span><span class="lit">228</span><span class="pun">, </span><span class="lit">207</span><span class="pun">, </span><span class="lit">189</span><span class="pun">, </span><span class="lit">142</span><span class="pun">, </span><span class="lit">133</span><span class="pun">, </span><span class="lit">143</span><span class="pun">, </span><span class="lit">108</span><span class="pun">, </span><span class="lit">186</span><span class="pun">, </span><span class="lit">157</span><span class="pun">, </span><span class="lit">126</span><span class="pun">, </span><span class="lit">231</span><span class="pun">, </span><span class="lit">27</span><span class="pun">, </span><span class="lit">166</span><span class="pun">, </span><span class="lit">84</span><span class="pun">,
-    </span><span class="lit">213</span><span class="pun">, </span><span class="lit">143</span><span class="pun">, </span><span class="lit">220</span><span class="pun">, </span><span class="lit">251</span><span class="pun">, </span><span class="lit">238</span><span class="pun">, </span><span class="lit">127</span><span class="pun">, </span><span class="lit">231</span><span class="pun">, </span><span class="lit">251</span><span class="pun">, </span><span class="lit">173</span><span class="pun">, </span><span class="lit">126</span><span class="pun">, </span><span class="lit">231</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">126</span><span class="pun">, </span><span class="lit">231</span><span class="pun">, </span><span class="lit">189</span><span class="pun">,
-    </span><span class="lit">190</span><span class="pun">, </span><span class="lit">127</span><span class="pun">, </span><span class="lit">215</span><span class="pun">, </span><span class="lit">62</span><span class="pun">, </span><span class="lit">215</span><span class="pun">, </span><span class="lit">156</span><span class="pun">, </span><span class="lit">190</span><span class="pun">, </span><span class="lit">126</span><span class="pun">, </span><span class="lit">231</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0
-</span><span class="pun">];
-</span><span class="kwd">auto </span><span class="pln">bmpStream16_5_6_5 </span><span class="pun">= </span><span class="kwd">new </span><span class="typ">ArrayStream</span><span class="pun">(</span><span class="pln">bmpData16_5_6_5</span><span class="pun">);
-</span><span class="pln">img </span><span class="pun">= <a href="../../../../dlib/image/io/bmp/loadBMP.html"></span><span class="pln">loadBMP</span></a><span class="pun">(</span><span class="pln">bmpStream16_5_6_5</span><span class="pun">);
-
-</span><span class="com">/*TODO: pixel comparisons
- * GIMP shows slightly different pixel values on the same images.
- */
-
-//4 bit
-</span><span class="typ">ubyte</span><span class="pun">[] </span><span class="pln">bmpData4 </span><span class="pun">= [
-    </span><span class="lit">66</span><span class="pun">, </span><span class="lit">77</span><span class="pun">, </span><span class="lit">150</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">118</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">40</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">8</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">8</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
-    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">4</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">32</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">196</span><span class="pun">, </span><span class="lit">14</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">196</span><span class="pun">, </span><span class="lit">14</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
-    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">128</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">128</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">128</span><span class="pun">, </span><span class="lit">128</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">128</span><span class="pun">,
-    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">128</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">128</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">128</span><span class="pun">, </span><span class="lit">128</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">128</span><span class="pun">, </span><span class="lit">128</span><span class="pun">, </span><span class="lit">128</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">192</span><span class="pun">, </span><span class="lit">192</span><span class="pun">, </span><span class="lit">192</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
-    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">255</span><span class="pun">,
-    </span><span class="lit">255</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">136</span><span class="pun">, </span><span class="lit">136</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">246</span><span class="pun">, </span><span class="lit">136</span><span class="pun">, </span><span class="lit">136</span><span class="pun">, </span><span class="lit">111</span><span class="pun">, </span><span class="lit">116</span><span class="pun">, </span><span class="lit">103</span><span class="pun">,
-    </span><span class="lit">187</span><span class="pun">, </span><span class="lit">103</span><span class="pun">, </span><span class="lit">118</span><span class="pun">, </span><span class="lit">104</span><span class="pun">, </span><span class="lit">131</span><span class="pun">, </span><span class="lit">119</span><span class="pun">, </span><span class="lit">119</span><span class="pun">, </span><span class="lit">120</span><span class="pun">, </span><span class="lit">131</span><span class="pun">, </span><span class="lit">119</span><span class="pun">, </span><span class="lit">136</span><span class="pun">, </span><span class="lit">147</span><span class="pun">, </span><span class="lit">135</span><span class="pun">, </span><span class="lit">40</span><span class="pun">, </span><span class="lit">248</span><span class="pun">, </span><span class="lit">135</span><span class="pun">,
-    </span><span class="lit">255</span><span class="pun">, </span><span class="lit">143</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255</span><span class="pun">, </span><span class="lit">255
-</span><span class="pun">];
-</span><span class="kwd">auto </span><span class="pln">bmpStream4 </span><span class="pun">= </span><span class="kwd">new </span><span class="typ">ArrayStream</span><span class="pun">(</span><span class="pln">bmpData4</span><span class="pun">);
-</span><span class="pln">img </span><span class="pun">= <a href="../../../../dlib/image/io/bmp/loadBMP.html"></span><span class="pln">loadBMP</span></a><span class="pun">(</span><span class="pln">bmpStream4</span><span class="pun">);
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">img</span><span class="pun">[</span><span class="lit">2</span><span class="pun">,</span><span class="lit">2</span><span class="pun">]<wbr/>.</span><span class="pln">convert</span><span class="pun">(</span><span class="lit">8</span><span class="pun">) == </span><span class="typ">Color4</span><span class="pun">(</span><span class="lit">255</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">255</span><span class="pun">));
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">img</span><span class="pun">[</span><span class="lit">1</span><span class="pun">,</span><span class="lit">1</span><span class="pun">]<wbr/>.</span><span class="pln">convert</span><span class="pun">(</span><span class="lit">8</span><span class="pun">) == </span><span class="typ">Color4</span><span class="pun">(</span><span class="lit">192</span><span class="pun">,</span><span class="lit">192</span><span class="pun">,</span><span class="lit">192</span><span class="pun">,</span><span class="lit">255</span><span class="pun">));
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">img</span><span class="pun">[</span><span class="lit">6</span><span class="pun">,</span><span class="lit">2</span><span class="pun">]<wbr/>.</span><span class="pln">convert</span><span class="pun">(</span><span class="lit">8</span><span class="pun">) == </span><span class="typ">Color4</span><span class="pun">(</span><span class="lit">0</span><span class="pun">,</span><span class="lit">128</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">255</span><span class="pun">));
-</span></code></pre>
-</section>
-
+			<div class="prototype">
+				<code class="lang-d">
+					<div class="single-prototype">
+			<a href="../../../../dlib/core/compound/Compound.html"><span class="typ">Compound</span></a>!(dlib.image.image.SuperImage,string) <span class="pln">loadBMP</span>
+			<span class="pun">(</span>
+			<br/>
+			&nbsp;&nbsp;<a href="../../../../dlib/core/stream/InputStream.html"><span class="typ">InputStream</span></a> <span class="pln">istrm</span><span class="pun">,</span>
+			<br/>
+			&nbsp;&nbsp;<a href="../../../../dlib/image/image/SuperImageFactory.html"><span class="typ">SuperImageFactory</span></a> <span class="pln">imgFac</span>
+			<br/>
+			<span class="pun">)</span><span class="pun">;</span>
+					</div>
+				</code>
 			</div>
+			
+			
 			<footer>
-				<div id="license-info">
-					<p>Timur Gafarov, Roman Chistokhodov
+				<table class="license-info">
+					<tr>
+						<th>Authors</th>
+						<td>
+							<p>Timur Gafarov, Roman Chistokhodov
 </p>
 
-					<p>Timur Gafarov, Roman Chistokhodov 2014-2021.
+						</td>
+					</tr>
+					<tr>
+						<th>Copyright</th>
+						<td>
+							<p>Timur Gafarov, Roman Chistokhodov 2014-2021.
 </p>
 
-					<p><a href="boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+						</td>
+					</tr>
+					<tr>
+						<th>License</th>
+						<td>
+							<p><a href="boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
 </p>
 
-				</div>
+						</td>
+					</tr>
+				</table>
+				<p class="faint">Generated using the DDOX documentation generator</p>
 			</footer>
 		</div>
 	</body>

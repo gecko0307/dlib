@@ -2,749 +2,803 @@
 <html>
 	<head>
 		<meta charset="UTF-8"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
 		<title>Module dlib.core.compound</title>
-		<link rel="stylesheet" href="../../css/style.min.css"/>
-		<script type="text/javascript" src="../../js/script.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="../../styles/ddox.css"/>
+		<link rel="stylesheet" href="../../prettify/prettify.css" type="text/css"/>
+		<script type="text/javascript" src="../../scripts/jquery.js">/**/</script><script type="text/javascript" src="../../scripts/ddox.js">/**/</script>
 	</head>
 	<body onload="setupDdox();">
-		<header></header>
 		<nav id="main-nav">
-			<div>
-				<noscript>
-					<p style="color: red">The search functionality needs JavaScript enabled</p>
-				</noscript>
-				<div id="symbolSearchPane" style="display: none">
-					<form action="#" method="GET">
-						<input id="symbolSearch" type="text" name="q" placeholder="Search for symbols" autocomplete="off" onchange="performSymbolSearch(24);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" autofocus/>
-					</form>
-					<ul id="symbolSearchResults" class="symbolList" style="display: none"></ul><script type="application/javascript" src="../../symbols.js"></script><script type="application/javascript">var symbolSearchRootDir = "../../";
-document.getElementById('symbolSearchPane').style.display = 'block';</script>
-				</div>
-				<ul class="tree-view">
-					<li class="tree-view ">
-						<div class="package ">
-							<a href="../../dlib.html">dlib</a>
-						</div>
-				<ul class="tree-view">
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../dlib/audio.html">audio</a>
-						</div>
-				<ul class="tree-view">
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../dlib/audio/io.html">io</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../dlib/audio/io/wav.html">wav</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/audio/sample.html">sample</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/audio/sound.html">sound</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/audio/synth.html">synth</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/audio/unmanaged.html">unmanaged</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../dlib/coding.html">coding</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../dlib/coding/varint.html">varint</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/coding/zlib.html">zlib</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../dlib/concurrency.html">concurrency</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../dlib/concurrency/taskqueue.html">taskqueue</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/concurrency/threadpool.html">threadpool</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/concurrency/workerthread.html">workerthread</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../dlib/container.html">container</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../dlib/container/array.html">array</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/container/bst.html">bst</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/container/buffer.html">buffer</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/container/dict.html">dict</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/container/linkedlist.html">linkedlist</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/container/queue.html">queue</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/container/stack.html">stack</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view ">
-						<div class="package ">
-							<a href="../../dlib/core.html">core</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../dlib/core/bitio.html">bitio</a>
-						</div>
-					</li>
-					<li>
-						<div class="module selected">
-							<a href="../../dlib/core/compound.html">compound</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/core/memory.html">memory</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/core/mutex.html">mutex</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/core/oop.html">oop</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/core/ownership.html">ownership</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/core/stream.html">stream</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/core/thread.html">thread</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/core/tuple.html">tuple</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../dlib/filesystem.html">filesystem</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../dlib/filesystem/delegaterange.html">delegaterange</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/filesystem/dirrange.html">dirrange</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/filesystem/filesystem.html">filesystem</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/filesystem/local.html">local</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/filesystem/stdfs.html">stdfs</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../dlib/geometry.html">geometry</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../dlib/geometry/aabb.html">aabb</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/geometry/frustum.html">frustum</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/geometry/intersection.html">intersection</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/geometry/obb.html">obb</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/geometry/plane.html">plane</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/geometry/ray.html">ray</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/geometry/sphere.html">sphere</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/geometry/triangle.html">triangle</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/geometry/trimesh.html">trimesh</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/geometry/utils.html">utils</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../dlib/image.html">image</a>
-						</div>
-				<ul class="tree-view">
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../dlib/image/filters.html">filters</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/filters/binarization.html">binarization</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/filters/boxblur.html">boxblur</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/filters/chromakey.html">chromakey</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/filters/contrast.html">contrast</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/filters/convolution.html">convolution</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/filters/desaturate.html">desaturate</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/filters/edgedetect.html">edgedetect</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/filters/histogram.html">histogram</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/filters/lens.html">lens</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/filters/morphology.html">morphology</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/filters/normalmap.html">normalmap</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/filters/sharpen.html">sharpen</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../dlib/image/io.html">io</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/io/bmp.html">bmp</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/io/hdr.html">hdr</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/io/jpeg.html">jpeg</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/io/png.html">png</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/io/tga.html">tga</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/io/utils.html">utils</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../dlib/image/render.html">render</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/render/cosplasma.html">cosplasma</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/render/shapes.html">shapes</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/render/text.html">text</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../dlib/image/resampling.html">resampling</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/resampling/bicubic.html">bicubic</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/resampling/bilinear.html">bilinear</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/resampling/lanczos.html">lanczos</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/resampling/nearest.html">nearest</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/animation.html">animation</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/arithmetics.html">arithmetics</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/canvas.html">canvas</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/color.html">color</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/fthread.html">fthread</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/hdri.html">hdri</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/hsv.html">hsv</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/image.html">image</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/signal2d.html">signal2d</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/transform.html">transform</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/image/unmanaged.html">unmanaged</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../dlib/math.html">math</a>
-						</div>
-				<ul class="tree-view">
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../dlib/math/interpolation.html">interpolation</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../dlib/math/interpolation/bezier.html">bezier</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/math/interpolation/catmullrom.html">catmullrom</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/math/interpolation/easing.html">easing</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/math/interpolation/hermite.html">hermite</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/math/interpolation/linear.html">linear</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/math/interpolation/nearest.html">nearest</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/math/interpolation/smoothstep.html">smoothstep</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/math/combinatorics.html">combinatorics</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/math/complex.html">complex</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/math/decomposition.html">decomposition</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/math/diff.html">diff</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/math/dual.html">dual</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/math/dualquaternion.html">dualquaternion</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/math/fft.html">fft</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/math/hof.html">hof</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/math/linsolve.html">linsolve</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/math/matrix.html">matrix</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/math/quaternion.html">quaternion</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/math/sse.html">sse</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/math/tensor.html">tensor</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/math/transformation.html">transformation</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/math/utils.html">utils</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/math/vector.html">vector</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../dlib/memory.html">memory</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../dlib/memory/allocator.html">allocator</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/memory/gcallocator.html">gcallocator</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/memory/mallocator.html">mallocator</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/memory/mmappool.html">mmappool</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../dlib/network.html">network</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../dlib/network/socket.html">socket</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/network/url.html">url</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../dlib/serialization.html">serialization</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../dlib/serialization/json.html">json</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/serialization/xml.html">xml</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../dlib/text.html">text</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../dlib/text/encodings.html">encodings</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/text/lexer.html">lexer</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/text/str.html">str</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/text/utf16.html">utf16</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/text/utf8.html">utf8</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../dlib/text/utils.html">utils</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-				</ul>
-					</li>
-				</ul>
+			<noscript>
+				<p style="color: red">The search functionality needs JavaScript enabled</p>
+			</noscript>
+			<div id="symbolSearchPane" style="display: none">
+				<form action="#" method="GET">
+					<input id="symbolSearch" type="text" name="q" placeholder="Search for symbols" autocomplete="off" onchange="performSymbolSearch(40);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();"/>
+				</form>
+				<ul id="symbolSearchResults" class="symbolList" style="display: none"></ul><script type="application/javascript" src="../../symbols.js"></script><script type="application/javascript">var symbolSearchRootDir = "../../";
+$('#symbolSearchPane').show();</script>
 			</div>
-			<p id="main-nav-footer">
-				Built with
-				<a href="https://github.com/MartinNowak/scod">scod</a>
-			</p>
+			<ul class="tree-view">
+				<li class="tree-view ">
+					<div class="package ">
+						<a href="../../dlib.html">dlib</a>
+					</div>
+			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../dlib/audio.html">audio</a>
+					</div>
+			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../dlib/audio/io.html">io</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../dlib/audio/io/wav.html">wav</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/audio/sample.html">sample</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/audio/sound.html">sound</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/audio/synth.html">synth</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/audio/unmanaged.html">unmanaged</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../dlib/coding.html">coding</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../dlib/coding/varint.html">varint</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/coding/zlib.html">zlib</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../dlib/concurrency.html">concurrency</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../dlib/concurrency/taskqueue.html">taskqueue</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/concurrency/threadpool.html">threadpool</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/concurrency/workerthread.html">workerthread</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../dlib/container.html">container</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../dlib/container/array.html">array</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/container/bst.html">bst</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/container/buffer.html">buffer</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/container/dict.html">dict</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/container/linkedlist.html">linkedlist</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/container/queue.html">queue</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/container/stack.html">stack</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view ">
+					<div class="package ">
+						<a href="../../dlib/core.html">core</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../dlib/core/bitio.html">bitio</a>
+					</div>
+				</li>
+				<li>
+					<div class="module selected">
+						<a href="../../dlib/core/compound.html">compound</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/core/memory.html">memory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/core/mutex.html">mutex</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/core/oop.html">oop</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/core/ownership.html">ownership</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/core/stream.html">stream</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/core/thread.html">thread</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/core/tuple.html">tuple</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../dlib/filesystem.html">filesystem</a>
+					</div>
+			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">posix
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/posix/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/posix/directory.html">directory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/posix/file.html">file</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">windows
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/windows/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/windows/directory.html">directory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/windows/file.html">file</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/delegaterange.html">delegaterange</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/dirrange.html">dirrange</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/filesystem.html">filesystem</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/local.html">local</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/stdfs.html">stdfs</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../dlib/geometry.html">geometry</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../dlib/geometry/aabb.html">aabb</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/geometry/frustum.html">frustum</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/geometry/intersection.html">intersection</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/geometry/obb.html">obb</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/geometry/plane.html">plane</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/geometry/ray.html">ray</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/geometry/sphere.html">sphere</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/geometry/triangle.html">triangle</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/geometry/trimesh.html">trimesh</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/geometry/utils.html">utils</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../dlib/image.html">image</a>
+					</div>
+			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../dlib/image/filters.html">filters</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/filters/binarization.html">binarization</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/filters/boxblur.html">boxblur</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/filters/chromakey.html">chromakey</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/filters/contrast.html">contrast</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/filters/convolution.html">convolution</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/filters/desaturate.html">desaturate</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/filters/edgedetect.html">edgedetect</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/filters/histogram.html">histogram</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/filters/lens.html">lens</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/filters/morphology.html">morphology</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/filters/normalmap.html">normalmap</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/filters/sharpen.html">sharpen</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../dlib/image/io.html">io</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/io/bmp.html">bmp</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/io/hdr.html">hdr</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/io/jpeg.html">jpeg</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/io/png.html">png</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/io/tga.html">tga</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/io/utils.html">utils</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../dlib/image/render.html">render</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/render/cosplasma.html">cosplasma</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/render/shapes.html">shapes</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/render/text.html">text</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../dlib/image/resampling.html">resampling</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/resampling/bicubic.html">bicubic</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/resampling/bilinear.html">bilinear</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/resampling/lanczos.html">lanczos</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/resampling/nearest.html">nearest</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/animation.html">animation</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/arithmetics.html">arithmetics</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/canvas.html">canvas</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/color.html">color</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/fthread.html">fthread</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/hdri.html">hdri</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/hsv.html">hsv</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/image.html">image</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/signal2d.html">signal2d</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/transform.html">transform</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/image/unmanaged.html">unmanaged</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../dlib/math.html">math</a>
+					</div>
+			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../dlib/math/interpolation.html">interpolation</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../dlib/math/interpolation/bezier.html">bezier</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/math/interpolation/catmullrom.html">catmullrom</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/math/interpolation/easing.html">easing</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/math/interpolation/hermite.html">hermite</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/math/interpolation/linear.html">linear</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/math/interpolation/nearest.html">nearest</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/math/interpolation/smoothstep.html">smoothstep</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/math/combinatorics.html">combinatorics</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/math/complex.html">complex</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/math/decomposition.html">decomposition</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/math/diff.html">diff</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/math/dual.html">dual</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/math/dualquaternion.html">dualquaternion</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/math/fft.html">fft</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/math/hof.html">hof</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/math/linsolve.html">linsolve</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/math/matrix.html">matrix</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/math/quaternion.html">quaternion</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/math/sse.html">sse</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/math/tensor.html">tensor</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/math/transformation.html">transformation</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/math/utils.html">utils</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/math/vector.html">vector</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../dlib/memory.html">memory</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../dlib/memory/allocator.html">allocator</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/memory/gcallocator.html">gcallocator</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/memory/mallocator.html">mallocator</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/memory/mmappool.html">mmappool</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../dlib/network.html">network</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../dlib/network/errno.html">errno</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/network/socket.html">socket</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/network/url.html">url</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../dlib/serialization.html">serialization</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../dlib/serialization/json.html">json</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/serialization/xml.html">xml</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../dlib/text.html">text</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../dlib/text/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/text/encodings.html">encodings</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/text/lexer.html">lexer</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/text/str.html">str</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/text/utf16.html">utf16</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/text/utf8.html">utf8</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/text/utils.html">utils</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+			</ul>
+				</li>
+			</ul>
 		</nav>
 		<div id="main-contents">
-			<div>
-				<h1>Module dlib.core.compound</h1><p>Tuple + struct hybrid
+			<h1>Module dlib.core.compound</h1><p>Tuple + struct hybrid
 </p><section></section>
 
-				<section><section><h2>Description</h2>
+			<section><section><h2>Description</h2>
 <p>This template can be used to construct data types on-the-fly
  and return them from functions, which cannot be done with pure tuples.
  One possible use case for such types is returning result and error message
@@ -752,55 +806,78 @@ document.getElementById('symbolSearchPane').style.display = 'block';</script>
 </p>
 </section>
 </section>
-				<section>
-					<h2>Functions</h2>
-					<table>
-						<col class="caption"/>
-						<tr>
-							<th>Name</th><th>Description</th>
-						</tr>
-						<tr>
-							<td>
-								<code>
-									<a id="compound" class="public" href="../../dlib/core/compound/compound.html">compound</a><span class="tableEntryAnnotation">(args)</span>
-								</code>
-							</td>
-							<td>Returns a Compound consisting of args
+			<section>
+				<h2>Functions</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="__unittest_L62_C1" class="public" href="../../dlib/core/compound/__unittest_L62_C1.html">__unittest_L62_C1</a><span class="tableEntryAnnotation">()</span>
+							</code>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="compound" class="public" href="../../dlib/core/compound/compound.html">compound</a><span class="tableEntryAnnotation">(args)</span>
+							</code>
+						</td>
+						<td>Returns a Compound consisting of args
 </td>
-						</tr>
-					</table>
-				</section>
-				<section>
-					<h2>Structs</h2>
-					<table>
-						<col class="caption"/>
-						<tr>
-							<th>Name</th><th>Description</th>
-						</tr>
-						<tr>
-							<td>
-								<code>
-									<a id="Compound" class="public" href="../../dlib/core/compound/Compound.html">Compound</a>
-								</code>
-							</td>
-							<td>A struct that consists of a tuple T. Allows square bracket access to the members of a tuple
+					</tr>
+				</table>
+			</section>
+			<section>
+				<h2>Structs</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="Compound" class="public" href="../../dlib/core/compound/Compound.html">Compound</a>
+							</code>
+						</td>
+						<td>A struct that consists of a tuple T. Allows square bracket access to the members of a tuple
 </td>
-						</tr>
-					</table>
-				</section>
-			</div>
+					</tr>
+				</table>
+			</section>
 			<footer>
-				<div id="license-info">
-					<p>Timur Gafarov
+				<table class="license-info">
+					<tr>
+						<th>Authors</th>
+						<td>
+							<p>Timur Gafarov
 </p>
 
-					<p>Timur Gafarov 2011-2021.
+						</td>
+					</tr>
+					<tr>
+						<th>Copyright</th>
+						<td>
+							<p>Timur Gafarov 2011-2021.
 </p>
 
-					<p><a href="htpps://boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+						</td>
+					</tr>
+					<tr>
+						<th>License</th>
+						<td>
+							<p><a href="htpps://boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
 </p>
 
-				</div>
+						</td>
+					</tr>
+				</table>
+				<p class="faint">Generated using the DDOX documentation generator</p>
 			</footer>
 		</div>
 	</body>

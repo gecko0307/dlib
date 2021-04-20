@@ -2,985 +2,1055 @@
 <html>
 	<head>
 		<meta charset="UTF-8"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
 		<title>Class ArrayStream</title>
-		<link rel="stylesheet" href="../../../css/style.min.css"/>
-		<script type="text/javascript" src="../../../js/script.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="../../../styles/ddox.css"/>
+		<link rel="stylesheet" href="../../../prettify/prettify.css" type="text/css"/>
+		<script type="text/javascript" src="../../../scripts/jquery.js">/**/</script><script type="text/javascript" src="../../../scripts/ddox.js">/**/</script>
 	</head>
 	<body onload="setupDdox();">
-		<header></header>
 		<nav id="main-nav">
-			<div>
-				<noscript>
-					<p style="color: red">The search functionality needs JavaScript enabled</p>
-				</noscript>
-				<div id="symbolSearchPane" style="display: none">
-					<form action="#" method="GET">
-						<input id="symbolSearch" type="text" name="q" placeholder="Search for symbols" autocomplete="off" onchange="performSymbolSearch(24);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" autofocus/>
-					</form>
-					<ul id="symbolSearchResults" class="symbolList" style="display: none"></ul><script type="application/javascript" src="../../../symbols.js"></script><script type="application/javascript">var symbolSearchRootDir = "../../../";
-document.getElementById('symbolSearchPane').style.display = 'block';</script>
-				</div>
-				<ul class="tree-view">
-					<li class="tree-view ">
-						<div class="package ">
-							<a href="../../../dlib.html">dlib</a>
-						</div>
-				<ul class="tree-view">
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../dlib/audio.html">audio</a>
-						</div>
-				<ul class="tree-view">
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../dlib/audio/io.html">io</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/audio/io/wav.html">wav</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/audio/sample.html">sample</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/audio/sound.html">sound</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/audio/synth.html">synth</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/audio/unmanaged.html">unmanaged</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../dlib/coding.html">coding</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/coding/varint.html">varint</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/coding/zlib.html">zlib</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../dlib/concurrency.html">concurrency</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/concurrency/taskqueue.html">taskqueue</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/concurrency/threadpool.html">threadpool</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/concurrency/workerthread.html">workerthread</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../dlib/container.html">container</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/container/array.html">array</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/container/bst.html">bst</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/container/buffer.html">buffer</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/container/dict.html">dict</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/container/linkedlist.html">linkedlist</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/container/queue.html">queue</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/container/stack.html">stack</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view ">
-						<div class="package ">
-							<a href="../../../dlib/core.html">core</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/core/bitio.html">bitio</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/core/compound.html">compound</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/core/memory.html">memory</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/core/mutex.html">mutex</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/core/oop.html">oop</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/core/ownership.html">ownership</a>
-						</div>
-					</li>
-					<li>
-						<div class="module selected">
-							<a href="../../../dlib/core/stream.html">stream</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/core/thread.html">thread</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/core/tuple.html">tuple</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../dlib/filesystem.html">filesystem</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/filesystem/delegaterange.html">delegaterange</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/filesystem/dirrange.html">dirrange</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/filesystem/filesystem.html">filesystem</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/filesystem/local.html">local</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/filesystem/stdfs.html">stdfs</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../dlib/geometry.html">geometry</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/geometry/aabb.html">aabb</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/geometry/frustum.html">frustum</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/geometry/intersection.html">intersection</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/geometry/obb.html">obb</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/geometry/plane.html">plane</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/geometry/ray.html">ray</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/geometry/sphere.html">sphere</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/geometry/triangle.html">triangle</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/geometry/trimesh.html">trimesh</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/geometry/utils.html">utils</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../dlib/image.html">image</a>
-						</div>
-				<ul class="tree-view">
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../dlib/image/filters.html">filters</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/filters/binarization.html">binarization</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/filters/boxblur.html">boxblur</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/filters/chromakey.html">chromakey</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/filters/contrast.html">contrast</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/filters/convolution.html">convolution</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/filters/desaturate.html">desaturate</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/filters/edgedetect.html">edgedetect</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/filters/histogram.html">histogram</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/filters/lens.html">lens</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/filters/morphology.html">morphology</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/filters/normalmap.html">normalmap</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/filters/sharpen.html">sharpen</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../dlib/image/io.html">io</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/io/bmp.html">bmp</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/io/hdr.html">hdr</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/io/jpeg.html">jpeg</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/io/png.html">png</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/io/tga.html">tga</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/io/utils.html">utils</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../dlib/image/render.html">render</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/render/cosplasma.html">cosplasma</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/render/shapes.html">shapes</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/render/text.html">text</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../dlib/image/resampling.html">resampling</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/resampling/bicubic.html">bicubic</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/resampling/bilinear.html">bilinear</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/resampling/lanczos.html">lanczos</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/resampling/nearest.html">nearest</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/animation.html">animation</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/arithmetics.html">arithmetics</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/canvas.html">canvas</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/color.html">color</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/fthread.html">fthread</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/hdri.html">hdri</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/hsv.html">hsv</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/image.html">image</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/signal2d.html">signal2d</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/transform.html">transform</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/image/unmanaged.html">unmanaged</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../dlib/math.html">math</a>
-						</div>
-				<ul class="tree-view">
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../dlib/math/interpolation.html">interpolation</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/math/interpolation/bezier.html">bezier</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/math/interpolation/catmullrom.html">catmullrom</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/math/interpolation/easing.html">easing</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/math/interpolation/hermite.html">hermite</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/math/interpolation/linear.html">linear</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/math/interpolation/nearest.html">nearest</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/math/interpolation/smoothstep.html">smoothstep</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/math/combinatorics.html">combinatorics</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/math/complex.html">complex</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/math/decomposition.html">decomposition</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/math/diff.html">diff</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/math/dual.html">dual</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/math/dualquaternion.html">dualquaternion</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/math/fft.html">fft</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/math/hof.html">hof</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/math/linsolve.html">linsolve</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/math/matrix.html">matrix</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/math/quaternion.html">quaternion</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/math/sse.html">sse</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/math/tensor.html">tensor</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/math/transformation.html">transformation</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/math/utils.html">utils</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/math/vector.html">vector</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../dlib/memory.html">memory</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/memory/allocator.html">allocator</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/memory/gcallocator.html">gcallocator</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/memory/mallocator.html">mallocator</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/memory/mmappool.html">mmappool</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../dlib/network.html">network</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/network/socket.html">socket</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/network/url.html">url</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../dlib/serialization.html">serialization</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/serialization/json.html">json</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/serialization/xml.html">xml</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-					<li class="tree-view collapsed">
-						<div class="package ">
-							<a href="../../../dlib/text.html">text</a>
-						</div>
-				<ul class="tree-view">
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/text/encodings.html">encodings</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/text/lexer.html">lexer</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/text/str.html">str</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/text/utf16.html">utf16</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/text/utf8.html">utf8</a>
-						</div>
-					</li>
-					<li>
-						<div class="module ">
-							<a href="../../../dlib/text/utils.html">utils</a>
-						</div>
-					</li>
-				</ul>
-					</li>
-				</ul>
-					</li>
-				</ul>
+			<noscript>
+				<p style="color: red">The search functionality needs JavaScript enabled</p>
+			</noscript>
+			<div id="symbolSearchPane" style="display: none">
+				<form action="#" method="GET">
+					<input id="symbolSearch" type="text" name="q" placeholder="Search for symbols" autocomplete="off" onchange="performSymbolSearch(40);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();"/>
+				</form>
+				<ul id="symbolSearchResults" class="symbolList" style="display: none"></ul><script type="application/javascript" src="../../../symbols.js"></script><script type="application/javascript">var symbolSearchRootDir = "../../../";
+$('#symbolSearchPane').show();</script>
 			</div>
-			<p id="main-nav-footer">
-				Built with
-				<a href="https://github.com/MartinNowak/scod">scod</a>
-			</p>
+			<ul class="tree-view">
+				<li class="tree-view ">
+					<div class="package ">
+						<a href="../../../dlib.html">dlib</a>
+					</div>
+			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../dlib/audio.html">audio</a>
+					</div>
+			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../dlib/audio/io.html">io</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/audio/io/wav.html">wav</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/audio/sample.html">sample</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/audio/sound.html">sound</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/audio/synth.html">synth</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/audio/unmanaged.html">unmanaged</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../dlib/coding.html">coding</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/coding/varint.html">varint</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/coding/zlib.html">zlib</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../dlib/concurrency.html">concurrency</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/concurrency/taskqueue.html">taskqueue</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/concurrency/threadpool.html">threadpool</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/concurrency/workerthread.html">workerthread</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../dlib/container.html">container</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/container/array.html">array</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/container/bst.html">bst</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/container/buffer.html">buffer</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/container/dict.html">dict</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/container/linkedlist.html">linkedlist</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/container/queue.html">queue</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/container/stack.html">stack</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view ">
+					<div class="package ">
+						<a href="../../../dlib/core.html">core</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/core/bitio.html">bitio</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/core/compound.html">compound</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/core/memory.html">memory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/core/mutex.html">mutex</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/core/oop.html">oop</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/core/ownership.html">ownership</a>
+					</div>
+				</li>
+				<li>
+					<div class="module selected">
+						<a href="../../../dlib/core/stream.html">stream</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/core/thread.html">thread</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/core/tuple.html">tuple</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../dlib/filesystem.html">filesystem</a>
+					</div>
+			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">posix
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/posix/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/posix/directory.html">directory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/posix/file.html">file</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">windows
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/windows/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/windows/directory.html">directory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/windows/file.html">file</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/delegaterange.html">delegaterange</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/dirrange.html">dirrange</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/filesystem.html">filesystem</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/local.html">local</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/stdfs.html">stdfs</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../dlib/geometry.html">geometry</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/geometry/aabb.html">aabb</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/geometry/frustum.html">frustum</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/geometry/intersection.html">intersection</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/geometry/obb.html">obb</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/geometry/plane.html">plane</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/geometry/ray.html">ray</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/geometry/sphere.html">sphere</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/geometry/triangle.html">triangle</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/geometry/trimesh.html">trimesh</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/geometry/utils.html">utils</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../dlib/image.html">image</a>
+					</div>
+			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../dlib/image/filters.html">filters</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/filters/binarization.html">binarization</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/filters/boxblur.html">boxblur</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/filters/chromakey.html">chromakey</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/filters/contrast.html">contrast</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/filters/convolution.html">convolution</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/filters/desaturate.html">desaturate</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/filters/edgedetect.html">edgedetect</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/filters/histogram.html">histogram</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/filters/lens.html">lens</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/filters/morphology.html">morphology</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/filters/normalmap.html">normalmap</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/filters/sharpen.html">sharpen</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../dlib/image/io.html">io</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/io/bmp.html">bmp</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/io/hdr.html">hdr</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/io/jpeg.html">jpeg</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/io/png.html">png</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/io/tga.html">tga</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/io/utils.html">utils</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../dlib/image/render.html">render</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/render/cosplasma.html">cosplasma</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/render/shapes.html">shapes</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/render/text.html">text</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../dlib/image/resampling.html">resampling</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/resampling/bicubic.html">bicubic</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/resampling/bilinear.html">bilinear</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/resampling/lanczos.html">lanczos</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/resampling/nearest.html">nearest</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/animation.html">animation</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/arithmetics.html">arithmetics</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/canvas.html">canvas</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/color.html">color</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/fthread.html">fthread</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/hdri.html">hdri</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/hsv.html">hsv</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/image.html">image</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/signal2d.html">signal2d</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/transform.html">transform</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/image/unmanaged.html">unmanaged</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../dlib/math.html">math</a>
+					</div>
+			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../dlib/math/interpolation.html">interpolation</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/math/interpolation/bezier.html">bezier</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/math/interpolation/catmullrom.html">catmullrom</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/math/interpolation/easing.html">easing</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/math/interpolation/hermite.html">hermite</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/math/interpolation/linear.html">linear</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/math/interpolation/nearest.html">nearest</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/math/interpolation/smoothstep.html">smoothstep</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/math/combinatorics.html">combinatorics</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/math/complex.html">complex</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/math/decomposition.html">decomposition</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/math/diff.html">diff</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/math/dual.html">dual</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/math/dualquaternion.html">dualquaternion</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/math/fft.html">fft</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/math/hof.html">hof</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/math/linsolve.html">linsolve</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/math/matrix.html">matrix</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/math/quaternion.html">quaternion</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/math/sse.html">sse</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/math/tensor.html">tensor</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/math/transformation.html">transformation</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/math/utils.html">utils</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/math/vector.html">vector</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../dlib/memory.html">memory</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/memory/allocator.html">allocator</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/memory/gcallocator.html">gcallocator</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/memory/mallocator.html">mallocator</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/memory/mmappool.html">mmappool</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../dlib/network.html">network</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/network/errno.html">errno</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/network/socket.html">socket</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/network/url.html">url</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../dlib/serialization.html">serialization</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/serialization/json.html">json</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/serialization/xml.html">xml</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">
+						<a href="../../../dlib/text.html">text</a>
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/text/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/text/encodings.html">encodings</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/text/lexer.html">lexer</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/text/str.html">str</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/text/utf16.html">utf16</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/text/utf8.html">utf8</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/text/utils.html">utils</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+			</ul>
+				</li>
+			</ul>
 		</nav>
 		<div id="main-contents">
-			<div>
-				<h1>Class ArrayStream</h1><p>An InputStream that encapsulates contents of an array
+			<h1>Class ArrayStream</h1><p>An InputStream that encapsulates contents of an array
 </p>
-				<div class="prototype">
-					<code class="lang-d">
-						<div class="single-prototype">
-				<span class="kwd">class</span> <span class="typ">ArrayStream</span>
-				<br>&nbsp;&nbsp;: <a href="../../../dlib/core/stream/InputStream.html"><span class="typ">InputStream</span></a>
-				<span class="pun">;</span>
-						</div>
-					</code>
-				</div>
-				
-				<section><h2>Constructors</h2>
-					<table>
-						<col class="caption"/>
-						<tr>
-							<th>Name</th><th>Description</th>
-						</tr>
-						<tr>
-							<td>
-								<a href="../../../dlib/core/stream/ArrayStream.this.html" class="public">
-									<code>this</code>
-								</a>
-								<span class="tableEntryAnnotation">()</span>
-							</td>
-							<td>Constructor. Initializes stream as empty
+			<div class="prototype">
+				<code class="lang-d">
+					<div class="single-prototype">
+			<span class="kwd">class</span> <span class="typ">ArrayStream</span>
+			<br>&nbsp;&nbsp;: <a href="../../../dlib/core/stream/InputStream.html"><span class="typ">InputStream</span></a>
+			<span class="pun">;</span>
+					</div>
+				</code>
+			</div>
+			
+			<section><h2>Constructors</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/core/stream/ArrayStream.this.html" class="public">
+								<code>this</code>
+							</a>
+							<span class="tableEntryAnnotation">()</span>
+						</td>
+						<td>Constructor. Initializes stream as empty
 </td>
-						</tr>
-						<tr>
-							<td>
-								<a href="../../../dlib/core/stream/ArrayStream.this.html" class="public">
-									<code>this</code>
-								</a>
-								<span class="tableEntryAnnotation">(data, size)</span>
-							</td>
-							<td>Constructor. Initializes stream with an array of bytes.
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/core/stream/ArrayStream.this.html" class="public">
+								<code>this</code>
+							</a>
+							<span class="tableEntryAnnotation">(data, size)</span>
+						</td>
+						<td>Constructor. Initializes stream with an array of bytes.
  size delimits maximum read size
 </td>
-						</tr>
-						<tr>
-							<td>
-								<a href="../../../dlib/core/stream/ArrayStream.this.html" class="public">
-									<code>this</code>
-								</a>
-								<span class="tableEntryAnnotation">(data)</span>
-							</td>
-							<td>Constructor. Initializes stream with an array of bytes
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/core/stream/ArrayStream.this.html" class="public">
+								<code>this</code>
+							</a>
+							<span class="tableEntryAnnotation">(data)</span>
+						</td>
+						<td>Constructor. Initializes stream with an array of bytes
 </td>
-						</tr>
-					</table>
-				</section>
-				<section><h2>Properties</h2>
-					<table>
-						<col class="caption"/>
-						<tr>
-							<th>Name</th><th>Type</th><th>Description</th>
-						</tr>
-						<tr>
-							<td>
-								<a href="../../../dlib/core/stream/Seekable.getPosition.html" class="public inherited property"><code>getPosition</code></a><span class="tableEntryAnnotation">[get]</span>
-							</td>
-							<td class="typecol"><code class="prettyprint lang-d"><span class="typ">ulong</span></code></td><td>Returns current position
+					</tr>
+				</table>
+			</section>
+			<section><h2>Fields</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Type</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/core/stream/ArrayStream.data.html" class="private"><code>data</code></a>
+						</td>
+						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">ubyte</span><span class="pun">[]</span></code></td><td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/core/stream/ArrayStream.pos.html" class="private"><code>pos</code></a>
+						</td>
+						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">ulong</span></code></td><td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/core/stream/ArrayStream.size_.html" class="private"><code>size_</code></a>
+						</td>
+						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">ulong</span></code></td><td></td>
+					</tr>
+				</table>
+			</section>
+			<section><h2>Properties</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Type</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/core/stream/Seekable.getPosition.html" class="public inherited property"><code>getPosition</code></a><span class="tableEntryAnnotation">[get]</span>
+						</td>
+						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">ulong</span></code></td><td>Returns current position
 </td>
-						</tr>
-					</table>
-				</section>
-				<section><h2>Methods</h2>
-					<table>
-						<col class="caption"/>
-						<tr>
-							<th>Name</th><th>Description</th>
-						</tr>
-						<tr>
-							<td>
-								<a href="../../../dlib/core/stream/Stream.close.html" class="public inherited">
-									<code>close</code>
-								</a>
-								<span class="tableEntryAnnotation">()</span>
-							</td>
-							<td>Closes the stream. Closed stream cannot be read or written any more
+					</tr>
+				</table>
+			</section>
+			<section><h2>Methods</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/core/stream/ArrayStream.close.html" class="public">
+								<code>close</code>
+							</a>
+							<span class="tableEntryAnnotation">()</span>
+						</td>
+						<td>Closes the stream. Closed stream cannot be read or written any more
 </td>
-						</tr>
-						<tr>
-							<td>
-								<a href="../../../dlib/core/stream/InputStream.fillArray.html" class="public inherited">
-									<code>fillArray</code>
-								</a>
-								<span class="tableEntryAnnotation">(array)</span>
-							</td>
-							<td>Attempts to fill an array with raw data from stream.
- Returns true if the array was filled, false otherwise
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/core/stream/ArrayStream.getPosition.html" class="public">
+								<code>getPosition</code>
+							</a>
+							<span class="tableEntryAnnotation">()</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/core/stream/ArrayStream.readable.html" class="public">
+								<code>readable</code>
+							</a>
+							<span class="tableEntryAnnotation">()</span>
+						</td>
+						<td>Returns true if there are any data to read. false means end of the stream.
 </td>
-						</tr>
-						<tr>
-							<td>
-								<a href="../../../dlib/core/stream/Seekable.position.html" class="public inherited">
-									<code>position</code>
-								</a>
-								<span class="tableEntryAnnotation">(pos)</span>
-							</td>
-							<td>Attempts to set current position to pos.
- Throws SeekException on failure
-</td>
-						</tr>
-						<tr>
-							<td>
-								<a href="../../../dlib/core/stream/InputStream.readable.html" class="public inherited">
-									<code>readable</code>
-								</a>
-								<span class="tableEntryAnnotation">()</span>
-							</td>
-							<td>Returns true if there are any data to read. false means end of the stream.
-</td>
-						</tr>
-						<tr>
-							<td>
-								<a href="../../../dlib/core/stream/InputStream.readBE.html" class="public inherited">
-									<code>readBE</code>
-								</a>
-								<span class="tableEntryAnnotation">(value)</span>
-							</td>
-							<td>Reads big-endian integer, converts to native-endian
- and stores in value
-</td>
-						</tr>
-						<tr>
-							<td>
-								<a href="../../../dlib/core/stream/InputStream.readBytes.html" class="public inherited">
-									<code>readBytes</code>
-								</a>
-								<span class="tableEntryAnnotation">(buffer, count)</span>
-							</td>
-							<td>Attempts to read count bytes from stream and stores them in memory
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/core/stream/ArrayStream.readBytes.html" class="public">
+								<code>readBytes</code>
+							</a>
+							<span class="tableEntryAnnotation">(buffer, count)</span>
+						</td>
+						<td>Attempts to read count bytes from stream and stores them in memory
  pointing by buffer. Returns number of bytes actually read
 </td>
-						</tr>
-						<tr>
-							<td>
-								<a href="../../../dlib/core/stream/InputStream.readLE.html" class="public inherited">
-									<code>readLE</code>
-								</a>
-								<span class="tableEntryAnnotation">(value)</span>
-							</td>
-							<td>Reads little-endian integer, converts to native-endian
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/core/stream/ArrayStream.seekable.html" class="public">
+								<code>seekable</code>
+							</a>
+							<span class="tableEntryAnnotation">()</span>
+						</td>
+						<td>Returns true if it is legal to use Seekable functionality on this stream
+</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/core/stream/ArrayStream.setPosition.html" class="public">
+								<code>setPosition</code>
+							</a>
+							<span class="tableEntryAnnotation">(pos)</span>
+						</td>
+						<td>Attempts to set current position to pos.
+ Returns true on success, false on failure
+</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/core/stream/ArrayStream.size.html" class="public">
+								<code>size</code>
+							</a>
+							<span class="tableEntryAnnotation">()</span>
+						</td>
+						<td>Returns the size of a stream in bytes
+</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/core/stream/InputStream.fillArray.html" class="public inherited">
+								<code>fillArray</code>
+							</a>
+							<span class="tableEntryAnnotation">(array)</span>
+						</td>
+						<td>Attempts to fill an array with raw data from stream.
+ Returns true if the array was filled, false otherwise
+</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/core/stream/Seekable.position.html" class="public inherited">
+								<code>position</code>
+							</a>
+							<span class="tableEntryAnnotation">(pos)</span>
+						</td>
+						<td>Attempts to set current position to pos.
+ Throws SeekException on failure
+</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/core/stream/InputStream.readBE.html" class="public inherited">
+								<code>readBE</code>
+							</a>
+							<span class="tableEntryAnnotation">(value)</span>
+						</td>
+						<td>Reads big-endian integer, converts to native-endian
  and stores in value
 </td>
-						</tr>
-						<tr>
-							<td>
-								<a href="../../../dlib/core/stream/Seekable.seek.html" class="public inherited">
-									<code>seek</code>
-								</a>
-								<span class="tableEntryAnnotation">(amount)</span>
-							</td>
-							<td>Relatively changes position.
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/core/stream/InputStream.readLE.html" class="public inherited">
+								<code>readLE</code>
+							</a>
+							<span class="tableEntryAnnotation">(value)</span>
+						</td>
+						<td>Reads little-endian integer, converts to native-endian
+ and stores in value
+</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/core/stream/Seekable.seek.html" class="public inherited">
+								<code>seek</code>
+							</a>
+							<span class="tableEntryAnnotation">(amount)</span>
+						</td>
+						<td>Relatively changes position.
  amount defines an offset from the current position (can be negative).
  Throws SeekException on failure
 </td>
-						</tr>
-						<tr>
-							<td>
-								<a href="../../../dlib/core/stream/Stream.seekable.html" class="public inherited">
-									<code>seekable</code>
-								</a>
-								<span class="tableEntryAnnotation">()</span>
-							</td>
-							<td>Returns true if it is legal to use Seekable functionality on this stream
-</td>
-						</tr>
-						<tr>
-							<td>
-								<a href="../../../dlib/core/stream/Seekable.setPosition.html" class="public inherited">
-									<code>setPosition</code>
-								</a>
-								<span class="tableEntryAnnotation">(pos)</span>
-							</td>
-							<td>Attempts to set current position to pos.
- Returns true on success, false on failure
-</td>
-						</tr>
-						<tr>
-							<td>
-								<a href="../../../dlib/core/stream/Seekable.size.html" class="public inherited">
-									<code>size</code>
-								</a>
-								<span class="tableEntryAnnotation">()</span>
-							</td>
-							<td>Returns the size of a stream in bytes
-</td>
-						</tr>
-					</table>
-				</section>
-				<section><h2>Example</h2>
-
-<pre class="code"><code class="lang-d"><span class="typ">ubyte</span><span class="pun">[] </span><span class="pln">arr </span><span class="pun">= [</span><span class="lit">23</span><span class="pun">,</span><span class="lit">13</span><span class="pun">,</span><span class="lit">42</span><span class="pun">,</span><span class="lit">71</span><span class="pun">,</span><span class="lit">0</span><span class="pun">,</span><span class="lit">1</span><span class="pun">,</span><span class="lit">1</span><span class="pun">,</span><span class="lit">2</span><span class="pun">,</span><span class="lit">3</span><span class="pun">,</span><span class="lit">5</span><span class="pun">,</span><span class="lit">8</span><span class="pun">];
-
-</span><span class="kwd">auto </span><span class="pln">stream </span><span class="pun">= </span><span class="kwd">new </span><span class="typ">ArrayStream</span><span class="pun">(</span><span class="pln">arr</span><span class="pun">);
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">size</span><span class="pun">() == </span><span class="pln">arr<wbr/></span><span class="pun">.</span><span class="pln">length</span><span class="pun">);
-
-</span><span class="typ">ubyte</span><span class="pun">[</span><span class="lit">4</span><span class="pun">] </span><span class="pln">buf</span><span class="pun">;
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">readBytes</span><span class="pun">(</span><span class="pln">buf<wbr/></span><span class="pun">.</span><span class="pln">ptr</span><span class="pun">, </span><span class="pln">buf<wbr/></span><span class="pun">.</span><span class="pln">length</span><span class="pun">) == </span><span class="pln">buf<wbr/></span><span class="pun">.</span><span class="pln">length</span><span class="pun">);
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">buf </span><span class="pun">== [</span><span class="lit">23</span><span class="pun">,</span><span class="lit">13</span><span class="pun">,</span><span class="lit">42</span><span class="pun">,</span><span class="lit">71</span><span class="pun">]);
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">getPosition</span><span class="pun">() == </span><span class="pln">buf<wbr/></span><span class="pun">.</span><span class="pln">length</span><span class="pun">);
-
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">setPosition</span><span class="pun">(</span><span class="lit">6</span><span class="pun">));
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">getPosition </span><span class="pun">== </span><span class="lit">6</span><span class="pun">);
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">readBytes</span><span class="pun">(</span><span class="pln">buf<wbr/></span><span class="pun">.</span><span class="pln">ptr</span><span class="pun">, </span><span class="pln">buf<wbr/></span><span class="pun">.</span><span class="pln">length</span><span class="pun">) == </span><span class="pln">buf<wbr/></span><span class="pun">.</span><span class="pln">length</span><span class="pun">);
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">buf </span><span class="pun">== [</span><span class="lit">1</span><span class="pun">,</span><span class="lit">2</span><span class="pun">,</span><span class="lit">3</span><span class="pun">,</span><span class="lit">5</span><span class="pun">]);
-
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">readBytes</span><span class="pun">(</span><span class="pln">buf<wbr/></span><span class="pun">.</span><span class="pln">ptr</span><span class="pun">, </span><span class="pln">buf<wbr/></span><span class="pun">.</span><span class="pln">length</span><span class="pun">) == </span><span class="lit">1</span><span class="pun">);
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">buf</span><span class="pun">[</span><span class="lit">0</span><span class="pun">] == </span><span class="lit">8</span><span class="pun">);
-</span><span class="kwd">assert</span><span class="pun">(!</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">readable</span><span class="pun">);
-
-</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">setPosition</span><span class="pun">(</span><span class="lit">1</span><span class="pun">);
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">readable</span><span class="pun">);
-</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">seek</span><span class="pun">(</span><span class="lit">4</span><span class="pun">);
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">readBytes</span><span class="pun">(</span><span class="pln">buf<wbr/></span><span class="pun">.</span><span class="pln">ptr</span><span class="pun">, </span><span class="pln">buf<wbr/></span><span class="pun">.</span><span class="pln">length</span><span class="pun">) == </span><span class="pln">buf<wbr/></span><span class="pun">.</span><span class="pln">length</span><span class="pun">);
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">buf </span><span class="pun">== [</span><span class="lit">1</span><span class="pun">,</span><span class="lit">1</span><span class="pun">,</span><span class="lit">2</span><span class="pun">,</span><span class="lit">3</span><span class="pun">]);
-
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">setPosition</span><span class="pun">(</span><span class="pln">arr<wbr/></span><span class="pun">.</span><span class="pln">length</span><span class="pun">));
-</span><span class="kwd">assert</span><span class="pun">(!</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">setPosition</span><span class="pun">(</span><span class="pln">arr<wbr/></span><span class="pun">.</span><span class="pln">length</span><span class="pun">+</span><span class="lit">1</span><span class="pun">));
-
-</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">close</span><span class="pun">();
-</span><span class="kwd">assert</span><span class="pun">(!</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">readable</span><span class="pun">);
-</span></code></pre>
-</section>
-
-			</div>
+					</tr>
+				</table>
+			</section>
+			
 			<footer>
-				<div id="license-info">
-					<p>Martin Cejp, Timur Gafarov
+				<table class="license-info">
+					<tr>
+						<th>Authors</th>
+						<td>
+							<p>Martin Cejp, Timur Gafarov
 </p>
 
-					<p>Martin Cejp 2014-2021.
+						</td>
+					</tr>
+					<tr>
+						<th>Copyright</th>
+						<td>
+							<p>Martin Cejp 2014-2021.
 </p>
 
-					<p><a href="https://boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+						</td>
+					</tr>
+					<tr>
+						<th>License</th>
+						<td>
+							<p><a href="https://boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
 </p>
 
-				</div>
+						</td>
+					</tr>
+				</table>
+				<p class="faint">Generated using the DDOX documentation generator</p>
 			</footer>
 		</div>
 	</body>
