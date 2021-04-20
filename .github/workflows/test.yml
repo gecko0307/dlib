@@ -2,6 +2,13 @@ name: CI
 
 on: 
   push:
+    branches: [ master ]
+    paths:
+    - 'dlib/*'
+    - 'dub.json'
+    - '.github/workflows/*'
+  pull_request:
+    branches: [ master ]
     paths:
     - 'dlib/*'
     - 'dub.json'
