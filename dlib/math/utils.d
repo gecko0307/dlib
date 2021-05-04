@@ -189,6 +189,7 @@ T nextPowerOfTwo(T) (T k) nothrow
 ///
 unittest
 {
+    assert(nextPowerOfTwo(0) == 1);
     assert(nextPowerOfTwo(5) == 8);
 }
 
@@ -260,10 +261,22 @@ version (BigEndian)
     {
         return value;
     }
+    
+    ///
+    unittest
+    {
+        assert(bigEndian(cast(ushort)0x00FF) == 0x00FF);
+    }
 
     uint bigEndian(uint value) nothrow
     {
         return value;
+    }
+
+    ///
+    unittest
+    {
+        assert(bigEndian(cast(uint)0x000000FF) == cast(uint)0x000000FF);
     }
 
     ushort networkByteOrder(ushort value) nothrow
@@ -271,9 +284,21 @@ version (BigEndian)
         return value;
     }
 
+    ///
+    unittest
+    {
+        assert(networkByteOrder(cast(ushort)0x00FF) == 0x00FF);
+    }
+
     uint networkByteOrder(uint value) nothrow
     {
         return value;
+    }
+
+    ///
+    unittest
+    {
+        assert(networkByteOrder(cast(uint)0x000000FF) == cast(uint)0x000000FF);
     }
 }
 
@@ -284,6 +309,12 @@ version (LittleEndian)
         return ((value & 0xFF) << 8) | ((value >> 8) & 0xFF);
     }
 
+    ///
+    unittest
+    {
+        assert(bigEndian(cast(ushort)0x00FF) == 0xFF00);
+    }
+
     uint bigEndian(uint value) nothrow
     {
         return value << 24
@@ -292,14 +323,32 @@ version (LittleEndian)
             |  value >> 24;
     }
 
+    ///
+    unittest
+    {
+        assert(bigEndian(cast(uint)0x000000FF) == cast(uint)0xFF000000);
+    }
+
     ushort networkByteOrder(ushort value) nothrow
     {
         return bigEndian(value);
     }
 
+    ///
+    unittest
+    {
+        assert(networkByteOrder(cast(ushort)0x00FF) == 0xFF00);
+    }
+
     uint networkByteOrder(uint value) nothrow
     {
         return bigEndian(value);
+    }
+
+    ///
+    unittest
+    {
+        assert(networkByteOrder(cast(uint)0x000000FF) == cast(uint)0xFF000000);
     }
 }
 
