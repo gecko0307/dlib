@@ -241,7 +241,7 @@ struct Quaternion(T)
     * Rotate a point by quaternion
     */
     Vector!(T,3) rotate(Vector!(T,3) v)
-    do
+    body
     {
         Quaternion!(T) qf = this * v * this.conj;
         return Vector!(T,3)(qf.x, qf.y, qf.z);
@@ -269,7 +269,7 @@ struct Quaternion(T)
         * Convert to 4x4 matrix
         */
         Matrix!(T,4) toMatrix4x4()
-        do
+        body
         {
             auto mat = Matrix!(T,4).identity;
 
@@ -300,7 +300,7 @@ struct Quaternion(T)
         * Convert to 3x3 matrix
         */
         Matrix!(T,3) toMatrix3x3()
-        do
+        body
         {
             auto mat = Matrix!(T,3).identity;
 
@@ -324,7 +324,7 @@ struct Quaternion(T)
         * given the angular displacement in matrix form
         */
         static Quaternion!(T) fromMatrix(Matrix!(T,4) m)
-        do
+        body
         {
             Quaternion!(T) q;
 
@@ -374,7 +374,7 @@ struct Quaternion(T)
         * given the orientation in XYZ-Euler angles format (in radians)
         */
         static Quaternion!(T) fromEulerAngles(Vector!(T,3) e)
-        do
+        body
         {
             Quaternion!(T) q;
 
@@ -398,7 +398,7 @@ struct Quaternion(T)
         * Returned x,y,z are in radians
         */
         Vector!(T,3) toEulerAngles()
-        do
+        body
         {
             Vector!(T,3) e;
 
@@ -428,7 +428,7 @@ struct Quaternion(T)
         * Return the rotation angle (in radians)
         */
         T rotationAngle()
-        do
+        body
         {
             return 2.0 * acos(w);
         }
@@ -437,7 +437,7 @@ struct Quaternion(T)
         * Return the rotation axis
         */
         Vector!(T,3) rotationAxis()
-        do
+        body
         {
             T s = sqrt(1.0 - (w * w));
 
@@ -451,7 +451,7 @@ struct Quaternion(T)
         * Quaternion as an angular velocity
         */
         Vector!(T,3) generator()
-        do
+        body
         {
             T s = sqrt(1.0 - (w * w));
 
@@ -467,6 +467,20 @@ struct Quaternion(T)
             return axis * angle;
         }
     }
+}
+
+///
+unittest
+{
+    Quaternion!float q1 = Quaternion!float(0.0f, 0.0f, 0.0f, 1.0f);
+    Vector3f v = q1.rotate(Vector3f(1.0f, 0.0f, 0.0f));
+    assert(isAlmostZero(v - Vector3f(1.0f, 0.0f, 0.0f)));
+    
+    Quaternion!float q2 = Quaternion!float.identity;
+    assert(isConsiderZero(q2.x));
+    assert(isConsiderZero(q2.y));
+    assert(isConsiderZero(q2.z));
+    assert(isConsiderZero(q2.w - 1.0f));
 }
 
 /**
@@ -715,7 +729,7 @@ in
     assert (dot(qprev, qprev) <= 1.0001);
     assert (dot(qcurr, qcurr) <= 1.0001);
 }
-do
+body
 {
     Quaternion!(T) inv_prev = qprev.conj;
     Quaternion!(T) inv_curr = qcurr.conj;
