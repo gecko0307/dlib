@@ -61,38 +61,12 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.math.linsolve;
 
+import std.math;
 import dlib.math.matrix;
 import dlib.math.vector;
 import dlib.math.decomposition;
 
 // TODO: use arrays instead of Matrix structs to support big systems stored in heap
-
-/// Solve Ax = b iteratively using Gauss-Seidel method
-void solveGS(T, size_t N)(
-      Matrix!(T,N) a,
-  ref Vector!(T,N) x,
-      Vector!(T,N) b,
-      uint iterations = 10)
-{
-    double delta;
-
-    for (int k = 0; k < iterations; ++k)
-    {
-        for (int i = 0; i < N; ++i)
-        {
-            delta = 0.0;
-
-            for (int j = 0; j < i; ++j)
-                delta += a[j, i] * x[j];
-
-            for (int j = i + 1; j < N; ++j)
-                delta += a[j, i] * x[j];
-
-            delta = (b[i] - delta) / a[i, i];
-            x[i] = delta;
-        }
-    }
-}
 
 /// Solve Ax = b directly using LUP decomposition
 void solve(T, size_t N)(
@@ -103,6 +77,29 @@ void solve(T, size_t N)(
     Matrix!(T,N) L, U, P;
     decomposeLUP(a, L, U, P);
     solveLU(L, U, x, b * P);
+}
+
+///
+unittest
+{
+    bool isConsiderZeroTolerant(T) (T f) nothrow
+    {
+        return (abs(f) < 0.0001f);
+    }
+    
+    Matrix3f a = matrixf(
+        1, 3, -2,
+        3, 5,  6,
+        2, 4,  3
+    );
+    Vector3f b = Vector3f(5, 7, 8);
+    Vector3f x = Vector3f(0, 0, 0);
+    
+    solve(a, x, b);
+    
+    assert(isConsiderZeroTolerant(-15 - x[0]));
+    assert(isConsiderZeroTolerant(8 - x[1]));
+    assert(isConsiderZeroTolerant(2 - x[2]));
 }
 
 /// Solve LUx = b directly
@@ -134,3 +131,32 @@ ref Vector!(T,N) x,
         x[i] /= U[i, i];
     }
 }
+
+/// Solve Ax = b iteratively using Gauss-Seidel method (implementation is bugged)
+/*
+void solveGS(T, size_t N)(
+      Matrix!(T,N) a,
+  ref Vector!(T,N) x,
+      Vector!(T,N) b,
+      uint iterations = 10)
+{
+    T delta;
+
+    for (int k = 0; k < iterations; ++k)
+    {
+        for (int i = 0; i < N; ++i)
+        {
+            delta = 0.0;
+
+            for (int j = 0; j < i; ++j)
+                delta += a[j, i] * x[j];
+
+            for (int j = i + 1; j < N; ++j)
+                delta += a[j, i] * x[j];
+
+            delta = (b[i] - delta) / a[i, i];
+            x[i] = delta;
+        }
+    }
+}
+*/
