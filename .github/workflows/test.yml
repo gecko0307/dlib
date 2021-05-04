@@ -4,15 +4,15 @@ on:
   push:
     branches: [ master ]
     paths:
-    - 'dlib/*'
+    - 'dlib/**'
     - 'dub.json'
-    - '.github/workflows/*'
+    - '.github/workflows/**'
   pull_request:
     branches: [ master ]
     paths:
-    - 'dlib/*'
+    - 'dlib/**'
     - 'dub.json'
-    - '.github/workflows/*'
+    - '.github/workflows/**'
 
 jobs:
   test:
