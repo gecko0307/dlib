@@ -102,6 +102,7 @@ T setBit(T)(T b, uint pos, bool state)
 unittest
 {
     assert(setBit(0, 0, true) == 1);
+    assert(setBit(1, 0, false) == 0);
 }
 
 /**
