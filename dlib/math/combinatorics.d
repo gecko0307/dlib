@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2021 Nick Papanastasiou
+Copyright (c) 2015-2021 Nick Papanastasiou, Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -31,7 +31,7 @@ DEALINGS IN THE SOFTWARE.
  *
  * Copyright: Nick Papanastasiou 2015-2021.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
- * Authors: Nick Papanastasiou
+ * Authors: Nick Papanastasiou, Timur Gafarov
  */
 module dlib.math.combinatorics;
 
@@ -53,6 +53,7 @@ ulong factorial(ulong n) @safe nothrow
     return n * mfac(n - 1);
 }
 
+///
 unittest
 {
     assert(factorial(10) == 3_628_800);
@@ -77,12 +78,11 @@ ulong fibonacci(ulong n)
 /// Common vernacular for fibonacci
 alias fib = fibonacci;
 
+///
 unittest
 {
-    import std.array : array;
-
+    import std.array: array;
     auto fibs = iota(1, 21).map!(n => fib(n)).array;
-
     assert(fibs == [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144,
                     233, 377, 610, 987, 1597, 2584, 4181, 6765]);
 }
@@ -101,6 +101,17 @@ ulong doubleFactorial(ulong n)
     return n * doubleFactorial(n - 2);
 }
 
+///
+unittest
+{
+    import std.array: array;
+    auto dfacs = iota(1, 21).map!(n => doubleFactorial(n)).array;
+    assert(dfacs == [1, 2, 3, 8, 15, 48, 105, 384, 945, 3840, 
+                    10395, 46080, 135135, 645120, 2027025, 
+                    10321920, 34459425, 185794560, 654729075, 
+                    3715891200]);
+}
+
 /// Computes the hyperfactorial of n: 1^1 * 2^2 * 3^3 * ... n^n
 BigInt hyperFactorial(ulong n)
 {
@@ -112,6 +123,14 @@ BigInt hyperFactorial(ulong n)
     alias mhfac = memoize!hyperFactorial;
 
     return BigInt(n ^^ n) * hyperFactorial(n - 1);
+}
+
+///
+unittest
+{
+    import std.array: array;
+    auto hfacs = iota(1, 6).map!(n => hyperFactorial(n)).array;
+    assert(hfacs == [1, 4, 108, 27648, 86400000]);
 }
 
 /++
@@ -134,6 +153,13 @@ alias C = combinations;
 /// Ditto
 alias choose = combinations;
 
+///
+unittest
+{
+    assert(1.choose(2) == 0);
+    assert(5.choose(2) == 10);
+}
+
 /++
 +  Compute the number of permutations of `objects` types of items
 + when considered `taken` at a time, where order is considered
@@ -146,9 +172,9 @@ ulong permutations(ulong objects, ulong taken) @safe nothrow
 // Common vernacular for permutations
 alias P = permutations;
 
+///
 unittest
 {
-    assert(5.choose(2) == 10);
     assert(10.P(2) == 90);
 }
 
@@ -172,10 +198,8 @@ ulong lucas(ulong n) @safe nothrow
 
 unittest
 {
-    import std.algorithm : map;
+    import std.algorithm: map;
     import std.array;
-
     auto lucasRange = iota(0, 12).map!(k => lucas(k)).array;
-
     assert(lucasRange == [2, 1, 3, 4, 7, 11, 18, 29, 47, 76, 123, 199]);
 }
