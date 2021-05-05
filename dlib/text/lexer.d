@@ -361,6 +361,9 @@ class Lexer: InputRange!string
 ///
 unittest
 {
+    import std.array: array;
+    import std.range: iota;
+    
     string[] delims = ["(", ")", ";", " ", "{", "}", ".", "\n", "\r", "=", "++", "<"];
     auto input = "for (int i=0; i<arr.length; ++i)\r\n{doThing();}\n";
     auto lexer = new Lexer(input, delims);
@@ -373,10 +376,15 @@ unittest
         }
         arr ~= lexeme;
     }
-    assert(arr == [
+    auto reference = [
         "for", " ", "(", "int", " ", "i", "=", "0", ";", " ", "i", "<",
         "arr", ".", "length", ";", " ", "++", "i", ")", "\n", "{", "doThing",
-        "(", ")", ";", "}", "\n" ]);
+        "(", ")", ";", "}", "\n" ];
+    assert(arr == reference);
+
+    lexer = new Lexer(input, delims);
+    arr = array(lexer);
+    assert(arr == reference);
 
     input = "";
     lexer = new Lexer(input, delims);
