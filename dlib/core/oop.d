@@ -157,6 +157,17 @@ bool hasMethod(T, string m)()
     }
 }
 
+///
+unittest
+{
+    struct Foo
+    {
+        int bar() { return 0; }
+    }
+    
+    assert(hasMethod!(Foo, "bar")() == true);
+}
+
 /**
  * Check if given type (T) corresponds to given signature (I)
  *
@@ -164,6 +175,7 @@ bool hasMethod(T, string m)()
  * Returns true if struct T has the same members and methods as struct I.
  * This allows to use structs as static interfaces in generic code.
  */
+/*
 bool implements(T, I)()
 {
     foreach(i, name; __traits(allMembers, I))
@@ -197,6 +209,23 @@ bool implements(T, I)()
     }
     return true;
 }
+
+///
+unittest
+{
+    struct Foo
+    {
+        int bar() { return 10; }
+    }
+    
+    struct FooInterface
+    {
+        int bar() { return 0; }
+    }
+    
+    assert(implements!(Foo, FooInterface)() == true);
+}
+*/
 
 /**
  * Test if F is a method
