@@ -166,6 +166,7 @@ unittest
     }
     
     assert(hasMethod!(Foo, "bar")() == true);
+    assert(hasMethod!(Foo, "foo")() == false);
 }
 
 /**
