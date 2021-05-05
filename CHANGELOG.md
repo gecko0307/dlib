@@ -1,3 +1,23 @@
+dlib 0.22.0 beta1 - TBD
+-----------------------
+- **dlib.core**
+  - **Breaking change:** removed `dlib.core.oop.implements` (non-working function)
+- **dlib.math**
+  - Fix matrix subtraction
+  - Fix wrong bounds check in matrix slice assignment
+  - **Breaking change:** removed `dlib.math.linsolve.solveGS` (non-working function)
+  - Binary matrix operations are now `const`
+  - `sum`, `invertArray`, `allIsZero` in `dlib.math.utils` are deprecated. Use `reduce!((a, b) => a + b)`, `map!(a => -a)`, `reduce!((a, b) => a + b == 0)` instead
+- **dlib.image**
+  - **Breaking change:** deprecated type `dlib.image.image.PixelFormat` has been removed
+  - **Breaking change:** deprecated aliases `save` and `load` in `dlib.audio.io` have been removed
+- **dlib.audio**
+  - **Breaking change:** deprecated aliases `save`, `load`, `saveAnimated`, `loadAnimated`, `saveHDRI`, `loadHDRI` in `dlib.image.io` have been removed
+- **dlib.text**
+  - **Breaking change:** deprecated method `UTF8Decoder.byDChar` have been removed
+  - **Breaking change:** deprecated method `UTF16LEDecoder.byDChar` have been removed
+  - **Breaking change:** deprecated aliases `UTF16Decoder` and `UTF16Encoder` have been removed
+
 dlib 0.21.0 - 7 Apr, 2021
 -------------------------
 No changes since dlib 0.21.0 beta2.
