@@ -89,8 +89,6 @@ It is not strictly necessary to document the code, but if you do, use [ddoc synt
 module dlib.something.something;
 ```
 
-### Unit tests
-
 It is advisable to write unit tests for new code, if they can be written. Sometimes functionality needs particular external environment or special conditions to run; in these cases tests are not required.
 
 It is recommended to add one `unittest` block per function, method, or class. Test block should be formatted in the following way:
