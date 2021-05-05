@@ -193,8 +193,10 @@ struct Matrix(T, size_t N)
     T[] opSliceAssign(in T t, in size_t index1, in size_t index2)
     in
     {
-        assert ((0 <= index1) && (index1 < N) && (0 <= index2) && (index2 < N),
-            "Matrix.opSliceAssign(T t, int index1, int index2): array index out of bounds");
+        assert ((0 <= index1) && (index1 < N * N),
+            "Matrix.opSliceAssign(T t, int index1, int index2): index1 out of bounds");
+        assert ((0 <= index2) && (index2 < N * N),
+            "Matrix.opSliceAssign(T t, int index1, int index2): index2 out of bounds");
     }
     do
     {
@@ -933,15 +935,12 @@ unittest
         0, 0, 0, 1)
     );
 
-    m3.a14 = 1;
+    m3[12] = 1;
     m3.a24 = 2;
     m3.a34 = 3;
-
-    /*
-    // This will compile, but fail to link for some wierd reason
-    auto v = Vector3f(2.0f, 4.0f, 6.0f);
-    assert(Vector3f(1.0f, 2.0f, 3.0f) * m3 == v);
-    */
+    m3[1..4] = 0;
+    
+    assert(m3[12] == 1);
 
     assert(m1.determinant3x3 == -25);
     assert(m1.determinant == 567);
