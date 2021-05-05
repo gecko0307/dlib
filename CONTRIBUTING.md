@@ -1,6 +1,6 @@
 # Contributing Guidelines
 
-####  Bug reporting 
+#### Bug reporting 
 
 Open an issue at [GitHub issue tracker](https://github.com/gecko0307/dlib/issues). Before doing that, ensure the bug was not already reported or fixed in `master` branch. Describe a problem and, if necessary, provide minimal code needed to reproduce it.
 
@@ -15,11 +15,11 @@ We also use several other labels:
 * Missing. Appears when existing functionality is removed due to regressions and needs to be rewritten, or when some implementation is not complete
 * New functionality. Self-descriptive: a new functionality request.
 
-####  Bug fixing 
+#### Bug fixing 
 
 Open a new GitHub pull request with your patch. Provide a description of the problem and solution. Follow our [code style](#code-style-and-standards). Please, try to avoid solutions that break library API and semantics - such changes should be made very carefully. If the problem can't be solved without breaking changes, explicitly state that in the description.
 
-####  Implementing new features 
+#### Implementing new features 
 
 Before writing a new module, familiarize yourself with [project philosophy](https://github.com/gecko0307/dlib/wiki/Rationale) and [best practices](https://github.com/gecko0307/dlib/wiki/Best-Practices). Despite being a general-purpose library, dlib is not a place for rarely used or too domain-specific code. In most cases it's better to start a new library instead of pushing new modules to dlib. Only in case you find yourself constantly reusing some generic functionality in different projects it may be reasonable to propose such code to dlib. It may be a data structure, sorting algorithm, data compression method, image file decoder, communication protocol, or anything of that sort.
 
@@ -32,7 +32,7 @@ New code should at least:
 * follow [dlib's best practices](https://github.com/gecko0307/dlib/wiki/Best-Practices), making use of ownership, containers, streams, exceptionless error handling and filesystem abstraction
 * not violate copyright/licensing. When adapting third-party code, make sure that it is compatible with [Boost Software License 1.0](https://www.boost.org/LICENSE_1_0.txt).
 
-####  Code style and standards 
+#### Code style and standards 
 
 dlib follows [D style](https://dlang.org/dstyle.html). Essential rules are the following:
 * Use spaces instead of tabs. Each indentation level is 4 spaces
@@ -87,4 +87,17 @@ It is not strictly necessary to document the code, but if you do, use [ddoc synt
  * Authors: Your Name
  */
 module dlib.something.something;
+```
+
+### Unit tests
+
+It is advisable to write unit tests for new code, if they can be written. Sometimes functionality needs particular external environment or special conditions to run; in these cases tests are not required.
+
+It is recommended to add one `unittest` block per function, method, or class. Test block should be formatted in the following way:
+
+```d
+///
+unittest
+{
+}
 ```
