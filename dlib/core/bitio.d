@@ -52,6 +52,12 @@ T hiNibble(T)(T b)
     return ((b >> 4) & 0x0F);
 }
 
+///
+unittest
+{
+    assert(hiNibble(0xFE) == 0x0F);
+}
+
 /**
  * Returns low 4 bits of a byte
  */
@@ -60,12 +66,25 @@ T loNibble(T)(T b)
     return (b & 0x0F);
 }
 
+///
+unittest
+{
+    assert(loNibble(0xFE) == 0x0E);
+}
+
 /**
  * Returns 16-bit integer n with swapped endianness
+ * TODO: move to dlib.math.utils
  */
 T swapEndian16(T)(T n)
 {
     return cast(T)((n >> 8) | (n << 8));
+}
+
+///
+unittest
+{
+    assert(swapEndian16(cast(ushort)0xFF00) == 0x00FF);
 }
 
 /**
@@ -79,10 +98,22 @@ T setBit(T)(T b, uint pos, bool state)
         return cast(T)(b & ~(1 << pos));
 }
 
+///
+unittest
+{
+    assert(setBit(0, 0, true) == 1);
+}
+
 /**
  * Returns bit at position pos in integer b
  */
 bool getBit(T)(T b, uint pos)
 {
     return ((b & (1 << pos)) != 0);
+}
+
+///
+unittest
+{
+    assert(getBit(1, 0) == 1);
 }
