@@ -237,7 +237,7 @@ struct Matrix(T, size_t N)
         foreach (i; 0..N)
         foreach (j; 0..N)
         {
-            res[i, j] = this[i, j] + mat[i, j];
+            res[i, j] = this[i, j] - mat[i, j];
         }
         return res;
     }
@@ -975,6 +975,16 @@ unittest
       -16, -49, 113,  19,
      -158, 154, -89, -25)
     );
+    
+    Matrix2f m5;
+    m5[] = 1.0f;
+    m5 += matrixf(
+      2, 2,
+      2, 2
+    );
+    m5 = m5 - m5;
+    
+    assert(m5 == Matrix2f.zero);
 }
 
 /*
