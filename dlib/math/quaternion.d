@@ -460,18 +460,40 @@ struct Quaternion(T)
     }
 }
 
+/*
+ * Predefined quaternion type aliases
+ */
+/// Alias for single precision Quaternion
+alias Quaternionf = Quaternion!(float);
+/// Alias for double precision Quaternion
+alias Quaterniond = Quaternion!(double);
+
 ///
 unittest
 {
-    Quaternion!float q1 = Quaternion!float(0.0f, 0.0f, 0.0f, 1.0f);
-    Vector3f v = q1.rotate(Vector3f(1.0f, 0.0f, 0.0f));
-    assert(isAlmostZero(v - Vector3f(1.0f, 0.0f, 0.0f)));
+    Quaternionf q1 = Quaternionf(0.0f, 0.0f, 0.0f, 1.0f);
+    Vector3f v1 = q1.rotate(Vector3f(1.0f, 0.0f, 0.0f));
+    assert(isAlmostZero(v1 - Vector3f(1.0f, 0.0f, 0.0f)));
     
-    Quaternion!float q2 = Quaternion!float.identity;
+    Quaternionf q2 = Quaternionf.identity;
     assert(isConsiderZero(q2.x));
     assert(isConsiderZero(q2.y));
     assert(isConsiderZero(q2.z));
     assert(isConsiderZero(q2.w - 1.0f));
+    
+    Quaternionf q3 = Quaternionf([1.0f, 0.0f, 0.0f, 1.0f]);
+    Quaternionf q4 = Quaternionf([0.0f, 1.0f, 0.0f, 1.0f]);
+    q4 = q3 * q4;
+    assert(q4 == Quaternionf(1, 1, 1, 1));
+    
+    Vector3f v2 = Vector3f(0, 0, 1);
+    Quaternionf q5 = Quaternionf(v2, 1.0f);
+    q5 *= q5;
+    assert(q5 == Quaternionf(0, 0, 2, 0));
+    
+    Quaternionf q6 = Quaternionf(Vector4f(1, 0, 0, 1));
+    Quaternionf q7 = q6 + q6 - Quaternionf(2, 0, 0, 2);
+    assert(q7 == Quaternionf(0, 0, 0, 0));
 }
 
 /**
@@ -733,11 +755,3 @@ do
     qa = qcurr * exp( arg);
     qb = qcurr * exp(-arg);
 }
-
-/*
- * Predefined quaternion type aliases
- */
-/// Alias for single precision Quaternion
-alias Quaternionf = Quaternion!(float);
-/// Alias for double precision Quaternion
-alias Quaterniond = Quaternion!(double);
