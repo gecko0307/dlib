@@ -982,8 +982,13 @@ unittest
       2, 2,
       2, 2
     );
-    m5 = m5 - m5;
+    m5 *= m5;
+    assert(m5 == matrixf(
+      18, 18,
+      18, 18)
+    );
     
+    m5 = m5 - m5;
     assert(m5 == Matrix2f.zero);
     
     Matrix2f m6 = matrixf(
@@ -991,9 +996,10 @@ unittest
       2, 2
     );
     m6 = m6 * m6;
+    m6 *= 2;
     assert(m6 == matrixf(
-      8, 8,
-      8, 8)
+      16, 16,
+      16, 16)
     );
     
     Matrix3f m7 = matrixf(
@@ -1007,6 +1013,42 @@ unittest
       27, 27, 27,
       27, 27, 27)
     );
+    
+    bool isAlmostZero3(Vector3f v)
+    {
+        float e = 0.002f;
+        return abs(v.x) < e &&
+               abs(v.y) < e &&
+               abs(v.z) < e;
+    }
+    
+    Vector3f v1 = Vector3f(1, 0, 0);
+    v1 = v1 * matrixf(
+        1, 0, 0, 2,
+        0, 1, 0, 3,
+        0, 0, 1, 4,
+        0, 0, 0, 1
+    );
+    assert(v1 == Vector3f(3, 3, 4));
+    
+    Vector3f v2 = Vector3f(0, 1, 0);
+    const float a1 = PI * 0.5f;
+    v2 = matrixf(
+        1, 0,        0,       0,
+        0, cos(a1), -sin(a1), 0,
+        0, sin(a1),  cos(a1), 0,
+        0, 0,        0,       1
+    ).rotate(v2);
+    assert(isAlmostZero3(v2 - Vector3f(0, 0, 1)));
+    
+    Vector3f v3 = Vector3f(0, 1, 0);
+    v3 = matrixf(
+        1, 0,        0,       0,
+        0, cos(a1), -sin(a1), 0,
+        0, sin(a1),  cos(a1), 0,
+        0, 0,        0,       1
+    ).invRotate(v3);
+    assert(isAlmostZero3(v3 - Vector3f(0, 0, -1)));
 }
 
 /*
