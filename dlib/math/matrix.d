@@ -985,6 +985,28 @@ unittest
     m5 = m5 - m5;
     
     assert(m5 == Matrix2f.zero);
+    
+    Matrix2f m6 = matrixf(
+      2, 2,
+      2, 2
+    );
+    m6 = m6 * m6;
+    assert(m6 == matrixf(
+      8, 8,
+      8, 8)
+    );
+    
+    Matrix3f m7 = matrixf(
+      3, 3, 3,
+      3, 3, 3,
+      3, 3, 3
+    );
+    m7 = m7 * m7;
+    assert(m7 == matrixf(
+      27, 27, 27,
+      27, 27, 27,
+      27, 27, 27)
+    );
 }
 
 /*
