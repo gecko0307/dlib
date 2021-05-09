@@ -494,6 +494,30 @@ unittest
     Quaternionf q6 = Quaternionf(Vector4f(1, 0, 0, 1));
     Quaternionf q7 = q6 + q6 - Quaternionf(2, 0, 0, 2);
     assert(q7 == Quaternionf(0, 0, 0, 0));
+    
+    Quaternionf q8 = Quaternionf(0.5f, 0.5f, 0.5f, 0.0f);
+    q8.computeW();
+    assert(q8.w == -0.5f);
+    
+    Quaternionf q9 = Quaternionf(0.5f, 0.0f, 0.0f, 0.0f);
+    q9 = q9.normalized;
+    assert(q9 == Quaternionf(1, 0, 0, 0));
+    
+    Quaternionf q10 = Quaternionf(0.0f, 0.0f, 0.0f, 1.0f);
+    Matrix4f m1 = q10.toMatrix4x4;
+    assert(m1 == matrixf(
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1)
+    );
+    
+    Matrix3f m2 = q10.toMatrix3x3;
+    assert(m2 == matrixf(
+        1, 0, 0,
+        0, 1, 0,
+        0, 0, 1)
+    );
 }
 
 /**
