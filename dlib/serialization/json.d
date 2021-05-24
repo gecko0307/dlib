@@ -166,7 +166,8 @@ enum JSONType
     Number,
     String,
     Array,
-    Object
+    Object,
+    Boolean
 }
 
 /// JSON array
@@ -183,12 +184,14 @@ class JSONValue
     string asString;
     JSONArray asArray;
     JSONObject asObject;
+    bool asBoolean;
 
     this()
     {
         asNumber = 0.0;
         asString = "";
         asObject = null;
+        asBoolean = false;
     }
 
     void addArrayElement(JSONValue element)
@@ -336,6 +339,11 @@ class JSONDocument
                 data = data[1..$-1];
                 value.type = JSONType.String;
                 value.asString = data;
+            }
+            else if (data == "true" || data == "false")
+            {
+                value.type = JSONType.Boolean;
+                value.asBoolean = data.to!bool;
             }
             else
             {
