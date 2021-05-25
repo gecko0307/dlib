@@ -17,6 +17,8 @@ dlib 0.22.0 beta1 - TBD
   - **Breaking change:** deprecated method `UTF8Decoder.byDChar` have been removed
   - **Breaking change:** deprecated method `UTF16LEDecoder.byDChar` have been removed
   - **Breaking change:** deprecated aliases `UTF16Decoder` and `UTF16Encoder` have been removed
+- **dlib.serialization**
+  - Boolean values support in JSON decoder.
 
 dlib 0.21.0 - 7 Apr, 2021
 -------------------------
