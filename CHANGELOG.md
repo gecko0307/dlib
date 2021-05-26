@@ -1,5 +1,5 @@
-dlib 0.22.0 beta1 - TBD
------------------------
+dlib 0.22.0 beta1 - 26 May, 2021
+--------------------------------
 - **dlib.core**
   - **Breaking change:** removed `dlib.core.oop.implements` (non-working function)
 - **dlib.math**
