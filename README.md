@@ -49,7 +49,7 @@ Copyright (c) 2011-2021 Timur Gafarov, Martin Cejp, Andrey Penechko, Vadim Lopat
 
 Sponsors
 --------
-Rafał Ziemniewski, Kumar Sookram, Aleksandr Kovalev, Robert Georges, Jan Jurzitza (WebFreak), Rais Safiullin (SARFEX), Benas Cernevicius, Koichi Takio.
+Daniel Laburthe, Rafał Ziemniewski, Kumar Sookram, Aleksandr Kovalev, Robert Georges, Jan Jurzitza (WebFreak), Rais Safiullin (SARFEX), Benas Cernevicius, Koichi Takio.
 
 Users
 -----
