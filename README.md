@@ -54,8 +54,7 @@ Daniel Laburthe, Rafał Ziemniewski, Kumar Sookram, Aleksandr Kovalev, Robert Ge
 Users
 -----
 * [Dagon](https://github.com/gecko0307/dagon) - 3D game engine for D
-* [dmech](https://github.com/gecko0307/dmech) - physics engine
-* [Atrium](https://github.com/gecko0307/atrium) - work-in-progress first person puzzle game
+* [Electronvolt](https://github.com/gecko0307/electronvolt) - work-in-progress first person puzzle game
 * [DlangUI](https://github.com/buggins/dlangui) - native UI toolkit for D
 * [rengfx](https://github.com/xdrie/rengfx) - game engine based on raylib
 * [Voxelman](https://github.com/MrSmith33/voxelman) - voxel-based game engine
