@@ -948,7 +948,6 @@ unittest
     assert(m1.singular == false);
 
     assert(m1.affine == false);
-    assert(m3.affine == true);
 
     assert(m1.transposed == matrixf(
         1, 4, 2, 0,
@@ -976,6 +975,14 @@ unittest
      -158, 154, -89, -25)
     );
     
+    m1.transpose();
+    assert(m1 == matrixf(
+        1, 4, 2, 0,
+        2, 6, 7, 5,
+        0, 3, 8, 2,
+        6, 1, 2, 1)
+    );
+    
     Matrix2f m5;
     m5[] = 1.0f;
     m5 += matrixf(
@@ -996,11 +1003,13 @@ unittest
       2, 2
     );
     m6 = m6 * m6;
+    m6 = m6 * 2;
     m6 *= 2;
     assert(m6 == matrixf(
-      16, 16,
-      16, 16)
+      32, 32,
+      32, 32)
     );
+    assert(m6.determinant == 0);
     
     Matrix3f m7 = matrixf(
       3, 3, 3,
@@ -1012,6 +1021,30 @@ unittest
       27, 27, 27,
       27, 27, 27,
       27, 27, 27)
+    );
+    
+    Matrix2f m8 = matrixf(
+        1, 0,
+        0, 1
+    );
+    m8.invert();
+    assert(m8 == matrixf(
+        1, 0,
+        0, 1)
+    );
+    
+    auto m9 = matrixf(
+        1, 0, 0, 2,
+        0, 1, 0, 3,
+        0, 0, 1, 4,
+        0, 0, 0, 1
+    );
+    assert(m9.affine == true);
+    assert(m9.inverse == matrixf(
+        1, 0, 0, -2,
+        0, 1, 0, -3,
+        0, 0, 1, -4,
+        0, 0, 0,  1)
     );
     
     bool isAlmostZero3(Vector3f v)
@@ -1097,6 +1130,23 @@ Matrix!(T,4) matrix3x3to4x4(T) (Matrix!(T,3) m)
     return res;
 }
 
+///
+unittest
+{
+    Matrix3f m1 = matrixf(
+        1, 0, 0,
+        0, 1, 0,
+        0, 0, 1
+    );
+    Matrix4f m2 = matrix3x3to4x4(m1);
+    assert(m2 == matrixf(
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1)
+    );
+}
+
 /**
  * Converts 4x4 matrix to 3x3 matrix.
  * 3x3 matrix defaults to identity
@@ -1108,6 +1158,23 @@ Matrix!(T,3) matrix4x4to3x3(T) (Matrix!(T,4) m)
     res.a21 = m.a21; res.a22 = m.a22; res.a23 = m.a23;
     res.a31 = m.a31; res.a32 = m.a32; res.a33 = m.a33;
     return res;
+}
+
+///
+unittest
+{
+    Matrix4f m1 = matrixf(
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1
+    );
+    Matrix3f m2 = matrix4x4to3x3(m1);
+    assert(m2 == matrixf(
+        1, 0, 0,
+        0, 1, 0,
+        0, 0, 1)
+    );
 }
 
 /**
@@ -1159,4 +1226,16 @@ string matrixToStr(T, size_t N)(Matrix!(T, N) m)
     }
 
     return writer.data;
+}
+
+///
+unittest
+{
+    import std.string;
+    Matrix2f m1 = matrixf(
+        1, 0,
+        0, 1
+    );
+    string s = matrixToStr(m1);
+    assert(s.startsWith(" 1.0000    0.0000 \n 0.0000    1.0000"));
 }
