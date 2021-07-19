@@ -1137,6 +1137,9 @@ unittest
     assert(m11.flatten == [2, 1, 2, 1]);
     
     assert(m11.elements("a") == "T a11;T a21;T a12;T a22;");
+    
+    Matrix!(float, 1) m12 = matrixf(1);
+    assert(m12.determinant == 1);
 }
 
 /*
