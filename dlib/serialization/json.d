@@ -363,7 +363,8 @@ unittest
     {
         \"foo\": \"bar\",
         \"test\": 100,
-        \"bool\": true
+        \"bool\": true,
+        \"arr\": [0, 1, 2]
     }
     ";
     
@@ -371,4 +372,6 @@ unittest
     assert(doc.root.asObject["foo"].asString == "bar");
     assert(doc.root.asObject["test"].asNumber == 100);
     assert(doc.root.asObject["bool"].asBoolean == true);
+    assert(doc.root.asObject["arr"].asArray[1].asNumber == 1);
+    Delete(doc);
 }
