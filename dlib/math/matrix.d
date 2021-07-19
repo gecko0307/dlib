@@ -967,6 +967,13 @@ unittest
         -0,   0,  1,
          0.5, 0, -1.5)
     );
+    
+    assert(m1.adjugate == matrixf(
+        7, 148, -16, -158,
+      -14,  28, -49,  154,
+      -14, -53, 113,  -89,
+       98, -34,  19,  -25)
+    );
 
     assert(m1.cofactor == matrixf(
         7, -14, -14,  98,
@@ -1114,6 +1121,19 @@ unittest
     m10.swapColumns(1, 2);
     Vector3f c1 = m10.getColumn(1);
     assert(isAlmostZero3(c1 - Vector3f(1, 1, 1)));
+    
+    Matrix2f m11 = matrixf(
+        2, 1,
+        2, 1
+    );
+    assert(m11.adjugate == matrixf(
+        1, -1,
+       -2,  2)
+    );
+    assert(m11.cofactor == matrixf(
+        1, -2,
+       -1,  2)
+    );
 }
 
 /*
