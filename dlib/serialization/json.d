@@ -355,3 +355,20 @@ class JSONDocument
         return JSONResult(true, "");
     }
 }
+
+//
+unittest
+{
+    string input = "
+    {
+        \"foo\": \"bar\",
+        \"test\": 100,
+        \"bool\": true
+    }
+    ";
+    
+    JSONDocument doc = New!JSONDocument(input);
+    assert(doc.root.asObject["foo"].asString == "bar");
+    assert(doc.root.asObject["test"].asNumber == 100);
+    assert(doc.root.asObject["bool"].asBoolean == true);
+}
