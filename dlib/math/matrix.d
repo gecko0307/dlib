@@ -1140,6 +1140,7 @@ unittest
     
     Matrix!(float, 1) m12 = matrixf(1);
     assert(m12.determinant == 1);
+    assert(m12.inverse == matrixf(1));
 }
 
 /*
