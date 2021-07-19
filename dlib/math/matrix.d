@@ -1134,6 +1134,9 @@ unittest
         1, -2,
        -1,  2)
     );
+    assert(m11.flatten == [2, 1, 2, 1]);
+    
+    assert(m11.elements("a") == "T a11;T a21;T a12;T a22;");
 }
 
 /*
