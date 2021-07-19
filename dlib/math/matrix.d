@@ -1032,6 +1032,10 @@ unittest
         1, 0,
         0, 1)
     );
+    assert(m8.negative == matrixf(
+       -1,  0,
+        0, -1)
+    );
     
     auto m9 = matrixf(
         1, 0, 0, 2,
@@ -1082,6 +1086,34 @@ unittest
         0, 0,        0,       1
     ).invRotate(v3);
     assert(isAlmostZero3(v3 - Vector3f(0, 0, -1)));
+    
+    auto m10 = matrixf(
+        1, 2, 3,
+        3, 2, 1,
+        2, 3, 1
+    );
+    
+    Vector3f r0 = m10.getRow(0);
+    assert(isAlmostZero3(r0 - Vector3f(1, 2, 3)));
+    
+    Vector3f c0 = m10.getColumn(0);
+    assert(isAlmostZero3(c0 - Vector3f(1, 3, 2)));
+    
+    m10.setRow(2, Vector3f(1, 1, 1));
+    Vector3f r2 = m10.getRow(2);
+    assert(isAlmostZero3(r2 - Vector3f(1, 1, 1)));
+    
+    m10.setColumn(2, Vector3f(1, 1, 1));
+    Vector3f c2 = m10.getColumn(2);
+    assert(isAlmostZero3(c2 - Vector3f(1, 1, 1)));
+    
+    m10.swapRows(0, 1);
+    Vector3f r1 = m10.getRow(1);
+    assert(isAlmostZero3(r1 - Vector3f(1, 2, 1)));
+    
+    m10.swapColumns(1, 2);
+    Vector3f c1 = m10.getColumn(1);
+    assert(isAlmostZero3(c1 - Vector3f(1, 1, 1)));
 }
 
 /*
@@ -1236,6 +1268,6 @@ unittest
         1, 0,
         0, 1
     );
-    string s = matrixToStr(m1);
+    string s = m1.toString;
     assert(s.startsWith(" 1.0000    0.0000 \n 0.0000    1.0000"));
 }
