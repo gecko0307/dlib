@@ -1,3 +1,8 @@
+dlib 0.23.0 beta1 - TBD
+-----------------------
+- **dlib.math**
+  - `Quaternion.generator` is deprecated, use `Quaternion.rotationAxis` and `Quaternion.rotationAngle` instead
+
 dlib 0.22.0 - 13 Jun, 2021
 --------------------------
 No changes since dlib 0.22.0 beta1.
