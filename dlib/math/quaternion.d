@@ -367,54 +367,52 @@ struct Quaternion(T)
 
        /**
         * Setup the quaternion to perform a rotation,
-        * given the orientation in XYZ-Euler angles format (in radians)
+        * given the orientation in Euler angles pitch, yaw, roll (in radians)
         */
         static Quaternion!(T) fromEulerAngles(Vector!(T,3) e)
         {
             Quaternion!(T) q;
-
-            T sr = sin(e.x * 0.5);
-            T cr = cos(e.x * 0.5);
-            T sp = sin(e.y * 0.5);
-            T cp = cos(e.y * 0.5);
-            T sy = sin(e.z * 0.5);
+            
             T cy = cos(e.z * 0.5);
+            T sy = sin(e.z * 0.5);
+            T cp = cos(e.y * 0.5);
+            T sp = sin(e.y * 0.5);
+            T cr = cos(e.x * 0.5);
+            T sr = sin(e.x * 0.5);
 
-            q.w =  (cy * cp * cr) + (sy * sp * sr);
-            q.x = -(sy * sp * cr) + (cy * cp * sr);
-            q.y =  (cy * sp * cr) + (sy * cp * sr);
-            q.z = -(cy * sp * sr) + (sy * cp * cr);
+            q.w = cr * cp * cy + sr * sp * sy;
+            q.x = sr * cp * cy - cr * sp * sy;
+            q.y = cr * sp * cy + sr * cp * sy;
+            q.z = cr * cp * sy - sr * sp * cy;
 
             return q;
         }
 
        /**
-        * Setup the Euler angles, given a rotation Quaternion.
-        * Returned x,y,z are in radians
+        * Setup the Euler angles (pitch, yaw, roll), given a rotation Quaternion.
+        * Returned x, y, z are in radians
         */
         Vector!(T,3) toEulerAngles()
         {
             Vector!(T,3) e;
-
-            e.y = asin(2.0 * ((x * z) + (w * y)));
-
-            T cy = cos(e.y);
-            T oneOverCosY = 1.0 / cy;
-
-            if (fabs(cy) > 0.001)
-            {
-                e.x = atan2(2.0 * ((w * x) - (y * z)) * oneOverCosY,
-                           (1.0 - 2.0 *  (x*x + y*y)) * oneOverCosY);
-                e.z = atan2(2.0 * ((w * z) - (x * y)) * oneOverCosY,
-                           (1.0 - 2.0 *  (y*y + z*z)) * oneOverCosY);
-            }
+            
+            // pitch (x-axis rotation)
+            T sinr_cosp = 2 * (w * x + y * z);
+            T cosr_cosp = 1 - 2 * (x * x + y * y);
+            e.x = atan2(sinr_cosp, cosr_cosp);
+            
+            // yaw (y-axis rotation)
+            T sinp = 2 * (w * y - z * x);
+            if (abs(sinp) >= 1.0)
+                e.y = PI / 2.0 * sinp;
             else
-            {
-                e.x = 0.0;
-                e.z = atan2(2.0 * ((x * y) + (w * z)),
-                            1.0 - 2.0 *  (x*x + z*z));
-            }
-
+                e.y = asin(sinp);
+            
+            // roll (z-axis rotation)
+            T siny_cosp = 2 * (w * z + x * y);
+            T cosy_cosp = 1 - 2 * (y * y + z * z);
+            e.z = atan2(siny_cosp, cosy_cosp);
+            
             return e;
         }
 
@@ -442,7 +440,7 @@ struct Quaternion(T)
        /**
         * Quaternion as an angular velocity
         */
-        Vector!(T,3) generator()
+        deprecated("use Quaternion.rotationAxis and Quaternion.rotationAngle instead") Vector!(T,3) generator()
         {
             T s = sqrt(1.0 - (w * w));
 
@@ -471,6 +469,8 @@ alias Quaterniond = Quaternion!(double);
 ///
 unittest
 {
+    import dlib.math.transformation;
+    
     Quaternionf q1 = Quaternionf(0.0f, 0.0f, 0.0f, 1.0f);
     Vector3f v1 = q1.rotate(Vector3f(1.0f, 0.0f, 0.0f));
     assert(isAlmostZero(v1 - Vector3f(1.0f, 0.0f, 0.0f)));
@@ -503,6 +503,10 @@ unittest
     q9 = q9.normalized;
     assert(q9 == Quaternionf(1, 0, 0, 0));
     
+    assert(q9 * 2.0f == Quaternionf(2, 0, 0, 0));
+    assert(3.0f * q9 == Quaternionf(3, 0, 0, 0));
+    assert(q9 / 2.0f == Quaternionf(0.5f, 0, 0, 0));
+    
     Quaternionf q10 = Quaternionf(0.0f, 0.0f, 0.0f, 1.0f);
     Matrix4f m1 = q10.toMatrix4x4;
     assert(m1 == matrixf(
@@ -518,6 +522,16 @@ unittest
         0, 1, 0,
         0, 0, 1)
     );
+    
+    auto m3 = rotationMatrix!float(0, PI);
+    Quaternionf q11 = Quaternionf.fromMatrix(m3);
+    assert(q11.toMatrix4x4 == m3);
+    
+    Vector3f angles = Vector3f(PI * 0.5f, 0.0f, 0.0f);
+    Quaternionf q12 = Quaternionf.fromEulerAngles(angles);
+    assert(isAlmostZero(q12.toEulerAngles - angles));
+    assert(isAlmostZero(q12.rotationAxis - Vector3f(1, 0, 0)));
+    assert(isConsiderZero(q12.rotationAngle - angles.x));
 }
 
 /**
