@@ -1,71 +1,148 @@
+<!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <meta name="Keywords" content="dlib,dlang,library,generic"/>
-    <meta name="Description" content="dlib, a generic library for D"/>
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+    <head>
+        <meta charset="UTF-8">
+        <title>dlib</title>
+        <meta name="Description" content="dlib, a generic library for D"/>
+        <meta name="Keywords" content="dlib,dlang,library,generic"/>
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+        
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        
+        <link rel="stylesheet" href="styles/default.css">
+        <script src="scripts/highlight.pack.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+        
+        <style>
+            body { font-family: "Lato", sans-serif; }
+            .mySlides { display: none; }
+            
+            .video-container {
+                overflow: hidden;
+                position: relative;
+                left: 50%;
+            transform: translateX(-50%);
+                width: 100%;
+                max-width: 1024px;
+            }
 
-    <title>dlib</title>
+            .video-container::after {
+                padding-top: 56.25%;
+                display: block;
+                content: '';
+            }
 
-    <link rel="stylesheet" href="style.css" Type="text/css"/>
-
-    <link rel="stylesheet" href="styles/default.css">
-    <script src="scripts/highlight.pack.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
-
-  </head>
-  <body>
-    <table class="center">
-    <tr>
-    <td>
-      <img src="images/dlib-logo.png"/>
-    </td>
-    <td width="50%">
-      <div style="float:right;margin-right:10px;">
-        <a href="https://gitter.im/gecko0307/dlib" target="_blank"><img class="clickable" src="images/gitter.png" title="Gitter chat room"/></a>
-      </div>
-      <div style="float:right;margin-right:10px;">
-        <a href="https://code.dlang.org/packages/dlib" target="_blank"><img class="clickable" src="images/dub.png" title="Dub package"/></a>
-      </div>
-      <div style="float:right;margin-right:10px;">
-        <a href="https://github.com/gecko0307/dlib" target="_blank"><img class="clickable" src="images/github.png" title="GitHub repository"/></a>
-      </div>
-    </td>
-    </tr>
-    <tr>
-    <td colspan="2">
-      <p></p>
-      <p><a href="https://github.com/gecko0307/dlib" target="_blank">dlib</a> is a general-purpose library for <a href="https://dlang.org" target="_blank">D language</a>. It implements such common functionality as image manipulation, OpenGL-friendly linear algebra, multithreading, networking, stream-based I/O, memory management, etc. dlib is an ideal solution for writing game engines and rendering pipelines, building simple web apps, quickly prototyping new ideas and algorithms.
-      </p>
-      <p>dlib is cross-platform, it supports Windows, Linux and all POSIX-compliant systems. It is fully written in D2 and has no external dependencies aside D's standard library, Phobos.</p>
-      <p><b>This project is not related to <a href="http://dlib.net" target="_blank">dlib for C++</a> in any way, it just has the same name by coincidence.</b></p>
-      <p>Currently dlib contains the following packages:
-      <ul>
-      <li><b>dlib.core</b> - basic functionality used by other modules (manual memory management, streams, OOP for structs, etc.)</li>
-      <li><b>dlib.container</b> - generic data structures (GC-free dynamic and associative arrays and more)</li>
-      <li><b>dlib.filesystem</b> - abstract FS interface and its implementations for Windows and POSIX filesystems</li>
-      <li><b>dlib.math</b> - linear algebra and numerical analysis (vectors, matrices, quaternions, linear system solvers etc.)</li>
-      <li><b>dlib.geometry</b> - computational geometry (ray casting, primitives, intersection, etc.)</li>
-      <li><b>dlib.image</b> - image processing (8-bit, 16-bit and 32-bit floating point channels, common filters and convolution kernels, resizing, FFT, HDRI, animation, vector graphics rendering, image formats I/O: JPEG, PNG/APNG, BMP, TGA, HDR)</li>
-      <li><b>dlib.audio</b> - sound processing (8 and 16 bits per sample, synthesizers, WAV export and import)</li>
-      <li><b>dlib.network</b> - cross-platform sockets and other network functionality</li>
-      <li><b>dlib.memory</b> - allocators and memory management functions</li>
-      <li><b>dlib.text</b> - text processing</li>
-      <li><b>dlib.serialization</b> - data serialization (currently includes lightweight XML parser)</li>
-      <li><b>dlib.coding</b> - various data compression and coding algorithms.</li>
-      </ul>
-      </p>
-      <h2>Download</h2>
-      <p>Head on to <a href="https://github.com/gecko0307/dlib/releases" target="_blank">releases page</a> and get the latest source tarball. You may also use dub package instead - add the following dependency to your dub.json: 
-      </p>
-      <p>
+            .video-container iframe {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+            
+            .ribbon {
+              /* positioning */
+              position: fixed;
+              padding: 5px 45px;
+              width: 256px;
+              /* top right of the page */
+              top: 60px;
+              right: -80px;
+              -webkit-transform: rotate(45deg);
+              -moz-transform: rotate(45deg);
+              -ms-transform: rotate(45deg);
+              transform: rotate(45deg);
+              /* effects with some shadow */
+              box-shadow: 0 0 0 3px #000000, 0 0 20px -3px rgba(0, 0, 0, 0.5);
+              text-shadow: 0 0 0 #ffffff, 0 0 5px rgba(0, 0, 0, 0.3);
+              /* looks */
+              background-color: #000000;
+              color: #ffffff;
+              font-size: 13px;
+              font-family: sans-serif;
+              text-decoration: none;
+              font-weight: bold;
+              /* ribbon effects */
+              border: 2px dotted #ffffff;
+              /* webkit antialias fix */
+              -webkit-backface-visibility: hidden;
+              letter-spacing: .5px;
+              z-index: 1000;
+            }
+            @media screen and (max-width: 850px) {
+                .ribbon {
+                    display: none;
+                }
+            }
+            
+            .content {
+                max-width: 1024px;
+                margin-top: 64px;
+            }
+            @media screen and (max-width: 715px) {
+                .content { margin-top: 128px; }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="w3-top w3-bar w3-black">
+            <a href="#home" class="w3-bar-item w3-button">Home</a>
+            <a href="#features" class="w3-bar-item w3-button">Features</a>
+            <a href="#gettingstarted" class="w3-bar-item w3-button">Getting Started</a>
+            <a href="#examples" class="w3-bar-item w3-button">Examples</a>
+            <a href="#documentation" class="w3-bar-item w3-button">Documentation</a>
+            <a href="#contributing" class="w3-bar-item w3-button">Contributing</a>
+            <a href="#sponsorship" class="w3-bar-item w3-button">Sponsorship</a>
+            <a href="#usage" class="w3-bar-item w3-button">Usage</a>
+        </div>
+        <div class="w3-content content">
+            <div id="home" class="w3-container">
+                <h1 class="w3-center"><img src="images/dlib-logo.png"/></h1>
+                <p><a href="https://github.com/gecko0307/dlib" target="_blank">dlib</a> is a general-purpose library for game engine development in <a href="https://dlang.org" target="_blank">D language</a>.
+                It provides basic building blocks for writing graphics-intensive applications: containers, data streams, linear algebra and image decoders.</p>
+                <p>dlib is cross-platform, it supports Windows, Linux and all POSIX-compliant systems. It is fully written in D2 and has no external dependencies aside D's standard library, Phobos.</p>
+                <p>dlib is distributed under the <a href="http://www.boost.org/LICENSE_1_0.txt" target="_blank">Boost Software License, Version 1.0</a>.
+                You are free to use, copy, modify and redistribute dlib, even in closed-source products. The only requirement is to keep the license and copyright notice in all source code copies.</p>
+                <p><b>This project is not related to <a href="http://dlib.net" target="_blank">dlib for C++</a> in any way, it just has the same name by coincidence.</b></p>
+            </div>
+            <div id="features" class="w3-container w3-padding-32">
+                <h1 class="w3-center">Features</h1>
+                <p>Currently dlib contains the following packages:
+                  <ul>
+                  <li><b>dlib.core</b> - basic functionality used by other modules (manual memory management, streams, OOP for structs, etc.)</li>
+                  <li><b>dlib.container</b> - generic data structures (GC-free dynamic and associative arrays and more)</li>
+                  <li><b>dlib.filesystem</b> - abstract FS interface and its implementations for Windows and POSIX filesystems</li>
+                  <li><b>dlib.math</b> - linear algebra and numerical analysis (vectors, matrices, quaternions, linear system solvers etc.)</li>
+                  <li><b>dlib.geometry</b> - computational geometry (ray casting, primitives, intersection, etc.)</li>
+                  <li><b>dlib.image</b> - image processing (8-bit, 16-bit and 32-bit floating point channels, common filters and convolution kernels, resizing, FFT, HDRI, animation, vector graphics rendering, image formats I/O: JPEG, PNG/APNG, BMP, TGA, HDR)</li>
+                  <li><b>dlib.audio</b> - sound processing (8 and 16 bits per sample, synthesizers, WAV export and import)</li>
+                  <li><b>dlib.network</b> - cross-platform sockets and other network functionality</li>
+                  <li><b>dlib.memory</b> - allocators and memory management functions</li>
+                  <li><b>dlib.text</b> - GC-free strings and text processing</li>
+                  <li><b>dlib.serialization</b> - data serialization, includes JSON and XML parsers</li>
+                  <li><b>dlib.coding</b> - various data compression and coding algorithms.</li>
+                  </ul>
+                </p>
+            </div>
+            
+            <div id="gettingstarted" class="w3-container w3-padding-32">
+                <h1 class="w3-center">Getting started</h1>
+                <p>Head on to <a href="https://github.com/gecko0307/dlib/releases" target="_blank">releases page</a> and get the latest source tarball. You may also use dub package instead - add the following dependency to your dub.json:</p>
+                <p>
 <pre><code class="nohighlight">
-"dlib": "0.21.0"
+"dlib": "~>0.22.0"
 </code></pre>
-      </p>
-      <h2>Examples</h2>
-      <p>Load PNG image and save its resized copy:</p>
-      <p>
+                </p>
+                <p>A simple introductory tutorial on setting up a workspace for D projects can be found <a href="https://timurgafarov.medium.com/getting-started-with-d-7aac1e47fb2" target="_blank">here</a>.</p>
+            </div>
+            
+            <div id="examples" class="w3-container w3-padding-32">
+                <h1 class="w3-center">Examples</h1>
+                <p>Load PNG image and save its resized copy:</p>
+                <p>
 <pre><code>
 import dlib;
 
@@ -74,9 +151,9 @@ void main()
     loadPNG("input.png").resampleBilinear(240, 320).savePNG("output.png");
 }
 </code></pre>
-      </p>
-      <p>Transform a vector with 4x4 affine matrix:</p>
-      <p>
+                </p>
+                <p>Transform a vector with 4x4 affine matrix:</p>
+                <p>
 <pre><code>
 import dlib;
 
@@ -86,10 +163,9 @@ void main()
     Vector3f v2 = v1 * translationMatrix(Vector3f(0, 2, 0));
 }
 </code></pre>
-      </p>
-      
-      <p>A simple 'Hello, world' HTTP server:</p>
-      <p>
+                </p>
+                <p>A simple 'Hello, world' HTTP server:</p>
+                <p>
 <pre><code>
 module main;
 
@@ -119,10 +195,9 @@ void main()
     }
 }
 </code></pre>
-      </p>
-      
-      <p>Working with filesystem without garbage collection:</p>
-      <p>
+                </p>
+                <p>Working with filesystem without garbage collection:</p>
+                <p>
 <pre><code>
 import dlib.core.memory;
 import dlib.filesystem;
@@ -156,50 +231,52 @@ void main()
     Delete(fs);
 }
 </code></pre>
-      </p>
-
-      <h2>Documentation</h2>
-      <p>There are <a href="/dlib/docs">ddox documentation</a> generated from source code and <a href="https://github.com/gecko0307/dlib/wiki" target="_blank">GitHub wiki</a>. 
-      Be aware that documentation is currently incomplete. For support and overall discussions, use our <a href="https://gitter.im/gecko0307/dlib" target="_blank">Gitter chat room</a>.
-      </p>
-      <h2>License</h2>
-      <p>dlib is distributed under the <a href="http://www.boost.org/LICENSE_1_0.txt" target="_blank">Boost Software License, Version 1.0</a>. You are free to use, copy, modify and redistribute dlib, even in closed-source products. The only requirement is to keep the license and copyright notice in all source code copies.
-      </p>
-      <h2>Found a bug?</h2>
-      <p>Please, create an issue <a href="https://github.com/gecko0307/dlib/issues" target="_blank">here</a>. PRs are welcome.
-      </p>
-      
-      <h2>Become a Patron!</h2>
-      <p>If you like dlib, please support its development on <a href="https://www.patreon.com/gecko0307" target="_blank">Patreon</a> and get a reward depending on your donation amount. Supporters who donate $10 and more will be listed on this page as Sponsors.
-      You can also make one-time donation via <a href="https://www.paypal.me/tgafarov" target="_blank">PayPal</a>. Thanks in advance!
-      </p>
-      
-      <h2>Sponsors</h2>
-      <p> 
-        <b>Daniel Laburthe</b>, <b>Rafał Ziemniewski</b>, <b>Kumar Sookram</b>, <b>Aleksandr Kovalev</b>, <b>Robert Georges</b>, <b>Jan Jurzitza (WebFreak)</b>, 
-        <b>Rais Safiullin (SARFEX)</b>, <b>Benas Cernevicius</b>, <b>Koichi Takio</b>.
-      </p>
-      
-      <h2>Contributors</h2>
-      <p> 
-        <b>Timur Gafarov</b>, <b>Martin Cejp</b>, <b>Andrey Penechko</b>, <b>Vadim Lopatin</b>, <b>Nick Papanastasiou</b>, <b>Oleg Baharev</b>, <b>Roman Chistokhodov</b>, 
-        <b>Eugene Wissner</b>, <b>Roman Vlasov</b>, <b>Basile Burg</b>, <b>Valeriy Fedotov</b>, <b>Ferhat Kurtulmuş</b>.
-      </p>
-      
-      <h2>Worth checking out</h2>
-      <p>
-      <ul>
-      <li><a href="https://github.com/gecko0307/dagon" target="_blank">Dagon</a>, a 3D game engine that uses dlib</li>
-      <li><a href="https://github.com/gecko0307/dmech" target="_blank">dmech</a>, a physics engine built on top of dlib.math and dlib.geometry</li>
-      <li><a href="https://gecko0307.github.io/atrium" target="_blank">Atrium</a>, a game that uses dlib and dmech</li>
-      <li><a href="https://github.com/buggins/dlangui" target="_blank">DlangUI</a>, native UI toolkit for D - uses dlib.image</li>
-      <li><a href="https://github.com/MrSmith33/voxelman" target="_blank">Voxelman</a>, voxel game engine - uses dlib.image and dlib.math</li>
-      <li><a href="https://github.com/georgy7/dlib-webp" target="_blank">dlib-webp</a>, WebP loader for dlib.image.</li>
-      </ul>
-      </p>
-      <p><br/></p>
-    </td>
-    </tr>
-    </table>
-  </body>
+                </p>
+            </div>
+            
+            <div id="documentation" class="w3-container w3-padding-32">
+                <h1 class="w3-center">Documentation</h1>
+                <p>There are <a href="/dlib/docs">ddox documentation</a> generated from source code. Be aware that documentation is currently incomplete, we are working towards making it more comprehensive. 
+                For support and overall discussions, use our <a href="https://gitter.im/gecko0307/dlib" target="_blank">Gitter chat room</a>.
+                </p>
+            </div>
+            
+            <div id="contributing" class="w3-container w3-padding-32">
+                <h1 class="w3-center">Contributing</h1>
+                <p>If you want to contribute code to dlib, send pull requests to <a href="https://github.com/gecko0307/dlib" target="_blank">the project repository</a>. Please, read <a href="https://github.com/gecko0307/dlib/blob/master/CONTRIBUTING.md" target="_blank">Contributing Guidelines</a> first.</p>
+                <p>Found a bug? Please, create an issue <a href="https://github.com/gecko0307/dlib/issues" target="_blank">here</a>.</p>
+                <p>Dagon was created by <b>Timur Gafarov</b>, <b>Martin Cejp</b>, <b>Andrey Penechko</b>, <b>Vadim Lopatin</b>, <b>Nick Papanastasiou</b>, <b>Oleg Baharev</b>, <b>Roman Chistokhodov</b>, <b>Eugene Wissner</b>, <b>Roman Vlasov</b>, <b>Basile Burg</b>, <b>Valeriy Fedotov</b>, <b>Ferhat Kurtulmuş</b>.
+            </div>
+            
+            <div id="sponsorship" class="w3-container w3-padding-32">
+                <h1 class="w3-center">Sponsorship</h1>
+                <p>If you like dlib, please support its development on Patreon and get a reward depending on your donation amount. Supporters who donate $10 and more will be listed on this page as Sponsors. You can also make donation via PayPal.</p>
+                <p>Big thanks to these awesome people for supporting dlib: <b>Daniel Laburthe</b>, <b>Rafał Ziemniewski</b>, <b>Kumar Sookram</b>, <b>Aleksandr Kovalev</b>, <b>Robert Georges</b>, <b>Jan Jurzitza (WebFreak)</b>, <b>Rais Safiullin (SARFEX)</b>, <b>Benas Cernevicius</b>, <b>Koichi Takio</b>.</p>
+                <p><a href="https://www.patreon.com/gecko0307"><img src="images/patron.png"></a></p>
+                <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                    <input type="hidden" name="cmd" value="_s-xclick" />
+                    <input type="hidden" name="hosted_button_id" value="FJHGS46446EH4" />
+                    <input type="image" src="https://www.paypalobjects.com/en_US/RU/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+                    <img alt="" border="0" src="https://www.paypal.com/en_RU/i/scr/pixel.gif" width="1" height="1" />
+                </form>
+            </div>
+            
+            <div id="usage" class="w3-container w3-padding-32">
+                <h1 class="w3-center">Usage</h1>
+                <p>Some interesting projects that use dlib:</p>
+                <p>
+                  <ul>
+                  <li><a href="https://github.com/gecko0307/dagon" target="_blank">Dagon</a>, 3D game engine</li>
+                  <li><a href="https://github.com/gecko0307/electronvolt" target="_blank">Electronvolt</a>, a game that uses dlib and dmech</li>
+                  <li><a href="https://github.com/buggins/dlangui" target="_blank">DlangUI</a>, native UI toolkit for D - uses dlib.image</li>
+                  <li><a href="https://github.com/LightHouseSoftware/rip" target="_blank">RIP</a>, image processing and analysis library by LightHouse Software</li>
+                  <li><a href="https://github.com/MrSmith33/voxelman" target="_blank">Voxelman</a>, voxel game engine - uses dlib.image and dlib.math</li>
+                  <li><a href="https://github.com/georgy7/dlib-webp" target="_blank">dlib-webp</a>, WebP loader for dlib.image.</li>
+                  </ul>
+                </p>
+            </div>
+        </div>
+        
+        <a href="https://github.com/gecko0307/dlib" class="ribbon" target="_blank">Fork me on GitHub</a>
+    </body>
 </html>
