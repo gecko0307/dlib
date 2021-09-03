@@ -76,6 +76,12 @@ size_t getVarintSize(ulong n)
     );
 }
 
+///
+unittest
+{
+    assert(getVarintSize(4637734) == 4);
+}
+
 /**
  * Encode a fixed-size integer to Varint
  */
@@ -95,6 +101,13 @@ Varint encodeVarint(ulong n)
     }
 
     return res;
+}
+
+///
+unittest
+{
+    Varint v = encodeVarint(4783);
+    assert(v.size == 2);
 }
 
 /**
@@ -119,4 +132,11 @@ ulong decodeVarint(Varint vint)
     result += ((ll & 0x7F) << bits);
 
     return result;
+}
+
+///
+unittest
+{
+    Varint v = encodeVarint(2345);
+    assert(decodeVarint(v) == 2345);
 }
