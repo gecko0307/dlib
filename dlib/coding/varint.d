@@ -108,6 +108,7 @@ unittest
 {
     Varint v = encodeVarint(4783);
     assert(v.size == 2);
+    assert(v.bytes == [175, 37]);
 }
 
 /**
