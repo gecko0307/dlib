@@ -212,6 +212,7 @@ struct String
     }
 }
 
+///
 unittest
 {
     String s = "hello";
@@ -222,4 +223,15 @@ unittest
     assert(dStr == "hello, world!");
     s.free();
     assert(s.length == 0);
+    
+    const(char)* cStr = "Hello!";
+    String s2 = String(cStr);
+    assert(s2.toString == "Hello!");
+    
+    import std.algorithm.comparison: equal;
+    assert(equal(s2.decode, ['H', 'e', 'l', 'l', 'o', '!']));
+    
+    auto istrm = new ArrayStream([104, 101, 108, 108, 111]);
+    String s3 = String(istrm);
+    assert(s3.toString == "hello");
 }
