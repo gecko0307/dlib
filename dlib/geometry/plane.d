@@ -221,3 +221,11 @@ struct Plane
         return -(normal * d);
     }
 }
+
+///
+unittest
+{
+    Plane plane = Plane(Vector3f(0, 1, 0), 0.0f);
+    float d = plane.dot(Vector3f(1, 0, 0));
+    assert(isConsiderZero(d));
+}
