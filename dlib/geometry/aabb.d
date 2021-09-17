@@ -197,6 +197,15 @@ unittest
     float t;
     assert(aabb1.intersectsSegment(Vector3f(0, 0, 3), Vector3f(0, 0, -3), t));
     assert(isConsiderZero(t * segLength - 2.0f));
+    
+    assert(!aabb1.intersectsSegment(Vector3f(5, 0, 3), Vector3f(5, 0, -3), t));
+    
+    Sphere sphere = Sphere(Vector3f(1.5f, 0.0f, 0.0f), 1.0f);
+    Vector3f sphereCollisionNormal;
+    float spherePenetrationDepth;
+    assert(aabb1.intersectsSphere(sphere, sphereCollisionNormal, spherePenetrationDepth));
+    assert(isAlmostZero(sphereCollisionNormal - Vector3f(1.0f, 0.0f, 0.0f)));
+    assert(isConsiderZero(spherePenetrationDepth - 0.5f));
 }
 
 /// Creates AABB from minimum and maximum points
@@ -216,6 +225,8 @@ AABB boxFromMinMaxPoints(Vector3f mi, Vector3f ma)
 ///
 unittest
 {
+    import dlib.math.utils;
+    
     Vector3f pmin = Vector3f(-1, -1, -1);
     Vector3f pmax = Vector3f(1, 1, 1);
     AABB aabb = boxFromMinMaxPoints(pmin, pmax);
@@ -224,4 +235,7 @@ unittest
     assert(isAlmostZero(aabb.size - Vector3f(1, 1, 1)));
     assert(isAlmostZero(aabb.pmin - pmin));
     assert(isAlmostZero(aabb.pmax - pmax));
+    assert(isConsiderZero(aabb.topHeight - 1.0f));
+    assert(isConsiderZero(aabb.bottomHeight + 1.0f));
+    assert(isAlmostZero(aabb.closestPoint(Vector3f(2.0f, 0.0f, 0.0f)) - Vector3f(1.0f, 0.0f, 0.0f)));
 }
