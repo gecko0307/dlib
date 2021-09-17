@@ -542,6 +542,7 @@ class StdFileSystem: FileSystem
 }
 
 ///
+version(Windows)
 unittest
 {
     StdFileSystem fs = New!StdFileSystem();
