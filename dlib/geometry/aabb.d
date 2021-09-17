@@ -176,6 +176,29 @@ struct AABB
     }
 }
 
+///
+unittest
+{
+    import dlib.math.utils;
+    
+    AABB aabb1 = AABB(Vector3f(0, 0, 0), Vector3f(1, 1, 1));
+    AABB aabb2 = AABB(Vector3f(0.5, 0.5, 0.5), Vector3f(1, 1, 1));
+    AABB aabb3 = AABB(Vector3f(3, 0, 0), Vector3f(1, 1, 1));
+    
+    assert(aabb1.containsPoint(Vector3f(0, 0, 0)));
+    assert(!aabb3.containsPoint(Vector3f(0, 0, 0)));
+    
+    assert(aabb1.intersectsAABB(aabb2));
+    assert(!aabb1.intersectsAABB(aabb3));
+    
+    Vector3f segStart = Vector3f(0, 0, 3);
+    Vector3f segEnd = Vector3f(0, 0, -3);
+    float segLength = distance(segStart, segEnd);
+    float t;
+    assert(aabb1.intersectsSegment(Vector3f(0, 0, 3), Vector3f(0, 0, -3), t));
+    assert(isConsiderZero(t * segLength - 2.0f));
+}
+
 /// Creates AABB from minimum and maximum points
 AABB boxFromMinMaxPoints(Vector3f mi, Vector3f ma)
 {
@@ -188,4 +211,17 @@ AABB boxFromMinMaxPoints(Vector3f mi, Vector3f ma)
     box.size.y = abs(box.size.y);
     box.size.z = abs(box.size.z);
     return box;
+}
+
+///
+unittest
+{
+    Vector3f pmin = Vector3f(-1, -1, -1);
+    Vector3f pmax = Vector3f(1, 1, 1);
+    AABB aabb = boxFromMinMaxPoints(pmin, pmax);
+    
+    assert(isAlmostZero(aabb.center));
+    assert(isAlmostZero(aabb.size - Vector3f(1, 1, 1)));
+    assert(isAlmostZero(aabb.pmin - pmin));
+    assert(isAlmostZero(aabb.pmax - pmax));
 }
