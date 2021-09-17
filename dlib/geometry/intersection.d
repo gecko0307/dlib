@@ -78,7 +78,6 @@ unittest
     Sphere sphere2 = Sphere(Vector3f(1.9f, 0, 0), 1.0f);
     Intersection isec = intrSphereVsSphere(sphere1, sphere2);
     assert(isec.fact);
-    import std.stdio;
     assert(isConsiderZero(isec.penetrationDepth - 0.1f));
     assert(isAlmostZero(isec.point - Vector3f(0.9f, 0.0f, 0.0f)));
     assert(isAlmostZero(isec.normal - Vector3f(-1.0f, 0.0f, 0.0f)));
@@ -101,6 +100,18 @@ Intersection intrSphereVsPlane(ref Sphere sphere, ref Plane plane)
     }
 
     return res;
+}
+
+///
+unittest
+{
+    Sphere sphere = Sphere(Vector3f(0, 0.9f, 0), 1.0f);
+    Plane plane = Plane(Vector3f(0, 1, 0), 0.0f);
+    Intersection isec = intrSphereVsPlane(sphere, plane);
+    assert(isec.fact);
+    assert(isConsiderZero(isec.penetrationDepth - 0.1f));
+    assert(isAlmostZero(isec.point - Vector3f(0.0f, -0.1f, 0.0f)));
+    assert(isAlmostZero(isec.normal - Vector3f(0.0f, 1.0f, 0.0f)));
 }
 
 private void measureSphereAndTriVert(
@@ -219,6 +230,29 @@ Intersection intrSphereVsTriangle(ref Sphere sphere, ref Triangle tri)
     }
 
     return result;
+}
+
+///
+unittest
+{
+    Sphere sphere = Sphere(Vector3f(0, 0.9f, 0), 1.0f);
+    
+    Triangle tri;
+    tri.v = [
+        Vector3f(0.5f, 0, -0.5f),
+        Vector3f(-0.5f, 0, -0.5f),
+        Vector3f(0, 0, 0.5f)
+    ];
+    tri.normal = Vector3f(0, 1, 0);
+    tri.d = 0.0f;
+    
+    Intersection isec = intrSphereVsTriangle(sphere, tri);
+    assert(isec.fact);
+    import std.stdio;
+    writeln(isec.penetrationDepth);
+    assert(isConsiderZero(isec.penetrationDepth - 0.1f));
+    assert(isAlmostZero(isec.point - Vector3f(0.0f, -0.1f, 0.0f)));
+    assert(isAlmostZero(isec.normal - Vector3f(0.0f, 1.0f, 0.0f)));
 }
 
 /// Checks sphere and OBB for intersection
