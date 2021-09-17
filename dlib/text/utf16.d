@@ -132,6 +132,16 @@ struct UTF16LEDecoder
     }
 }
 
+///
+unittest
+{
+    wstring input = "Жå∑";
+    auto decoder = UTF16LEDecoder(cast(string)input);
+    assert(decoder.decodeNext() == 'Ж');
+    assert(decoder.decodeNext() == 'å');
+    assert(decoder.decodeNext() == '∑');
+}
+
 /**
  * UTF-16 LE encoder to use with dlib.text.encodings.transcode
  */
