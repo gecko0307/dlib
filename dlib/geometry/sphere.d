@@ -53,3 +53,10 @@ struct Sphere
         return dist < (radius * radius) ? true : false;
     }
 }
+
+///
+unittest
+{
+    Sphere sphere = Sphere(Vector3f(0, 0, 0), 1.0f);
+    assert(sphere.containsPoint(Vector3f(0.1f, 0, 0)));
+}

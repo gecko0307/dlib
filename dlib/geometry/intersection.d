@@ -71,6 +71,19 @@ Intersection intrSphereVsSphere(ref Sphere sphere1, ref Sphere sphere2)
     return res;
 }
 
+///
+unittest
+{
+    Sphere sphere1 = Sphere(Vector3f(0, 0, 0), 1.0f);
+    Sphere sphere2 = Sphere(Vector3f(1.9f, 0, 0), 1.0f);
+    Intersection isec = intrSphereVsSphere(sphere1, sphere2);
+    assert(isec.fact);
+    import std.stdio;
+    assert(isConsiderZero(isec.penetrationDepth - 0.1f));
+    assert(isAlmostZero(isec.point - Vector3f(0.9f, 0.0f, 0.0f)));
+    assert(isAlmostZero(isec.normal - Vector3f(-1.0f, 0.0f, 0.0f)));
+}
+
 /// Checks sphere and plane for intersection
 Intersection intrSphereVsPlane(ref Sphere sphere, ref Plane plane)
 {
