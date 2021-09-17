@@ -58,7 +58,6 @@ struct OBB
         }
 
         Vector3f center(Vector3f v)
-        do
         {
             transform.a41 = v.x;
             transform.a42 = v.y;

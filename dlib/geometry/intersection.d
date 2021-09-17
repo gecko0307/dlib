@@ -248,8 +248,6 @@ unittest
     
     Intersection isec = intrSphereVsTriangle(sphere, tri);
     assert(isec.fact);
-    import std.stdio;
-    writeln(isec.penetrationDepth);
     assert(isConsiderZero(isec.penetrationDepth - 0.1f));
     assert(isAlmostZero(isec.point - Vector3f(0.0f, -0.1f, 0.0f)));
     assert(isAlmostZero(isec.normal - Vector3f(0.0f, 1.0f, 0.0f)));
@@ -302,4 +300,17 @@ Intersection intrSphereVsOBB(ref Sphere s, ref OBB b)
     intr.penetrationDepth = s.radius - sqrt(distanceSqr);
 
     return intr;
+}
+
+///
+unittest
+{
+    Sphere sphere = Sphere(Vector3f(0, 1.9f, 0), 1.0f);
+    OBB obb = OBB(Vector3f(0, 0, 0), Vector3f(1, 1, 1));
+    
+    Intersection isec = intrSphereVsOBB(sphere, obb);
+    assert(isec.fact);
+    assert(isConsiderZero(isec.penetrationDepth - 0.1f));
+    assert(isAlmostZero(isec.point - Vector3f(0.0f, 1.0f, 0.0f)));
+    assert(isAlmostZero(isec.normal - Vector3f(0.0f, 1.0f, 0.0f)));
 }
