@@ -448,6 +448,12 @@ class StdFileSystem: FileSystem
 
     Directory openDir(string path)
     {
+        FileStat ps;
+        if (!stat(path, ps))
+            return null;
+        if (!ps.isDirectory)
+            return null;
+    
         if (path in openedDirs)
         {
             Directory d = openedDirs[path];
@@ -472,6 +478,7 @@ class StdFileSystem: FileSystem
         p[] = path[];
         openedDirPaths.append(cast(string)p);
         openedDirs[cast(string)p] = dir;
+        
         return dir;
     }
 
@@ -532,6 +539,41 @@ class StdFileSystem: FileSystem
             return res;
         }
     }
+}
+
+///
+unittest
+{
+    StdFileSystem fs = New!StdFileSystem();
+    
+    string path = "tests/stdfs";
+    
+    FileStat ps;
+    if (fs.stat(path, ps))
+    {
+        fs.remove(path, true);
+        assert(fs.openDir(path) is null);
+    }
+    assert(fs.createDir(path, true));
+    
+    string filename = "tests/stdfs/hello_world.txt";
+    
+    OutputStream outp = fs.openForOutput(filename, FileSystem.create | FileSystem.truncate);
+    assert(outp);
+    string data = "Hello, World!\n";
+    assert(outp.writeArray(data));
+    outp.close();
+    
+    InputStream inp = fs.openForInput(filename);
+    assert(inp);
+    string text = readText(inp);
+    assert(text == data);
+    inp.close();
+    
+    FileStat s;
+    assert(fs.stat(filename, s));
+    assert(s.isFile);
+    assert(s.sizeInBytes == 14);
 }
 
 /// Reads string from InputStream and stores it in unmanaged memory
