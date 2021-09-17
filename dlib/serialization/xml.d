@@ -623,6 +623,26 @@ XmlDocument parseXMLUnmanaged(string text)
     return doc;
 }
 
+///
+unittest
+{
+    string xml = "
+    <object>
+        <property name=\"position\" value=\"0 10 5\"/>
+    </object>
+    ";
+    
+    XmlDocument doc = parseXMLUnmanaged(xml);
+    
+    auto obj = doc.root.children[0];
+    assert(obj.name == "object");
+    
+    auto prop = obj.children[0];
+    assert(prop.name == "property");
+    assert(prop.properties["name"] == "position");
+    assert(prop.properties["value"] == "0 10 5");
+}
+
 int hexCharacterCode(string input)
 {
     int res;
