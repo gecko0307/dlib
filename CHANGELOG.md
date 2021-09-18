@@ -2,6 +2,13 @@ dlib 0.23.0 beta1 - TBD
 -----------------------
 - **dlib.math**
   - `Quaternion.generator` is deprecated, use `Quaternion.rotationAxis` and `Quaternion.rotationAngle` instead
+  - `Quaternion.fromEulerAngles` and `Quaternion.toEulerAngles` now use angles in pitch-yaw-roll format
+  - `EPSILON` in `dlib.math.utils` now equals 0.000001.
+- **dlib.geometry**
+  - `Ray.intersectSphere` with `position` and `radius` arguments is deprecated, use `Ray.intersectSphere` with `Sphere` struct instead
+  - `Ray.intersectTriangle` with `v0`, `v1`, `v2` arguments is is deprecated, use `Ray.intersectTriangle` with `Triangle` struct instead
+- **dlib.filesystem**
+  - `StdFileSystem.openDir` now returns null if path is not a valid directory.
 
 dlib 0.22.0 - 13 Jun, 2021
 --------------------------
