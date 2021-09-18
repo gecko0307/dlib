@@ -125,17 +125,17 @@ struct Frustum
 
     bool intersectsSphere(Sphere sphere)
     {
-	    float d;
+        float d;
 
-	    foreach(i, ref p; planes)
+        foreach(i, ref p; planes)
         {
-		    d = p.distance(sphere.center);
+            d = p.distance(sphere.center);
 
-		    if (d > sphere.radius)
-			    return false;
-	    }
+            if (d > sphere.radius)
+                return false;
+        }
 
-	    return true;
+        return true;
     }
 
     bool intersectsAABB(
@@ -172,3 +172,19 @@ struct Frustum
     }
 }
 
+///
+unittest
+{
+    import dlib.math.transformation;
+    
+    Matrix4x4f mvp = perspectiveMatrix(60.0f, 16.0f/9.0f, 0.1f, 1000.0f);
+    Frustum f = Frustum(mvp);
+    
+    assert(f.containsPoint(Vector3f(0, 0, -10)));
+    
+    Sphere s = Sphere(Vector3f(0, 0, 10), 1);
+    assert(!f.intersectsSphere(s));
+    
+    AABB aabb = AABB(Vector3f(0, 0, 0), Vector3f(1, 1, 1));
+    assert(f.intersectsAABB(aabb));
+}
