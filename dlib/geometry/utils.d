@@ -33,10 +33,7 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.geometry.utils;
 
-private
-{
-    import dlib.math.vector;
-}
+import dlib.math.vector;
 
 Vector3f triBarycentricCoords(Vector3f v0, Vector3f v1, Vector3f v2, Vector3f p)
 {

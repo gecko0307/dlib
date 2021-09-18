@@ -231,6 +231,17 @@ struct Color4f
 /// ditto
 alias ColorRGBAf = Color4f;
 
+///
+unittest
+{
+    Color4f c1 = Color4f(0.5f, 0.5f, 0.5f, 1.0f);
+    assert(isConsiderZero(c1.luminance - 0.5f));
+    assert(isConsiderZero(c1.luminance601 - 0.5f));
+    
+    Color4f c2 = Color4f(1.0f, 0.0f, 0.0f, 1.0f);
+    assert(isAlmostZero(c2.inverse - Color4f(0.0f, 1.0f, 1.0f, 1.0f)));
+}
+
 /// Encode a normal vector to color
 Color4f packNormal(Vector3f n)
 {
@@ -278,4 +289,15 @@ Color4f alphaOver(Color4f c1, Color4f c2)
     }
 
     return c;
+}
+
+/**
+ * Is all elements almost zero
+ */
+bool isAlmostZero(Color4f c)
+{
+    return (isConsiderZero(c.r) &&
+            isConsiderZero(c.g) &&
+            isConsiderZero(c.b) &&
+            isConsiderZero(c.a));
 }
