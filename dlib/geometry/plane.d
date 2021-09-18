@@ -202,8 +202,7 @@ struct Plane
 
     union
     {
-        float[4] arrayof;// = [0, 0, 0, 0];
-
+        float[4] arrayof;
         Vector4f vectorof;
 
         struct
@@ -226,6 +225,8 @@ struct Plane
 unittest
 {
     Plane plane = Plane(Vector3f(0, 1, 0), 0.0f);
+    assert(isConsiderZero(plane.distance(Vector3f(0, -1, 0)) + 1.0f));
     float d = plane.dot(Vector3f(1, 0, 0));
     assert(isConsiderZero(d));
+    assert(isAlmostZero(plane.position));
 }

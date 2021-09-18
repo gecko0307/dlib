@@ -36,6 +36,8 @@ module dlib.geometry.ray;
 import std.math;
 import dlib.math.vector;
 import dlib.math.utils;
+import dlib.geometry.sphere;
+import dlib.geometry.triangle;
 
 /// Ray with starting and ending points
 struct Ray
@@ -49,14 +51,14 @@ struct Ray
         p0 = begin;
         p1 = end;
     }
-
-    bool intersectSphere(Vector3f position, float radius, out Vector3f intersectionPoint)
+    
+    bool intersectSphere(Sphere sphere, out Vector3f intersectionPoint)
     {
         Vector3f dir = p1 - p0;
         dir.normalize();
-        Vector3f dist = position - p0;
+        Vector3f dist = sphere.center - p0;
         float B = dot(dist,dir);
-        float D = radius * radius - dot(dist,dist) + B * B;
+        float D = sphere.radius * sphere.radius - dot(dist,dist) + B * B;
         if (D < 0.0f)
         {
             intersectionPoint = Vector3f(0.0f, 0.0f, 0.0f);
@@ -79,16 +81,22 @@ struct Ray
         intersectionPoint = Vector3f(0.0f, 0.0f, 0.0f);
         return false;
     }
-
-    bool intersectTriangle(Vector3f v0, Vector3f v1, Vector3f v2, out Vector3f intersectionPoint)
+    
+    deprecated("use intersectSphere with Sphere struct")
+    bool intersectSphere(Vector3f position, float radius, out Vector3f intersectionPoint)
+    {
+        return intersectSphere(Sphere(position, radius), intersectionPoint);
+    }
+    
+    bool intersectTriangle(Triangle tri, out Vector3f intersectionPoint)
     {
         Vector3f u, v, n;    // triangle vectors
         Vector3f dir, w0, w; // ray vectors
         float r, a, b;       // params to calc ray-plane intersect
 
         // get triangle edge vectors and plane normal
-        u = v1 - v0;
-        v = v2 - v0;
+        u = tri.v[1] - tri.v[0];
+        v = tri.v[2] - tri.v[0];
         n = cross(u, v); // cross product
         if (n.isZero)    // triangle is degenerate
         {
@@ -97,7 +105,7 @@ struct Ray
         }
 
         dir = p1 - p0; // ray direction vector
-        w0 = p0 - v0;
+        w0 = p0 - tri.v[0];
         a = -dot(n, w0);
         b = dot(n, dir);
 
@@ -123,7 +131,7 @@ struct Ray
         uu = dot(u, u);
         uv = dot(u, v);
         vv = dot(v, v);
-        w = I - v0;
+        w = I - tri.v[0];
         wu = dot(w, u);
         wv = dot(w, v);
         D = uv * uv - uu * vv;
@@ -146,4 +154,31 @@ struct Ray
         intersectionPoint = I; // point is inside of the triangle
         return true;
     }
+    
+    deprecated("use intersectTriangle with Triangle struct")
+    bool intersectTriangle(Vector3f v0, Vector3f v1, Vector3f v2, out Vector3f intersectionPoint)
+    {
+        Triangle tri;
+        tri.v[0] = v0;
+        tri.v[1] = v1;
+        tri.v[2] = v2;
+        return intersectTriangle(tri, intersectionPoint);
+    }
+}
+
+///
+unittest
+{
+    Ray r = Ray(Vector3f(0, 0, 0), Vector3f(10, 0, 0));
+    Sphere s = Sphere(Vector3f(3, 0, 0), 1);
+    Vector3f intersectionPoint;
+    assert(r.intersectSphere(s, intersectionPoint));
+    assert(isAlmostZero(intersectionPoint - Vector3f(2, 0, 0)));
+    
+    Triangle tri;
+    tri.v[0] = Vector3f(5, -1, 1);
+    tri.v[1] = Vector3f(5, -1, -1);
+    tri.v[2] = Vector3f(5, 1, 0);
+    assert(r.intersectTriangle(tri, intersectionPoint));
+    assert(isAlmostZero(intersectionPoint - Vector3f(5, 0, 0)));
 }

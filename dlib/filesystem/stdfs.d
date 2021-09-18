@@ -521,7 +521,6 @@ class StdFileSystem: FileSystem
                     string path2 = catStr(path, "\\");
                     string path3 = catStr(path2, e.name);
                     Delete(path2);
-                    writeln(path3);
                     this.remove(path3, recursive);
                     Delete(path3);
                 }
