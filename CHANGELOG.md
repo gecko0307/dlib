@@ -7,6 +7,8 @@ dlib 0.23.0 beta1 - TBD
 - **dlib.geometry**
   - `Ray.intersectSphere` with `position` and `radius` arguments is deprecated, use `Ray.intersectSphere` with `Sphere` struct instead
   - `Ray.intersectTriangle` with `v0`, `v1`, `v2` arguments is is deprecated, use `Ray.intersectTriangle` with `Triangle` struct instead
+- **dlib.image**
+  - `isAlmostZero` for `Color4f`
 - **dlib.filesystem**
   - `StdFileSystem.openDir` now returns null if path is not a valid directory.
 
