@@ -614,6 +614,35 @@ struct Vector(T, int size)
                 else static if (s.length == 2)
                     return Vector!(T,2)(arrayof[i0], arrayof[i1]);
             }
+
+            @property void opDispatch(this X, T2, alias n)(Vector!(T2, n) vec)
+                if (s.length == n)
+            {
+                enum p = extend(s);
+                enum i = (char c) => ['x':0, 'y':1, 'z':2, 'w':3,
+                                      'r':0, 'g':1, 'b':2, 'a':3,
+                                      's':0, 't':1, 'p':2, 'q':3][c];
+                enum i0 = i(p[0]),
+                     i1 = i(p[1]),
+                     i2 = i(p[2]),
+                     i3 = i(p[3]);
+
+                static if (s.length == 4)
+                {
+                    arrayof[i3] = vec.arrayof[3];
+                }
+
+                static if (s.length >= 3)
+                {
+                    arrayof[i2] = vec.arrayof[2];
+                }
+
+                static if (s.length >= 2)
+                {
+                    arrayof[i1] = vec.arrayof[1];
+                    arrayof[i0] = vec.arrayof[0];
+                }
+            }
         }
     }
 
@@ -800,21 +829,30 @@ unittest
         a.clamp(-1, 1);
         assert(a == Vector3f(1, -1, 0));
     }
-    
+
     {
         Vector3f a = Vector3f(2, 5, 7);
         Vector4f b = Vector4f(a);
         assert(b == Vector4f(2, 5, 7, float.nan));
     }
-    
+
     {
         Vector3f a = Vector3f([0, 1]);
         assert(a == Vector3f(0, 1, float.nan));
-        
+
         Vector4f b = a.xyy;
         assert(b == Vector4f(0, 1, 1, float.nan));
     }
-    
+
+    {
+        Vector3f a = Vector3f([0, 1]);
+        a.xz = Vector2f([6, 1]);
+        assert(a == Vector3f([6, 1, 1]));
+
+        a.zxy = Vector3f([1, 2, 3]);
+        assert(a == Vector3f([2, 3, 1]));
+    }
+
     {
         Vector3f a = Vector3f(1, 2, 3);
         a = a + 1;
@@ -825,7 +863,7 @@ unittest
         assert(a == Vector3f(2, 4, 6));
         a = a / 2;
         assert(a == Vector3f(1, 2, 3));
-        
+
         Vector3f b = Vector3f(3, 2, 1);
         b += a;
         assert(b == Vector3f(4, 4, 4));
@@ -836,7 +874,7 @@ unittest
         b -= a;
         assert(b == Vector3f(1, 2, 5));
     }
-    
+
     {
         Vector3f v = Vector3f(0, 0, 0);
         v[0] = 5;
@@ -847,7 +885,7 @@ unittest
         v[] = 0;
         assert(v == Vector3f(0, 0, 0));
     }
-    
+
     {
         Vector4f a = Vector4f(2, 4, 6, 8);
         Vector4f b = a.wxyz;
@@ -855,7 +893,7 @@ unittest
         float d = dot(a, b);
         assert(d == 96.0f);
     }
-    
+
     {
         Vector2f a = Vector2f(1, 2);
         Vector2f b = Vector2f(2, 1);
