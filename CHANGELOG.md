@@ -1,6 +1,7 @@
 dlib 0.23.0 beta1 - TBD
 -----------------------
 - **dlib.math**
+  - Vector swizzling assign support: `v.zxy = Vector3f(1, 2, 3);`
   - `Quaternion.generator` is deprecated, use `Quaternion.rotationAxis` and `Quaternion.rotationAngle` instead
   - `Quaternion.fromEulerAngles` and `Quaternion.toEulerAngles` now use angles in pitch-yaw-roll format
   - `EPSILON` in `dlib.math.utils` now equals 0.000001.
