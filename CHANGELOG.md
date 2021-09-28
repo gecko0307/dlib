@@ -1,5 +1,5 @@
-dlib 0.23.0 beta1 - TBD
------------------------
+dlib 0.23.0 beta1 - 28 Sep, 2021
+--------------------------------
 - **dlib.math**
   - Vector swizzling assign support: `v.zxy = Vector3f(1, 2, 3);`
   - `Quaternion.generator` is deprecated, use `Quaternion.rotationAxis` and `Quaternion.rotationAngle` instead
