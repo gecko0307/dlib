@@ -436,25 +436,6 @@ struct Quaternion(T)
             else
                 return Vector!(T,3)(x / s, y / s, z / s);
         }
-
-       /**
-        * Quaternion as an angular velocity
-        */
-        deprecated("use Quaternion.rotationAxis and Quaternion.rotationAngle instead") Vector!(T,3) generator()
-        {
-            T s = sqrt(1.0 - (w * w));
-
-            Vector!(T,3) axis;
-
-            if (s <= 0.0)
-                axis = Vector!(T,3)(x, y, z);
-            else
-                axis = Vector!(T,3)(x * s, y * s, z * s);
-
-            T angle = 2.0 * atan2(s, w);
-
-            return axis * angle;
-        }
     }
 }
 

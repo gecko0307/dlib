@@ -82,12 +82,6 @@ struct Ray
         return false;
     }
     
-    deprecated("use intersectSphere with Sphere struct")
-    bool intersectSphere(Vector3f position, float radius, out Vector3f intersectionPoint)
-    {
-        return intersectSphere(Sphere(position, radius), intersectionPoint);
-    }
-    
     bool intersectTriangle(Triangle tri, out Vector3f intersectionPoint)
     {
         Vector3f u, v, n;    // triangle vectors
@@ -153,16 +147,6 @@ struct Ray
 
         intersectionPoint = I; // point is inside of the triangle
         return true;
-    }
-    
-    deprecated("use intersectTriangle with Triangle struct")
-    bool intersectTriangle(Vector3f v0, Vector3f v1, Vector3f v2, out Vector3f intersectionPoint)
-    {
-        Triangle tri;
-        tri.v[0] = v0;
-        tri.v[1] = v1;
-        tri.v[2] = v2;
-        return intersectTriangle(tri, intersectionPoint);
     }
 }
 

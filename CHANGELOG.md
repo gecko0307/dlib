@@ -1,3 +1,12 @@
+dlib 1.0.0 beta1 - TBD
+----------------------
+- **dlib.math**
+  - **Breaking change:** deprecated method `Quaternion.generator` has been removed
+  - **Breaking change:** deprecated functions `sum`, `invertArray`, `allIsZero` in `dlib.math.utils` have been removed
+- **dlib.geometry**
+  - **Breaking change:** deprecated method `Ray.intersectSphere` with `position` and `radius` arguments has been removed
+  - **Breaking change:** deprecated method `Ray.intersectTriangle` with `v0`, `v1`, `v2` arguments has been removed
+
 dlib 0.23.0 - 1 Oct, 2021
 -------------------------
 No changes since dlib 0.23.0 beta1.
