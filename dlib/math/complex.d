@@ -162,6 +162,25 @@ struct Complex(T)
     }
 }
 
+///
+unittest
+{
+    import dlib.math.utils;
+    
+    auto c1 = Complex!float(2, 1);
+    auto c2 = Complex!float(1, 2);
+    auto c3 = Complex!float(1, 0);
+    
+    assert((c1 + c2) == Complex!float(3, 3));
+    assert((c1 - c1) == Complex!float(0, 0));
+    assert((c1 * c2) == Complex!float(0, 5));
+    assert((c2 / c1) == Complex!float(0.8f, 0.6f));
+    assert(c1.reciprocal == Complex!float(0.4f, -0.2f));
+    assert(c3.magnitude == 1.0f);
+    assert(c3.norm == 1.0f);
+    assert(c1.toString == "2 + 1i");
+}
+
 /// Complex abs
 T abs(T)(Complex!T x)
 {
