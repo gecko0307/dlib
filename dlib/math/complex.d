@@ -169,7 +169,7 @@ unittest
     
     auto c1 = Complex!float(2, 1);
     auto c2 = Complex!float(1, 2);
-    auto c3 = Complex!float(1, 0);
+    auto c3 = Complex!float(1);
     
     assert((c1 + c2) == Complex!float(3, 3));
     assert((c1 - c1) == Complex!float(0, 0));
@@ -187,17 +187,31 @@ T abs(T)(Complex!T x)
     return sqrt(x.re * x.re + x.im * x.im);
 }
 
+///
+unittest
+{
+    auto c1 = Complex!float(1);
+    assert(abs(c1) == 1.0f);
+}
+
 /// Complex atan2
 T atan2(T)(Complex!T x)
 {
-    return atan2(x.im, x.re);
+    return std.math.atan2(x.im, x.re);
+}
+
+///
+unittest
+{
+    auto c1 = Complex!float(1);
+    assert(atan2(c1) == 0.0f);
 }
 
 /// Complex pow
 Complex!T pow(T)(Complex!T x, Complex!T n)
 {
     T r = abs(x);
-    T t = arg(x);
+    T t = x.magnitude;
     T c = n.re;
     T d = n.im;
 
