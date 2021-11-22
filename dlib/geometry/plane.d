@@ -229,4 +229,10 @@ unittest
     float d = plane.dot(Vector3f(1, 0, 0));
     assert(isConsiderZero(d));
     assert(isAlmostZero(plane.position));
+    assert(plane.isOnPlane(Vector3f(0, 0, 0)));
+    float t;
+    assert(plane.intersectsLine(Vector3f(0, -1, 0), Vector3f(0, 1, 0), t));
+    assert(isConsiderZero(t - 0.5f));
+    Vector3f ip;
+    assert(plane.intersectsLineSegment(Vector3f(0, -1, 0), Vector3f(0, 1, 0), ip));
 }
