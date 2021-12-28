@@ -629,8 +629,9 @@ unittest
     string xml = "
     <object>
         <property name=\"position\" value=\"0 10 5\"/>
-        <!-- commend -->
+        <!-- comment -->
         <![CDATA[ some data ]]>
+        <foo></foo>
     </object>
     ";
     
@@ -643,6 +644,11 @@ unittest
     assert(prop.name == "property");
     assert(prop.properties["name"] == "position");
     assert(prop.properties["value"] == "0 10 5");
+    
+    auto tag = obj.firstChildByTag("foo");
+    assert(tag.name == "foo");
+    
+    Delete(doc);
 }
 
 int hexCharacterCode(string input)
