@@ -291,3 +291,13 @@ struct UTF8Encoder
         }
     }
 }
+
+///
+unittest
+{
+    UTF8Encoder enc;
+    char[4] buffer;
+    size_t numBytes = enc.encode('Ж', buffer);
+    assert(numBytes == 2);
+    assert(buffer[0..numBytes] == [0xD0, 0x96]);
+}
