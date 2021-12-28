@@ -260,6 +260,12 @@ Color4f color3(int hex)
         cast(float)b / 255.0f);
 }
 
+///
+unittest
+{
+    assert(color3(0xff0000) == Color4f(1.0f, 0.0f, 0.0f, 1.0f));
+}
+
 /// 32-bit integer color unpacking
 Color4f color4(int hex)
 {
@@ -272,6 +278,12 @@ Color4f color4(int hex)
         cast(float)g / 255.0f,
         cast(float)b / 255.0f,
         cast(float)a / 255.0f);
+}
+
+///
+unittest
+{
+    assert(color4(0xff000000) == Color4f(1.0f, 0.0f, 0.0f, 0.0f));
 }
 
 /// Blend two colors taking transparency into account
