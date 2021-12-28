@@ -629,6 +629,8 @@ unittest
     string xml = "
     <object>
         <property name=\"position\" value=\"0 10 5\"/>
+        <!-- commend -->
+        <![CDATA[ some data ]]>
     </object>
     ";
     
@@ -666,4 +668,11 @@ int hexCharacterCode(string input)
         }
     }
     return res;
+}
+
+///
+unittest
+{
+    assert(hexCharacterCode("ff00ff") == 16711935);
+    assert(hexCharacterCode("ABABAB") == 11250603);
 }
