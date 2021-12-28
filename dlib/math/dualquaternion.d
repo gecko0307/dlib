@@ -208,4 +208,7 @@ unittest
     DualQuaternionf dq1 = DualQuaternionf(r1, t1);
     assert(dq1.rotation == r1);
     assert(isAlmostZero(dq1.translation - t1));
+    
+    Vector3f v = dq1.rotate(Vector3f(0.0f, 1.0f, 0.0f));
+    assert(isAlmostZero(v - Vector3f(0.0f, 0.0f, 1.0f)));
 }
