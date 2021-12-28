@@ -241,5 +241,8 @@ Complex!T zeta(T)(Complex!T s)
         Complex!T(1.0) / pow(Complex!T(2.0), s + Complex!T(1.0));
 }
 
-/// Alias for single precision Complex specialization
-alias Complexf = Complex!float;
+/*
+ * Predefined complex type aliases
+ */
+alias Complexf = Complex!(float);
+alias Complexd = Complex!(double);

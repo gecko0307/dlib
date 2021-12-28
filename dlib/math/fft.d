@@ -35,15 +35,12 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.math.fft;
 
-private
-{
-    import std.math;
-    import dlib.math.utils;
-    import dlib.math.complex;
-}
+import std.math;
+import dlib.math.utils;
+import dlib.math.complex;
 
 /// Forward or backward fast Fourier transform. Data must be power of two in length
-void fastFourierTransform(Complex!(float)[] data, bool forward)
+void fastFourierTransform(Complexf[] data, bool forward)
 {
     assert(isPowerOfTwo(data.length));
 
@@ -53,7 +50,7 @@ void fastFourierTransform(Complex!(float)[] data, bool forward)
     {
         if (target > pos)
         {
-            Complex!(float) temp = data[target];
+            Complexf temp = data[target];
             data[target] = data[pos];
             data[pos] = temp;
         }
@@ -70,15 +67,15 @@ void fastFourierTransform(Complex!(float)[] data, bool forward)
         uint jump = step << 1;
         float delta = pi / cast(float)step;
         float sine = sin(delta * 0.5f);
-        Complex!(float) multiplier = Complex!(float)(-2.0f * sine * sine, sin(delta));
-        Complex!(float) factor = Complex!(float)(1.0f);
+        Complexf multiplier = Complexf(-2.0f * sine * sine, sin(delta));
+        Complexf factor = Complexf(1.0f);
 
         for (uint group = 0; group < step; ++group)
         {
             for (uint pair = group; pair < data.length; pair += jump)
             {
                 uint match = pair + step;
-                Complex!(float) product = factor * data[match];
+                Complexf product = factor * data[match];
                 data[match] = data[pair] - product;
                 data[pair] += product;
             }
@@ -86,4 +83,22 @@ void fastFourierTransform(Complex!(float)[] data, bool forward)
             factor = multiplier * factor + factor;
         }
     }
+}
+
+///
+unittest
+{
+    Complexf[4] data = [
+        Complexf(1.0f, 0.0f),
+        Complexf(2.0f, 0.0f),
+        Complexf(3.0f, 0.0f),
+        Complexf(4.0f, 0.0f)
+    ];
+    
+    fastFourierTransform(data, true);
+    
+    assert(data[0].toString == "10 + 0i");
+    assert(data[1].toString == "-2 + 2i");
+    assert(data[2].toString == "-2 + 0i");
+    assert(data[3].toString == "-2 + -2i");
 }
