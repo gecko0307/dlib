@@ -223,3 +223,15 @@ alias Dualf = Dual!(float);
 
 /// Alias for double precision Dual specialization
 alias Duald = Dual!(double);
+
+///
+unittest
+{
+    Dualf a = Dualf(1.0f, 1.0f);
+    assert(a + a == Dualf(2.0f, 2.0f));
+    assert(a - a == Dualf(0.0f, 0.0f));
+    assert(a * a == Dualf(1.0f, 2.0f));
+    assert(a / a == Dualf(1.0f, 0.0f));
+    
+    assert(Dualf(4.0f, 1.0f).sqrt == Dualf(2.0f, 0.25f));
+}
