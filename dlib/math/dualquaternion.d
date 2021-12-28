@@ -199,3 +199,13 @@ alias DualQuaternionf = DualQuaternion!(float);
 
 /// Alias for double precision DualQuaternion specialization
 alias DualQuaterniond = DualQuaternion!(double);
+
+///
+unittest
+{
+    Quaternionf r1 = rotationQuaternion!float(0, PI * 0.5f);
+    Vector3f t1 = Vector3f(1.0f, 0.0f, 0.0f);
+    DualQuaternionf dq1 = DualQuaternionf(r1, t1);
+    assert(dq1.rotation == r1);
+    assert(isAlmostZero(dq1.translation - t1));
+}
