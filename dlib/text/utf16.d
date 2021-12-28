@@ -171,6 +171,16 @@ struct UTF16LEEncoder
     }
 }
 
+///
+unittest
+{
+    UTF16LEEncoder enc;
+    char[4] buffer;
+    size_t numBytes = enc.encode('Ж', buffer);
+    assert(numBytes == 2);
+    assert(cast(wchar[])(buffer[0..numBytes]) == [0x0416]);
+}
+
 /**
  * Converts UTF-8 to UTF-16
  * Will be deprecated soon, use transcode!(UTF8Decoder, UTF16LEEncoder) instead
