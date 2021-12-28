@@ -45,3 +45,9 @@ T interpNearest(T) (T x, T y, float t)
     else
         return y;
 }
+
+///
+unittest
+{
+    assert(interpNearest(0.0f, 2.0f, 0.3f) == 0.0f);
+}

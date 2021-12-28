@@ -45,3 +45,9 @@ T interpLinear(T) (T a, T b, float t)
 
 /// ditto
 alias lerp = interpLinear;
+
+///
+unittest
+{
+    assert(lerp(0.0f, 2.0f, 0.5f) == 1.0f);
+}
