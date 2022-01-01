@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2021 Timur Gafarov
+Copyright (c) 2011-2022 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -27,22 +27,22 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
- * Tuple + struct hybrid
+ * Compile-time sequence (aka tuple) + struct hybrid
  *
  * Description:
- * This template can be used to construct data types on-the-fly 
- * and return them from functions, which cannot be done with pure tuples.
+ * This template can be used to construct data types on the fly 
+ * and return them from functions, which cannot be done with pure compile-time sequence.
  * One possible use case for such types is returning result and error message 
  * from function instead of throwing an exception.
  *
- * Copyright: Timur Gafarov 2011-2021.
+ * Copyright: Timur Gafarov 2011-2022.
  * License: $(LINK2 htpps://boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
 module dlib.core.compound;
 
 /**
- * A struct that consists of a tuple T. Allows square bracket access to the members of a tuple
+ * A struct that consists of a compile-time sequence T. Allows square bracket access to the members of a sequence
  */
 struct Compound(T...)
 {

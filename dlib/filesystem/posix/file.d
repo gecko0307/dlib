@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2021 Martin Cejp
+Copyright (c) 2014-2022 Martin Cejp
 
 Boost Software License - Version 1.0 - August 17th, 2003
 

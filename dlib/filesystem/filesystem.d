@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2021 Martin Cejp, Timur Gafarov
+Copyright (c) 2014-2022 Martin Cejp, Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -27,7 +27,7 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
- * Copyright: Martin Cejp, Timur Gafarov 2014-2021.
+ * Copyright: Martin Cejp, Timur Gafarov 2014-2022.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Martin Cejp, Timur Gafarov
  */
@@ -216,13 +216,9 @@ interface FileSystem: ReadOnlyFileSystem
 InputRange!DirEntry findFiles(ReadOnlyFileSystem rofs, string baseDir, bool recursive)
 {
     // Do some magic so that we don't have to keep our own stack
-
     import core.thread;
-
-    //baseDir = normalizePath(baseDir);
-
     DirEntry entry;
-
+    
     // findFiles insists on calling us back (it's recursive), but we can trap it in a Fiber
     auto search = new Fiber(delegate void()
     {
@@ -297,4 +293,3 @@ private int findFiles(ReadOnlyFileSystem rofs, string baseDir, bool recursive, i
 
     return result;
 }
-

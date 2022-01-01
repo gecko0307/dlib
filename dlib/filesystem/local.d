@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2021 Martin Cejp
+Copyright (c) 2014-2022 Martin Cejp
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -27,7 +27,7 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
- * Copyright: Martin Cejp 2014-2021.
+ * Copyright: Martin Cejp 2014-2022.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Martin Cejp
  */
@@ -61,7 +61,7 @@ else version (Windows)
 // TODO: Should probably check for FILE_ATTRIBUTE_REPARSE_POINT before recursing
 
 /// LocalFileSystem
-class LocalFileSystem : FileSystem
+class LocalFileSystem: FileSystem
 {
     override InputStream openForInput(string filename)
     {

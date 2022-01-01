@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2018-2021 Oleg Baharev, Timur Gafarov
+Copyright (c) 2018-2022 Oleg Baharev, Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Image binarization
  *
- * Copyright: Oleg Baharev, Timur Gafarov 2018-2021.
+ * Copyright: Oleg Baharev, Timur Gafarov 2018-2022.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Oleg Baharev, Timur Gafarov
  */
@@ -41,19 +41,19 @@ import dlib.image.filters.histogram;
 
 int otsuThreshold(SuperImage img)
 {
-	auto histogram = createHistogram(img);
+    auto histogram = createHistogram(img);
 
-	int sumOfLuminances;
+    int sumOfLuminances;
 
-	foreach (x; 0..img.width)
-	foreach (y; 0..img.height)
-	{
-		sumOfLuminances += cast(int)(img[x, y].luminance * 255); 
-	}
+    foreach (x; 0..img.width)
+    foreach (y; 0..img.height)
+    {
+        sumOfLuminances += cast(int)(img[x, y].luminance * 255); 
+    }
 
-	auto allPixelCount = cast(double)(img.width * img.height);
-	
-	int bestThreshold = 0;
+    auto allPixelCount = cast(double)(img.width * img.height);
+    
+    int bestThreshold = 0;
     int firstClassPixelCount = 0;
     int firstClassLuminanceSum = 0;
     
@@ -61,7 +61,7 @@ int otsuThreshold(SuperImage img)
 
     for (int threshold = 0; threshold < 255; threshold++)
     {
-    	firstClassPixelCount += histogram[threshold];
+        firstClassPixelCount += histogram[threshold];
         firstClassLuminanceSum += threshold * histogram[threshold];
     
         double firstClassProbability = firstClassPixelCount / allPixelCount;
@@ -73,7 +73,7 @@ int otsuThreshold(SuperImage img)
         double meanDelta = firstClassMean - secondClassMean;
         double sigma = firstClassProbability * secondClassProbability * meanDelta * meanDelta;
 
-        if (sigma > bestSigma) 
+        if (sigma > bestSigma)
         {
             bestSigma = sigma;
             bestThreshold = threshold;
@@ -86,20 +86,19 @@ int otsuThreshold(SuperImage img)
 /// Otsu binarization
 auto otsuBinarization(SuperImage img)
 {
-	SuperImage res = img.createSameFormat(img.width, img.height);
-	auto threshold = otsuThreshold(img);
+    SuperImage res = img.createSameFormat(img.width, img.height);
+    auto threshold = otsuThreshold(img);
 
-	foreach (x; 0..img.width)
+    foreach (x; 0..img.width)
     foreach (y; 0..img.height)
-	{
-		auto luminance = cast(int)(img[x,y].luminance * 255);
+    {
+        auto luminance = cast(int)(img[x,y].luminance * 255);
 
-		if (luminance > threshold)
-			res[x, y] = Color4f(1.0f, 1.0f, 1.0f, 1.0f);
-		else
-			res[x, y] = Color4f(0.0f, 0.0f, 0.0f, 1.0f);
-	}
+        if (luminance > threshold)
+            res[x, y] = Color4f(1.0f, 1.0f, 1.0f, 1.0f);
+        else
+            res[x, y] = Color4f(0.0f, 0.0f, 0.0f, 1.0f);
+    }
 
-	return res; 
+    return res; 
 }
-

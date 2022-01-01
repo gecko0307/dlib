@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2021 Timur Gafarov
+Copyright (c) 2015-2022 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -34,7 +34,7 @@ DEALINGS IN THE SOFTWARE.
  * using SSE instructions. Implementation is in WIP status.
  * Module is compatible only with Digital Mars D Compiler.
  *
- * Copyright: Timur Gafarov 2015-2021.
+ * Copyright: Timur Gafarov 2015-2022.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
@@ -50,6 +50,8 @@ version(GNU)
 
 version(DMD)
 {
+    pragma(inline, true):
+    
     /// Vector addition
     Vector4f sseAdd4(Vector4f a, Vector4f b)
     {

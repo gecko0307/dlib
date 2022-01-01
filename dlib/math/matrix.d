@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2021 Timur Gafarov, Martin Cejp
+Copyright (c) 2013-2022 Timur Gafarov, Martin Cejp
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Square matrices with static memory allocation
  *
- * Copyright: Timur Gafarov, Martin Cejp 2013-2021.
+ * Copyright: Timur Gafarov, Martin Cejp 2013-2022.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov, Martin Cejp
  */
@@ -46,7 +46,7 @@ import dlib.math.utils;
 import dlib.math.decomposition;
 import dlib.math.linsolve;
 
-/***********************************
+/**
  * Square (NxN) matrix.
  * 
  * Implementation notes:

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2021 Timur Gafarov
+Copyright (c) 2016-2022 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -36,7 +36,7 @@ DEALINGS IN THE SOFTWARE.
  * Assumes UTF-8 input.
  * Treats \r\n as a single \n.
  *
- * Copyright: Timur Gafarov 2016-2021.
+ * Copyright: Timur Gafarov 2016-2022.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov, Eugene Wissner, Roman Chistokhodov, ijet
  */
@@ -364,22 +364,27 @@ unittest
     import std.array: array;
     import std.range: iota;
     
-    string[] delims = ["(", ")", ";", " ", "{", "}", ".", "\n", "\r", "=", "++", "<"];
+    string[] delims =
+    [
+        "(", ")", ";", " ", "{", "}", ".", "\n", "\r", "=", "++", "<"
+    ];
     auto input = "for (int i=0; i<arr.length; ++i)\r\n{doThing();}\n";
     auto lexer = new Lexer(input, delims);
 
     string[] arr;
-    while(true) {
+    while(true)
+    {
         auto lexeme = lexer.getLexeme();
-        if(lexeme.length == 0) {
+        if(lexeme.length == 0)
             break;
-        }
         arr ~= lexeme;
     }
-    auto reference = [
+    auto reference =
+    [
         "for", " ", "(", "int", " ", "i", "=", "0", ";", " ", "i", "<",
         "arr", ".", "length", ";", " ", "++", "i", ")", "\n", "{", "doThing",
-        "(", ")", ";", "}", "\n" ];
+        "(", ")", ";", "}", "\n"
+    ];
     assert(arr == reference);
 
     lexer = new Lexer(input, delims);

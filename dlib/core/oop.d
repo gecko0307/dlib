@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2021 Timur Gafarov
+Copyright (c) 2015-2022 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -33,7 +33,7 @@ DEALINGS IN THE SOFTWARE.
  * Supports multiple inheritance, parametric polymorphism (struct interfaces),
  * interface inheritance
  *
- * Copyright: Timur Gafarov 2015-2021.
+ * Copyright: Timur Gafarov 2015-2022.
  * License: $(LINK2 https://boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
@@ -168,65 +168,6 @@ unittest
     assert(hasMethod!(Foo, "bar")() == true);
     assert(hasMethod!(Foo, "foo")() == false);
 }
-
-/**
- * Check if given type (T) corresponds to given signature (I)
- *
- * Description:
- * Returns true if struct T has the same members and methods as struct I.
- * This allows to use structs as static interfaces in generic code.
- */
-/*
-bool implements(T, I)()
-{
-    foreach(i, name; __traits(allMembers, I))
-    {
-        static if (name == "_parentTypeTuple") {}
-        else static if (name == "_parent")
-        {
-            foreach(ParI; I._parentTypeTuple)
-            {
-                static if (!implements!(T, ParI))
-                    return false;
-            }
-        }
-        else static if (isMethod!(__traits(getMember, I, name)))
-        {
-            static if (!hasMethod!(T, name))
-                return false;
-        }
-        else
-        {
-            static if (!__traits(hasMember, T, name))
-                return false;
-            else
-            {
-                alias t1 = typeof(__traits(getMember, T, name));
-                alias t2 = typeof(__traits(getMember, I, name));
-                static if (!is(t1 == t2))
-                    return false;
-            }
-        }
-    }
-    return true;
-}
-
-///
-unittest
-{
-    struct Foo
-    {
-        int bar() { return 10; }
-    }
-    
-    struct FooInterface
-    {
-        int bar() { return 0; }
-    }
-    
-    assert(implements!(Foo, FooInterface)() == true);
-}
-*/
 
 /**
  * Test if F is a method

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2021 Timur Gafarov, Martin Cejp, Vadim Lopatin
+Copyright (c) 2011-2022 Timur Gafarov, Martin Cejp, Vadim Lopatin
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Decode and encode PNG/APNG images
  *
- * Copyright: Timur Gafarov, Martin Cejp, Vadim Lopatin 2011-2021.
+ * Copyright: Timur Gafarov, Martin Cejp, Vadim Lopatin 2011-2022.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov, Martin Cejp, Vadim Lopatin
  */
@@ -264,7 +264,6 @@ struct PNGImage
 
         if (decoder.buffer.length)
         {
-            //Delete(decoder.buffer);
             buffer = decoder.buffer;
         }
         else
@@ -1196,7 +1195,6 @@ Compound!(bool, string) fillFrame(PNGImage* png)
             for (int dstindex = 0; dstindex < sz; dstindex++)
             {
                 auto b = ((filteredBuffer[srcindex] >> srcshift) & mask);
-                //assert(b * 3 + 2 < palette.length);
                 pdata[dstindex * png.numChannels + 0] = png.palette[b * 3 + 0];
                 pdata[dstindex * png.numChannels + 1] = png.palette[b * 3 + 1];
                 pdata[dstindex * png.numChannels + 2] = png.palette[b * 3 + 2];

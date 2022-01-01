@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2021 Timur Gafarov
+Copyright (c) 2016-2022 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 /**
  * UTF-16 decoder and encoder
  *
- * Copyright: Timur Gafarov 2016-2021.
+ * Copyright: Timur Gafarov 2016-2022.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov, Roman Chistokhodov
  */
@@ -100,24 +100,29 @@ struct UTF16LEDecoder
             dchar _lastRead;
 
             public:
-            this(UTF16LEDecoder decoder) {
+            this(UTF16LEDecoder decoder)
+            {
                 _decoder = decoder;
                 _lastRead = cast(dchar)_decoder.decodeNext();
             }
 
-            bool empty() {
+            bool empty()
+            {
                 return _lastRead == DECODE_END || _lastRead == DECODE_ERROR;
             }
 
-            dchar front() {
+            dchar front()
+            {
                 return _lastRead;
             }
 
-            void popFront() {
+            void popFront()
+            {
                 _lastRead = cast(dchar)_decoder.decodeNext();
             }
 
-            auto save() {
+            auto save()
+            {
                 return this;
             }
         }

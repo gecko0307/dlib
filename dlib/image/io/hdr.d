@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2021 Timur Gafarov
+Copyright (c) 2016-2022 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Decode and encode Radiance HDR/RGBE images
  *
- * Copyright: Timur Gafarov 2016-2021.
+ * Copyright: Timur Gafarov 2016-2022.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
@@ -384,9 +384,9 @@ void writeBufferRLE(OutputStream output, ubyte[] data)
             beg_run += run_count;
             old_run_count = run_count;
             run_count = 1;
-            while( (beg_run + run_count < data.length) && (run_count < 127)
+            while((beg_run + run_count < data.length) && (run_count < 127)
                 && (data[beg_run] == data[beg_run + run_count]))
-	            run_count++;
+                run_count++;
         }
 
         // if data before next big run is a short run then write it as such
@@ -403,7 +403,7 @@ void writeBufferRLE(OutputStream output, ubyte[] data)
         {
             nonrun_count = beg_run - cur;
             if (nonrun_count > 128)
-	            nonrun_count = 128;
+                nonrun_count = 128;
             buf[0] = cast(ubyte)nonrun_count;
             output.writeBytes(buf.ptr, 1);
             output.writeBytes(&data[cur], nonrun_count);

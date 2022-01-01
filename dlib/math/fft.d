@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2021 Timur Gafarov
+Copyright (c) 2013-2022 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Fast Fourier transform
  *
- * Copyright: Timur Gafarov 2013-2021.
+ * Copyright: Timur Gafarov 2013-2022.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
@@ -88,7 +88,8 @@ void fastFourierTransform(Complexf[] data, bool forward)
 ///
 unittest
 {
-    Complexf[4] data = [
+    Complexf[4] data =
+    [
         Complexf(1.0f, 0.0f),
         Complexf(2.0f, 0.0f),
         Complexf(3.0f, 0.0f),

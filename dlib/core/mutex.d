@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2021 Timur Gafarov
+Copyright (c) 2022 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Cross-platform thread synchronization primitive
  *
- * Copyright: Timur Gafarov 2021.
+ * Copyright: Timur Gafarov 2022.
  * License: $(LINK2 https://boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
@@ -45,7 +45,7 @@ else version(Posix)
 }
 
 /**
- * Mutex structure. 
+ * Mutex structure.
  * Uses CRITICAL_SECTION under Windows, pthread_mutex_t under Posix
  */
 struct Mutex

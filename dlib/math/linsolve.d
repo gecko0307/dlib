@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2021 Timur Gafarov
+Copyright (c) 2013-2022 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -55,7 +55,7 @@ DEALINGS IN THE SOFTWARE.
  * [x, y, z]
  * ---
  *
- * Copyright: Timur Gafarov 2013-2021.
+ * Copyright: Timur Gafarov 2013-2022.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
@@ -68,7 +68,7 @@ import dlib.math.decomposition;
 
 // TODO: use arrays instead of Matrix structs to support big systems stored in heap
 
-/// Solve Ax = b directly using LUP decomposition
+/// Solve Ax = b using LUP decomposition
 void solve(T, size_t N)(
       Matrix!(T,N) a,
   ref Vector!(T,N) x,
@@ -102,7 +102,7 @@ unittest
     assert(isConsiderZeroTolerant(2 - x[2]));
 }
 
-/// Solve LUx = b directly
+/// Solve LUx = b
 void solveLU(T, size_t N)(
     Matrix!(T,N) L,
     Matrix!(T,N) U,
@@ -131,32 +131,3 @@ ref Vector!(T,N) x,
         x[i] /= U[i, i];
     }
 }
-
-/// Solve Ax = b iteratively using Gauss-Seidel method (implementation is bugged)
-/*
-void solveGS(T, size_t N)(
-      Matrix!(T,N) a,
-  ref Vector!(T,N) x,
-      Vector!(T,N) b,
-      uint iterations = 10)
-{
-    T delta;
-
-    for (int k = 0; k < iterations; ++k)
-    {
-        for (int i = 0; i < N; ++i)
-        {
-            delta = 0.0;
-
-            for (int j = 0; j < i; ++j)
-                delta += a[j, i] * x[j];
-
-            for (int j = i + 1; j < N; ++j)
-                delta += a[j, i] * x[j];
-
-            delta = (b[i] - delta) / a[i, i];
-            x[i] = delta;
-        }
-    }
-}
-*/

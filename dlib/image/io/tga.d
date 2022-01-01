@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2021 Timur Gafarov, Roman Chistokhodov
+Copyright (c) 2014-2022 Timur Gafarov, Roman Chistokhodov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Decode JPEG images
  *
- * Copyright: Timur Gafarov, Roman Chistokhodov 2014-2021.
+ * Copyright: Timur Gafarov, Roman Chistokhodov 2014-2022.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov, Roman Chistokhodov
  */
@@ -66,7 +66,8 @@ struct TGAHeader
     ubyte descriptor;
 }
 
-enum TGAEncoding : ubyte {
+enum TGAEncoding : ubyte
+{
     Indexed = 1,
     RGB = 2,
     Grey = 3,
@@ -185,21 +186,25 @@ Compound!(SuperImage, string) loadTGA(
         uint channels = hdr.bpp / 8;
         SuperImage res = imgFac.createImage(hdr.width, hdr.height, channels, 8);
 
-        if (hdr.descriptor & TgaOrigin.Upper) {
+        if (hdr.descriptor & TgaOrigin.Upper)
+        {
             istrm.fillArray(res.data);
-        } else {
-            foreach(i; 0..hdr.height) {
+        }
+        else
+        {
+            foreach(i; 0..hdr.height)
+            {
                 istrm.fillArray(res.data[channels * hdr.width * (hdr.height-i-1)..channels * hdr.width * (hdr.height-i)]);
             }
         }
 
         const ubyte alphaBits = cast(ubyte)(hdr.descriptor & 0xf);
-        version(TGADebug) {
-            writefln("Alpha bits: %s", alphaBits);
-        }
+        version(TGADebug) writefln("Alpha bits: %s", alphaBits);
 
-        if (channels == 4) {
-            for (size_t i=0; i<res.data.length; i += channels) {
+        if (channels == 4)
+        {
+            for (size_t i=0; i<res.data.length; i += channels)
+            {
                 auto alphaIndex = i+3;
                 res.data[alphaIndex] = cast(ubyte)((res.data[alphaIndex] & ((1 << alphaBits)-1 )) << (8 - alphaBits));
             }
@@ -286,13 +291,12 @@ Compound!(SuperImage, string) loadTGA(
         Delete(id);
     }
 
-    if (hdr.encoding == TGAEncoding.RGB) {
+    if (hdr.encoding == TGAEncoding.RGB)
         img = readRawRGB(hdr);
-    } else if (hdr.encoding == TGAEncoding.RLE_RGB) {
+    else if (hdr.encoding == TGAEncoding.RLE_RGB)
         img = readRLERGB(hdr);
-    } else {
+    else
         return error("loadTGA error: only RGB images are supported");
-    }
 
     img.swapRGB();
 
@@ -301,7 +305,8 @@ Compound!(SuperImage, string) loadTGA(
 
 void swapRGB(SuperImage img)
 {
-    foreach(x; 0..img.width) {
+    foreach(x; 0..img.width)
+    {
         foreach(y; 0..img.height)
         {
             img[x, y] = Color4f(img[x, y].bgra);
@@ -341,28 +346,36 @@ Compound!(bool, string) saveTGA(SuperImage img, OutputStream output)
 
     const bool hasAlpha = img.channels == 4;
 
-    if (img.channels == 3) {
+    if (img.channels == 3)
+    {
         output.writeLE(cast(ubyte)24);
         output.writeLE(cast(ubyte)TgaOrigin.Upper);
-    } else if (img.channels == 4) {
+    }
+    else if (img.channels == 4)
+    {
         output.writeLE(cast(ubyte)32);
         output.writeLE(cast(ubyte)0x28);
-    } else {
-        return error("saveTGA error: unsupported number of channels");
     }
+    else
+        return error("saveTGA error: unsupported number of channels");
 
-    foreach(y; 0..img.height) {
-        foreach(x; 0..img.width) {
+    foreach(y; 0..img.height)
+    {
+        foreach(x; 0..img.width)
+        {
             ubyte[4] rgb;
             ColorRGBA color = img[x, y].convert(8);
             rgb[0] = cast(ubyte)color[2];
             rgb[1] = cast(ubyte)color[1];
             rgb[2] = cast(ubyte)color[0];
 
-            if (hasAlpha) {
+            if (hasAlpha)
+            {
                 rgb[3] = cast(ubyte)(color[3]);
                 output.writeArray(rgb[]);
-            } else {
+            }
+            else
+            {
                 output.writeArray(rgb[0..3]);
             }
         }

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2021 Timur Gafarov
+Copyright (c) 2011-2022 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,14 +29,14 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Functions that return other functions
  *
- * Copyright: Timur Gafarov 2011-2021.
+ * Copyright: Timur Gafarov 2011-2022.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
 module dlib.math.hof;
 
 /**
- * Functional composition. 
+ * Functional composition.
  * Description:
  * Returns a function that applies function f to the return value of function g
  */

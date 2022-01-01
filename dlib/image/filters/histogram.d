@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2018-2021 Oleg Baharev, Timur Gafarov
+Copyright (c) 2018-2022 Oleg Baharev, Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Generate histogram of an image
  *
- * Copyright: Oleg Baharev, Timur Gafarov 2018-2021.
+ * Copyright: Oleg Baharev, Timur Gafarov 2018-2022.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Oleg Baharev, Timur Gafarov
  */
@@ -41,16 +41,16 @@ import dlib.image.color;
 /// Obtain histogram
 int[256] createHistogram(SuperImage img)
 {
-	int[256] histogram;
+    int[256] histogram;
 
-	foreach (x; 0..img.width)
-	foreach (y; 0..img.height)
-	{
-		int luma = cast(int)(img[x,y].luminance * 255);
-		histogram[luma] += 1; 
-	}
+    foreach (x; 0..img.width)
+    foreach (y; 0..img.height)
+    {
+        int luma = cast(int)(img[x,y].luminance * 255);
+        histogram[luma] += 1; 
+    }
 
-	return histogram;
+    return histogram;
 }
 
 /// Generate histogram image
@@ -71,9 +71,9 @@ SuperImage histogramImage(SuperImage img, Color4f background, Color4f diagram)
         v = cast(int)(cast(float)v / cast(float)vmax * 255.0f);
     }
 
-	foreach (x; 0..res.width)
-	foreach (y; 0..res.height)
-	{
+    foreach (x; 0..res.width)
+    foreach (y; 0..res.height)
+    {
         int v = h[x];
         if (y < 255 - v)
             res[x, y] = background;

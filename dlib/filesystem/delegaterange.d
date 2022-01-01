@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2021 Martin Cejp
+Copyright (c) 2014-2022 Martin Cejp
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -27,7 +27,7 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
- * Copyright: Martin Cejp 2014-2021.
+ * Copyright: Martin Cejp 2014-2022.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Martin Cejp
  */
@@ -38,7 +38,7 @@ private import std.range;
 /**
  * An input range that enumerates items by obtaining them from a delegate until it returns 0
  */
-class DelegateInputRange(T) : InputRange!T
+class DelegateInputRange(T): InputRange!T
 {
     bool delegate(out T t) fetch;
     bool have = false;

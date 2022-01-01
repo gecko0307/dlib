@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2021 Timur Gafarov
+Copyright (c) 2015-2022 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -28,7 +28,7 @@ DEALINGS IN THE SOFTWARE.
 
 /**
  * GC-free filesystem
- * Copyright: Timur Gafarov 2015-2021.
+ * Copyright: Timur Gafarov 2015-2022.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
@@ -99,7 +99,7 @@ class StdInFileStream: InputStream
 
     bool setPosition(StreamPos p)
     {
-        import core.stdc.config : c_long;
+        import core.stdc.config: c_long;
         return !fseek(file, cast(c_long)p, SEEK_SET);
     }
 

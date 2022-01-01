@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2021 Eugene Wissner
+Copyright (c) 2016-2022 Eugene Wissner
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Allocator based on malloc/realloc/free
  *
- * Copyright: Eugene Wissner 2016-2021.
+ * Copyright: Eugene Wissner 2016-2022.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Eugene Wissner
  */
@@ -43,7 +43,7 @@ import std.algorithm.comparison;
 /**
  * Wrapper for malloc/realloc/free from the C standard library.
  */
-class Mallocator : Allocator
+class Mallocator: Allocator
 {
     /**
      * Allocates $(D_PARAM size) bytes of memory.

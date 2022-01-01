@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2021 Martin Cejp
+Copyright (c) 2014-2022 Martin Cejp
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Binary I/O stream interfaces
  *
- * Copyright: Martin Cejp 2014-2021.
+ * Copyright: Martin Cejp 2014-2022.
  * License: $(LINK2 https://boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Martin Cejp, Timur Gafarov
  */
@@ -349,26 +349,26 @@ class ArrayStream: InputStream
 
     private:
     size_t pos = 0, size_ = 0;
-    ubyte[] data;       // data.length is capacity
+    ubyte[] data; // data.length is capacity
 }
 
 ///
 unittest
 {
-    ubyte[] arr = [23,13,42,71,0,1,1,2,3,5,8];
+    ubyte[] arr = [23, 13, 42, 71, 0, 1, 1, 2, 3, 5, 8];
 
     auto stream = new ArrayStream(arr);
     assert(stream.size() == arr.length);
 
     ubyte[4] buf;
     assert(stream.readBytes(buf.ptr, buf.length) == buf.length);
-    assert(buf == [23,13,42,71]);
+    assert(buf == [23, 13, 42, 71]);
     assert(stream.getPosition() == buf.length);
 
     assert(stream.setPosition(6));
     assert(stream.getPosition == 6);
     assert(stream.readBytes(buf.ptr, buf.length) == buf.length);
-    assert(buf == [1,2,3,5]);
+    assert(buf == [1, 2, 3, 5]);
 
     assert(stream.readBytes(buf.ptr, buf.length) == 1);
     assert(buf[0] == 8);
@@ -378,10 +378,10 @@ unittest
     assert(stream.readable);
     stream.seek(4);
     assert(stream.readBytes(buf.ptr, buf.length) == buf.length);
-    assert(buf == [1,1,2,3]);
+    assert(buf == [1, 1, 2, 3]);
 
     assert(stream.setPosition(arr.length));
-    assert(!stream.setPosition(arr.length+1));
+    assert(!stream.setPosition(arr.length + 1));
 
     stream.close();
     assert(!stream.readable);

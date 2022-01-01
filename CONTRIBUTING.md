@@ -32,7 +32,7 @@ New code should at least:
 * follow [dlib's best practices](https://github.com/gecko0307/dlib/wiki/Best-Practices), making use of ownership, containers, streams, exceptionless error handling and filesystem abstraction
 * not violate copyright/licensing. When adapting third-party code, make sure that it is compatible with [Boost Software License 1.0](https://www.boost.org/LICENSE_1_0.txt).
 
-#### Code style and standards 
+#### Code style and standards
 
 dlib follows [D style](https://dlang.org/dstyle.html). Essential rules are the following:
 * Use spaces instead of tabs. Each indentation level is 4 spaces
@@ -46,7 +46,7 @@ All modules in dlib should belong to a package (`dlib.core`, `dlib.math`, `dlib.
 Each D module should start with a Boost license block prepended with a copyright notice:
 ```d
 /*
-Copyright (c) 2021 <author's name here>
+Copyright (c) 2022 <author's name here>
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -74,7 +74,9 @@ DEALINGS IN THE SOFTWARE.
 */
 ```
 
-It is not strictly necessary to document the code, but if you do, use [ddoc syntax](https://dlang.org/spec/ddoc.html). Each documented module should be accompanied by a description block (if you don't do that, documentation generators may ignore the module):
+#### Documenting and testing
+
+It is not strictly necessary to document code, but if you do, use [ddoc syntax](https://dlang.org/spec/ddoc.html). Each documented module should be accompanied by a description block (if you don't do that, documentation generators may ignore the module):
 ```d
 /**
  * <One-line description of the module>

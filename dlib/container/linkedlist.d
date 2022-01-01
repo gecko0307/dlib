@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2021 Timur Gafarov
+Copyright (c) 2011-2022 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Singly linked list
  *
- * Copyright: Timur Gafarov 2011-2021.
+ * Copyright: Timur Gafarov 2011-2022.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov, Andrey Penechko, Roman Chistokhodov, ijet
  */
@@ -512,17 +512,17 @@ struct LinkedList(T, bool ordered = true)
         list.insertBack(3);
 
         auto range = list.byElement();
-        import std.range : isInputRange;
-        import std.algorithm : equal;
+        import std.range: isInputRange;
+        import std.algorithm: equal;
         static assert(isInputRange!(typeof(range)));
 
-        assert(equal(range, [1,2,3]));
+        assert(equal(range, [1, 2, 3]));
 
         range = list.byElement();
         auto saved = range.save();
         range.popFront();
-        assert(equal(range,[2,3]));
-        assert(equal(saved,[1,2,3]));
+        assert(equal(range, [2, 3]));
+        assert(equal(saved, [1, 2, 3]));
     }
 
     // For backward compatibility

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2017-2021 Timur Gafarov
+Copyright (c) 2017-2022 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -37,7 +37,7 @@ DEALINGS IN THE SOFTWARE.
  * This module is not compatible with GC-collected objects. It can be used only with
  * dlib.core.memory. Using it with objects allocated any other way will cause application to crash.
  *
- * Copyright: Timur Gafarov 2017-2021.
+ * Copyright: Timur Gafarov 2017-2022.
  * License: $(LINK2 https://boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2021 Timur Gafarov
+Copyright (c) 2015-2022 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,10 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Decode JPEG images
  *
- * Copyright: Timur Gafarov 2015-2021.
+ * Description:
+ * Simple self-contained JPEG decoder, supports only baseline format.
+ *
+ * Copyright: Timur Gafarov 2015-2022.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
@@ -48,15 +51,6 @@ import dlib.container.array;
 import dlib.filesystem.local;
 import dlib.image.color;
 import dlib.image.image;
-
-/*
- * Simple JPEG decoder
- *
- * Limitations:
- *  - Doesn't support progressive JPEG
- *  - Doesn't perform chroma interpolation
- *  - Doesn't read EXIF metadata
- */
 
 // Uncomment this to see debug messages
 //version = JPEGDebug;
