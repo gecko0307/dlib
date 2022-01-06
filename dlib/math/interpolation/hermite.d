@@ -35,14 +35,29 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.math.interpolation.hermite;
 
-/// Hermite curve
+/**
+ * Hermite curve
+ */
 T interpHermite(T) (T x, T tx, T y, T ty, float t)
 {
-    T h1 = 2 * t^^3 - 3 * t^^2 + 1;
-    T h2 = -2* t^^3 + 3 * t^^2;
-    T h3 = t^^3 - 2 * t^^2 + t;
-    T h4 = t^^3 - t^^2;
-    return h1 * x + h3 * tx + h2 * y + h4 * ty;
+    float t2 = t * t;
+    float t3 = t2 * t;
+    float h1 = t3 * 2.0 - t2 * 3.0 + 1.0;
+    float h2 = t2 * 3.0 - t3 * 2.0;
+    float h3 = t3 - t2 * 2.0 + t;
+    float h4 = t3 - t2;
+    return x * h1 + tx * h3 + y * h2 + ty * h4;
 }
 
-// TODO: interpHermiteDerivative
+/**
+ * Hermite curve derivative
+ */
+T interpHermiteDerivative(T) (T x, T tx, T y, T ty, float t)
+{
+    float t2 = t * t;
+    float h1 = t2 * 6.0 - t * 6.0;
+    float h2 = t * 6.0 - t2 * 6.0;
+    float h3 = t2 * 3.0 - t * 4.0 + 1.0;
+    float h4 = t2 * 3.0 - t * 2.0;
+    return x * h1 + tx * h3 + y * h2 + ty * h4;
+}
