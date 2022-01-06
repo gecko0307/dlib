@@ -3,6 +3,8 @@ dlib 1.0.0 beta1 - TBD
 - **dlib.math**
   - **Breaking change:** deprecated method `Quaternion.generator` has been removed
   - **Breaking change:** deprecated functions `sum`, `invertArray`, `allIsZero` in `dlib.math.utils` have been removed
+  - `interpHermiteDerivative`
+  - `interpHermite` now support vector types
   - Fix `dlib.math.complex.pow`, `dlib.math.complex.atan2`
 - **dlib.geometry**
   - **Breaking change:** deprecated method `Ray.intersectSphere` with `position` and `radius` arguments has been removed
