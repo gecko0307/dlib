@@ -144,8 +144,6 @@ interface ReadOnlyFileSystem
 /// A file system with read/write access.
 interface FileSystem: ReadOnlyFileSystem
 {
-    // TODO: Use exceptions or not?
-    
     /// File access flags.
     enum
     {
@@ -159,8 +157,6 @@ interface FileSystem: ReadOnlyFileSystem
         create = 1,
         truncate = 2,
     }
-
-    // TODO: Keep it this way? (strongly-typed)
 
     /** Open a file for output.
         Returns: a valid OutputStream on success, null on failure
@@ -258,28 +254,28 @@ InputRange!DirEntry findFiles(ReadOnlyFileSystem rofs, string baseDir, bool recu
 private int findFiles(ReadOnlyFileSystem rofs, string baseDir, bool recursive, int delegate(ref DirEntry entry) dg)
 {
     Directory dir = rofs.openDir(baseDir);
-
+    
     if (dir is null)
         return 0;
-
+    
     int result = 0;
-
+    
     try
     {
         foreach (entry; dir.contents)
         {
             if (!baseDir.empty)
                 entry.name = baseDir ~ "/" ~ entry.name;
-
+            
             result = dg(entry);
-
+            
             if (result != 0)
                 return result;
-
+            
             if (recursive && entry.isDirectory)
             {
                 result = findFiles(rofs, entry.name, recursive, dg);
-
+            
                 if (result != 0)
                     return result;
             }
@@ -290,6 +286,6 @@ private int findFiles(ReadOnlyFileSystem rofs, string baseDir, bool recursive, i
     {
         dir.close();
     }
-
+    
     return result;
 }

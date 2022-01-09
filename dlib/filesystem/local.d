@@ -366,7 +366,7 @@ InputStream openForInput(string filename)
     InputStream ins = rofs.openForInput(filename);
 
     if (ins is null)
-        throw new Exception("Failed to open '" ~ filename ~ "'");
+        throw new Exception("Failed to open \"" ~ filename ~ "\"");
 
     return ins;
 }
@@ -388,7 +388,7 @@ OutputStream openForOutput(string filename, uint creationFlags = FileSystem.crea
     OutputStream outs = fs.openForOutput(filename, creationFlags);
 
     if (outs is null)
-        throw new Exception("Failed to open '" ~ filename ~ "' for writing");
+        throw new Exception("Failed to open \"" ~ filename ~ "\" for writing");
 
     return outs;
 }
@@ -398,7 +398,7 @@ IOStream openForIO(string filename, uint creationFlags)
     IOStream ios = fs.openForIO(filename, creationFlags);
 
     if (ios is null)
-        throw new Exception("Failed to open '" ~ filename ~ "' for writing");
+        throw new Exception("Failed to open \"" ~ filename ~ "\" for writing");
 
     return ios;
 }

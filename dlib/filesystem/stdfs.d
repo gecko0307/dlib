@@ -60,7 +60,6 @@ version(Windows)
 import dlib.text.utils;
 import dlib.text.utf16;
 
-// TODO: where are these definitions in druntime?
 version(Windows)
 {
    extern(C) int _wmkdir(const wchar*);
