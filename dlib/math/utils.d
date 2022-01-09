@@ -317,6 +317,23 @@ version (LittleEndian)
     }
 }
 
+/**
+ * Returns 16-bit integer n with swapped endianness
+ */
+T swapEndian16(T)(T n)
+{
+    return cast(T)((n >> 8) | (n << 8));
+}
+
+///
+unittest
+{
+    assert(swapEndian16(cast(ushort)0xFF00) == 0x00FF);
+}
+
+/**
+ * Constructs uint from an array of bytes
+ */
 uint bytesToUint(ubyte[4] src) nothrow
 {
     return (src[0] << 24 | src[1] << 16 | src[2] << 8 | src[3]);

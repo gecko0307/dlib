@@ -51,6 +51,7 @@ import dlib.container.array;
 import dlib.filesystem.local;
 import dlib.image.color;
 import dlib.image.image;
+import dlib.math.utils;
 
 // Uncomment this to see debug messages
 //version = JPEGDebug;

@@ -181,8 +181,6 @@ class FMSynth: Synth
     }
 }
 
-// TODO: EnvelopeSynth
-
 /**
  * Fill a given portion of a sound with a signal from specified synthesizer.
  * Params:

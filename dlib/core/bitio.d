@@ -73,21 +73,6 @@ unittest
 }
 
 /**
- * Returns 16-bit integer n with swapped endianness
- * TODO: move to dlib.math.utils
- */
-T swapEndian16(T)(T n)
-{
-    return cast(T)((n >> 8) | (n << 8));
-}
-
-///
-unittest
-{
-    assert(swapEndian16(cast(ushort)0xFF00) == 0x00FF);
-}
-
-/**
  * Sets bit at position pos in integer b to state
  */
 T setBit(T)(T b, uint pos, bool state)
