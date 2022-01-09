@@ -269,8 +269,6 @@ StreamSize copyFromTo(InputStream input, OutputStream output)
  */
 class ArrayStream: InputStream
 {
-    // TODO: Add OutputStream methods
-    
     import std.algorithm;
 
     /// Constructor. Initializes stream as empty
@@ -313,12 +311,12 @@ class ArrayStream: InputStream
     override size_t readBytes(void* buffer, size_t count)
     {
         import core.stdc.string;
-
+        
         count = min(count, size_ - pos);
-
+        
         // whoops, memcpy out of nowhere, can we do better than that?
         memcpy(buffer, data.ptr + pos, count);
-
+        
         pos += count;
         return count;
     }
@@ -337,7 +335,7 @@ class ArrayStream: InputStream
     {
         if (pos > size_)
             return false;
-
+        
         this.pos = cast(size_t)pos;
         return true;
     }

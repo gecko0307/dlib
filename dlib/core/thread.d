@@ -177,8 +177,8 @@ class Thread
         version(Posix)
         {
             running = true;
-            pthread_create(&posixThread, null, &posixThreadFunc, cast(void*)this);
-            // TODO: validate thread creation
+            int error = pthread_create(&posixThread, null, &posixThreadFunc, cast(void*)this);
+            assert(error == 0);
             initialized = true;
         }
     }
