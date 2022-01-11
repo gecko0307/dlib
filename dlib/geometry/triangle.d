@@ -175,7 +175,7 @@ struct Triangle
             adjustMaxPoint(vertex);
         }
 
-        return boxFromMinMaxPoints(pmin - 0.5f, pmax + 0.5f);
+        return boxFromMinMaxPoints(pmin, pmax);
     }
 }
 
@@ -190,4 +190,8 @@ unittest
     
     assert(tri.isPointInside(Vector3f(0.5f, 0.5f, 0.0f)) == -1);
     assert(tri.isPointInside(Vector3f(-0.5f, 0.5f, 0.0f)) != -1);
+    
+    AABB aabb = tri.boundingBox();
+    assert(aabb.center == Vector3f(0.5f, 0.5f, 0.0f));
+    assert(aabb.size == Vector3f(0.5f, 0.5f, 0.0f));
 }
