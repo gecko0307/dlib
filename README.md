@@ -12,7 +12,7 @@ dlib has no external dependencies aside D's standard library. dlib is created an
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/gecko0307/dlib?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Patreon button](https://img.shields.io/badge/patreon-donate-yellow.svg)](http://patreon.com/gecko0307 "Become a Patron!")
 
-If you like dlib, please support its development on [Patreon](https://www.patreon.com/gecko0307) or [Liberapay](https://liberapay.com/gecko0307). You can also make one-time donation via [PayPal](https://www.paypal.me/tgafarov). Thanks in advance!
+If you like dlib, please support its development on [Patreon](https://www.patreon.com/gecko0307) or [Liberapay](https://liberapay.com/gecko0307). You can also make one-time donation via [PayPal](https://www.paypal.me/tgafarov) or [NOWPayments](https://nowpayments.io/donation/gecko0307). Thanks in advance!
 
 **Important:** if you want to use dlib on macOS then, please, first read the [manifesto](https://github.com/gecko0307/dlib/wiki/Why-doesn't-dlib-support-macOS).
 
