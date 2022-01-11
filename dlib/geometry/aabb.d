@@ -37,6 +37,7 @@ import std.math;
 import std.algorithm;
 import dlib.math.vector;
 import dlib.geometry.sphere;
+import dlib.geometry.intersection;
 
 /// Axis-aligned bounding box
 struct AABB
@@ -80,9 +81,6 @@ struct AABB
                  point.z < pmin.z || point.z > pmax.z);
     }
 
-    // TODO: move the following into
-    // separate intersection module
-
     bool intersectsAABB(AABB b)
     {
         Vector3f t = b.center - center;
@@ -91,29 +89,16 @@ struct AABB
                fabs(t.z) <= (size.z + b.size.z);
     }
 
+    deprecated("use dlib.geometry.intersection.intrSphereVsAABB instead")
     bool intersectsSphere(
         Sphere sphere,
         out Vector3f collisionNormal,
         out float penetrationDepth)
     {
-        penetrationDepth = 0.0f;
-        collisionNormal = Vector3f(0.0f, 0.0f, 0.0f);
-
-        if (containsPoint(sphere.center))
-            return true;
-
-        Vector3f xClosest = closestPoint(sphere.center);
-        Vector3f xDiff = sphere.center - xClosest;
-
-        float fDistSquared = xDiff.lengthsqr();
-        if (fDistSquared > sphere.radius * sphere.radius)
-            return false;
-
-        float fDist = sqrt(fDistSquared);
-        penetrationDepth = sphere.radius - fDist;
-        collisionNormal = xDiff / fDist;
-        collisionNormal.normalize();
-        return true;
+        Intersection intr = intrSphereVsAABB(sphere, this);
+        collisionNormal = -intr.normal;
+        penetrationDepth = intr.penetrationDepth;
+        return intr.fact;
     }
 
     private bool intersectsRaySlab(
@@ -199,13 +184,6 @@ unittest
     assert(isConsiderZero(t * segLength - 2.0f));
     
     assert(!aabb1.intersectsSegment(Vector3f(5, 0, 3), Vector3f(5, 0, -3), t));
-    
-    Sphere sphere = Sphere(Vector3f(1.5f, 0.0f, 0.0f), 1.0f);
-    Vector3f sphereCollisionNormal;
-    float spherePenetrationDepth;
-    assert(aabb1.intersectsSphere(sphere, sphereCollisionNormal, spherePenetrationDepth));
-    assert(isAlmostZero(sphereCollisionNormal - Vector3f(1.0f, 0.0f, 0.0f)));
-    assert(isConsiderZero(spherePenetrationDepth - 0.5f));
 }
 
 /// Creates AABB from minimum and maximum points

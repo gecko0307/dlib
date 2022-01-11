@@ -37,10 +37,11 @@ import std.math;
 import dlib.math.vector;
 import dlib.math.utils;
 import dlib.math.transformation;
-import dlib.geometry.sphere;
-import dlib.geometry.plane;
-import dlib.geometry.triangle;
+import dlib.geometry.aabb;
 import dlib.geometry.obb;
+import dlib.geometry.plane;
+import dlib.geometry.sphere;
+import dlib.geometry.triangle;
 
 /// Stores intersection data
 struct Intersection
@@ -251,6 +252,51 @@ unittest
     assert(isConsiderZero(isec.penetrationDepth - 0.1f));
     assert(isAlmostZero(isec.point - Vector3f(0.0f, -0.1f, 0.0f)));
     assert(isAlmostZero(isec.normal - Vector3f(0.0f, 1.0f, 0.0f)));
+}
+
+/// Checks sphere and AABB for intersection
+Intersection intrSphereVsAABB(ref Sphere sphere, ref AABB aabb)
+{
+    Intersection result;
+    result.penetrationDepth = 0.0f;
+    result.normal = Vector3f(0.0f, 0.0f, 0.0f);
+    result.fact = false;
+
+    if (aabb.containsPoint(sphere.center))
+    {
+        result.penetrationDepth = distance(aabb.center, sphere.center);
+        result.normal = (aabb.center - sphere.center) / result.penetrationDepth;
+        result.point = sphere.center + result.normal * sphere.radius;
+        result.fact = true;
+        return result;
+    }
+    else
+    {
+        Vector3f closest = aabb.closestPoint(sphere.center);
+        Vector3f delta = closest - sphere.center;
+
+        float distSquared = delta.lengthsqr();
+        if (distSquared > sphere.radius * sphere.radius)
+            return result;
+
+        result.fact = true;
+        float dist = sqrt(distSquared);
+        result.penetrationDepth = sphere.radius - dist;
+        result.normal = delta / dist;
+        result.point = sphere.center + result.normal * sphere.radius;
+        return result;
+    }
+}
+
+///
+unittest
+{
+    Sphere sphere = Sphere(Vector3f(1.5f, 0.0f, 0.0f), 1.0f);
+    AABB aabb = AABB(Vector3f(0, 0, 0), Vector3f(1, 1, 1));
+    Intersection intr = intrSphereVsAABB(sphere, aabb);
+    assert(intr.fact);
+    assert(isAlmostZero(intr.normal - Vector3f(-1.0f, 0.0f, 0.0f)));
+    assert(isConsiderZero(intr.penetrationDepth - 0.5f));
 }
 
 /// Checks sphere and OBB for intersection
