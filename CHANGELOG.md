@@ -1,14 +1,21 @@
 dlib 1.0.0 beta1 - TBD
 ----------------------
+- **dlib.core**
+  - **Breaking change:** `dlib.core.bitio.swapEndian16` moved to `dlib.math.utils`
+  - POSIX thread creation is now validated in debug mode
 - **dlib.math**
   - **Breaking change:** deprecated method `Quaternion.generator` has been removed
   - **Breaking change:** deprecated functions `sum`, `invertArray`, `allIsZero` in `dlib.math.utils` have been removed
   - `interpHermiteDerivative`
   - `interpHermite` now support vector types
+  - `Complexd` alias to `Complex!(double)` in `dlib.math.complex`
   - Fix `dlib.math.complex.pow`, `dlib.math.complex.atan2`
 - **dlib.geometry**
   - **Breaking change:** deprecated method `Ray.intersectSphere` with `position` and `radius` arguments has been removed
   - **Breaking change:** deprecated method `Ray.intersectTriangle` with `v0`, `v1`, `v2` arguments has been removed.
+  - Fix `Triangle.boundingBox`
+  - New function `intrSphereVsAABB` in `dlib.geometry.intersection`
+  - `AABB.intersectsSphere` is deprecated, use `intrSphereVsAABB` instead
 
 dlib 0.23.0 - 1 Oct, 2021
 -------------------------
