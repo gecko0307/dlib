@@ -43,7 +43,6 @@ private
 /// Triangle object
 struct Triangle
 {
-    public:
     Vector3f[3] v;
     Vector3f[3] n;
     Vector2f[3] t1;
@@ -57,6 +56,7 @@ struct Triangle
 
     int materialIndex;
 
+    /// Returns -1 if given point is inside the triangle
     int isPointInside(Vector3f point)
     {
         //select coordinate
@@ -68,8 +68,8 @@ struct Triangle
             if (abs(normal[1]) > abs(normal[0])) //use y plane
             {
                 plane = 1;
-                dim0 = 2; //0;
-                dim1 = 0; //2;
+                dim0 = 2;
+                dim1 = 0;
             }
             else //use x plane
             {
@@ -177,4 +177,17 @@ struct Triangle
 
         return boxFromMinMaxPoints(pmin - 0.5f, pmax + 0.5f);
     }
+}
+
+///
+unittest
+{
+    Triangle tri = {
+        v: [Vector3f(0, 0, 0), Vector3f(0, 1, 0), Vector3f(1, 0, 0)],
+        n: [Vector3f(0, 0, 1), Vector3f(0, 0, 1), Vector3f(0, 0, 1)],
+        normal: Vector3f(0, 0, 1)
+    };
+    
+    assert(tri.isPointInside(Vector3f(0.5f, 0.5f, 0.0f)) == -1);
+    assert(tri.isPointInside(Vector3f(-0.5f, 0.5f, 0.0f)) != -1);
 }
