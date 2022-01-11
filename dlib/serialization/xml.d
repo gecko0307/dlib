@@ -627,26 +627,37 @@ XmlDocument parseXMLUnmanaged(string text)
 unittest
 {
     string xml = "
+    <?xml version=\"1.0\" encoding=\"UTF-8\"?>
     <object>
         <property name=\"position\" value=\"0 10 5\"/>
         <!-- comment -->
         <![CDATA[ some data ]]>
-        <foo></foo>
+        <foo>&#xE9;</foo>
     </object>
     ";
     
     XmlDocument doc = parseXMLUnmanaged(xml);
     
+    assert(doc.prolog.properties["version"] == "1.0");
+    assert(doc.prolog.properties["encoding"] == "UTF-8");
+    
     auto obj = doc.root.children[0];
     assert(obj.name == "object");
     
-    auto prop = obj.children[0];
-    assert(prop.name == "property");
-    assert(prop.properties["name"] == "position");
-    assert(prop.properties["value"] == "0 10 5");
+    auto p = obj.children[0];
+    assert(p.name == "property");
+    assert(p.properties["name"] == "position");
+    assert(p.properties["value"] == "0 10 5");
     
-    auto tag = obj.firstChildByTag("foo");
-    assert(tag.name == "foo");
+    assert(prop(p, "name") == "position");
+    assert(prop(p, "something") == "");
+    
+    auto foo = obj.firstChildByTag("foo");
+    assert(foo.name == "foo");
+    
+    string fooText = foo.getTextUnmanaged();
+    assert(fooText == "é");
+    Delete(fooText);
     
     Delete(doc);
 }
@@ -680,5 +691,5 @@ int hexCharacterCode(string input)
 unittest
 {
     assert(hexCharacterCode("ff00ff") == 16711935);
-    assert(hexCharacterCode("ABABAB") == 11250603);
+    assert(hexCharacterCode("ABABAB;") == 11250603);
 }
