@@ -202,48 +202,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/filesystem.html">filesystem</a>
 					</div>
 			<ul class="tree-view">
-				<li class="tree-view collapsed">
-					<div class="package ">posix
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
-				<li class="tree-view collapsed">
-					<div class="package ">windows
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/delegaterange.html">delegaterange</a>
@@ -267,16 +225,6 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/stdfs.html">stdfs</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
 					</div>
 				</li>
 			</ul>
@@ -716,11 +664,6 @@ $('#symbolSearchPane').show();</script>
 			<ul class="tree-view">
 				<li>
 					<div class="module ">
-						<a href="../../../dlib/network/errno.html">errno</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
 						<a href="../../../dlib/network/socket.html">socket</a>
 					</div>
 				</li>
@@ -753,11 +696,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/text.html">text</a>
 					</div>
 			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/text/common.html">common</a>
-					</div>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/text/encodings.html">encodings</a>
@@ -807,234 +745,44 @@ $('#symbolSearchPane').show();</script>
 				</code>
 			</div>
 			
-			<section><h2>Constructors</h2>
-				<table>
-					<col class="caption"/>
-					<tr>
-						<th>Name</th><th>Description</th>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/lexer/Lexer.this.html" class="public">
-								<code>this</code>
-							</a>
-							<span class="tableEntryAnnotation">(input, delims)</span>
-						</td>
-						<td></td>
-					</tr>
-				</table>
-			</section>
-			<section><h2>Fields</h2>
-				<table>
-					<col class="caption"/>
-					<tr>
-						<th>Name</th><th>Type</th><th>Description</th>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/lexer/Lexer.ignoreNewlines.html" class="public"><code>ignoreNewlines</code></a>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">bool</span></code></td><td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/lexer/Lexer.ignoreWhitespaces.html" class="public"><code>ignoreWhitespaces</code></a>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">bool</span></code></td><td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/lexer/Lexer.current.html" class="protected"><code>current</code></a>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">dchar</span></code></td><td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/lexer/Lexer.currentSize.html" class="protected"><code>currentSize</code></a>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">uint</span></code></td><td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/lexer/Lexer.dec.html" class="protected"><code>dec</code></a>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/text/utf8/UTF8Decoder.html"><span class="typ">UTF8Decoder</span></a></code></td><td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/lexer/Lexer.delims.html" class="protected"><code>delims</code></a>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">string</span><span class="pun">[]</span></code></td><td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/lexer/Lexer.index.html" class="protected"><code>index</code></a>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">uint</span></code></td><td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/lexer/Lexer.input.html" class="protected"><code>input</code></a>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">string</span></code></td><td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/lexer/Lexer._front.html" class="private"><code>_front</code></a>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">string</span></code></td><td></td>
-					</tr>
-				</table>
-			</section>
-			<section><h2>Properties</h2>
-				<table>
-					<col class="caption"/>
-					<tr>
-						<th>Name</th><th>Type</th><th>Description</th>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/lexer/Lexer.position.html" class="public property"><code>position</code></a><span class="tableEntryAnnotation">[get]</span>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">uint</span></code></td><td></td>
-					</tr>
-				</table>
-			</section>
-			<section><h2>Methods</h2>
-				<table>
-					<col class="caption"/>
-					<tr>
-						<th>Name</th><th>Description</th>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/lexer/Lexer.empty.html" class="public">
-								<code>empty</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/lexer/Lexer.front.html" class="public">
-								<code>front</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/lexer/Lexer.getLexeme.html" class="public">
-								<code>getLexeme</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/lexer/Lexer.moveFront.html" class="public">
-								<code>moveFront</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/lexer/Lexer.opApply.html" class="public">
-								<code>opApply</code>
-							</a>
-							<span class="tableEntryAnnotation">(dg)</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/lexer/Lexer.opApply.html" class="public">
-								<code>opApply</code>
-							</a>
-							<span class="tableEntryAnnotation">(dg)</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/lexer/Lexer.popFront.html" class="public">
-								<code>popFront</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/lexer/Lexer.advance.html" class="protected">
-								<code>advance</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/lexer/Lexer.consumeDelimiter.html" class="protected">
-								<code>consumeDelimiter</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/lexer/Lexer.forwardCompare.html" class="protected">
-								<code>forwardCompare</code>
-							</a>
-							<span class="tableEntryAnnotation">(str)</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/lexer/Lexer.forwardJump.html" class="protected">
-								<code>forwardJump</code>
-							</a>
-							<span class="tableEntryAnnotation">(numChars)</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/lexer/Lexer.isNewline.html" class="protected">
-								<code>isNewline</code>
-							</a>
-							<span class="tableEntryAnnotation">(c)</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/lexer/Lexer.isWhitespace.html" class="protected">
-								<code>isWhitespace</code>
-							</a>
-							<span class="tableEntryAnnotation">(c)</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/lexer/Lexer.pos.html" class="protected">
-								<code>pos</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td></td>
-					</tr>
-				</table>
-			</section>
-			
+			<section><h2>Example</h2>
+
+<pre class="code"><code class="lang-d"><span class="kwd">import </span><span class="pln">std<wbr/></span><span class="pun">.</span><span class="pln">array</span><span class="pun">: </span><span class="pln">array</span><span class="pun">;
+</span><span class="kwd">import </span><span class="pln">std<wbr/></span><span class="pun">.</span><span class="pln">range</span><span class="pun">: </span><span class="pln">iota</span><span class="pun">;
+
+</span><span class="typ">string</span><span class="pun">[] </span><span class="pln">delims </span><span class="pun">=
+[
+    </span><span class="str">"("</span><span class="pun">, </span><span class="str">")"</span><span class="pun">, </span><span class="str">";"</span><span class="pun">, </span><span class="str">" "</span><span class="pun">, </span><span class="str">"{"</span><span class="pun">, </span><span class="str">"}"</span><span class="pun">, </span><span class="str">"."</span><span class="pun">, </span><span class="str">"\n"</span><span class="pun">, </span><span class="str">"\r"</span><span class="pun">, </span><span class="str">"="</span><span class="pun">, </span><span class="str">"++"</span><span class="pun">, </span><span class="str">"&lt;"
+</span><span class="pun">];
+</span><span class="kwd">auto </span><span class="pln">input </span><span class="pun">= </span><span class="str">"for (int i=0; i&lt;arr.length; ++i)\r\n{doThing();}\n"</span><span class="pun">;
+</span><span class="kwd">auto </span><span class="pln">lexer </span><span class="pun">= </span><span class="kwd">new </span><span class="typ">Lexer</span><span class="pun">(</span><span class="pln">input</span><span class="pun">, </span><span class="pln">delims</span><span class="pun">);
+
+</span><span class="typ">string</span><span class="pun">[] </span><span class="pln">arr</span><span class="pun">;
+</span><span class="kwd">while</span><span class="pun">(</span><span class="kwd">true</span><span class="pun">)
+{
+    </span><span class="kwd">auto </span><span class="pln">lexeme </span><span class="pun">= </span><span class="pln">lexer<wbr/></span><span class="pun">.</span><span class="pln">getLexeme</span><span class="pun">();
+    </span><span class="kwd">if</span><span class="pun">(</span><span class="pln">lexeme<wbr/></span><span class="pun">.</span><span class="pln">length </span><span class="pun">== </span><span class="lit">0</span><span class="pun">)
+        </span><span class="kwd">break</span><span class="pun">;
+    </span><span class="pln">arr </span><span class="pun">~= </span><span class="pln">lexeme</span><span class="pun">;
+}
+</span><span class="kwd">auto </span><span class="pln">reference </span><span class="pun">=
+[
+    </span><span class="str">"for"</span><span class="pun">, </span><span class="str">" "</span><span class="pun">, </span><span class="str">"("</span><span class="pun">, </span><span class="str">"int"</span><span class="pun">, </span><span class="str">" "</span><span class="pun">, </span><span class="str">"i"</span><span class="pun">, </span><span class="str">"="</span><span class="pun">, </span><span class="str">"0"</span><span class="pun">, </span><span class="str">";"</span><span class="pun">, </span><span class="str">" "</span><span class="pun">, </span><span class="str">"i"</span><span class="pun">, </span><span class="str">"&lt;"</span><span class="pun">,
+    </span><span class="str">"arr"</span><span class="pun">, </span><span class="str">"."</span><span class="pun">, </span><span class="str">"length"</span><span class="pun">, </span><span class="str">";"</span><span class="pun">, </span><span class="str">" "</span><span class="pun">, </span><span class="str">"++"</span><span class="pun">, </span><span class="str">"i"</span><span class="pun">, </span><span class="str">")"</span><span class="pun">, </span><span class="str">"\n"</span><span class="pun">, </span><span class="str">"{"</span><span class="pun">, </span><span class="str">"doThing"</span><span class="pun">,
+    </span><span class="str">"("</span><span class="pun">, </span><span class="str">")"</span><span class="pun">, </span><span class="str">";"</span><span class="pun">, </span><span class="str">"}"</span><span class="pun">, </span><span class="str">"\n"
+</span><span class="pun">];
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">arr </span><span class="pun">== </span><span class="pln">reference</span><span class="pun">);
+
+</span><span class="pln">lexer </span><span class="pun">= </span><span class="kwd">new </span><span class="typ">Lexer</span><span class="pun">(</span><span class="pln">input</span><span class="pun">, </span><span class="pln">delims</span><span class="pun">);
+</span><span class="pln">arr </span><span class="pun">= </span><span class="pln">array</span><span class="pun">(</span><span class="pln">lexer</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">arr </span><span class="pun">== </span><span class="pln">reference</span><span class="pun">);
+
+</span><span class="pln">input </span><span class="pun">= </span><span class="str">""</span><span class="pun">;
+</span><span class="pln">lexer </span><span class="pun">= </span><span class="kwd">new </span><span class="typ">Lexer</span><span class="pun">(</span><span class="pln">input</span><span class="pun">, </span><span class="pln">delims</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">lexer<wbr/></span><span class="pun">.</span><span class="pln">getLexeme</span><span class="pun">()<wbr/>.</span><span class="pln">length </span><span class="pun">== </span><span class="lit">0</span><span class="pun">);
+</span></code></pre>
+</section>
+
 			<footer>
 				<table class="license-info">
 					<tr>
@@ -1048,7 +796,7 @@ $('#symbolSearchPane').show();</script>
 					<tr>
 						<th>Copyright</th>
 						<td>
-							<p>Timur Gafarov 2016-2021.
+							<p>Timur Gafarov 2016-2022.
 </p>
 
 						</td>

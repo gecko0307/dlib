@@ -202,48 +202,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/filesystem.html">filesystem</a>
 					</div>
 			<ul class="tree-view">
-				<li class="tree-view collapsed">
-					<div class="package ">posix
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
-				<li class="tree-view collapsed">
-					<div class="package ">windows
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/delegaterange.html">delegaterange</a>
@@ -267,16 +225,6 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/stdfs.html">stdfs</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
 					</div>
 				</li>
 			</ul>
@@ -716,11 +664,6 @@ $('#symbolSearchPane').show();</script>
 			<ul class="tree-view">
 				<li>
 					<div class="module ">
-						<a href="../../../dlib/network/errno.html">errno</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
 						<a href="../../../dlib/network/socket.html">socket</a>
 					</div>
 				</li>
@@ -753,11 +696,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/text.html">text</a>
 					</div>
 			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/text/common.html">common</a>
-					</div>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/text/encodings.html">encodings</a>
@@ -806,64 +744,6 @@ $('#symbolSearchPane').show();</script>
 				</code>
 			</div>
 			
-			<section><h2>Constructors</h2>
-				<table>
-					<col class="caption"/>
-					<tr>
-						<th>Name</th><th>Description</th>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/math/quaternion/Quaternion.this.html" class="public">
-								<code>this</code>
-							</a>
-							<span class="tableEntryAnnotation">(x, y, z, w)</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/math/quaternion/Quaternion.this.html" class="public">
-								<code>this</code>
-							</a>
-							<span class="tableEntryAnnotation">(arr)</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/math/quaternion/Quaternion.this.html" class="public">
-								<code>this</code>
-							</a>
-							<span class="tableEntryAnnotation">(v)</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/math/quaternion/Quaternion.this.html" class="public">
-								<code>this</code>
-							</a>
-							<span class="tableEntryAnnotation">(v, neww)</span>
-						</td>
-						<td></td>
-					</tr>
-				</table>
-			</section>
-			<section><h2>Fields</h2>
-				<table>
-					<col class="caption"/>
-					<tr>
-						<th>Name</th><th>Type</th><th>Description</th>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/math/quaternion/Quaternion.vectorof.html" class="public"><code>vectorof</code></a>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/math/vector/Vector.html"><span class="typ">Vector</span></a>!(T,4)</code></td><td></td>
-					</tr>
-				</table>
-			</section>
 			<section><h2>Methods</h2>
 				<table>
 					<col class="caption"/>
@@ -899,7 +779,7 @@ $('#symbolSearchPane').show();</script>
 							<span class="tableEntryAnnotation">(e)</span>
 						</td>
 						<td>Setup the quaternion to perform a rotation,
- given the orientation in XYZ-Euler angles format (in radians)
+ given the orientation in Euler angles pitch, yaw, roll (in radians)
 </td>
 					</tr>
 					<tr>
@@ -911,16 +791,6 @@ $('#symbolSearchPane').show();</script>
 						</td>
 						<td>Setup the quaternion to perform a rotation,
  given the angular displacement in matrix form
-</td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/math/quaternion/Quaternion.generator.html" class="public">
-								<code>generator</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td>Quaternion as an angular velocity
 </td>
 					</tr>
 					<tr>
@@ -1012,15 +882,6 @@ $('#symbolSearchPane').show();</script>
 						</td>
 						<td>T * Quaternion!(T)
 </td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/math/quaternion/Quaternion.opBinaryRight.html" class="public">
-								<code>opBinaryRight</code>
-							</a>
-							<span class="tableEntryAnnotation">(v)</span>
-						</td>
-						<td></td>
 					</tr>
 					<tr>
 						<td>
@@ -1119,8 +980,8 @@ $('#symbolSearchPane').show();</script>
 							</a>
 							<span class="tableEntryAnnotation">()</span>
 						</td>
-						<td>Setup the Euler angles, given a rotation Quaternion.
- Returned x,y,z are in radians
+						<td>Setup the Euler angles (pitch, yaw, roll), given a rotation Quaternion.
+ Returned x, y, z are in radians
 </td>
 					</tr>
 					<tr>
@@ -1145,22 +1006,6 @@ $('#symbolSearchPane').show();</script>
 					</tr>
 				</table>
 			</section>
-			<section><h2>Aliases</h2>
-				<table>
-					<col class="caption"/>
-					<tr>
-						<th>Name</th><th>Description</th>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/math/quaternion/Quaternion.conj.html" class="public">
-								<code>conj</code>
-							</a>
-						</td>
-						<td></td>
-					</tr>
-				</table>
-			</section>
 			
 			<footer>
 				<table class="license-info">
@@ -1175,7 +1020,7 @@ $('#symbolSearchPane').show();</script>
 					<tr>
 						<th>Copyright</th>
 						<td>
-							<p>Timur Gafarov 2011-2021.
+							<p>Timur Gafarov 2011-2022.
 </p>
 
 						</td>

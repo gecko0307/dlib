@@ -202,48 +202,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/filesystem.html">filesystem</a>
 					</div>
 			<ul class="tree-view">
-				<li class="tree-view collapsed">
-					<div class="package ">posix
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
-				<li class="tree-view collapsed">
-					<div class="package ">windows
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/delegaterange.html">delegaterange</a>
@@ -267,16 +225,6 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/stdfs.html">stdfs</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
 					</div>
 				</li>
 			</ul>
@@ -716,11 +664,6 @@ $('#symbolSearchPane').show();</script>
 			<ul class="tree-view">
 				<li>
 					<div class="module ">
-						<a href="../../../dlib/network/errno.html">errno</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
 						<a href="../../../dlib/network/socket.html">socket</a>
 					</div>
 				</li>
@@ -753,11 +696,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/text.html">text</a>
 					</div>
 			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/text/common.html">common</a>
-					</div>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/text/encodings.html">encodings</a>
@@ -846,32 +784,6 @@ $('#symbolSearchPane').show();</script>
 					</tr>
 				</table>
 			</section>
-			<section><h2>Fields</h2>
-				<table>
-					<col class="caption"/>
-					<tr>
-						<th>Name</th><th>Type</th><th>Description</th>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/core/stream/ArrayStream.data.html" class="private"><code>data</code></a>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">ubyte</span><span class="pun">[]</span></code></td><td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/core/stream/ArrayStream.pos.html" class="private"><code>pos</code></a>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">ulong</span></code></td><td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/core/stream/ArrayStream.size_.html" class="private"><code>size_</code></a>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">ulong</span></code></td><td></td>
-					</tr>
-				</table>
-			</section>
 			<section><h2>Properties</h2>
 				<table>
 					<col class="caption"/>
@@ -895,73 +807,12 @@ $('#symbolSearchPane').show();</script>
 					</tr>
 					<tr>
 						<td>
-							<a href="../../../dlib/core/stream/ArrayStream.close.html" class="public">
+							<a href="../../../dlib/core/stream/Stream.close.html" class="public inherited">
 								<code>close</code>
 							</a>
 							<span class="tableEntryAnnotation">()</span>
 						</td>
 						<td>Closes the stream. Closed stream cannot be read or written any more
-</td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/core/stream/ArrayStream.getPosition.html" class="public">
-								<code>getPosition</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/core/stream/ArrayStream.readable.html" class="public">
-								<code>readable</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td>Returns true if there are any data to read. false means end of the stream.
-</td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/core/stream/ArrayStream.readBytes.html" class="public">
-								<code>readBytes</code>
-							</a>
-							<span class="tableEntryAnnotation">(buffer, count)</span>
-						</td>
-						<td>Attempts to read count bytes from stream and stores them in memory
- pointing by buffer. Returns number of bytes actually read
-</td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/core/stream/ArrayStream.seekable.html" class="public">
-								<code>seekable</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td>Returns true if it is legal to use Seekable functionality on this stream
-</td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/core/stream/ArrayStream.setPosition.html" class="public">
-								<code>setPosition</code>
-							</a>
-							<span class="tableEntryAnnotation">(pos)</span>
-						</td>
-						<td>Attempts to set current position to pos.
- Returns true on success, false on failure
-</td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/core/stream/ArrayStream.size.html" class="public">
-								<code>size</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td>Returns the size of a stream in bytes
 </td>
 					</tr>
 					<tr>
@@ -988,6 +839,16 @@ $('#symbolSearchPane').show();</script>
 					</tr>
 					<tr>
 						<td>
+							<a href="../../../dlib/core/stream/InputStream.readable.html" class="public inherited">
+								<code>readable</code>
+							</a>
+							<span class="tableEntryAnnotation">()</span>
+						</td>
+						<td>Returns true if there are any data to read. false means end of the stream.
+</td>
+					</tr>
+					<tr>
+						<td>
 							<a href="../../../dlib/core/stream/InputStream.readBE.html" class="public inherited">
 								<code>readBE</code>
 							</a>
@@ -995,6 +856,17 @@ $('#symbolSearchPane').show();</script>
 						</td>
 						<td>Reads big-endian integer, converts to native-endian
  and stores in value
+</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/core/stream/InputStream.readBytes.html" class="public inherited">
+								<code>readBytes</code>
+							</a>
+							<span class="tableEntryAnnotation">(buffer, count)</span>
+						</td>
+						<td>Attempts to read count bytes from stream and stores them in memory
+ pointing by buffer. Returns number of bytes actually read
 </td>
 					</tr>
 					<tr>
@@ -1020,9 +892,74 @@ $('#symbolSearchPane').show();</script>
  Throws SeekException on failure
 </td>
 					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/core/stream/Stream.seekable.html" class="public inherited">
+								<code>seekable</code>
+							</a>
+							<span class="tableEntryAnnotation">()</span>
+						</td>
+						<td>Returns true if it is legal to use Seekable functionality on this stream
+</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/core/stream/Seekable.setPosition.html" class="public inherited">
+								<code>setPosition</code>
+							</a>
+							<span class="tableEntryAnnotation">(pos)</span>
+						</td>
+						<td>Attempts to set current position to pos.
+ Returns true on success, false on failure
+</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/core/stream/Seekable.size.html" class="public inherited">
+								<code>size</code>
+							</a>
+							<span class="tableEntryAnnotation">()</span>
+						</td>
+						<td>Returns the size of a stream in bytes
+</td>
+					</tr>
 				</table>
 			</section>
-			
+			<section><h2>Example</h2>
+
+<pre class="code"><code class="lang-d"><span class="typ">ubyte</span><span class="pun">[] </span><span class="pln">arr </span><span class="pun">= [</span><span class="lit">23</span><span class="pun">, </span><span class="lit">13</span><span class="pun">, </span><span class="lit">42</span><span class="pun">, </span><span class="lit">71</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">2</span><span class="pun">, </span><span class="lit">3</span><span class="pun">, </span><span class="lit">5</span><span class="pun">, </span><span class="lit">8</span><span class="pun">];
+
+</span><span class="kwd">auto </span><span class="pln">stream </span><span class="pun">= </span><span class="kwd">new </span><span class="typ">ArrayStream</span><span class="pun">(</span><span class="pln">arr</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">size</span><span class="pun">() == </span><span class="pln">arr<wbr/></span><span class="pun">.</span><span class="pln">length</span><span class="pun">);
+
+</span><span class="typ">ubyte</span><span class="pun">[</span><span class="lit">4</span><span class="pun">] </span><span class="pln">buf</span><span class="pun">;
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">readBytes</span><span class="pun">(</span><span class="pln">buf<wbr/></span><span class="pun">.</span><span class="pln">ptr</span><span class="pun">, </span><span class="pln">buf<wbr/></span><span class="pun">.</span><span class="pln">length</span><span class="pun">) == </span><span class="pln">buf<wbr/></span><span class="pun">.</span><span class="pln">length</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">buf </span><span class="pun">== [</span><span class="lit">23</span><span class="pun">, </span><span class="lit">13</span><span class="pun">, </span><span class="lit">42</span><span class="pun">, </span><span class="lit">71</span><span class="pun">]);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">getPosition</span><span class="pun">() == </span><span class="pln">buf<wbr/></span><span class="pun">.</span><span class="pln">length</span><span class="pun">);
+
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">setPosition</span><span class="pun">(</span><span class="lit">6</span><span class="pun">));
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">getPosition </span><span class="pun">== </span><span class="lit">6</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">readBytes</span><span class="pun">(</span><span class="pln">buf<wbr/></span><span class="pun">.</span><span class="pln">ptr</span><span class="pun">, </span><span class="pln">buf<wbr/></span><span class="pun">.</span><span class="pln">length</span><span class="pun">) == </span><span class="pln">buf<wbr/></span><span class="pun">.</span><span class="pln">length</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">buf </span><span class="pun">== [</span><span class="lit">1</span><span class="pun">, </span><span class="lit">2</span><span class="pun">, </span><span class="lit">3</span><span class="pun">, </span><span class="lit">5</span><span class="pun">]);
+
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">readBytes</span><span class="pun">(</span><span class="pln">buf<wbr/></span><span class="pun">.</span><span class="pln">ptr</span><span class="pun">, </span><span class="pln">buf<wbr/></span><span class="pun">.</span><span class="pln">length</span><span class="pun">) == </span><span class="lit">1</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">buf</span><span class="pun">[</span><span class="lit">0</span><span class="pun">] == </span><span class="lit">8</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(!</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">readable</span><span class="pun">);
+
+</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">setPosition</span><span class="pun">(</span><span class="lit">1</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">readable</span><span class="pun">);
+</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">seek</span><span class="pun">(</span><span class="lit">4</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">readBytes</span><span class="pun">(</span><span class="pln">buf<wbr/></span><span class="pun">.</span><span class="pln">ptr</span><span class="pun">, </span><span class="pln">buf<wbr/></span><span class="pun">.</span><span class="pln">length</span><span class="pun">) == </span><span class="pln">buf<wbr/></span><span class="pun">.</span><span class="pln">length</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">buf </span><span class="pun">== [</span><span class="lit">1</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">2</span><span class="pun">, </span><span class="lit">3</span><span class="pun">]);
+
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">setPosition</span><span class="pun">(</span><span class="pln">arr<wbr/></span><span class="pun">.</span><span class="pln">length</span><span class="pun">));
+</span><span class="kwd">assert</span><span class="pun">(!</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">setPosition</span><span class="pun">(</span><span class="pln">arr<wbr/></span><span class="pun">.</span><span class="pln">length </span><span class="pun">+ </span><span class="lit">1</span><span class="pun">));
+
+</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">close</span><span class="pun">();
+</span><span class="kwd">assert</span><span class="pun">(!</span><span class="pln">stream<wbr/></span><span class="pun">.</span><span class="pln">readable</span><span class="pun">);
+</span></code></pre>
+</section>
+
 			<footer>
 				<table class="license-info">
 					<tr>
@@ -1036,7 +973,7 @@ $('#symbolSearchPane').show();</script>
 					<tr>
 						<th>Copyright</th>
 						<td>
-							<p>Martin Cejp 2014-2021.
+							<p>Martin Cejp 2014-2022.
 </p>
 
 						</td>

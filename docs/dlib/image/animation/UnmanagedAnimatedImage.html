@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8"/>
-		<title>Class UnmanagedAnimatedImage</title>
+		<title>Function unmanagedAnimatedImage</title>
 		<link rel="stylesheet" type="text/css" href="../../../styles/ddox.css"/>
 		<link rel="stylesheet" href="../../../prettify/prettify.css" type="text/css"/>
 		<script type="text/javascript" src="../../../scripts/jquery.js">/**/</script><script type="text/javascript" src="../../../scripts/ddox.js">/**/</script>
@@ -202,48 +202,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/filesystem.html">filesystem</a>
 					</div>
 			<ul class="tree-view">
-				<li class="tree-view collapsed">
-					<div class="package ">posix
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
-				<li class="tree-view collapsed">
-					<div class="package ">windows
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/delegaterange.html">delegaterange</a>
@@ -267,16 +225,6 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/stdfs.html">stdfs</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
 					</div>
 				</li>
 			</ul>
@@ -716,11 +664,6 @@ $('#symbolSearchPane').show();</script>
 			<ul class="tree-view">
 				<li>
 					<div class="module ">
-						<a href="../../../dlib/network/errno.html">errno</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
 						<a href="../../../dlib/network/socket.html">socket</a>
 					</div>
 				</li>
@@ -753,11 +696,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/text.html">text</a>
 					</div>
 			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/text/common.html">common</a>
-					</div>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/text/encodings.html">encodings</a>
@@ -795,83 +733,29 @@ $('#symbolSearchPane').show();</script>
 			</ul>
 		</nav>
 		<div id="main-contents">
-			<h1>Class UnmanagedAnimatedImage</h1><p>AnimatedImage that uses dlib.core.memory instead of GC
+			<h1>Function unmanagedAnimatedImage</h1><p>Factory function for UnmanagedAnimatedImage
 </p>
 			<div class="prototype">
 				<code class="lang-d">
 					<div class="single-prototype">
-			<span class="kwd">class</span> <span class="typ">UnmanagedAnimatedImage</span>(<a href="../../../dlib/image/image/IntegerPixelFormat.html"><span class="typ">IntegerPixelFormat</span></a> fmt)
-			<span class="pun">;</span>
+			<a href="../../../dlib/image/image/SuperImage.html"><span class="typ">SuperImage</span></a> <span class="pln">unmanagedAnimatedImage</span>
+			<span class="pun">(</span>
+			<br/>
+			&nbsp;&nbsp;<span class="typ">uint</span> <span class="pln">w</span><span class="pun">,</span>
+			<br/>
+			&nbsp;&nbsp;<span class="typ">uint</span> <span class="pln">h</span><span class="pun">,</span>
+			<br/>
+			&nbsp;&nbsp;<span class="typ">uint</span> <span class="pln">channels</span><span class="pun">,</span>
+			<br/>
+			&nbsp;&nbsp;<span class="typ">uint</span> <span class="pln">bitDepth</span><span class="pun">,</span>
+			<br/>
+			&nbsp;&nbsp;<span class="typ">uint</span> <span class="pln">numFrames</span> <span class="pun">=</span> <span class="lit">1u</span>
+			<br/>
+			<span class="pun">)</span><span class="pun">;</span>
 					</div>
 				</code>
 			</div>
 			
-			<section><h2>Constructors</h2>
-				<table>
-					<col class="caption"/>
-					<tr>
-						<th>Name</th><th>Description</th>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/image/animation/UnmanagedAnimatedImage.this.html" class="public">
-								<code>this</code>
-							</a>
-							<span class="tableEntryAnnotation">(w, h, frames)</span>
-						</td>
-						<td></td>
-					</tr>
-				</table>
-			</section>
-			<section><h2>Properties</h2>
-				<table>
-					<col class="caption"/>
-					<tr>
-						<th>Name</th><th>Type</th><th>Description</th>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/image/animation/UnmanagedAnimatedImage.dup.html" class="public property"><code>dup</code></a><span class="tableEntryAnnotation">[get]</span>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/image/image/SuperImage.html"><span class="typ">SuperImage</span></a></code></td><td></td>
-					</tr>
-				</table>
-			</section>
-			<section><h2>Methods</h2>
-				<table>
-					<col class="caption"/>
-					<tr>
-						<th>Name</th><th>Description</th>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/image/animation/UnmanagedAnimatedImage.allocateData.html" class="public">
-								<code>allocateData</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/image/animation/UnmanagedAnimatedImage.createSameFormat.html" class="public">
-								<code>createSameFormat</code>
-							</a>
-							<span class="tableEntryAnnotation">(w, h)</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/image/animation/UnmanagedAnimatedImage.free.html" class="public">
-								<code>free</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td></td>
-					</tr>
-				</table>
-			</section>
 			
 			<footer>
 				<table class="license-info">
@@ -886,7 +770,7 @@ $('#symbolSearchPane').show();</script>
 					<tr>
 						<th>Copyright</th>
 						<td>
-							<p>Timur Gafarov 2017-2021.
+							<p>Timur Gafarov 2017-2022.
 </p>
 
 						</td>

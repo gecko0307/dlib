@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8"/>
-		<title>Variable allocator</title>
+		<title>Module dlib.memory.allocator</title>
 		<link rel="stylesheet" type="text/css" href="../../styles/ddox.css"/>
 		<link rel="stylesheet" href="../../prettify/prettify.css" type="text/css"/>
 		<script type="text/javascript" src="../../scripts/jquery.js">/**/</script><script type="text/javascript" src="../../scripts/ddox.js">/**/</script>
@@ -202,48 +202,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../dlib/filesystem.html">filesystem</a>
 					</div>
 			<ul class="tree-view">
-				<li class="tree-view collapsed">
-					<div class="package ">posix
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../dlib/filesystem/posix/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../dlib/filesystem/posix/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../dlib/filesystem/posix/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
-				<li class="tree-view collapsed">
-					<div class="package ">windows
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../dlib/filesystem/windows/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../dlib/filesystem/windows/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../dlib/filesystem/windows/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../dlib/filesystem/delegaterange.html">delegaterange</a>
@@ -267,16 +225,6 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../dlib/filesystem/stdfs.html">stdfs</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
 					</div>
 				</li>
 			</ul>
@@ -683,12 +631,12 @@ $('#symbolSearchPane').show();</script>
 			</ul>
 				</li>
 				<li class="tree-view ">
-					<div class="package selected">
+					<div class="package ">
 						<a href="../../dlib/memory.html">memory</a>
 					</div>
 			<ul class="tree-view">
 				<li>
-					<div class="module ">
+					<div class="module selected">
 						<a href="../../dlib/memory/allocator.html">allocator</a>
 					</div>
 				</li>
@@ -714,11 +662,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../dlib/network.html">network</a>
 					</div>
 			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../dlib/network/errno.html">errno</a>
-					</div>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../dlib/network/socket.html">socket</a>
@@ -753,11 +696,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../dlib/text.html">text</a>
 					</div>
 			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../dlib/text/common.html">common</a>
-					</div>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../dlib/text/encodings.html">encodings</a>
@@ -795,17 +733,45 @@ $('#symbolSearchPane').show();</script>
 			</ul>
 		</nav>
 		<div id="main-contents">
-			<h1>Variable allocator</h1><p></p>
-			<div class="prototype">
-				<code class="lang-d">
-					<div class="single-prototype">
-			<a href="../../dlib/memory/allocator/Allocator.html"><span class="typ">Allocator</span></a> <span class="pln">allocator</span>
-			<span class="pun">;</span>
-					</div>
-				</code>
-			</div>
-			
-			
+			<h1>Module dlib.memory.allocator</h1><p>Abstract allocator interface
+</p><section></section>
+
+			<section></section>
+			<section>
+				<h2>Functions</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="resizeArray" class="public" href="../../dlib/memory/allocator/resizeArray.html">resizeArray</a><span class="tableEntryAnnotation">(allocator, array, length)</span>
+							</code>
+						</td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
+			<section>
+				<h2>Interfaces</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="Allocator" class="public" href="../../dlib/memory/allocator/Allocator.html">Allocator</a>
+							</code>
+						</td>
+						<td>Allocator interface.
+</td>
+					</tr>
+				</table>
+			</section>
 			<footer>
 				<table class="license-info">
 					<tr>
@@ -819,7 +785,7 @@ $('#symbolSearchPane').show();</script>
 					<tr>
 						<th>Copyright</th>
 						<td>
-							<p>Eugene Wissner 2016-2021.
+							<p>Eugene Wissner 2016-2022.
 </p>
 
 						</td>

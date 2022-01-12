@@ -202,48 +202,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/filesystem.html">filesystem</a>
 					</div>
 			<ul class="tree-view">
-				<li class="tree-view collapsed">
-					<div class="package ">posix
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
-				<li class="tree-view collapsed">
-					<div class="package ">windows
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/delegaterange.html">delegaterange</a>
@@ -267,16 +225,6 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/stdfs.html">stdfs</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
 					</div>
 				</li>
 			</ul>
@@ -716,11 +664,6 @@ $('#symbolSearchPane').show();</script>
 			<ul class="tree-view">
 				<li>
 					<div class="module ">
-						<a href="../../../dlib/network/errno.html">errno</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
 						<a href="../../../dlib/network/socket.html">socket</a>
 					</div>
 				</li>
@@ -753,11 +696,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/text.html">text</a>
 					</div>
 			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/text/common.html">common</a>
-					</div>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/text/encodings.html">encodings</a>
@@ -806,20 +744,6 @@ $('#symbolSearchPane').show();</script>
 				</code>
 			</div>
 			
-			<section><h2>Fields</h2>
-				<table>
-					<col class="caption"/>
-					<tr>
-						<th>Name</th><th>Type</th><th>Description</th>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/container/queue/Queue.array.html" class="public"><code>array</code></a>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/container/array/Array.html"><span class="typ">Array</span></a>!T</code></td><td></td>
-					</tr>
-				</table>
-			</section>
 			<section><h2>Properties</h2>
 				<table>
 					<col class="caption"/>
@@ -883,7 +807,29 @@ $('#symbolSearchPane').show();</script>
 					</tr>
 				</table>
 			</section>
-			
+			<section><h2>Example</h2>
+
+<pre class="code"><code class="lang-d"><span class="kwd">import </span><span class="pln">std<wbr/></span><span class="pun">.</span><span class="pln">exception</span><span class="pun">: </span><span class="pln">assertThrown</span><span class="pun">;
+
+</span><span class="typ">Queue</span><span class="pun">!</span><span class="typ">int </span><span class="pln">q</span><span class="pun">;
+</span><span class="pln">assertThrown</span><span class="pun">(</span><span class="pln">q<wbr/></span><span class="pun">.</span><span class="pln">dequeue</span><span class="pun">());
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">q<wbr/></span><span class="pun">.</span><span class="pln">empty</span><span class="pun">);
+
+</span><span class="pln">q<wbr/></span><span class="pun">.</span><span class="pln">enqueue</span><span class="pun">(</span><span class="lit">50</span><span class="pun">);
+</span><span class="pln">q<wbr/></span><span class="pun">.</span><span class="pln">enqueue</span><span class="pun">(</span><span class="lit">30</span><span class="pun">);
+</span><span class="pln">q<wbr/></span><span class="pun">.</span><span class="pln">enqueue</span><span class="pun">(</span><span class="lit">900</span><span class="pun">);
+
+</span><span class="typ">int </span><span class="pln">v</span><span class="pun">;
+</span><span class="pln">q<wbr/></span><span class="pun">.</span><span class="pln">dequeue</span><span class="pun">(</span><span class="pln">v</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">v </span><span class="pun">== </span><span class="lit">50</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">q<wbr/></span><span class="pun">.</span><span class="pln">dequeue</span><span class="pun">() == </span><span class="lit">30</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">q<wbr/></span><span class="pun">.</span><span class="pln">dequeue</span><span class="pun">() == </span><span class="lit">900</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">q<wbr/></span><span class="pun">.</span><span class="pln">empty</span><span class="pun">);
+
+</span><span class="pln">q<wbr/></span><span class="pun">.</span><span class="pln">free</span><span class="pun">();
+</span></code></pre>
+</section>
+
 			<footer>
 				<table class="license-info">
 					<tr>
@@ -897,7 +843,7 @@ $('#symbolSearchPane').show();</script>
 					<tr>
 						<th>Copyright</th>
 						<td>
-							<p>Timur Gafarov 2011-2021.
+							<p>Timur Gafarov 2011-2022.
 </p>
 
 						</td>

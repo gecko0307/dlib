@@ -202,48 +202,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/filesystem.html">filesystem</a>
 					</div>
 			<ul class="tree-view">
-				<li class="tree-view collapsed">
-					<div class="package ">posix
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
-				<li class="tree-view collapsed">
-					<div class="package ">windows
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/delegaterange.html">delegaterange</a>
@@ -267,16 +225,6 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/stdfs.html">stdfs</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
 					</div>
 				</li>
 			</ul>
@@ -716,11 +664,6 @@ $('#symbolSearchPane').show();</script>
 			<ul class="tree-view">
 				<li>
 					<div class="module ">
-						<a href="../../../dlib/network/errno.html">errno</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
 						<a href="../../../dlib/network/socket.html">socket</a>
 					</div>
 				</li>
@@ -753,11 +696,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/text.html">text</a>
 					</div>
 			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/text/common.html">common</a>
-					</div>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/text/encodings.html">encodings</a>
@@ -817,7 +755,43 @@ $('#symbolSearchPane').show();</script>
 </p>
 </section>
 
-			
+			<section><h2>Example</h2>
+
+<pre class="code"><code class="lang-d"><span class="typ">bool </span><span class="pln">isAlmostZero4</span><span class="pun">(</span><span class="typ">Vector4f </span><span class="pln">v</span><span class="pun">)
+{
+    </span><span class="typ">float </span><span class="pln">e </span><span class="pun">= </span><span class="lit">0.002f</span><span class="pun">;
+
+    </span><span class="kwd">return </span><span class="pln">abs</span><span class="pun">(</span><span class="pln">v<wbr/></span><span class="pun">.</span><span class="pln">x</span><span class="pun">) &lt; </span><span class="pln">e </span><span class="pun">&amp;&amp;
+           </span><span class="pln">abs</span><span class="pun">(</span><span class="pln">v<wbr/></span><span class="pun">.</span><span class="pln">y</span><span class="pun">) &lt; </span><span class="pln">e </span><span class="pun">&amp;&amp;
+           </span><span class="pln">abs</span><span class="pun">(</span><span class="pln">v<wbr/></span><span class="pun">.</span><span class="pln">z</span><span class="pun">) &lt; </span><span class="pln">e </span><span class="pun">&amp;&amp;
+           </span><span class="pln">abs</span><span class="pun">(</span><span class="pln">v<wbr/></span><span class="pun">.</span><span class="pln">w</span><span class="pun">) &lt; </span><span class="pln">e</span><span class="pun">;
+}
+
+</span><span class="com">// build ModelView (World to Camera)
+</span><span class="pln">vec3 center </span><span class="pun">= </span><span class="pln">vec3</span><span class="pun">(</span><span class="lit">0.0f</span><span class="pun">, </span><span class="lit">0.0f</span><span class="pun">, </span><span class="lit">0.0f</span><span class="pun">);
+</span><span class="pln">vec3 eye </span><span class="pun">= </span><span class="pln">center </span><span class="pun">+ </span><span class="pln">vec3</span><span class="pun">(</span><span class="lit">0.0f</span><span class="pun">, </span><span class="lit">1.0f</span><span class="pun">, </span><span class="lit">1.0f</span><span class="pun">);
+</span><span class="pln">vec3 up </span><span class="pun">= </span><span class="pln">vec3</span><span class="pun">(</span><span class="lit">0.0f</span><span class="pun">, -</span><span class="lit">0.707f</span><span class="pun">, </span><span class="lit">0.707f</span><span class="pun">);
+
+</span><span class="typ">Matrix4f </span><span class="pln">modelView </span><span class="pun">= <a href="../../../dlib/math/transformation/lookAtMatrix.html"></span><span class="pln">lookAtMatrix</span></a><span class="pun">(</span><span class="pln">eye</span><span class="pun">, </span><span class="pln">center</span><span class="pun">, <a href="../../../dlib/math/transformation/up.html"></span><span class="pln">up</span></a><span class="pun">);
+
+</span><span class="com">// build Projection (Camera to Eye)
+</span><span class="typ">Matrix4f </span><span class="pln">projection </span><span class="pun">= <a href="../../../dlib/math/transformation/perspectiveMatrix.html"></span><span class="pln">perspectiveMatrix</span></a><span class="pun">(</span><span class="lit">45.0f</span><span class="pun">, </span><span class="lit">16.0f </span><span class="pun">/ </span><span class="lit">9.0f</span><span class="pun">, </span><span class="lit">1.0f</span><span class="pun">, </span><span class="lit">100.0f</span><span class="pun">);
+
+</span><span class="com">// compose into one transformation
+</span><span class="typ">Matrix4f </span><span class="pln">projectionModelView </span><span class="pun">= </span><span class="pln">projection </span><span class="pun">* </span><span class="pln">modelView</span><span class="pun">;
+
+</span><span class="pln">vec4 positionInWorld </span><span class="pun">= </span><span class="pln">vec4</span><span class="pun">(</span><span class="lit">0.0f</span><span class="pun">, </span><span class="lit">0.0f</span><span class="pun">, </span><span class="lit">0.0f</span><span class="pun">, </span><span class="lit">1.0f</span><span class="pun">);
+
+</span><span class="pln">vec4 transformed1 </span><span class="pun">=
+    </span><span class="pln">positionInWorld </span><span class="pun">* </span><span class="pln">projectionModelView</span><span class="pun">;
+
+</span><span class="pln">vec4 transformed2 </span><span class="pun">=
+    (</span><span class="pln">positionInWorld </span><span class="pun">* </span><span class="pln">modelView</span><span class="pun">) * </span><span class="pln">projection</span><span class="pun">;
+
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">isAlmostZero4</span><span class="pun">(</span><span class="pln">transformed1 </span><span class="pun">- </span><span class="pln">transformed2</span><span class="pun">));
+</span></code></pre>
+</section>
+
 			<footer>
 				<table class="license-info">
 					<tr>
@@ -831,7 +805,7 @@ $('#symbolSearchPane').show();</script>
 					<tr>
 						<th>Copyright</th>
 						<td>
-							<p>Timur Gafarov 2013-2021.
+							<p>Timur Gafarov 2013-2022.
 </p>
 
 						</td>

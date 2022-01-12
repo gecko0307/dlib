@@ -202,48 +202,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/filesystem.html">filesystem</a>
 					</div>
 			<ul class="tree-view">
-				<li class="tree-view collapsed">
-					<div class="package ">posix
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
-				<li class="tree-view collapsed">
-					<div class="package ">windows
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/delegaterange.html">delegaterange</a>
@@ -267,16 +225,6 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/stdfs.html">stdfs</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
 					</div>
 				</li>
 			</ul>
@@ -716,11 +664,6 @@ $('#symbolSearchPane').show();</script>
 			<ul class="tree-view">
 				<li>
 					<div class="module ">
-						<a href="../../../dlib/network/errno.html">errno</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
 						<a href="../../../dlib/network/socket.html">socket</a>
 					</div>
 				</li>
@@ -753,11 +696,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/text.html">text</a>
 					</div>
 			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/text/common.html">common</a>
-					</div>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/text/encodings.html">encodings</a>
@@ -823,6 +761,35 @@ $('#symbolSearchPane').show();</script>
 <p>Whether the reallocation was successful.
 </p>
 </section>
+<section><h2>Example</h2>
+
+<pre class="code"><code class="lang-d"><span class="typ">void</span><span class="pun">[] <a href="../../../dlib/memory/mmappool/MmapPool.reallocate.html#p"></span><span class="pln">p</span></a><span class="pun">;
+</span><span class="typ">MmapPool<wbr/></span><span class="pun">.</span><span class="pln">instance<wbr/></span><span class="pun">.</span><span class="pln">reallocate</span><span class="pun">(<a href="../../../dlib/memory/mmappool/MmapPool.reallocate.html#p"></span><span class="pln">p</span></a><span class="pun">, </span><span class="lit">10 </span><span class="pun">* </span><span class="typ">int<wbr/></span><span class="pun">.</span><span class="pln">sizeof</span><span class="pun">);
+(</span><span class="kwd">cast</span><span class="pun">(</span><span class="typ">int</span><span class="pun">[]) <a href="../../../dlib/memory/mmappool/MmapPool.reallocate.html#p"></span><span class="pln">p</span></a><span class="pun">)[</span><span class="lit">7</span><span class="pun">] = </span><span class="lit">123</span><span class="pun">;
+
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">p<wbr/></span><span class="pun">.</span><span class="pln">length </span><span class="pun">== </span><span class="lit">40</span><span class="pun">);
+
+</span><span class="typ">MmapPool<wbr/></span><span class="pun">.</span><span class="pln">instance<wbr/></span><span class="pun">.</span><span class="pln">reallocate</span><span class="pun">(<a href="../../../dlib/memory/mmappool/MmapPool.reallocate.html#p"></span><span class="pln">p</span></a><span class="pun">, </span><span class="lit">8 </span><span class="pun">* </span><span class="typ">int<wbr/></span><span class="pun">.</span><span class="pln">sizeof</span><span class="pun">);
+
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">p<wbr/></span><span class="pun">.</span><span class="pln">length </span><span class="pun">== </span><span class="lit">32</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">((</span><span class="kwd">cast</span><span class="pun">(</span><span class="typ">int</span><span class="pun">[]) <a href="../../../dlib/memory/mmappool/MmapPool.reallocate.html#p"></span><span class="pln">p</span></a><span class="pun">)[</span><span class="lit">7</span><span class="pun">] == </span><span class="lit">123</span><span class="pun">);
+
+</span><span class="typ">MmapPool<wbr/></span><span class="pun">.</span><span class="pln">instance<wbr/></span><span class="pun">.</span><span class="pln">reallocate</span><span class="pun">(<a href="../../../dlib/memory/mmappool/MmapPool.reallocate.html#p"></span><span class="pln">p</span></a><span class="pun">, </span><span class="lit">20 </span><span class="pun">* </span><span class="typ">int<wbr/></span><span class="pun">.</span><span class="pln">sizeof</span><span class="pun">);
+(</span><span class="kwd">cast</span><span class="pun">(</span><span class="typ">int</span><span class="pun">[]) <a href="../../../dlib/memory/mmappool/MmapPool.reallocate.html#p"></span><span class="pln">p</span></a><span class="pun">)[</span><span class="lit">15</span><span class="pun">] = </span><span class="lit">8</span><span class="pun">;
+
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">p<wbr/></span><span class="pun">.</span><span class="pln">length </span><span class="pun">== </span><span class="lit">80</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">((</span><span class="kwd">cast</span><span class="pun">(</span><span class="typ">int</span><span class="pun">[]) <a href="../../../dlib/memory/mmappool/MmapPool.reallocate.html#p"></span><span class="pln">p</span></a><span class="pun">)[</span><span class="lit">15</span><span class="pun">] == </span><span class="lit">8</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">((</span><span class="kwd">cast</span><span class="pun">(</span><span class="typ">int</span><span class="pun">[]) <a href="../../../dlib/memory/mmappool/MmapPool.reallocate.html#p"></span><span class="pln">p</span></a><span class="pun">)[</span><span class="lit">7</span><span class="pun">] == </span><span class="lit">123</span><span class="pun">);
+
+</span><span class="typ">MmapPool<wbr/></span><span class="pun">.</span><span class="pln">instance<wbr/></span><span class="pun">.</span><span class="pln">reallocate</span><span class="pun">(<a href="../../../dlib/memory/mmappool/MmapPool.reallocate.html#p"></span><span class="pln">p</span></a><span class="pun">, </span><span class="lit">8 </span><span class="pun">* </span><span class="typ">int<wbr/></span><span class="pun">.</span><span class="pln">sizeof</span><span class="pun">);
+
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">p<wbr/></span><span class="pun">.</span><span class="pln">length </span><span class="pun">== </span><span class="lit">32</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">((</span><span class="kwd">cast</span><span class="pun">(</span><span class="typ">int</span><span class="pun">[]) <a href="../../../dlib/memory/mmappool/MmapPool.reallocate.html#p"></span><span class="pln">p</span></a><span class="pun">)[</span><span class="lit">7</span><span class="pun">] == </span><span class="lit">123</span><span class="pun">);
+
+</span><span class="typ">MmapPool<wbr/></span><span class="pun">.</span><span class="pln">instance<wbr/></span><span class="pun">.</span><span class="pln">deallocate</span><span class="pun">(<a href="../../../dlib/memory/mmappool/MmapPool.reallocate.html#p"></span><span class="pln">p</span></a><span class="pun">);
+
+</span></code></pre>
+</section>
 
 			<footer>
 				<table class="license-info">
@@ -837,7 +804,7 @@ $('#symbolSearchPane').show();</script>
 					<tr>
 						<th>Copyright</th>
 						<td>
-							<p>Eugene Wissner 2016-2021.
+							<p>Eugene Wissner 2016-2022.
 </p>
 
 						</td>

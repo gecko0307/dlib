@@ -202,48 +202,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/filesystem.html">filesystem</a>
 					</div>
 			<ul class="tree-view">
-				<li class="tree-view collapsed">
-					<div class="package ">posix
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
-				<li class="tree-view collapsed">
-					<div class="package ">windows
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/delegaterange.html">delegaterange</a>
@@ -267,16 +225,6 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/stdfs.html">stdfs</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
 					</div>
 				</li>
 			</ul>
@@ -716,11 +664,6 @@ $('#symbolSearchPane').show();</script>
 			<ul class="tree-view">
 				<li>
 					<div class="module ">
-						<a href="../../../dlib/network/errno.html">errno</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
 						<a href="../../../dlib/network/socket.html">socket</a>
 					</div>
 				</li>
@@ -753,11 +696,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/text.html">text</a>
 					</div>
 			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/text/common.html">common</a>
-					</div>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/text/encodings.html">encodings</a>
@@ -843,19 +781,10 @@ $('#symbolSearchPane').show();</script>
 					</tr>
 					<tr>
 						<td>
-							<a href="../../../dlib/text/utf8/UTF8Decoder.__unittest_L194_C5.html" class="public">
-								<code>__unittest_L194_C5</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
 							<a href="../../../dlib/text/utf8/UTF8Decoder.decode.html" class="public">
 								<code>decode</code>
 							</a>
-							<span class="tableEntryAnnotation">(s)</span>
+							<span class="tableEntryAnnotation">()</span>
 						</td>
 						<td>Range interface.
 </td>
@@ -880,27 +809,40 @@ $('#symbolSearchPane').show();</script>
 						<td>Check if decoder is in the end of input.
 </td>
 					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/utf8/UTF8Decoder.cont.html" class="private">
-								<code>cont</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/utf8/UTF8Decoder.get.html" class="private">
-								<code>get</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td></td>
-					</tr>
 				</table>
 			</section>
-			
+			<section><h2>Example</h2>
+
+<pre class="code"><code class="lang-d"><span class="pun">{
+    </span><span class="kwd">auto </span><span class="pln">decoder </span><span class="pun">= </span><span class="typ">UTF8Decoder</span><span class="pun">(</span><span class="str">"Eng 日本語 Кир ©€\xF0\x90\x8D\x88"</span><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">decoder<wbr/></span><span class="pun">.</span><span class="pln">decodeNext</span><span class="pun">() == </span><span class="str">'E'</span><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">decoder<wbr/></span><span class="pun">.</span><span class="pln">decodeNext</span><span class="pun">() == </span><span class="str">'n'</span><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">decoder<wbr/></span><span class="pun">.</span><span class="pln">decodeNext</span><span class="pun">() == </span><span class="str">'g'</span><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">decoder<wbr/></span><span class="pun">.</span><span class="pln">decodeNext</span><span class="pun">() == </span><span class="str">' '</span><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">decoder<wbr/></span><span class="pun">.</span><span class="pln">decodeNext</span><span class="pun">() == </span><span class="str">'日'</span><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">decoder<wbr/></span><span class="pun">.</span><span class="pln">decodeNext</span><span class="pun">() == </span><span class="str">'本'</span><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">decoder<wbr/></span><span class="pun">.</span><span class="pln">decodeNext</span><span class="pun">() == </span><span class="str">'語'</span><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">decoder<wbr/></span><span class="pun">.</span><span class="pln">decodeNext</span><span class="pun">() == </span><span class="str">' '</span><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">decoder<wbr/></span><span class="pun">.</span><span class="pln">decodeNext</span><span class="pun">() == </span><span class="str">'К'</span><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">decoder<wbr/></span><span class="pun">.</span><span class="pln">decodeNext</span><span class="pun">() == </span><span class="str">'и'</span><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">decoder<wbr/></span><span class="pun">.</span><span class="pln">decodeNext</span><span class="pun">() == </span><span class="str">'р'</span><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">decoder<wbr/></span><span class="pun">.</span><span class="pln">decodeNext</span><span class="pun">() == </span><span class="str">' '</span><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">decoder<wbr/></span><span class="pun">.</span><span class="pln">decodeNext</span><span class="pun">() == </span><span class="str">'©'</span><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">decoder<wbr/></span><span class="pun">.</span><span class="pln">decodeNext</span><span class="pun">() == </span><span class="str">'€'</span><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">decoder<wbr/></span><span class="pun">.</span><span class="pln">decodeNext</span><span class="pun">() == </span><span class="lit">0x10348</span><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">decoder<wbr/></span><span class="pun">.</span><span class="pln">decodeNext</span><span class="pun">() == <a href="../../../dlib/text/utf8/UTF8_END.html"></span><span class="pln">UTF8_END</span></a><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">decoder<wbr/></span><span class="pun">.</span><span class="pln">get</span><span class="pun">() == <a href="../../../dlib/text/utf8/UTF8_END.html"></span><span class="pln">UTF8_END</span></a><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">decoder<wbr/></span><span class="pun">.</span><span class="pln">eos</span><span class="pun">());
+}
+{
+    </span><span class="kwd">auto </span><span class="pln">decoder </span><span class="pun">= </span><span class="typ">UTF8Decoder</span><span class="pun">(</span><span class="str">"日本語"</span><span class="pun">[</span><span class="lit">0</span><span class="pun">..$-</span><span class="lit">1</span><span class="pun">]);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">decoder<wbr/></span><span class="pun">.</span><span class="pln">decodeNext</span><span class="pun">() == </span><span class="str">'日'</span><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">decoder<wbr/></span><span class="pun">.</span><span class="pln">decodeNext</span><span class="pun">() == </span><span class="str">'本'</span><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">decoder<wbr/></span><span class="pun">.</span><span class="pln">decodeNext</span><span class="pun">() == <a href="../../../dlib/text/utf8/UTF8_ERROR.html"></span><span class="pln">UTF8_ERROR</span></a><span class="pun">);
+}
+</span></code></pre>
+</section>
+
 			<footer>
 				<table class="license-info">
 					<tr>
@@ -914,7 +856,7 @@ $('#symbolSearchPane').show();</script>
 					<tr>
 						<th>Copyright</th>
 						<td>
-							<p>Timur Gafarov 2015-2021.
+							<p>Timur Gafarov 2015-2022.
 </p>
 
 						</td>

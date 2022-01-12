@@ -202,48 +202,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../dlib/filesystem.html">filesystem</a>
 					</div>
 			<ul class="tree-view">
-				<li class="tree-view collapsed">
-					<div class="package ">posix
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../dlib/filesystem/posix/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../dlib/filesystem/posix/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../dlib/filesystem/posix/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
-				<li class="tree-view collapsed">
-					<div class="package ">windows
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../dlib/filesystem/windows/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../dlib/filesystem/windows/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../dlib/filesystem/windows/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../dlib/filesystem/delegaterange.html">delegaterange</a>
@@ -267,16 +225,6 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../dlib/filesystem/stdfs.html">stdfs</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
 					</div>
 				</li>
 			</ul>
@@ -716,11 +664,6 @@ $('#symbolSearchPane').show();</script>
 			<ul class="tree-view">
 				<li>
 					<div class="module ">
-						<a href="../../dlib/network/errno.html">errno</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
 						<a href="../../dlib/network/socket.html">socket</a>
 					</div>
 				</li>
@@ -753,11 +696,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../dlib/text.html">text</a>
 					</div>
 			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../dlib/text/common.html">common</a>
-					</div>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../dlib/text/encodings.html">encodings</a>
@@ -795,12 +733,12 @@ $('#symbolSearchPane').show();</script>
 			</ul>
 		</nav>
 		<div id="main-contents">
-			<h1>Module dlib.core.compound</h1><p>Tuple + struct hybrid
+			<h1>Module dlib.core.compound</h1><p>Compile-time sequence (aka tuple) + struct hybrid
 </p><section></section>
 
 			<section><section><h2>Description</h2>
-<p>This template can be used to construct data types on-the-fly
- and return them from functions, which cannot be done with pure tuples.
+<p>This template can be used to construct data types on the fly
+ and return them from functions, which cannot be done with pure compile-time sequence.
  One possible use case for such types is returning result and error message
  from function instead of throwing an exception.
 </p>
@@ -812,14 +750,6 @@ $('#symbolSearchPane').show();</script>
 					<col class="caption"/>
 					<tr>
 						<th>Name</th><th>Description</th>
-					</tr>
-					<tr>
-						<td>
-							<code>
-								<a id="__unittest_L62_C1" class="public" href="../../dlib/core/compound/__unittest_L62_C1.html">__unittest_L62_C1</a><span class="tableEntryAnnotation">()</span>
-							</code>
-						</td>
-						<td></td>
 					</tr>
 					<tr>
 						<td>
@@ -845,7 +775,7 @@ $('#symbolSearchPane').show();</script>
 								<a id="Compound" class="public" href="../../dlib/core/compound/Compound.html">Compound</a>
 							</code>
 						</td>
-						<td>A struct that consists of a tuple T. Allows square bracket access to the members of a tuple
+						<td>A struct that consists of a compile-time sequence T. Allows square bracket access to the members of a sequence
 </td>
 					</tr>
 				</table>
@@ -863,7 +793,7 @@ $('#symbolSearchPane').show();</script>
 					<tr>
 						<th>Copyright</th>
 						<td>
-							<p>Timur Gafarov 2011-2021.
+							<p>Timur Gafarov 2011-2022.
 </p>
 
 						</td>

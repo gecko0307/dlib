@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8"/>
-		<title>Function Socket.shutdown</title>
+		<title>Enum Socket.Shutdown</title>
 		<link rel="stylesheet" type="text/css" href="../../../styles/ddox.css"/>
 		<link rel="stylesheet" href="../../../prettify/prettify.css" type="text/css"/>
 		<script type="text/javascript" src="../../../scripts/jquery.js">/**/</script><script type="text/javascript" src="../../../scripts/ddox.js">/**/</script>
@@ -202,48 +202,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/filesystem.html">filesystem</a>
 					</div>
 			<ul class="tree-view">
-				<li class="tree-view collapsed">
-					<div class="package ">posix
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
-				<li class="tree-view collapsed">
-					<div class="package ">windows
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/delegaterange.html">delegaterange</a>
@@ -267,16 +225,6 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/stdfs.html">stdfs</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
 					</div>
 				</li>
 			</ul>
@@ -715,11 +663,6 @@ $('#symbolSearchPane').show();</script>
 					</div>
 			<ul class="tree-view">
 				<li>
-					<div class="module ">
-						<a href="../../../dlib/network/errno.html">errno</a>
-					</div>
-				</li>
-				<li>
 					<div class="module selected">
 						<a href="../../../dlib/network/socket.html">socket</a>
 					</div>
@@ -753,11 +696,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/text.html">text</a>
 					</div>
 			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/text/common.html">common</a>
-					</div>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/text/encodings.html">encodings</a>
@@ -795,32 +733,47 @@ $('#symbolSearchPane').show();</script>
 			</ul>
 		</nav>
 		<div id="main-contents">
-			<h1>Function Socket.shutdown</h1><p>Disables sends and/or receives.
+			<h1>Enum Socket.Shutdown</h1><p>How a socket is shutdown.
 </p>
 			<div class="prototype">
 				<code class="lang-d">
 					<div class="single-prototype">
-			<span class="typ">void</span> <span class="pln">shutdown</span>
-			<span class="pun">(</span>
-			<br/>
-			&nbsp;&nbsp;<a href="../../../dlib/network/socket/Socket.Shutdown.html"><span class="typ">Socket<wbr/></span><span class="pun">.<wbr/></span><span class="typ">Shutdown</span></a> <span class="pln">how</span> <span class="pun">=</span> <span class="typ">Shutdown<wbr/></span><span class="pun">.</span><span class="pln">both</span>
-			<br/>
-			<span class="pun">)</span><span class="pln"> </span><span class="kwd">nothrow @nogc @trusted const</span><span class="pun">;</span>
+			<span class="kwd">enum</span> <span class="typ">Shutdown</span>
+			 <span class="pun">:</span> <span class="typ">int</span> <span class="pun">{ ... }</span>
 					</div>
 				</code>
 			</div>
-			<section></section>
-
-			<section><h2>Parameters</h2>
-<table><col class="caption"><tr><th>Name</th><th>Description</th></tr>
-<tr><td id="how">how</td><td> What to disable.</td></tr>
-</table>
-</section>
-<section><h2>See Also</h2>
-<p><u>Shutdown</u>
-</p>
-</section>
-
+			
+			<section><h2>Enum members</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Description</th>
+					</tr>
+					<tr>
+						<td id="both">
+							<code>both</code>
+						</td>
+						<td>Both receive and send.
+</td>
+					</tr>
+					<tr>
+						<td id="receive">
+							<code>receive</code>
+						</td>
+						<td>Socket receives are disallowed.
+</td>
+					</tr>
+					<tr>
+						<td id="send">
+							<code>send</code>
+						</td>
+						<td>Socket sends are disallowed.
+</td>
+					</tr>
+				</table>
+			</section>
+			
 			<footer>
 				<table class="license-info">
 					<tr>
@@ -834,7 +787,7 @@ $('#symbolSearchPane').show();</script>
 					<tr>
 						<th>Copyright</th>
 						<td>
-							<p>Eugene Wissner 2016-2021.
+							<p>Eugene Wissner 2016-2022.
 </p>
 
 						</td>

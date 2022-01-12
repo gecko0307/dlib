@@ -202,48 +202,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/filesystem.html">filesystem</a>
 					</div>
 			<ul class="tree-view">
-				<li class="tree-view collapsed">
-					<div class="package ">posix
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
-				<li class="tree-view collapsed">
-					<div class="package ">windows
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/delegaterange.html">delegaterange</a>
@@ -267,16 +225,6 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/stdfs.html">stdfs</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
 					</div>
 				</li>
 			</ul>
@@ -716,11 +664,6 @@ $('#symbolSearchPane').show();</script>
 			<ul class="tree-view">
 				<li>
 					<div class="module ">
-						<a href="../../../dlib/network/errno.html">errno</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
 						<a href="../../../dlib/network/socket.html">socket</a>
 					</div>
 				</li>
@@ -753,11 +696,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/text.html">text</a>
 					</div>
 			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/text/common.html">common</a>
-					</div>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/text/encodings.html">encodings</a>
@@ -815,7 +753,7 @@ $('#symbolSearchPane').show();</script>
 					</tr>
 					<tr>
 						<td>
-							<a href="../../../dlib/filesystem/local/LocalFileSystem.createDir.html" class="public">
+							<a href="../../../dlib/filesystem/filesystem/FileSystem.createDir.html" class="public inherited">
 								<code>createDir</code>
 							</a>
 							<span class="tableEntryAnnotation">(path, recursive)</span>
@@ -825,7 +763,7 @@ $('#symbolSearchPane').show();</script>
 					</tr>
 					<tr>
 						<td>
-							<a href="../../../dlib/filesystem/local/LocalFileSystem.openDir.html" class="public">
+							<a href="../../../dlib/filesystem/filesystem/ReadOnlyFileSystem.openDir.html" class="public inherited">
 								<code>openDir</code>
 							</a>
 							<span class="tableEntryAnnotation">(path)</span>
@@ -835,7 +773,7 @@ $('#symbolSearchPane').show();</script>
 					</tr>
 					<tr>
 						<td>
-							<a href="../../../dlib/filesystem/local/LocalFileSystem.openForInput.html" class="public">
+							<a href="../../../dlib/filesystem/filesystem/ReadOnlyFileSystem.openForInput.html" class="public inherited">
 								<code>openForInput</code>
 							</a>
 							<span class="tableEntryAnnotation">(filename)</span>
@@ -845,7 +783,7 @@ $('#symbolSearchPane').show();</script>
 					</tr>
 					<tr>
 						<td>
-							<a href="../../../dlib/filesystem/local/LocalFileSystem.openForIO.html" class="public">
+							<a href="../../../dlib/filesystem/filesystem/FileSystem.openForIO.html" class="public inherited">
 								<code>openForIO</code>
 							</a>
 							<span class="tableEntryAnnotation">(filename, creationFlags)</span>
@@ -855,7 +793,7 @@ $('#symbolSearchPane').show();</script>
 					</tr>
 					<tr>
 						<td>
-							<a href="../../../dlib/filesystem/local/LocalFileSystem.openForOutput.html" class="public">
+							<a href="../../../dlib/filesystem/filesystem/FileSystem.openForOutput.html" class="public inherited">
 								<code>openForOutput</code>
 							</a>
 							<span class="tableEntryAnnotation">(filename, creationFlags)</span>
@@ -865,7 +803,7 @@ $('#symbolSearchPane').show();</script>
 					</tr>
 					<tr>
 						<td>
-							<a href="../../../dlib/filesystem/local/LocalFileSystem.remove.html" class="public">
+							<a href="../../../dlib/filesystem/filesystem/FileSystem.remove.html" class="public inherited">
 								<code>remove</code>
 							</a>
 							<span class="tableEntryAnnotation">(path, recursive)</span>
@@ -875,31 +813,13 @@ $('#symbolSearchPane').show();</script>
 					</tr>
 					<tr>
 						<td>
-							<a href="../../../dlib/filesystem/local/LocalFileSystem.stat.html" class="public">
+							<a href="../../../dlib/filesystem/filesystem/ReadOnlyFileSystem.stat.html" class="public inherited">
 								<code>stat</code>
 							</a>
-							<span class="tableEntryAnnotation">(path, stat_out)</span>
+							<span class="tableEntryAnnotation">(filename, stat)</span>
 						</td>
 						<td>Get file or directory stats.
 </td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/filesystem/local/LocalFileSystem.openFile.html" class="private">
-								<code>openFile</code>
-							</a>
-							<span class="tableEntryAnnotation">(filename, accessFlags, creationFlags)</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/filesystem/local/LocalFileSystem.remove.html" class="private">
-								<code>remove</code>
-							</a>
-							<span class="tableEntryAnnotation">(path, isDirectory, recursive)</span>
-						</td>
-						<td></td>
 					</tr>
 				</table>
 			</section>
@@ -917,7 +837,7 @@ $('#symbolSearchPane').show();</script>
 					<tr>
 						<th>Copyright</th>
 						<td>
-							<p>Martin Cejp 2014-2021.
+							<p>Martin Cejp 2014-2022.
 </p>
 
 						</td>

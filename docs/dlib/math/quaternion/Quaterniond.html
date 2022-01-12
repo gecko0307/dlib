@@ -202,48 +202,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/filesystem.html">filesystem</a>
 					</div>
 			<ul class="tree-view">
-				<li class="tree-view collapsed">
-					<div class="package ">posix
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
-				<li class="tree-view collapsed">
-					<div class="package ">windows
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/delegaterange.html">delegaterange</a>
@@ -267,16 +225,6 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/stdfs.html">stdfs</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
 					</div>
 				</li>
 			</ul>
@@ -716,11 +664,6 @@ $('#symbolSearchPane').show();</script>
 			<ul class="tree-view">
 				<li>
 					<div class="module ">
-						<a href="../../../dlib/network/errno.html">errno</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
 						<a href="../../../dlib/network/socket.html">socket</a>
 					</div>
 				</li>
@@ -753,11 +696,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/text.html">text</a>
 					</div>
 			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/text/common.html">common</a>
-					</div>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/text/encodings.html">encodings</a>
@@ -806,7 +744,74 @@ $('#symbolSearchPane').show();</script>
 				</code>
 			</div>
 			
-			
+			<section><h2>Example</h2>
+
+<pre class="code"><code class="lang-d"><span class="kwd">import <a href="../../../dlib/math/transformation.html"></span><span class="pln">dlib<wbr/></span><span class="pun">.</span><span class="pln">math<wbr/></span><span class="pun">.</span><span class="pln">transformation</span></a><span class="pun">;
+
+<a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pln"> q1 </span><span class="pun">= <a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pun">(</span><span class="lit">0.0f</span><span class="pun">, </span><span class="lit">0.0f</span><span class="pun">, </span><span class="lit">0.0f</span><span class="pun">, </span><span class="lit">1.0f</span><span class="pun">);
+</span><span class="typ">Vector3f </span><span class="pln">v1 </span><span class="pun">= </span><span class="pln">q1<wbr/></span><span class="pun">.</span><span class="pln">rotate</span><span class="pun">(</span><span class="typ">Vector3f</span><span class="pun">(</span><span class="lit">1.0f</span><span class="pun">, </span><span class="lit">0.0f</span><span class="pun">, </span><span class="lit">0.0f</span><span class="pun">));
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">isAlmostZero</span><span class="pun">(</span><span class="pln">v1 </span><span class="pun">- </span><span class="typ">Vector3f</span><span class="pun">(</span><span class="lit">1.0f</span><span class="pun">, </span><span class="lit">0.0f</span><span class="pun">, </span><span class="lit">0.0f</span><span class="pun">)));
+
+<a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pln"> q2 </span><span class="pun">= </span><span class="typ">Quaternionf<wbr/></span><span class="pun">.</span><span class="pln">identity</span><span class="pun">;
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">isConsiderZero</span><span class="pun">(</span><span class="pln">q2<wbr/></span><span class="pun">.</span><span class="pln">x</span><span class="pun">));
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">isConsiderZero</span><span class="pun">(</span><span class="pln">q2<wbr/></span><span class="pun">.</span><span class="pln">y</span><span class="pun">));
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">isConsiderZero</span><span class="pun">(</span><span class="pln">q2<wbr/></span><span class="pun">.</span><span class="pln">z</span><span class="pun">));
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">isConsiderZero</span><span class="pun">(</span><span class="pln">q2<wbr/></span><span class="pun">.</span><span class="pln">w </span><span class="pun">- </span><span class="lit">1.0f</span><span class="pun">));
+
+<a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pln"> q3 </span><span class="pun">= <a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pun">([</span><span class="lit">1.0f</span><span class="pun">, </span><span class="lit">0.0f</span><span class="pun">, </span><span class="lit">0.0f</span><span class="pun">, </span><span class="lit">1.0f</span><span class="pun">]);
+<a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pln"> q4 </span><span class="pun">= <a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pun">([</span><span class="lit">0.0f</span><span class="pun">, </span><span class="lit">1.0f</span><span class="pun">, </span><span class="lit">0.0f</span><span class="pun">, </span><span class="lit">1.0f</span><span class="pun">]);
+</span><span class="pln">q4 </span><span class="pun">= </span><span class="pln">q3 </span><span class="pun">* </span><span class="pln">q4</span><span class="pun">;
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">q4 </span><span class="pun">== <a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pun">(</span><span class="lit">1</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">1</span><span class="pun">));
+
+</span><span class="typ">Vector3f </span><span class="pln">v2 </span><span class="pun">= </span><span class="typ">Vector3f</span><span class="pun">(</span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">);
+<a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pln"> q5 </span><span class="pun">= <a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pun">(</span><span class="pln">v2</span><span class="pun">, </span><span class="lit">1.0f</span><span class="pun">);
+</span><span class="pln">q5 </span><span class="pun">*= </span><span class="pln">q5</span><span class="pun">;
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">q5 </span><span class="pun">== <a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pun">(</span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">2</span><span class="pun">, </span><span class="lit">0</span><span class="pun">));
+
+<a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pln"> q6 </span><span class="pun">= <a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pun">(</span><span class="typ">Vector4f</span><span class="pun">(</span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">));
+<a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pln"> q7 </span><span class="pun">= </span><span class="pln">q6 </span><span class="pun">+ </span><span class="pln">q6 </span><span class="pun">- <a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pun">(</span><span class="lit">2</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">2</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">q7 </span><span class="pun">== <a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pun">(</span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">));
+
+<a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pln"> q8 </span><span class="pun">= <a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pun">(</span><span class="lit">0.5f</span><span class="pun">, </span><span class="lit">0.5f</span><span class="pun">, </span><span class="lit">0.5f</span><span class="pun">, </span><span class="lit">0.0f</span><span class="pun">);
+</span><span class="pln">q8<wbr/></span><span class="pun">.</span><span class="pln">computeW</span><span class="pun">();
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">q8<wbr/></span><span class="pun">.</span><span class="pln">w </span><span class="pun">== -</span><span class="lit">0.5f</span><span class="pun">);
+
+<a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pln"> q9 </span><span class="pun">= <a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pun">(</span><span class="lit">0.5f</span><span class="pun">, </span><span class="lit">0.0f</span><span class="pun">, </span><span class="lit">0.0f</span><span class="pun">, </span><span class="lit">0.0f</span><span class="pun">);
+</span><span class="pln">q9 </span><span class="pun">= </span><span class="pln">q9<wbr/></span><span class="pun">.</span><span class="pln">normalized</span><span class="pun">;
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">q9 </span><span class="pun">== <a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pun">(</span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">));
+
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">q9 </span><span class="pun">* </span><span class="lit">2.0f </span><span class="pun">== <a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pun">(</span><span class="lit">2</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">));
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="lit">3.0f </span><span class="pun">* </span><span class="pln">q9 </span><span class="pun">== <a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pun">(</span><span class="lit">3</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">));
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">q9 </span><span class="pun">/ </span><span class="lit">2.0f </span><span class="pun">== <a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pun">(</span><span class="lit">0.5f</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">));
+
+<a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pln"> q10 </span><span class="pun">= <a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pun">(</span><span class="lit">0.0f</span><span class="pun">, </span><span class="lit">0.0f</span><span class="pun">, </span><span class="lit">0.0f</span><span class="pun">, </span><span class="lit">1.0f</span><span class="pun">);
+</span><span class="typ">Matrix4f </span><span class="pln">m1 </span><span class="pun">= </span><span class="pln">q10<wbr/></span><span class="pun">.</span><span class="pln">toMatrix4x4</span><span class="pun">;
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">m1 </span><span class="pun">== </span><span class="pln">matrixf</span><span class="pun">(
+    </span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
+    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
+    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
+    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">)
+);
+
+</span><span class="typ">Matrix3f </span><span class="pln">m2 </span><span class="pun">= </span><span class="pln">q10<wbr/></span><span class="pun">.</span><span class="pln">toMatrix3x3</span><span class="pun">;
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">m2 </span><span class="pun">== </span><span class="pln">matrixf</span><span class="pun">(
+    </span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
+    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">,
+    </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">)
+);
+
+</span><span class="kwd">auto </span><span class="pln">m3 </span><span class="pun">= </span><span class="pln">rotationMatrix</span><span class="pun">!</span><span class="typ">float</span><span class="pun">(</span><span class="lit">0</span><span class="pun">, </span><span class="pln">PI</span><span class="pun">);
+<a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pln"> q11 </span><span class="pun">= </span><span class="typ">Quaternionf<wbr/></span><span class="pun">.</span><span class="pln">fromMatrix</span><span class="pun">(</span><span class="pln">m3</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">q11<wbr/></span><span class="pun">.</span><span class="pln">toMatrix4x4 </span><span class="pun">== </span><span class="pln">m3</span><span class="pun">);
+
+</span><span class="typ">Vector3f </span><span class="pln">angles </span><span class="pun">= </span><span class="typ">Vector3f</span><span class="pun">(</span><span class="pln">PI </span><span class="pun">* </span><span class="lit">0.5f</span><span class="pun">, </span><span class="lit">0.0f</span><span class="pun">, </span><span class="lit">0.0f</span><span class="pun">);
+<a href="../../../dlib/math/quaternion/Quaternionf.html"></span><span class="typ">Quaternionf</span></a><span class="pln"> q12 </span><span class="pun">= </span><span class="typ">Quaternionf<wbr/></span><span class="pun">.</span><span class="pln">fromEulerAngles</span><span class="pun">(</span><span class="pln">angles</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">isAlmostZero</span><span class="pun">(</span><span class="pln">q12<wbr/></span><span class="pun">.</span><span class="pln">toEulerAngles </span><span class="pun">- </span><span class="pln">angles</span><span class="pun">));
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">isAlmostZero</span><span class="pun">(</span><span class="pln">q12<wbr/></span><span class="pun">.</span><span class="pln">rotationAxis </span><span class="pun">- </span><span class="typ">Vector3f</span><span class="pun">(</span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">)));
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">isConsiderZero</span><span class="pun">(</span><span class="pln">q12<wbr/></span><span class="pun">.</span><span class="pln">rotationAngle </span><span class="pun">- </span><span class="pln">angles<wbr/></span><span class="pun">.</span><span class="pln">x</span><span class="pun">));
+</span></code></pre>
+</section>
+
 			<footer>
 				<table class="license-info">
 					<tr>
@@ -820,7 +825,7 @@ $('#symbolSearchPane').show();</script>
 					<tr>
 						<th>Copyright</th>
 						<td>
-							<p>Timur Gafarov 2011-2021.
+							<p>Timur Gafarov 2011-2022.
 </p>
 
 						</td>
