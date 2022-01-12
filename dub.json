@@ -1,5 +1,8 @@
 {
+    "name": "dlib",
     "description": "D language utility library",
+    "homepage": "http://github.com/gecko0307/dlib",
+    "license": "BSL-1.0",
     "authors": [
         "Timur Gafarov",
         "Martin Cejp",
@@ -14,9 +17,6 @@
         "Valeriy Fedotov",
         "Ferhat Kurtulmuş"
     ],
-    "license": "BSL-1.0",
-    "homepage": "http://github.com/gecko0307/dlib",
-    "name": "dlib",
     "importPaths": [
         "."
     ],
@@ -36,6 +36,5 @@
             "sourceFiles-posix": ["libdlib.a"],
             "sourceFiles-windows": ["dlib.lib"]
         }
-    ],
-    "-ddoxTool": "scod"
+    ]
 }
