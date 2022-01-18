@@ -36,7 +36,7 @@ New code should at least:
 
 dlib follows [D style](https://dlang.org/dstyle.html). Essential rules are the following:
 * Use spaces instead of tabs. Each indentation level is 4 spaces
-* Opening curly bracket should be on a new line
+* Opening curly bracket should be on a new line (Allman style)
 * Functions and variables should be in `camelCase`
 * Types, constants and enums should be in `PascalCase`
 * Module names should be in lowercase.
