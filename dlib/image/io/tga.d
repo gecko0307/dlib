@@ -102,7 +102,13 @@ SuperImage loadTGA(string filename)
 
     try
     {
-        return loadTGA(input);
+        ubyte[] data = New!(ubyte[])(input.size);
+        input.fillArray(data);
+        ArrayStream arrStrm = New!ArrayStream(data);
+        auto img = loadTGA(arrStrm);
+        Delete(arrStrm);
+        Delete(data);
+        return img;
     }
     catch (TGALoadException ex)
     {

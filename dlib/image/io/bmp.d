@@ -177,7 +177,13 @@ SuperImage loadBMP(string filename)
 
     try
     {
-        return loadBMP(input);
+        ubyte[] data = New!(ubyte[])(input.size);
+        input.fillArray(data);
+        ArrayStream arrStrm = New!ArrayStream(data);
+        auto img = loadBMP(arrStrm);
+        Delete(arrStrm);
+        Delete(data);
+        return img;
     }
     catch (BMPLoadException ex)
     {

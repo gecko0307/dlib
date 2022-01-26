@@ -417,7 +417,12 @@ struct JPEGImage
 SuperImage loadJPEG(string filename)
 {
     InputStream input = openForInput(filename);
-    auto img = loadJPEG(input);
+    ubyte[] data = New!(ubyte[])(input.size);
+    input.fillArray(data);
+    ArrayStream arrStrm = New!ArrayStream(data);
+    auto img = loadJPEG(arrStrm);
+    Delete(arrStrm);
+    Delete(data);
     input.close();
     return img;
 }

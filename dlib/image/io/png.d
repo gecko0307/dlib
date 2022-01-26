@@ -321,7 +321,12 @@ class PNGLoadException: ImageLoadException
 SuperImage loadPNG(string filename)
 {
     InputStream input = openForInput(filename);
-    auto img = loadPNG(input);
+    ubyte[] data = New!(ubyte[])(input.size);
+    input.fillArray(data);
+    ArrayStream arrStrm = New!ArrayStream(data);
+    auto img = loadPNG(arrStrm);
+    Delete(arrStrm);
+    Delete(data);
     input.close();
     return img;
 }
@@ -333,7 +338,12 @@ SuperImage loadPNG(string filename)
 SuperAnimatedImage loadAPNG(string filename)
 {
     InputStream input = openForInput(filename);
-    auto img = loadAPNG(input);
+    ubyte[] data = New!(ubyte[])(input.size);
+    input.fillArray(data);
+    ArrayStream arrStrm = New!ArrayStream(data);
+    auto img = loadAPNG(arrStrm);
+    Delete(arrStrm);
+    Delete(data);
     input.close();
     return img;
 }
@@ -1035,6 +1045,7 @@ Compound!(bool, string) readChunk(
         return err("loadPNG error: failed to read chunk CRC, invalid PNG stream");
     }
 
+    /*
     uint calculatedCRC = crc32(chain(chunk.type[0..$], chunk.data));
 
     version(PNGDebug)
@@ -1047,6 +1058,7 @@ Compound!(bool, string) readChunk(
     {
         return err("loadPNG error: chunk CRC check failed");
     }
+    */
 
     return suc();
 }

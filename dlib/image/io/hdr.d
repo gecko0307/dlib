@@ -116,7 +116,12 @@ class HDRLoadException: ImageLoadException
 SuperHDRImage loadHDR(string filename)
 {
     InputStream input = openForInput(filename);
-    auto img = loadHDR(input);
+    ubyte[] data = New!(ubyte[])(input.size);
+    input.fillArray(data);
+    ArrayStream arrStrm = New!ArrayStream(data);
+    auto img = loadHDR(arrStrm);
+    Delete(arrStrm);
+    Delete(data);
     input.close();
     return img;
 }
