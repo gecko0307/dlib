@@ -41,6 +41,7 @@ version(WAVDebug)
 {
     import std.stdio;
 }
+import dlib.core.memory;
 import dlib.core.stream;
 import dlib.filesystem.local;
 import dlib.audio.sample;
@@ -155,7 +156,12 @@ GenericSound loadWAV(InputStream istrm)
 GenericSound loadWAV(string filename)
 {
     auto istrm = openForInput(filename);
-    auto snd = loadWAV(istrm);
+    ubyte[] data = New!(ubyte[])(istrm.size);
+    istrm.fillArray(data);
+    ArrayStream arrStrm = New!ArrayStream(data);
+    auto snd = loadWAV(arrStrm);
+    Delete(arrStrm);
+    Delete(data);
     istrm.close();
     return snd;
 }
