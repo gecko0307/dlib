@@ -1,5 +1,11 @@
-dlib 1.0.0 beta1 - TBD
+dlib 1.0.0 beta2 - TBD
 ----------------------
+Changes since dlib 1.0.0 beta1:
+- **dlib.image**
+  - File-based image loading functions now preload data to memory, so that decoders run faster (2x-10x depending on format and image size).
+
+dlib 1.0.0 beta1 - 12 Jan, 2022
+-------------------------------
 - **dlib.core**
   - **Breaking change:** `dlib.core.bitio.swapEndian16` moved to `dlib.math.utils`
   - POSIX thread creation is now validated in debug mode
@@ -15,7 +21,7 @@ dlib 1.0.0 beta1 - TBD
   - **Breaking change:** deprecated method `Ray.intersectTriangle` with `v0`, `v1`, `v2` arguments has been removed.
   - Fix `Triangle.boundingBox`
   - New function `intrSphereVsAABB` in `dlib.geometry.intersection`
-  - `AABB.intersectsSphere` is deprecated, use `intrSphereVsAABB` instead
+  - `AABB.intersectsSphere` is deprecated, use `intrSphereVsAABB` instead.
 
 dlib 0.23.0 - 1 Oct, 2021
 -------------------------
