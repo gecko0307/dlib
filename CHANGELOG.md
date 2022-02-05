@@ -1,5 +1,5 @@
-dlib 1.0.0 beta2 - TBD
-----------------------
+dlib 1.0.0 beta2 - 05 Feb, 2022
+-------------------------------
 Changes since dlib 1.0.0 beta1:
 - **dlib.image**
   - File-based image loading functions now preload data to memory, so that decoders run faster (2x-10x depending on format and image size).
