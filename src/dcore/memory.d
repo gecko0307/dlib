@@ -45,7 +45,7 @@ void deallocate(T)(ref T obj) nothrow @nogc if (isArray!T)
         free(cast(uint)p);
     else
         free(p);
-    obj = [];
+    obj.length = 0;
 }
 
 void deallocate(T)(T obj) nothrow @nogc if (is(T == class) || is(T == interface))
