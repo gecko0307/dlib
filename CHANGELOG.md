@@ -1,3 +1,7 @@
+dlib 1.0.0 - 17 Feb, 2022
+-------------------------
+No changes since dlib 1.0.0 beta2.
+
 dlib 1.0.0 beta2 - 05 Feb, 2022
 -------------------------------
 Changes since dlib 1.0.0 beta1:
