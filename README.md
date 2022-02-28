@@ -20,7 +20,7 @@ Important message to users and contributors of dlib due to the 2022 Ukraine cris
 ----------------------------------------------------------------------------------
 **I, Timur Gafarov, creator and maintainer of dlib, live in Russia. dlib has contributors from both Ukraine and Russia, as well as other countries of the world. While working on such projects, there are no borders between people. I strongly believe that politics should not prevent people from sharing knowledge with each other, creating new things and solving intellectual problems.**
 
-**Yet the current political situation can lead to catastrophic consequences, up to the disconnection of all Russian developers from the world community for undefined period, which will seriously affect the projects in which they are actively involved. I hope these fears don't come true, but in case of the worst scenario, I will not be able to participate in the development of the project.**
+**Yet the current political situation can lead to catastrophic consequences, up to the disconnection of all Russian developers from the world community for undefined period, which will seriously affect the projects in which they are actively involved. I hope these fears don't come true, but in case of the worst scenario, I will not be able to participate in the development of dlib.**
 
 What's inside
 -------------
