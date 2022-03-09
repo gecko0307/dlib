@@ -12,7 +12,7 @@ dlib has no external dependencies aside D's standard library. dlib is created an
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/gecko0307/dlib?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Patreon button](https://img.shields.io/badge/patreon-donate-yellow.svg)](http://patreon.com/gecko0307 "Become a Patron!")
 
-If you like dlib, please support its development on [Patreon](https://www.patreon.com/gecko0307) or [Liberapay](https://liberapay.com/gecko0307). You can also make one-time donation via [PayPal](https://www.paypal.me/tgafarov) or [NOWPayments](https://nowpayments.io/donation/gecko0307). Thanks in advance!
+If you like dlib, please support its development via [NOWPayments](https://nowpayments.io/donation/gecko0307). Unfortunately, due to the sanctions imposed on Russia, donations through Patreon and Paypal are currently not accepted. Thanks in advance!
 
 **Important:** if you want to use dlib on macOS then, please, first read the [manifesto](https://github.com/gecko0307/dlib/wiki/Why-doesn't-dlib-support-macOS).
 
@@ -20,7 +20,7 @@ Important message to users of dlib due to the 2022 Ukraine crisis
 -----------------------------------------------------------------
 I, Timur Gafarov, creator and maintainer of dlib, live in Russia. dlib has contributors from both Ukraine and Russia, as well as other countries of the world. While working on such projects, there are no borders between people. I strongly believe that politics should not prevent people from sharing knowledge with each other, creating new things and solving intellectual problems.
 
-Yet the current political situation can lead to catastrophic consequences, up to the disconnection of all Russian developers from the world community for undefined period, which will seriously affect the projects in which they are actively involved. I hope these fears don't come true, but in case of the worst scenario, I will not be able to participate in the development of dlib and manage its package in Dub registry. It is also not clear yet whether I will be able to receive funding through Patreon, PayPal and other financial platforms.
+Yet the current political situation can lead to catastrophic consequences, up to the disconnection of all Russian developers from the world community for undefined period, which will seriously affect the projects in which they are actively involved. I hope these fears don't come true, but in case of the worst scenario, I will not be able to participate in the development of dlib and manage its package in Dub registry.
 
 **Therefore, I strongly discourage using dlib as a critical dependency in important software products until the situation improves and there is confidence in the future for Russian developers.**
 
