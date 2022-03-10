@@ -18,11 +18,9 @@ If you like dlib, please support its development via [NOWPayments](https://nowpa
 
 Important message to users of dlib due to the 2022 Ukraine crisis
 -----------------------------------------------------------------
-I, Timur Gafarov, creator and maintainer of dlib, live in Russia and I condemn this invasion. Nothing can justify loss of life of innocent people and destruction of cities. I deeply sympathize with the people of Ukraine and everyone whose life have been affected by this terrible tragedy.
+I, Timur Gafarov, creator and maintainer of dlib, live in Russia. dlib has contributors from both Ukraine and Russia, as well as other countries of the world. When working on Open Source software, there are no borders between people. I strongly believe that politics should not prevent people from sharing knowledge with each other, creating new things and solving intellectual problems.
 
-We, reasonable citizens of Russia who stand for peace, are now hostages of this situation. dlib has contributors from both Ukraine and Russia, as well as other countries of the world. While working on such projects, there are no borders between people. I strongly believe that politics should not prevent people from sharing knowledge with each other, creating new things and solving intellectual problems.
-
-Yet the current state of affairs can lead to catastrophic consequences, up to the disconnection of all Russian developers from the world community for undefined period, which will seriously affect the projects in which they are actively involved. I hope these fears don't come true, but in case of the worst scenario, I will not be able to participate in the development of dlib and manage its package in Dub registry.
+Yet the current political situation can lead to catastrophic consequences, up to the disconnection of all Russian developers from the world community for undefined period, which will seriously affect the projects in which they are involved. I hope these fears don't come true, but in case of the worst scenario, I will not be able to participate in the development of dlib, Dagon and other projects and manage their packages in Dub registry.
 
 **Therefore, I strongly discourage using dlib as a critical dependency in important software products until the situation improves and there is confidence in the future for Russian developers.**
 
