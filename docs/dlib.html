@@ -737,14 +737,68 @@ $('#symbolSearchPane').show();</script>
 </p><section></section>
 
 			<section><section><h2>Description</h2>
-<p>dlib is a high-level general purpose library for D language intended to
+<p>dlib is a high-level general purpose library for
+ <a href="https://dlang.org">D language</a> intended to
  game engine developers. It provides basic building blocks for writing
  graphics-intensive applications: containers, data streams, linear algebra
  and image decoders.
 </p>
 
 <p> dlib has no external dependencies aside D's standard library. dlib is created
- and maintained by Timur Gafarov (https://github.com/gecko0307).
+ and maintained by <a href="https://github.com/gecko0307">Timur Gafarov</a>.
+</p>
+
+<p> If you like dlib, please support its development on
+ <a href="https://www.patreon.com/gecko0307">Patreon</a> or
+ <a href="https://liberapay.com/gecko0307">Liberapay</a>. You can also make one-time
+ donation via <a href="https://www.paypal.me/tgafarov">PayPal</a> or
+ <a href="https://nowpayments.io/donation/gecko0307">NOWPayments</a>.
+</p>
+
+<p> If you want to use dlib on macOS then, please, first read the
+ <a href="https://github.com/gecko0307/dlib/wiki/Why-doesn't-dlib-support-macOS">manifesto</a>.
+</p>
+
+<p> Currently dlib consists of the following packages:
+</p>
+
+<p> - <a href="dlib/core.html">dlib.core</a> - basic functionality used by other modules (memory management, streams, threads, etc.)
+</p>
+
+<p> - <a href="dlib/container.html">dlib.container</a> - generic data structures (GC-free dynamic and associative arrays and more)
+</p>
+
+<p> - <a href="dlib/filesystem.html">dlib.filesystem</a> - abstract FS interface and its implementations for Windows and POSIX filesystems
+</p>
+
+<p> - <a href="dlib/math.html">dlib.math</a> - linear algebra and numerical analysis (vectors, matrices, quaternions, linear system solvers, interpolation functions, etc.)
+</p>
+
+<p> - <a href="dlib/geometry.html">dlib.geometry</a> - computational geometry (ray casting, primitives, intersection, etc.)
+</p>
+
+<p> - <a href="dlib/image.html">dlib.image</a> - image processing (8-bit, 16-bit and 32-bit floating point channels, common filters and convolution kernels, resizing, FFT, HDRI, animation, graphics formats I/O: JPEG, PNG/APNG, BMP, TGA, HDR)
+</p>
+
+<p> - <a href="dlib/audio.html">dlib.audio</a> - sound processing (8 and 16 bits per sample, synthesizers, WAV export and import)
+</p>
+
+<p> - <a href="dlib/network.html">dlib.network</a> - networking and web functionality
+</p>
+
+<p> - <a href="dlib/memory.html">dlib.memory</a> - memory allocators
+</p>
+
+<p> - <a href="dlib/text.html">dlib.text</a>  - text processing, GC-free strings, Unicode decoding and encoding
+</p>
+
+<p> - <a href="dlib/serialization.html">dlib.serialization</a> - data serialization (XML and JSON parsers)
+</p>
+
+<p> - <a href="dlib/coding.html">dlib.coding</a>- various data compression and coding algorithms
+</p>
+
+<p> - <a href="dlib/concurrency.html">dlib.concurrency</a> - a thread pool.
 </p>
 </section>
 </section>
@@ -769,7 +823,7 @@ $('#symbolSearchPane').show();</script>
 					<tr>
 						<th>License</th>
 						<td>
-							<p><a href="boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
+							<p><a href="https://boost.org/LICENSE_1_0.txt">Boost License 1.0</a>.
 </p>
 
 						</td>
