@@ -7,7 +7,7 @@ extern(C) void main() nothrow @nogc
 
     Array!int arr;
     arr ~= 10;
-    printf("arr.length = %d\n", arr.length);
+    printf("arr.length = %d\n".ptr, arr.length);
     arr.free();
     
     float x = cos(PI * 0.5f);

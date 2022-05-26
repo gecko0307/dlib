@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019-2022 Timur Gafarov
+Copyright (c) 2022 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -25,15 +25,29 @@ FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
+module dcore.c.math;
 
-module dcore.stdio;
-
-public
+version(FreeStanding)
 {
-    import dcore.c.stdio: printf;
+    static assert(0, "dcore.c.math requires libc");
 }
 
-void printStr(string s) nothrow @nogc
+extern(C) nothrow @nogc
 {
-    printf("%.*s\n", s.length, s.ptr);
+    double sin(double x);
+    double cos(double x);
+    
+    double ceil(double x);
+    float ceilf(float x);
+    real ceill(real x)
+    {
+        return ceil(x);
+    }
+    
+    double floor(double x);
+    float floorf(float x);
+    real floorl(real x)
+    {
+        return floor(x);
+    }
 }

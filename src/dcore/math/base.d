@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019 Timur Gafarov
+Copyright (c) 2019-2022 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -57,11 +57,13 @@ T clamp(T)(T v, T mi, T ma) pure nothrow @nogc
     else return v;
 }
 
+/*
 T floor(T)(T x) pure nothrow @nogc
 {
     long xi = cast(long)x;
     return x < xi ? xi - 1 : xi;
 }
+*/
 
 bool isClose(real a, real b, real delta) pure nothrow @nogc
 {

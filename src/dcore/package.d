@@ -30,6 +30,7 @@ module dcore;
 
 public
 {
+    import dcore.c;
     import dcore.container;
     import dcore.internal;
     import dcore.math;

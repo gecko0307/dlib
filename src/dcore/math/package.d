@@ -31,5 +31,5 @@ module dcore.math;
 public
 {
     import dcore.math.base;
-    import dcore.libc: sin, cos;
+    import dcore.c.math;
 }

@@ -1,7 +1,7 @@
 module dcore.memory;
 
 import std.traits;
-import dcore.libc;
+import dcore.c.stdlib;
 
 T allocate(T, A...) (A args) nothrow @nogc if (is(T == class))
 {
