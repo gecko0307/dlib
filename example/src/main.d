@@ -4,6 +4,13 @@ import dcore;
 extern(C) void main() nothrow @nogc
 {
     printStr("Hello!");
+    
+    SysInfo info;
+    if (sysInfo(&info))
+    {
+        printf("Architecture: %d\n", info.architecture);
+        printf("Processors: %d\n", info.numProcessors);
+    }
 
     Array!int arr;
     arr ~= 10;

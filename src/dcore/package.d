@@ -36,5 +36,6 @@ public
     import dcore.math;
     import dcore.memory;
     import dcore.stdio;
+    import dcore.sys;
     import dcore.text;
 }
