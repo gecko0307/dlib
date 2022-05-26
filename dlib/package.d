@@ -30,16 +30,54 @@ DEALINGS IN THE SOFTWARE.
  * dlib - general purpose library
  *
  * Description:
- * dlib is a high-level general purpose library for D language intended to 
+ * dlib is a high-level general purpose library for 
+ * $(LINK2 https://dlang.org, D language) intended to 
  * game engine developers. It provides basic building blocks for writing
  * graphics-intensive applications: containers, data streams, linear algebra 
  * and image decoders.
  *
  * dlib has no external dependencies aside D's standard library. dlib is created
- * and maintained by Timur Gafarov (https://github.com/gecko0307).
+ * and maintained by $(LINK2 https://github.com/gecko0307, Timur Gafarov).
+ *
+ * If you like dlib, please support its development on
+ * $(LINK2 https://www.patreon.com/gecko0307, Patreon) or
+ * $(LINK2 https://liberapay.com/gecko0307, Liberapay). You can also make one-time 
+ * donation via $(LINK2 https://www.paypal.me/tgafarov, PayPal) or
+ * $(LINK2 https://nowpayments.io/donation/gecko0307, NOWPayments).
+ *
+ * If you want to use dlib on macOS then, please, first read the 
+ * $(LINK2 https://github.com/gecko0307/dlib/wiki/Why-doesn't-dlib-support-macOS, manifesto).
+ *
+ * Currently dlib consists of the following packages:
+ *
+ * - $(LINK2 dlib/core.html, dlib.core) - basic functionality used by other modules (memory management, streams, threads, etc.)
+ *
+ * - $(LINK2 dlib/container.html, dlib.container) - generic data structures (GC-free dynamic and associative arrays and more)
+ *
+ * - $(LINK2 dlib/filesystem.html, dlib.filesystem) - abstract FS interface and its implementations for Windows and POSIX filesystems
+ *
+ * - $(LINK2 dlib/math.html, dlib.math) - linear algebra and numerical analysis (vectors, matrices, quaternions, linear system solvers, interpolation functions, etc.)
+ *
+ * - $(LINK2 dlib/geometry.html, dlib.geometry) - computational geometry (ray casting, primitives, intersection, etc.)
+ *
+ * - $(LINK2 dlib/image.html, dlib.image) - image processing (8-bit, 16-bit and 32-bit floating point channels, common filters and convolution kernels, resizing, FFT, HDRI, animation, graphics formats I/O: JPEG, PNG/APNG, BMP, TGA, HDR)
+ *
+ * - $(LINK2 dlib/audio.html, dlib.audio) - sound processing (8 and 16 bits per sample, synthesizers, WAV export and import)
+ *
+ * - $(LINK2 dlib/network.html, dlib.network) - networking and web functionality
+ *
+ * - $(LINK2 dlib/memory.html, dlib.memory) - memory allocators
+ *
+ * - $(LINK2 dlib/text.html, dlib.text)  - text processing, GC-free strings, Unicode decoding and encoding
+ *
+ * - $(LINK2 dlib/serialization.html, dlib.serialization) - data serialization (XML and JSON parsers)
+ *
+ * - $(LINK2 dlib/coding.html, dlib.coding)- various data compression and coding algorithms
+ *
+ * - $(LINK2 dlib/concurrency.html, dlib.concurrency) - a thread pool.
  *
  * Copyright: Timur Gafarov 2011-2022.
- * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * License: $(LINK2 https://boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
 module dlib;

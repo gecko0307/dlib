@@ -27,16 +27,18 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
- GC-free parser for a subset of XML.
-
- Description:
- Has the following limitations:
- - supports only ASCII and UTF-8 encodings
- - doesn't support DOCTYPE and some other special tags
-
- Copyright: Timur Gafarov 2015-2022.
- License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
- Authors: Timur Gafarov
+ * GC-free parser for a subset of XML.
+ *
+ * Description:
+ * Has the following limitations:
+ *
+ * - supports only ASCII and UTF-8 encodings
+ *
+ * - doesn't support DOCTYPE and some other special tags
+ *
+ * Copyright: Timur Gafarov 2015-2022.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
  */
 module dlib.serialization.xml;
 
