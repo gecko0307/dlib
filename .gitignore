@@ -1,10 +1,13 @@
-# Compiled binaries
+# Compiled Object files
+*.o
+*.obj
+
+# Compiled Static libraries
 *.a
 *.lib
-*.exe
 
-# Backup files
-*~
+# Executables
+*.exe
 
 # Dub files
 .dub
@@ -12,11 +15,18 @@ dub.selections.json
 
 # Dub test files
 __test__library__
-tests
+tests/
 
 # Documentation
-docs
+docs/
 docs.json
+__dummy.html
 
 # Coverage files
 *.lst
+
+# Debug info
+*.pdb
+
+# Backup files
+*~
