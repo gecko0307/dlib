@@ -397,3 +397,34 @@ unittest
 {
     assert(isPerfectSquare(64.0f));
 }
+
+/**
+ * Integer part
+ */
+real integer(real v)
+{
+    real ipart;
+    modf(v, ipart);
+    return ipart;
+}
+
+///
+unittest
+{
+    assert(integer(54.832f) == 54.0f);
+}
+
+/**
+ * Fractional part
+ */
+real frac(real v)
+{
+    real ipart;
+    return modf(v, ipart);
+}
+
+///
+unittest
+{
+    assert(frac(54.832f) == 0.832f);
+}
