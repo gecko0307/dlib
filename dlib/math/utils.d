@@ -426,5 +426,5 @@ real frac(real v)
 ///
 unittest
 {
-    assert(frac(54.832f) == 0.832f);
+    assert(abs(frac(54.832f) - 0.832f) <= EPSILON);
 }
