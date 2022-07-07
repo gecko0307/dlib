@@ -25,22 +25,32 @@ FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
+
+/**
+ * Copyright: Timur Gafarov 2011-2022.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.geometry.support;
 
 import std.math;
 import dlib.math.vector;
+import dlib.math.matrix;
 import dlib.math.utils;
 
+/// Sphere support function
 Vector3f supSphere(Vector3f dir, float radius)
 {
     return dir * radius;
 }
 
+/// Ellipsoid support function
 Vector3f supEllipsoid(Vector3f dir, Vector3f radii)
 {
     return dir * radii;
 }
 
+/// AABB support function
 Vector3f subBox(Vector3f dir, Vector3f halfSize)
 {
     Vector3f result;
@@ -50,6 +60,7 @@ Vector3f subBox(Vector3f dir, Vector3f halfSize)
     return result;
 }
 
+/// Cylinder support function
 Vector3f supCylinder(Vector3f dir, float radius, float height)
 {
     Vector3f result;
@@ -71,6 +82,7 @@ Vector3f supCylinder(Vector3f dir, float radius, float height)
     return result;
 }
 
+/// Cone support function
 Vector3f supCone(Vector3f dir, float radius, float height)
 {
     float zdist = dir[0] * dir[0] + dir[1] * dir[1];
@@ -92,6 +104,7 @@ Vector3f supCone(Vector3f dir, float radius, float height)
         return Vector3f(0.0f, 0.0f, -half_h);
 }
 
+/// Capsule support function
 Vector3f supCapsule(Vector3f dir, float radius, float height)
 {
     float half_h = height * 0.5f;
@@ -105,6 +118,7 @@ Vector3f supCapsule(Vector3f dir, float radius, float height)
     else return pos2;
 }
 
+/// Convex hull support function
 Vector3f supConvexHull(Vector3f dir, Vector3f[] vertices)
 {
     float maxdot = -float.max;
@@ -121,6 +135,7 @@ Vector3f supConvexHull(Vector3f dir, Vector3f[] vertices)
     return bestv;
 }
 
+/// Triangle support function
 Vector3f supTriangle(Vector3f dir, Vector3f[3] v)
 {
     float dota = dir.dot(v[0]);
@@ -141,4 +156,25 @@ Vector3f supTriangle(Vector3f dir, Vector3f[3] v)
         else
             return v[1];
     }
+}
+
+/// Transformed support function
+Vector3f supTransformed(S)(S shape, Matrix4x4f transformation, Vector3f dir)
+{
+    Vector3f result;
+    result.x = ((dir.x * m.a11) + (dir.y * m.a21)) + (dir.z * m.a31);
+    result.y = ((dir.x * m.a12) + (dir.y * m.a22)) + (dir.z * m.a32);
+    result.z = ((dir.x * m.a13) + (dir.y * m.a23)) + (dir.z * m.a33);
+
+    result = shape.support(result);
+
+    float x = ((result.x * m.a11) + (result.y * m.a12)) + (result.z * m.a13);
+    float y = ((result.x * m.a21) + (result.y * m.a22)) + (result.z * m.a23);
+    float z = ((result.x * m.a31) + (result.y * m.a32)) + (result.z * m.a33);
+
+    result.x = m.a14 + x;
+    result.y = m.a24 + y;
+    result.z = m.a34 + z;
+    
+    return Vector3f;
 }

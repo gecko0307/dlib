@@ -40,6 +40,7 @@ public
     import dlib.geometry.aabb;
     import dlib.geometry.frustum;
     import dlib.geometry.intersection;
+    import dlib.geometry.mpr;
     import dlib.geometry.obb;
     import dlib.geometry.plane;
     import dlib.geometry.ray;
