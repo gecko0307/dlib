@@ -44,6 +44,7 @@ public
     import dlib.geometry.plane;
     import dlib.geometry.ray;
     import dlib.geometry.sphere;
+    import dlib.geometry.support;
     import dlib.geometry.triangle;
     import dlib.geometry.trimesh;
     import dlib.geometry.utils;
