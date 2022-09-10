@@ -1,10 +1,12 @@
-dlib 1.1.0 beta1 - TBD
-----------------------
+dlib 1.1.0 beta1 - 10 Sep, 2022
+-------------------------------
 - **dlib.geometry**
   - New module `dlib.geometry.mpr` - implementation of the Minkowski Portal Refinement algorithm that detects intersection between two arbitrary convex shapes
   - New module `dlib.geometry.support` with support functions for some common shapes
 - **dlib.math**
   - `integer` and `frac` functions in `dlib.math.utils` that return integer part and fractional part of a real number.
+- **dlib.image**
+  - Fix compilation for x86.
 
 dlib 1.0.0 - 17 Feb, 2022
 -------------------------
