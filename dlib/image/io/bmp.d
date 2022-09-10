@@ -177,7 +177,7 @@ SuperImage loadBMP(string filename)
 
     try
     {
-        ubyte[] data = New!(ubyte[])(input.size);
+        ubyte[] data = New!(ubyte[])(cast(size_t)input.size);
         input.fillArray(data);
         ArrayStream arrStrm = New!ArrayStream(data);
         auto img = loadBMP(arrStrm);

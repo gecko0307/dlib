@@ -156,7 +156,7 @@ GenericSound loadWAV(InputStream istrm)
 GenericSound loadWAV(string filename)
 {
     auto istrm = openForInput(filename);
-    ubyte[] data = New!(ubyte[])(istrm.size);
+    ubyte[] data = New!(ubyte[])(cast(size_t)istrm.size);
     istrm.fillArray(data);
     ArrayStream arrStrm = New!ArrayStream(data);
     auto snd = loadWAV(arrStrm);

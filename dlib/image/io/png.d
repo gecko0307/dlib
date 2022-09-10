@@ -321,7 +321,7 @@ class PNGLoadException: ImageLoadException
 SuperImage loadPNG(string filename)
 {
     InputStream input = openForInput(filename);
-    ubyte[] data = New!(ubyte[])(input.size);
+    ubyte[] data = New!(ubyte[])(cast(size_t)input.size);
     input.fillArray(data);
     ArrayStream arrStrm = New!ArrayStream(data);
     auto img = loadPNG(arrStrm);
@@ -338,7 +338,7 @@ SuperImage loadPNG(string filename)
 SuperAnimatedImage loadAPNG(string filename)
 {
     InputStream input = openForInput(filename);
-    ubyte[] data = New!(ubyte[])(input.size);
+    ubyte[] data = New!(ubyte[])(cast(size_t)input.size);
     input.fillArray(data);
     ArrayStream arrStrm = New!ArrayStream(data);
     auto img = loadAPNG(arrStrm);
