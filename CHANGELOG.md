@@ -1,3 +1,7 @@
+dlib 1.1.0 - 5 Oct, 2022
+-------------------------
+No changes since dlib 1.1.0 beta1.
+
 dlib 1.1.0 beta1 - 10 Sep, 2022
 -------------------------------
 - **dlib.geometry**
