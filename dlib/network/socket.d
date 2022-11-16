@@ -1304,7 +1304,7 @@ class InternetAddress : Address
         }
 
         ubyte* dp = cast(ubyte*) &storage, sp = cast(ubyte*) ai_res.ai_addr;
-        for (auto i = ai_res.ai_addrlen; i > 0; --i, *dp++, *sp++)
+        for (auto i = ai_res.ai_addrlen; i > 0; --i, dp++, sp++)
         {
             *dp = *sp;
         }
