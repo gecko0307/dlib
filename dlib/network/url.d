@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2022 Eugene Wissner
+Copyright (c) 2016-2023 Eugene Wissner
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,15 +29,15 @@ DEALINGS IN THE SOFTWARE.
 /**
  * URL parser
  *
- * Copyright: Eugene Wissner 2016-2022.
+ * Copyright: Eugene Wissner 2016-2023.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Eugene Wissner
  */
 module dlib.network.url;
 
-import std.ascii : isAlphaNum, isDigit;
-import std.traits : isSomeString;
-import std.uni : isAlpha, isNumber;
+import std.ascii: isAlphaNum, isDigit;
+import std.traits: isSomeString;
+import std.uni: isAlpha, isNumber;
 import std.uri;
 
 version (unittest) private

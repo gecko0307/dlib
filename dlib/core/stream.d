@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2022 Martin Cejp
+Copyright (c) 2014-2023 Martin Cejp
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Binary I/O stream interfaces
  *
- * Copyright: Martin Cejp 2014-2022.
+ * Copyright: Martin Cejp 2014-2023.
  * License: $(LINK2 https://boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Martin Cejp, Timur Gafarov
  */

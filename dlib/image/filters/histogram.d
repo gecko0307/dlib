@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2018-2022 Oleg Baharev, Timur Gafarov
+Copyright (c) 2018-2023 Oleg Baharev, Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Generate histogram of an image
  *
- * Copyright: Oleg Baharev, Timur Gafarov 2018-2022.
+ * Copyright: Oleg Baharev, Timur Gafarov 2018-2023.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Oleg Baharev, Timur Gafarov
  */

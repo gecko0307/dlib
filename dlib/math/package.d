@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2022 Timur Gafarov
+Copyright (c) 2013-2023 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -27,16 +27,16 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
- * Linear algebra and numerical analysis
+ * Linear algebra and calculus
  *
  * Description:
- * dlib.math brings vector and matrix types to D, as well as some numerical 
- * analysis functionality. dlib.math is great as a math library for games, 
+ * dlib.math brings vector and matrix types to D, as well as some calculus 
+ * functionality. dlib.math is great as a math library for games, 
  * graphics/physics engines and rendering pipelines. All types are POD and 
  * OpenGL-friendly: you can pass your 4x4 matrices to OpenGL functions directly, 
  * without any conversion.
  *
- * Copyright: Timur Gafarov 2013-2022.
+ * Copyright: Timur Gafarov 2013-2023.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */

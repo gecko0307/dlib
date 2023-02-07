@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2022 Timur Gafarov
+Copyright (c) 2013-2023 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -34,7 +34,7 @@ DEALINGS IN THE SOFTWARE.
  * dynamic array, dictionary, etc. They are based on dlib.core.memory allocators.
  * dlib.container is useful when writing applications with manual memory management.
  *
- * Copyright: Timur Gafarov 2013-2022.
+ * Copyright: Timur Gafarov 2013-2023.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
