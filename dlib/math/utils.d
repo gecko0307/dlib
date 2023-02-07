@@ -73,6 +73,22 @@ T radtodeg(T) (T angle) nothrow
 }
 
 /**
+ * Convert radians to revolutions
+ */
+T radtorev(T)(T angle) nothrow
+{
+    return angle / (2.0 * PI);
+}
+
+/**
+ * Convert revolutions to radians
+ */
+T revtorad(T)(angle) nothrow
+{
+    return angle * (2.0 * PI);
+}
+
+/**
  * Find maximum of two values
  */
 T max2(T) (T x, T y) nothrow
