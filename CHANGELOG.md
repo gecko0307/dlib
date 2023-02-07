@@ -1,3 +1,8 @@
+dlib 1.2.0 beta1 - TBD
+----------------------
+- **dlib.math**
+  - `radtorev` and `revtorad` functions in `dlib.math.utils` that convert radians to revolutions and revolutions to radians, respectively.
+
 dlib 1.1.0 - 5 Oct, 2022
 -------------------------
 No changes since dlib 1.1.0 beta1.
@@ -8,7 +13,7 @@ dlib 1.1.0 beta1 - 10 Sep, 2022
   - New module `dlib.geometry.mpr` - implementation of the Minkowski Portal Refinement algorithm that detects intersection between two arbitrary convex shapes
   - New module `dlib.geometry.support` with support functions for some common shapes
 - **dlib.math**
-  - `integer` and `frac` functions in `dlib.math.utils` that return integer part and fractional part of a real number.
+  - `integer` and `frac` functions in `dlib.math.utils` that return integer part and fractional part of a real number, respectively.
 - **dlib.image**
   - Fix compilation for x86.
 
