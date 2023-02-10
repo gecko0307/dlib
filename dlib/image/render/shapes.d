@@ -134,12 +134,12 @@ void drawCircle(SuperImage img, Color4f col, int x0, int y0, uint r)
 /// Draw a filled rectangle
 void drawRect(SuperImage img, Color4f col, int x1, int y1, int x2, int y2)
 {
-  int minX = x1 < x2 ? x1 : x2;
-  int maxX = x1 > x2 ? x1 : x2;
-  int minY = y1 < y2 ? y1 : y2;
-  int maxY = y1 > y2 ? y1 : y2;
+    int minX = x1 < x2 ? x1 : x2;
+    int maxX = x1 > x2 ? x1 : x2;
+    int minY = y1 < y2 ? y1 : y2;
+    int maxY = y1 > y2 ? y1 : y2;
 
-  foreach (x; minX..maxX + 1)
-    foreach (y; minY..maxY + 1)
-      img[x, y] = col;
+    foreach (x; minX..maxX + 1)
+        foreach (y; minY..maxY + 1)
+            img[x, y] = col;
 }
