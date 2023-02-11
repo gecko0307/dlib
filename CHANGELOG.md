@@ -1,7 +1,9 @@
 dlib 1.2.0 beta1 - TBD
 ----------------------
 - **dlib.math**
-  - `radtorev` and `revtorad` functions in `dlib.math.utils` that convert radians to revolutions and revolutions to radians, respectively.
+  - `radtorev` and `revtorad` functions in `dlib.math.utils` that convert radians to revolutions and revolutions to radians, respectively
+- **dlib.image**
+  - New funtion `drawRect` in `dlib.image.render.shapes`.
 
 dlib 1.1.0 - 5 Oct, 2022
 -------------------------
