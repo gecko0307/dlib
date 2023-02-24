@@ -202,6 +202,48 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/filesystem.html">filesystem</a>
 					</div>
 			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">posix
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/posix/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/posix/directory.html">directory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/posix/file.html">file</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">windows
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/windows/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/windows/directory.html">directory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/windows/file.html">file</a>
+					</div>
+				</li>
+			</ul>
+				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/delegaterange.html">delegaterange</a>
@@ -225,6 +267,16 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/stdfs.html">stdfs</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
 					</div>
 				</li>
 			</ul>
@@ -251,6 +303,11 @@ $('#symbolSearchPane').show();</script>
 				</li>
 				<li>
 					<div class="module ">
+						<a href="../../../dlib/geometry/mpr.html">mpr</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
 						<a href="../../../dlib/geometry/obb.html">obb</a>
 					</div>
 				</li>
@@ -267,6 +324,11 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/geometry/sphere.html">sphere</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/geometry/support.html">support</a>
 					</div>
 				</li>
 				<li>
@@ -664,6 +726,11 @@ $('#symbolSearchPane').show();</script>
 			<ul class="tree-view">
 				<li>
 					<div class="module ">
+						<a href="../../../dlib/network/errno.html">errno</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
 						<a href="../../../dlib/network/socket.html">socket</a>
 					</div>
 				</li>
@@ -696,6 +763,11 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/text.html">text</a>
 					</div>
 			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/text/common.html">common</a>
+					</div>
+				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/text/encodings.html">encodings</a>
@@ -762,11 +834,43 @@ $('#symbolSearchPane').show();</script>
 |      |     |         |     |            ||      |     |                  |</span></code></pre>
 </section>
 
+			<section><h2>Fields</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Type</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/memory/mmappool/MmapPool.head.html" class="private"><code>head</code></a>
+						</td>
+						<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/memory/mmappool/MmapPool.RegionEntry.html"><span class="typ">MmapPool<wbr/></span><span class="pun">.<wbr/></span><span class="typ">RegionEntry</span></a><span class="pun">*</span></code></td><td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/memory/mmappool/MmapPool.instance_.html" class="private"><code>instance_</code></a>
+						</td>
+						<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/memory/mmappool/MmapPool.html"><span class="typ">MmapPool</span></a></code></td><td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/memory/mmappool/MmapPool.pageSize.html" class="private"><code>pageSize</code></a>
+						</td>
+						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">ulong</span></code></td><td></td>
+					</tr>
+				</table>
+			</section>
 			<section><h2>Properties</h2>
 				<table>
 					<col class="caption"/>
 					<tr>
 						<th>Name</th><th>Type</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/memory/mmappool/MmapPool.alignment.html" class="public property"><code>alignment</code></a><span class="tableEntryAnnotation">[get]</span>
+						</td>
+						<td class="typecol"><code class="prettyprint lang-d"><span class="kwd">immutable</span><span class="pun">(</span><span class="typ">uint</span><span class="pun">)</span></code></td><td></td>
 					</tr>
 					<tr>
 						<td>
@@ -791,6 +895,42 @@ $('#symbolSearchPane').show();</script>
 					</tr>
 					<tr>
 						<td>
+							<a href="../../../dlib/memory/mmappool/MmapPool.__unittest_L129_C25.html" class="public">
+								<code>__unittest_L129_C25</code>
+							</a>
+							<span class="tableEntryAnnotation">()</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/memory/mmappool/MmapPool.__unittest_L248_C25.html" class="public">
+								<code>__unittest_L248_C25</code>
+							</a>
+							<span class="tableEntryAnnotation">()</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/memory/mmappool/MmapPool.__unittest_L299_C19.html" class="public">
+								<code>__unittest_L299_C19</code>
+							</a>
+							<span class="tableEntryAnnotation">()</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/memory/mmappool/MmapPool.__unittest_L353_C25.html" class="public">
+								<code>__unittest_L353_C25</code>
+							</a>
+							<span class="tableEntryAnnotation">()</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
 							<a href="../../../dlib/memory/mmappool/MmapPool.allocate.html" class="public">
 								<code>allocate</code>
 							</a>
@@ -808,6 +948,15 @@ $('#symbolSearchPane').show();</script>
 						</td>
 						<td>Deallocates a memory block.
 </td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/memory/mmappool/MmapPool.initialize.html" class="public">
+								<code>initialize</code>
+							</a>
+							<span class="tableEntryAnnotation">()</span>
+						</td>
+						<td></td>
 					</tr>
 					<tr>
 						<td>
@@ -849,6 +998,103 @@ $('#symbolSearchPane').show();</script>
 						<td>Increases or decreases the size of a memory block.
 </td>
 					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/memory/mmappool/MmapPool.addAlignment.html" class="private">
+								<code>addAlignment</code>
+							</a>
+							<span class="tableEntryAnnotation">(x)</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/memory/mmappool/MmapPool.calculateRegionSize.html" class="private">
+								<code>calculateRegionSize</code>
+							</a>
+							<span class="tableEntryAnnotation">(x)</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/memory/mmappool/MmapPool.findBlock.html" class="private">
+								<code>findBlock</code>
+							</a>
+							<span class="tableEntryAnnotation">(size)</span>
+						</td>
+						<td>Search for a block large enough to keep <i>size</i> and split it
+ into two blocks if the block is too large.
+</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/memory/mmappool/MmapPool.initializeRegion.html" class="private">
+								<code>initializeRegion</code>
+							</a>
+							<span class="tableEntryAnnotation">(size, head)</span>
+						</td>
+						<td>Initializes a region for one element.
+</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/memory/mmappool/MmapPool.initializeRegion.html" class="private">
+								<code>initializeRegion</code>
+							</a>
+							<span class="tableEntryAnnotation">(size)</span>
+						</td>
+						<td>Ditto.
+</td>
+					</tr>
+				</table>
+			</section>
+			<section><h2>Inner structs</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/memory/mmappool/MmapPool.BlockEntry.html" class="private">
+								<code>BlockEntry</code>
+							</a>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/memory/mmappool/MmapPool.RegionEntry.html" class="private">
+								<code>RegionEntry</code>
+							</a>
+						</td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
+			<section><h2>Aliases</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/memory/mmappool/MmapPool.Block.html" class="private">
+								<code>Block</code>
+							</a>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/memory/mmappool/MmapPool.Region.html" class="private">
+								<code>Region</code>
+							</a>
+						</td>
+						<td></td>
+					</tr>
 				</table>
 			</section>
 			<section><h2>TODO</h2>
@@ -874,7 +1120,7 @@ $('#symbolSearchPane').show();</script>
 					<tr>
 						<th>Copyright</th>
 						<td>
-							<p>Eugene Wissner 2016-2022.
+							<p>Eugene Wissner 2016-2023.
 </p>
 
 						</td>

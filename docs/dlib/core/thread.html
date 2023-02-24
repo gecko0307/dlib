@@ -202,6 +202,48 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../dlib/filesystem.html">filesystem</a>
 					</div>
 			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">posix
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/posix/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/posix/directory.html">directory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/posix/file.html">file</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">windows
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/windows/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/windows/directory.html">directory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/windows/file.html">file</a>
+					</div>
+				</li>
+			</ul>
+				</li>
 				<li>
 					<div class="module ">
 						<a href="../../dlib/filesystem/delegaterange.html">delegaterange</a>
@@ -225,6 +267,16 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../dlib/filesystem/stdfs.html">stdfs</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
 					</div>
 				</li>
 			</ul>
@@ -251,6 +303,11 @@ $('#symbolSearchPane').show();</script>
 				</li>
 				<li>
 					<div class="module ">
+						<a href="../../dlib/geometry/mpr.html">mpr</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
 						<a href="../../dlib/geometry/obb.html">obb</a>
 					</div>
 				</li>
@@ -267,6 +324,11 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../dlib/geometry/sphere.html">sphere</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/geometry/support.html">support</a>
 					</div>
 				</li>
 				<li>
@@ -664,6 +726,11 @@ $('#symbolSearchPane').show();</script>
 			<ul class="tree-view">
 				<li>
 					<div class="module ">
+						<a href="../../dlib/network/errno.html">errno</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
 						<a href="../../dlib/network/socket.html">socket</a>
 					</div>
 				</li>
@@ -696,6 +763,11 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../dlib/text.html">text</a>
 					</div>
 			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../dlib/text/common.html">common</a>
+					</div>
+				</li>
 				<li>
 					<div class="module ">
 						<a href="../../dlib/text/encodings.html">encodings</a>
@@ -752,6 +824,63 @@ $('#symbolSearchPane').show();</script>
 </section>
 </section>
 			<section>
+				<h2>Functions</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="CloseHandle" class="public" href="../../dlib/core/thread/CloseHandle.html">CloseHandle</a><span class="tableEntryAnnotation">(hObject)</span>
+							</code>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="CreateThread" class="public" href="../../dlib/core/thread/CreateThread.html">CreateThread</a><span class="tableEntryAnnotation">()</span>
+							</code>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="GetExitCodeThread" class="public" href="../../dlib/core/thread/GetExitCodeThread.html">GetExitCodeThread</a><span class="tableEntryAnnotation">(hThread, lpExitCode)</span>
+							</code>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="TerminateThread" class="public" href="../../dlib/core/thread/TerminateThread.html">TerminateThread</a><span class="tableEntryAnnotation">(hThread, dwExitCode)</span>
+							</code>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="WaitForMultipleObjects" class="public" href="../../dlib/core/thread/WaitForMultipleObjects.html">WaitForMultipleObjects</a><span class="tableEntryAnnotation">(nCount, lpHandles, bWaitAll, dwMilliseconds)</span>
+							</code>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="Sleep" class="private" href="../../dlib/core/thread/Sleep.html">Sleep</a><span class="tableEntryAnnotation">(msec)</span>
+							</code>
+						</td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
+			<section>
 				<h2>Classes</h2>
 				<table>
 					<col class="caption"/>
@@ -769,6 +898,72 @@ $('#symbolSearchPane').show();</script>
 					</tr>
 				</table>
 			</section>
+			<section>
+				<h2>Structs</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="SECURITY_ATTRIBUTES" class="public" href="../../dlib/core/thread/SECURITY_ATTRIBUTES.html">SECURITY_ATTRIBUTES</a>
+							</code>
+						</td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
+			<section>
+				<h2>Manifest constants</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Type</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a id="INFINITE" class="public" href="../../dlib/core/thread/INFINITE.html">
+								<code>INFINITE</code>
+							</a>
+						</td>
+						<td>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a id="STILL_ACTIVE" class="public" href="../../dlib/core/thread/STILL_ACTIVE.html">
+								<code>STILL_ACTIVE</code>
+							</a>
+						</td>
+						<td>
+						</td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
+			<section>
+				<h2>Aliases</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Type</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a id="LPTHREAD_START_ROUTINE" class="public" href="../../dlib/core/thread/LPTHREAD_START_ROUTINE.html">
+								<code>LPTHREAD_START_ROUTINE</code>
+							</a>
+						</td>
+						<td>
+							<code class="prettyprint lang-d"><span class="kwd">extern</span><span class="pun">(</span><span class="typ">Windows</span><span class="pun">)</span> <span class="typ">uint</span> <span class="kwd">function</span><span class="pun">(</span><span class="kwd">in</span> <span class="typ">void</span><span class="pun">*</span><span class="pun">)</span></code>
+						</td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
 			<footer>
 				<table class="license-info">
 					<tr>
@@ -782,7 +977,7 @@ $('#symbolSearchPane').show();</script>
 					<tr>
 						<th>Copyright</th>
 						<td>
-							<p>Timur Gafarov 2015-2022.
+							<p>Timur Gafarov 2015-2023.
 </p>
 
 						</td>

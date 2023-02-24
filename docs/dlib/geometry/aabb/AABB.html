@@ -202,6 +202,48 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/filesystem.html">filesystem</a>
 					</div>
 			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">posix
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/posix/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/posix/directory.html">directory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/posix/file.html">file</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">windows
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/windows/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/windows/directory.html">directory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/windows/file.html">file</a>
+					</div>
+				</li>
+			</ul>
+				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/delegaterange.html">delegaterange</a>
@@ -225,6 +267,16 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/stdfs.html">stdfs</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
 					</div>
 				</li>
 			</ul>
@@ -251,6 +303,11 @@ $('#symbolSearchPane').show();</script>
 				</li>
 				<li>
 					<div class="module ">
+						<a href="../../../dlib/geometry/mpr.html">mpr</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
 						<a href="../../../dlib/geometry/obb.html">obb</a>
 					</div>
 				</li>
@@ -267,6 +324,11 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/geometry/sphere.html">sphere</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/geometry/support.html">support</a>
 					</div>
 				</li>
 				<li>
@@ -664,6 +726,11 @@ $('#symbolSearchPane').show();</script>
 			<ul class="tree-view">
 				<li>
 					<div class="module ">
+						<a href="../../../dlib/network/errno.html">errno</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
 						<a href="../../../dlib/network/socket.html">socket</a>
 					</div>
 				</li>
@@ -696,6 +763,11 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/text.html">text</a>
 					</div>
 			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/text/common.html">common</a>
+					</div>
+				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/text/encodings.html">encodings</a>
@@ -744,31 +816,138 @@ $('#symbolSearchPane').show();</script>
 				</code>
 			</div>
 			
-			<section><h2>Example</h2>
-
-<pre class="code"><code class="lang-d"><span class="kwd">import <a href="../../../dlib/math/utils.html"></span><span class="pln">dlib<wbr/></span><span class="pun">.</span><span class="pln">math<wbr/></span><span class="pun">.</span><span class="pln">utils</span></a><span class="pun">;
-
-</span><span class="pln">AABB aabb1 </span><span class="pun">= </span><span class="pln">AABB</span><span class="pun">(</span><span class="typ">Vector3f</span><span class="pun">(</span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">), </span><span class="typ">Vector3f</span><span class="pun">(</span><span class="lit">1</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">1</span><span class="pun">));
-</span><span class="pln">AABB aabb2 </span><span class="pun">= </span><span class="pln">AABB</span><span class="pun">(</span><span class="typ">Vector3f</span><span class="pun">(</span><span class="lit">0.5</span><span class="pun">, </span><span class="lit">0.5</span><span class="pun">, </span><span class="lit">0.5</span><span class="pun">), </span><span class="typ">Vector3f</span><span class="pun">(</span><span class="lit">1</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">1</span><span class="pun">));
-</span><span class="pln">AABB aabb3 </span><span class="pun">= </span><span class="pln">AABB</span><span class="pun">(</span><span class="typ">Vector3f</span><span class="pun">(</span><span class="lit">3</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">), </span><span class="typ">Vector3f</span><span class="pun">(</span><span class="lit">1</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">1</span><span class="pun">));
-
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">aabb1<wbr/></span><span class="pun">.</span><span class="pln">containsPoint</span><span class="pun">(</span><span class="typ">Vector3f</span><span class="pun">(</span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">)));
-</span><span class="kwd">assert</span><span class="pun">(!</span><span class="pln">aabb3<wbr/></span><span class="pun">.</span><span class="pln">containsPoint</span><span class="pun">(</span><span class="typ">Vector3f</span><span class="pun">(</span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">)));
-
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">aabb1<wbr/></span><span class="pun">.</span><span class="pln">intersectsAABB</span><span class="pun">(</span><span class="pln">aabb2</span><span class="pun">));
-</span><span class="kwd">assert</span><span class="pun">(!</span><span class="pln">aabb1<wbr/></span><span class="pun">.</span><span class="pln">intersectsAABB</span><span class="pun">(</span><span class="pln">aabb3</span><span class="pun">));
-
-</span><span class="typ">Vector3f </span><span class="pln">segStart </span><span class="pun">= </span><span class="typ">Vector3f</span><span class="pun">(</span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">3</span><span class="pun">);
-</span><span class="typ">Vector3f </span><span class="pln">segEnd </span><span class="pun">= </span><span class="typ">Vector3f</span><span class="pun">(</span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, -</span><span class="lit">3</span><span class="pun">);
-</span><span class="typ">float </span><span class="pln">segLength </span><span class="pun">= </span><span class="pln">distance</span><span class="pun">(</span><span class="pln">segStart</span><span class="pun">, </span><span class="pln">segEnd</span><span class="pun">);
-</span><span class="typ">float </span><span class="pln">t</span><span class="pun">;
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">aabb1<wbr/></span><span class="pun">.</span><span class="pln">intersectsSegment</span><span class="pun">(</span><span class="typ">Vector3f</span><span class="pun">(</span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">3</span><span class="pun">), </span><span class="typ">Vector3f</span><span class="pun">(</span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, -</span><span class="lit">3</span><span class="pun">), </span><span class="pln">t</span><span class="pun">));
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">isConsiderZero</span><span class="pun">(</span><span class="pln">t </span><span class="pun">* </span><span class="pln">segLength </span><span class="pun">- </span><span class="lit">2.0f</span><span class="pun">));
-
-</span><span class="kwd">assert</span><span class="pun">(!</span><span class="pln">aabb1<wbr/></span><span class="pun">.</span><span class="pln">intersectsSegment</span><span class="pun">(</span><span class="typ">Vector3f</span><span class="pun">(</span><span class="lit">5</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">3</span><span class="pun">), </span><span class="typ">Vector3f</span><span class="pun">(</span><span class="lit">5</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, -</span><span class="lit">3</span><span class="pun">), </span><span class="pln">t</span><span class="pun">));
-</span></code></pre>
-</section>
-
+			<section><h2>Constructors</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/geometry/aabb/AABB.this.html" class="public">
+								<code>this</code>
+							</a>
+							<span class="tableEntryAnnotation">(newPosition, newSize)</span>
+						</td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
+			<section><h2>Fields</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Type</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/geometry/aabb/AABB.center.html" class="public"><code>center</code></a>
+						</td>
+						<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/math/vector/Vector.html"><span class="typ">Vector</span></a>!(float,3)</code></td><td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/geometry/aabb/AABB.pmax.html" class="public"><code>pmax</code></a>
+						</td>
+						<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/math/vector/Vector.html"><span class="typ">Vector</span></a>!(float,3)</code></td><td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/geometry/aabb/AABB.pmin.html" class="public"><code>pmin</code></a>
+						</td>
+						<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/math/vector/Vector.html"><span class="typ">Vector</span></a>!(float,3)</code></td><td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/geometry/aabb/AABB.size.html" class="public"><code>size</code></a>
+						</td>
+						<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/math/vector/Vector.html"><span class="typ">Vector</span></a>!(float,3)</code></td><td></td>
+					</tr>
+				</table>
+			</section>
+			<section><h2>Properties</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Type</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/geometry/aabb/AABB.bottomHeight.html" class="public property"><code>bottomHeight</code></a><span class="tableEntryAnnotation">[get]</span>
+						</td>
+						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">float</span></code></td><td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/geometry/aabb/AABB.topHeight.html" class="public property"><code>topHeight</code></a><span class="tableEntryAnnotation">[get]</span>
+						</td>
+						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">float</span></code></td><td></td>
+					</tr>
+				</table>
+			</section>
+			<section><h2>Methods</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/geometry/aabb/AABB.closestPoint.html" class="public">
+								<code>closestPoint</code>
+							</a>
+							<span class="tableEntryAnnotation">(point)</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/geometry/aabb/AABB.containsPoint.html" class="public">
+								<code>containsPoint</code>
+							</a>
+							<span class="tableEntryAnnotation">(point)</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/geometry/aabb/AABB.intersectsAABB.html" class="public">
+								<code>intersectsAABB</code>
+							</a>
+							<span class="tableEntryAnnotation">(b)</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/geometry/aabb/AABB.intersectsSegment.html" class="public">
+								<code>intersectsSegment</code>
+							</a>
+							<span class="tableEntryAnnotation">(segStart, segEnd, intersectionTime)</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/geometry/aabb/AABB.intersectsSphere.html" class="public">
+								<code>intersectsSphere</code>
+							</a>
+							<span class="tableEntryAnnotation">(sphere, collisionNormal, penetrationDepth)</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/geometry/aabb/AABB.intersectsRaySlab.html" class="private">
+								<code>intersectsRaySlab</code>
+							</a>
+							<span class="tableEntryAnnotation">(slabmin, slabmax, raystart, rayend, tbenter, tbexit)</span>
+						</td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
+			
 			<footer>
 				<table class="license-info">
 					<tr>
@@ -782,7 +961,7 @@ $('#symbolSearchPane').show();</script>
 					<tr>
 						<th>Copyright</th>
 						<td>
-							<p>Timur Gafarov 2011-2022.
+							<p>Timur Gafarov 2011-2023.
 </p>
 
 						</td>

@@ -202,6 +202,48 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../dlib/filesystem.html">filesystem</a>
 					</div>
 			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">posix
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/posix/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/posix/directory.html">directory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/posix/file.html">file</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">windows
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/windows/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/windows/directory.html">directory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/windows/file.html">file</a>
+					</div>
+				</li>
+			</ul>
+				</li>
 				<li>
 					<div class="module ">
 						<a href="../../dlib/filesystem/delegaterange.html">delegaterange</a>
@@ -225,6 +267,16 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../dlib/filesystem/stdfs.html">stdfs</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
 					</div>
 				</li>
 			</ul>
@@ -251,6 +303,11 @@ $('#symbolSearchPane').show();</script>
 				</li>
 				<li>
 					<div class="module ">
+						<a href="../../dlib/geometry/mpr.html">mpr</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
 						<a href="../../dlib/geometry/obb.html">obb</a>
 					</div>
 				</li>
@@ -267,6 +324,11 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../dlib/geometry/sphere.html">sphere</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/geometry/support.html">support</a>
 					</div>
 				</li>
 				<li>
@@ -664,6 +726,11 @@ $('#symbolSearchPane').show();</script>
 			<ul class="tree-view">
 				<li>
 					<div class="module ">
+						<a href="../../dlib/network/errno.html">errno</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
 						<a href="../../dlib/network/socket.html">socket</a>
 					</div>
 				</li>
@@ -696,6 +763,11 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../dlib/text.html">text</a>
 					</div>
 			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../dlib/text/common.html">common</a>
+					</div>
+				</li>
 				<li>
 					<div class="module ">
 						<a href="../../dlib/text/encodings.html">encodings</a>
@@ -746,51 +818,137 @@ $('#symbolSearchPane').show();</script>
 <p> - doesn't support DOCTYPE and some other special tags
 </p>
 </section>
-<section><h2>Example</h2>
-
-<pre class="code"><code class="lang-d"><span class="typ">string </span><span class="pln">xml </span><span class="pun">= </span><span class="str">"
-&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;
-&lt;object&gt;
-    &lt;property name=\"position\" value=\"0 10 5\"/&gt;
-    &lt;!-- comment --&gt;
-    &lt;![CDATA[ some data ]]&gt;
-    &lt;foo&gt;&amp;#xE9;&lt;/foo&gt;
-&lt;/object&gt;
-"</span><span class="pun">;
-
-</span><span class="typ">XmlDocument </span><span class="pln">doc </span><span class="pun">= </span><span class="pln">parseXMLUnmanaged</span><span class="pun">(</span><span class="pln">xml</span><span class="pun">);
-
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">doc<wbr/></span><span class="pun">.</span><span class="pln">prolog<wbr/></span><span class="pun">.</span><span class="pln">properties</span><span class="pun">[</span><span class="str">"version"</span><span class="pun">] == </span><span class="str">"1.0"</span><span class="pun">);
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">doc<wbr/></span><span class="pun">.</span><span class="pln">prolog<wbr/></span><span class="pun">.</span><span class="pln">properties</span><span class="pun">[</span><span class="str">"encoding"</span><span class="pun">] == </span><span class="str">"UTF-8"</span><span class="pun">);
-
-</span><span class="kwd">auto </span><span class="pln">obj </span><span class="pun">= </span><span class="pln">doc<wbr/></span><span class="pun">.</span><span class="pln">root<wbr/></span><span class="pun">.</span><span class="pln">children</span><span class="pun">[</span><span class="lit">0</span><span class="pun">];
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">obj<wbr/></span><span class="pun">.</span><span class="pln">name </span><span class="pun">== </span><span class="str">"object"</span><span class="pun">);
-
-</span><span class="kwd">auto </span><span class="pln">p </span><span class="pun">= </span><span class="pln">obj<wbr/></span><span class="pun">.</span><span class="pln">children</span><span class="pun">[</span><span class="lit">0</span><span class="pun">];
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">p<wbr/></span><span class="pun">.</span><span class="pln">name </span><span class="pun">== </span><span class="str">"property"</span><span class="pun">);
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">p<wbr/></span><span class="pun">.</span><span class="pln">properties</span><span class="pun">[</span><span class="str">"name"</span><span class="pun">] == </span><span class="str">"position"</span><span class="pun">);
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">p<wbr/></span><span class="pun">.</span><span class="pln">properties</span><span class="pun">[</span><span class="str">"value"</span><span class="pun">] == </span><span class="str">"0 10 5"</span><span class="pun">);
-
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">prop</span><span class="pun">(</span><span class="pln">p</span><span class="pun">, </span><span class="str">"name"</span><span class="pun">) == </span><span class="str">"position"</span><span class="pun">);
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">prop</span><span class="pun">(</span><span class="pln">p</span><span class="pun">, </span><span class="str">"something"</span><span class="pun">) == </span><span class="str">""</span><span class="pun">);
-
-</span><span class="kwd">auto </span><span class="pln">foo </span><span class="pun">= </span><span class="pln">obj<wbr/></span><span class="pun">.</span><span class="pln">firstChildByTag</span><span class="pun">(</span><span class="str">"foo"</span><span class="pun">);
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">foo<wbr/></span><span class="pun">.</span><span class="pln">name </span><span class="pun">== </span><span class="str">"foo"</span><span class="pun">);
-
-</span><span class="typ">string </span><span class="pln">fooText </span><span class="pun">= </span><span class="pln">foo<wbr/></span><span class="pun">.</span><span class="pln">getTextUnmanaged</span><span class="pun">();
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">fooText </span><span class="pun">== </span><span class="str">"é"</span><span class="pun">);
-</span><span class="typ">Delete</span><span class="pun">(</span><span class="pln">fooText</span><span class="pun">);
-
-</span><span class="typ">Delete</span><span class="pun">(</span><span class="pln">doc</span><span class="pun">);
-</span></code></pre>
 </section>
-<section><h2>Example</h2>
-
-<pre class="code"><code class="lang-d"><span class="kwd">assert</span><span class="pun">(</span><span class="pln">hexCharacterCode</span><span class="pun">(</span><span class="str">"ff00ff"</span><span class="pun">) == </span><span class="lit">16711935</span><span class="pun">);
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">hexCharacterCode</span><span class="pun">(</span><span class="str">"ABABAB;"</span><span class="pun">) == </span><span class="lit">11250603</span><span class="pun">);
-</span></code></pre>
-</section>
-</section>
+			<section>
+				<h2>Functions</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="__unittest_L629_C1" class="public" href="../../dlib/serialization/xml/__unittest_L629_C1.html">__unittest_L629_C1</a><span class="tableEntryAnnotation">()</span>
+							</code>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="__unittest_L693_C1" class="public" href="../../dlib/serialization/xml/__unittest_L693_C1.html">__unittest_L693_C1</a><span class="tableEntryAnnotation">()</span>
+							</code>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="appendChar" class="public" href="../../dlib/serialization/xml/appendChar.html">appendChar</a><span class="tableEntryAnnotation">(s, ch)</span>
+							</code>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="hexCharacterCode" class="public" href="../../dlib/serialization/xml/hexCharacterCode.html">hexCharacterCode</a><span class="tableEntryAnnotation">(input)</span>
+							</code>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="parseXMLUnmanaged" class="public" href="../../dlib/serialization/xml/parseXMLUnmanaged.html">parseXMLUnmanaged</a><span class="tableEntryAnnotation">(text)</span>
+							</code>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="prop" class="public" href="../../dlib/serialization/xml/prop.html">prop</a><span class="tableEntryAnnotation">(node, name)</span>
+							</code>
+						</td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
+			<section>
+				<h2>Classes</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="XmlDocument" class="public" href="../../dlib/serialization/xml/XmlDocument.html">XmlDocument</a>
+							</code>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="XmlNode" class="public" href="../../dlib/serialization/xml/XmlNode.html">XmlNode</a>
+							</code>
+						</td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
+			<section>
+				<h2>Enums</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="XmlToken" class="public" href="../../dlib/serialization/xml/XmlToken.html">XmlToken</a>
+							</code>
+						</td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
+			<section>
+				<h2>Global variables</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Type</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a id="emptyStr" class="public" href="../../dlib/serialization/xml/emptyStr.html">
+								<code>emptyStr</code>
+							</a>
+						</td>
+						<td>
+							<code class="prettyprint lang-d"><span class="typ">string</span></code>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a id="xmlDelims" class="public" href="../../dlib/serialization/xml/xmlDelims.html">
+								<code>xmlDelims</code>
+							</a>
+						</td>
+						<td>
+							<code class="prettyprint lang-d"><span class="typ">string</span><span class="pun">[]</span></code>
+						</td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
 			<footer>
 				<table class="license-info">
 					<tr>
@@ -804,7 +962,7 @@ $('#symbolSearchPane').show();</script>
 					<tr>
 						<th>Copyright</th>
 						<td>
-							<p>Timur Gafarov 2015-2022.
+							<p>Timur Gafarov 2015-2023.
 </p>
 
 						</td>

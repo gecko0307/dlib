@@ -202,6 +202,48 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/filesystem.html">filesystem</a>
 					</div>
 			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">posix
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/posix/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/posix/directory.html">directory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/posix/file.html">file</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">windows
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/windows/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/windows/directory.html">directory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/windows/file.html">file</a>
+					</div>
+				</li>
+			</ul>
+				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/delegaterange.html">delegaterange</a>
@@ -225,6 +267,16 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module selected">
 						<a href="../../../dlib/filesystem/stdfs.html">stdfs</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
 					</div>
 				</li>
 			</ul>
@@ -251,6 +303,11 @@ $('#symbolSearchPane').show();</script>
 				</li>
 				<li>
 					<div class="module ">
+						<a href="../../../dlib/geometry/mpr.html">mpr</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
 						<a href="../../../dlib/geometry/obb.html">obb</a>
 					</div>
 				</li>
@@ -267,6 +324,11 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/geometry/sphere.html">sphere</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/geometry/support.html">support</a>
 					</div>
 				</li>
 				<li>
@@ -664,6 +726,11 @@ $('#symbolSearchPane').show();</script>
 			<ul class="tree-view">
 				<li>
 					<div class="module ">
+						<a href="../../../dlib/network/errno.html">errno</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
 						<a href="../../../dlib/network/socket.html">socket</a>
 					</div>
 				</li>
@@ -696,6 +763,11 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/text.html">text</a>
 					</div>
 			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/text/common.html">common</a>
+					</div>
+				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/text/encodings.html">encodings</a>
@@ -745,6 +817,49 @@ $('#symbolSearchPane').show();</script>
 				</code>
 			</div>
 			
+			<section><h2>Constructors</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/filesystem/stdfs/StdInFileStream.this.html" class="public">
+								<code>this</code>
+							</a>
+							<span class="tableEntryAnnotation">(file)</span>
+						</td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
+			<section><h2>Fields</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Type</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/filesystem/stdfs/StdInFileStream._size.html" class="public"><code>_size</code></a>
+						</td>
+						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">ulong</span></code></td><td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/filesystem/stdfs/StdInFileStream.eof.html" class="public"><code>eof</code></a>
+						</td>
+						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">bool</span></code></td><td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/filesystem/stdfs/StdInFileStream.file.html" class="public"><code>file</code></a>
+						</td>
+						<td class="typecol"><code class="prettyprint lang-d"><span class="kwd">shared</span><span class="pun">(</span><span class="pln">core<wbr/></span><span class="pun">.</span><span class="pln">stdc<wbr/></span><span class="pun">.</span><span class="pln">stdio<wbr/></span><span class="pun">.</span><span class="pln">_iobuf</span><span class="pun">)</span><span class="pun">*</span></code></td><td></td>
+					</tr>
+				</table>
+			</section>
 			<section><h2>Properties</h2>
 				<table>
 					<col class="caption"/>
@@ -753,7 +868,7 @@ $('#symbolSearchPane').show();</script>
 					</tr>
 					<tr>
 						<td>
-							<a href="../../../dlib/core/stream/Seekable.getPosition.html" class="public inherited property"><code>getPosition</code></a><span class="tableEntryAnnotation">[get]</span>
+							<a href="../../../dlib/filesystem/stdfs/StdInFileStream.getPosition.html" class="public property"><code>getPosition</code></a><span class="tableEntryAnnotation">[get]</span>
 						</td>
 						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">ulong</span></code></td><td>Returns current position
 </td>
@@ -768,12 +883,64 @@ $('#symbolSearchPane').show();</script>
 					</tr>
 					<tr>
 						<td>
-							<a href="../../../dlib/core/stream/Stream.close.html" class="public inherited">
+							<a href="../../../dlib/filesystem/stdfs/StdInFileStream.close.html" class="public">
 								<code>close</code>
 							</a>
 							<span class="tableEntryAnnotation">()</span>
 						</td>
 						<td>Closes the stream. Closed stream cannot be read or written any more
+</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/filesystem/stdfs/StdInFileStream.readable.html" class="public">
+								<code>readable</code>
+							</a>
+							<span class="tableEntryAnnotation">()</span>
+						</td>
+						<td>Returns true if there are any data to read. false means end of the stream.
+</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/filesystem/stdfs/StdInFileStream.readBytes.html" class="public">
+								<code>readBytes</code>
+							</a>
+							<span class="tableEntryAnnotation">(buffer, count)</span>
+						</td>
+						<td>Attempts to read count bytes from stream and stores them in memory
+ pointing by buffer. Returns number of bytes actually read
+</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/filesystem/stdfs/StdInFileStream.seekable.html" class="public">
+								<code>seekable</code>
+							</a>
+							<span class="tableEntryAnnotation">()</span>
+						</td>
+						<td>Returns true if it is legal to use Seekable functionality on this stream
+</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/filesystem/stdfs/StdInFileStream.setPosition.html" class="public">
+								<code>setPosition</code>
+							</a>
+							<span class="tableEntryAnnotation">(p)</span>
+						</td>
+						<td>Attempts to set current position to pos.
+ Returns true on success, false on failure
+</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/filesystem/stdfs/StdInFileStream.size.html" class="public">
+								<code>size</code>
+							</a>
+							<span class="tableEntryAnnotation">()</span>
+						</td>
+						<td>Returns the size of a stream in bytes
 </td>
 					</tr>
 					<tr>
@@ -800,16 +967,6 @@ $('#symbolSearchPane').show();</script>
 					</tr>
 					<tr>
 						<td>
-							<a href="../../../dlib/core/stream/InputStream.readable.html" class="public inherited">
-								<code>readable</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td>Returns true if there are any data to read. false means end of the stream.
-</td>
-					</tr>
-					<tr>
-						<td>
 							<a href="../../../dlib/core/stream/InputStream.readBE.html" class="public inherited">
 								<code>readBE</code>
 							</a>
@@ -817,17 +974,6 @@ $('#symbolSearchPane').show();</script>
 						</td>
 						<td>Reads big-endian integer, converts to native-endian
  and stores in value
-</td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/core/stream/InputStream.readBytes.html" class="public inherited">
-								<code>readBytes</code>
-							</a>
-							<span class="tableEntryAnnotation">(buffer, count)</span>
-						</td>
-						<td>Attempts to read count bytes from stream and stores them in memory
- pointing by buffer. Returns number of bytes actually read
 </td>
 					</tr>
 					<tr>
@@ -853,36 +999,21 @@ $('#symbolSearchPane').show();</script>
  Throws SeekException on failure
 </td>
 					</tr>
+				</table>
+			</section>
+			<section><h2>Aliases</h2>
+				<table>
+					<col class="caption"/>
 					<tr>
-						<td>
-							<a href="../../../dlib/core/stream/Stream.seekable.html" class="public inherited">
-								<code>seekable</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td>Returns true if it is legal to use Seekable functionality on this stream
-</td>
+						<th>Name</th><th>Description</th>
 					</tr>
 					<tr>
 						<td>
-							<a href="../../../dlib/core/stream/Seekable.setPosition.html" class="public inherited">
-								<code>setPosition</code>
+							<a href="../../../dlib/filesystem/stdfs/StdInFileStream.__xdtor.html" class="public">
+								<code>__xdtor</code>
 							</a>
-							<span class="tableEntryAnnotation">(pos)</span>
 						</td>
-						<td>Attempts to set current position to pos.
- Returns true on success, false on failure
-</td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/core/stream/Seekable.size.html" class="public inherited">
-								<code>size</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td>Returns the size of a stream in bytes
-</td>
+						<td></td>
 					</tr>
 				</table>
 			</section>
@@ -900,7 +1031,7 @@ $('#symbolSearchPane').show();</script>
 					<tr>
 						<th>Copyright</th>
 						<td>
-							<p>Timur Gafarov 2015-2022.
+							<p>Timur Gafarov 2015-2023.
 </p>
 
 						</td>

@@ -202,6 +202,48 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../dlib/filesystem.html">filesystem</a>
 					</div>
 			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">posix
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/posix/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/posix/directory.html">directory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/posix/file.html">file</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">windows
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/windows/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/windows/directory.html">directory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/windows/file.html">file</a>
+					</div>
+				</li>
+			</ul>
+				</li>
 				<li>
 					<div class="module ">
 						<a href="../../dlib/filesystem/delegaterange.html">delegaterange</a>
@@ -225,6 +267,16 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../dlib/filesystem/stdfs.html">stdfs</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
 					</div>
 				</li>
 			</ul>
@@ -251,6 +303,11 @@ $('#symbolSearchPane').show();</script>
 				</li>
 				<li>
 					<div class="module ">
+						<a href="../../dlib/geometry/mpr.html">mpr</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
 						<a href="../../dlib/geometry/obb.html">obb</a>
 					</div>
 				</li>
@@ -267,6 +324,11 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../dlib/geometry/sphere.html">sphere</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../dlib/geometry/support.html">support</a>
 					</div>
 				</li>
 				<li>
@@ -664,6 +726,11 @@ $('#symbolSearchPane').show();</script>
 			<ul class="tree-view">
 				<li>
 					<div class="module ">
+						<a href="../../dlib/network/errno.html">errno</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
 						<a href="../../dlib/network/socket.html">socket</a>
 					</div>
 				</li>
@@ -696,6 +763,11 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../dlib/text.html">text</a>
 					</div>
 			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../dlib/text/common.html">common</a>
+					</div>
+				</li>
 				<li>
 					<div class="module ">
 						<a href="../../dlib/text/encodings.html">encodings</a>
@@ -747,6 +819,14 @@ $('#symbolSearchPane').show();</script>
 					<tr>
 						<td>
 							<code>
+								<a id="averageLuminance" class="public" href="../../dlib/image/hdri/averageLuminance.html">averageLuminance</a><span class="tableEntryAnnotation">(img)</span>
+							</code>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<code>
 								<a id="clamp" class="public" href="../../dlib/image/hdri/clamp.html">clamp</a><span class="tableEntryAnnotation">(img, minv, maxv)</span>
 							</code>
 						</td>
@@ -765,7 +845,15 @@ $('#symbolSearchPane').show();</script>
 					<tr>
 						<td>
 							<code>
-								<a id="hdrTonemapACES" class="public" href="../../dlib/image/hdri/hdrTonemapACES.html">hdrTonemapACES</a><span class="tableEntryAnnotation">(img, exposure, gamma)</span>
+								<a id="hableFunc" class="public" href="../../dlib/image/hdri/hableFunc.html">hableFunc</a><span class="tableEntryAnnotation">(x)</span>
+							</code>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<code>
+								<a id="hdrTonemapACES" class="public" href="../../dlib/image/hdri/hdrTonemapACES.html">hdrTonemapACES</a><span class="tableEntryAnnotation">(img, output, exposure, gamma)</span>
 							</code>
 						</td>
 						<td>ACES curve tonal compression
@@ -899,6 +987,26 @@ $('#symbolSearchPane').show();</script>
 					</tr>
 				</table>
 			</section>
+			<section>
+				<h2>Global variables</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Type</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a id="_defaultHDRImageFactory" class="private" href="../../dlib/image/hdri/_defaultHDRImageFactory.html">
+								<code>_defaultHDRImageFactory</code>
+							</a>
+						</td>
+						<td>
+							<code class="prettyprint lang-d"><a href="../../dlib/image/hdri/SuperHDRImageFactory.html"><span class="typ">SuperHDRImageFactory</span></a></code>
+						</td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
 			<footer>
 				<table class="license-info">
 					<tr>
@@ -912,7 +1020,7 @@ $('#symbolSearchPane').show();</script>
 					<tr>
 						<th>Copyright</th>
 						<td>
-							<p>Timur Gafarov 2013-2022.
+							<p>Timur Gafarov 2013-2023.
 </p>
 
 						</td>

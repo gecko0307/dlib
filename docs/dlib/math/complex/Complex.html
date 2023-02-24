@@ -202,6 +202,48 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/filesystem.html">filesystem</a>
 					</div>
 			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">posix
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/posix/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/posix/directory.html">directory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/posix/file.html">file</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">windows
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/windows/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/windows/directory.html">directory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/windows/file.html">file</a>
+					</div>
+				</li>
+			</ul>
+				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/delegaterange.html">delegaterange</a>
@@ -225,6 +267,16 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/stdfs.html">stdfs</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
 					</div>
 				</li>
 			</ul>
@@ -251,6 +303,11 @@ $('#symbolSearchPane').show();</script>
 				</li>
 				<li>
 					<div class="module ">
+						<a href="../../../dlib/geometry/mpr.html">mpr</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
 						<a href="../../../dlib/geometry/obb.html">obb</a>
 					</div>
 				</li>
@@ -267,6 +324,11 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/geometry/sphere.html">sphere</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/geometry/support.html">support</a>
 					</div>
 				</li>
 				<li>
@@ -664,6 +726,11 @@ $('#symbolSearchPane').show();</script>
 			<ul class="tree-view">
 				<li>
 					<div class="module ">
+						<a href="../../../dlib/network/errno.html">errno</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
 						<a href="../../../dlib/network/socket.html">socket</a>
 					</div>
 				</li>
@@ -696,6 +763,11 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/text.html">text</a>
 					</div>
 			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/text/common.html">common</a>
+					</div>
+				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/text/encodings.html">encodings</a>
@@ -744,25 +816,214 @@ $('#symbolSearchPane').show();</script>
 				</code>
 			</div>
 			
-			<section><h2>Example</h2>
-
-<pre class="code"><code class="lang-d"><span class="kwd">import <a href="../../../dlib/math/utils.html"></span><span class="pln">dlib<wbr/></span><span class="pun">.</span><span class="pln">math<wbr/></span><span class="pun">.</span><span class="pln">utils</span></a><span class="pun">;
-
-</span><span class="kwd">auto </span><span class="pln">c1 </span><span class="pun">= </span><span class="typ">Complex</span><span class="pun">!</span><span class="typ">float</span><span class="pun">(</span><span class="lit">2</span><span class="pun">, </span><span class="lit">1</span><span class="pun">);
-</span><span class="kwd">auto </span><span class="pln">c2 </span><span class="pun">= </span><span class="typ">Complex</span><span class="pun">!</span><span class="typ">float</span><span class="pun">(</span><span class="lit">1</span><span class="pun">, </span><span class="lit">2</span><span class="pun">);
-</span><span class="kwd">auto </span><span class="pln">c3 </span><span class="pun">= </span><span class="typ">Complex</span><span class="pun">!</span><span class="typ">float</span><span class="pun">(</span><span class="lit">1</span><span class="pun">);
-
-</span><span class="kwd">assert</span><span class="pun">((</span><span class="pln">c1 </span><span class="pun">+ </span><span class="pln">c2</span><span class="pun">) == </span><span class="typ">Complex</span><span class="pun">!</span><span class="typ">float</span><span class="pun">(</span><span class="lit">3</span><span class="pun">, </span><span class="lit">3</span><span class="pun">));
-</span><span class="kwd">assert</span><span class="pun">((</span><span class="pln">c1 </span><span class="pun">- </span><span class="pln">c1</span><span class="pun">) == </span><span class="typ">Complex</span><span class="pun">!</span><span class="typ">float</span><span class="pun">(</span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">));
-</span><span class="kwd">assert</span><span class="pun">((</span><span class="pln">c1 </span><span class="pun">* </span><span class="pln">c2</span><span class="pun">) == </span><span class="typ">Complex</span><span class="pun">!</span><span class="typ">float</span><span class="pun">(</span><span class="lit">0</span><span class="pun">, </span><span class="lit">5</span><span class="pun">));
-</span><span class="kwd">assert</span><span class="pun">((</span><span class="pln">c2 </span><span class="pun">/ </span><span class="pln">c1</span><span class="pun">) == </span><span class="typ">Complex</span><span class="pun">!</span><span class="typ">float</span><span class="pun">(</span><span class="lit">0.8f</span><span class="pun">, </span><span class="lit">0.6f</span><span class="pun">));
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">c1<wbr/></span><span class="pun">.</span><span class="pln">reciprocal </span><span class="pun">== </span><span class="typ">Complex</span><span class="pun">!</span><span class="typ">float</span><span class="pun">(</span><span class="lit">0.4f</span><span class="pun">, -</span><span class="lit">0.2f</span><span class="pun">));
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">c3<wbr/></span><span class="pun">.</span><span class="pln">magnitude </span><span class="pun">== </span><span class="lit">1.0f</span><span class="pun">);
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">c3<wbr/></span><span class="pun">.</span><span class="pln">norm </span><span class="pun">== </span><span class="lit">1.0f</span><span class="pun">);
-</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">c1<wbr/></span><span class="pun">.</span><span class="pln">toString </span><span class="pun">== </span><span class="str">"2 + 1i"</span><span class="pun">);
-</span></code></pre>
-</section>
-
+			<section><h2>Constructors</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/math/complex/Complex.this.html" class="public">
+								<code>this</code>
+							</a>
+							<span class="tableEntryAnnotation">(r, i)</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/math/complex/Complex.this.html" class="public">
+								<code>this</code>
+							</a>
+							<span class="tableEntryAnnotation">(r)</span>
+						</td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
+			<section><h2>Fields</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Type</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/math/complex/Complex.im.html" class="public"><code>im</code></a>
+						</td>
+						<td class="typecol"><code class="prettyprint lang-d"><span class="pln">T</span></code></td><td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/math/complex/Complex.re.html" class="public"><code>re</code></a>
+						</td>
+						<td class="typecol"><code class="prettyprint lang-d"><span class="pln">T</span></code></td><td></td>
+					</tr>
+				</table>
+			</section>
+			<section><h2>Methods</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/math/complex/Complex.magnitude.html" class="public">
+								<code>magnitude</code>
+							</a>
+							<span class="tableEntryAnnotation">()</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/math/complex/Complex.norm.html" class="public">
+								<code>norm</code>
+							</a>
+							<span class="tableEntryAnnotation">()</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/math/complex/Complex.opBinary.html" class="public">
+								<code>opBinary</code>
+							</a>
+							<span class="tableEntryAnnotation">(c)</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/math/complex/Complex.opBinary.html" class="public">
+								<code>opBinary</code>
+							</a>
+							<span class="tableEntryAnnotation">(c)</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/math/complex/Complex.opBinary.html" class="public">
+								<code>opBinary</code>
+							</a>
+							<span class="tableEntryAnnotation">(c)</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/math/complex/Complex.opBinary.html" class="public">
+								<code>opBinary</code>
+							</a>
+							<span class="tableEntryAnnotation">(c)</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/math/complex/Complex.opBinary.html" class="public">
+								<code>opBinary</code>
+							</a>
+							<span class="tableEntryAnnotation">(scalar)</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/math/complex/Complex.opBinary.html" class="public">
+								<code>opBinary</code>
+							</a>
+							<span class="tableEntryAnnotation">(scalar)</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/math/complex/Complex.opBinary.html" class="public">
+								<code>opBinary</code>
+							</a>
+							<span class="tableEntryAnnotation">(scalar)</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/math/complex/Complex.opBinary.html" class="public">
+								<code>opBinary</code>
+							</a>
+							<span class="tableEntryAnnotation">(scalar)</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/math/complex/Complex.opOpAssign.html" class="public">
+								<code>opOpAssign</code>
+							</a>
+							<span class="tableEntryAnnotation">(c)</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/math/complex/Complex.opOpAssign.html" class="public">
+								<code>opOpAssign</code>
+							</a>
+							<span class="tableEntryAnnotation">(c)</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/math/complex/Complex.opOpAssign.html" class="public">
+								<code>opOpAssign</code>
+							</a>
+							<span class="tableEntryAnnotation">(c)</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/math/complex/Complex.opOpAssign.html" class="public">
+								<code>opOpAssign</code>
+							</a>
+							<span class="tableEntryAnnotation">(c)</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/math/complex/Complex.opUnary.html" class="public">
+								<code>opUnary</code>
+							</a>
+							<span class="tableEntryAnnotation">()</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/math/complex/Complex.reciprocal.html" class="public">
+								<code>reciprocal</code>
+							</a>
+							<span class="tableEntryAnnotation">()</span>
+						</td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/math/complex/Complex.toString.html" class="public">
+								<code>toString</code>
+							</a>
+							<span class="tableEntryAnnotation">()</span>
+						</td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
+			
 			<footer>
 				<table class="license-info">
 					<tr>
@@ -776,7 +1037,7 @@ $('#symbolSearchPane').show();</script>
 					<tr>
 						<th>Copyright</th>
 						<td>
-							<p>Timur Gafarov 2013-2022.
+							<p>Timur Gafarov 2013-2023.
 </p>
 
 						</td>

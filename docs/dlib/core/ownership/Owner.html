@@ -202,6 +202,48 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/filesystem.html">filesystem</a>
 					</div>
 			<ul class="tree-view">
+				<li class="tree-view collapsed">
+					<div class="package ">posix
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/posix/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/posix/directory.html">directory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/posix/file.html">file</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">windows
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/windows/common.html">common</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/windows/directory.html">directory</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/windows/file.html">file</a>
+					</div>
+				</li>
+			</ul>
+				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/delegaterange.html">delegaterange</a>
@@ -225,6 +267,16 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/stdfs.html">stdfs</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
 					</div>
 				</li>
 			</ul>
@@ -251,6 +303,11 @@ $('#symbolSearchPane').show();</script>
 				</li>
 				<li>
 					<div class="module ">
+						<a href="../../../dlib/geometry/mpr.html">mpr</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
 						<a href="../../../dlib/geometry/obb.html">obb</a>
 					</div>
 				</li>
@@ -267,6 +324,11 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/geometry/sphere.html">sphere</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/geometry/support.html">support</a>
 					</div>
 				</li>
 				<li>
@@ -664,6 +726,11 @@ $('#symbolSearchPane').show();</script>
 			<ul class="tree-view">
 				<li>
 					<div class="module ">
+						<a href="../../../dlib/network/errno.html">errno</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
 						<a href="../../../dlib/network/socket.html">socket</a>
 					</div>
 				</li>
@@ -696,6 +763,11 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/text.html">text</a>
 					</div>
 			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/text/common.html">common</a>
+					</div>
+				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/text/encodings.html">encodings</a>
@@ -765,6 +837,20 @@ $('#symbolSearchPane').show();</script>
 					</tr>
 				</table>
 			</section>
+			<section><h2>Fields</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Type</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/core/ownership/Owner.ownedObjects.html" class="protected"><code>ownedObjects</code></a>
+						</td>
+						<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/container/array/Array.html"><span class="typ">Array</span></a>!(dlib.core.ownership.Owned,32L)</code></td><td></td>
+					</tr>
+				</table>
+			</section>
 			<section><h2>Methods</h2>
 				<table>
 					<col class="caption"/>
@@ -803,37 +889,23 @@ $('#symbolSearchPane').show();</script>
 					</tr>
 				</table>
 			</section>
-			<section><h2>Example</h2>
-
-<pre class="code"><code class="lang-d"><span class="kwd">class </span><span class="typ">Test</span><span class="pun">: </span><span class="typ">Owner
-</span><span class="pun">{
-    </span><span class="typ">string </span><span class="pln">name</span><span class="pun">;
-    </span><span class="kwd">static </span><span class="typ">bool</span><span class="pun">[</span><span class="typ">string</span><span class="pun">] </span><span class="pln">available</span><span class="pun">;
-
-    </span><span class="kwd">this</span><span class="pun">(</span><span class="typ">string </span><span class="pln">name</span><span class="pun">, </span><span class="typ">Owner </span><span class="pln">o </span><span class="pun">= </span><span class="kwd">null</span><span class="pun">)
-    {
-        </span><span class="kwd">super</span><span class="pun">(</span><span class="pln">o</span><span class="pun">);
-        </span><span class="kwd">this<wbr/></span><span class="pun">.</span><span class="pln">name </span><span class="pun">= </span><span class="pln">name</span><span class="pun">;
-        </span><span class="pln">available</span><span class="pun">[</span><span class="pln">name</span><span class="pun">] = </span><span class="kwd">true</span><span class="pun">;
-    }
-
-    ~</span><span class="kwd">this</span><span class="pun">()
-    {
-        </span><span class="pln">available</span><span class="pun">[</span><span class="pln">name</span><span class="pun">] = </span><span class="kwd">false</span><span class="pun">;
-    }
-}
-
-</span><span class="typ">Test </span><span class="pln">obj1 </span><span class="pun">= </span><span class="typ">New</span><span class="pun">!</span><span class="typ">Test</span><span class="pun">(</span><span class="str">"obj1"</span><span class="pun">, </span><span class="kwd">null</span><span class="pun">);
-</span><span class="typ">Test </span><span class="pln">obj2 </span><span class="pun">= </span><span class="typ">New</span><span class="pun">!</span><span class="typ">Test</span><span class="pun">(</span><span class="str">"obj2"</span><span class="pun">, </span><span class="pln">obj1</span><span class="pun">);
-</span><span class="typ">Test </span><span class="pln">obj3 </span><span class="pun">= </span><span class="typ">New</span><span class="pun">!</span><span class="typ">Test</span><span class="pun">(</span><span class="str">"obj3"</span><span class="pun">, </span><span class="pln">obj2</span><span class="pun">);
-</span><span class="pln">obj2<wbr/></span><span class="pun">.</span><span class="pln">deleteOwnedObject</span><span class="pun">(</span><span class="pln">obj3</span><span class="pun">);
-</span><span class="kwd">assert</span><span class="pun">(!</span><span class="typ">Test<wbr/></span><span class="pun">.</span><span class="pln">available</span><span class="pun">[</span><span class="str">"obj3"</span><span class="pun">]);
-</span><span class="typ">Delete</span><span class="pun">(</span><span class="pln">obj1</span><span class="pun">);
-</span><span class="kwd">assert</span><span class="pun">(!</span><span class="typ">Test<wbr/></span><span class="pun">.</span><span class="pln">available</span><span class="pun">[</span><span class="str">"obj2"</span><span class="pun">]);
-</span><span class="kwd">assert</span><span class="pun">(!</span><span class="typ">Test<wbr/></span><span class="pun">.</span><span class="pln">available</span><span class="pun">[</span><span class="str">"obj1"</span><span class="pun">]);
-</span></code></pre>
-</section>
-
+			<section><h2>Aliases</h2>
+				<table>
+					<col class="caption"/>
+					<tr>
+						<th>Name</th><th>Description</th>
+					</tr>
+					<tr>
+						<td>
+							<a href="../../../dlib/core/ownership/Owner.__xdtor.html" class="public">
+								<code>__xdtor</code>
+							</a>
+						</td>
+						<td></td>
+					</tr>
+				</table>
+			</section>
+			
 			<footer>
 				<table class="license-info">
 					<tr>
@@ -847,7 +919,7 @@ $('#symbolSearchPane').show();</script>
 					<tr>
 						<th>Copyright</th>
 						<td>
-							<p>Timur Gafarov 2017-2022.
+							<p>Timur Gafarov 2017-2023.
 </p>
 
 						</td>
