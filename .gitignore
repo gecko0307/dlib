@@ -19,6 +19,7 @@ tests/
 
 # Documentation
 docs/
+docs-doxygen/
 docs.json
 __dummy.html
 

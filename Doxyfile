@@ -1,0 +1,17 @@
+DOXYFILE_ENCODING      = UTF-8
+PROJECT_NAME           = "dlib"
+PROJECT_NUMBER         = 1.1
+PROJECT_BRIEF          = "Allocators, I/O streams, math, geometry, image and audio processing for D"
+PROJECT_LOGO           = "logo/dlib-logo-doxygen.png"
+OUTPUT_DIRECTORY       = "docs-doxygen"
+CREATE_SUBDIRS         = YES
+CREATE_SUBDIRS_LEVEL   = 8
+ALLOW_UNICODE_NAMES    = NO
+OUTPUT_LANGUAGE        = English
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+HTML_FILE_EXTENSION    = .html
+GENERATE_HTMLHELP      = YES
+CHM_FILE               = "documentation.chm"
+INPUT                  = "dlib"
+RECURSIVE              = YES
