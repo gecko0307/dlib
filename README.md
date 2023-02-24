@@ -38,7 +38,7 @@ dlib is automatically tested for compatibility with latest releases of DMD and L
 
 Documentation
 -------------
-HTML documentation can be generated from source code using ddox (run `dub build --build=ddox`) or Doxygen (run `doxygen`). Ddox documentation i [available](https://gecko0307.github.io/dlib/docs/dlib.html) online. There is also [GitHub wiki](https://github.com/gecko0307/dlib/wiki). Be aware that documentation is currently incomplete.
+HTML documentation can be generated from source code using ddox (run `dub build --build=ddox`) or Doxygen (run `doxygen`). ddox documentation is [available online](https://gecko0307.github.io/dlib/docs/dlib.html). There is also [GitHub wiki](https://github.com/gecko0307/dlib/wiki). Be aware that documentation is currently incomplete.
 
 For quick support and overall discussions, use [Gitter chat room](https://gitter.im/gecko0307/dlib).
 
