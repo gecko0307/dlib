@@ -22,6 +22,7 @@ docs/
 docs-doxygen/
 docs.json
 __dummy.html
+documentation.chm
 
 # Coverage files
 *.lst
