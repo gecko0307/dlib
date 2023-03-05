@@ -746,7 +746,7 @@ do
     return res;
 }
 
-alias homothety2 = scaleMatrix2D;
+alias homothety2 = homothetyMatrix2D;
 
 ///
 unittest
