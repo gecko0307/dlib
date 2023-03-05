@@ -266,6 +266,20 @@ do
 }
 
 /**
+ * Create a matrix to perform uniform scale with respect to a point
+ */
+Matrix!(T,4) homothetyMatrix(T) (Vector!(T,3) point, T scale)
+do
+{
+    auto res = Matrix!(T,4).identity;
+    Vector!(T,3) t = point * (1.0 - scale);
+    res.a11 = scale; res.a14 = t.x;
+    res.a22 = scale; res.a24 = t.y;
+    res.a33 = scale; res.a34 = t.z;
+    return res;
+}
+
+/**
  * Setup the matrix to perform a shear
  */
 Matrix!(T,4) shearMatrix(T) (uint shearAxis, T s, T t)
@@ -738,11 +752,10 @@ alias scale2 = scaleMatrix2D;
 Matrix!(T,3) homothetyMatrix2D(T) (Vector!(T,2) point, T scale)
 do
 {
-    Matrix!(T,3) res;
-    T oneMinusScale = 1.0 - scale;
-    res.a11 = scale; res.a12 = 0;     res.a13 = oneMinusScale * point.x;
-    res.a21 = 0;     res.a22 = scale; res.a23 = oneMinusScale * point.y;
-    res.a31 = 0;     res.a32 = 0;     res.a33 = 1;
+    auto res = Matrix!(T,3).identity;
+    Vector!(T,2) t = point * (1.0 - scale);
+    res.a11 = scale; res.a13 = t.x;
+    res.a22 = scale; res.a23 = t.y;
     return res;
 }
 
