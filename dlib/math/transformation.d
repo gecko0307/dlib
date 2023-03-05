@@ -732,6 +732,22 @@ do
 
 alias scale2 = scaleMatrix2D;
 
+/**
+ * Homothety (scale with respect to a point) in 2D space
+ */
+Matrix!(T,3) homothetyMatrix2D(T) (Vector!(T,2) point, T scale)
+do
+{
+    Matrix!(T,3) res;
+    T oneMinusScale = 1.0 - scale;
+    res.a11 = k; res.a12 = 0; res.a13 = oneMinusScale * point.x;
+    res.a21 = 0; res.a22 = k; res.a23 = oneMinusScale * point.y;
+    res.a31 = 0; res.a32 = 0; res.a33 = 1;
+    return res;
+}
+
+alias homothety2 = scaleMatrix2D;
+
 ///
 unittest
 {
