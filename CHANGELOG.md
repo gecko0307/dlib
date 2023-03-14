@@ -4,7 +4,9 @@ dlib 1.2.0 beta1 - TBD
   - `homothetyMatrix` and `homothetyMatrix2D` functions in `dlib.math.transformation`
   - `radtorev` and `revtorad` functions in `dlib.math.utils` that convert radians to revolutions and revolutions to radians, respectively
 - **dlib.image**
-  - New funtion `drawRect` in `dlib.image.render.shapes`.
+  - New funtion `drawRect` in `dlib.image.render.shapes`
+- **Misc**
+  - Added `CODE_OF_CONDUCT.md`.
 
 dlib 1.1.0 - 5 Oct, 2022
 -------------------------
