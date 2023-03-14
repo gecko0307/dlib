@@ -74,7 +74,7 @@ DEALINGS IN THE SOFTWARE.
 */
 ```
 
-#### Documenting and testing
+#### Documenting
 
 It is not strictly necessary to document code, but if you do, use [ddoc syntax](https://dlang.org/spec/ddoc.html). Each documented module should be accompanied by a description block (if you don't do that, documentation generators may ignore the module):
 ```d
@@ -84,12 +84,14 @@ It is not strictly necessary to document code, but if you do, use [ddoc syntax](
  * Description:
  * <more in-depth information (optional)>
  *
- * Copyright: Your Name 2020.
+ * Copyright: Your Name 2023.
  * License: $(LINK2 https://boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Your Name
  */
 module dlib.something.something;
 ```
+
+#### Testing
 
 It is advisable to write unit tests for new code, if they can be written. Sometimes functionality needs particular external environment or special conditions to run; in these cases tests are not required.
 
