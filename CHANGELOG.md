@@ -1,5 +1,5 @@
-dlib 1.2.0 beta1 - TBD
-----------------------
+dlib 1.2.0 beta1 - 19 Apr, 2023
+-------------------------------
 - **dlib.math**
   - `homothetyMatrix` and `homothetyMatrix2D` functions in `dlib.math.transformation`
   - `radtorev` and `revtorad` functions in `dlib.math.utils` that convert radians to revolutions and revolutions to radians, respectively
