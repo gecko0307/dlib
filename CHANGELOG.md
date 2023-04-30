@@ -1,3 +1,7 @@
+dlib 1.2.0 - 30 Apr, 2023
+-------------------------
+No changes since dlib 1.2.0 beta1.
+
 dlib 1.2.0 beta1 - 19 Apr, 2023
 -------------------------------
 - **dlib.math**
@@ -6,7 +10,8 @@ dlib 1.2.0 beta1 - 19 Apr, 2023
 - **dlib.image**
   - New funtion `drawRect` in `dlib.image.render.shapes`
 - **Misc**
-  - Added `CODE_OF_CONDUCT.md`.
+  - Added `CODE_OF_CONDUCT.md`
+  - Doxygen support for documentation.
 
 dlib 1.1.0 - 5 Oct, 2022
 -------------------------
