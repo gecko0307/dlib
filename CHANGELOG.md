@@ -1,3 +1,8 @@
+dlib 1.3.0 beta1 - TBD
+----------------------
+- **dlib.image**
+  - Median filter (`dlib.image.filters.median`).
+
 dlib 1.2.0 - 30 Apr, 2023
 -------------------------
 No changes since dlib 1.2.0 beta1.
