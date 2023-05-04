@@ -43,6 +43,7 @@ public
     import dlib.image.filters.desaturate;
     import dlib.image.filters.edgedetect;
     import dlib.image.filters.lens;
+    import dlib.image.filters.median;
     import dlib.image.filters.morphology;
     import dlib.image.filters.normalmap;
     import dlib.image.filters.sharpen;
