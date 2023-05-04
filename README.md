@@ -1,6 +1,6 @@
 <img align="left" alt="dlib logo" src="https://github.com/gecko0307/dlib/raw/master/logo/dlib-logo.png" height="66" />
 
-dlib is a high-level general purpose library for [D language](https://dlang.org) intended to game engine developers. It provides basic building blocks for writing graphics-intensive applications: containers, data streams, linear algebra and image decoders. 
+dlib is a high-level general purpose library written in [D language](https://dlang.org) for game and graphics developers. It provides basic building blocks for writing real-time and multimedia applications: containers, data streams, linear algebra and image decoders.
 
 dlib has no external dependencies aside D's standard library. dlib is created and maintained by [Timur Gafarov](https://github.com/gecko0307).
 
@@ -12,8 +12,6 @@ dlib has no external dependencies aside D's standard library. dlib is created an
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/gecko0307/dlib?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 If you like dlib, please support its development on [Patreon](https://www.patreon.com/gecko0307) or [Liberapay](https://liberapay.com/gecko0307). You can also make one-time donation via [NOWPayments](https://nowpayments.io/donation/gecko0307). I appreciate any support. Thanks in advance!
-
-**Important:** if you want to use dlib on macOS then, please, first read the [manifesto](https://github.com/gecko0307/dlib/wiki/Why-doesn't-dlib-support-macOS).
 
 What's inside
 -------------
@@ -73,5 +71,3 @@ Users
 * [D-VXLMapPreview](https://github.com/rakiru/D-VXLMapPreview) - isometric preview generator for Ace of Spades and Iceball maps
 * [dlib-webp](https://github.com/georgy7/dlib-webp) - WebP image format decoder based on libwebp
 * [SMSFontConverter](https://github.com/Doom2fan/SMSFontConverter) - a program for generating Sega Master System fonts.
-
-If you use dlib, please tell me by email (gecko0307@gmail.com), and I'll add your link to the list.
