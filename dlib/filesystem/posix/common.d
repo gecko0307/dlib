@@ -40,7 +40,7 @@ version(Posix)
     }
 
     // Rename stat to stat_ because of method name collision
-    version(Linux)
+    version(linux)
     {
         alias off_t = off64_t;
         alias stat_t = stat64_t;
