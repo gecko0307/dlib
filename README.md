@@ -58,16 +58,17 @@ Users
 -----
 * [Dagon](https://github.com/gecko0307/dagon) - 3D game engine for D
 * [Electronvolt](https://github.com/gecko0307/electronvolt) - work-in-progress first person puzzle game
+* [DagoBan](https://github.com/Timu5/dagoban) - Sokoban clone
 * [DlangUI](https://github.com/buggins/dlangui) - native UI toolkit for D
 * [rengfx](https://github.com/xdrie/rengfx) - game engine based on raylib
 * [Voxelman](https://github.com/MrSmith33/voxelman) - voxel-based game engine
-* [Laser Patriarch](http://ludumdare.com/compo/ludum-dare-36/?action=preview&uid=14310) - Ludum Dare 36 participant, a rougelike with random maps
-* [Anchovy](https://github.com/MrSmith33/anchovy) - multimedia library for games and graphics apps
 * [RIP](https://github.com/LightHouseSoftware/rip) - image processing and analysis library by LightHouse Software
 * [GeneticAlgorithm](https://github.com/Hnatekmar/GeneticAlgorithm) - genetic algorithms library
 * [Orb](https://github.com/claudemr/orb) - a game/engine with procedural content
 * [Leptbag](https://github.com/thotgamma/LeptbagCpp) - physics simulator by Gamma-Lab. Written in C++, but supports D plugins
 * [aoynthesizer](https://github.com/AODQ/aoynthesizer) - sound synthesizer based on Lisp-like scripting language
 * [D-VXLMapPreview](https://github.com/rakiru/D-VXLMapPreview) - isometric preview generator for Ace of Spades and Iceball maps
-* [dlib-webp](https://github.com/georgy7/dlib-webp) - WebP image format decoder based on libwebp
-* [SMSFontConverter](https://github.com/Doom2fan/SMSFontConverter) - a program for generating Sega Master System fonts.
+* [SMSFontConverter](https://github.com/Doom2fan/SMSFontConverter) - a program for generating Sega Master System fonts
+* [sacengine](https://github.com/tg-2/sacengine/) - engine reimplementation for the game Sacrifice
+* [Shaders Playground](https://github.com/AntonC9018/shader_playground) - a sandbox project for experimenting with OpenGL shaders
+* [wgpu-dlang](https://github.com/gecko0307/wgpu-dlang) - WebGPU usage example.
