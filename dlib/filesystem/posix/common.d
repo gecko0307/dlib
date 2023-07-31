@@ -42,9 +42,6 @@ version(Posix)
     // Rename stat to stat_ because of method name collision
     version(linux)
     {
-        alias off_t = off64_t;
-        alias stat_t = stat64_t;
-
         alias lseek = lseek64;
         alias open = open64;
         alias stat_ = stat64;
