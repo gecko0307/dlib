@@ -220,7 +220,7 @@ T nextPowerOfTen(T) (T k) nothrow
 ///
 unittest
 {
-    assert(nextPowerOfTen(80) == 100);
+    assert(nextPowerOfTen!double(80) == 100);
 }
 
 /**
