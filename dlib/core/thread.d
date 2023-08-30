@@ -50,6 +50,8 @@ module dlib.core.thread;
 version(Windows)
 {
     extern(Windows):
+    
+    alias HANDLE = void*;
 
     struct SECURITY_ATTRIBUTES
     {
@@ -58,36 +60,36 @@ version(Windows)
         int    bInheritHandle;
     }
 
-    alias LPTHREAD_START_ROUTINE = extern(Windows) uint function(in void*);
+    alias LPTHREAD_START_ROUTINE = extern(Windows) uint function(const(void)*);
 
     void* CreateThread(
-        in SECURITY_ATTRIBUTES*   lpThreadAttributes,
-        in size_t                 dwStackSize,
-        in LPTHREAD_START_ROUTINE lpStartAddress,
-        in void*                  lpParameter,
-        in uint                   dwCreationFlags,
-        uint*                     lpThreadId
+        const(SECURITY_ATTRIBUTES)* lpThreadAttributes,
+        size_t dwStackSize,
+        LPTHREAD_START_ROUTINE lpStartAddress,
+        void* lpParameter,
+        uint dwCreationFlags,
+        uint* lpThreadId
     );
 
     uint WaitForMultipleObjects(
-        in uint nCount,
-        in void** lpHandles,
-        in int bWaitAll,
-        in uint dwMilliseconds
+        uint nCount,
+        const(HANDLE)* lpHandles,
+        int bWaitAll,
+        uint dwMilliseconds
     );
 
     int TerminateThread(
-        void* hThread,
-        in uint dwExitCode
+        const(void)* hThread,
+        uint dwExitCode
     );
 
     int GetExitCodeThread(
-        in void* hThread,
+        const(void)* hThread,
         uint* lpExitCode
     );
 
     int CloseHandle(
-        in void* hObject
+        const(void)* hObject
     );
 
     enum INFINITE = uint.max;
@@ -188,7 +190,7 @@ class Thread
     {
         version(Windows)
         {
-            WaitForMultipleObjects(1, &winThread, 1, INFINITE);
+            WaitForMultipleObjects(1u, &winThread, 1, INFINITE);
         }
 
         version(Posix)
@@ -230,7 +232,7 @@ class Thread
 
     version(Windows)
     {
-        extern(Windows) static uint winThreadFunc(in void* lpParam)
+        extern(Windows) static uint winThreadFunc(const(void)* lpParam)
         {
             Thread t = cast(Thread)lpParam;
             if (t.callFunc)
