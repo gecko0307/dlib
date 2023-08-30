@@ -1,7 +1,15 @@
-dlib 1.3.0 beta1 - TBD
-----------------------
+dlib 1.2.1 - 30 Aug, 2023
+-------------------------
 - **dlib.image**
-  - Median filter (`dlib.image.filters.median`).
+  - Median filter (`dlib.image.filters.median`)
+- **dlib.filesystem**
+  - Bugfixes in `dlib.filesystem.posix.common`
+- **dlib.core**
+  - `dlib.core.thread`: fix deprecations in Windows multithreading API signatures
+- **dlib.math**
+  - Fix unittest for `dlib.math.utils.nextPowerOfTen`
+- **Misc**
+  - Added `AUTHORS.md`.
 
 dlib 1.2.0 - 30 Apr, 2023
 -------------------------
