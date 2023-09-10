@@ -405,6 +405,11 @@ $('#symbolSearchPane').show();</script>
 				</li>
 				<li>
 					<div class="module ">
+						<a href="../../../dlib/image/filters/median.html">median</a>
+					</div>
+				</li>
+				<li>
+					<div class="module ">
 						<a href="../../../dlib/image/filters/morphology.html">morphology</a>
 					</div>
 				</li>
@@ -809,7 +814,22 @@ $('#symbolSearchPane').show();</script>
 			<div class="prototype">
 				<code class="lang-d">
 					<div class="single-prototype">
-			{null} <span class="pln">CreateThread</span><span class="pun">(</span><span class="pun">)</span><span class="pun">;</span>
+			<span class="kwd">extern</span><span class="pun">(</span><span class="typ">Windows</span><span class="pun">) </span><span class="typ">void</span><span class="pun">*</span> <span class="pln">CreateThread</span>
+			<span class="pun">(</span>
+			<br/>
+			&nbsp;&nbsp;<span class="kwd">const</span><span class="pun">(</span><a href="../../../dlib/core/thread/SECURITY_ATTRIBUTES.html"><span class="pln">SECURITY_ATTRIBUTES</span></a><span class="pun">)</span><span class="pun">*</span> <span class="pln">lpThreadAttributes</span><span class="pun">,</span>
+			<br/>
+			&nbsp;&nbsp;<span class="typ">ulong</span> <span class="pln">dwStackSize</span><span class="pun">,</span>
+			<br/>
+			&nbsp;&nbsp;<span class="kwd">extern</span><span class="pun">(</span><span class="typ">Windows</span><span class="pun">)</span> <span class="typ">uint</span> <span class="kwd">function</span><span class="pun">(</span><span class="kwd">const</span><span class="pun">(</span><span class="typ">void</span><span class="pun">)</span><span class="pun">*</span><span class="pun">)</span> <span class="pln">lpStartAddress</span><span class="pun">,</span>
+			<br/>
+			&nbsp;&nbsp;<span class="typ">void</span><span class="pun">*</span> <span class="pln">lpParameter</span><span class="pun">,</span>
+			<br/>
+			&nbsp;&nbsp;<span class="typ">uint</span> <span class="pln">dwCreationFlags</span><span class="pun">,</span>
+			<br/>
+			&nbsp;&nbsp;<span class="typ">uint</span><span class="pun">*</span> <span class="pln">lpThreadId</span>
+			<br/>
+			<span class="pun">)</span><span class="pun">;</span>
 					</div>
 				</code>
 			</div>

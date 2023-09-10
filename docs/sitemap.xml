@@ -203,7 +203,7 @@
 <url><loc>http://127.0.0.1/dlib/concurrency/workerthread/WorkerThread.id.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/concurrency/workerthread/WorkerThread.pool.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/concurrency/workerthread/WorkerThread.this.html</loc></url>
-<url><loc>http://127.0.0.1/dlib/core/thread/Thread.__unittest_L275_C5.html</loc></url>
+<url><loc>http://127.0.0.1/dlib/core/thread/Thread.__unittest_L277_C5.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/core/thread/Thread.__xdtor.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/core/thread/Thread.isRunning.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/core/thread/Thread.join.html</loc></url>
@@ -625,6 +625,7 @@
 <url><loc>http://127.0.0.1/dlib/core/thread/CloseHandle.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/core/thread/CreateThread.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/core/thread/GetExitCodeThread.html</loc></url>
+<url><loc>http://127.0.0.1/dlib/core/thread/HANDLE.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/core/thread/INFINITE.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/core/thread/LPTHREAD_START_ROUTINE.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/core/thread/SECURITY_ATTRIBUTES.html</loc></url>
@@ -634,7 +635,7 @@
 <url><loc>http://127.0.0.1/dlib/core/thread/STILL_ACTIVE.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/core/thread/TerminateThread.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/core/thread/Thread.html</loc></url>
-<url><loc>http://127.0.0.1/dlib/core/thread/Thread.__unittest_L275_C5.html</loc></url>
+<url><loc>http://127.0.0.1/dlib/core/thread/Thread.__unittest_L277_C5.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/core/thread/Thread.__xdtor.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/core/thread/Thread.isRunning.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/core/thread/Thread.join.html</loc></url>
@@ -1141,6 +1142,9 @@
 <url><loc>http://127.0.0.1/dlib/image/filters/lens.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/image/filters/lens/lensDistortion.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/image/filters/lens/lensDistortion.html</loc></url>
+<url><loc>http://127.0.0.1/dlib/image/filters/median.html</loc></url>
+<url><loc>http://127.0.0.1/dlib/image/filters/median/medianFilter.html</loc></url>
+<url><loc>http://127.0.0.1/dlib/image/filters/median/medianFilter.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/image/filters/morphology.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/image/filters/morphology/close.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/image/filters/morphology/close.html</loc></url>
@@ -2271,14 +2275,17 @@
 <url><loc>http://127.0.0.1/dlib/math/transformation.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/math/transformation/__unittest_L141_C1.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/math/transformation/__unittest_L220_C1.html</loc></url>
-<url><loc>http://127.0.0.1/dlib/math/transformation/__unittest_L640_C1.html</loc></url>
-<url><loc>http://127.0.0.1/dlib/math/transformation/__unittest_L736_C1.html</loc></url>
+<url><loc>http://127.0.0.1/dlib/math/transformation/__unittest_L654_C1.html</loc></url>
+<url><loc>http://127.0.0.1/dlib/math/transformation/__unittest_L765_C1.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/math/transformation/affineTransform2D.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/math/transformation/axisReflectionMatrix.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/math/transformation/directionToMatrix.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/math/transformation/forward.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/math/transformation/fromEuler.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/math/transformation/frustumMatrix.html</loc></url>
+<url><loc>http://127.0.0.1/dlib/math/transformation/homothety2.html</loc></url>
+<url><loc>http://127.0.0.1/dlib/math/transformation/homothetyMatrix.html</loc></url>
+<url><loc>http://127.0.0.1/dlib/math/transformation/homothetyMatrix2D.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/math/transformation/lookAtMatrix.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/math/transformation/orthoMatrix.html</loc></url>
 <url><loc>http://127.0.0.1/dlib/math/transformation/orthoNormalMatrix.html</loc></url>
