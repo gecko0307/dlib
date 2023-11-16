@@ -38,7 +38,16 @@ module dlib.math.interpolation.bezier;
 import dlib.math.vector;
 
 /**
- * Computes cubic Bézier curve 
+ * Computes quadratic Bézier curve
+ */
+T bezierQuadratic(T)(T A, T B, T C, T t)
+{
+    T s = cast(T)1.0 - t;
+    return s * s * A + 2.0 * s * B + t * t * C;
+}
+
+/**
+ * Computes cubic Bézier curve
  */
 T bezierCubic(T) (T A, T B, T C, T D, T t)
 {
