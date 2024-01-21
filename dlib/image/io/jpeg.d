@@ -296,20 +296,21 @@ struct JPEGImage
         }
     }
 
-    struct SOF0Component
+    struct FrameComponent
     {
         ubyte hSubsampling;
         ubyte vSubsampling;
         ubyte dqtTableId;
     }
 
-    struct SOF0
+    struct Frame
     {
         ubyte precision;
         ushort height;
         ushort width;
         ubyte componentsNum;
-        SOF0Component[] components;
+        FrameComponent[] components;
+        bool isProgressive;
 
         void free()
         {
@@ -333,16 +334,16 @@ struct JPEGImage
         }
     }
 
-    struct SOSComponent
+    struct ScanComponent
     {
         ubyte tableIdDC;
         ubyte tableIdAC;
     }
 
-    struct SOS
+    struct Scan
     {
         ubyte componentsNum;
-        SOSComponent[] components;
+        ScanComponent[] components;
         ubyte spectralSelectionStart;
         ubyte spectralSelectionEnd;
         ubyte successiveApproximationBitHigh;
@@ -357,9 +358,10 @@ struct JPEGImage
 
     JFIF jfif;
     DQT[] dqt;
-    SOF0 sof0;
+    Frame frame;
     DHT[] dht;
-    SOS sos;
+    // TODO: multiple scans for progressive JPEG support
+    Scan scan;
 
     DQT* addDQT()
     {
@@ -385,11 +387,11 @@ struct JPEGImage
         foreach(ref t; dqt) t.free();
         if (dqt.length)
             Delete(dqt);
-        sof0.free();
+        frame.free();
         foreach(ref t; dht) t.free();
         if (dht.length)
             Delete(dht);
-        sos.free();
+        scan.free();
     }
 
     DQT* getQuantizationTable(ubyte id)
@@ -595,8 +597,7 @@ Compound!(bool, string) readMarker(
         case 0xFFC2:
             // Start of frame (progressive)
             *mt = JPEGMarkerType.SOF2;
-            version(JPEGDebug) writeln("SOF2");
-            break;
+            return readSOF2(jpg, istrm);
 
         case 0xFFC4:
             // Huffman table(s)
@@ -831,23 +832,24 @@ Compound!(bool, string) readDQT(JPEGImage* jpg, InputStream istrm)
 Compound!(bool, string) readSOF0(JPEGImage* jpg, InputStream istrm)
 {
     ushort sof0_length = istrm.readNumeric!ushort(Endian.Big);
-    jpg.sof0.precision = istrm.readNumeric!ubyte;
-    jpg.sof0.height = istrm.readNumeric!ushort(Endian.Big);
-    jpg.sof0.width = istrm.readNumeric!ushort(Endian.Big);
-    jpg.sof0.componentsNum = istrm.readNumeric!ubyte;
+    jpg.frame.isProgressive = false;
+    jpg.frame.precision = istrm.readNumeric!ubyte;
+    jpg.frame.height = istrm.readNumeric!ushort(Endian.Big);
+    jpg.frame.width = istrm.readNumeric!ushort(Endian.Big);
+    jpg.frame.componentsNum = istrm.readNumeric!ubyte;
 
     version(JPEGDebug)
     {
-        writefln("SOF0 length: %s", sof0_length);
-        writefln("SOF0 precision: %s", jpg.sof0.precision);
-        writefln("SOF0 height: %s", jpg.sof0.height);
-        writefln("SOF0 width: %s", jpg.sof0.width);
-        writefln("SOF0 components: %s", jpg.sof0.componentsNum);
+        writefln("SOF length: %s", sof0_length);
+        writefln("SOF precision: %s", jpg.frame.precision);
+        writefln("SOF height: %s", jpg.frame.height);
+        writefln("SOF width: %s", jpg.frame.width);
+        writefln("SOF components: %s", jpg.frame.componentsNum);
     }
 
-    jpg.sof0.components = New!(JPEGImage.SOF0Component[])(jpg.sof0.componentsNum);
+    jpg.frame.components = New!(JPEGImage.FrameComponent[])(jpg.frame.componentsNum);
 
-    foreach(ref c; jpg.sof0.components)
+    foreach(ref c; jpg.frame.components)
     {
         ubyte c_id = istrm.readNumeric!ubyte;
         ubyte bite = istrm.readNumeric!ubyte;
@@ -856,14 +858,21 @@ Compound!(bool, string) readSOF0(JPEGImage* jpg, InputStream istrm)
         c.dqtTableId = istrm.readNumeric!ubyte;
         version(JPEGDebug)
         {
-            writefln("SOF0 component id: %s", c_id);
-            writefln("SOF0 component %s hsubsampling: %s", c_id, c.hSubsampling);
-            writefln("SOF0 component %s vsubsampling: %s", c_id, c.vSubsampling);
-            writefln("SOF0 component %s table id: %s", c_id, c.dqtTableId);
+            writefln("SOF component id: %s", c_id);
+            writefln("SOF component %s hsubsampling: %s", c_id, c.hSubsampling);
+            writefln("SOF component %s vsubsampling: %s", c_id, c.vSubsampling);
+            writefln("SOF component %s table id: %s", c_id, c.dqtTableId);
         }
     }
 
     return compound(true, "");
+}
+
+Compound!(bool, string) readSOF2(JPEGImage* jpg, InputStream istrm)
+{
+    auto res = readSOF0(jpg, istrm);
+    jpg.frame.isProgressive = true;
+    return res;
 }
 
 Compound!(bool, string) readDHT(JPEGImage* jpg, InputStream istrm)
@@ -938,17 +947,17 @@ Compound!(bool, string) readDHT(JPEGImage* jpg, InputStream istrm)
 Compound!(bool, string) readSOS(JPEGImage* jpg, InputStream istrm)
 {
     ushort sos_length = istrm.readNumeric!ushort(Endian.Big);
-    jpg.sos.componentsNum = istrm.readNumeric!ubyte;
+    jpg.scan.componentsNum = istrm.readNumeric!ubyte;
 
     version(JPEGDebug)
     {
         writefln("SOS length: %s", sos_length);
-        writefln("SOS components: %s", jpg.sos.componentsNum);
+        writefln("SOS components: %s", jpg.scan.componentsNum);
     }
 
-    jpg.sos.components = New!(JPEGImage.SOSComponent[])(jpg.sos.componentsNum);
+    jpg.scan.components = New!(JPEGImage.ScanComponent[])(jpg.scan.componentsNum);
 
-    foreach(ref c; jpg.sos.components)
+    foreach(ref c; jpg.scan.components)
     {
         ubyte c_id = istrm.readNumeric!ubyte;
         ubyte bite = istrm.readNumeric!ubyte;
@@ -962,18 +971,18 @@ Compound!(bool, string) readSOS(JPEGImage* jpg, InputStream istrm)
         }
     }
 
-    jpg.sos.spectralSelectionStart = istrm.readNumeric!ubyte;
-    jpg.sos.spectralSelectionEnd = istrm.readNumeric!ubyte;
+    jpg.scan.spectralSelectionStart = istrm.readNumeric!ubyte;
+    jpg.scan.spectralSelectionEnd = istrm.readNumeric!ubyte;
     ubyte bite = istrm.readNumeric!ubyte;
-    jpg.sos.successiveApproximationBitHigh = bite.hiNibble;
-    jpg.sos.successiveApproximationBitLow = bite.loNibble;
+    jpg.scan.successiveApproximationBitHigh = bite.hiNibble;
+    jpg.scan.successiveApproximationBitLow = bite.loNibble;
 
     version(JPEGDebug)
     {
-        writefln("SOS spectral selection start: %s", jpg.sos.spectralSelectionStart);
-        writefln("SOS spectral selection end: %s", jpg.sos.spectralSelectionEnd);
-        writefln("SOS successive approximation bit: %s", jpg.sos.successiveApproximationBitHigh);
-        writefln("SOS successive approximation bit low: %s", jpg.sos.successiveApproximationBitLow);
+        writefln("SOS spectral selection start: %s", jpg.scan.spectralSelectionStart);
+        writefln("SOS spectral selection end: %s", jpg.scan.spectralSelectionEnd);
+        writefln("SOS successive approximation bit: %s", jpg.scan.successiveApproximationBitHigh);
+        writefln("SOS successive approximation bit low: %s", jpg.scan.successiveApproximationBitLow);
     }
 
     return compound(true, "");
@@ -1102,10 +1111,10 @@ Compound!(SuperImage, string) decodeScanData(
     InputStream istrm,
     SuperImageFactory imgFac)
 {
-    SuperImage img = imgFac.createImage(jpg.sof0.width, jpg.sof0.height, 3, 8);
+    SuperImage img = imgFac.createImage(jpg.frame.width, jpg.frame.height, 3, 8);
 
     MCU mcu;
-    foreach(ci, ref c; jpg.sof0.components)
+    foreach(ci, ref c; jpg.frame.components)
     {
         if (ci == 0)
             mcu.createYBlocks(c.hSubsampling, c.vSubsampling);
@@ -1156,11 +1165,11 @@ Compound!(SuperImage, string) decodeScanData(
         53, 60, 61, 54, 47, 55, 62, 63
     ];
 
-    if (jpg.sos.componentsNum != 3)
+    if (jpg.scan.componentsNum != 3)
     {
         return error(format(
-                "loadJPEG error: unsupported number of components: %s",
-                jpg.sos.componentsNum));
+                "loadJPEG error: unsupported number of scan components: %s",
+                jpg.scan.componentsNum));
     }
 
     // Store previous DC coefficients
@@ -1177,15 +1186,15 @@ Compound!(SuperImage, string) decodeScanData(
     sbs.istrm = istrm;
     sbs.readNextByte();
 
-    uint numMCUsH = jpg.sof0.width / mcu.width + ((jpg.sof0.width % mcu.width) > 0);
-    uint numMCUsV = jpg.sof0.height / mcu.height + ((jpg.sof0.height % mcu.height) > 0);
+    uint numMCUsH = jpg.frame.width / mcu.width + ((jpg.frame.width % mcu.width) > 0);
+    uint numMCUsV = jpg.frame.height / mcu.height + ((jpg.frame.height % mcu.height) > 0);
 
     // Read MCUs
     foreach(mcuY; 0..numMCUsV)
     foreach(mcuX; 0..numMCUsH)
     {
         // Read MCU for each channel
-        foreach(ci, ref c; jpg.sos.components)
+        foreach(ci, ref c; jpg.scan.components)
         {
             auto tableDC = jpg.getHuffmanTable(0, c.tableIdDC);
             auto tableAC = jpg.getHuffmanTable(1, c.tableIdAC);
@@ -1195,7 +1204,7 @@ Compound!(SuperImage, string) decodeScanData(
             if (tableAC is null)
                 return error("loadJPEG error: illegal AC table index in MCU component");
 
-            auto component = jpg.sof0.components[ci];
+            auto component = jpg.frame.components[ci];
             auto hblocks = component.hSubsampling;
             auto vblocks = component.vSubsampling;
             auto dqtTableId = component.dqtTableId;
