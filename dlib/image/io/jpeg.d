@@ -491,97 +491,197 @@ Compound!(bool, string) readMarker(
     switch (magic)
     {
         case 0xFFD8:
+            // Start of image
             *mt = JPEGMarkerType.SOI;
             version(JPEGDebug) writeln("SOI");
             break;
 
         case 0xFFE0:
+            // JFIF data
             *mt = JPEGMarkerType.APP0;
             return readJFIF(jpg, istrm);
 
         case 0xFFE1:
+            // Application-specific data
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 1);
 
         case 0xFFE2:
+            // Application-specific data
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 2);
 
         case 0xFFE3:
+            // Application-specific data
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 3);
 
         case 0xFFE4:
+            // Application-specific data
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 4);
 
         case 0xFFE5:
+            // Application-specific data
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 5);
 
         case 0xFFE6:
+            // Application-specific data
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 6);
 
         case 0xFFE7:
+            // Application-specific data
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 7);
 
         case 0xFFE8:
+            // Application-specific data
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 8);
 
-         case 0xFFE9:
+        case 0xFFE9:
+            // Application-specific data
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 9);
 
-         case 0xFFEA:
+        case 0xFFEA:
+            // Application-specific data
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 10);
 
-         case 0xFFEB:
+        case 0xFFEB:
+            // Application-specific data
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 11);
 
-         case 0xFFEC:
+        case 0xFFEC:
+            // Application-specific data
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 12);
 
-         case 0xFFED:
+        case 0xFFED:
+            // Application-specific data
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 13);
 
-         case 0xFFEE:
+        case 0xFFEE:
+            // Application-specific data
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 14);
 
-         case 0xFFEF:
+        case 0xFFEF:
+            // Application-specific data
             *mt = JPEGMarkerType.APPn;
             return readAPPn(jpg, istrm, 15);
 
         case 0xFFDB:
+            // Quantization table(s)
             *mt = JPEGMarkerType.DQT;
             return readDQT(jpg, istrm);
 
         case 0xFFC0:
+            // Start of frame (baseline)
             *mt = JPEGMarkerType.SOF0;
             return readSOF0(jpg, istrm);
+        
+        case 0xFFC1:
+            // Start of frame (extended sequential)
+            *mt = JPEGMarkerType.SOF1;
+            version(JPEGDebug) writeln("SOF1");
+            break;
 
         case 0xFFC2:
+            // Start of frame (progressive)
             *mt = JPEGMarkerType.SOF2;
+            version(JPEGDebug) writeln("SOF2");
             break;
 
         case 0xFFC4:
+            // Huffman table(s)
             *mt = JPEGMarkerType.DHT;
             return readDHT(jpg, istrm);
 
         case 0xFFDA:
+            // Start of scan
             *mt = JPEGMarkerType.SOS;
             return readSOS(jpg, istrm);
 
         case 0xFFFE:
+            // Comments
             *mt = JPEGMarkerType.COM;
             return readCOM(jpg, istrm);
+        
+        case 0xFFDD:
+            // Restart interval
+            // TODO
+            *mt = JPEGMarkerType.DRI;
+            version(JPEGDebug) writeln("DRI");
+            break;
+        
+        case 0xFFD0:
+            // Restart
+            // TODO
+            *mt = JPEGMarkerType.RSTn;
+            version(JPEGDebug) writeln("RST0");
+            break;
+        
+        case 0xFFD1:
+            // Restart
+            // TODO
+            *mt = JPEGMarkerType.RSTn;
+            version(JPEGDebug) writeln("RST1");
+            break;
+        
+        case 0xFFD2:
+            // Restart
+            // TODO
+            *mt = JPEGMarkerType.RSTn;
+            version(JPEGDebug) writeln("RST2");
+            break;
+        
+        case 0xFFD3:
+            // Restart
+            // TODO
+            *mt = JPEGMarkerType.RSTn;
+            version(JPEGDebug) writeln("RST3");
+            break;
+        
+        case 0xFFD4:
+            // Restart
+            // TODO
+            *mt = JPEGMarkerType.RSTn;
+            version(JPEGDebug) writeln("RST4");
+            break;
+        
+        case 0xFFD5:
+            // Restart
+            // TODO
+            *mt = JPEGMarkerType.RSTn;
+            version(JPEGDebug) writeln("RST5");
+            break;
+        
+        case 0xFFD6:
+            // Restart
+            // TODO
+            *mt = JPEGMarkerType.RSTn;
+            version(JPEGDebug) writeln("RST6");
+            break;
+        
+        case 0xFFD7:
+            // Restart
+            // TODO
+            *mt = JPEGMarkerType.RSTn;
+            version(JPEGDebug) writeln("RST7");
+            break;
+        
+        case 0xFFD9:
+            // End of image
+            // TODO
+            *mt = JPEGMarkerType.EOI;
+            version(JPEGDebug) writeln("EOI");
+            break;
 
         default:
             *mt = JPEGMarkerType.Unknown;
