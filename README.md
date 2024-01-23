@@ -27,6 +27,7 @@ Currently dlib consists of the following packages:
 * [dlib.memory](https://gecko0307.github.io/dlib/docs/dlib/memory.html) - memory allocators
 * [dlib.text](https://gecko0307.github.io/dlib/docs/dlib/text.html) - text processing, GC-free strings, Unicode decoding and encoding
 * [dlib.serialization](https://gecko0307.github.io/dlib/docs/dlib/serialization.html) - data serialization (XML and JSON parsers)
+* [dlib.random](https://gecko0307.github.io/dlib/docs/dlib/random.html) - random number generation
 * [dlib.coding](https://gecko0307.github.io/dlib/docs/dlib/coding.html) - various data compression and coding algorithms
 * [dlib.concurrency](https://gecko0307.github.io/dlib/docs/dlib/concurrency.html) - a thread pool.
 

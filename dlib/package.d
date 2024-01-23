@@ -68,7 +68,9 @@ DEALINGS IN THE SOFTWARE.
  *
  * - $(LINK2 dlib/memory.html, dlib.memory) - memory allocators
  *
- * - $(LINK2 dlib/text.html, dlib.text)  - text processing, GC-free strings, Unicode decoding and encoding
+ * - $(LINK2 dlib/text.html, dlib.text) - text processing, GC-free strings, Unicode decoding and encoding
+ *
+ * - $(LINK2 dlib/random.html, dlib.random) - random number generation
  *
  * - $(LINK2 dlib/serialization.html, dlib.serialization) - data serialization (XML and JSON parsers)
  *
@@ -95,6 +97,7 @@ public
     import dlib.math;
     import dlib.memory;
     import dlib.network;
+    import dlib.random;
     import dlib.serialization;
     import dlib.text;
 }
