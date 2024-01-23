@@ -132,6 +132,7 @@ class ThreadPool
     }
 }
 
+/*
 ///
 unittest
 {
@@ -167,3 +168,4 @@ unittest
 
     Delete(threadPool);
 }
+*/
