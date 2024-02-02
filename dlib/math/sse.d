@@ -45,7 +45,205 @@ import dlib.math.matrix;
 
 version(GNU)
 {
-    pragma(msg, "Warning: dlib.math.sse is not compatible with GNU D Compiler");
+    pragma(inline, true);
+
+	/// Vector addition
+	Vector4f sseAdd4(Vector4f a, Vector4f b)
+	{
+	    asm {
+	        "movups %[a], %%xmm0 \n" ~  // Load vector a into xmm0
+	        "movups %[b], %%xmm1 \n" ~  // Load vector b into xmm1
+	        "addps %%xmm1, %%xmm0 \n" ~ // Add xmm1 to xmm0
+	        "movups %%xmm0, %[a] \n"    // Store the result back in vector a
+	        : [a] "+m" (a)                // Output operand a, constrained to memory
+	        : [b] "m" (b)                 // Input operand b, constrained to memory
+	        : "%xmm0", "%xmm1";           // Clobbered registers
+	    }
+	    
+	    return a;
+	}
+
+    /// Vector subtraction for GNU D Compiler (using AVX)
+    Vector4f sseSub4(Vector4f a, Vector4f b)
+    {
+	    asm
+	    {
+	        "movups %[a], %%xmm0 \n" ~  // Load vector a into xmm0
+	        "movups %[b], %%xmm1 \n" ~  // Load vector b into xmm1
+	        "subps %%xmm1, %%xmm0 \n" ~  // Subtract xmm1 from xmm0
+	        "movups %%xmm0, %[a] \n"   // Store the result back in vector a
+	        : [a] "+m" (a)                // Output operand a, constrained to memory
+	        : [b] "m" (b)                 // Input operand b, constrained to memory
+	        : "%xmm0", "%xmm1";            // Clobbered registers
+	    }
+
+        return a;
+    }
+    
+    /// Vector multiplication for GNU D Compiler (using AVX)
+	Vector4f sseMul4(Vector4f a, Vector4f b)
+	{
+	    asm
+	    {
+	        "movups %[a], %%xmm0 \n" ~  // Load vector a into xmm0
+	        "movups %[b], %%xmm1 \n" ~  // Load vector b into xmm1
+	        "mulps %%xmm1, %%xmm0 \n" ~ // Multiply xmm0 by xmm1
+	        "movups %%xmm0, %[a] \n"    // Store the result back in vector a
+		    : [a] "+m" (a)                // Output operand a, constrained to memory
+		    : [b] "m" (b)                 // Input operand b, constrained to memory
+		    : "%xmm0", "%xmm1";           // Clobbered registers
+	    }
+	
+	    return a;
+	}
+    
+    /// Vector division for GNU D Compiler (using AVX)
+	Vector4f sseDiv4(Vector4f a, Vector4f b)
+	{
+	    asm
+	    {
+	        "movups %[a], %%xmm0 \n" ~  // Load vector a into xmm0
+	        "movups %[b], %%xmm1 \n" ~  // Load vector b into xmm1
+	        "divps %%xmm1, %%xmm0 \n" ~ // Divide xmm0 by xmm1
+	        "movups %%xmm0, %[a] \n"    // Store the result back in vector a
+		    : [a] "+m" (a)                // Output operand a, constrained to memory
+		    : [b] "m" (b)                 // Input operand b, constrained to memory
+		    : "%xmm0", "%xmm1";           // Clobbered registers
+	    }
+	
+	    return a;
+	}
+    
+    /// Vector dot product for GNU D Compiler (using SSE)
+	float sseDot4(Vector4f a, Vector4f b)
+	{
+	    asm
+	    {
+	        "movups %[a], %%xmm0 \n" ~      // Load vector a into xmm0
+	        "movups %[b], %%xmm1 \n" ~      // Load vector b into xmm1
+	        "mulps %%xmm1, %%xmm0 \n" ~     // Multiply xmm0 by xmm1
+	
+	        // Horizontal addition
+	        "movhlps %%xmm0, %%xmm1 \n" ~   // Copy the high 64 bits to the low 64 bits of xmm1
+	        "addps %%xmm1, %%xmm0 \n" ~     // Add xmm1 to xmm0
+	
+	        "movups %%xmm0, %[a] \n"         // Store the result back in vector a
+		    : [a] "+m" (a)                        // Output operand a, constrained to memory
+		    : [b] "m" (b)                         // Input operand b, constrained to memory
+		    : "%xmm0", "%xmm1";                    // Clobbered registers
+	    }
+	
+	    return a[0];
+	}
+    
+    /// Vector cross product for GNU D Compiler (using SSE)
+	Vector4f sseCross3(Vector4f a, Vector4f b)
+	{
+	    asm
+	    {
+	        "movups %[a], %%xmm0 \n" ~      // Load vector a into xmm0
+	        "movups %[b], %%xmm1 \n" ~      // Load vector b into xmm1
+	        "movaps %%xmm0, %%xmm2 \n" ~   // Copy xmm0 to xmm2
+	        "movaps %%xmm1, %%xmm3 \n" ~   // Copy xmm1 to xmm3
+	
+	        "shufps $0xC9, %%xmm0, %%xmm0 \n" ~ // Shuffle xmm0 according to 0xC9
+	        "shufps $0xD2, %%xmm1, %%xmm1 \n" ~ // Shuffle xmm1 according to 0xD2
+	        "shufps $0xD2, %%xmm2, %%xmm2 \n" ~ // Shuffle xmm2 according to 0xD2
+	        "shufps $0xC9, %%xmm3, %%xmm3 \n" ~ // Shuffle xmm3 according to 0xC9
+	
+	        "mulps %%xmm1, %%xmm0 \n" ~         // Multiply xmm0 by xmm1
+	        "mulps %%xmm3, %%xmm2 \n" ~         // Multiply xmm2 by xmm3
+	
+	        "subps %%xmm2, %%xmm0 \n" ~         // Subtract xmm2 from xmm0
+	
+	        "movups %%xmm0, %[a] \n"            // Store the result back in vector a
+		    : [a] "+m" (a)                            // Output operand a, constrained to memory
+		    : [b] "m" (b)                             // Input operand b, constrained to memory
+		    : "%xmm0", "%xmm1", "%xmm2", "%xmm3";    // Clobbered registers
+	    }
+	
+	    return a;
+	}
+    
+    /// Matrix multiplication for GNU D Compiler (using SSE)
+    Matrix4x4f sseMulMat4(Matrix4x4f a, Matrix4x4f b)
+	{
+	    Matrix4x4f r;
+	    Vector4f a_line, b_line, r_line;
+	    float _b;
+	    uint i, j;
+	    Vector4f* _rp;
+	
+	    for (i = 0; i < 16; i += 4)
+	    {
+	        a_line = *cast(Vector4f*)(a.arrayof.ptr);
+	        _b = *(b.arrayof.ptr + i);
+	
+	        asm
+	        {
+	            "movups %[a_line], %%xmm0 \n" ~  // Load vector a_line into xmm0
+	
+	            "mov %[EAX], %[b] \n" ~          // Move _b into the EAX register
+	            "movd %[EAX], %%xmm1 \n" ~       // Move EAX into xmm1
+	
+	            "shufps $0, %%xmm1, %%xmm1 \n" ~ // Shuffle xmm1 according to 0
+	
+	            "mulps %%xmm1, %%xmm0 \n" ~      // Multiply xmm0 by xmm1
+	            "movups %%xmm0, %[r_line] \n"    // Store the result in r_line
+		        : [a_line] "+m" (a_line), [r_line] "=m" (r_line), [EAX] "+r" (_b) // Output and input operands
+		        : [b] "m" (b)                      // Input operand b, constrained to memory
+		        : "%xmm0", "%xmm1";                 // Clobbered registers
+	        }
+	
+	        for (j = 1; j < 4; j++)
+	        {
+	            a_line = *cast(Vector4f*)(a.arrayof.ptr + j * 4);
+	            _b = *(b.arrayof.ptr + i + j);
+	
+	            asm
+	            {
+	                "movups %[a_line], %%xmm0 \n" ~  // Load vector a_line into xmm0
+	
+	                "mov %[EAX], %[b] \n" ~           // Move _b into the EAX register
+	                "movd %[EAX], %%xmm1 \n" ~        // Move EAX into xmm1
+	
+	                "shufps $0, %%xmm1, %%xmm1 \n" ~  // Shuffle xmm1 according to 0
+	
+	                "mulps %%xmm1, %%xmm0 \n" ~       // Multiply xmm0 by xmm1
+	
+	                "movups %%xmm0, %[r_line] \n" ~   // Store the result in r_line
+	
+	                "movups %[r_line], %%xmm2 \n" ~   // Load r_line into xmm2
+	                "addps %%xmm0, %%xmm2 \n" ~       // Add xmm0 to xmm2
+	
+	                "movups %%xmm2, %[r_line] \n"     // Store the result back in r_line
+		            : [a_line] "+m" (a_line), [r_line] "=m" (r_line), [EAX] "+r" (_b) // Output and input operands
+		            : [b] "m" (b)                      // Input operand b, constrained to memory
+		            : "%xmm0", "%xmm1", "%xmm2";       // Clobbered registers
+	            }
+	        }
+	
+	        _rp = cast(Vector4f*)(r.arrayof.ptr + i);
+	        version(X86) asm
+			{
+			    "mov %[rp], %%eax \n\t" ~              	// Move _rp into the EAX register
+			    "movups %%xmm0, (%%eax) \n\t"      	 	// Move xmm0 to the memory location pointed by EAX
+			    : [rp] "+r" (_rp)                    	// Output and input operands
+			    :                                   	// No additional input operands
+			    : "%eax", "%xmm0";                   	// Clobbered registers
+			}	        
+	        version(X86_64) asm
+			{
+			    "mov %[rp], %%rax \n" ~           		// Move _rp into the RAX register
+			    "movups %%xmm0, (%%rax) \n"      		// Move xmm0 to the memory location pointed by RAX
+			    : [rp] "+r" (_rp)                    	// Output and input operands
+			    :                                   	// No additional input operands
+			    : "%rax", "%xmm0";                   	// Clobbered registers
+			}
+	    }
+	
+	    return r;
+	}
 }
 
 version(DMD)
