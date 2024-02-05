@@ -166,7 +166,7 @@ version(GNU)
 	}
     
     /// Matrix multiplication for GNU D Compiler (using SSE)
-    Matrix4x4f sseMulMat4(Matrix4x4f a, Matrix4x4f b)
+	Matrix4x4f sseMulMat4(Matrix4x4f a, Matrix4x4f b)
 	{
 	    Matrix4x4f r;
 	    Vector4f a_line, b_line, r_line;
@@ -178,22 +178,23 @@ version(GNU)
 	    {
 	        a_line = *cast(Vector4f*)(a.arrayof.ptr);
 	        _b = *(b.arrayof.ptr + i);
-	
-	        asm
-	        {
-	            "movups %[a_line], %%xmm0 \n" ~  // Load vector a_line into xmm0
-	
-	            "mov %[EAX], %[b] \n" ~          // Move _b into the EAX register
-	            "movd %[EAX], %%xmm1 \n" ~       // Move EAX into xmm1
-	
-	            "shufps $0, %%xmm1, %%xmm1 \n" ~ // Shuffle xmm1 according to 0
-	
-	            "mulps %%xmm1, %%xmm0 \n" ~      // Multiply xmm0 by xmm1
-	            "movups %%xmm0, %[r_line] \n"    // Store the result in r_line
-		        : [a_line] "+m" (a_line), [r_line] "=m" (r_line), [EAX] "+r" (_b) // Output and input operands
-		        : [b] "m" (b)                      // Input operand b, constrained to memory
-		        : "%xmm0", "%xmm1";                 // Clobbered registers
-	        }
+			
+			asm
+			{
+			    "movups %[a_line], %%xmm0 \n" ~    // Load vector a_line into xmm0
+			    
+			    "mov %[_b], %%eax \n" ~            // Move _b into the EAX register
+			    "movd %%eax, %%xmm1 \n" ~          // Move EAX into xmm1
+			    
+			    "shufps $0, %%xmm1, %%xmm1 \n" ~   // Shuffle xmm1 according to 0
+			    
+			    "mulps %%xmm1, %%xmm0 \n" ~        // Multiply xmm0 by xmm1
+			    "movups %%xmm0, %[r_line]"         // Store the result in r_line
+			    
+			    : [r_line] "=m" (r_line)           // Output operand r_line, constrained to memory
+			    : [a_line] "m" (a_line), [_b] "r" (_b) // Input operands a_line and _b, constrained to memory and register
+			    : "%xmm0", "%xmm1", "%eax";        // Clobbered registers
+			}
 	
 	        for (j = 1; j < 4; j++)
 	        {
@@ -202,44 +203,42 @@ version(GNU)
 	
 	            asm
 	            {
-	                "movups %[a_line], %%xmm0 \n" ~  // Load vector a_line into xmm0
+	                "movups %[a_line], %%xmm0 \n" ~  		// Load vector a_line into xmm0
 	
-	                "mov %[EAX], %[b] \n" ~           // Move _b into the EAX register
-	                "movd %[EAX], %%xmm1 \n" ~        // Move EAX into xmm1
+	                "mov %[_b], %%eax \n" ~           		// Move _b into the EAX register
+	                "movd %%eax, %%xmm1 \n" ~         		// Move EAX into xmm1
+	                "shufps $0, %%xmm1, %%xmm1 \n" ~  		// Shuffle xmm1 according to 0
 	
-	                "shufps $0, %%xmm1, %%xmm1 \n" ~  // Shuffle xmm1 according to 0
+	                "mulps %%xmm1, %%xmm0 \n" ~       		// Multiply xmm0 by xmm1
 	
-	                "mulps %%xmm1, %%xmm0 \n" ~       // Multiply xmm0 by xmm1
+	                "movups %[r_line], %%xmm2 \n" ~   		// Load r_line into xmm2
+	                "addps %%xmm2, %%xmm0 \n" ~       		// Add xmm2 to xmm0
 	
-	                "movups %%xmm0, %[r_line] \n" ~   // Store the result in r_line
-	
-	                "movups %[r_line], %%xmm2 \n" ~   // Load r_line into xmm2
-	                "addps %%xmm0, %%xmm2 \n" ~       // Add xmm0 to xmm2
-	
-	                "movups %%xmm2, %[r_line] \n"     // Store the result back in r_line
-		            : [a_line] "+m" (a_line), [r_line] "=m" (r_line), [EAX] "+r" (_b) // Output and input operands
-		            : [b] "m" (b)                      // Input operand b, constrained to memory
-		            : "%xmm0", "%xmm1", "%xmm2";       // Clobbered registers
+	                "movups %%xmm0, %[r_line]"        		// Store the result back in r_line
+	                : [r_line] "=m" (r_line)          		// Output and input operands
+	                : [a_line] "m" (a_line), [_b] "r" (_b)	// Input operand b, constrained to memory
+	                : "%xmm0", "%xmm1", "%xmm2", "%eax";  	// Clobbered registers
 	            }
 	        }
 	
 	        _rp = cast(Vector4f*)(r.arrayof.ptr + i);
+	        
 	        version(X86) asm
-			{
-			    "mov %[rp], %%eax \n\t" ~              	// Move _rp into the EAX register
-			    "movups %%xmm0, (%%eax) \n\t"      	 	// Move xmm0 to the memory location pointed by EAX
-			    : [rp] "+r" (_rp)                    	// Output and input operands
-			    :                                   	// No additional input operands
-			    : "%eax", "%xmm0";                   	// Clobbered registers
-			}	        
+	        {
+	            "mov %[_rp], %%eax \n" ~          // Move _rp into the EAX register
+	            "movups %%xmm0,(%%eax)"           // Move xmm0 to the memory location pointed by EAX
+	            : [_rp] "+r" (_rp)                // Output and input operands
+	            :                                 // No additional input operands
+	            : "%eax", "%xmm0";                // Clobbered registers
+	        }
 	        version(X86_64) asm
-			{
-			    "mov %[rp], %%rax \n" ~           		// Move _rp into the RAX register
-			    "movups %%xmm0, (%%rax) \n"      		// Move xmm0 to the memory location pointed by RAX
-			    : [rp] "+r" (_rp)                    	// Output and input operands
-			    :                                   	// No additional input operands
-			    : "%rax", "%xmm0";                   	// Clobbered registers
-			}
+	        {
+	            "mov %[_rp], %%rax \n" ~           // Move _rp into the RAX register
+	            "movups %%xmm0, (%%rax)"           // Move xmm0 to the memory location pointed by RAX
+	            : [_rp] "+r" (_rp)                 // Output and input operands
+	            :                                  // No additional input operands
+	            : "%rax", "%xmm0";                 // Clobbered registers
+	        }
 	    }
 	
 	    return r;
