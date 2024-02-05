@@ -1,3 +1,11 @@
+dlib 1.3.0 beta1 - TBD
+----------------------
+- **dlib.random**
+  - New module `dlib.random.random` that implements `random`, a pseudo-random number generator based on C `rand`
+- **dlib.math**
+  - Function that computes quadratic Bézier curve - `dlib.math.interpolation.bezierQuadratic`
+  - GNU D Compiler (GDC) support in `dlib.math.sse`
+
 dlib 1.2.1 - 30 Aug, 2023
 -------------------------
 - **dlib.image**
