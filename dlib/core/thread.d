@@ -35,12 +35,6 @@ DEALINGS IN THE SOFTWARE.
  * is greatly inspired by core.thread from Phobos, but dlib.core.thread
  * is fully GC-free and can be used with dlib.core.memory allocators.
  *
- * Implementation notes:
- * - No TLS support, sorry. Any global variables should be marked with
- *   __gshared for correct access from threads.
- * - Internals of Thread class are platform-dependent, so be aware of that
- *   when inheriting.
- *
  * Copyright: Timur Gafarov 2015-2023.
  * License: $(LINK2 https://boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
