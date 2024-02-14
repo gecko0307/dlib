@@ -1,5 +1,5 @@
-dlib 1.3.0 beta1 - TBD
-----------------------
+dlib 1.3.0 beta1 - 14 Feb, 2023
+-------------------------------
 - **dlib.random**
   - New module `dlib.random.random` that implements `random`, a pseudo-random number generator based on C `rand`
 - **dlib.math**
