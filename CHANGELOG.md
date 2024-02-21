@@ -1,3 +1,7 @@
+dlib 1.3.0 - 21 Feb, 2023
+-------------------------
+No changes since dlib 1.3.0 beta1.
+
 dlib 1.3.0 beta1 - 14 Feb, 2023
 -------------------------------
 - **dlib.random**
