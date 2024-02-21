@@ -202,48 +202,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/filesystem.html">filesystem</a>
 					</div>
 			<ul class="tree-view">
-				<li class="tree-view collapsed">
-					<div class="package ">posix
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
-				<li class="tree-view collapsed">
-					<div class="package ">windows
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/delegaterange.html">delegaterange</a>
@@ -267,16 +225,6 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module selected">
 						<a href="../../../dlib/filesystem/stdfs.html">stdfs</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
 					</div>
 				</li>
 			</ul>
@@ -731,17 +679,23 @@ $('#symbolSearchPane').show();</script>
 			<ul class="tree-view">
 				<li>
 					<div class="module ">
-						<a href="../../../dlib/network/errno.html">errno</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
 						<a href="../../../dlib/network/socket.html">socket</a>
 					</div>
 				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/network/url.html">url</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">random
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/random/random.html">random</a>
 					</div>
 				</li>
 			</ul>
@@ -768,11 +722,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/text.html">text</a>
 					</div>
 			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/text/common.html">common</a>
-					</div>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/text/encodings.html">encodings</a>
@@ -822,43 +771,6 @@ $('#symbolSearchPane').show();</script>
 				</code>
 			</div>
 			
-			<section><h2>Constructors</h2>
-				<table>
-					<col class="caption"/>
-					<tr>
-						<th>Name</th><th>Description</th>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/filesystem/stdfs/StdFileSystem.this.html" class="public">
-								<code>this</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td></td>
-					</tr>
-				</table>
-			</section>
-			<section><h2>Fields</h2>
-				<table>
-					<col class="caption"/>
-					<tr>
-						<th>Name</th><th>Type</th><th>Description</th>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/filesystem/stdfs/StdFileSystem.openedDirPaths.html" class="public"><code>openedDirPaths</code></a>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/container/array/Array.html"><span class="typ">Array</span></a>!(string,32L)</code></td><td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/filesystem/stdfs/StdFileSystem.openedDirs.html" class="public"><code>openedDirs</code></a>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/container/dict/Trie.html"><span class="typ">Trie</span></a>!(dlib.filesystem.filesystem.Directory,string)</code></td><td></td>
-					</tr>
-				</table>
-			</section>
 			<section><h2>Methods</h2>
 				<table>
 					<col class="caption"/>
@@ -867,7 +779,7 @@ $('#symbolSearchPane').show();</script>
 					</tr>
 					<tr>
 						<td>
-							<a href="../../../dlib/filesystem/stdfs/StdFileSystem.createDir.html" class="public">
+							<a href="../../../dlib/filesystem/filesystem/FileSystem.createDir.html" class="public inherited">
 								<code>createDir</code>
 							</a>
 							<span class="tableEntryAnnotation">(path, recursive)</span>
@@ -877,59 +789,12 @@ $('#symbolSearchPane').show();</script>
 					</tr>
 					<tr>
 						<td>
-							<a href="../../../dlib/filesystem/stdfs/StdFileSystem.openDir.html" class="public">
+							<a href="../../../dlib/filesystem/filesystem/ReadOnlyFileSystem.openDir.html" class="public inherited">
 								<code>openDir</code>
 							</a>
 							<span class="tableEntryAnnotation">(path)</span>
 						</td>
 						<td>Open a directory.
-</td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/filesystem/stdfs/StdFileSystem.openForInput.html" class="public">
-								<code>openForInput</code>
-							</a>
-							<span class="tableEntryAnnotation">(filename)</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/filesystem/stdfs/StdFileSystem.openForIO.html" class="public">
-								<code>openForIO</code>
-							</a>
-							<span class="tableEntryAnnotation">(filename, creationFlags)</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/filesystem/stdfs/StdFileSystem.openForOutput.html" class="public">
-								<code>openForOutput</code>
-							</a>
-							<span class="tableEntryAnnotation">(filename, creationFlags)</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/filesystem/stdfs/StdFileSystem.remove.html" class="public">
-								<code>remove</code>
-							</a>
-							<span class="tableEntryAnnotation">(path, recursive)</span>
-						</td>
-						<td>Permanently delete a file or directory.
-</td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/filesystem/stdfs/StdFileSystem.stat.html" class="public">
-								<code>stat</code>
-							</a>
-							<span class="tableEntryAnnotation">(filename, stat)</span>
-						</td>
-						<td>Get file or directory stats.
 </td>
 					</tr>
 					<tr>
@@ -962,25 +827,63 @@ $('#symbolSearchPane').show();</script>
 						<td>Open a file for output.
 </td>
 					</tr>
-				</table>
-			</section>
-			<section><h2>Aliases</h2>
-				<table>
-					<col class="caption"/>
 					<tr>
-						<th>Name</th><th>Description</th>
+						<td>
+							<a href="../../../dlib/filesystem/filesystem/FileSystem.remove.html" class="public inherited">
+								<code>remove</code>
+							</a>
+							<span class="tableEntryAnnotation">(path, recursive)</span>
+						</td>
+						<td>Permanently delete a file or directory.
+</td>
 					</tr>
 					<tr>
 						<td>
-							<a href="../../../dlib/filesystem/stdfs/StdFileSystem.__xdtor.html" class="public">
-								<code>__xdtor</code>
+							<a href="../../../dlib/filesystem/filesystem/ReadOnlyFileSystem.stat.html" class="public inherited">
+								<code>stat</code>
 							</a>
+							<span class="tableEntryAnnotation">(filename, stat)</span>
 						</td>
-						<td></td>
+						<td>Get file or directory stats.
+</td>
 					</tr>
 				</table>
 			</section>
-			
+			<section><h2>Example</h2>
+
+<pre class="code"><code class="lang-d"><span class="typ">StdFileSystem </span><span class="pln">fs </span><span class="pun">= </span><span class="typ">New</span><span class="pun">!</span><span class="typ">StdFileSystem</span><span class="pun">();
+
+</span><span class="typ">string </span><span class="pln">path </span><span class="pun">= </span><span class="str">"tests/stdfs"</span><span class="pun">;
+
+</span><span class="typ">FileStat </span><span class="pln">ps</span><span class="pun">;
+</span><span class="kwd">if </span><span class="pun">(</span><span class="pln">fs<wbr/></span><span class="pun">.</span><span class="pln">stat</span><span class="pun">(</span><span class="pln">path</span><span class="pun">, </span><span class="pln">ps</span><span class="pun">))
+{
+    </span><span class="pln">fs<wbr/></span><span class="pun">.</span><span class="pln">remove</span><span class="pun">(</span><span class="pln">path</span><span class="pun">, </span><span class="kwd">true</span><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">fs<wbr/></span><span class="pun">.</span><span class="pln">openDir</span><span class="pun">(</span><span class="pln">path</span><span class="pun">) </span><span class="kwd">is null</span><span class="pun">);
+}
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">fs<wbr/></span><span class="pun">.</span><span class="pln">createDir</span><span class="pun">(</span><span class="pln">path</span><span class="pun">, </span><span class="kwd">true</span><span class="pun">));
+
+</span><span class="typ">string </span><span class="pln">filename </span><span class="pun">= </span><span class="str">"tests/stdfs/hello_world.txt"</span><span class="pun">;
+
+</span><span class="typ">OutputStream </span><span class="pln">outp </span><span class="pun">= </span><span class="pln">fs<wbr/></span><span class="pun">.</span><span class="pln">openForOutput</span><span class="pun">(</span><span class="pln">filename</span><span class="pun">, </span><span class="typ">FileSystem<wbr/></span><span class="pun">.</span><span class="pln">create </span><span class="pun">| </span><span class="typ">FileSystem<wbr/></span><span class="pun">.</span><span class="pln">truncate</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">outp</span><span class="pun">);
+</span><span class="typ">string </span><span class="pln">data </span><span class="pun">= </span><span class="str">"Hello, World!\n"</span><span class="pun">;
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">outp<wbr/></span><span class="pun">.</span><span class="pln">writeArray</span><span class="pun">(</span><span class="pln">data</span><span class="pun">));
+</span><span class="pln">outp<wbr/></span><span class="pun">.</span><span class="pln">close</span><span class="pun">();
+
+</span><span class="typ">InputStream </span><span class="pln">inp </span><span class="pun">= </span><span class="pln">fs<wbr/></span><span class="pun">.</span><span class="pln">openForInput</span><span class="pun">(</span><span class="pln">filename</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">inp</span><span class="pun">);
+</span><span class="typ">string </span><span class="pln">text </span><span class="pun">= <a href="../../../dlib/filesystem/stdfs/readText.html"></span><span class="pln">readText</span></a><span class="pun">(</span><span class="pln">inp</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">text </span><span class="pun">== </span><span class="pln">data</span><span class="pun">);
+</span><span class="pln">inp<wbr/></span><span class="pun">.</span><span class="pln">close</span><span class="pun">();
+
+</span><span class="typ">FileStat </span><span class="pln">s</span><span class="pun">;
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">fs<wbr/></span><span class="pun">.</span><span class="pln">stat</span><span class="pun">(</span><span class="pln">filename</span><span class="pun">, </span><span class="pln">s</span><span class="pun">));
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">s<wbr/></span><span class="pun">.</span><span class="pln">isFile</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">s<wbr/></span><span class="pun">.</span><span class="pln">sizeInBytes </span><span class="pun">== </span><span class="lit">14</span><span class="pun">);
+</span></code></pre>
+</section>
+
 			<footer>
 				<table class="license-info">
 					<tr>

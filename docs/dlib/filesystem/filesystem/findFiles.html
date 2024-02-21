@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8"/>
-		<title>findFiles - multiple declarations</title>
+		<title>Function findFiles</title>
 		<link rel="stylesheet" type="text/css" href="../../../styles/ddox.css"/>
 		<link rel="stylesheet" href="../../../prettify/prettify.css" type="text/css"/>
 		<script type="text/javascript" src="../../../scripts/jquery.js">/**/</script><script type="text/javascript" src="../../../scripts/ddox.js">/**/</script>
@@ -202,48 +202,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/filesystem.html">filesystem</a>
 					</div>
 			<ul class="tree-view">
-				<li class="tree-view collapsed">
-					<div class="package ">posix
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
-				<li class="tree-view collapsed">
-					<div class="package ">windows
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/delegaterange.html">delegaterange</a>
@@ -267,16 +225,6 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/stdfs.html">stdfs</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
 					</div>
 				</li>
 			</ul>
@@ -731,17 +679,23 @@ $('#symbolSearchPane').show();</script>
 			<ul class="tree-view">
 				<li>
 					<div class="module ">
-						<a href="../../../dlib/network/errno.html">errno</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
 						<a href="../../../dlib/network/socket.html">socket</a>
 					</div>
 				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/network/url.html">url</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">random
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/random/random.html">random</a>
 					</div>
 				</li>
 			</ul>
@@ -768,11 +722,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/text.html">text</a>
 					</div>
 			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/text/common.html">common</a>
-					</div>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/text/encodings.html">encodings</a>
@@ -810,21 +759,7 @@ $('#symbolSearchPane').show();</script>
 			</ul>
 		</nav>
 		<div id="main-contents">
-			<h1>findFiles - multiple declarations</h1>
-			<nav class="page-nav">
-				<ul>
-					<li>
-						<a href="#0">
-							Function <code>findFiles</code>
-						</a>
-					</li>
-					<li>
-						<a href="#1">
-							Function <code>findFiles</code>
-						</a>
-					</li>
-				</ul>
-			</nav><h2 id="0">Function findFiles</h2><p>Find files in the specified directory
+			<h1>Function findFiles</h1><p>Find files in the specified directory
 </p>
 			<div class="prototype">
 				<code class="lang-d">
@@ -844,14 +779,14 @@ $('#symbolSearchPane').show();</script>
 			</div>
 			<section></section>
 
-			<section><h3>Parameters</h3>
+			<section><h2>Parameters</h2>
 <table><col class="caption"><tr><th>Name</th><th>Description</th></tr>
 <tr><td id="rofs">rofs</td><td> filesystem to scan</td></tr>
 <tr><td id="baseDir">baseDir</td><td> path to the base directory (if empty, defaults to current working directory)</td></tr>
 <tr><td id="recursive">recursive</td><td> if true, the search will recurse into subdirectories</td></tr>
 </table>
 </section>
-<section><h3>Examples</h3>
+<section><h2>Examples</h2>
 <pre class="code"><code class="lang-d"><span class="typ">void </span><span class="pln">listImagesInDirectory</span><span class="pun">(<a href="../../../dlib/filesystem/filesystem/ReadOnlyFileSystem.html"></span><span class="typ">ReadOnlyFileSystem</span></a><span class="pln"> fs</span><span class="pun">, </span><span class="typ">string </span><span class="pln">baseDir </span><span class="pun">= </span><span class="str">""</span><span class="pun">)
 {
     </span><span class="kwd">foreach </span><span class="pun">(</span><span class="pln">entry</span><span class="pun">; </span><span class="pln">fs<wbr/></span><span class="pun">.</span><span class="pln">findFiles</span><span class="pun">(<a href="../../../dlib/filesystem/filesystem/findFiles.html#baseDir"></span><span class="pln">baseDir</span></a><span class="pun">, </span><span class="kwd">true</span><span class="pun">)
@@ -862,27 +797,7 @@ $('#symbolSearchPane').show();</script>
     }
 }</span></code></pre>
 </section>
-<h2 id="1">Function findFiles</h2><p></p>
-			<div class="prototype">
-				<code class="lang-d">
-					<div class="single-prototype">
-			<span class="typ">int</span> <span class="pln">findFiles</span>
-			<span class="pun">(</span>
-			<br/>
-			&nbsp;&nbsp;<a href="../../../dlib/filesystem/filesystem/ReadOnlyFileSystem.html"><span class="typ">ReadOnlyFileSystem</span></a> <span class="pln">rofs</span><span class="pun">,</span>
-			<br/>
-			&nbsp;&nbsp;<span class="typ">string</span> <span class="pln">baseDir</span><span class="pun">,</span>
-			<br/>
-			&nbsp;&nbsp;<span class="typ">bool</span> <span class="pln">recursive</span><span class="pun">,</span>
-			<br/>
-			&nbsp;&nbsp;<span class="typ">int</span> <span class="kwd">delegate</span><span class="pun">(</span><span class="kwd">ref</span> <a href="../../../dlib/filesystem/filesystem/DirEntry.html"><span class="typ">DirEntry</span></a><span class="pun">)</span> <span class="pln">dg</span>
-			<br/>
-			<span class="pun">)</span><span class="pun">;</span>
-					</div>
-				</code>
-			</div>
-			
-			
+
 			<footer>
 				<table class="license-info">
 					<tr>

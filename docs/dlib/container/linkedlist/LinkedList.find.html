@@ -202,48 +202,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/filesystem.html">filesystem</a>
 					</div>
 			<ul class="tree-view">
-				<li class="tree-view collapsed">
-					<div class="package ">posix
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
-				<li class="tree-view collapsed">
-					<div class="package ">windows
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/delegaterange.html">delegaterange</a>
@@ -267,16 +225,6 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/stdfs.html">stdfs</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
 					</div>
 				</li>
 			</ul>
@@ -731,17 +679,23 @@ $('#symbolSearchPane').show();</script>
 			<ul class="tree-view">
 				<li>
 					<div class="module ">
-						<a href="../../../dlib/network/errno.html">errno</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
 						<a href="../../../dlib/network/socket.html">socket</a>
 					</div>
 				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/network/url.html">url</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">random
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/random/random.html">random</a>
 					</div>
 				</li>
 			</ul>
@@ -768,11 +722,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/text.html">text</a>
 					</div>
 			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/text/common.html">common</a>
-					</div>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/text/encodings.html">encodings</a>
@@ -828,6 +777,26 @@ $('#symbolSearchPane').show();</script>
 			<section><h2>Returns</h2>
 <p>Found element or null if could not find.
 </p>
+</section>
+<section><h2>Example</h2>
+
+<pre class="code"><code class="lang-d"><a href="../../../dlib/container/linkedlist/LinkedList.html"><span class="typ">LinkedList</span></a><span class="pun">!</span><span class="typ">int </span><span class="pln">list</span><span class="pun">;
+</span><span class="kwd">scope</span><span class="pun">(</span><span class="pln">exit</span><span class="pun">) </span><span class="pln">list<wbr/></span><span class="pun">.</span><span class="pln">free</span><span class="pun">();
+
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">list<wbr/></span><span class="pun">.</span><span class="pln">find</span><span class="pun">(</span><span class="lit">42</span><span class="pun">) </span><span class="kwd">is null</span><span class="pun">);
+
+</span><span class="pln">list<wbr/></span><span class="pun">.</span><span class="pln">insertBack</span><span class="pun">(</span><span class="lit">13</span><span class="pun">);
+</span><span class="pln">list<wbr/></span><span class="pun">.</span><span class="pln">insertBack</span><span class="pun">(</span><span class="lit">42</span><span class="pun">);
+
+</span><span class="kwd">auto </span><span class="pln">first </span><span class="pun">= </span><span class="pln">list<wbr/></span><span class="pun">.</span><span class="pln">find</span><span class="pun">(</span><span class="lit">13</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">first </span><span class="pun">&amp;&amp; </span><span class="pln">first<wbr/></span><span class="pun">.</span><span class="pln">datum </span><span class="pun">== </span><span class="lit">13</span><span class="pun">);
+
+</span><span class="kwd">auto </span><span class="pln">second </span><span class="pun">= </span><span class="pln">list<wbr/></span><span class="pun">.</span><span class="pln">find</span><span class="pun">(</span><span class="lit">42</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">second </span><span class="pun">&amp;&amp; </span><span class="pln">second<wbr/></span><span class="pun">.</span><span class="pln">datum </span><span class="pun">== </span><span class="lit">42</span><span class="pun">);
+
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">list<wbr/></span><span class="pun">.</span><span class="pln">find</span><span class="pun">(</span><span class="lit">0</span><span class="pun">) </span><span class="kwd">is null</span><span class="pun">);
+
+</span></code></pre>
 </section>
 
 			<footer>

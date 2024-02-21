@@ -202,48 +202,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/filesystem.html">filesystem</a>
 					</div>
 			<ul class="tree-view">
-				<li class="tree-view collapsed">
-					<div class="package ">posix
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
-				<li class="tree-view collapsed">
-					<div class="package ">windows
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/delegaterange.html">delegaterange</a>
@@ -267,16 +225,6 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/stdfs.html">stdfs</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
 					</div>
 				</li>
 			</ul>
@@ -731,17 +679,23 @@ $('#symbolSearchPane').show();</script>
 			<ul class="tree-view">
 				<li>
 					<div class="module ">
-						<a href="../../../dlib/network/errno.html">errno</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
 						<a href="../../../dlib/network/socket.html">socket</a>
 					</div>
 				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/network/url.html">url</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">random
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/random/random.html">random</a>
 					</div>
 				</li>
 			</ul>
@@ -768,11 +722,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/text.html">text</a>
 					</div>
 			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/text/common.html">common</a>
-					</div>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/text/encodings.html">encodings</a>
@@ -950,24 +899,6 @@ $('#symbolSearchPane').show();</script>
 					<col class="caption"/>
 					<tr>
 						<th>Name</th><th>Description</th>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/math/vector/Vector.__unittest_L677_C5.html" class="public">
-								<code>__unittest_L677_C5</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/math/vector/Vector.__unittest_L709_C5.html" class="public">
-								<code>__unittest_L709_C5</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td></td>
 					</tr>
 					<tr>
 						<td>
@@ -1279,15 +1210,6 @@ $('#symbolSearchPane').show();</script>
 						<td>+Vector!(T,size)
 </td>
 					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/math/vector/Vector.valid.html" class="public">
-								<code>valid</code>
-							</a>
-							<span class="tableEntryAnnotation">(s)</span>
-						</td>
-						<td></td>
-					</tr>
 				</table>
 			</section>
 			<section><h2>Templates</h2>
@@ -1307,7 +1229,172 @@ $('#symbolSearchPane').show();</script>
 					</tr>
 				</table>
 			</section>
-			
+			<section><h2>Example</h2>
+
+<pre class="code"><code class="lang-d"><span class="pun">{
+    </span><span class="kwd">const </span><span class="pln">vec3 a </span><span class="pun">= </span><span class="pln">vec3</span><span class="pun">(</span><span class="lit">10.5f</span><span class="pun">, </span><span class="lit">20.0f</span><span class="pun">, </span><span class="lit">33.12345f</span><span class="pun">);
+    </span><span class="kwd">const </span><span class="pln">vec3 b </span><span class="pun">= -</span><span class="pln">a</span><span class="pun">;
+    </span><span class="kwd">const </span><span class="pln">vec3 c </span><span class="pun">= +</span><span class="pln">a </span><span class="pun">- </span><span class="pln">b</span><span class="pun">;
+    </span><span class="kwd">const </span><span class="pln">vec3 d </span><span class="pun">= </span><span class="pln">a </span><span class="pun">* </span><span class="pln">b </span><span class="pun">/ </span><span class="pln">c</span><span class="pun">;
+
+    </span><span class="kwd">assert</span><span class="pun">(<a href="../../../dlib/math/vector/isAlmostZero.html"></span><span class="pln">isAlmostZero</span></a><span class="pun">(</span><span class="pln">to</span><span class="pun">!</span><span class="pln">vec3</span><span class="pun">(</span><span class="pln">c<wbr/></span><span class="pun">.</span><span class="pln">toString</span><span class="pun">()) - </span><span class="pln">c</span><span class="pun">));
+
+    </span><span class="kwd">const </span><span class="pln">vec3 v </span><span class="pun">= </span><span class="pln">vec3</span><span class="pun">(</span><span class="lit">10</span><span class="pun">, </span><span class="lit">10</span><span class="pun">, </span><span class="lit">10</span><span class="pun">);
+    </span><span class="kwd">const </span><span class="pln">vec3 vRes </span><span class="pun">= (</span><span class="pln">v </span><span class="pun">/ </span><span class="lit">10</span><span class="pun">) * </span><span class="lit">2 </span><span class="pun">- </span><span class="lit">1 </span><span class="pun">+ </span><span class="lit">5</span><span class="pun">;
+    </span><span class="kwd">assert</span><span class="pun">(<a href="../../../dlib/math/vector/isAlmostZero.html"></span><span class="pln">isAlmostZero</span></a><span class="pun">(</span><span class="pln">vRes </span><span class="pun">- </span><span class="pln">vec3</span><span class="pun">(</span><span class="lit">6</span><span class="pun">, </span><span class="lit">6</span><span class="pun">, </span><span class="lit">6</span><span class="pun">)));
+    </span><span class="kwd">assert</span><span class="pun">(!</span><span class="pln">vRes<wbr/></span><span class="pun">.</span><span class="pln">isZero</span><span class="pun">);
+
+    <a href="../../../dlib/math/vector/ivec2.html"></span><span class="pln">ivec2</span></a><span class="pln"> ab </span><span class="pun">= <a href="../../../dlib/math/vector/ivec2.html"></span><span class="pln">ivec2</span></a><span class="pun">(</span><span class="lit">5</span><span class="pun">, </span><span class="lit">15</span><span class="pun">);
+    </span><span class="pln">ab </span><span class="pun">+= <a href="../../../dlib/math/vector/ivec2.html"></span><span class="pln">ivec2</span></a><span class="pun">(</span><span class="lit">20</span><span class="pun">, </span><span class="lit">30</span><span class="pun">);
+    </span><span class="pln">ab </span><span class="pun">*= </span><span class="lit">3</span><span class="pun">;
+
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">ab</span><span class="pun">[</span><span class="lit">0</span><span class="pun">] == </span><span class="lit">75 </span><span class="pun">&amp;&amp; </span><span class="pln">ab</span><span class="pun">[</span><span class="lit">1</span><span class="pun">] == </span><span class="lit">135</span><span class="pun">);
+
+    </span><span class="kwd">auto </span><span class="pln">len </span><span class="pun">= </span><span class="pln">c<wbr/></span><span class="pun">.</span><span class="pln">length</span><span class="pun">();
+    </span><span class="kwd">auto </span><span class="pln">lensqr </span><span class="pun">= </span><span class="pln">c<wbr/></span><span class="pun">.</span><span class="pln">lengthsqr</span><span class="pun">();
+    </span><span class="kwd">auto </span><span class="pln">dist </span><span class="pun">= <a href="../../../dlib/math/vector/distance.html"></span><span class="pln">distance</span></a><span class="pun">(</span><span class="pln">a</span><span class="pun">, </span><span class="pln">b</span><span class="pun">);
+
+    </span><span class="kwd">auto </span><span class="pln">xy </span><span class="pun">= </span><span class="pln">a</span><span class="pun">[</span><span class="lit">0</span><span class="pun">..</span><span class="lit">1</span><span class="pun">];
+    </span><span class="kwd">auto </span><span class="pln">n </span><span class="pun">= </span><span class="pln">a</span><span class="pun">[];
+
+    </span><span class="pln">vec3 v1 </span><span class="pun">= </span><span class="pln">vec3</span><span class="pun">(</span><span class="lit">2.0f</span><span class="pun">, </span><span class="lit">0.0f</span><span class="pun">, </span><span class="lit">1.0f</span><span class="pun">);
+    </span><span class="pln">ivec3 v2 </span><span class="pun">= </span><span class="pln">v1</span><span class="pun">;
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">ivec3</span><span class="pun">(</span><span class="pln">v1</span><span class="pun">) == </span><span class="pln">ivec3</span><span class="pun">(</span><span class="lit">2</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">));
+
+    </span><span class="pln">vec3 v3 </span><span class="pun">= [</span><span class="lit">0</span><span class="pun">, </span><span class="lit">2</span><span class="pun">, </span><span class="lit">3.5</span><span class="pun">];
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">v3 </span><span class="pun">== </span><span class="pln">vec3</span><span class="pun">(</span><span class="lit">0.0f</span><span class="pun">, </span><span class="lit">2.0f</span><span class="pun">, </span><span class="lit">3.5f</span><span class="pun">));
+
+    </span><span class="pln">ivec3 v4 </span><span class="pun">= [</span><span class="lit">7</span><span class="pun">, </span><span class="lit">8</span><span class="pun">, </span><span class="lit">3</span><span class="pun">];
+    </span><span class="pln">v4 </span><span class="pun">%= </span><span class="lit">2</span><span class="pun">;
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">v4 </span><span class="pun">== </span><span class="pln">ivec3</span><span class="pun">(</span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">));
+}
+
+{
+    <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pln"> a </span><span class="pun">= <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">1</span><span class="pun">, </span><span class="lit">2</span><span class="pun">, </span><span class="lit">3</span><span class="pun">);
+    <a href="../../../dlib/math/vector/Vector2f.html"></span><span class="typ">Vector2f</span></a><span class="pln"> b </span><span class="pun">= <a href="../../../dlib/math/vector/Vector2f.html"></span><span class="typ">Vector2f</span></a><span class="pun">(</span><span class="pln">a</span><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">b </span><span class="pun">== <a href="../../../dlib/math/vector/Vector2f.html"></span><span class="typ">Vector2f</span></a><span class="pun">(</span><span class="lit">1</span><span class="pun">, </span><span class="lit">2</span><span class="pun">));
+}
+
+{
+    <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pln"> a </span><span class="pun">= <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">([</span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">]);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">isNaN</span><span class="pun">(</span><span class="pln">a<wbr/></span><span class="pun">.</span><span class="pln">z</span><span class="pun">));
+}
+
+{
+    <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pln"> a </span><span class="pun">= <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">2</span><span class="pun">);
+    </span><span class="pln">a </span><span class="pun">+= </span><span class="lit">1</span><span class="pun">;
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">a </span><span class="pun">== <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">1</span><span class="pun">, </span><span class="lit">2</span><span class="pun">, </span><span class="lit">3</span><span class="pun">));
+    </span><span class="pln">a </span><span class="pun">*= </span><span class="lit">2</span><span class="pun">;
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">a </span><span class="pun">== <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">2</span><span class="pun">, </span><span class="lit">4</span><span class="pun">, </span><span class="lit">6</span><span class="pun">));
+    </span><span class="pln">a </span><span class="pun">-= </span><span class="lit">1</span><span class="pun">;
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">a </span><span class="pun">== <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">1</span><span class="pun">, </span><span class="lit">3</span><span class="pun">, </span><span class="lit">5</span><span class="pun">));
+    </span><span class="pln">a </span><span class="pun">/= </span><span class="lit">3</span><span class="pun">;
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">a<wbr/></span><span class="pun">.</span><span class="pln">y </span><span class="pun">== </span><span class="lit">1</span><span class="pun">);
+}
+
+{
+    <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pln"> a</span><span class="pun">;
+    </span><span class="pln">a</span><span class="pun">[</span><span class="lit">1</span><span class="pun">] = </span><span class="lit">3</span><span class="pun">;
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">a<wbr/></span><span class="pun">.</span><span class="pln">y </span><span class="pun">== </span><span class="lit">3</span><span class="pun">);
+
+    </span><span class="pln">a</span><span class="pun">[</span><span class="lit">0</span><span class="pun">..</span><span class="lit">3</span><span class="pun">] = </span><span class="lit">1</span><span class="pun">;
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">a </span><span class="pun">== <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">1</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">1</span><span class="pun">));
+
+    </span><span class="pln">a</span><span class="pun">[] = </span><span class="lit">0</span><span class="pun">;
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">a </span><span class="pun">== <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">));
+}
+
+{
+    <a href="../../../dlib/math/vector/Vector3i.html"></span><span class="typ">Vector3i</span></a><span class="pln"> a </span><span class="pun">= <a href="../../../dlib/math/vector/Vector3i.html"></span><span class="typ">Vector3i</span></a><span class="pun">(</span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">3</span><span class="pun">);
+    </span><span class="pln">a </span><span class="pun">= </span><span class="pln">a<wbr/></span><span class="pun">.</span><span class="pln">normalized</span><span class="pun">;
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">a </span><span class="pun">== <a href="../../../dlib/math/vector/Vector3i.html"></span><span class="typ">Vector3i</span></a><span class="pun">(</span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">));
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">a<wbr/></span><span class="pun">.</span><span class="pln">length </span><span class="pun">== </span><span class="lit">1</span><span class="pun">);
+}
+
+{
+    <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pln"> a </span><span class="pun">= <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">a<wbr/></span><span class="pun">.</span><span class="pln">isZero</span><span class="pun">);
+}
+
+{
+    <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pln"> a </span><span class="pun">= <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">2</span><span class="pun">, -</span><span class="lit">3</span><span class="pun">, </span><span class="lit">0</span><span class="pun">);
+    </span><span class="pln">a<wbr/></span><span class="pun">.</span><span class="pln">clamp</span><span class="pun">(-</span><span class="lit">1</span><span class="pun">, </span><span class="lit">1</span><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">a </span><span class="pun">== <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">1</span><span class="pun">, -</span><span class="lit">1</span><span class="pun">, </span><span class="lit">0</span><span class="pun">));
+}
+
+{
+    <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pln"> a </span><span class="pun">= <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">2</span><span class="pun">, </span><span class="lit">5</span><span class="pun">, </span><span class="lit">7</span><span class="pun">);
+    <a href="../../../dlib/math/vector/Vector4f.html"></span><span class="typ">Vector4f</span></a><span class="pln"> b </span><span class="pun">= <a href="../../../dlib/math/vector/Vector4f.html"></span><span class="typ">Vector4f</span></a><span class="pun">(</span><span class="pln">a</span><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">b </span><span class="pun">== <a href="../../../dlib/math/vector/Vector4f.html"></span><span class="typ">Vector4f</span></a><span class="pun">(</span><span class="lit">2</span><span class="pun">, </span><span class="lit">5</span><span class="pun">, </span><span class="lit">7</span><span class="pun">, </span><span class="typ">float<wbr/></span><span class="pun">.</span><span class="pln">nan</span><span class="pun">));
+}
+
+{
+    <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pln"> a </span><span class="pun">= <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">([</span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">]);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">a </span><span class="pun">== <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="typ">float<wbr/></span><span class="pun">.</span><span class="pln">nan</span><span class="pun">));
+
+    <a href="../../../dlib/math/vector/Vector4f.html"></span><span class="typ">Vector4f</span></a><span class="pln"> b </span><span class="pun">= </span><span class="pln">a<wbr/></span><span class="pun">.</span><span class="pln">xyy</span><span class="pun">;
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">b </span><span class="pun">== <a href="../../../dlib/math/vector/Vector4f.html"></span><span class="typ">Vector4f</span></a><span class="pun">(</span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="typ">float<wbr/></span><span class="pun">.</span><span class="pln">nan</span><span class="pun">));
+}
+
+{
+    <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pln"> a </span><span class="pun">= <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">([</span><span class="lit">0</span><span class="pun">, </span><span class="lit">1</span><span class="pun">]);
+    </span><span class="pln">a<wbr/></span><span class="pun">.</span><span class="pln">xz </span><span class="pun">= <a href="../../../dlib/math/vector/Vector2f.html"></span><span class="typ">Vector2f</span></a><span class="pun">([</span><span class="lit">6</span><span class="pun">, </span><span class="lit">1</span><span class="pun">]);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">a </span><span class="pun">== <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">([</span><span class="lit">6</span><span class="pun">, </span><span class="lit">1</span><span class="pun">, </span><span class="lit">1</span><span class="pun">]));
+
+    </span><span class="pln">a<wbr/></span><span class="pun">.</span><span class="pln">zxy </span><span class="pun">= <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">([</span><span class="lit">1</span><span class="pun">, </span><span class="lit">2</span><span class="pun">, </span><span class="lit">3</span><span class="pun">]);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">a </span><span class="pun">== <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">([</span><span class="lit">2</span><span class="pun">, </span><span class="lit">3</span><span class="pun">, </span><span class="lit">1</span><span class="pun">]));
+}
+
+{
+    <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pln"> a </span><span class="pun">= <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">1</span><span class="pun">, </span><span class="lit">2</span><span class="pun">, </span><span class="lit">3</span><span class="pun">);
+    </span><span class="pln">a </span><span class="pun">= </span><span class="pln">a </span><span class="pun">+ </span><span class="lit">1</span><span class="pun">;
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">a </span><span class="pun">== <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">2</span><span class="pun">, </span><span class="lit">3</span><span class="pun">, </span><span class="lit">4</span><span class="pun">));
+    </span><span class="pln">a </span><span class="pun">= </span><span class="pln">a </span><span class="pun">* </span><span class="lit">2</span><span class="pun">;
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">a </span><span class="pun">== <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">4</span><span class="pun">, </span><span class="lit">6</span><span class="pun">, </span><span class="lit">8</span><span class="pun">));
+    </span><span class="pln">a </span><span class="pun">= </span><span class="pln">a </span><span class="pun">- </span><span class="lit">2</span><span class="pun">;
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">a </span><span class="pun">== <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">2</span><span class="pun">, </span><span class="lit">4</span><span class="pun">, </span><span class="lit">6</span><span class="pun">));
+    </span><span class="pln">a </span><span class="pun">= </span><span class="pln">a </span><span class="pun">/ </span><span class="lit">2</span><span class="pun">;
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">a </span><span class="pun">== <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">1</span><span class="pun">, </span><span class="lit">2</span><span class="pun">, </span><span class="lit">3</span><span class="pun">));
+
+    <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pln"> b </span><span class="pun">= <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">3</span><span class="pun">, </span><span class="lit">2</span><span class="pun">, </span><span class="lit">1</span><span class="pun">);
+    </span><span class="pln">b </span><span class="pun">+= </span><span class="pln">a</span><span class="pun">;
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">b </span><span class="pun">== <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">4</span><span class="pun">, </span><span class="lit">4</span><span class="pun">, </span><span class="lit">4</span><span class="pun">));
+    </span><span class="pln">b </span><span class="pun">*= </span><span class="pln">b</span><span class="pun">;
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">b </span><span class="pun">== <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">16</span><span class="pun">, </span><span class="lit">16</span><span class="pun">, </span><span class="lit">16</span><span class="pun">));
+    </span><span class="pln">b </span><span class="pun">/= <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">8</span><span class="pun">, </span><span class="lit">4</span><span class="pun">, </span><span class="lit">2</span><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">b </span><span class="pun">== <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">2</span><span class="pun">, </span><span class="lit">4</span><span class="pun">, </span><span class="lit">8</span><span class="pun">));
+    </span><span class="pln">b </span><span class="pun">-= </span><span class="pln">a</span><span class="pun">;
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">b </span><span class="pun">== <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">1</span><span class="pun">, </span><span class="lit">2</span><span class="pun">, </span><span class="lit">5</span><span class="pun">));
+}
+
+{
+    <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pln"> v </span><span class="pun">= <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">);
+    </span><span class="pln">v</span><span class="pun">[</span><span class="lit">0</span><span class="pun">] = </span><span class="lit">5</span><span class="pun">;
+    </span><span class="pln">v</span><span class="pun">[</span><span class="lit">1</span><span class="pun">] = </span><span class="lit">2</span><span class="pun">;
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">v </span><span class="pun">== <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">5</span><span class="pun">, </span><span class="lit">2</span><span class="pun">, </span><span class="lit">0</span><span class="pun">));
+    </span><span class="pln">v</span><span class="pun">[</span><span class="lit">1</span><span class="pun">..</span><span class="lit">3</span><span class="pun">] = </span><span class="lit">12</span><span class="pun">;
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">v </span><span class="pun">== <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">5</span><span class="pun">, </span><span class="lit">12</span><span class="pun">, </span><span class="lit">12</span><span class="pun">));
+    </span><span class="pln">v</span><span class="pun">[] = </span><span class="lit">0</span><span class="pun">;
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">v </span><span class="pun">== <a href="../../../dlib/math/vector/Vector3f.html"></span><span class="typ">Vector3f</span></a><span class="pun">(</span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">, </span><span class="lit">0</span><span class="pun">));
+}
+
+{
+    <a href="../../../dlib/math/vector/Vector4f.html"></span><span class="typ">Vector4f</span></a><span class="pln"> a </span><span class="pun">= <a href="../../../dlib/math/vector/Vector4f.html"></span><span class="typ">Vector4f</span></a><span class="pun">(</span><span class="lit">2</span><span class="pun">, </span><span class="lit">4</span><span class="pun">, </span><span class="lit">6</span><span class="pun">, </span><span class="lit">8</span><span class="pun">);
+    <a href="../../../dlib/math/vector/Vector4f.html"></span><span class="typ">Vector4f</span></a><span class="pln"> b </span><span class="pun">= </span><span class="pln">a<wbr/></span><span class="pun">.</span><span class="pln">wxyz</span><span class="pun">;
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">b </span><span class="pun">== <a href="../../../dlib/math/vector/Vector4f.html"></span><span class="typ">Vector4f</span></a><span class="pun">(</span><span class="lit">8</span><span class="pun">, </span><span class="lit">2</span><span class="pun">, </span><span class="lit">4</span><span class="pun">, </span><span class="lit">6</span><span class="pun">));
+    </span><span class="typ">float </span><span class="pln">d </span><span class="pun">= <a href="../../../dlib/math/vector/dot.html"></span><span class="pln">dot</span></a><span class="pun">(</span><span class="pln">a</span><span class="pun">, </span><span class="pln">b</span><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">d </span><span class="pun">== </span><span class="lit">96.0f</span><span class="pun">);
+}
+
+{
+    <a href="../../../dlib/math/vector/Vector2f.html"></span><span class="typ">Vector2f</span></a><span class="pln"> a </span><span class="pun">= <a href="../../../dlib/math/vector/Vector2f.html"></span><span class="typ">Vector2f</span></a><span class="pun">(</span><span class="lit">1</span><span class="pun">, </span><span class="lit">2</span><span class="pun">);
+    <a href="../../../dlib/math/vector/Vector2f.html"></span><span class="typ">Vector2f</span></a><span class="pln"> b </span><span class="pun">= <a href="../../../dlib/math/vector/Vector2f.html"></span><span class="typ">Vector2f</span></a><span class="pun">(</span><span class="lit">2</span><span class="pun">, </span><span class="lit">1</span><span class="pun">);
+    </span><span class="typ">float </span><span class="pln">d </span><span class="pun">= <a href="../../../dlib/math/vector/dot.html"></span><span class="pln">dot</span></a><span class="pun">(</span><span class="pln">a</span><span class="pun">, </span><span class="pln">b</span><span class="pun">);
+    </span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">d </span><span class="pun">== </span><span class="lit">4.0f</span><span class="pun">);
+}
+</span></code></pre>
+</section>
+
 			<footer>
 				<table class="license-info">
 					<tr>

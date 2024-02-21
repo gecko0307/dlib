@@ -202,48 +202,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/filesystem.html">filesystem</a>
 					</div>
 			<ul class="tree-view">
-				<li class="tree-view collapsed">
-					<div class="package ">posix
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
-				<li class="tree-view collapsed">
-					<div class="package ">windows
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/delegaterange.html">delegaterange</a>
@@ -267,16 +225,6 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/stdfs.html">stdfs</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
 					</div>
 				</li>
 			</ul>
@@ -731,17 +679,23 @@ $('#symbolSearchPane').show();</script>
 			<ul class="tree-view">
 				<li>
 					<div class="module ">
-						<a href="../../../dlib/network/errno.html">errno</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
 						<a href="../../../dlib/network/socket.html">socket</a>
 					</div>
 				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/network/url.html">url</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">random
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/random/random.html">random</a>
 					</div>
 				</li>
 			</ul>
@@ -768,11 +722,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/text.html">text</a>
 					</div>
 			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/text/common.html">common</a>
-					</div>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/text/encodings.html">encodings</a>
@@ -845,9 +794,9 @@ $('#symbolSearchPane').show();</script>
 							<a href="../../../dlib/text/str/String.this.html" class="public">
 								<code>this</code>
 							</a>
-							<span class="tableEntryAnnotation">(cStr)</span>
+							<span class="tableEntryAnnotation">(wStr)</span>
 						</td>
-						<td>Construct from zero-terminated C string (ASCII or UTF8)
+						<td>Construct from zero-terminated UTF-16 LE string
 </td>
 					</tr>
 					<tr>
@@ -855,9 +804,9 @@ $('#symbolSearchPane').show();</script>
 							<a href="../../../dlib/text/str/String.this.html" class="public">
 								<code>this</code>
 							</a>
-							<span class="tableEntryAnnotation">(wStr)</span>
+							<span class="tableEntryAnnotation">(cStr)</span>
 						</td>
-						<td>Construct from zero-terminated UTF-16 LE string
+						<td>Construct from zero-terminated C string (ASCII or UTF8)
 </td>
 					</tr>
 					<tr>
@@ -887,38 +836,6 @@ $('#symbolSearchPane').show();</script>
 					</tr>
 				</table>
 			</section>
-			<section><h2>Properties</h2>
-				<table>
-					<col class="caption"/>
-					<tr>
-						<th>Name</th><th>Type</th><th>Description</th>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/str/String.isDynamic.html" class="public property"><code>isDynamic</code></a><span class="tableEntryAnnotation">[get]</span>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">bool</span></code></td><td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/str/String.length.html" class="public property"><code>length</code></a><span class="tableEntryAnnotation">[get]</span>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">ulong</span></code></td><td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/str/String.ptr.html" class="public property"><code>ptr</code></a><span class="tableEntryAnnotation">[get]</span>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><span class="kwd">const</span><span class="pun">(</span><span class="typ">char</span><span class="pun">)</span><span class="pun">*</span></code></td><td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/str/String.toString.html" class="public property"><code>toString</code></a><span class="tableEntryAnnotation">[get]</span>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><span class="typ">string</span></code></td><td></td>
-					</tr>
-				</table>
-			</section>
 			<section><h2>Methods</h2>
 				<table>
 					<col class="caption"/>
@@ -936,72 +853,32 @@ $('#symbolSearchPane').show();</script>
  i.e., foreach(dchar c; str.decode)
 </td>
 					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/str/String.free.html" class="public">
-								<code>free</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/str/String.opOpAssign.html" class="public">
-								<code>opOpAssign</code>
-							</a>
-							<span class="tableEntryAnnotation">(s)</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/str/String.opOpAssign.html" class="public">
-								<code>opOpAssign</code>
-							</a>
-							<span class="tableEntryAnnotation">(c)</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/str/String.opOpAssign.html" class="public">
-								<code>opOpAssign</code>
-							</a>
-							<span class="tableEntryAnnotation">(s)</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/str/String.reserve.html" class="public">
-								<code>reserve</code>
-							</a>
-							<span class="tableEntryAnnotation">(amount)</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/str/String.addZero.html" class="private">
-								<code>addZero</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/text/str/String.removeZero.html" class="private">
-								<code>removeZero</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td></td>
-					</tr>
 				</table>
 			</section>
-			
+			<section><h2>Example</h2>
+
+<pre class="code"><code class="lang-d"><span class="typ">String </span><span class="pln">s </span><span class="pun">= </span><span class="str">"hello"</span><span class="pun">;
+</span><span class="pln">s </span><span class="pun">~= </span><span class="str">", world"</span><span class="pun">;
+</span><span class="pln">s </span><span class="pun">~= </span><span class="str">'!'</span><span class="pun">;
+</span><span class="kwd">assert</span><span class="pun">(!</span><span class="pln">s<wbr/></span><span class="pun">.</span><span class="pln">isDynamic</span><span class="pun">);
+</span><span class="typ">string </span><span class="pln">dStr </span><span class="pun">= </span><span class="pln">s</span><span class="pun">;
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">dStr </span><span class="pun">== </span><span class="str">"hello, world!"</span><span class="pun">);
+</span><span class="pln">s<wbr/></span><span class="pun">.</span><span class="pln">free</span><span class="pun">();
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">s<wbr/></span><span class="pun">.</span><span class="pln">length </span><span class="pun">== </span><span class="lit">0</span><span class="pun">);
+
+</span><span class="kwd">const</span><span class="pun">(</span><span class="typ">char</span><span class="pun">)* </span><span class="pln">cStr </span><span class="pun">= </span><span class="str">"Hello!"</span><span class="pun">;
+</span><span class="typ">String </span><span class="pln">s2 </span><span class="pun">= </span><span class="typ">String</span><span class="pun">(</span><span class="pln">cStr</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">s2<wbr/></span><span class="pun">.</span><span class="pln">toString </span><span class="pun">== </span><span class="str">"Hello!"</span><span class="pun">);
+
+</span><span class="kwd">import </span><span class="pln">std<wbr/></span><span class="pun">.</span><span class="pln">algorithm<wbr/></span><span class="pun">.</span><span class="pln">comparison</span><span class="pun">: </span><span class="pln">equal</span><span class="pun">;
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">equal</span><span class="pun">(</span><span class="pln">s2<wbr/></span><span class="pun">.</span><span class="pln">decode</span><span class="pun">, [</span><span class="str">'H'</span><span class="pun">, </span><span class="str">'e'</span><span class="pun">, </span><span class="str">'l'</span><span class="pun">, </span><span class="str">'l'</span><span class="pun">, </span><span class="str">'o'</span><span class="pun">, </span><span class="str">'!'</span><span class="pun">]));
+
+</span><span class="kwd">auto </span><span class="pln">istrm </span><span class="pun">= </span><span class="kwd">new </span><span class="typ">ArrayStream</span><span class="pun">([</span><span class="lit">104</span><span class="pun">, </span><span class="lit">101</span><span class="pun">, </span><span class="lit">108</span><span class="pun">, </span><span class="lit">108</span><span class="pun">, </span><span class="lit">111</span><span class="pun">]);
+</span><span class="typ">String </span><span class="pln">s3 </span><span class="pun">= </span><span class="typ">String</span><span class="pun">(</span><span class="pln">istrm</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">s3<wbr/></span><span class="pun">.</span><span class="pln">toString </span><span class="pun">== </span><span class="str">"hello"</span><span class="pun">);
+</span></code></pre>
+</section>
+
 			<footer>
 				<table class="license-info">
 					<tr>

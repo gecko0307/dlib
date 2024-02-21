@@ -202,48 +202,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/filesystem.html">filesystem</a>
 					</div>
 			<ul class="tree-view">
-				<li class="tree-view collapsed">
-					<div class="package ">posix
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/posix/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
-				<li class="tree-view collapsed">
-					<div class="package ">windows
-					</div>
-			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/common.html">common</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/directory.html">directory</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/windows/file.html">file</a>
-					</div>
-				</li>
-			</ul>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/delegaterange.html">delegaterange</a>
@@ -267,16 +225,6 @@ $('#symbolSearchPane').show();</script>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/filesystem/stdfs.html">stdfs</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdposixdir.html">stdposixdir</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/filesystem/stdwindowsdir.html">stdwindowsdir</a>
 					</div>
 				</li>
 			</ul>
@@ -731,17 +679,23 @@ $('#symbolSearchPane').show();</script>
 			<ul class="tree-view">
 				<li>
 					<div class="module ">
-						<a href="../../../dlib/network/errno.html">errno</a>
-					</div>
-				</li>
-				<li>
-					<div class="module ">
 						<a href="../../../dlib/network/socket.html">socket</a>
 					</div>
 				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/network/url.html">url</a>
+					</div>
+				</li>
+			</ul>
+				</li>
+				<li class="tree-view collapsed">
+					<div class="package ">random
+					</div>
+			<ul class="tree-view">
+				<li>
+					<div class="module ">
+						<a href="../../../dlib/random/random.html">random</a>
 					</div>
 				</li>
 			</ul>
@@ -768,11 +722,6 @@ $('#symbolSearchPane').show();</script>
 						<a href="../../../dlib/text.html">text</a>
 					</div>
 			<ul class="tree-view">
-				<li>
-					<div class="module ">
-						<a href="../../../dlib/text/common.html">common</a>
-					</div>
-				</li>
 				<li>
 					<div class="module ">
 						<a href="../../../dlib/text/encodings.html">encodings</a>
@@ -821,203 +770,11 @@ $('#symbolSearchPane').show();</script>
 				</code>
 			</div>
 			
-			<section><h2>Constructors</h2>
-				<table>
-					<col class="caption"/>
-					<tr>
-						<th>Name</th><th>Description</th>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/geometry/trimesh/TriMesh.this.html" class="public">
-								<code>this</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td></td>
-					</tr>
-				</table>
-			</section>
-			<section><h2>Fields</h2>
-				<table>
-					<col class="caption"/>
-					<tr>
-						<th>Name</th><th>Type</th><th>Description</th>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/geometry/trimesh/TriMesh.facegroupsArray.html" class="public"><code>facegroupsArray</code></a>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/container/array/Array.html"><span class="typ">Array</span></a>!(dlib.geometry.trimesh.FaceGroup,32L)</code></td><td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/geometry/trimesh/TriMesh.normalsArray.html" class="public"><code>normalsArray</code></a>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/container/array/Array.html"><span class="typ">Array</span></a>!(dlib.math.vector.Vector!(float,3).Vector,32L)</code></td><td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/geometry/trimesh/TriMesh.tangentsArray.html" class="public"><code>tangentsArray</code></a>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/container/array/Array.html"><span class="typ">Array</span></a>!(dlib.math.vector.Vector!(float,3).Vector,32L)</code></td><td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/geometry/trimesh/TriMesh.texcoordsArray.html" class="public"><code>texcoordsArray</code></a>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/container/array/Array.html"><span class="typ">Array</span></a>!(dlib.math.vector.Vector!(float,2).Vector,32L)</code></td><td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/geometry/trimesh/TriMesh.verticesArray.html" class="public"><code>verticesArray</code></a>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/container/array/Array.html"><span class="typ">Array</span></a>!(dlib.math.vector.Vector!(float,3).Vector,32L)</code></td><td></td>
-					</tr>
-				</table>
-			</section>
-			<section><h2>Properties</h2>
-				<table>
-					<col class="caption"/>
-					<tr>
-						<th>Name</th><th>Type</th><th>Description</th>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/geometry/trimesh/TriMesh.facegroups.html" class="public property"><code>facegroups</code></a><span class="tableEntryAnnotation">[get]</span>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/geometry/trimesh/FaceGroup.html"><span class="typ">FaceGroup</span></a><span class="pun">[]</span></code></td><td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/geometry/trimesh/TriMesh.normals.html" class="public property"><code>normals</code></a><span class="tableEntryAnnotation">[get]</span>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/math/vector/Vector.html"><span class="typ">Vector</span></a>!(float,3)<span class="pun">[]</span></code></td><td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/geometry/trimesh/TriMesh.tangents.html" class="public property"><code>tangents</code></a><span class="tableEntryAnnotation">[get]</span>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/math/vector/Vector.html"><span class="typ">Vector</span></a>!(float,3)<span class="pun">[]</span></code></td><td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/geometry/trimesh/TriMesh.texcoords.html" class="public property"><code>texcoords</code></a><span class="tableEntryAnnotation">[get]</span>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/math/vector/Vector.html"><span class="typ">Vector</span></a>!(float,2)<span class="pun">[]</span></code></td><td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/geometry/trimesh/TriMesh.vertices.html" class="public property"><code>vertices</code></a><span class="tableEntryAnnotation">[get]</span>
-						</td>
-						<td class="typecol"><code class="prettyprint lang-d"><a href="../../../dlib/math/vector/Vector.html"><span class="typ">Vector</span></a>!(float,3)<span class="pun">[]</span></code></td><td></td>
-					</tr>
-				</table>
-			</section>
 			<section><h2>Methods</h2>
 				<table>
 					<col class="caption"/>
 					<tr>
 						<th>Name</th><th>Description</th>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/geometry/trimesh/TriMesh.addFacegroup.html" class="public">
-								<code>addFacegroup</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/geometry/trimesh/TriMesh.addNormal.html" class="public">
-								<code>addNormal</code>
-							</a>
-							<span class="tableEntryAnnotation">(n)</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/geometry/trimesh/TriMesh.addNormals.html" class="public">
-								<code>addNormals</code>
-							</a>
-							<span class="tableEntryAnnotation">(norms)</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/geometry/trimesh/TriMesh.addTangent.html" class="public">
-								<code>addTangent</code>
-							</a>
-							<span class="tableEntryAnnotation">(t)</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/geometry/trimesh/TriMesh.addTangents.html" class="public">
-								<code>addTangents</code>
-							</a>
-							<span class="tableEntryAnnotation">(tans)</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/geometry/trimesh/TriMesh.addTexcoord.html" class="public">
-								<code>addTexcoord</code>
-							</a>
-							<span class="tableEntryAnnotation">(t)</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/geometry/trimesh/TriMesh.addTexcoords.html" class="public">
-								<code>addTexcoords</code>
-							</a>
-							<span class="tableEntryAnnotation">(texs)</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/geometry/trimesh/TriMesh.addVertex.html" class="public">
-								<code>addVertex</code>
-							</a>
-							<span class="tableEntryAnnotation">(v)</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/geometry/trimesh/TriMesh.addVertices.html" class="public">
-								<code>addVertices</code>
-							</a>
-							<span class="tableEntryAnnotation">(verts)</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/geometry/trimesh/TriMesh.genTangents.html" class="public">
-								<code>genTangents</code>
-							</a>
-							<span class="tableEntryAnnotation">()</span>
-						</td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/geometry/trimesh/TriMesh.getTriangle.html" class="public">
-								<code>getTriangle</code>
-							</a>
-							<span class="tableEntryAnnotation">(facegroupIndex, triIndex)</span>
-						</td>
-						<td></td>
 					</tr>
 					<tr>
 						<td>
@@ -1028,22 +785,6 @@ $('#symbolSearchPane').show();</script>
 						</td>
 						<td>Read-only triangle aggregate
 </td>
-					</tr>
-				</table>
-			</section>
-			<section><h2>Aliases</h2>
-				<table>
-					<col class="caption"/>
-					<tr>
-						<th>Name</th><th>Description</th>
-					</tr>
-					<tr>
-						<td>
-							<a href="../../../dlib/geometry/trimesh/TriMesh.__xdtor.html" class="public">
-								<code>__xdtor</code>
-							</a>
-						</td>
-						<td></td>
 					</tr>
 				</table>
 			</section>
