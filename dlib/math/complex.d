@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2023 Timur Gafarov
+Copyright (c) 2013-2024 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -228,17 +228,6 @@ Complex!T exp(T)(Complex!T s)
     return Complex!T(
         std.math.exp(s.re) * cos(s.im),
         std.math.exp(s.re) * sin(s.im));
-}
-
-/**
- * Riemann zeta function:
- * ζ(s) = 1/1^s + 1/2^s + 1/3^s + ...
- */
-Complex!T zeta(T)(Complex!T s)
-{
-    return Complex!T(1.0) +
-        (s + Complex!T(3.0)) / (s - Complex!T(1.0)) *
-        Complex!T(1.0) / pow(Complex!T(2.0), s + Complex!T(1.0));
 }
 
 /*
