@@ -25,7 +25,7 @@ Progress
 --------
 * [ ] `dcore.linker` - cross-platform dynamic library linker
 * [ ] `dcore.container` - `betterC` containers and data structures
-* [ ] `dcore.math` - basic C math functions
+* [ ] `dcore.math` - basic math functions
 * [x] `dcore.memory` - memory allocator for D objects (classic `New`/`Delete`)
 * [ ] `dcore.stdio` - standard C I/O for platforms that support it
 * [ ] `dcore.stdlib` - `malloc/free` for platforms that support it
