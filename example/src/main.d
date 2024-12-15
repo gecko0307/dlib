@@ -79,7 +79,7 @@ void testTrigPrecision()
         maxErrorSin = std.algorithm.max(maxErrorSin, errorSin);
         maxErrorCos = std.algorithm.max(maxErrorCos, errorCos);
 
-        writeln(format("x = %.2f PI | sin: %.6f (std) vs %.6f (my) | cos: %.6f (std) vs %.6f (my)",
+        writeln(format("x = %.2f PI | sin: %.6f (std) vs %.6f (custom) | cos: %.6f (std) vs %.6f (custom)",
             x / std.math.PI, standardSin, mySinValue, standardCos, myCosValue));
     }
 

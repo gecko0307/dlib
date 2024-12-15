@@ -115,22 +115,24 @@ version(UsePortableTrig)
     real sin(real x) pure nothrow @nogc
     {
         pragma(inline, true);
+        
         real xfmod = x - floor(x / TWOPI) * TWOPI;
         x = (0 > xfmod)? 0 : xfmod;
+        
         real rsign = 1.0;
-        if (x < 0)
+        real adjusted_x = x;
+        if (x < 0) 
         {
-            x = -x;
+            adjusted_x = -x;
             rsign = -1.0;
         }
-        if (x > PI)
+        if (adjusted_x > PI) 
         {
-            x = min(PI, TWOPI - x);
+            adjusted_x = min(PI, TWOPI - adjusted_x);
             rsign = -1.0;
         }
         
-        x = (x < 0) ? 0 : (x > PI) ? PI : x;
-        real j = x * ((sinfTable.length - 2) * INVPI);
+        real j = adjusted_x * ((sinfTable.length - 2) * INVPI);
         int zero = cast(int)j;
         real nx = j - zero;
         return ((1 - nx) * sinfTable[zero][0] + nx * sinfTable[zero + 1][0]) * rsign;
@@ -139,19 +141,21 @@ version(UsePortableTrig)
     real cos(real x) pure nothrow @nogc
     {
         pragma(inline, true);
+        
         real xfmod = x - floor(x / TWOPI) * TWOPI;
         x = (0 > xfmod)? 0 : xfmod;
-        if (x < 0)
+        
+        real adjusted_x = x;
+        if (x < 0) 
         {
-            x = -x;
+            adjusted_x = -x;
         }
-        if (x > PI)
+        if (adjusted_x > PI) 
         {
-            x = min(PI, TWOPI - x);
+            adjusted_x = min(PI, TWOPI - adjusted_x);
         }
         
-        x = (x < 0) ? 0 : (x > PI) ? PI : x;
-        real j = x * ((cosfTable.length - 2) * INVPI);
+        real j = adjusted_x * ((cosfTable.length - 2) * INVPI);
         int zero = cast(int)j;
         real nx = j - zero;
         return (1 - nx) * cosfTable[zero][0] + nx * cosfTable[zero + 1][0];
