@@ -15,7 +15,7 @@
     "importPaths": ["src"],
     "sourcePaths": ["src"],
     "mainSourceFile": "src/main.d",
-    "dflags": ["-betterC"],
+
     "configurations": [
         {
             "name": "application",

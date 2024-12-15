@@ -28,17 +28,129 @@ DEALINGS IN THE SOFTWARE.
 
 module dcore.math.base;
 
+version = UsePortableTrig;
+
+enum double PI = 3.14159265358979323846;
+enum double HALFPI = 1.5707964;
+enum double QUARTPI = 0.7853982;
+enum double INVPI = 0.31830988618;
+enum double INVTWOPI = 0.1591549;
+enum double TWOPI = 6.28318530718;
+enum double THREEHALFPI = 4.7123889;
+
+bool isNaN(real x) pure nothrow @nogc
+{
+    pragma(inline, true);
+    return x != x;
+}
+
+int isInfinity(real x) pure nothrow @nogc
+{
+    pragma(inline, true);
+    return !isNaN(x) && isNaN(x - x);
+}
+
+T max(T)(T a, T b) pure nothrow @nogc
+{
+    pragma(inline, true);
+    return (a > b)? a : b;
+}
+
+T min(T)(T a, T b) pure nothrow @nogc
+{
+    pragma(inline, true);
+    return (a < b)? a : b;
+}
+
+T abs(T)(T v) pure nothrow @nogc
+{
+    pragma(inline, true);
+    return (v > 0.0)? v : -v;
+}
+
+T clamp(T)(T v, T mi, T ma) pure nothrow @nogc
+{
+    pragma(inline, true);
+    if (v < mi) return mi;
+    else if (v > ma) return ma;
+    else return v;
+}
+
+bool isClose(real a, real b, real delta) pure nothrow @nogc
+{
+    pragma(inline, true);
+    return abs(a - b) < delta;
+}
+
+real floor(real x) pure nothrow @nogc
+{
+    long intPart = cast(long)x;
+    if (x < 0 && x != cast(real)intPart)
+        return intPart - 1;
+    return intPart;
+}
+
+real fmod(real x, real y) pure nothrow @nogc
+{
+    auto m = floor(x / y);
+    return max(0, x - y * m);
+}
+
 version(FreeStanding)
 {
-    version = UsePortableMath;
+    version = UsePortableTrig;
+}
+
+version(LDC)
+{
+    import ldc.intrinsics;
+    alias sin = llvm_sin;
+    alias cos = llvm_cos;
 }
 else
+version(UsePortableTrig)
+{
+    import dcore.math.trigtables;
+    
+    real sin(real x) pure nothrow @nogc
+    {
+        pragma(inline, true);
+        real xfmod = x - floor(x / TWOPI) * TWOPI;
+        x = (0 > xfmod)? 0 : xfmod;
+        if (x < 0) return -sin(-x);
+        if (x > PI) return -sin(min(PI, TWOPI - x));
+        
+        x = (x < 0) ? 0 : (x > PI) ? PI : x;
+        real j = x * ((sinfTable.length - 2) * INVPI);
+        int zero = cast(int)j;
+        real nx = j - zero;
+        return (1 - nx) * sinfTable[zero][0] + nx * sinfTable[zero + 1][0];
+    }
+    
+    real cos(real x) pure nothrow @nogc
+    {
+        pragma(inline, true);
+        real xfmod = x - floor(x / TWOPI) * TWOPI;
+        x = (0 > xfmod)? 0 : xfmod;
+        if (x < 0) return cos(-x);
+        if (x > PI) return cos(min(PI, TWOPI - x));
+        
+        x = (x < 0) ? 0 : (x > PI) ? PI : x;
+        real j = x * ((cosfTable.length - 2) * INVPI);
+        int zero = cast(int)j;
+        real nx = j - zero;
+        return (1 - nx) * cosfTable[zero][0] + nx * cosfTable[zero + 1][0];
+    }
+}
+else
+version(NoPhobos)
 {
     extern(C) nothrow @nogc
     {
         double sin(double x);
         double cos(double x);
         
+        /*
         double ceil(double x);
         float ceilf(float x);
         real ceill(real x)
@@ -52,47 +164,12 @@ else
         {
             return floor(x);
         }
+        */
     }
 }
-
-enum double PI = 3.14159265358979323846;
-enum double HALFPI = 1.5707964;
-enum double QUARTPI = 0.7853982;
-enum double INVTWOPI = 0.1591549;
-enum double TWOPI = 6.283185;
-enum double THREEHALFPI = 4.7123889;
-
-T max(T)(T a, T b) pure nothrow @nogc
+else
 {
-    return (a > b)? a : b;
-}
-
-T min(T)(T a, T b) pure nothrow @nogc
-{
-    return (a < b)? a : b;
-}
-
-T abs(T)(T v) pure nothrow @nogc
-{
-    return (v > 0.0)? v : -v;
-}
-
-T clamp(T)(T v, T mi, T ma) pure nothrow @nogc
-{
-    if (v < mi) return mi;
-    else if (v > ma) return ma;
-    else return v;
-}
-
-bool isClose(real a, real b, real delta) pure nothrow @nogc
-{
-    return abs(a - b) < delta;
-}
-
-version(UsePortableMath)
-{
-    extern(C) nothrow @nogc
-    {
-        // TODO
-    }
+    import std.math;
+    alias sin = std.math.sin;
+    alias cos = std.math.cos;
 }
