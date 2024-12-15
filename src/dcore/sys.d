@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2022 Timur Gafarov
+Copyright (c) 2022-2024 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -61,12 +61,19 @@ enum ProcessorArchitecture
 struct SysInfo
 {
     ulong totalMemory;
-    ulong availableMemory;
     ProcessorArchitecture architecture;
-    uint addressLength;
     uint numProcessors;
+    string os;
+    uint osVersionMajor;
+    uint osVersionMinor;
 }
 
+/*
+ * sysInfo works on Windows, Unix/sysconf (Linux-like)
+ * and Unix/sysctl (BSD-like) systems.
+ * Under other systems it returns false, meaning that 
+ * it's not possible to retrieve system information.
+ */
 bool sysInfo(SysInfo* info) nothrow @nogc
 {
     version(_TP_Windows)
@@ -76,9 +83,6 @@ bool sysInfo(SysInfo* info) nothrow @nogc
         info.numProcessors = sysinfo.dwNumberOfProcessors;
         
         auto procArch = sysinfo.wProcessorArchitecture;
-        //auto minAddress = sysinfo.lpMinimumApplicationAddress; // A pointer to the lowest memory address accessible to applications
-        //auto maxAddress = sysinfo.lpMaximumApplicationAddress; // A pointer to the highest memory address accessible to applications
-        //auto pageSize = sysinfo.dwPageSize;
         
         if (procArch == PROCESSOR_ARCHITECTURE_INTEL) info.architecture = ProcessorArchitecture.x86;
         else if (procArch == PROCESSOR_ARCHITECTURE_AMD64) info.architecture = ProcessorArchitecture.x64;
@@ -87,11 +91,48 @@ bool sysInfo(SysInfo* info) nothrow @nogc
         else if (procArch == PROCESSOR_ARCHITECTURE_IA64) info.architecture = ProcessorArchitecture.IA64;
         else if (procArch == PROCESSOR_ARCHITECTURE_UNKNOWN) info.architecture = ProcessorArchitecture.Unknown;
         
+        MEMORYSTATUSEX status;
+        status.dwLength = status.sizeof;
+        GlobalMemoryStatusEx(&status);
+        info.totalMemory = status.ullTotalPhys;
+        
+        OSVERSIONINFOEXA vi;
+        vi.dwOSVersionInfoSize = vi.sizeof;
+        if (GetVersionExA(cast(LPOSVERSIONINFOA)&vi) != 0)
+        {
+            switch (vi.dwPlatformId)
+            {
+                case VER_PLATFORM_WIN32s:
+                    info.os = "Windows 3.x";
+                    break;
+                case VER_PLATFORM_WIN32_WINDOWS:
+                    info.os = (vi.dwMinorVersion == 0) ? "Windows 95" : "Windows 98";
+                    break;
+                case VER_PLATFORM_WIN32_NT:
+                    info.os = "Windows NT";
+                    break;
+                default:
+                    info.os = "Windows";
+                    break;
+            }
+            
+            info.osVersionMajor = vi.dwMajorVersion;
+            info.osVersionMinor = vi.dwMinorVersion;
+        }
+        
         return true;
     }
     else version(_TP_Unix_sysconf)
     {
         info.numProcessors = sysconf(_SC_NPROCESSORS_ONLN);
+        
+        long pages = sysconf(_SC_PHYS_PAGES);
+        long pageSize = sysconf(_SC_PAGE_SIZE);
+        info.totalMemory = pages * pageSize;
+        
+        info.os = ""; // TODO
+        info.osVersionMajor = 0; // TODO
+        info.osVersionMinor = 0; // TODO
         
         return true;
     }
@@ -115,6 +156,12 @@ bool sysInfo(SysInfo* info) nothrow @nogc
         }
         
         info.numProcessors = numCPU;
+        
+        info.totalMemory = 0; // TODO
+        
+        info.os = ""; // TODO
+        info.osVersionMajor = 0; // TODO
+        info.osVersionMinor = 0; // TODO
         
         return true;
     }
