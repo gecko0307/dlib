@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019-2024 Timur Gafarov
+Copyright (c) 2024 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -28,71 +28,7 @@ DEALINGS IN THE SOFTWARE.
 
 module dcore.math;
 
-version(FreeStanding)
+public
 {
-    version = UsePortableMath;
-}
-else
-{
-    extern(C) nothrow @nogc
-    {
-        double sin(double x);
-        double cos(double x);
-        
-        double ceil(double x);
-        float ceilf(float x);
-        real ceill(real x)
-        {
-            return ceil(x);
-        }
-        
-        double floor(double x);
-        float floorf(float x);
-        real floorl(real x)
-        {
-            return floor(x);
-        }
-    }
-}
-
-enum float PI = 3.141593f;
-enum float HALFPI = 1.570796f;
-enum float QUARTPI = 0.7853982f;
-enum float INVTWOPI = 0.1591549f;
-enum float TWOPI = 6.283185f;
-enum float THREEHALFPI = 4.7123889f;
-
-T max(T)(T a, T b) pure nothrow @nogc
-{
-    return (a > b)? a : b;
-}
-
-T min(T)(T a, T b) pure nothrow @nogc
-{
-    return (a < b)? a : b;
-}
-
-T abs(T)(T v) pure nothrow @nogc
-{
-    return (v > 0.0)? v : -v;
-}
-
-T clamp(T)(T v, T mi, T ma) pure nothrow @nogc
-{
-    if (v < mi) return mi;
-    else if (v > ma) return ma;
-    else return v;
-}
-
-bool isClose(real a, real b, real delta) pure nothrow @nogc
-{
-    return abs(a - b) < delta;
-}
-
-version(UsePortableMath)
-{
-    extern(C) nothrow @nogc
-    {
-        // TODO
-    }
+    import dcore.math.base;
 }
