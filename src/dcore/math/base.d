@@ -28,7 +28,7 @@ DEALINGS IN THE SOFTWARE.
 
 module dcore.math.base;
 
-version = UsePortableTrig;
+//version = UsePortableTrig;
 
 enum double PI = 3.14159265358979323846;
 enum double HALFPI = 1.5707964;
@@ -117,14 +117,23 @@ version(UsePortableTrig)
         pragma(inline, true);
         real xfmod = x - floor(x / TWOPI) * TWOPI;
         x = (0 > xfmod)? 0 : xfmod;
-        if (x < 0) return -sin(-x);
-        if (x > PI) return -sin(min(PI, TWOPI - x));
+        real rsign = 1.0;
+        if (x < 0)
+        {
+            x = -x;
+            rsign = -1.0;
+        }
+        if (x > PI)
+        {
+            x = min(PI, TWOPI - x);
+            rsign = -1.0;
+        }
         
         x = (x < 0) ? 0 : (x > PI) ? PI : x;
         real j = x * ((sinfTable.length - 2) * INVPI);
         int zero = cast(int)j;
         real nx = j - zero;
-        return (1 - nx) * sinfTable[zero][0] + nx * sinfTable[zero + 1][0];
+        return ((1 - nx) * sinfTable[zero][0] + nx * sinfTable[zero + 1][0]) * rsign;
     }
     
     real cos(real x) pure nothrow @nogc
@@ -132,8 +141,14 @@ version(UsePortableTrig)
         pragma(inline, true);
         real xfmod = x - floor(x / TWOPI) * TWOPI;
         x = (0 > xfmod)? 0 : xfmod;
-        if (x < 0) return cos(-x);
-        if (x > PI) return cos(min(PI, TWOPI - x));
+        if (x < 0)
+        {
+            x = -x;
+        }
+        if (x > PI)
+        {
+            x = min(PI, TWOPI - x);
+        }
         
         x = (x < 0) ? 0 : (x > PI) ? PI : x;
         real j = x * ((cosfTable.length - 2) * INVPI);
