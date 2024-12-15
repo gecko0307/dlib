@@ -34,7 +34,7 @@ enum double PI = 3.14159265358979323846;
 enum double HALFPI = 1.5707964;
 enum double QUARTPI = 0.7853982;
 enum double INVPI = 0.31830988618;
-enum double INVTWOPI = 0.1591549;
+enum double INVTWOPI = 0.15915494309;
 enum double TWOPI = 6.28318530718;
 enum double THREEHALFPI = 4.7123889;
 
@@ -82,17 +82,16 @@ bool isClose(real a, real b, real delta) pure nothrow @nogc
     return abs(a - b) < delta;
 }
 
-real floor(real x) pure nothrow @nogc
+real trunc(real x) pure nothrow @nogc
 {
+    pragma(inline, true);
     long intPart = cast(long)x;
-    if (x < 0 && x != cast(real)intPart)
-        return intPart - 1;
-    return intPart;
+    return (x < 0 && x != cast(real)intPart) ? intPart - 1 : intPart;
 }
 
 real fmod(real x, real y) pure nothrow @nogc
 {
-    auto m = floor(x / y);
+    auto m = trunc(x / y);
     return max(0, x - y * m);
 }
 
@@ -116,7 +115,7 @@ version(UsePortableTrig)
     {
         pragma(inline, true);
         
-        real xfmod = x - floor(x / TWOPI) * TWOPI;
+        real xfmod = x - trunc(x * INVTWOPI) * TWOPI;
         x = (0 > xfmod)? 0 : xfmod;
         
         real rsign = 1.0;
@@ -142,7 +141,7 @@ version(UsePortableTrig)
     {
         pragma(inline, true);
         
-        real xfmod = x - floor(x / TWOPI) * TWOPI;
+        real xfmod = x - trunc(x * INVTWOPI) * TWOPI;
         x = (0 > xfmod)? 0 : xfmod;
         
         real adjusted_x = x;
