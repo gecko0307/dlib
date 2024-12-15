@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019-2022 Timur Gafarov
+Copyright (c) 2022-2024 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -25,47 +25,22 @@ FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
+module dcore.stdlib;
 
-module dcore.math.base;
-
-enum float PI = 3.141593f;
-enum float HALFPI = 1.570796f;
-enum float QUARTPI = 0.7853982f;
-enum float INVTWOPI = 0.1591549f;
-enum float TWOPI = 6.283185f;
-enum float THREEHALFPI = 4.7123889f;
-
-T max(T)(T a, T b) pure nothrow @nogc
+version(FreeStanding)
 {
-    return (a > b)? a : b;
+    extern(C) nothrow @nogc
+    {
+        // Placeholder functions
+        void* malloc(size_t size) { return null; }
+        void free(void* mem) {}
+    }
 }
-
-T min(T)(T a, T b) pure nothrow @nogc
+else
 {
-    return (a < b)? a : b;
-}
-
-T abs(T)(T v) pure nothrow @nogc
-{
-    return (v > 0.0)? v : -v;
-}
-
-T clamp(T)(T v, T mi, T ma) pure nothrow @nogc
-{
-    if (v < mi) return mi;
-    else if (v > ma) return ma;
-    else return v;
-}
-
-/*
-T floor(T)(T x) pure nothrow @nogc
-{
-    long xi = cast(long)x;
-    return x < xi ? xi - 1 : xi;
-}
-*/
-
-bool isClose(real a, real b, real delta) pure nothrow @nogc
-{
-    return abs(a - b) < delta;
+    extern(C) nothrow @nogc
+    {
+        void* malloc(size_t size);
+        void free(void* mem);
+    }
 }

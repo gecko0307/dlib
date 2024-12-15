@@ -28,9 +28,24 @@ DEALINGS IN THE SOFTWARE.
 
 module dcore.stdio;
 
-public
+version(FreeStanding)
 {
-    import dcore.c.stdio: printf;
+    extern(C) nothrow @nogc
+    {
+        // Placeholder functions
+        int putchar(int c) { return с; }
+        int puts(const char* s) { return '\n'; }
+        int printf(const char* fmt, ...) { return 0; }
+    }
+}
+else
+{
+    extern(C) nothrow @nogc
+    {
+        int putchar(int c);
+        int puts(const char* s);
+        int printf(const char* fmt, ...);
+    }
 }
 
 void printStr(string s) nothrow @nogc

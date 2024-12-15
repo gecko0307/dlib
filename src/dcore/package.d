@@ -30,12 +30,12 @@ module dcore;
 
 public
 {
-    import dcore.c;
     import dcore.container;
     import dcore.internal;
     import dcore.math;
     import dcore.memory;
     import dcore.stdio;
+    import dcore.stdlib;
     import dcore.sys;
     import dcore.text;
 }
