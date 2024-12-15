@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019-2024 Timur Gafarov
+Copyright (c) 2024 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,29 +26,6 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
-module dcore.stdio;
+module dcore.linker;
 
-version(FreeStanding)
-{
-    extern(C) nothrow @nogc
-    {
-        // Placeholder functions
-        int putchar(int c) { return с; }
-        int puts(const char* s) { return '\n'; }
-        int printf(const char* fmt, ...) { return 0; }
-    }
-}
-else
-{
-    extern(C) nothrow @nogc
-    {
-        int putchar(int c);
-        int puts(const char* s);
-        int printf(const char* fmt, ...);
-    }
-}
-
-void printStr(string s) nothrow @nogc
-{
-    printf("%.*s\n", s.length, s.ptr);
-}
+// TODO

@@ -27,6 +27,7 @@ DEALINGS IN THE SOFTWARE.
 */
 module dcore.sys;
 
+// TODO: use built-in system API for full independency from Phobos
 version(Windows) { import core.sys.windows.windows; }
 version(linux) { import core.sys.linux.sys.sysinfo; }
 
