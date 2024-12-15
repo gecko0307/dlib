@@ -100,7 +100,7 @@ void testTrigPerformance()
     // std.math sin/cos
     foreach (i; 0..iterations)
     {
-        auto x = i * 0.00001 - std.math.PI; // -PI to +PI
+        auto x = i * 0.00001 * std.math.PI;
         cast(void)refSin(x);
         cast(void)refCos(x);
     }
@@ -113,7 +113,7 @@ void testTrigPerformance()
     // dcore.math.base sin/cos
     foreach (i; 0..iterations)
     {
-        auto x = i * 0.00001 - std.math.PI; // -PI to +PI
+        auto x = i * 0.00001 * std.math.PI;
         cast(void)mySin(x);
         cast(void)myCos(x);
     }

@@ -131,10 +131,10 @@ version(UsePortableTrig)
             rsign = -1.0;
         }
         
-        real j = adjusted_x * ((sinTable.length - 2) * INVPI);
+        real j = adjusted_x * (cast(real)(sinTable.length - 2) * INVPI);
         int zero = cast(int)j;
         real nx = j - zero;
-        return ((1 - nx) * sinTable[zero][0] + nx * sinTable[zero + 1][0]) * rsign;
+        return ((1.0 - nx) * sinTable[zero][0] + nx * sinTable[zero + 1][0]) * rsign;
     }
     
     real cos(real x) pure nothrow @nogc
@@ -154,10 +154,10 @@ version(UsePortableTrig)
             adjusted_x = min(PI, TWOPI - adjusted_x);
         }
         
-        real j = adjusted_x * ((cosTable.length - 2) * INVPI);
+        real j = adjusted_x * (cast(real)(cosTable.length - 2) * INVPI);
         int zero = cast(int)j;
         real nx = j - zero;
-        return (1 - nx) * cosTable[zero][0] + nx * cosTable[zero + 1][0];
+        return (1.0 - nx) * cosTable[zero][0] + nx * cosTable[zero + 1][0];
     }
 }
 else
