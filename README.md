@@ -23,8 +23,10 @@ dlib 2.0 will support at least Unix and Windows, x86 and x86_64. There is possib
 
 Progress
 --------
-* [ ] dcore.container
-* [ ] dcore.math
-* [x] dcore.memory
-* [ ] dcore.stdio
-* [ ] dcore.text
+* [ ] `dcore.container` - `betterC` containers and data structures
+* [ ] `dcore.math` - basic C math functions
+* [x] `dcore.memory` - memory allocator for D objects (classic `New`/`Delete`)
+* [ ] `dcore.stdio` - standard C I/O for platforms that support it
+* [ ] `dcore.stdlib` - `malloc/free` for platforms that support it
+* [x] `dcore.sys` - retrieve system information
+* [ ] `dcore.text` - string/text processing
