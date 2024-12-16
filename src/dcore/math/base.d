@@ -104,6 +104,14 @@ T ceilFallback(T)(T x) pure nothrow @nogc
     return (xtrunc < x)? xtrunc + 1 : x;
 }
 
+T roundFallback(T)(T x) pure nothrow @nogc
+{
+    if (x < 0.0)
+        return cast(long)(x - 0.5);
+    else
+        return cast(long)(x + 0.5);
+}
+
 T fmod(T)(T x, T y) pure nothrow @nogc
 {
     pragma(inline, true);
@@ -298,6 +306,7 @@ version(LDC)
     
     alias floor = llvm_floor;
     alias ceil = llvm_ceil;
+    alias round = llvm_round;
     alias sqrt = llvm_sqrt;
     alias sin = llvm_sin;
     alias cos = llvm_cos;
@@ -349,6 +358,7 @@ version(UseFreeStandingMath)
     
     alias floor = floorFallback;
     alias ceil = ceilFallback;
+    alias round = roundFallback;
     alias sqrt = sqrtFallback;
     alias cbrt = cbrtFallback;
     alias sin = sinFallback;
@@ -365,6 +375,7 @@ else version(NoPhobos)
     {
         double floor(double x);
         double ceil(double x);
+        alias round = roundFallback;
         double sqrt(double x);
         double cbrt(double x);
         double sin(double x);
@@ -382,6 +393,7 @@ else
     
     alias floor = std.math.floor;
     alias ceil = std.math.ceil;
+    alias round = std.math.round;
     alias sqrt = std.math.sqrt;
     alias cbrt = std.math.cbrt;
     alias sin = std.math.sin;
