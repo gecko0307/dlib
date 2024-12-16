@@ -124,6 +124,22 @@ T atanFallback(T)(T x) pure nothrow @nogc
     return XX1;
 }
 
+T atan2Fallback(T)(T y, T x) pure nothrow @nogc
+{
+    if (x > 0)
+        return atan(y / x);
+    else if (x < 0 && y >= 0)
+        return atan(y / x) + PI;
+    else if (x < 0 && y < 0)
+        return atan(y / x) - PI;
+    else if (x == 0 && y > 0)
+        return HALFPI;
+    else if (x == 0 && y < 0)
+        return -HALFPI;
+    else
+        return 0; // Undefined
+}
+
 version(FreeStanding)
 {
     version = UseFreeStandingMath;
@@ -146,6 +162,7 @@ version(LDC)
     version(UseFreeStandingMath)
     {
         alias atan = atanFallback;
+        alias atan2 = atan2Fallback;
     }
     else version(NoPhobos)
     {
@@ -163,7 +180,8 @@ version(LDC)
         alias atan2 = std.math.atan2;
     }
 }
-else version(UseFreeStandingMath)
+else
+version(UseFreeStandingMath)
 {
     version(X86)
     {
@@ -293,22 +311,7 @@ else version(UseFreeStandingMath)
     // TODO: acos
 
     alias atan = atanFallback;
-    
-    T atan2(T)(T y, T x) pure nothrow @nogc
-    {
-        if (x > 0)
-            return atan(y / x);
-        else if (x < 0 && y >= 0)
-            return atan(y / x) + PI;
-        else if (x < 0 && y < 0)
-            return atan(y / x) - PI;
-        else if (x == 0 && y > 0)
-            return HALFPI;
-        else if (x == 0 && y < 0)
-            return -HALFPI;
-        else
-            return 0; // Undefined
-    }
+    alias atan2 = atan2Fallback;
 }
 else version(NoPhobos)
 {
