@@ -28,14 +28,51 @@ DEALINGS IN THE SOFTWARE.
 
 module dcore.stdio;
 
+version(WebAssembly)
+{
+    //import core.stdc.stdarg;
+    
+    extern(C) nothrow @nogc
+    {
+        void jsPrint(uint str, uint len);
+        
+        int putchar(int c) { return c; }
+        
+        int puts(const(char)* s)
+        {
+            int len = 0;
+            while(true)
+            {
+                char c = s[len];
+                if (c == 0) break;
+                len++;
+            }
+            jsPrint(cast(uint)s, len);
+            return '\n';
+        }
+        
+        int printf(const(char)* fmt, ...)
+        {
+            int len = 0;
+            while(true)
+            {
+                char c = fmt[len];
+                if (c == 0) break;
+                len++;
+            }
+            jsPrint(cast(uint)fmt, len);
+            return 0;
+        }
+    }
+}
+else
 version(FreeStanding)
 {
     extern(C) nothrow @nogc
     {
-        // Placeholder functions
         int putchar(int c) { return c; }
-        int puts(const char* s) { return '\n'; }
-        int printf(const char* fmt, ...) { return 0; }
+        int puts(const(char)* s) { return '\n'; }
+        int printf(const(char)* fmt, ...) { return 0; }
     }
 }
 else

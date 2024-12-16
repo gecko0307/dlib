@@ -20,8 +20,9 @@
     {
         //TODO
     }
-
-    var wasmMemory;
+    
+    var memory;
+    var memoryView;
 
     const request = new XMLHttpRequest();
     request.open("GET", "main.wasm");
@@ -30,13 +31,9 @@
         const bytes = request.response;
         const importObject = {
             env: {
-                jsPrintString: function(str, len) {
-                    var charArray = new Int8Array(
-                        wasmMemory, // WASM memory
-                        str, // string pointer
-                        len // string length
-                    );
-                    var string = new TextDecoder().decode(charArray);
+                jsPrint: function(str, len) {
+                    var charArray = new Uint8Array(memory, str, len);
+                    var string = new TextDecoder("utf-8").decode(charArray);
                     console.log(string);
                 },
                 jsMalloc: malloc,
@@ -45,9 +42,9 @@
         };
         WebAssembly.instantiate(bytes, importObject).then(result => {
             const { exports } = result.instance;
-            wasmMemory = exports.memory.buffer;
-            const r = exports.testFunc();
-            console.log("return = " + r);
+            memory = exports.memory.buffer;
+            memoryView = new DataView(memory);
+            exports.main();
         });
     };
     request.send();

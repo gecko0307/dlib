@@ -16,5 +16,6 @@ tests
 node_modules
 dub.selections.json
 
-# WASM module
-main.wasm
+# Binaries
+*.exe
+*.wasm

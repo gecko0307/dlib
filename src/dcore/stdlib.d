@@ -27,25 +27,36 @@ DEALINGS IN THE SOFTWARE.
 */
 module dcore.stdlib;
 
-version(FreeStanding)
+version(WebAssembly)
 {
     extern(C) nothrow @nogc
     {
-        __gshared void* function(size_t) mallocCallback = null;
-        __gshared void function(void*) freeCallback = null;
+        uint jsMalloc(uint) nothrow @nogc;
+        void jsFree(uint) nothrow @nogc;
         
         void* malloc(size_t size)
         {
-            if (mallocCallback)
-                return mallocCallback(size);
-            else return
-                null;
+            return cast(void*)jsMalloc(size);
         }
         
         void free(void* mem)
         {
-            if (freeCallback)
-                freeCallback(mem);
+            jsFree(cast(uint)mem);
+        }
+    }
+}
+else
+version(FreeStanding)
+{
+    extern(C) nothrow @nogc
+    {
+        void* malloc(size_t size)
+        {
+            return null;
+        }
+        
+        void free(void* mem)
+        {
         }
     }
 }
