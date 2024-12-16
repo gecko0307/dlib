@@ -89,6 +89,41 @@ T tanFallback(T)(T x) pure nothrow @nogc
     return sin(x) / cos(x);
 }
 
+T atanFallback(T)(T x) pure nothrow @nogc
+{
+    // Implementation from Algol 60
+    const T        R1 =  0x1.9310cfe85307cp+3;
+    const T        R2 = -0x1.58beca04f1805p+6;
+    const T        R3 = -0x1.46d547fed8a3dp+0;
+    const T        R4 = -0x1.57bd961f06c89p-4;
+    const T        S1 =  0x1.b189e39236635p+4;
+    const T        S2 =  0x1.a3b86f7830dc0p+2;
+    const T        S3 =  0x1.1273f9e5eff20p+1;
+    const T        S4 =  0x1.44831dafbf542p+0;
+    const T       RT3 =  0x1.bb67ae8584caap+0;
+    const T     PIBY6 =  0x1.0c152382d7365p-1;
+    const T   PIBY2M1 =  0x1.243f6a8885a30p-1;
+    const T     RT3M1 =  0x1.76cf5d0b09955p-1;
+    const T TANPIBY12 =  0x1.126145e9ecd56p-2;
+    const T       ONE =  0x1.0000000000000p+0;
+
+    double XX1, XSQ, CONSTANT = 0.0;
+    int SIGN = 0, INV = 0;
+
+    if (x < 0) { SIGN = 1; XX1 = -x; } else XX1 = x;
+    if (XX1 > ONE) { XX1 = 1.0 / XX1; INV = 1; }
+    if (XX1 > TANPIBY12) { XX1 = (RT3M1 * XX1 - 1.0 + XX1) / (XX1 + RT3); CONSTANT = PIBY6; }
+
+    XSQ = XX1 * XX1;
+    XX1 = XX1 * (R1 / (XSQ + S1 + R2 / (XSQ + S2 + R3 / (XSQ + S3 + R4 / (XSQ + S4)))));
+    XX1 = XX1 + CONSTANT;
+
+    if (INV) XX1 = 1.0 - XX1 + PIBY2M1;
+    if (SIGN) XX1 = -XX1;
+     
+    return XX1;
+}
+
 version(FreeStanding)
 {
     version = UseFreeStandingMath;
@@ -104,9 +139,31 @@ version(LDC)
     alias sin = llvm_sin;
     alias cos = llvm_cos;
     alias tan = tanFallback;
+    
+    // TODO: asin
+    // TODO: acos
+    
+    version(UseFreeStandingMath)
+    {
+        alias atan = atanFallback;
+    }
+    else version(NoPhobos)
+    {
+        extern(C) nothrow @nogc
+        {
+            double atan(double x);
+            double atan2(double y, double x);
+        }
+    }
+    else
+    {
+        import std.math;
+        
+        alias atan = std.math.atan;
+        alias atan2 = std.math.atan2;
+    }
 }
-else
-version(UseFreeStandingMath)
+else version(UseFreeStandingMath)
 {
     version(X86)
     {
@@ -231,9 +288,29 @@ version(UseFreeStandingMath)
     }
     
     alias tan = tanFallback;
+    
+    // TODO: asin
+    // TODO: acos
+
+    alias atan = atanFallback;
+    
+    T atan2(T)(T y, T x) pure nothrow @nogc
+    {
+        if (x > 0)
+            return atan(y / x);
+        else if (x < 0 && y >= 0)
+            return atan(y / x) + PI;
+        else if (x < 0 && y < 0)
+            return atan(y / x) - PI;
+        else if (x == 0 && y > 0)
+            return HALFPI;
+        else if (x == 0 && y < 0)
+            return -HALFPI;
+        else
+            return 0; // Undefined
+    }
 }
-else
-version(NoPhobos)
+else version(NoPhobos)
 {
     extern(C) nothrow @nogc
     {
@@ -243,6 +320,10 @@ version(NoPhobos)
         double sin(double x);
         double cos(double x);
         double tan(double x);
+        double asin(double x);
+        double acos(double x);
+        double atan(double x);
+        double atan2(double y, double x);
     }
 }
 else
@@ -255,4 +336,8 @@ else
     alias sin = std.math.sin;
     alias cos = std.math.cos;
     alias tan = std.math.tan;
+    alias asin = std.math.asin;
+    alias acos = std.math.acos;
+    alias atan = std.math.atan;
+    alias atan2 = std.math.atan2;
 }
