@@ -83,6 +83,60 @@ bool isClose(T)(T a, T b, T delta) pure nothrow @nogc
     return abs(a - b) < delta;
 }
 
+T sqrtFallback(T)(T x) pure nothrow @nogc
+{
+    version(UseX87Math)
+    {
+        T result;
+        
+        if (is(T == float))
+        {
+            asm pure nothrow @nogc
+            {
+                fld dword ptr x;
+                fsqrt;
+                fstp dword ptr result;
+            }
+        }
+        else
+        {
+            asm pure nothrow @nogc
+            {
+                fld qword ptr x;
+                fsqrt;
+                fstp qword ptr result;
+            }
+        }
+        
+        return result;
+    }
+    else
+    {
+        double z = cast(double)(x > 1.0) ? x * 0.5 : x + 1.0;
+        for (uint i = 1; i <= 10; i++)
+        {
+            z -= (z * z - x) / (2.0 * z);
+        }
+        return cast(T)z;
+    }
+}
+
+T cbrtFallback(T)(T x) pure nothrow @nogc
+{
+    enum OneOverThree = 1.0 / 3.0;
+    if (x < 0) return -cbrt(-x);
+    if (isNaN(x) || isInfinity(x)) return x;
+    if (x == 0) return 0;
+    T a = sqrtFallback(x);
+    T b = T.infinity;
+    while (a < b)
+    {
+        b = a;
+        a = (2.0 * a + (x / (b * b))) * OneOverThree;
+    }
+    return a;
+}
+
 T tanFallback(T)(T x) pure nothrow @nogc
 {
     pragma(inline, true);
@@ -155,7 +209,6 @@ version(FreeStanding)
     version = UseFreeStandingMath;
 }
 
-/*
 version(LDC)
 {
     import ldc.intrinsics;
@@ -169,6 +222,7 @@ version(LDC)
     
     version(UseFreeStandingMath)
     {
+        alias cbrt = cbrtFallback;
         alias asin = asinFallback;
         alias acos = acosFallback;
         alias atan = atanFallback;
@@ -178,6 +232,7 @@ version(LDC)
     {
         extern(C) nothrow @nogc
         {
+            double cbrt(double x);
             double asin(double x);
             double acos(double x);
             double atan(double x);
@@ -188,6 +243,7 @@ version(LDC)
     {
         import std.math;
         
+        alias cbrt = std.math.cbrt;
         alias asin = std.math.asin;
         alias acos = std.math.acos;
         alias atan = std.math.atan;
@@ -195,7 +251,6 @@ version(LDC)
     }
 }
 else
-*/
 version(UseFreeStandingMath)
 {
     version(X86)
@@ -233,43 +288,8 @@ version(UseFreeStandingMath)
         return max(0, x - y * m);
     }
     
-    T sqrt(T)(T x) pure nothrow @nogc
-    {
-        version(UseX87Math)
-        {
-            T result;
-            
-            if (is(T == float))
-            {
-                asm pure nothrow @nogc
-                {
-                    fld dword ptr x;
-                    fsqrt;
-                    fstp dword ptr result;
-                }
-            }
-            else
-            {
-                asm pure nothrow @nogc
-                {
-                    fld qword ptr x;
-                    fsqrt;
-                    fstp qword ptr result;
-                }
-            }
-            
-            return result;
-        }
-        else
-        {
-            double z = cast(double)(x > 1.0) ? x / 2.0 : x + 1.0;
-            for (uint i = 1; i <= 10; i++)
-            {
-                z -= (z * z - x) / (2.0 * z);
-            }
-            return cast(T)z;
-        }
-    }
+    alias sqrt = sqrtFallback;
+    alias cbrt = cbrtFallback;
     
     T sin(T)(T x) pure nothrow @nogc
     {
@@ -333,6 +353,7 @@ else version(NoPhobos)
         double ceil(double x);
         double floor(double x);
         double sqrt(double x);
+        double cbrt(double x);
         double sin(double x);
         double cos(double x);
         double tan(double x);
@@ -349,6 +370,7 @@ else
     alias ceil = std.math.ceil;
     alias floor = std.math.floor;
     alias sqrt = std.math.sqrt;
+    alias cbrt = std.math.cbrt;
     alias sin = std.math.sin;
     alias cos = std.math.cos;
     alias tan = std.math.tan;
@@ -360,5 +382,6 @@ else
 
 T cot(T)(T x) pure nothrow @nogc
 {
+    pragma(inline, true);
     return cos(x) / sin(x);
 }
