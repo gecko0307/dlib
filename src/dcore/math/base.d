@@ -83,6 +83,34 @@ bool isClose(T)(T a, T b, T delta) pure nothrow @nogc
     return abs(a - b) < delta;
 }
 
+T trunc(T)(T x) pure nothrow @nogc
+{
+    pragma(inline, true);
+    return cast(long)x;
+}
+
+T floorFallback(T)(T x) pure nothrow @nogc
+{
+    pragma(inline, true);
+    long intPart = cast(long)x;
+    return (x < 0 && x != cast(T)intPart) ? intPart - 1 : intPart;
+}
+
+T ceilFallback(T)(T x) pure nothrow @nogc
+{
+    pragma(inline, true);
+    long intPart = cast(long)x;
+    T xtrunc = (x < 0 && x != cast(T)intPart) ? intPart - 1 : intPart;
+    return (xtrunc < x)? xtrunc + 1 : x;
+}
+
+T fmod(T)(T x, T y) pure nothrow @nogc
+{
+    pragma(inline, true);
+    auto m = floorFallback(x / y);
+    return max(0, x - y * m);
+}
+
 T sqrtFallback(T)(T x) pure nothrow @nogc
 {
     version(UseX87Math)
@@ -137,10 +165,75 @@ T cbrtFallback(T)(T x) pure nothrow @nogc
     return a;
 }
 
+T sinFallback(T)(T x) pure nothrow @nogc
+{
+    pragma(inline, true);
+    
+    T xfmod = x - floorFallback(x * INVTWOPI) * TWOPI;
+    x = (0 > xfmod)? 0 : xfmod;
+    
+    T rsign = 1.0;
+    T adjusted_x = x;
+    if (x < 0) 
+    {
+        adjusted_x = -x;
+        rsign = -1.0;
+    }
+    if (adjusted_x > PI) 
+    {
+        adjusted_x = min(PI, TWOPI - adjusted_x);
+        rsign = -1.0;
+    }
+    
+    T j = adjusted_x * (cast(T)(sinTable.length - 2) * INVPI);
+    int zero = cast(int)j;
+    T nx = j - zero;
+    return ((1.0 - nx) * sinTable[zero][0] + nx * sinTable[zero + 1][0]) * rsign;
+}
+
+T cosFallback(T)(T x) pure nothrow @nogc
+{
+    pragma(inline, true);
+    
+    T xfmod = x - floorFallback(x * INVTWOPI) * TWOPI;
+    x = (0 > xfmod)? 0 : xfmod;
+    
+    T adjusted_x = x;
+    if (x < 0) 
+    {
+        adjusted_x = -x;
+    }
+    if (adjusted_x > PI) 
+    {
+        adjusted_x = min(PI, TWOPI - adjusted_x);
+    }
+     
+    T j = adjusted_x * (cast(T)(cosTable.length - 2) * INVPI);
+    int zero = cast(int)j;
+    T nx = j - zero;
+    return (1.0 - nx) * cosTable[zero][0] + nx * cosTable[zero + 1][0];
+}
+
 T tanFallback(T)(T x) pure nothrow @nogc
 {
     pragma(inline, true);
     return sin(x) / cos(x);
+}
+
+T cot(T)(T x) pure nothrow @nogc
+{
+    pragma(inline, true);
+    return cos(x) / sin(x);
+}
+
+T asinFallback(T)(T x) pure nothrow @nogc
+{
+    return atan2Fallback(x, sqrt(1.0 - x * x));
+}
+
+T acosFallback(T)(T x) pure nothrow @nogc
+{
+    return atan2Fallback(sqrt(1.0 - x * x), x);
 }
 
 T atanFallback(T)(T x) pure nothrow @nogc
@@ -178,16 +271,6 @@ T atanFallback(T)(T x) pure nothrow @nogc
     return XX1;
 }
 
-T asinFallback(T)(T x) pure nothrow @nogc
-{
-    return atan2Fallback(x, sqrt(1.0 - x * x));
-}
-
-T acosFallback(T)(T x) pure nothrow @nogc
-{
-    return atan2Fallback(sqrt(1.0 - x * x), x);
-}
-
 T atan2Fallback(T)(T y, T x) pure nothrow @nogc
 {
     if (x > 0)
@@ -213,8 +296,8 @@ version(LDC)
 {
     import ldc.intrinsics;
     
-    alias ceil = llvm_ceil;
     alias floor = llvm_floor;
+    alias ceil = llvm_ceil;
     alias sqrt = llvm_sqrt;
     alias sin = llvm_sin;
     alias cos = llvm_cos;
@@ -264,82 +347,12 @@ version(UseFreeStandingMath)
     
     import dcore.math.trigtables;
     
-    T trunc(T)(T x) pure nothrow @nogc
-    {
-        pragma(inline, true);
-        long intPart = cast(long)x;
-        return (x < 0 && x != cast(T)intPart) ? intPart - 1 : intPart;
-    }
-    
-    alias floor = trunc;
-    
-    T ceil(T)(T x) pure nothrow @nogc
-    {
-        pragma(inline, true);
-        long intPart = cast(long)x;
-        T xtrunc = (x < 0 && x != cast(T)intPart) ? intPart - 1 : intPart;
-        return (xtrunc < x)? xtrunc + 1 : x;
-    }
-    
-    T fmod(T)(T x, T y) pure nothrow @nogc
-    {
-        pragma(inline, true);
-        auto m = trunc(x / y);
-        return max(0, x - y * m);
-    }
-    
+    alias floor = floorFallback;
+    alias ceil = ceilFallback;
     alias sqrt = sqrtFallback;
     alias cbrt = cbrtFallback;
-    
-    T sin(T)(T x) pure nothrow @nogc
-    {
-        pragma(inline, true);
-        
-        T xfmod = x - trunc(x * INVTWOPI) * TWOPI;
-        x = (0 > xfmod)? 0 : xfmod;
-        
-        T rsign = 1.0;
-        T adjusted_x = x;
-        if (x < 0) 
-        {
-            adjusted_x = -x;
-            rsign = -1.0;
-        }
-        if (adjusted_x > PI) 
-        {
-            adjusted_x = min(PI, TWOPI - adjusted_x);
-            rsign = -1.0;
-        }
-        
-        T j = adjusted_x * (cast(T)(sinTable.length - 2) * INVPI);
-        int zero = cast(int)j;
-        T nx = j - zero;
-        return ((1.0 - nx) * sinTable[zero][0] + nx * sinTable[zero + 1][0]) * rsign;
-    }
-    
-    T cos(T)(T x) pure nothrow @nogc
-    {
-        pragma(inline, true);
-        
-        T xfmod = x - trunc(x * INVTWOPI) * TWOPI;
-        x = (0 > xfmod)? 0 : xfmod;
-        
-        T adjusted_x = x;
-        if (x < 0) 
-        {
-            adjusted_x = -x;
-        }
-        if (adjusted_x > PI) 
-        {
-            adjusted_x = min(PI, TWOPI - adjusted_x);
-        }
-        
-        T j = adjusted_x * (cast(T)(cosTable.length - 2) * INVPI);
-        int zero = cast(int)j;
-        T nx = j - zero;
-        return (1.0 - nx) * cosTable[zero][0] + nx * cosTable[zero + 1][0];
-    }
-    
+    alias sin = sinFallback;
+    alias cos = cosFallback;
     alias tan = tanFallback;
     alias asin = asinFallback;
     alias acos = acosFallback;
@@ -350,8 +363,8 @@ else version(NoPhobos)
 {
     extern(C) nothrow @nogc
     {
-        double ceil(double x);
         double floor(double x);
+        double ceil(double x);
         double sqrt(double x);
         double cbrt(double x);
         double sin(double x);
@@ -367,8 +380,8 @@ else
 {
     import std.math;
     
-    alias ceil = std.math.ceil;
     alias floor = std.math.floor;
+    alias ceil = std.math.ceil;
     alias sqrt = std.math.sqrt;
     alias cbrt = std.math.cbrt;
     alias sin = std.math.sin;
@@ -378,10 +391,4 @@ else
     alias acos = std.math.acos;
     alias atan = std.math.atan;
     alias atan2 = std.math.atan2;
-}
-
-T cot(T)(T x) pure nothrow @nogc
-{
-    pragma(inline, true);
-    return cos(x) / sin(x);
 }
