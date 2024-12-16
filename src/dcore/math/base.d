@@ -29,6 +29,7 @@ DEALINGS IN THE SOFTWARE.
 module dcore.math.base;
 
 //version = UseFreeStandingMath;
+//version = NoPhobos;
 
 enum double PI = 3.14159265358979323846;
 enum double HALFPI = 1.5707964;
@@ -100,7 +101,6 @@ version(FreeStanding)
     version = UseFreeStandingMath;
 }
 
-/*
 version(LDC)
 {
     import ldc.intrinsics;
@@ -108,12 +108,61 @@ version(LDC)
     alias sqrt = llvm_sqrt;
     alias sin = llvm_sin;
     alias cos = llvm_cos;
+    
+    // TODO: ceil
+    // TODO: floor
 }
 else
-*/
 version(UseFreeStandingMath)
 {
+    version(X86)
+    {
+        version = UseX87Math;
+    }
+    version(X86_64)
+    {
+        version = UseX87Math;
+    }
+    
     import dcore.math.trigtables;
+    
+    T sqrt(T)(T x) pure nothrow @nogc
+    {
+        version(UseX87Math)
+        {
+            T result;
+            
+            if (is(T == float))
+            {
+                asm pure nothrow @nogc
+                {
+                    fld dword ptr x;
+                    fsqrt;
+                    fstp dword ptr result;
+                }
+            }
+            else
+            {
+                asm pure nothrow @nogc
+                {
+                    fld qword ptr x;
+                    fsqrt;
+                    fstp qword ptr result;
+                }
+            }
+            
+            return result;
+        }
+        else
+        {
+            double z = cast(double)(x > 1.0) ? x / 2.0 : x + 1.0;
+            for (uint i = 1; i <= 10; i++)
+            {
+                z -= (z * z - x) / (2.0 * z);
+            }
+            return cast(T)z;
+        }
+    }
     
     T sin(T)(T x) pure nothrow @nogc
     {
@@ -163,6 +212,9 @@ version(UseFreeStandingMath)
         T nx = j - zero;
         return (1.0 - nx) * cosTable[zero][0] + nx * cosTable[zero + 1][0];
     }
+    
+    // TODO: ceil
+    // TODO: floor
 }
 else
 version(NoPhobos)
@@ -184,4 +236,7 @@ else
     alias sqrt = std.math.sqrt;
     alias sin = std.math.sin;
     alias cos = std.math.cos;
+    
+    // TODO: ceil
+    // TODO: floor
 }

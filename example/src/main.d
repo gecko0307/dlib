@@ -1,7 +1,10 @@
 module main;
 
-import test.sys;
+import std.math;
+import dcore.math.base;
+import tests.math;
 
 void main() {
-    testSysInfo();
+    testPrecision!(dcore.math.base.sqrt, std.math.sqrt, 0.0f, 64.0f, float)();
+    testPerformance!(dcore.math.base.sqrt, std.math.sqrt, 0.0f, 64.0f, float)();
 }
