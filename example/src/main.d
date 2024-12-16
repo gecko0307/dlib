@@ -5,6 +5,6 @@ import dcore.math.base;
 import tests.math;
 
 void main() {
-    testPrecision!(dcore.math.base.sqrt, std.math.sqrt, 0.0f, 64.0f, float)();
-    testPerformance!(dcore.math.base.sqrt, std.math.sqrt, 0.0f, 64.0f, float)();
+    testPrecision!(dcore.math.base.ceil, std.math.ceil, -64.0f, 64.0f, double)();
+    testPerformance!(dcore.math.base.ceil, std.math.ceil, -64.0f, 64.0f, double)();
 }

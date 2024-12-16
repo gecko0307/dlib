@@ -28,8 +28,8 @@ DEALINGS IN THE SOFTWARE.
 
 module dcore.math.base;
 
-//version = UseFreeStandingMath;
-//version = NoPhobos;
+version = UseFreeStandingMath;
+version = NoPhobos;
 
 enum double PI = 3.14159265358979323846;
 enum double HALFPI = 1.5707964;
@@ -83,19 +83,6 @@ bool isClose(T)(T a, T b, T delta) pure nothrow @nogc
     return abs(a - b) < delta;
 }
 
-T trunc(T)(T x) pure nothrow @nogc
-{
-    pragma(inline, true);
-    long intPart = cast(long)x;
-    return (x < 0 && x != cast(T)intPart) ? intPart - 1 : intPart;
-}
-
-T fmod(T)(T x, T y) pure nothrow @nogc
-{
-    auto m = trunc(x / y);
-    return max(0, x - y * m);
-}
-
 version(FreeStanding)
 {
     version = UseFreeStandingMath;
@@ -105,12 +92,11 @@ version(LDC)
 {
     import ldc.intrinsics;
     
+    alias ceil = llvm_ceil;
+    alias floor = llvm_floor;
     alias sqrt = llvm_sqrt;
     alias sin = llvm_sin;
     alias cos = llvm_cos;
-    
-    // TODO: ceil
-    // TODO: floor
 }
 else
 version(UseFreeStandingMath)
@@ -125,6 +111,30 @@ version(UseFreeStandingMath)
     }
     
     import dcore.math.trigtables;
+    
+    T trunc(T)(T x) pure nothrow @nogc
+    {
+        pragma(inline, true);
+        long intPart = cast(long)x;
+        return (x < 0 && x != cast(T)intPart) ? intPart - 1 : intPart;
+    }
+    
+    alias floor = trunc;
+    
+    T ceil(T)(T x) pure nothrow @nogc
+    {
+        pragma(inline, true);
+        long intPart = cast(long)x;
+        T xtrunc = (x < 0 && x != cast(T)intPart) ? intPart - 1 : intPart;
+        return (xtrunc < x)? xtrunc + 1 : x;
+    }
+    
+    T fmod(T)(T x, T y) pure nothrow @nogc
+    {
+        pragma(inline, true);
+        auto m = trunc(x / y);
+        return max(0, x - y * m);
+    }
     
     T sqrt(T)(T x) pure nothrow @nogc
     {
@@ -212,31 +222,26 @@ version(UseFreeStandingMath)
         T nx = j - zero;
         return (1.0 - nx) * cosTable[zero][0] + nx * cosTable[zero + 1][0];
     }
-    
-    // TODO: ceil
-    // TODO: floor
 }
 else
 version(NoPhobos)
 {
     extern(C) nothrow @nogc
     {
+        double ceil(double x);
+        double floor(double x);
         double sqrt(double x);
         double sin(double x);
         double cos(double x);
-        
-        double ceil(double x);
-        double floor(double x);
     }
 }
 else
 {
     import std.math;
     
+    alias ceil = std.math.ceil;
+    alias floor = std.math.floor;
     alias sqrt = std.math.sqrt;
     alias sin = std.math.sin;
     alias cos = std.math.cos;
-    
-    // TODO: ceil
-    // TODO: floor
 }
