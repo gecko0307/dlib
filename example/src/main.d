@@ -5,6 +5,6 @@ import dcore.math.base;
 import tests.math;
 
 void main() {
-    testPrecision!(dcore.math.base.ceil, std.math.ceil, -64.0f, 64.0f, double)();
-    testPerformance!(dcore.math.base.ceil, std.math.ceil, -64.0f, 64.0f, double)();
+    testPrecision!(dcore.math.base.tan, std.math.tan, -std.math.PI, std.math.PI, float)();
+    testPerformance!(dcore.math.base.tan, std.math.tan, -std.math.PI, std.math.PI, float)();
 }

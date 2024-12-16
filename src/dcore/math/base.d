@@ -28,8 +28,8 @@ DEALINGS IN THE SOFTWARE.
 
 module dcore.math.base;
 
-version = UseFreeStandingMath;
-version = NoPhobos;
+//version = UseFreeStandingMath;
+//version = NoPhobos;
 
 enum double PI = 3.14159265358979323846;
 enum double HALFPI = 1.5707964;
@@ -83,6 +83,12 @@ bool isClose(T)(T a, T b, T delta) pure nothrow @nogc
     return abs(a - b) < delta;
 }
 
+T tanFallback(T)(T x) pure nothrow @nogc
+{
+    pragma(inline, true);
+    return sin(x) / cos(x);
+}
+
 version(FreeStanding)
 {
     version = UseFreeStandingMath;
@@ -97,6 +103,7 @@ version(LDC)
     alias sqrt = llvm_sqrt;
     alias sin = llvm_sin;
     alias cos = llvm_cos;
+    alias tan = tanFallback;
 }
 else
 version(UseFreeStandingMath)
@@ -222,6 +229,8 @@ version(UseFreeStandingMath)
         T nx = j - zero;
         return (1.0 - nx) * cosTable[zero][0] + nx * cosTable[zero + 1][0];
     }
+    
+    alias tan = tanFallback;
 }
 else
 version(NoPhobos)
@@ -233,6 +242,7 @@ version(NoPhobos)
         double sqrt(double x);
         double sin(double x);
         double cos(double x);
+        double tan(double x);
     }
 }
 else
@@ -244,4 +254,5 @@ else
     alias sqrt = std.math.sqrt;
     alias sin = std.math.sin;
     alias cos = std.math.cos;
+    alias tan = std.math.tan;
 }
