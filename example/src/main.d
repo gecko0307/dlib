@@ -5,6 +5,6 @@ import dcore.math.base;
 import tests.math;
 
 void main() {
-    testPrecision2!(dcore.math.base.atan2, std.math.atan2, 1.0f, 1.0f, double)();
-    testPerformance2!(dcore.math.base.atan2, std.math.atan2, 1.0f, 1.0f, double)();
+    testPrecision!(dcore.math.base.acos, std.math.acos, 0.0, 1.0, double)();
+    testPerformance!(dcore.math.base.acos, std.math.acos, 0.0, 1.0, double)();
 }

@@ -124,6 +124,16 @@ T atanFallback(T)(T x) pure nothrow @nogc
     return XX1;
 }
 
+T asinFallback(T)(T x) pure nothrow @nogc
+{
+    return atan2Fallback(x, sqrt(1.0 - x * x));
+}
+
+T acosFallback(T)(T x) pure nothrow @nogc
+{
+    return atan2Fallback(sqrt(1.0 - x * x), x);
+}
+
 T atan2Fallback(T)(T y, T x) pure nothrow @nogc
 {
     if (x > 0)
@@ -145,6 +155,7 @@ version(FreeStanding)
     version = UseFreeStandingMath;
 }
 
+/*
 version(LDC)
 {
     import ldc.intrinsics;
@@ -156,11 +167,10 @@ version(LDC)
     alias cos = llvm_cos;
     alias tan = tanFallback;
     
-    // TODO: asin
-    // TODO: acos
-    
     version(UseFreeStandingMath)
     {
+        alias asin = asinFallback;
+        alias acos = acosFallback;
         alias atan = atanFallback;
         alias atan2 = atan2Fallback;
     }
@@ -168,6 +178,8 @@ version(LDC)
     {
         extern(C) nothrow @nogc
         {
+            double asin(double x);
+            double acos(double x);
             double atan(double x);
             double atan2(double y, double x);
         }
@@ -176,11 +188,14 @@ version(LDC)
     {
         import std.math;
         
+        alias asin = std.math.asin;
+        alias acos = std.math.acos;
         alias atan = std.math.atan;
         alias atan2 = std.math.atan2;
     }
 }
 else
+*/
 version(UseFreeStandingMath)
 {
     version(X86)
@@ -306,10 +321,8 @@ version(UseFreeStandingMath)
     }
     
     alias tan = tanFallback;
-    
-    // TODO: asin
-    // TODO: acos
-
+    alias asin = asinFallback;
+    alias acos = acosFallback;
     alias atan = atanFallback;
     alias atan2 = atan2Fallback;
 }
