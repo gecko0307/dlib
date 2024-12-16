@@ -295,6 +295,19 @@ T atan2Fallback(T)(T y, T x) pure nothrow @nogc
         return 0; // Undefined
 }
 
+// TODO: exp
+// TODO: log
+// TODO: log2
+// TODO: log10
+// TODO: pow
+// TODO: hypot
+// TODO: modf
+// TODO: gcd
+// TODO: lcm
+// TODO: exp2
+// TODO: sinh, cosh, tanh
+// TODO: asinh, acosh, atanh
+
 version(FreeStanding)
 {
     version = UseFreeStandingMath;
