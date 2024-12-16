@@ -33,7 +33,7 @@ version(FreeStanding)
     extern(C) nothrow @nogc
     {
         // Placeholder functions
-        int putchar(int c) { return с; }
+        int putchar(int c) { return c; }
         int puts(const char* s) { return '\n'; }
         int printf(const char* fmt, ...) { return 0; }
     }

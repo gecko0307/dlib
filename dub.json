@@ -26,13 +26,6 @@
         {
             "name": "library",
             "targetType": "library",
-            "importPaths": ["src"],
-            "sourcePaths": ["src"],
-            "dflags": ["-betterC"]
-        },
-        {
-            "name": "import",
-            "targetType": "sourceLibrary",
             "sourceFiles-posix": ["libdlib.a"],
             "sourceFiles-windows": ["dlib.lib"],
             "dflags": ["-betterC"]

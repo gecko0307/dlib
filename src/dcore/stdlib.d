@@ -31,9 +31,22 @@ version(FreeStanding)
 {
     extern(C) nothrow @nogc
     {
-        // Placeholder functions
-        void* malloc(size_t size) { return null; }
-        void free(void* mem) {}
+        __gshared void* function(size_t) mallocCallback = null;
+        __gshared void function(void*) freeCallback = null;
+        
+        void* malloc(size_t size)
+        {
+            if (mallocCallback)
+                return mallocCallback(size);
+            else return
+                null;
+        }
+        
+        void free(void* mem)
+        {
+            if (freeCallback)
+                freeCallback(mem);
+        }
     }
 }
 else

@@ -15,3 +15,7 @@ tests
 # Node.js
 node_modules
 dub.selections.json
+
+# Binaries
+*.exe
+*.pdb

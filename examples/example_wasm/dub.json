@@ -6,7 +6,7 @@
     "dependencies": {
         "dlib": {
             "version": "~dlib2",
-            "path": "../"
+            "path": "../.."
         }
     },
     "description": "dlib2 example",
@@ -19,7 +19,9 @@
     "configurations": [
         {
             "name": "application",
-            "targetType": "executable"
+            "targetType": "executable",
+            "dflags": ["-betterC", "-mtriple=wasm32-unknown-unknown-wasm", "-link-internally", "-L-allow-undefined", "-L--export-dynamic"],
+            "lflags": []
         }
     ]
 }

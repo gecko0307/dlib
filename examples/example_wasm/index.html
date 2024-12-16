@@ -1,0 +1,59 @@
+<html>
+  <head>
+    <script>
+    var wasmHeap;
+
+    function memoryInit(m) 
+    {
+        wasmHeap = m;
+    }
+
+    const pageSize = 64 * 1024;
+
+    function malloc(size)
+    {
+        const offset = wasmHeap.grow(size / pageSize + size % pageSize);
+        return offset;
+    }
+
+    function free(buf)
+    {
+        //TODO
+    }
+
+    var wasmMemory;
+
+    const request = new XMLHttpRequest();
+    request.open('GET', 'main.wasm');
+    request.responseType = 'arraybuffer';
+    request.onload = () => {
+        const bytes = request.response;
+        const importObject = {
+            env: {
+                jsConsoleLog: function(str, len) {
+                    var charArray = new Int8Array(
+                        wasmMemory, // WASM memory
+                        str, // string pointer
+                        len // string length
+                    );
+                    var string = String.fromCharCode.apply(null, charArray);
+                    console.log(string);
+                },
+                jsMalloc: malloc,
+                jsFree: free
+            }
+        };
+        WebAssembly.instantiate(bytes, importObject).then(result => {
+            const { exports } = result.instance;
+            wasmMemory = exports.memory.buffer;
+            const r = exports.computeTest();
+            console.log('return = ' + r);
+        });
+    };
+    request.send();
+    </script>
+  </head>
+  <body>
+    Test page
+  </body>
+</html>
