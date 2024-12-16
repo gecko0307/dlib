@@ -31,6 +31,23 @@ module dcore.math.base;
 //version = UseFreeStandingMath;
 //version = NoPhobos;
 
+version(FreeStanding)
+{
+    version = UseFreeStandingMath;
+}
+
+version(UseFreeStandingMath)
+{
+    version(X86)
+    {
+        version = UseX87Math;
+    }
+    version(X86_64)
+    {
+        version = UseX87Math;
+    }
+}
+
 enum double PI = 3.14159265358979323846;
 enum double HALFPI = 1.5707964;
 enum double QUARTPI = 0.7853982;
@@ -307,11 +324,6 @@ T atan2Fallback(T)(T y, T x) pure nothrow @nogc
 // TODO: exp2
 // TODO: sinh, cosh, tanh
 // TODO: asinh, acosh, atanh
-
-version(FreeStanding)
-{
-    version = UseFreeStandingMath;
-}
 
 version(LDC)
 {
