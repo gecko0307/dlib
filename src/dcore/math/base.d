@@ -357,3 +357,8 @@ else
     alias atan = std.math.atan;
     alias atan2 = std.math.atan2;
 }
+
+T cot(T)(T x) pure nothrow @nogc
+{
+    return cos(x) / sin(x);
+}
