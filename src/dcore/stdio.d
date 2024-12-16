@@ -25,18 +25,22 @@ FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
-
 module dcore.stdio;
 
 version(WebAssembly)
 {
-    //import core.stdc.stdarg;
+    import dcore.stdarg;
     
     extern(C) nothrow @nogc
     {
-        void jsPrint(uint str, uint len);
+        void jsPrintChar(uint c);
+        void jsPrintString(uint str, uint len);
         
-        int putchar(int c) { return c; }
+        int putchar(int c)
+        {
+            jsPrintChar(c);
+            return c;
+        }
         
         int puts(const(char)* s)
         {
@@ -47,20 +51,132 @@ version(WebAssembly)
                 if (c == 0) break;
                 len++;
             }
-            jsPrint(cast(uint)s, len);
+            jsPrintString(cast(uint)s, len);
             return '\n';
         }
         
+        const char[] hexmap = [
+            '0', '1', '2', '3', 
+            '4', '5', '6', '7', 
+            '8', '9', 'A', 'B', 
+            'C', 'D', 'E', 'F'
+        ];
+        
         int printf(const(char)* fmt, ...)
         {
-            int len = 0;
+            va_list args;
+            va_start(args, fmt);
+            
+            uint f;
+            int pos = 0;
             while(true)
             {
-                char c = fmt[len];
+                char c = fmt[pos];
+                pos++;
                 if (c == 0) break;
-                len++;
+                
+                if (c == '%')
+                {
+                    pos++;
+                    c = fmt[pos];
+                    if (c == 0) break;
+                    
+                    switch(c)
+                    {
+                        case 'c': // ASCII character
+                            jsPrintChar(va_arg!char(args));
+                            break;
+                        
+                        case 's': // zero-terminated string
+                            char* strPtr = va_arg!(char*)(args);
+                            for(char n = *strPtr; n != 0; strPtr++)
+                            {
+                                n = *strPtr;
+                                jsPrintChar(n);
+                            }
+                            break;
+                        
+                        case 'x': // 8 digit, unsigned 32bit hex integer
+                            uint u = va_arg!(uint)(args);
+                            jsPrintChar('0');
+                            jsPrintChar('x');
+                            char[8] digits;
+                            for (int j = 7; j >= 0; j--)
+                            {
+                                digits[j] = hexmap[u & 0x0F];
+                                u >>= 4;
+                            }
+                            foreach(char d; digits)
+                                jsPrintChar(d);
+                            break;
+                        
+                        case 'k': // 4 digit, unsigned 16bit hex integer
+                            ushort u = va_arg!ushort(args);
+                            jsPrintChar('0');
+                            jsPrintChar('x');
+                            char[4] digits;
+                            for (int j = 3; j >= 0; j--)
+                            {
+                                digits[j] = hexmap[u & 0x0F];
+                                u >>= 4;
+                            }
+                            foreach(char d; digits)
+                                jsPrintChar(d);
+                            break;
+                        
+                        case 'd': // signed integer
+                            int w = va_arg!int(args);
+                            if (w < 0)
+                            {
+                                f = -w;
+                                jsPrintChar('-');
+                            }
+                            else
+                            {
+                                f = w;
+                            }
+                            goto u2;
+                            break;
+                        
+                        case 'u': // unsigned integer
+                            f = va_arg!uint(args);
+                            u2:
+                            {
+                                char[10] d;
+                                int k = 9;
+                                do
+                                {
+                                    d[k] = (f % 10) + '0';
+                                    f /= 10;
+                                    k--;
+                                }
+                                while(f && k >= 0);
+                                while(++k < 10)
+                                {
+                                    jsPrintChar(d[k]);
+                                }
+                            }
+                            break;
+                        
+                        case 'X': // 2 digit, unsigned 8 bit hex integer
+                            ubyte b = va_arg!(ubyte)(args);
+                            jsPrintChar('0');
+                            jsPrintChar('x');
+                            jsPrintChar(hexmap[(b & 0xF0) >> 4]);
+                            jsPrintChar(hexmap[b & 0x0F]);
+                            break;
+                        
+                        default:
+                            jsPrintChar(c);
+                            break;
+                    }
+                }
+                else
+                    jsPrintChar(c);
             }
-            jsPrint(cast(uint)fmt, len);
+            
+            va_end(args);
+            
             return 0;
         }
     }
@@ -70,6 +186,7 @@ version(FreeStanding)
 {
     extern(C) nothrow @nogc
     {
+        // Placeholders
         int putchar(int c) { return c; }
         int puts(const(char)* s) { return '\n'; }
         int printf(const(char)* fmt, ...) { return 0; }
@@ -83,9 +200,4 @@ else
         int puts(const char* s);
         int printf(const char* fmt, ...);
     }
-}
-
-void printStr(string s) nothrow @nogc
-{
-    printf("%.*s\n", s.length, s.ptr);
 }

@@ -21,6 +21,19 @@
         //TODO
     }
     
+    var buf = "";
+    function writeChar(c)
+    {
+        if (c == "\n") {
+            console.log(buf);
+            buf = "";
+        }
+        else
+        {
+            buf += c;
+        }
+    }
+    
     var memory;
     var memoryView;
 
@@ -31,7 +44,10 @@
         const bytes = request.response;
         const importObject = {
             env: {
-                jsPrint: function(str, len) {
+                jsPrintChar: function(c) {
+                    writeChar(String.fromCodePoint(c));
+                },
+                jsPrintString: function(str, len) {
                     var charArray = new Uint8Array(memory, str, len);
                     var string = new TextDecoder("utf-8").decode(charArray);
                     console.log(string);
