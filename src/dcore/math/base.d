@@ -28,7 +28,7 @@ DEALINGS IN THE SOFTWARE.
 
 module dcore.math.base;
 
-//version = UsePortableTrig;
+//version = UseFreeStandingMath;
 
 enum double PI = 3.14159265358979323846;
 enum double HALFPI = 1.5707964;
@@ -38,13 +38,13 @@ enum double INVTWOPI = 0.15915494309;
 enum double TWOPI = 6.28318530718;
 enum double THREEHALFPI = 4.7123889;
 
-bool isNaN(real x) pure nothrow @nogc
+bool isNaN(T)(T x) pure nothrow @nogc
 {
     pragma(inline, true);
     return x != x;
 }
 
-int isInfinity(real x) pure nothrow @nogc
+int isInfinity(T)(T x) pure nothrow @nogc
 {
     pragma(inline, true);
     return !isNaN(x) && isNaN(x - x);
@@ -76,20 +76,20 @@ T clamp(T)(T v, T mi, T ma) pure nothrow @nogc
     else return v;
 }
 
-bool isClose(real a, real b, real delta) pure nothrow @nogc
+bool isClose(T)(T a, T b, T delta) pure nothrow @nogc
 {
     pragma(inline, true);
     return abs(a - b) < delta;
 }
 
-real trunc(real x) pure nothrow @nogc
+T trunc(T)(T x) pure nothrow @nogc
 {
     pragma(inline, true);
     long intPart = cast(long)x;
-    return (x < 0 && x != cast(real)intPart) ? intPart - 1 : intPart;
+    return (x < 0 && x != cast(T)intPart) ? intPart - 1 : intPart;
 }
 
-real fmod(real x, real y) pure nothrow @nogc
+T fmod(T)(T x, T y) pure nothrow @nogc
 {
     auto m = trunc(x / y);
     return max(0, x - y * m);
@@ -97,29 +97,31 @@ real fmod(real x, real y) pure nothrow @nogc
 
 version(FreeStanding)
 {
-    version = UsePortableTrig;
+    version = UseFreeStandingMath;
 }
 
 version(LDC)
 {
     import ldc.intrinsics;
+    
+    alias sqrt = llvm_sqrt;
     alias sin = llvm_sin;
     alias cos = llvm_cos;
 }
 else
-version(UsePortableTrig)
+version(UseFreeStandingMath)
 {
     import dcore.math.trigtables;
     
-    real sin(real x) pure nothrow @nogc
+    T sin(T)(T x) pure nothrow @nogc
     {
         pragma(inline, true);
         
-        real xfmod = x - trunc(x * INVTWOPI) * TWOPI;
+        T xfmod = x - trunc(x * INVTWOPI) * TWOPI;
         x = (0 > xfmod)? 0 : xfmod;
         
-        real rsign = 1.0;
-        real adjusted_x = x;
+        T rsign = 1.0;
+        T adjusted_x = x;
         if (x < 0) 
         {
             adjusted_x = -x;
@@ -131,20 +133,20 @@ version(UsePortableTrig)
             rsign = -1.0;
         }
         
-        real j = adjusted_x * (cast(real)(sinTable.length - 2) * INVPI);
+        T j = adjusted_x * (cast(T)(sinTable.length - 2) * INVPI);
         int zero = cast(int)j;
-        real nx = j - zero;
+        T nx = j - zero;
         return ((1.0 - nx) * sinTable[zero][0] + nx * sinTable[zero + 1][0]) * rsign;
     }
     
-    real cos(real x) pure nothrow @nogc
+    T cos(T)(T x) pure nothrow @nogc
     {
         pragma(inline, true);
         
-        real xfmod = x - trunc(x * INVTWOPI) * TWOPI;
+        T xfmod = x - trunc(x * INVTWOPI) * TWOPI;
         x = (0 > xfmod)? 0 : xfmod;
         
-        real adjusted_x = x;
+        T adjusted_x = x;
         if (x < 0) 
         {
             adjusted_x = -x;
@@ -154,9 +156,9 @@ version(UsePortableTrig)
             adjusted_x = min(PI, TWOPI - adjusted_x);
         }
         
-        real j = adjusted_x * (cast(real)(cosTable.length - 2) * INVPI);
+        T j = adjusted_x * (cast(T)(cosTable.length - 2) * INVPI);
         int zero = cast(int)j;
-        real nx = j - zero;
+        T nx = j - zero;
         return (1.0 - nx) * cosTable[zero][0] + nx * cosTable[zero + 1][0];
     }
 }
@@ -188,6 +190,8 @@ version(NoPhobos)
 else
 {
     import std.math;
+    
+    alias sqrt = std.math.sqrt;
     alias sin = std.math.sin;
     alias cos = std.math.cos;
 }
