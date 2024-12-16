@@ -100,6 +100,7 @@ version(FreeStanding)
     version = UseFreeStandingMath;
 }
 
+/*
 version(LDC)
 {
     import ldc.intrinsics;
@@ -109,6 +110,7 @@ version(LDC)
     alias cos = llvm_cos;
 }
 else
+*/
 version(UseFreeStandingMath)
 {
     import dcore.math.trigtables;
@@ -167,24 +169,12 @@ version(NoPhobos)
 {
     extern(C) nothrow @nogc
     {
+        double sqrt(double x);
         double sin(double x);
         double cos(double x);
         
-        /*
         double ceil(double x);
-        float ceilf(float x);
-        real ceill(real x)
-        {
-            return ceil(x);
-        }
-        
         double floor(double x);
-        float floorf(float x);
-        real floorl(real x)
-        {
-            return floor(x);
-        }
-        */
     }
 }
 else
