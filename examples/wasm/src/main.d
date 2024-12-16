@@ -7,6 +7,5 @@ extern(C):
 
 void main()
 {
-    string s = "Привет из D!";
-    printf("Hello from D! %s Test\n", s.ptr);
+    printf("Hello from D! Привет из D!\n");
 }
