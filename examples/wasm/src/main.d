@@ -4,7 +4,7 @@ import dcore.stdlib;
 
 extern(C):
 
-void jsConsoleLog(uint str, uint len) nothrow @nogc;
+void jsPrintString(uint str, uint len) nothrow @nogc;
 uint jsMalloc(uint) nothrow @nogc;
 void jsFree(uint) nothrow @nogc;
 
@@ -18,10 +18,10 @@ void customFree(void* mem) nothrow @nogc
     jsFree(cast(uint)mem);
 }
 
-double computeTest()
+double testFunc()
 {
-    string str = "Hello from D!";
-    jsConsoleLog(cast(uint)str.ptr, str.length);
+    string str = "Hello from D! Привет из D!";
+    jsPrintString(cast(uint)str.ptr, str.length);
     return 0.0;
 }
 
