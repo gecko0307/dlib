@@ -1,3 +1,4 @@
+# Static libraries
 *.a
 *.lib
 
@@ -12,10 +13,8 @@ dub.selections.json
 __test__library__
 tests
 
-# Node.js
-node_modules
-dub.selections.json
-
-# Binaries
+# Executables
 *.exe
+
+# Debug info
 *.pdb

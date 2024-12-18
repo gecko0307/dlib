@@ -73,6 +73,27 @@ version(Posix)
     import core.sys.posix.sys.utsname;
 
     __gshared utsname __posix_utsname;
+    
+    struct ArchitectureMapping
+    {
+        string unameStr;
+        ProcessorArchitecture architecture;
+    }
+    
+    static immutable ArchitectureMapping[] archTable = [
+        { "x86_64", ProcessorArchitecture.x64 },
+        { "i386", ProcessorArchitecture.x86 },
+        { "armv7l", ProcessorArchitecture.ARM },
+        { "aarch64", ProcessorArchitecture.ARM64 },
+        { "iPhone", ProcessorArchitecture.ARM64 },
+        { "iPad", ProcessorArchitecture.ARM64 },
+        { "ia64", ProcessorArchitecture.IA64 },
+        { "mips", ProcessorArchitecture.MIPS32 },
+        { "mips64", ProcessorArchitecture.MIPS64 },
+        { "sparc", ProcessorArchitecture.SPARC8 },
+        { "ppc", ProcessorArchitecture.PPC32 },
+        { "ppc64", ProcessorArchitecture.PPC64 }
+    ];
 }
 
 /*
@@ -151,12 +172,14 @@ bool sysInfo(SysInfo* info) nothrow @nogc
             auto osReleaseLen = strlen(__posix_utsname.release.ptr);
             info.osVersion = cast(string)__posix_utsname.release[0..osReleaseLen];
             
-            string x86_64 = "x86_64";
-            string x86 = "x86";
-            if (strncmp(__posix_utsname.machine.ptr, x86_64.ptr, x86_64.length) == 0)
-                info.architecture = ProcessorArchitecture.x64;
-            else if (strncmp(__posix_utsname.machine.ptr, x86.ptr, x86.length) == 0)
-                info.architecture = ProcessorArchitecture.x86;
+            foreach (mapping; archTable)
+            {
+                if (strncmp(__posix_utsname.machine.ptr, mapping.unameStr.ptr, mapping.unameStr.length) == 0)
+                {
+                    info.architecture = mapping.architecture;
+                    break;
+                }
+            }
         }
 
         version(_TP_Unix_sysconf)
@@ -208,4 +231,3 @@ bool sysInfo(SysInfo* info) nothrow @nogc
 
     return result;
 }
-

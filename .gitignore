@@ -1,4 +1,4 @@
-# Static libs
+# Static libraries
 *.a
 *.lib
 
@@ -12,3 +12,9 @@ dub.selections.json
 # Dub test files
 __test__library__
 tests
+
+# Executables
+*.exe
+
+# Debug info
+*.pdb
