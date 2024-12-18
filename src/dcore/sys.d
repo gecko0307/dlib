@@ -60,11 +60,14 @@ struct SysInfo
     ulong totalMemory;
     ProcessorArchitecture architecture;
     uint numProcessors;
-    string os;
-    uint osVersionMajor;
-    uint osVersionMinor;
+    string osName;
+    string osVersion;
 }
 
+version(Windows)
+{
+    char[32] __windows_osversion;
+}
 version(Posix)
 {
     import core.sys.posix.sys.utsname;
@@ -84,6 +87,8 @@ bool sysInfo(SysInfo* info) nothrow @nogc
 
     version(_TP_Windows)
     {
+        import core.stdc.stdio;
+        import core.stdc.string;
         import core.sys.windows.windows;
 
         SYSTEM_INFO sysinfo;
@@ -104,45 +109,47 @@ bool sysInfo(SysInfo* info) nothrow @nogc
         GlobalMemoryStatusEx(&status);
         info.totalMemory = status.ullTotalPhys;
         
-        OSVERSIONINFOEXA vi;
-        vi.dwOSVersionInfoSize = vi.sizeof;
-        if (GetVersionExA(cast(LPOSVERSIONINFOA)&vi) != 0)
+        OSVERSIONINFOEXA osvi;
+        osvi.dwOSVersionInfoSize = osvi.sizeof;
+        if (GetVersionExA(cast(LPOSVERSIONINFOA)&osvi) != 0)
         {
-            switch (vi.dwPlatformId)
+            switch (osvi.dwPlatformId)
             {
                 case VER_PLATFORM_WIN32s:
-                    info.os = "Windows 3.x";
+                    info.osName = "Windows 3.x";
                     break;
                 case VER_PLATFORM_WIN32_WINDOWS:
-                    info.os = (vi.dwMinorVersion == 0) ? "Windows 95" : "Windows 98";
+                    info.osName = (osvi.dwMinorVersion == 0) ? "Windows 95" : "Windows 98";
                     break;
                 case VER_PLATFORM_WIN32_NT:
-                    info.os = "Windows NT";
+                    info.osName = "Windows NT";
                     break;
                 default:
-                    info.os = "Windows";
+                    info.osName = "Windows";
                     break;
             }
             
-            info.osVersionMajor = vi.dwMajorVersion;
-            info.osVersionMinor = vi.dwMinorVersion;
+            snprintf(__windows_osversion.ptr, __windows_osversion.length, "%d.%d", osvi.dwMajorVersion, osvi.dwMinorVersion);
+            info.osVersion = cast(string)__windows_osversion[0..strlen(__windows_osversion.ptr)];
         }
         
         result = true;
     }
     else version(Posix)
     {
+        import core.stdc.string;
+        
         info.architecture = ProcessorArchitecture.Unknown;
-        info.os = "Unix/unknown";
-        info.osVersionMajor = 0;
-        info.osVersionMinor = 0;
+        info.osName = "Unix/unknown";
+        info.osVersion = "";
 
         if (uname(&__posix_utsname) == 0)
         {
             auto osNameLen = strlen(__posix_utsname.sysname.ptr);
-            info.os = cast(string)__posix_utsname.sysname[0..osNameLen];
+            info.osName = cast(string)__posix_utsname.sysname[0..osNameLen];
 
-            // TODO: use __posix_utsname.release to determine osVersionMajor and osVersionMinor
+            auto osReleaseLen = strlen(__posix_utsname.release.ptr);
+            info.osVersion = cast(string)__posix_utsname.release[0..osReleaseLen];
             
             string x86_64 = "x86_64";
             string x86 = "x86";
@@ -154,9 +161,7 @@ bool sysInfo(SysInfo* info) nothrow @nogc
 
         version(_TP_Unix_sysconf)
         {
-            import core.stdc.string;
             import core.sys.posix.unistd;
-            import dcore.stdio;
 
             info.numProcessors = cast(uint)sysconf(_SC_NPROCESSORS_ONLN);
             
