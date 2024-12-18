@@ -1,43 +1,52 @@
 # Contributing Guidelines
 
-####  Bug reporting 
+#### Bug reporting 
 
 Open an issue at [GitHub issue tracker](https://github.com/gecko0307/dlib/issues). Before doing that, ensure the bug was not already reported or fixed in `master` branch. Describe a problem and, if necessary, provide minimal code needed to reproduce it.
 
 Note that macOS compatibility issues are not considered bugs. dlib intentionally doesn't support macOS anymore. Read more [here](https://github.com/gecko0307/dlib/wiki/Why-doesn't-dlib-support-macOS).
 
-####  Bug fixing 
+Bugs that have not been reproduced or discussed for 6 months or longer are marked as `wontfix` and closed.
+
+We also use several other labels:
+* Breaking change. Self-descriptive: an improvement that breaks backward compatibility
+* Bug. A bug that should be fixed without API change
+* Enhancement. A non-breaking improvement of existing functionality (optimization or a new feature)
+* Missing. Appears when existing functionality is removed due to regressions and needs to be rewritten, or when some implementation is not complete
+* New functionality. Self-descriptive: a new functionality request.
+
+#### Bug fixing 
 
 Open a new GitHub pull request with your patch. Provide a description of the problem and solution. Follow our [code style](#code-style-and-standards). Please, try to avoid solutions that break library API and semantics - such changes should be made very carefully. If the problem can't be solved without breaking changes, explicitly state that in the description.
 
-####  Implementing new features 
+#### Implementing new features 
 
 Before writing a new module, familiarize yourself with [project philosophy](https://github.com/gecko0307/dlib/wiki/Rationale) and [best practices](https://github.com/gecko0307/dlib/wiki/Best-Practices). Despite being a general-purpose library, dlib is not a place for rarely used or too domain-specific code. In most cases it's better to start a new library instead of pushing new modules to dlib. Only in case you find yourself constantly reusing some generic functionality in different projects it may be reasonable to propose such code to dlib. It may be a data structure, sorting algorithm, data compression method, image file decoder, communication protocol, or anything of that sort.
 
 New code should at least:
 * work under Windows and POSIX systems and provide platform-agnostic API
 * support x86 and x86_64 targets
-* don't rely on third party libraries other than system API
-* follow our [code style](#code-style-and-standards)
-* use transparent dynamic memory allocations. Ideally the code should not allocate at all or rely on user for that. If dynamic allocations can't be avoided, they should be done with `dlib.core.memory`. Direct garbage collector usage is discouraged - `dlib.memory` can be used to abstract away from actual allocation method
-* follow [dlib's best practices](https://github.com/gecko0307/dlib/wiki/Best-Practices), making use of our memory management tools, containers, exceptionless error handling and filesystem abstraction
+* not rely on third party libraries other than system API
+* follow dlib's [code style](#code-style-and-standards)
+* use transparent dynamic memory allocations. Ideally the code should not allocate at all or rely on user for that. If internal dynamic allocations can't be avoided, they should be done with `dlib.core.memory` or `dlib.memory`. Direct garbage collector usage is discouraged
+* follow [dlib's best practices](https://github.com/gecko0307/dlib/wiki/Best-Practices), making use of ownership, containers, streams, exceptionless error handling and filesystem abstraction
 * not violate copyright/licensing. When adapting third-party code, make sure that it is compatible with [Boost Software License 1.0](https://www.boost.org/LICENSE_1_0.txt).
 
-####  Code style and standards 
+#### Code style and standards
 
 dlib follows [D style](https://dlang.org/dstyle.html). Essential rules are the following:
 * Use spaces instead of tabs. Each indentation level is 4 spaces
-* Opening curly bracket should be on a new line
+* Opening curly bracket should be on a new line (Allman style)
 * Functions and variables should be in `camelCase`
 * Types, constants and enums should be in `PascalCase`
 * Module names should be in lowercase.
 
-All modules in dlib should belong to a package (`dlib.core`, `dlib.math`, `dlib.image`, etc.). Keep package and module names short and informative. Modules with related functionality can be combined to subpackages (such as `dlib.image.io`). Provide a package module (`package.d` with public imports) for each subpackage.
+All modules in dlib should belong to a package (`dlib.core`, `dlib.math`, `dlib.image`, etc.). Keep package and module names short and informative. Modules with related functionality can be combined to subpackages (such as `dlib.image.io`). Provide a package import module (`package.d` with public imports) for each subpackage.
 
 Each D module should start with a Boost license block prepended with a copyright notice:
-```
+```d
 /*
-Copyright (c) 2018 <author's name here>
+Copyright (c) 2024 <author's name here>
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -63,4 +72,34 @@ FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
+```
+
+#### Documenting
+
+It is not strictly necessary to document code, but if you do, use [ddoc syntax](https://dlang.org/spec/ddoc.html). Each documented module should be accompanied by a description block (if you don't do that, documentation generators may ignore the module):
+```d
+/**
+ * <One-line description of the module>
+ *
+ * Description:
+ * <more in-depth information (optional)>
+ *
+ * Copyright: Your Name 2023.
+ * License: $(LINK2 https://boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Your Name
+ */
+module dlib.something.something;
+```
+
+#### Testing
+
+It is advisable to write unit tests for new code, if they can be written. Sometimes functionality needs particular external environment or special conditions to run; in these cases tests are not required.
+
+It is recommended to add one `unittest` block per function, method, or class. Test block should be formatted in the following way:
+
+```d
+///
+unittest
+{
+}
 ```

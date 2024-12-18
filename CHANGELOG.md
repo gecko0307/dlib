@@ -1,3 +1,265 @@
+dlib 1.3.0 - 21 Feb, 2023
+-------------------------
+No changes since dlib 1.3.0 beta1.
+
+dlib 1.3.0 beta1 - 14 Feb, 2023
+-------------------------------
+- **dlib.random**
+  - New module `dlib.random.random` that implements `random`, a pseudo-random number generator based on C `rand`
+- **dlib.math**
+  - Function that computes quadratic Bézier curve - `dlib.math.interpolation.bezierQuadratic`
+  - GNU D Compiler (GDC) support in `dlib.math.sse`
+
+dlib 1.2.1 - 30 Aug, 2023
+-------------------------
+- **dlib.image**
+  - Median filter (`dlib.image.filters.median`)
+- **dlib.filesystem**
+  - Bugfixes in `dlib.filesystem.posix.common`
+- **dlib.core**
+  - `dlib.core.thread`: fix deprecations in Windows multithreading API signatures
+- **dlib.math**
+  - Fix unittest for `dlib.math.utils.nextPowerOfTen`
+- **Misc**
+  - Added `AUTHORS.md`.
+
+dlib 1.2.0 - 30 Apr, 2023
+-------------------------
+No changes since dlib 1.2.0 beta1.
+
+dlib 1.2.0 beta1 - 19 Apr, 2023
+-------------------------------
+- **dlib.math**
+  - `homothetyMatrix` and `homothetyMatrix2D` functions in `dlib.math.transformation`
+  - `radtorev` and `revtorad` functions in `dlib.math.utils` that convert radians to revolutions and revolutions to radians, respectively
+- **dlib.image**
+  - New funtion `drawRect` in `dlib.image.render.shapes`
+- **Misc**
+  - Added `CODE_OF_CONDUCT.md`
+  - Doxygen support for documentation.
+
+dlib 1.1.0 - 5 Oct, 2022
+-------------------------
+No changes since dlib 1.1.0 beta1.
+
+dlib 1.1.0 beta1 - 10 Sep, 2022
+-------------------------------
+- **dlib.geometry**
+  - New module `dlib.geometry.mpr` - implementation of the Minkowski Portal Refinement algorithm that detects intersection between two arbitrary convex shapes
+  - New module `dlib.geometry.support` with support functions for some common shapes
+- **dlib.math**
+  - `integer` and `frac` functions in `dlib.math.utils` that return integer part and fractional part of a real number, respectively.
+- **dlib.image**
+  - Fix compilation for x86.
+
+dlib 1.0.0 - 17 Feb, 2022
+-------------------------
+No changes since dlib 1.0.0 beta2.
+
+dlib 1.0.0 beta2 - 05 Feb, 2022
+-------------------------------
+Changes since dlib 1.0.0 beta1:
+- **dlib.image**
+  - File-based image loading functions now preload data to memory, so that decoders run faster (2x-10x depending on format and image size).
+
+dlib 1.0.0 beta1 - 12 Jan, 2022
+-------------------------------
+- **dlib.core**
+  - **Breaking change:** `dlib.core.bitio.swapEndian16` moved to `dlib.math.utils`
+  - POSIX thread creation is now validated in debug mode
+- **dlib.math**
+  - **Breaking change:** deprecated method `Quaternion.generator` has been removed
+  - **Breaking change:** deprecated functions `sum`, `invertArray`, `allIsZero` in `dlib.math.utils` have been removed
+  - `interpHermiteDerivative`
+  - `interpHermite` now support vector types
+  - `Complexd` alias to `Complex!(double)` in `dlib.math.complex`
+  - Fix `dlib.math.complex.pow`, `dlib.math.complex.atan2`
+- **dlib.geometry**
+  - **Breaking change:** deprecated method `Ray.intersectSphere` with `position` and `radius` arguments has been removed
+  - **Breaking change:** deprecated method `Ray.intersectTriangle` with `v0`, `v1`, `v2` arguments has been removed.
+  - Fix `Triangle.boundingBox`
+  - New function `intrSphereVsAABB` in `dlib.geometry.intersection`
+  - `AABB.intersectsSphere` is deprecated, use `intrSphereVsAABB` instead.
+
+dlib 0.23.0 - 1 Oct, 2021
+-------------------------
+No changes since dlib 0.23.0 beta1.
+
+dlib 0.23.0 beta1 - 28 Sep, 2021
+--------------------------------
+- **dlib.math**
+  - Vector swizzling assign support: `v.zxy = Vector3f(1, 2, 3);`
+  - `Quaternion.generator` is deprecated, use `Quaternion.rotationAxis` and `Quaternion.rotationAngle` instead
+  - `Quaternion.fromEulerAngles` and `Quaternion.toEulerAngles` now use angles in pitch-yaw-roll format
+  - `EPSILON` in `dlib.math.utils` now equals 0.000001.
+- **dlib.geometry**
+  - `Ray.intersectSphere` with `position` and `radius` arguments is deprecated, use `Ray.intersectSphere` with `Sphere` struct instead
+  - `Ray.intersectTriangle` with `v0`, `v1`, `v2` arguments is is deprecated, use `Ray.intersectTriangle` with `Triangle` struct instead
+- **dlib.image**
+  - `isAlmostZero` for `Color4f`
+- **dlib.filesystem**
+  - `StdFileSystem.openDir` now returns null if path is not a valid directory.
+
+dlib 0.22.0 - 13 Jun, 2021
+--------------------------
+No changes since dlib 0.22.0 beta1.
+
+dlib 0.22.0 beta1 - 26 May, 2021
+--------------------------------
+- **dlib.core**
+  - **Breaking change:** removed `dlib.core.oop.implements` (non-working function)
+- **dlib.math**
+  - Fix matrix subtraction
+  - Fix wrong bounds check in matrix slice assignment
+  - **Breaking change:** removed `dlib.math.linsolve.solveGS` (non-working function)
+  - Binary matrix operations are now `const`
+  - `sum`, `invertArray`, `allIsZero` in `dlib.math.utils` are deprecated. Use `reduce!((a, b) => a + b)`, `map!(a => -a)`, `reduce!((a, b) => a + b == 0)` instead
+- **dlib.image**
+  - **Breaking change:** deprecated type `dlib.image.image.PixelFormat` has been removed
+  - **Breaking change:** deprecated aliases `save` and `load` in `dlib.audio.io` have been removed
+- **dlib.audio**
+  - **Breaking change:** deprecated aliases `save`, `load`, `saveAnimated`, `loadAnimated`, `saveHDRI`, `loadHDRI` in `dlib.image.io` have been removed
+- **dlib.text**
+  - **Breaking change:** deprecated method `UTF8Decoder.byDChar` have been removed
+  - **Breaking change:** deprecated method `UTF16LEDecoder.byDChar` have been removed
+  - **Breaking change:** deprecated aliases `UTF16Decoder` and `UTF16Encoder` have been removed
+- **dlib.serialization**
+  - Boolean values support in JSON decoder.
+
+dlib 0.21.0 - 7 Apr, 2021
+-------------------------
+No changes since dlib 0.21.0 beta2.
+
+dlib 0.21.0 beta2 - 28 Mar, 2021
+--------------------------------
+Changes since dlib 0.21.0 beta1:
+- **dlib.image**
+  - `PixelFormat` is deprecated, use `IntegerPixelFormat` instead.
+
+dlib 0.21.0 beta1 - 22 Feb, 2021
+--------------------------------
+- **dlib.text**
+  - **Breaking change:** deprecated module `dlib.text.unmanagedstring` has been removed
+  - **Breaking change:** deprecated method `String.byDChar` has been removed
+  - `UTF16Decoder` and `UTF16Encoder` are deprecated, use `UTF16LEDecoder` and `UTF16LEEncoder` instead
+- **dlib.image**
+  - **Breaking change:** deprecated module `dlib.image.io.io` has been removed
+  - `load` and `save` are deprecated, use `loadImage` and `saveImage` instead
+  - `loadAnimated` and `saveAnimated` are deprecated, use `loadAnimatedImage` and `saveAnimatedImage` instead
+  - `loadHDRI` and `saveHDRI` are deprecated, use `loadHDRImage` and `saveHDRImage` instead
+  - Fix integer overflow in `Image.getPixel` and `Image.setPixel`
+- **dlib.container**
+  - **Breaking change:** deprecated alias `DynamicArray` has been removed
+- **dlib.coding**
+  - **Breaking change:** deprecated module `dlib.coding.hash` has been removed
+- **dlib.audio**
+  - `load` and `save` are deprecated, use `loadSound` and `saveSound` instead
+- **dlib.serialization**
+  - Fix a bug in JSON decoder
+- **Misc**
+  - Switched from Travis CI to GitHub Actions for running integration tests.
+
+dlib 0.20.0 - 16 Oct, 2020
+--------------------------
+No changes since dlib 0.20.0 beta1.
+
+dlib 0.20.0 beta1 - 10 Oct, 2020
+--------------------------------
+- **dlib.image**
+  - `dlib.image.io.io` is deprecated, import `dlib.image.io` instead
+- **dlib.audio**
+  - New package: `dlib.audio.io`
+- **dlib.text**
+  - `dlib.text.unmanagedstring` is deprecated, use `dlib.text.str` instead
+  - `String.byDChar` is deprecated, use `String.decode` instead
+  - `UTF8Decoder.byDChar` is deprecated, use `UTF8Decoder.decode` instead
+  - `UTF16Decoder.byDChar` is deprecated, use `UTF16Decoder.decode` instead
+- **dlib.coding**
+  - `dlib.coding.hash` is deprecated, use `std.digest` instead
+- **dlib.container**
+  - `dlib.container.array.DynamicArray` is deprecated, use `dlib.container.array.Array` instead
+- **Documentation**
+  - Deploy-ready ddoc documentation for dlib now can be generated from source code using `dub --build=ddox`. It uses [scod](https://code.dlang.org/packages/scod) generator and is hosted [here](https://gecko0307.github.io/dlib/docs/dlib.html). Harbored-mod support has been dropped.
+  - Many modules are now documented better.
+- **Misc**
+  - Added latest DMD (2.094.0, 2.093.1) and LDC (1.23.0) to Travis CI config.
+
+dlib 0.19.2 - 26 Aug, 2020
+--------------------------
+- A couple of fixes for LDC
+- New AppVeyor configuration.
+
+dlib 0.19.1 - 24 July, 2020
+---------------------------
+- **dlib.network**
+  - Fixed compilation under Windows
+- **dlib.filesystem**
+  - `isFile`, `isDir` properties now work for `StdFileSystem` entries
+- **dlib.container**
+  - `DynamicArray.readOnlyData`
+- **dlib.text**
+  - `String.toString` and `String.ptr` are now `const`
+- **Misc**
+  - Added latest DMD (2.093.0) and LDC (1.22.0) to Travis CI config.
+
+dlib 0.19.0 - 31 May, 2020
+--------------------------
+Changes since beta2:
+- **dlib.coding**, **dlib.filesystem**
+  - Deprecation fixes
+- **Misc**
+  - Added latest DMD (2.092.0) to Travis CI config.
+
+dlib 0.19.0 beta2 - 22 May, 2020
+--------------------------------
+Changes since beta1:
+- **dlib.math**
+  - Transformation of a vector with 4x4 matrix now doesn't include affinity check.
+  - `dlib.math.transformation.scaling` fix.
+
+dlib 0.19.0 beta1 - 8 May, 2020
+-------------------------------
+- **dlib.core**
+  - New module `dlib.core.mutex`, a thin abstraction over platform-specific thread synchronization primitives.
+  - `Thread.sleep`
+- **dlib.concurrency**
+  - New package that implements a simple thread pool.
+- **dlib.image**
+  - New module `dlib.image.render.text` that provides `drawText`, a function to render ASCII strings on images.
+- **dlib.math**
+  - **Breaking change:** deprecated modules `dlib.math.easing`, `dlib.math.smoothstep` have been removed.
+  - **Breaking change:** tuple constructor of `Vector` now implicitly extends the last argument to all remaining components if the tuple is smaller than vector. This ensures e.g. `Vector3f(0) == Vector3f(0, 0, 0)`.
+- **dlib.geometry**
+  - **Breaking change:** deprecated modules `dlib.geometry.bezier`, `dlib.geometry.hermite` have been removed.
+- **Breaking change:** deprecated package `dlib.functional` has been removed.
+- **dlib.text**
+  - `UTF16Encoder` in `dlib.text.utf16`.
+  - `String` can now be constructed directly from `InputStream`.
+  - **Breaking change:** deprecated property `String.cString` has been removed.
+- **dlib.container**
+  - `Queue` and `Stack` now use `DynamicArray` internally instead of `LinkedList`.
+- **Misc**
+  - Added latest DMD (2.091.1, 2.090.1) and LDC (1.21.0, 1.20.0) to Travis CI config.
+
+dlib 0.18.0 - 28 Feb, 2020
+--------------------------
+No changes since dlib 0.18.0 beta1.
+
+dlib 0.18.0 beta1 - 23 Feb, 2020
+--------------------------------
+- **dlib.math**
+  - All interpolation functions moved to `dlib.math.interpolation`, which is now a package import. It includes `nearest`, `linear`, `bezier`, `catmullrom`, `hermite`, `smoothstep`, `easing` modules. Corresponding old modules (`dlib.math.easing`, `dlib.math.smoothstep`, `dlib.geometry.bezier`, `dlib.geometry.hermite`) are deprecated.
+- **dlib.audio**
+  - `SawtoothWaveSynth`, `TriangleWaveSynth` in `dlib.audio.synth`.
+- **dlib.text**
+  - `String` is now always null-terminated.
+- **dlib.functional**
+  - The whole package is now deprecated.
+  - `dlib.functional.hof` module moved to `dlib.math.hof`.
+  - `dlib.functional.range` module is deprecated, use `std.range.iota` instead.
+- **Misc**
+  - Added latest DMD (2.090.1, 2.089.1) and LDC (1.19.0, 1.18.0) to Travis CI config.
+
 dlib 0.17.0 - 21 Oct, 2019
 --------------------------
 Changes since beta:
@@ -27,7 +289,7 @@ No changes since dlib 0.16.0 beta1.
 dlib 0.16.0 beta1 - 4 Mar, 2019
 -------------------------------
 - **dlib.core**
-  - `dlib.core.memory`: Memory profiler now reports file and line of each allocation. Now it is enabled in runtime using `enableMemoryProfiler` function. 
+  - `dlib.core.memory`: Memory profiler now reports file and line of each allocation. Now it is enabled in runtime using `enableMemoryProfiler` function.
   - `dlib.core.memory`: `Owner.deleteOwnedObject`.
 - **dlib.text**
   - `dlib.text.lexer`: `Lexer.position`.
@@ -94,10 +356,10 @@ dlib 0.14.0 beta1 - 8 Jul, 2018
 
 - **dlib.image**
   - **Breaking change:** `SuperImage.pixelFormat` now returns `uint` instead of `PixelFormat`. This allows extending dlib with custom pixel formats while maintaining compatibility with `PixelFormat`. Values from 0 to 255 are reserved for dlib, values 256 and above are application-specific. This change is just a new convention and will not break any existing logics, though explicit cast to `PixelFormat` may be required in some cases. Comparisons such as `img.pixelFormat == PixelFormat.RGB8` will work fine.
-  - `PixelFormat.RGBA_FLOAT` is now deprecated, use `FloatPixelFormat.RGBAF32` from `dlib.image.hdri` instead. 
-  - Saving to HDR is now supported (`saveHDR` functions in `dlib.image.io.hdr`). 
+  - `PixelFormat.RGBA_FLOAT` is now deprecated, use `FloatPixelFormat.RGBAF32` from `dlib.image.hdri` instead.
+  - Saving to HDR is now supported (`saveHDR` functions in `dlib.image.io.hdr`).
   - New filters: `dlib.image.filters.histogram` (generates an image histogram) and `dlib.image.filters.binarization` (image thresholding using Otsu's method).
-  - ACES tonemapper (`hdrTonemapACES`) and average luminance function (`averageLuminance`) in `dlib.image.hdri`. 
+  - ACES tonemapper (`hdrTonemapACES`) and average luminance function (`averageLuminance`) in `dlib.image.hdri`.
   - Improved `dlib.image.canvas`. Path rasterizer now natively does anti-aliasing. Fixed bug with rendering on non-square images.
 - **dlib.audio**
   - Synthesizer framework (`dlib.audio.synth`). It allows to write synthesizers and use them to 'render' sounds, like in DAWs. Three built-in synthesizers are available: `SineWaveSynth`, `SquareWaveSynth`, `FMSynth`. To write actual data to `Sound` objects, two functions are available: `fillSynth` and `mixSynth`.
@@ -176,7 +438,7 @@ dlib 0.11.1 - 24 May, 2017
 --------------------------
 * Added `alphaOver` in `dlib.image.color`
 * Fixed memory leak in `dlib.image.io.png`
-* Deprecation fix: use `dlib.math.transformation` everywhere instead of `dlib.math.affine`. 
+* Deprecation fix: use `dlib.math.transformation` everywhere instead of `dlib.math.affine`.
 
 dlib 0.11.0 - 3 May, 2017
 -------------------------
@@ -203,12 +465,12 @@ dlib 0.11.0 beta1 - 25 Apr, 2017
 - **Misc**
   - Removed deprecated `dlib.xml` package. `dlib.serialization.xml` should be used instead.
   - Added latest DMD (2.074.0) and LDC (1.2.0) to Travis CI config.
-  - A new logo and homepage for the project: https://gecko0307.github.io/dlib. 
+  - A new logo and homepage for the project: https://gecko0307.github.io/dlib.
 
 dlib 0.10.1 - 14 Mar, 2017
 --------------------------
 * Animated images and basic APNG support (unfinished, without dispose and blend operations, saving to APNG is also missing)
-* Fixed some bugs in `dlib.text.slicelexer` and `dlib.serialization.xml`. `dlib.text.lexer.Lexer` is now an alias to `dlib.text.slicelexer.SliceLexer` 
+* Fixed some bugs in `dlib.text.slicelexer` and `dlib.serialization.xml`. `dlib.text.lexer.Lexer` is now an alias to `dlib.text.slicelexer.SliceLexer`
 * Added latest DMD (2.073.2) and LDC (1.1.0) to Travis CI config.
 
 dlib 0.10.0 - 23 Jan, 2017
@@ -275,7 +537,7 @@ dlib 0.9.0 beta1 - 14 May, 2016
   - Improved `LinkedList`, added range interface. Added unittests for `LinkedList` and `DynamicArray`
 - dlib.text
   - `UTF8Decoder` and `Lexer` now support range interface. Added unittests for both
-- Other improvements 
+- Other improvements
   - Added latest DMD (2.071.0) to Travis CI config, added DUB service files to .gitignore.
 
 dlib 0.8.1 - 13 Feb, 2016
@@ -302,7 +564,7 @@ dlib 0.8.0 beta1 - 7 Feb, 2016
   * Fixed erroneous deleting uninitialized thread in `dlib.core.thread`
 * dlib.filesystem
   * Implemented missing methods in `dlib.filesystem.stdfs.StdFileSystem`: `openForIO`, `openDir`, `createDir`, `remove`. There is a known issue with `remove`: it doesn't delete directories under Windows
-* Other improvements 
+* Other improvements
   * Added [HTML documentation generator](https://github.com/gecko0307/dlib/tree/master/gendoc).
 
 dlib 0.7.1 - 2 Dec, 2015

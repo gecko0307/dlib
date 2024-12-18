@@ -30,4 +30,4 @@ Progress
 * [ ] `dcore.stdio` - standard C I/O for platforms that support it
 * [ ] `dcore.stdlib` - `malloc/free` for platforms that support it
 * [x] `dcore.sys` - retrieve system information
-* [ ] `dcore.text` - string/text processing
+* [ ] `dcore.text` - string processing, UTF-8 decoder
