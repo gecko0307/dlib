@@ -1,4 +1,4 @@
-module test.sys;
+module tests.sys;
 
 import std.stdio;
 import dcore;

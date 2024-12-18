@@ -27,10 +27,6 @@ DEALINGS IN THE SOFTWARE.
 */
 module dcore.sys;
 
-// TODO: use built-in system API for full independency from Phobos
-version(Windows) { import core.sys.windows.windows; }
-version(linux) { import core.sys.linux.sys.sysinfo; }
-
 version(Windows) { version = _TP_Windows; }
 version(linux) { version = _TP_Unix_sysconf; }
 version(Solaris) { version = _TP_Unix_sysconf; }
@@ -69,6 +65,13 @@ struct SysInfo
     uint osVersionMinor;
 }
 
+version(Posix)
+{
+    import core.sys.posix.sys.utsname;
+
+    __gshared utsname __posix_utsname;
+}
+
 /*
  * sysInfo works on Windows, Unix/sysconf (Linux-like)
  * and Unix/sysctl (BSD-like) systems.
@@ -77,8 +80,12 @@ struct SysInfo
  */
 bool sysInfo(SysInfo* info) nothrow @nogc
 {
+    bool result = false;
+
     version(_TP_Windows)
     {
+        import core.sys.windows.windows;
+
         SYSTEM_INFO sysinfo;
         GetSystemInfo(&sysinfo);
         info.numProcessors = sysinfo.dwNumberOfProcessors;
@@ -121,103 +128,79 @@ bool sysInfo(SysInfo* info) nothrow @nogc
             info.osVersionMinor = vi.dwMinorVersion;
         }
         
-        return true;
+        result = true;
     }
-    else version(_TP_Unix_sysconf)
+    else version(Posix)
     {
-        info.numProcessors = sysconf(_SC_NPROCESSORS_ONLN);
-        
-        long pages = sysconf(_SC_PHYS_PAGES);
-        long pageSize = sysconf(_SC_PAGE_SIZE);
-        info.totalMemory = pages * pageSize;
-        
-        info.os = ""; // TODO
-        info.osVersionMajor = 0; // TODO
-        info.osVersionMinor = 0; // TODO
-        
-        /*
-        if (uname(&unameData) == 0)
+        info.architecture = ProcessorArchitecture.Unknown;
+        info.os = "Unix/unknown";
+        info.osVersionMajor = 0;
+        info.osVersionMinor = 0;
+
+        if (uname(&__posix_utsname) == 0)
         {
-            info.os = unameData.sysname ~ " " ~ unameData.release;
-            int major, minor;
-            if (sscanf(unameData.release.ptr, "%d.%d", &major, &minor) == 2)
-            {
-                info.osVersionMajor = cast(uint)major;
-                info.osVersionMinor = cast(uint)minor;
-            }
+            auto osNameLen = strlen(__posix_utsname.sysname.ptr);
+            info.os = cast(string)__posix_utsname.sysname[0..osNameLen];
+
+            // TODO: use __posix_utsname.release to determine osVersionMajor and osVersionMinor
+            
+            string x86_64 = "x86_64";
+            string x86 = "x86";
+            if (strncmp(__posix_utsname.machine.ptr, x86_64.ptr, x86_64.length) == 0)
+                info.architecture = ProcessorArchitecture.x64;
+            else if (strncmp(__posix_utsname.machine.ptr, x86.ptr, x86.length) == 0)
+                info.architecture = ProcessorArchitecture.x86;
         }
-        else
+
+        version(_TP_Unix_sysconf)
         {
-            info.os = "Unknown Unix";
-            info.osVersionMajor = 0;
-            info.osVersionMinor = 0;
+            import core.stdc.string;
+            import core.sys.posix.unistd;
+            import dcore.stdio;
+
+            info.numProcessors = cast(uint)sysconf(_SC_NPROCESSORS_ONLN);
+            
+            long pages = sysconf(_SC_PHYS_PAGES);
+            long pageSize = sysconf(_SC_PAGE_SIZE);
+            info.totalMemory = pages * pageSize;
+            
+            result = true;
         }
-        */
-        
-        return true;
-    }
-    else version(_TP_Unix_sysctl)
-    {
-        import core.sys.posix.sys.sysctl;
-        import core.sys.posix.sys.types;
-        
-        size_t len;
-        int[4] mib;
-        
-        len = numCPU.sizeof;
-        mib[0] = CTL_HW;
-        mib[1] = HW_AVAILCPU;
-        int numCPU;
-        sysctl(mib, 2, &numCPU, &len, null, 0);
-        if (numCPU < 1)
+        else version(_TP_Unix_sysctl)
         {
-            mib[1] = HW_NCPU;
+            import core.sys.posix.sys.sysctl;
+            import core.sys.posix.sys.types;
+            
+            size_t len;
+            int[4] mib;
+            
+            len = numCPU.sizeof;
+            mib[0] = CTL_HW;
+            mib[1] = HW_AVAILCPU;
+            int numCPU;
             sysctl(mib, 2, &numCPU, &len, null, 0);
             if (numCPU < 1)
-                numCPU = 1;
-        }
-        info.numProcessors = numCPU;
-        
-        len = ulong.sizeof;
-        mib[0] = CTL_HW;
-        mib[1] = HW_MEMSIZE;
-        ulong totalMemory = 0;
-        if (sysctl(mib.ptr, 2, &totalMemory, &len, null, 0) == 0)
-        {
-            info.totalMemory = totalMemory;
-        }
-        
-        info.os = ""; // TODO
-        info.osVersionMajor = 0; // TODO
-        info.osVersionMinor = 0; // TODO
-        
-        /*
-        mib[0] = CTL_KERN;
-        mib[1] = KERN_OSTYPE;
-        char[256] osBuffer;
-        len = osBuffer.length;
-        if (sysctl(mib.ptr, 2, osBuffer.ptr, &len, null, 0) == 0)
-            info.os = osBuffer[0 .. len-1].idup;
-
-        mib[1] = KERN_OSRELEASE;
-        char[256] releaseBuffer;
-        len = releaseBuffer.length;
-        if (sysctl(mib.ptr, 2, releaseBuffer.ptr, &len, null, 0) == 0)
-        {
-            info.os ~= " " ~ releaseBuffer[0 .. len-1];
-            int major, minor;
-            if (sscanf(releaseBuffer.ptr, "%d.%d", &major, &minor) == 2)
             {
-                info.osVersionMajor = cast(uint)major;
-                info.osVersionMinor = cast(uint)minor;
+                mib[1] = HW_NCPU;
+                sysctl(mib, 2, &numCPU, &len, null, 0);
+                if (numCPU < 1)
+                    numCPU = 1;
             }
+            info.numProcessors = numCPU;
+            
+            len = ulong.sizeof;
+            mib[0] = CTL_HW;
+            mib[1] = HW_MEMSIZE;
+            ulong totalMemory = 0;
+            if (sysctl(mib.ptr, 2, &totalMemory, &len, null, 0) == 0)
+            {
+                info.totalMemory = totalMemory;
+            }
+            
+            result = true;
         }
-        */
-        
-        return true;
     }
-    else
-    {
-        return false;
-    }
+
+    return result;
 }
+
