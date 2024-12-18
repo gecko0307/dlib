@@ -50,6 +50,8 @@ version(FreeStanding)
 {
     extern(C) nothrow @nogc
     {
+        // TODO: custom allocation callbacks
+        
         void* malloc(size_t size)
         {
             return null;
@@ -64,6 +66,7 @@ else
 {
     extern(C) nothrow @nogc
     {
+        // Use C runtime functions
         void* malloc(size_t size);
         void free(void* mem);
     }

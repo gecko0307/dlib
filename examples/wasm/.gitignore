@@ -16,6 +16,5 @@ tests
 node_modules
 dub.selections.json
 
-# Binaries
+# Executables
 *.exe
-*.wasm

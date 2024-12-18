@@ -135,34 +135,84 @@ bool sysInfo(SysInfo* info) nothrow @nogc
         info.osVersionMajor = 0; // TODO
         info.osVersionMinor = 0; // TODO
         
+        /*
+        if (uname(&unameData) == 0)
+        {
+            info.os = unameData.sysname ~ " " ~ unameData.release;
+            int major, minor;
+            if (sscanf(unameData.release.ptr, "%d.%d", &major, &minor) == 2)
+            {
+                info.osVersionMajor = cast(uint)major;
+                info.osVersionMinor = cast(uint)minor;
+            }
+        }
+        else
+        {
+            info.os = "Unknown Unix";
+            info.osVersionMajor = 0;
+            info.osVersionMinor = 0;
+        }
+        */
+        
         return true;
     }
     else version(_TP_Unix_sysctl)
     {
+        import core.sys.posix.sys.sysctl;
+        import core.sys.posix.sys.types;
+        
+        size_t len;
         int[4] mib;
-        size_t len = numCPU.sizeof;
-
+        
+        len = numCPU.sizeof;
         mib[0] = CTL_HW;
         mib[1] = HW_AVAILCPU;
-        
         int numCPU;
         sysctl(mib, 2, &numCPU, &len, null, 0);
-
-        if (numCPU < 1) 
+        if (numCPU < 1)
         {
             mib[1] = HW_NCPU;
             sysctl(mib, 2, &numCPU, &len, null, 0);
             if (numCPU < 1)
                 numCPU = 1;
         }
-        
         info.numProcessors = numCPU;
         
-        info.totalMemory = 0; // TODO
+        len = ulong.sizeof;
+        mib[0] = CTL_HW;
+        mib[1] = HW_MEMSIZE;
+        ulong totalMemory = 0;
+        if (sysctl(mib.ptr, 2, &totalMemory, &len, null, 0) == 0)
+        {
+            info.totalMemory = totalMemory;
+        }
         
         info.os = ""; // TODO
         info.osVersionMajor = 0; // TODO
         info.osVersionMinor = 0; // TODO
+        
+        /*
+        mib[0] = CTL_KERN;
+        mib[1] = KERN_OSTYPE;
+        char[256] osBuffer;
+        len = osBuffer.length;
+        if (sysctl(mib.ptr, 2, osBuffer.ptr, &len, null, 0) == 0)
+            info.os = osBuffer[0 .. len-1].idup;
+
+        mib[1] = KERN_OSRELEASE;
+        char[256] releaseBuffer;
+        len = releaseBuffer.length;
+        if (sysctl(mib.ptr, 2, releaseBuffer.ptr, &len, null, 0) == 0)
+        {
+            info.os ~= " " ~ releaseBuffer[0 .. len-1];
+            int major, minor;
+            if (sscanf(releaseBuffer.ptr, "%d.%d", &major, &minor) == 2)
+            {
+                info.osVersionMajor = cast(uint)major;
+                info.osVersionMinor = cast(uint)minor;
+            }
+        }
+        */
         
         return true;
     }

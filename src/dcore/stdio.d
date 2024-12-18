@@ -33,6 +33,7 @@ version(WebAssembly)
     
     extern(C) nothrow @nogc
     {
+        // Implement these on browser side
         void jsPrintChar(uint c);
         void jsPrintString(uint str, uint len);
         
@@ -64,6 +65,13 @@ version(WebAssembly)
         
         int printf(const(char)* fmt, ...)
         {
+            /* 
+             * Variadic arguments forwarding is not implemented yet,
+             * so we just print fmt
+             */
+            puts(fmt);
+            
+            /*
             va_list args;
             va_start(args, fmt);
             
@@ -176,6 +184,7 @@ version(WebAssembly)
             }
             
             va_end(args);
+            */
             
             return 0;
         }
@@ -196,6 +205,7 @@ else
 {
     extern(C) nothrow @nogc
     {
+        // Use C runtime functions
         int putchar(int c);
         int puts(const char* s);
         int printf(const char* fmt, ...);
