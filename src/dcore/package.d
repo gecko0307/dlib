@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2019-2024 Timur Gafarov
+Copyright (c) 2019-2025 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -35,8 +35,11 @@ public
     import dcore.linker;
     import dcore.math;
     import dcore.memory;
+    import dcore.process;
+    import dcore.random;
     import dcore.stdio;
     import dcore.stdlib;
     import dcore.sys;
     import dcore.text;
+    import dcore.time;
 }

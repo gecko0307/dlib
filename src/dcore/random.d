@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2022-2025 Timur Gafarov
+Copyright (c) 2024-2025 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -25,72 +25,70 @@ FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
-module dcore.stdlib;
+module dcore.random;
+
+/**
+ * Bob Jenkins' 96 bit mix function
+ */
+ulong mix(ulong a, ulong b, ulong c)
+{
+    a=a-b;  a=a-c;  a=a^(c >> 13);
+    b=b-c;  b=b-a;  b=b^(a << 8);
+    c=c-a;  c=c-b;  c=c^(b >> 13);
+    a=a-b;  a=a-c;  a=a^(c >> 12);
+    b=b-c;  b=b-a;  b=b^(a << 16);
+    c=c-a;  c=c-b;  c=c^(b >> 5);
+    a=a-b;  a=a-c;  a=a^(c >> 3);
+    b=b-c;  b=b-a;  b=b^(a << 10);
+    c=c-a;  c=c-b;  c=c^(b >> 15);
+    return c;
+}
 
 version(WebAssembly)
 {
-    extern(C) nothrow @nogc
-    {
-        uint jsMalloc(uint) nothrow @nogc;
-        void jsFree(uint) nothrow @nogc;
-        
-        void* malloc(size_t size)
-        {
-            return cast(void*)jsMalloc(size);
-        }
-        
-        void free(void* mem)
-        {
-            jsFree(cast(uint)mem);
-        }
-        
-        // Fallback
-        void srand(uint seed)
-        {
-        }
-        
-        // Fallback
-        int rand()
-        {
-            return 0;
-        }
-    }
+    // Not implemented
 }
-else
-version(FreeStanding)
+else version(FreeStanding)
 {
-    extern(C) nothrow @nogc
-    {
-        // Fallback
-        void* malloc(size_t size)
-        {
-            return null;
-        }
-        
-        // Fallback
-        void free(void* mem)
-        {
-        }
-        
-        // Fallback
-        void srand(uint seed)
-        {
-        }
-        
-        // Fallback
-        int rand()
-        {
-            return 0;
-        }
-    }
+    // Not implemented
 }
 else
 {
-    extern(C) nothrow @nogc
+    import dcore.stdlib;
+    import dcore.time;
+    import dcore.process;
+    
+    enum RAND_MAX = 0x7fff;
+    
+    void setSeed(uint s)
     {
-        void* malloc(size_t size);
-        void free(void* mem);
-        void srand(uint seed);
-        int rand();
+        srand(s);
+    }
+
+    void setSeed()
+    {
+        srand(cast(uint)seed());
+    }
+    
+    ulong seed()
+    {
+        return mix(clock(), time(null), processId());
+    }
+
+    /**
+     * Returns pseudo-random integer between mi (inclusive) and ma (exclusive)
+     */
+    int randomInRange(int mi, int ma)
+    {
+        return (rand() % (ma - mi)) + mi;
+    }
+    
+    /**
+     * Returns pseudo-random floating-point number in 0..1 range
+     */
+    T random(T)()
+    {
+        T res = (rand() % RAND_MAX) / cast(T)RAND_MAX;
+        return res;
     }
 }

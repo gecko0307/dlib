@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2022-2025 Timur Gafarov
+Copyright (c) 2025 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -25,72 +25,32 @@ FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
-module dcore.stdlib;
+module dcore.time;
 
 version(WebAssembly)
 {
-    extern(C) nothrow @nogc
-    {
-        uint jsMalloc(uint) nothrow @nogc;
-        void jsFree(uint) nothrow @nogc;
-        
-        void* malloc(size_t size)
-        {
-            return cast(void*)jsMalloc(size);
-        }
-        
-        void free(void* mem)
-        {
-            jsFree(cast(uint)mem);
-        }
-        
-        // Fallback
-        void srand(uint seed)
-        {
-        }
-        
-        // Fallback
-        int rand()
-        {
-            return 0;
-        }
-    }
+    // Not implemented
 }
-else
-version(FreeStanding)
+else version(FreeStanding)
 {
-    extern(C) nothrow @nogc
-    {
-        // Fallback
-        void* malloc(size_t size)
-        {
-            return null;
-        }
-        
-        // Fallback
-        void free(void* mem)
-        {
-        }
-        
-        // Fallback
-        void srand(uint seed)
-        {
-        }
-        
-        // Fallback
-        int rand()
-        {
-            return 0;
-        }
-    }
+    // Not implemented
 }
 else
 {
+    version(X86_64)
+    {
+        alias time_t = long;
+    }
+    else version(X86)
+    {
+        alias time_t = int;
+    }
+    
+    alias clock_t = int;
+    
     extern(C) nothrow @nogc
     {
-        void* malloc(size_t size);
-        void free(void* mem);
-        void srand(uint seed);
-        int rand();
+        time_t time(time_t* arg);
+        clock_t clock();
     }
 }

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2022-2025 Timur Gafarov
+Copyright (c) 2025 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -25,72 +25,53 @@ FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
-module dcore.stdlib;
+module dcore.process;
 
 version(WebAssembly)
 {
-    extern(C) nothrow @nogc
+    uint processId()
     {
-        uint jsMalloc(uint) nothrow @nogc;
-        void jsFree(uint) nothrow @nogc;
-        
-        void* malloc(size_t size)
-        {
-            return cast(void*)jsMalloc(size);
-        }
-        
-        void free(void* mem)
-        {
-            jsFree(cast(uint)mem);
-        }
-        
-        // Fallback
-        void srand(uint seed)
-        {
-        }
-        
-        // Fallback
-        int rand()
-        {
-            return 0;
-        }
+        return 0;
     }
 }
-else
-version(FreeStanding)
+else version(FreeStanding)
 {
-    extern(C) nothrow @nogc
+    uint processId()
     {
-        // Fallback
-        void* malloc(size_t size)
-        {
-            return null;
-        }
-        
-        // Fallback
-        void free(void* mem)
-        {
-        }
-        
-        // Fallback
-        void srand(uint seed)
-        {
-        }
-        
-        // Fallback
-        int rand()
-        {
-            return 0;
-        }
+        return 0;
     }
 }
 else
 {
-    extern(C) nothrow @nogc
+    version(Windows)
     {
-        void* malloc(size_t size);
-        void free(void* mem);
-        void srand(uint seed);
-        int rand();
+        extern(Windows) nothrow @nogc
+        {
+            uint GetCurrentProcessId();
+        }
+        
+        alias processId = GetCurrentProcessId;
+    }
+    else version(Posix)
+    {
+        alias pid_t = int;
+        
+        extern(C) nothrow @nogc
+        {
+            pid_t getpid();
+        }
+        
+        uint processId()
+        {
+            return cast(uint)getpid();
+        }
+    }
+    else
+    {
+        // Fallback
+        uint processId()
+        {
+            return 0;
+        }
     }
 }
