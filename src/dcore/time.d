@@ -27,6 +27,18 @@ DEALINGS IN THE SOFTWARE.
 */
 module dcore.time;
 
+struct DateTime
+{
+    int seconds;
+    int minutes;
+    int hours;
+    int day;
+    int month;
+    int year;
+    int dayInWeek;
+    int dayInYear;
+}
+
 version(WebAssembly)
 {
     // Not implemented
@@ -48,9 +60,58 @@ else
     
     alias clock_t = int;
     
+    struct tm
+    {
+        int tm_sec;   // seconds, range 0 to 59
+        int tm_min;   // minutes, range 0 to 59
+        int tm_hour;  // hours, range 0 to 23
+        int tm_mday;  // day of the month, range 1 to 31
+        int tm_mon;   // month, range 0 to 11
+        int tm_year;  // The number of years since 1900
+        int tm_wday;  // day of the week, range 0 to 6
+        int tm_yday;  // day in the year, range 0 to 365
+        int tm_isdst; // daylight saving time
+    }
+    
     extern(C) nothrow @nogc
     {
         time_t time(time_t* arg);
         clock_t clock();
+        tm* gmtime(const(time_t)* t);
+        tm* localtime(const(time_t)* t);
+    }
+    
+    DateTime currentTimeLocal()
+    {
+        time_t t = time(null);
+        tm timeInfo = *gmtime(&t);
+        DateTime dateTime = {
+            seconds: timeInfo.tm_sec,
+            minutes: timeInfo.tm_min,
+            hours: timeInfo.tm_hour,
+            day: timeInfo.tm_mday,
+            month: timeInfo.tm_mon,
+            year: 1900 + timeInfo.tm_year,
+            dayInWeek: timeInfo.tm_wday,
+            dayInYear: timeInfo.tm_yday
+        };
+        return dateTime;
+    }
+    
+    DateTime currentTimeUTC()
+    {
+        time_t t = time(null);
+        tm timeInfo = *localtime(&t);
+        DateTime dateTime = {
+            seconds: timeInfo.tm_sec,
+            minutes: timeInfo.tm_min,
+            hours: timeInfo.tm_hour,
+            day: timeInfo.tm_mday,
+            month: timeInfo.tm_mon,
+            year: 1900 + timeInfo.tm_year,
+            dayInWeek: timeInfo.tm_wday,
+            dayInYear: timeInfo.tm_yday
+        };
+        return dateTime;
     }
 }
