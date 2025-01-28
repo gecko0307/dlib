@@ -81,10 +81,11 @@ else
         tm* localtime(const(time_t)* t);
     }
     
-    DateTime currentTimeLocal()
+    DateTime dateTimeFromTm(tm* timeInfo)
     {
-        time_t t = time(null);
-        tm timeInfo = *gmtime(&t);
+        if (timeInfo is null)
+            return DateTime();
+        
         DateTime dateTime = {
             seconds: timeInfo.tm_sec,
             minutes: timeInfo.tm_min,
@@ -95,23 +96,21 @@ else
             dayInWeek: timeInfo.tm_wday,
             dayInYear: timeInfo.tm_yday
         };
+        
         return dateTime;
+    }
+    
+    DateTime currentTimeLocal()
+    {
+        time_t t = time(null);
+        tm timeInfo = *localtime(&t);
+        return dateTimeFromTm(&timeInfo);
     }
     
     DateTime currentTimeUTC()
     {
         time_t t = time(null);
-        tm timeInfo = *localtime(&t);
-        DateTime dateTime = {
-            seconds: timeInfo.tm_sec,
-            minutes: timeInfo.tm_min,
-            hours: timeInfo.tm_hour,
-            day: timeInfo.tm_mday,
-            month: timeInfo.tm_mon,
-            year: 1900 + timeInfo.tm_year,
-            dayInWeek: timeInfo.tm_wday,
-            dayInYear: timeInfo.tm_yday
-        };
-        return dateTime;
+        tm timeInfo = *gmtime(&t);
+        return dateTimeFromTm(&timeInfo);
     }
 }
