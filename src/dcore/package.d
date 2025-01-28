@@ -45,8 +45,8 @@ public
     import dcore.time;
 }
 
-void init()
+void init() nothrow @nogc
 {
     dcore.time.init();
-    dcore.random.setSeed();
+    dcore.random.init();
 }

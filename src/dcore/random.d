@@ -47,10 +47,20 @@ ulong mix(ulong a, ulong b, ulong c) pure nothrow @nogc
 version(WebAssembly)
 {
     // Not implemented
+    
+    // Fallback
+    void init() nothrow @nogc
+    {
+    }
 }
 else version(FreeStanding)
 {
     // Not implemented
+    
+    // Fallback
+    void init() nothrow @nogc
+    {
+    }
 }
 else
 {
@@ -60,14 +70,14 @@ else
     
     enum RAND_MAX = 0x7fff;
     
+    void init() nothrow @nogc
+    {
+        srand(cast(uint)seed());
+    }
+    
     void setSeed(uint s) nothrow @nogc
     {
         srand(s);
-    }
-
-    void setSeed() nothrow @nogc
-    {
-        srand(cast(uint)seed());
     }
     
     ulong seed() nothrow @nogc

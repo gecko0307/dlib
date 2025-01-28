@@ -42,10 +42,20 @@ struct DateTime
 version(WebAssembly)
 {
     // Not implemented
+    
+    // Fallback
+    void init() nothrow @nogc
+    {
+    }
 }
 else version(FreeStanding)
 {
     // Not implemented
+    
+    // Fallback
+    void init() nothrow @nogc
+    {
+    }
 }
 else
 {
