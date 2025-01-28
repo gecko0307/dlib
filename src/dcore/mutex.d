@@ -82,15 +82,15 @@ struct Mutex
     }
     
     /// Try to enter critical section. Return immediately if the mutex is already locked
-    int tryLock() nothrow @nogc
+    bool tryLock() nothrow @nogc
     {
         version(Windows)
         {
-            return !TryEnterCriticalSection(&_mutex);
+            return TryEnterCriticalSection(&_mutex) > 0;
         }
         else version(Posix)
         {
-            return pthread_mutex_trylock(&_mutex);
+            return pthread_mutex_trylock(&_mutex) == 0;
         }
         else return 0;
     }
