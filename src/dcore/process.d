@@ -29,14 +29,14 @@ module dcore.process;
 
 version(WebAssembly)
 {
-    uint processId()
+    uint processId() nothrow @nogc
     {
         return 0;
     }
 }
 else version(FreeStanding)
 {
-    uint processId()
+    uint processId() nothrow @nogc
     {
         return 0;
     }
@@ -61,7 +61,7 @@ else
             pid_t getpid();
         }
         
-        uint processId()
+        uint processId() nothrow @nogc
         {
             return cast(uint)getpid();
         }
@@ -69,7 +69,7 @@ else
     else
     {
         // Fallback
-        uint processId()
+        uint processId() nothrow @nogc
         {
             return 0;
         }

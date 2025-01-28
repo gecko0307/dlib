@@ -30,7 +30,7 @@ module dcore.random;
 /**
  * Bob Jenkins' 96 bit mix function
  */
-ulong mix(ulong a, ulong b, ulong c)
+ulong mix(ulong a, ulong b, ulong c) pure nothrow @nogc
 {
     a=a-b;  a=a-c;  a=a^(c >> 13);
     b=b-c;  b=b-a;  b=b^(a << 8);
@@ -60,17 +60,17 @@ else
     
     enum RAND_MAX = 0x7fff;
     
-    void setSeed(uint s)
+    void setSeed(uint s) nothrow @nogc
     {
         srand(s);
     }
 
-    void setSeed()
+    void setSeed() nothrow @nogc
     {
         srand(cast(uint)seed());
     }
     
-    ulong seed()
+    ulong seed() nothrow @nogc
     {
         return mix(clock(), time(null), processId());
     }
@@ -78,7 +78,7 @@ else
     /**
      * Returns pseudo-random integer between mi (inclusive) and ma (exclusive)
      */
-    int randomInRange(int mi, int ma)
+    int randomInRange(int mi, int ma) nothrow @nogc
     {
         return (rand() % (ma - mi)) + mi;
     }
@@ -86,7 +86,7 @@ else
     /**
      * Returns pseudo-random floating-point number in 0..1 range
      */
-    T random(T)()
+    T random(T)() nothrow @nogc
     {
         T res = (rand() % RAND_MAX) / cast(T)RAND_MAX;
         return res;

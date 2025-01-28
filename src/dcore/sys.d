@@ -66,13 +66,13 @@ struct SysInfo
 
 version(Windows)
 {
-    char[32] __windows_osversion;
+    private __gshared char[32] __windows_osversion;
 }
 version(Posix)
 {
     import core.sys.posix.sys.utsname;
 
-    __gshared utsname __posix_utsname;
+    private __gshared utsname __posix_utsname;
     
     struct ArchitectureMapping
     {
@@ -80,7 +80,7 @@ version(Posix)
         ProcessorArchitecture architecture;
     }
     
-    static immutable ArchitectureMapping[] archTable = [
+    private static immutable ArchitectureMapping[] archTable = [
         { "x86_64", ProcessorArchitecture.x64 },
         { "i386", ProcessorArchitecture.x86 },
         { "armv7l", ProcessorArchitecture.ARM },

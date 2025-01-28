@@ -43,3 +43,9 @@ public
     import dcore.text;
     import dcore.time;
 }
+
+void init()
+{
+    dcore.time.init();
+    dcore.random.setSeed();
+}

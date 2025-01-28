@@ -5,6 +5,5 @@ import dcore;
 
 void testRandom()
 {
-    setSeed();
     writefln("Random number: %s", random!float());
 }

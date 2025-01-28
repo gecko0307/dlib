@@ -49,6 +49,15 @@ else version(FreeStanding)
 }
 else
 {
+    import dcore.mutex;
+    
+    private __gshared Mutex mutex;
+    
+    void init() nothrow @nogc
+    {
+        mutex.init();
+    }
+    
     version(X86_64)
     {
         alias time_t = long;
@@ -77,11 +86,37 @@ else
     {
         time_t time(time_t* arg);
         clock_t clock();
+        
         tm* gmtime(const(time_t)* t);
         tm* localtime(const(time_t)* t);
+        
+        version(Posix)
+        {
+            tm* gmtime_s(const(time_t)* t, tm* buf);
+            tm* localtime_s(const(time_t)* t, tm* buf);
+        }
+        
+        version(Windows)
+        {
+            tm* gmtime_s(const(time_t)* t, tm* buf)
+            {
+                mutex.lock();
+                *buf = *gmtime(t);
+                mutex.unlock();
+                return buf;
+            }
+            
+            tm* localtime_s(const(time_t)* t, tm* buf)
+            {
+                mutex.lock();
+                *buf = *localtime(t);
+                mutex.unlock();
+                return buf;
+            }
+        }
     }
     
-    DateTime dateTimeFromTm(tm* timeInfo)
+    DateTime dateTimeFromTm(tm* timeInfo) pure nothrow @nogc
     {
         if (timeInfo is null)
             return DateTime();
@@ -100,17 +135,19 @@ else
         return dateTime;
     }
     
-    DateTime currentTimeLocal()
+    DateTime currentTimeLocal() nothrow @nogc
     {
         time_t t = time(null);
-        tm timeInfo = *localtime(&t);
+        tm timeInfo;
+        localtime_s(&t, &timeInfo);
         return dateTimeFromTm(&timeInfo);
     }
     
-    DateTime currentTimeUTC()
+    DateTime currentTimeUTC() nothrow @nogc
     {
         time_t t = time(null);
-        tm timeInfo = *gmtime(&t);
+        tm timeInfo;
+        gmtime_s(&t, &timeInfo);
         return dateTimeFromTm(&timeInfo);
     }
 }
