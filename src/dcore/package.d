@@ -35,6 +35,7 @@ public
     import dcore.linker;
     import dcore.math;
     import dcore.memory;
+    import dcore.mutex;
     import dcore.process;
     import dcore.random;
     import dcore.stdio;
