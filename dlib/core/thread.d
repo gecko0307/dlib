@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2023 Timur Gafarov
+Copyright (c) 2015-2025 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -35,7 +35,7 @@ DEALINGS IN THE SOFTWARE.
  * is greatly inspired by core.thread from Phobos, but dlib.core.thread
  * is fully GC-free and can be used with dlib.core.memory allocators.
  *
- * Copyright: Timur Gafarov 2015-2023.
+ * Copyright: Timur Gafarov 2015-2025.
  * License: $(LINK2 https://boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */

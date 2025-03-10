@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2023 Timur Gafarov
+Copyright (c) 2011-2025 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Functions that return other functions
  *
- * Copyright: Timur Gafarov 2011-2023.
+ * Copyright: Timur Gafarov 2011-2025.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
@@ -74,7 +74,7 @@ T delegate(S) compose(T, U, S)(T function(U) f, U function(S) g)
 auto Y(R, P...) (R delegate(P) delegate(R delegate(P)) lambda)
 {
     struct RFunc {R delegate(P) delegate(RFunc) f;}
-    auto r = RFunc( (RFunc w) => lambda((P x) => w.f(w)(x)) );
+    auto r = RFunc((RFunc w) => lambda((P x) => w.f(w)(x)));
     return r.f(r);
 }
 

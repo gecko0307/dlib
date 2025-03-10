@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2023 Timur Gafarov
+Copyright (c) 2011-2025 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -35,7 +35,7 @@ DEALINGS IN THE SOFTWARE.
  * One possible use case for such types is returning result and error message 
  * from function instead of throwing an exception.
  *
- * Copyright: Timur Gafarov 2011-2023.
+ * Copyright: Timur Gafarov 2011-2025.
  * License: $(LINK2 htpps://boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */

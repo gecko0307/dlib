@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2014-2023 Martin Cejp, Timur Gafarov
+Copyright (c) 2014-2025 Martin Cejp, Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -27,7 +27,7 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
- * Copyright: Martin Cejp, Timur Gafarov 2014-2023.
+ * Copyright: Martin Cejp, Timur Gafarov 2014-2025.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Martin Cejp, Timur Gafarov
  */

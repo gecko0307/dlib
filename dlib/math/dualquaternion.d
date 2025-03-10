@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2023 Timur Gafarov
+Copyright (c) 2015-2025 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Dual quaternions
  *
- * Copyright: Timur Gafarov 2015-2023.
+ * Copyright: Timur Gafarov 2015-2025.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */

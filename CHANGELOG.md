@@ -1,3 +1,9 @@
+dlib 1.3.1 - 10 Mar, 2025
+-------------------------
+- **dlib.math**
+  -  Limit `dlib.math.sse` for x86_64 only
+  - `dlib.math.complex.zeta` was removed due to its broken status.
+
 dlib 1.3.0 - 21 Feb, 2023
 -------------------------
 No changes since dlib 1.3.0 beta1.
