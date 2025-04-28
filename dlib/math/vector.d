@@ -684,7 +684,7 @@ struct Vector(T, int size)
             assert(!valid("m"));
             assert(!valid("km"));
         }
-        else static if (size == 3)
+        else static if (size == 4)
         {
             assert(valid("xyzw"));
             assert(valid("rgba"));
