@@ -417,6 +417,7 @@ do
     auto f = (center - eye).normalized;
     auto u = (up).normalized;
     auto s = cross(f, u).normalized;
+    assert(!s.isAlmostZero, "look direction cannot be exactly parallel to the up direction");
     u = cross(s, f);
 
     Result[0,0] = s.x;
