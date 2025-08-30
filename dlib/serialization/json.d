@@ -51,7 +51,7 @@ import dlib.text.str;
 
 class JSONLexer
 {
-    String text;
+    string text;
     Lexer lexer;
     string currentLexeme;
     
@@ -61,7 +61,7 @@ class JSONLexer
     
     this(string text)
     {
-        this.text = String(text);
+        this.text = text;
         lexer = New!Lexer(this.text, delimiters);
         lexer.ignoreNewlines = true;
         nextLexeme();
@@ -70,7 +70,6 @@ class JSONLexer
     ~this()
     {
         Delete(lexer);
-        text.free();
     }
     
     void nextLexeme()
@@ -80,8 +79,9 @@ class JSONLexer
         do
         {
             lex = lexer.getLexeme();
+            if (lex.length == 0) break;
         }
-        while (lex[0] == ' ' || lex[0] == '\t' || lex[0] == '\n');
+        while (lex == " " || lex == "\t" || lex == "\n");
         
         // EOF
         if (lex.length == 0)
@@ -90,11 +90,10 @@ class JSONLexer
             return;
         }
 
-        // Quote found
         if (lex == "\"" || lex == "\'" || lex == "`")
         {
-            char quote = lex[0];
-            auto startPos = lexer.position() - 1;
+            string quote = lex;
+            size_t startPos = lexer.position() - 1;
 
             while (true)
             {
@@ -105,10 +104,10 @@ class JSONLexer
                     currentLexeme = text[startPos..$];
                     return;
                 }
-                if (nextLex[0] == quote)
+                else if (nextLex.length == 1 && nextLex == quote)
                 {
                     // Closing quote found
-                    auto endPos = lexer.position();
+                    size_t endPos = lexer.position();
                     currentLexeme = text[startPos..endPos];
                     return;
                 }
