@@ -51,111 +51,73 @@ import dlib.text.str;
 
 class JSONLexer
 {
+    String text;
     Lexer lexer;
-    string text;
-    string currentLexeme = "";
-    String internalString;
-    UTF8Encoder encoder;
-
+    string currentLexeme;
+    
     enum delimiters = [
-        "{", "}", "[", "]", ",", ":", "\n", " ", "\"", "\'", "`",
-        "\\a", "\\b", "\\f", "\\n", "\\r", "\\t", "\\v", "\\\"", "\\\'", "\\\\", "\\?",
-        "\\u"
+        "{", "}", "[", "]", ",", ":", "\n", " ", "\"", "\'", "`"
     ];
-
+    
     this(string text)
     {
-        this.text = text;
-        internalString.reserve(text.length);
+        this.text = String(text);
         lexer = New!Lexer(this.text, delimiters);
+        lexer.ignoreNewlines = true;
         nextLexeme();
     }
 
     ~this()
     {
         Delete(lexer);
-        internalString.free();
+        text.free();
     }
-
+    
     void nextLexeme()
     {
-        string lexeme;
-        while (true)
+        // Skip whitespaces
+        string lex;
+        do
         {
-            lexeme = lexer.getLexeme();
-            
-            if (lexeme.length == 0)
+            lex = lexer.getLexeme();
+        }
+        while (lex[0] == ' ' || lex[0] == '\t' || lex[0] == '\n');
+        
+        // EOF
+        if (lex.length == 0)
+        {
+            currentLexeme = "";
+            return;
+        }
+
+        // Quote found
+        if (lex == "\"" || lex == "\'" || lex == "`")
+        {
+            char quote = lex[0];
+            auto startPos = lexer.position() - 1;
+
+            while (true)
             {
-                internalString ~= lexeme;
-                currentLexeme = cast(string)(internalString.data[$-1-lexeme.length..$-1]);
-                return;
-            }
-            else if (lexeme != "\n" && !isWhitespace(lexeme))
-            {
-                if (lexeme == "\"" || lexeme == "\'" || lexeme == "`")
+                auto nextLex = lexer.getLexeme();
+                if (nextLex.length == 0)
                 {
-                    string quote = lexeme;
-                    size_t startPos = internalString.length;
-                    internalString ~= lexeme;
-                    size_t endPos = startPos;
-                    while (lexeme.length)
-                    {
-                        lexeme = lexer.getLexeme();
-
-                        if (lexeme == "\\a") internalString ~= "\a";
-                        else if (lexeme == "\\b") internalString ~= "\b";
-                        else if (lexeme == "\\f") internalString ~= "\f";
-                        else if (lexeme == "\\n") internalString ~= "\n";
-                        else if (lexeme == "\\r") internalString ~= "\r";
-                        else if (lexeme == "\\t") internalString ~= "\t";
-                        else if (lexeme == "\\v") internalString ~= "\v";
-                        else if (lexeme == "\\\"") internalString ~= "\"";
-                        else if (lexeme == "\\\'") internalString ~= "\'";
-                        else if (lexeme == "\\\\") internalString ~= "\\";
-                        else if (lexeme == "\\?") internalString ~= "\?";
-                        else if (lexeme == "\\u")
-                        {
-                            lexeme = lexer.getLexeme();
-                            char[4] buffer;
-                            auto num = hexToUTF8(lexeme, buffer);
-                            internalString ~= cast(string)(buffer[0..num]);
-                        }
-                        else internalString ~= lexeme;
-
-                        endPos = internalString.length;
-                        if (lexeme == quote)
-                            break;
-                    }
-                    currentLexeme = cast(string)(internalString.data[startPos..endPos]);
+                    // EOF without closing quote
+                    currentLexeme = text[startPos..$];
                     return;
                 }
-                else
+                if (nextLex[0] == quote)
                 {
-                    internalString ~= lexeme;
-                    currentLexeme = cast(string)(internalString.data[$-1-lexeme.length..$-1]);
+                    // Closing quote found
+                    auto endPos = lexer.position();
+                    currentLexeme = text[startPos..endPos];
                     return;
                 }
             }
         }
-    }
-
-    bool isWhitespace(string lexeme)
-    {
-        return isWhite(lexeme[0]);
-    }
-
-    size_t hexToUTF8(string input, ref char[4] buffer)
-    {
-        uint codepoint = '\u0000';
-
-        // TODO: invalid codepoint should be an error
-        if (input.length >= 4)
+        else
         {
-            string hex = input[0..4];
-            codepoint = std.conv.parse!(uint, string)(hex, 16);
+            currentLexeme = lex;
         }
-
-        return encoder.encode(codepoint, buffer);
     }
 }
 
@@ -262,6 +224,7 @@ class JSONDocument
     protected:
 
     JSONLexer lexer;
+    
     string currentLexeme() @property
     {
         return lexer.currentLexeme;
