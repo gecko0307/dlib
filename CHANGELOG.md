@@ -1,7 +1,7 @@
 dlib 1.3.3 - 30 Aug, 2025
 -------------------------
 - **dlib.serialization**
-  - Fix bugs in **dlib.serialization.json**.
+  - Fix bugs in `dlib.serialization.json`.
 
 dlib 1.3.2 - 01 May, 2025
 -------------------------
