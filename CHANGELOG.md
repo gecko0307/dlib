@@ -1,8 +1,13 @@
+dlib 1.3.3 - 30 Aug, 2025
+-------------------------
+- **dlib.serialization**
+  - Fix bugs in **dlib.serialization.json**.
+
 dlib 1.3.2 - 01 May, 2025
 -------------------------
 - **dlib.math**
   - `lookAtMatrix` now checks for matching eye and up directions
-  - Fix unittest for vector swizzling
+  - Fix unittest for vector swizzling.
 
 dlib 1.3.1 - 10 Mar, 2025
 -------------------------
