@@ -41,7 +41,8 @@ public
     import dlib.memory.gcallocator;
     import dlib.memory.mallocator;
     import dlib.memory.mmappool;
-
+    import dlib.memory.arena;
+    
     import std.experimental.allocator: make, dispose, shrinkArray, expandArray, makeArray, dispose;
 }
 

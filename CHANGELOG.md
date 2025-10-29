@@ -1,5 +1,7 @@
 dlib 1.4.0 - TBD
 ----------------
+- **dlib.memory**
+  - `dlib.memory.arena` - a general-purpose region-based memory allocator.
 - **dlib.math**
   - New function `wrapAngle` in `dlib.math.utils`.
 
