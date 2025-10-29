@@ -444,3 +444,19 @@ unittest
 {
     assert(abs(frac(54.832f) - 0.832f) <= EPSILON);
 }
+
+/** 
+ * Wraps an arbitrary angle to [-180, +180] degrees range.
+ *
+ * Params:
+ *   a = angle in degrees.
+ * Returns:
+ *   Wrapped angle in degrees.
+ */
+T wrapAngle(T)(T a)
+{
+    a = fmod(a + 180.0, 360.0);
+    if (a < 0.0)
+        a += 360.0;
+    return a - 180.0;
+}
