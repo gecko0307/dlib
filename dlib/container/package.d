@@ -47,6 +47,7 @@ public
     import dlib.container.bst;
     import dlib.container.dict;
     import dlib.container.linkedlist;
+    import dlib.container.mappedlist;
     import dlib.container.queue;
     import dlib.container.stack;
 }
