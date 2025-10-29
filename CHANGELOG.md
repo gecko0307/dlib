@@ -1,3 +1,8 @@
+dlib 1.4.0 - TBD
+----------------
+- **dlib.math**
+  - New function `wrapAngle` in `dlib.math.utils`.
+
 dlib 1.3.3 - 30 Aug, 2025
 -------------------------
 - **dlib.serialization**
