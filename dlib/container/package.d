@@ -50,4 +50,5 @@ public
     import dlib.container.mappedlist;
     import dlib.container.queue;
     import dlib.container.stack;
+    import dlib.container.spscqueue;
 }

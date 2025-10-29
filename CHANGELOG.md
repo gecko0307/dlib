@@ -1,9 +1,10 @@
 dlib 1.4.0 - TBD
 ----------------
 - **dlib.memory**
-  - `dlib.memory.arena` - a general-purpose region-based memory allocator.
-- **dlib.containers**
-  - `dlib.containers.mappedlist` - a list with string-mapped indices.
+  - `dlib.memory.arena` - a general-purpose region-based memory allocator
+- **dlib.container**
+  - `dlib.container.spscqueue` - wait-free single-producer single-consumer queue
+  - `dlib.container.mappedlist` - a list with string-mapped indices
 - **dlib.math**
   - New function `wrapAngle` in `dlib.math.utils`.
 
