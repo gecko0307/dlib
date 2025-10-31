@@ -1,5 +1,5 @@
-dlib 1.4.0 beta1 - TBD
-----------------------
+dlib 1.4.0 beta1 - 31 Nov, 2025
+-------------------------------
 - **dlib.memory**
   - `dlib.memory.arena` - a general-purpose region-based memory allocator
 - **dlib.container**
