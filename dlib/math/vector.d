@@ -1120,7 +1120,7 @@ do
     T dx = a.x - b.x;
     T dy = a.y - b.y;
     T dz = a.z - b.z;
-    return sqrt((dx * dx) + (dy * dy) + (dz * dz));
+    return hypot3(dx, dy, dz);
 }
 
 /**
