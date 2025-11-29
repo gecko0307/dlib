@@ -1087,7 +1087,17 @@ do
 {
     T dx = a.x - b.x;
     T dy = a.y - b.y;
-    return sqrt((dx * dx) + (dy * dy));
+    return hypot(dx, dy);
+}
+
+///
+unittest
+{
+    const a = Vector2f(4, 0);
+    const b = Vector2f(1, 4);
+    const l = distance(a, b);
+
+    assert(isConsiderZero(l - 5));
 }
 
 /**
