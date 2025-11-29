@@ -55,7 +55,7 @@ SuperImage lensDistortion(
     float halfWidth = cast(float)img.width / 2.0f;
     float halfHeight = cast(float)img.height / 2.0f;
 
-    float correctionRadius = sqrt(cast(float)(img.width ^^ 2 + img.height ^^ 2)) / strength;
+    float correctionRadius = hypot(cast(float)img.width, img.height) / strength;
 
     foreach(y; 0..img.height)
     foreach(x; 0..img.width)
@@ -63,7 +63,7 @@ SuperImage lensDistortion(
         float newX = x - halfWidth;
         float newY = y - halfHeight;
 
-        float distance = sqrt(newX ^^ 2 + newY ^^ 2);
+        float distance = hypot(newX, newY);
         float r = distance / correctionRadius;
 
         float theta;
