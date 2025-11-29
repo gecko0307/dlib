@@ -490,18 +490,24 @@ struct Vector(T, int size)
         do
         {
             static if (isFloatingPoint!T)
+                alias CastTo = T;
+            else
+                alias CastTo = float;
+
+            static if (size == 2)
             {
-                T t = 0;
-                foreach (component; arrayof)
-                    t += component * component;
-                return sqrt(t);
+                return cast(T)hypot(cast(CastTo)x, cast(CastTo)y);
+            }
+            else static if (size == 3)
+            {
+                return cast(T)hypot3(cast(CastTo)x, cast(CastTo)y, cast(CastTo)z);
             }
             else
             {
                 T t = 0;
                 foreach (component; arrayof)
                     t += component * component;
-                return cast(T)sqrt(cast(float)t);
+                return cast(T)sqrt(cast(CastTo)t);
             }
         }
 
