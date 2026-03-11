@@ -238,6 +238,29 @@ do
 }
 
 /**
+ * Create a transformation matrix from translation, rotation, and scaling.
+ *
+ * Params:
+ *   t = Translation vector.
+ *   r = Rotation quaternion.
+ *   s = Scaling vector.
+ * Returns:
+ *   The resulting transformation matrix.
+ */
+Matrix!(T,4) trsMatrix(T) (Vector!(T,3) t, Quaternion!T r, Vector!(T,3) s)
+{
+    Matrix!(T,4) res = Matrix!(T,4).identity;
+    Matrix!(T,3) rm = r.toMatrix3x3;
+    res.a11 = rm.a11 * s.x; res.a12 = rm.a12 * s.x; res.a13 = rm.a13 * s.x;
+    res.a21 = rm.a21 * s.y; res.a22 = rm.a22 * s.y; res.a23 = rm.a23 * s.y;
+    res.a31 = rm.a31 * s.z; res.a32 = rm.a32 * s.z; res.a33 = rm.a33 * s.z;
+    res.a14 = t.x;
+    res.a24 = t.y;
+    res.a34 = t.z;
+    return res;
+}
+
+/**
  * Setup the matrix to perform scale along an arbitrary axis
  */
 Matrix!(T,4) scaleAlongAxisMatrix(T) (Vector!(T,3) scaleAxis, T k)
