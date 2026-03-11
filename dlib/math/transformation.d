@@ -238,7 +238,7 @@ do
 }
 
 /**
- * Create a transformation matrix from translation, rotation, and scaling.
+ * Create a combined transformation matrix from translation, rotation, and scaling.
  *
  * Params:
  *   t = Translation vector.
