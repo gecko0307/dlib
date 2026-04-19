@@ -27,7 +27,7 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
- * Easing functions
+ * Easing functions for animation.
  *
  * Copyright: Timur Gafarov 2019-2025.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
@@ -109,4 +109,11 @@ T easeOutBounce(T)(T t)
         t -= (2.625 / 2.75);
         return (7.5625 * (t) * t + 0.984375);
     }
+}
+
+/// Elastic ease out
+float easeOutElastic(float x)
+{
+    float c4 = (2 * PI) / 3;
+    return x == 0? 0 : x == 1 ? 1 : pow(2, -10 * x) * sin((x * 10 - 0.75) * c4) + 1;
 }
