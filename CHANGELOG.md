@@ -1,3 +1,9 @@
+dlib 1.5.0 - TBD
+----------------
+- **dlib.math**
+  - `trsMatrix` that creates a transformation matrix from translation/rotation/scaling a once, without three matrix multiplications
+  - New easing function `easeOutElastic`.
+
 dlib 1.4.1 - 1 Jan, 2026
 ------------------------
 - **dlib.geometry**
