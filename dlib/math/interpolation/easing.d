@@ -35,6 +35,8 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.math.interpolation.easing;
 
+import std.math;
+
 /// Quadratic ease in
 T easeInQuad(T)(T t)
 {
@@ -112,8 +114,8 @@ T easeOutBounce(T)(T t)
 }
 
 /// Elastic ease out
-float easeOutElastic(float x)
+T easeOutElastic(T)(T t)
 {
-    float c4 = (2 * PI) / 3;
-    return x == 0? 0 : x == 1 ? 1 : pow(2, -10 * x) * sin((x * 10 - 0.75) * c4) + 1;
+    T c4 = (2 * PI) / 3;
+    return t == 0? 0 : t == 1 ? 1 : pow(2, -10 * t) * sin((t * 10 - 0.75) * c4) + 1;
 }
