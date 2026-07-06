@@ -447,24 +447,30 @@ unittest
 
 /** 
  * Wraps an arbitrary angle to [-180, +180] degrees range.
+ * Input angle units depend on the provided period
+ * (360 for degrees, 2.0 * PI for radians).
  *
  * Params:
- *   a = angle in degrees.
+ *   angle = input angle.
+ *   period = full circle measure.
  * Returns:
- *   Wrapped angle in degrees.
+ *   Wrapped angle.
  */
-T wrapAngle(T)(T a)
+T wrapAngle(T)(T angle, T period = 360.0) nothrow
 {
-    a = fmod(a + 180.0, 360.0);
-    if (a < 0.0)
-        a += 360.0;
-    return a - 180.0;
+    return angle - period * floor((angle + period * 0.5) / period);
+}
+
+///
+unittest
+{
+    assert((wrapAngle(270.0f) + 90.0f) <= EPSILON);
 }
 
 /**
  * Returns shortest angular distance between two angles (in radians).
  */
-T shortestAngleDelta(T)(T angleFrom, T angleTo)
+T shortestAngleDelta(T)(T angleFrom, T angleTo) nothrow
 {
     float delta = angleTo - angleFrom;
     while (delta > PI)  delta -= 2.0 * PI;

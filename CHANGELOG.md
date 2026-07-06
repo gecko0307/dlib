@@ -1,8 +1,11 @@
 dlib 1.5.0 - TBD
 ----------------
 - **dlib.math**
-  - `trsMatrix` that creates a transformation matrix from translation/rotation/scaling a once, without three matrix multiplications
-  - New easing function `easeOutElastic`.
+  - New function `trsMatrix` that creates a transformation matrix from translation/rotation/scaling a once, without three matrix multiplications
+  - New function `shortestAngleDelta` that returns shortest angular distance between two angles
+  - New interpolation function `lerpAngle` that linearly interpolates between two angles along the shortest arc
+  - New easing function `easeOutElastic`
+  - Function `wrapAngle` now works with any angular units thanks to the new optional parameter `period`: for example, `360` for degrees, `2.0 * PI` for radians.
 
 dlib 1.4.1 - 1 Jan, 2026
 ------------------------
