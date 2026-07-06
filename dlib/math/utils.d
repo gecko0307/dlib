@@ -460,3 +460,21 @@ T wrapAngle(T)(T a)
         a += 360.0;
     return a - 180.0;
 }
+
+/**
+ * Returns shortest angular distance between two angles (in radians).
+ */
+T shortestAngleDelta(T)(T angleFrom, T angleTo)
+{
+    float delta = angleTo - angleFrom;
+    while (delta > PI)  delta -= 2.0 * PI;
+    while (delta < -PI) delta += 2.0 * PI;
+    return delta;
+}
+
+///
+unittest
+{
+    float d = shortestAngleDelta(degtorad(45.0f), degtorad(315.0f));
+    assert((d - degtorad(90.0f)) <= EPSILON);
+}

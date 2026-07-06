@@ -38,7 +38,7 @@ module dlib.math.interpolation.linear;
 import std.math;
 
 /// Linear interpolation
-T interpLinear(T) (T a, T b, float t)
+T interpLinear(T)(T a, T b, float t)
 {
     return a + (b - a) * t;
 }
@@ -50,4 +50,29 @@ alias lerp = interpLinear;
 unittest
 {
     assert(lerp(0.0f, 2.0f, 0.5f) == 1.0f);
+}
+
+/**
+ * Linearly interpolates between two angles (in radians)
+ * along the shortest arc.
+ */
+T lerpAngle(T)(T a, T b, T t)
+{
+    T delta = b - a;
+    T pi2 = 2.0 * PI;
+    delta = fmod(delta, pi2);
+    if (delta > PI)
+        delta -= pi2;
+    else if (delta < -PI)
+        delta += pi2;
+    return a + delta * t;
+}
+
+///
+unittest
+{
+    import dlib.math.utils;
+    
+    float a = lerpAngle(degtorad(45.0f), degtorad(315.0f), 0.5f);
+    assert(a <= EPSILON);
 }
