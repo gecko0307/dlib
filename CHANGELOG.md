@@ -1,5 +1,5 @@
-dlib 1.5.0 - TBD
-----------------
+dlib 1.5.0 - 10 Jul, 2026
+-------------------------
 - **dlib.math**
   - New function `trsMatrix` that creates a transformation matrix from translation/rotation/scaling a once, without three matrix multiplications
   - New function `shortestAngleDelta` that returns shortest angular distance between two angles
