@@ -168,6 +168,18 @@ class JSONValue
         type = JSONType.Object;
         asObject[name] = element;
     }
+    
+    void makeArray()
+    {
+        type = JSONType.Array;
+    }
+    
+    void makeObject()
+    {
+        if (asObject is null)
+            asObject = New!JSONObject();
+        type = JSONType.Object;
+    }
 
     ~this()
     {
@@ -241,6 +253,7 @@ class JSONDocument
 
         if (currentLexeme == "{")
         {
+            value.makeObject();
             nextLexeme();
             while (currentLexeme.length && currentLexeme != "}")
             {
@@ -273,6 +286,7 @@ class JSONDocument
         }
         else if (currentLexeme == "[")
         {
+            value.makeArray();
             nextLexeme();
             while (currentLexeme.length && currentLexeme != "]")
             {
@@ -326,7 +340,9 @@ unittest
         \"foo\": \"bar\",
         \"test\": 100,
         \"bool\": true,
-        \"arr\": [0, 1, 2]
+        \"arr\": [0, 1, 2],
+        \"emptyObj\": {},
+        \"emptyArr\": [],
     }
     ";
     
@@ -335,5 +351,7 @@ unittest
     assert(doc.root.asObject["test"].asNumber == 100);
     assert(doc.root.asObject["bool"].asBoolean == true);
     assert(doc.root.asObject["arr"].asArray[1].asNumber == 1);
+    assert(doc.root.asObject["emptyObj"].type == JSONType.Object);
+    assert(doc.root.asObject["emptyArr"].type == JSONType.Array);
     Delete(doc);
 }
