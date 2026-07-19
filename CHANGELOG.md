@@ -1,3 +1,8 @@
+dlib 1.5.1 - 19 Jul, 2026
+-------------------------
+- **dlib.serialization**
+  - Fix empty JSON arrays and objects that were interpreted as `JSONType.Null` nodes.
+
 dlib 1.5.0 - 10 Jul, 2026
 -------------------------
 - **dlib.math**
