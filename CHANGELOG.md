@@ -1,3 +1,8 @@
+dlib 1.6.0 - TBD
+----------------
+- **dlib.container**
+  - New module `dlib.container.sorting`.
+
 dlib 1.5.1 - 19 Jul, 2026
 -------------------------
 - **dlib.serialization**
