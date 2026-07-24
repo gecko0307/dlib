@@ -60,7 +60,7 @@ struct Mutex
     }
     
     /// Initialize the mutex
-    int init()
+    int init() nothrow @nogc
     {
         version(Windows)
         {
@@ -75,7 +75,7 @@ struct Mutex
     }
     
     /// Enter critical section. If the mutex is already locked, block the thread until it becomes available
-    int lock()
+    int lock() nothrow @nogc
     {
         version(Windows)
         {
@@ -90,7 +90,7 @@ struct Mutex
     }
     
     /// Try to enter critical section. Return immediately if the mutex is already locked
-    int tryLock()
+    int tryLock() nothrow @nogc
     {
         version(Windows)
         {
@@ -104,7 +104,7 @@ struct Mutex
     }
     
     /// Leave critical section
-    int unlock()
+    int unlock() nothrow @nogc
     {
         version(Windows)
         {
@@ -119,7 +119,7 @@ struct Mutex
     }
     
     /// Destroy the mutex
-    int destroy()
+    int destroy() nothrow @nogc
     {
         version(Windows)
         {
