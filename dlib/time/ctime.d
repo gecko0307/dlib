@@ -27,80 +27,69 @@ DEALINGS IN THE SOFTWARE.
 */
 module dlib.time.ctime;
 
-version(WebAssembly)
+import dlib.core.mutex;
+
+private __gshared Mutex mutex;
+
+void init() nothrow @nogc
 {
-    // Not implemented
+    mutex.init();
 }
-else version(FreeStanding)
+
+version(X86_64)
 {
-    // Not implemented
+    alias time_t = long;
 }
-else
+else version(X86)
 {
-    import dlib.core.mutex;
+    alias time_t = int;
+}
+
+alias clock_t = int;
+
+struct tm
+{
+    int tm_sec;   // seconds, range 0 to 59
+    int tm_min;   // minutes, range 0 to 59
+    int tm_hour;  // hours, range 0 to 23
+    int tm_mday;  // day of the month, range 1 to 31
+    int tm_mon;   // month, range 0 to 11
+    int tm_year;  // The number of years since 1900
+    int tm_wday;  // day of the week, range 0 to 6
+    int tm_yday;  // day in the year, range 0 to 365
+    int tm_isdst; // daylight saving time
+}
+
+extern(C) nothrow @nogc
+{
+    time_t time(time_t* arg);
+    clock_t clock();
     
-    private __gshared Mutex mutex;
+    tm* gmtime(const(time_t)* t);
+    tm* localtime(const(time_t)* t);
     
-    void init() nothrow @nogc
+    version(Posix)
     {
-        mutex.init();
+        tm* gmtime_s(const(time_t)* t, tm* buf);
+        tm* localtime_s(const(time_t)* t, tm* buf);
     }
     
-    version(X86_64)
+    version(Windows)
     {
-        alias time_t = long;
-    }
-    else version(X86)
-    {
-        alias time_t = int;
-    }
-    
-    alias clock_t = int;
-    
-    struct tm
-    {
-        int tm_sec;   // seconds, range 0 to 59
-        int tm_min;   // minutes, range 0 to 59
-        int tm_hour;  // hours, range 0 to 23
-        int tm_mday;  // day of the month, range 1 to 31
-        int tm_mon;   // month, range 0 to 11
-        int tm_year;  // The number of years since 1900
-        int tm_wday;  // day of the week, range 0 to 6
-        int tm_yday;  // day in the year, range 0 to 365
-        int tm_isdst; // daylight saving time
-    }
-    
-    extern(C) nothrow @nogc
-    {
-        time_t time(time_t* arg);
-        clock_t clock();
-        
-        tm* gmtime(const(time_t)* t);
-        tm* localtime(const(time_t)* t);
-        
-        version(Posix)
+        tm* gmtime_s(const(time_t)* t, tm* buf)
         {
-            tm* gmtime_s(const(time_t)* t, tm* buf);
-            tm* localtime_s(const(time_t)* t, tm* buf);
+            mutex.lock();
+            *buf = *gmtime(t);
+            mutex.unlock();
+            return buf;
         }
         
-        version(Windows)
+        tm* localtime_s(const(time_t)* t, tm* buf)
         {
-            tm* gmtime_s(const(time_t)* t, tm* buf)
-            {
-                mutex.lock();
-                *buf = *gmtime(t);
-                mutex.unlock();
-                return buf;
-            }
-            
-            tm* localtime_s(const(time_t)* t, tm* buf)
-            {
-                mutex.lock();
-                *buf = *localtime(t);
-                mutex.unlock();
-                return buf;
-            }
+            mutex.lock();
+            *buf = *localtime(t);
+            mutex.unlock();
+            return buf;
         }
     }
 }

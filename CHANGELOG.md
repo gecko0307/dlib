@@ -1,5 +1,9 @@
 dlib 1.6.0 - TBD
 ----------------
+- **dlib.core**
+  - `Mutex` is now `@nogc`
+- **dlib.time**
+  - New package `dlib.time`
 - **dlib.container**
   - New module `dlib.container.sorting`.
 
