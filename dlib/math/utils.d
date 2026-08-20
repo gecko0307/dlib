@@ -147,6 +147,23 @@ unittest
 }
 
 /**
+ * Calculates the length of the hypotenuse for triangle defined in 3D
+ */
+T hypot3(T) (T x, T y, T z) nothrow
+{
+    // std.math.algebraic also provides hypot() version with 3 arguments
+    // but internally for now it calls not fast mlib's hypot()
+    return hypot(hypot(x, y), z);
+}
+
+///
+unittest
+{
+    const len = hypot3!double(-2, 6, 3);
+    assert(isConsiderZero(len - 7));
+}
+
+/**
  * Limit to given range
  */
 static if (__traits(compiles, (){import std.algorithm: clamp;}))

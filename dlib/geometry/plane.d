@@ -91,7 +91,7 @@ struct Plane
 
     void normalize()
     {
-        float len = sqrt(x * x + y * y + z * z);
+        float len = hypot3(x, y, z);
         x /= len;
         y /= len;
         z /= len;
@@ -101,7 +101,7 @@ struct Plane
     Plane normalized()
     {
         Plane res;
-        float len = sqrt(x * x + y * y + z * z);
+        float len = hypot3(x, y, z);
         return Plane(x / len, y / len, z / len, d / len);
     }
 

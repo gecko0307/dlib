@@ -146,7 +146,7 @@ struct Complex(T)
 
     T magnitude()
     {
-        return sqrt(re * re + im * im);
+        return hypot(re, im);
     }
 
     T norm()
@@ -184,7 +184,7 @@ unittest
 /// Complex abs
 T abs(T)(Complex!T x)
 {
-    return sqrt(x.re * x.re + x.im * x.im);
+    return hypot(x.re, x.im);
 }
 
 ///

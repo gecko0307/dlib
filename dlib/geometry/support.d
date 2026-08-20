@@ -64,7 +64,7 @@ Vector3f subBox(Vector3f dir, Vector3f halfSize)
 Vector3f supCylinder(Vector3f dir, float radius, float height)
 {
     Vector3f result;
-    float sigma = sqrt((dir.x * dir.x + dir.z * dir.z));
+    float sigma = hypot(dir.x, dir.z);
 
     if (sigma > 0.0f)
     {
@@ -91,7 +91,7 @@ Vector3f supCone(Vector3f dir, float radius, float height)
     len = sqrt(len);
     float half_h = height * 0.5;
 
-    float sin_a = radius / sqrt(radius * radius + 4.0f * half_h * half_h);
+    float sin_a = radius / hypot(radius, 2.0f * half_h);
 
     if (dir[2] > len * sin_a)
         return Vector3f(0.0f, 0.0f, half_h);
