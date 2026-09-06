@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025 Timur Gafarov
+Copyright (c) 2025-2026 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -27,45 +27,36 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
- * Pseudo-random numbers based on C rand function
+ * Pseudo-random numbers based on PCG.
  *
- * Copyright: Timur Gafarov 2025.
+ * Copyright: Timur Gafarov 2025-2026.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
 module dlib.random.random;
 
-import core.stdc.stdlib;
-import core.stdc.time;
-import core.thread.osthread: getpid;
 import std.math;
 import std.algorithm: sum;
 
+public import dlib.random.seed;
+public import dlib.random.pcg;
+
 static this()
 {
-    srand(cast(uint)seed());
+    ulong seed64 = cast(ulong)seed();
+    uint seed32 = cast(uint)seed();
+    dlib.random.pcg.init(seed64, seed32);
 }
 
-auto seed()
+private uint random(uint bound)
 {
-    return mix(clock(), time(null), getpid());
-}
-
-/**
- * Bob Jenkins' 96 bit mix function
- */
-ulong mix(ulong a, ulong b, ulong c)
-{
-    a=a-b;  a=a-c;  a=a^(c >> 13);
-    b=b-c;  b=b-a;  b=b^(a << 8);
-    c=c-a;  c=c-b;  c=c^(b >> 13);
-    a=a-b;  a=a-c;  a=a^(c >> 12);
-    b=b-c;  b=b-a;  b=b^(a << 16);
-    c=c-a;  c=c-b;  c=c^(b >> 5);
-    a=a-b;  a=a-c;  a=a^(c >> 3);
-    b=b-c;  b=b-a;  b=b^(a << 10);
-    c=c-a;  c=c-b;  c=c^(b >> 15);
-    return c;
+    uint threshold = -bound % bound;
+    while(true)
+    {
+        uint r = pcg32();
+        if (r >= threshold)
+            return r % bound;
+    }
 }
 
 /**
@@ -73,14 +64,82 @@ ulong mix(ulong a, ulong b, ulong c)
  */
 int randomInRange(int mi, int ma)
 {
-    return (rand() % (ma - mi)) + mi;
+    assert(ma > mi);
+    uint range = cast(uint)(ma - mi);
+    uint r = random(range);
+    return mi + cast(int)r;
 }
 
 /**
- * Returns pseudo-random floating-point number in 0..1 range
+ * Returns a random element from the given compile-time sequence.
+ */
+T choice(T)(T[] values...)
+{
+    assert(values.length > 0);
+    return values[randomInRange(0, cast(int)values.length)];
+}
+
+/**
+ * Roll the dice with the given number of sides.
+ */
+uint rollDice(uint sides)
+{
+    assert(sides > 0);
+    return random(sides) + 1;
+}
+
+/**
+ * Returns pseudo-random floating-point number in 0..1 range.
  */
 T random(T)()
 {
-    T res = (rand() % RAND_MAX) / cast(T)RAND_MAX;
-    return res;
+    static if (is(T == float))
+        return cast(float)(pcg32() >> 8) * (1.0f / (1U << 24));
+    else static if (is(T == double))
+        return cast(double)(pcg64() >> 11) * (1.0 / (1UL << 53));
+    else
+        static assert(false, "random() supports only float and double");
+}
+
+unittest
+{
+    import std.math;
+    import std.stdio;
+
+    enum samples = 10_000_000;
+    enum expectedMean = 0.5;
+    enum expectedVariance = 1.0 / 12.0;
+
+    double mean = 0.0;
+    double m2 = 0.0;
+
+    foreach (i; 0..samples)
+    {
+        double x = random!float();
+        double delta = x - mean;
+        mean += delta / (i + 1);
+        double delta2 = x - mean;
+        m2 += delta * delta2;
+    }
+
+    double variance = m2 / (samples - 1);
+
+    double meanSigma = sqrt(1.0 / (12.0 * samples));
+
+    double varianceOfVariance =
+        (1.0 / samples) *
+        (1.0 / 80.0 -
+        (samples - 3.0) / (samples - 1.0) *
+        (1.0 / 144.0));
+
+    double varianceSigma = sqrt(varianceOfVariance);
+
+    double zMean = abs(mean - expectedMean) / meanSigma;
+    double zVariance = abs(variance - expectedVariance) / varianceSigma;
+
+    //writefln("pcg32 mean deviation = %.3fσ", zMean);
+    //writefln("pcg32 variance deviation = %.3fσ", zVariance);
+
+    assert(zMean < 6.0);
+    assert(zVariance < 6.0);
 }
