@@ -1,7 +1,7 @@
 dlib 1.7.0 - TBD
 ----------------
 - **dlib.container**
-  - New module `dlib.container.hashmap`, a flat hash map implementation
+  - New module `dlib.container.hashmap`, a flat hash map implementation that is faster than both `dlib.container.dict` and native associative arrays
 - **dlib.hash**
   - New package `dlib.hash`. Currently it contains one module, `dlib.hash.xxhash64`
 - **dlib.random**
