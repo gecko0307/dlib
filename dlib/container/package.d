@@ -31,7 +31,7 @@ DEALINGS IN THE SOFTWARE.
  *
  * Description:
  * This package implements generic GC-free data containers, such as linked list, 
- * dynamic array, dictionary, etc. They are based on dlib.core.memory allocators.
+ * dynamic array, dictionary, etc.
  * dlib.container is useful when writing applications with manual memory management.
  *
  * Copyright: Timur Gafarov 2013-2026.
@@ -46,6 +46,7 @@ public
     import dlib.container.buffer;
     import dlib.container.bst;
     import dlib.container.dict;
+    import dlib.container.hashmap;
     import dlib.container.linkedlist;
     import dlib.container.mappedlist;
     import dlib.container.queue;

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2025 Timur Gafarov
+Copyright (c) 2015-2026 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -60,6 +60,8 @@ DEALINGS IN THE SOFTWARE.
  *
  * - $(LINK2 dlib/geometry.html, dlib.geometry) - computational geometry (ray casting, primitives, intersection, etc.)
  *
+ * - $(LINK2 dlib/hash.html, dlib.hash) - hash functions (non-cryptographic)
+ *
  * - $(LINK2 dlib/image.html, dlib.image) - image processing (8-bit, 16-bit and 32-bit floating point channels, common filters and convolution kernels, resizing, FFT, HDRI, animation, graphics formats I/O: JPEG, PNG/APNG, BMP, TGA, HDR)
  *
  * - $(LINK2 dlib/audio.html, dlib.audio) - sound processing (8 and 16 bits per sample, synthesizers, WAV export and import)
@@ -93,6 +95,7 @@ public
     import dlib.core;
     import dlib.filesystem;
     import dlib.geometry;
+    import dlib.hash;
     import dlib.image;
     import dlib.math;
     import dlib.memory;

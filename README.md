@@ -17,10 +17,11 @@ What's inside
 -------------
 Currently dlib consists of the following packages:
 * [dlib.core](https://gecko0307.github.io/dlib/docs/dlib/core.html) - basic functionality used by other modules (memory management, streams, threads, etc.)
-* [dlib.container](https://gecko0307.github.io/dlib/docs/dlib/container.html) - generic data structures (GC-free dynamic and associative arrays and more)
+* [dlib.container](https://gecko0307.github.io/dlib/docs/dlib/container.html) - generic containers (GC-free dynamic array, fast hash table and more)
 * [dlib.filesystem](https://gecko0307.github.io/dlib/docs/dlib/filesystem.html) - abstract FS interface and its implementations for Windows and POSIX filesystems
 * [dlib.math](https://gecko0307.github.io/dlib/docs/dlib/math.html) - linear algebra and numerical analysis (vectors, matrices, quaternions, linear system solvers, interpolation functions, etc.)
 * [dlib.geometry](https://gecko0307.github.io/dlib/docs/dlib/geometry.html) - computational geometry (ray casting, primitives, intersection, etc.)
+* [dlib.hash](https://gecko0307.github.io/dlib/docs/dlib/hash.html) - hash functions
 * [dlib.image](https://gecko0307.github.io/dlib/docs/dlib/image.html) - image processing (8-bit, 16-bit and 32-bit floating point channels, common filters and convolution kernels, resizing, FFT, HDRI, animation, graphics formats I/O: JPEG, PNG/APNG, BMP, TGA, HDR)
 * [dlib.audio](https://gecko0307.github.io/dlib/docs/dlib/audio.html) - sound processing (8 and 16 bits per sample, synthesizers, WAV export and import)
 * [dlib.network](https://gecko0307.github.io/dlib/docs/dlib/network.html) - networking and web functionality
@@ -58,7 +59,7 @@ Jan Jurzitza (WebFreak), Daniel Laburthe, Rafał Ziemniewski, Kumar Sookram, Ale
 
 Users
 -----
-* [Dagon](https://github.com/gecko0307/dagon) - 3D game engine for D
+* [Dagon](https://github.com/gecko0307/dagon) and [Dagon 2](https://github.com/gecko0307/dagon2) - 3D game engine for D
 * [Electronvolt](https://github.com/gecko0307/electronvolt) - work-in-progress first person puzzle game
 * [DagoBan](https://github.com/Timu5/dagoban) - Sokoban clone
 * [DlangUI](https://github.com/buggins/dlangui) - native UI toolkit for D
