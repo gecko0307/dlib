@@ -41,14 +41,14 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.random.pcg;
 
-///
+/// 32-bit contants.
 enum PCG32
 {
     Multiplier = 747796405U,
     Increment = 2891336453U
 }
 
-///
+/// 64-bit contants.
 enum PCG64
 {
     Multiplier = 6364136223846793005UL,
@@ -58,8 +58,10 @@ enum PCG64
 private __gshared ulong state64;
 private __gshared uint state32;
 
-/// Initializes the PCG state with the given seed values.
-void init(ulong initialState64, uint initialState32)
+/**
+ * Initializes the PCG state with the given seed values.
+ */
+void init(ulong initialState64, uint initialState32) @nogc nothrow
 {
     state64 = initialState64;
     pcg64();
@@ -68,27 +70,49 @@ void init(ulong initialState64, uint initialState32)
     pcg32();
 }
 
-/*
- * 64-bit PCG.
+/**
+ * 64-bit PCG. Not thread-safe.
  * Based on pcg_oneseq_64_step_r and pcg_output_rxs_m_xs_64_64
  * from https://github.com/imneme/pcg-c/
  */
-ulong pcg64()
+ulong pcg64() @nogc nothrow
 {
     state64 = state64 * PCG64.Multiplier + PCG64.Increment;
     ulong lword = ((state64 >> ((state64 >> 59U) + 5U)) ^ state64) * 12605985483714917081UL;
     return (lword >> 43U) ^ lword;
 }
 
-/*
- * 32-bit PCG.
+/**
+ * 64-bit PCG that works with a user-provided state instead of the global one (e.g. for thread-safety).
+ */
+ulong pcg64(ulong* state) @nogc nothrow
+{
+    ulong newState = *state * PCG64.Multiplier + PCG64.Increment;
+    ulong lword = ((newState >> ((newState >> 59U) + 5U)) ^ newState) * 12605985483714917081UL;
+    *state = newState;
+    return (lword >> 43U) ^ lword;
+}
+
+/**
+ * 32-bit PCG. Not thread-safe.
  * Based on pcg_oneseq_32_step_r and pcg_output_rxs_m_xs_32_32
  * from https://github.com/imneme/pcg-c/
  */
-uint pcg32()
+uint pcg32() @nogc nothrow
 {
     state32 = state32 * PCG32.Multiplier + PCG32.Increment;
     uint word = ((state32 >> ((state32 >> 28U) + 4U)) ^ state32) * 277803737U;
+    return (word >> 22U) ^ word;
+}
+
+/**
+ * 32-bit PCG that works with a user-provided state instead of the global one (e.g. for thread-safety).
+ */
+uint pcg32(uint* state) @nogc nothrow
+{
+    uint newState = *state * PCG32.Multiplier + PCG32.Increment;
+    uint word = ((newState >> ((newState >> 28U) + 4U)) ^ newState) * 277803737U;
+    *state = newState;
     return (word >> 22U) ^ word;
 }
 

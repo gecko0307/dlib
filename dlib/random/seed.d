@@ -42,7 +42,7 @@ import core.thread.osthread: getpid;
 /**
  * Simple seed based on the system time and process ID.
  */
-ulong seed()
+ulong seed() @nogc nothrow
 {
     // Collect seed material
     ulong a = cast(ulong)clock();

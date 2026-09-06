@@ -48,7 +48,7 @@ static this()
     dlib.random.pcg.init(seed64, seed32);
 }
 
-private uint random(uint bound)
+private uint random(uint bound) @nogc nothrow
 {
     uint threshold = -bound % bound;
     while(true)
@@ -62,7 +62,7 @@ private uint random(uint bound)
 /**
  * Returns pseudo-random integer between mi (inclusive) and ma (exclusive)
  */
-int randomInRange(int mi, int ma)
+int randomInRange(int mi, int ma) @nogc nothrow
 {
     assert(ma > mi);
     uint range = cast(uint)(ma - mi);
@@ -73,7 +73,7 @@ int randomInRange(int mi, int ma)
 /**
  * Returns a random element from the given compile-time sequence.
  */
-T choice(T)(T[] values...)
+T choice(T)(T[] values...) @nogc nothrow
 {
     assert(values.length > 0);
     return values[randomInRange(0, cast(int)values.length)];
@@ -82,7 +82,7 @@ T choice(T)(T[] values...)
 /**
  * Roll the dice with the given number of sides.
  */
-uint rollDice(uint sides)
+uint rollDice(uint sides) @nogc nothrow
 {
     assert(sides > 0);
     return random(sides) + 1;
@@ -91,7 +91,7 @@ uint rollDice(uint sides)
 /**
  * Returns pseudo-random floating-point number in 0..1 range.
  */
-T random(T)()
+T random(T)() @nogc nothrow
 {
     static if (is(T == float))
         return cast(float)(pcg32() >> 8) * (1.0f / (1U << 24));

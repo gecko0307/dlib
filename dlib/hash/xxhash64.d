@@ -28,9 +28,9 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- *  You can contact the author at :
+ *  You can contact the author at:
  *  - xxHash homepage: http://www.xxhash.com
- *  - xxHash source repository : https://github.com/Cyan4973/xxHash
+ *  - xxHash source repository: https://github.com/Cyan4973/xxHash
  */
 
 /**
@@ -45,7 +45,7 @@ private enum ulong PRIME64_4 = 0x85EBCA77C2B2AE63UL; // 0b1000010111101011110010
 private enum ulong PRIME64_5 = 0x27D4EB2F165667C5UL; // 0b0010011111010100111010110010111100010110010101100110011111000101
 
 /// Rotates value left by amt bits.
-private ulong xxRotl64(ulong value, uint amt) pure nothrow @nogc
+private ulong xxRotl64(ulong value, uint amt) pure nothrow @safe @nogc
 {
     return (value << (amt % 64)) | (value >> (64 - amt % 64));
 }
@@ -73,7 +73,7 @@ private ulong xxRead64(const(ubyte)* data, size_t offset) pure nothrow @nogc
 }
 
 /// Mixes input into acc, this is mostly used in the first loop.
-private ulong xxRound(ulong acc, ulong input) pure nothrow @nogc
+private ulong xxRound(ulong acc, ulong input) pure nothrow @safe @nogc
 {
     acc += input * PRIME64_2;
     acc  = xxRotl64(acc, 31);
@@ -82,7 +82,7 @@ private ulong xxRound(ulong acc, ulong input) pure nothrow @nogc
 }
 
 /// Merges acc into hash to finalize.
-private ulong xxMergeRound(ulong hash, ulong acc) pure nothrow @nogc
+private ulong xxMergeRound(ulong hash, ulong acc) pure nothrow @safe @nogc
 {
     hash ^= xxRound(0, acc);
     hash *= PRIME64_1;
@@ -91,7 +91,7 @@ private ulong xxMergeRound(ulong hash, ulong acc) pure nothrow @nogc
 }
 
 /// Mixes all bits to finalize the hash.
-private ulong xxAvalanche(ulong hash) pure nothrow @nogc
+private ulong xxAvalanche(ulong hash) pure nothrow @safe @nogc
 {
     hash ^= hash >> 33;
     hash *= PRIME64_2;
