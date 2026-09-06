@@ -43,8 +43,8 @@ public import dlib.random.pcg;
 
 static this()
 {
-    ulong seed64 = cast(ulong)seed();
-    uint seed32 = cast(uint)seed();
+    ulong seed64 = seed();
+    uint seed32 = cast(uint)fmix64(seed64);
     dlib.random.pcg.init(seed64, seed32);
 }
 
