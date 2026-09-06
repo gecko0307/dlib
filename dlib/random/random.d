@@ -89,7 +89,8 @@ uint rollDice(uint sides) @nogc nothrow
 }
 
 /**
- * Returns pseudo-random floating-point number in 0..1 range.
+ * Returns pseudo-random floating-point number in 0..1 range,
+ * analogous to `uniform(0.0, 1.0)` from std.random.
  */
 T random(T)() @nogc nothrow
 {
