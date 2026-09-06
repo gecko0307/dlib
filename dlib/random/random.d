@@ -106,14 +106,16 @@ unittest
     import std.math;
     import std.stdio;
 
-    enum samples = 10_000_000;
-    enum expectedMean = 0.5;
-    enum expectedVariance = 1.0 / 12.0;
+    enum n = 10_000_000;
+    enum double expectedMean = 0.5;
+    
+    // Theoretical variace of U(0, 1)
+    enum double expectedVariance = 1.0 / 12.0;
 
     double mean = 0.0;
     double m2 = 0.0;
 
-    foreach (i; 0..samples)
+    foreach (i; 0..n)
     {
         double x = random!float();
         double delta = x - mean;
@@ -122,24 +124,36 @@ unittest
         m2 += delta * delta2;
     }
 
-    double variance = m2 / (samples - 1);
+    // Unbiased sample variance (Bessel's correction)
+    double variance = m2 / (n - 1);
 
-    double meanSigma = sqrt(1.0 / (12.0 * samples));
+    // Standard deviation of the sample mean
+    double meanSigma = sqrt(1.0 / (12.0 * n));
 
+    // μ₄ = E[(X - μ)⁴] = 1/80
+    enum double FourthCentralMoment = 1.0 / 80.0;
+    
+    // σ⁴ = (1/12)² = 1/144
+    enum double VarianceSquared = 1.0 / 144.0;
+    
+    // Var(s²) = (1/n) * (μ₄ - ((n - 3) / (n - 1)) * σ⁴)
     double varianceOfVariance =
-        (1.0 / samples) *
-        (1.0 / 80.0 -
-        (samples - 3.0) / (samples - 1.0) *
-        (1.0 / 144.0));
-
+        (1.0 / n) *
+        (FourthCentralMoment -
+        (n - 3.0) / (n - 1.0) *
+        VarianceSquared);
     double varianceSigma = sqrt(varianceOfVariance);
 
+    // By how many standard deviations did the mean deviate
     double zMean = abs(mean - expectedMean) / meanSigma;
+    
+    // By how many standard deviations did the variance deviate
     double zVariance = abs(variance - expectedVariance) / varianceSigma;
 
     //writefln("pcg32 mean deviation = %.3fσ", zMean);
     //writefln("pcg32 variance deviation = %.3fσ", zVariance);
 
+    // Six Sigma threshold
     assert(zMean < 6.0);
     assert(zVariance < 6.0);
 }
