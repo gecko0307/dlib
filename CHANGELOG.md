@@ -1,3 +1,15 @@
+dlib 1.7.0 - TBD
+----------------
+- **dlib.container**
+  - New module `dlib.container.hashmap`, a flat hash map implementation
+- **dlib.hash**
+  - New package `dlib.hash`. Currently it contains one module, `dlib.hash.xxhash64`
+- **dlib.random**
+  - Major overhaul of the whole package. `dlib.random.random` now uses modern and efficient permuted congruential generator (PCG) instead of C `rand`
+  - New functions `choice` and `rollDice`
+  - New module `dlib.random.pcg` with 32 and 64-bit PCG functions
+  - `seed` function now uses `fmix64` from MurmurHash3 instead of Bob Jenkins' `mix`, and it now lives in a new module `dlib.random.seed`.
+
 dlib 1.6.0 - 4 Aug, 2026
 ------------------------
 - **dlib.core**
