@@ -27,7 +27,7 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
- * Pseudo-random numbers based on PCG.
+ * Pseudo-random numbers (non-cryptographic) based on PCG.
  *
  * Copyright: Timur Gafarov 2025-2026.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
