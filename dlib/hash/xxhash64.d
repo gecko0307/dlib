@@ -1,9 +1,8 @@
 /*
- *  xxHash - Fast Hash algorithm
  *  Copyright (C) 2012-2020 Yann Collet
  *  Copyright (C) 2019-2020 Devin Hussey (easyaspi314)
  *
- *  BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+ *  BSD 2-Clause License (https://opensource.org/license/BSD-2-Clause)
  *
  *  Redistribution and use in source and binary forms, with or without
  *  modification, are permitted provided that the following conditions are
@@ -34,7 +33,16 @@
  */
 
 /**
- * xxHash64 ported to D from https://github.com/easyaspi314/xxhash-clean
+ * xxHash64 hash function.
+ * 
+ * Description:
+ * This is a partial D port of xxhash64-ref.c from https://github.com/easyaspi314/xxhash-clean.
+ * xxHash is an extremely fast non-cryptographic hash algorithm that is fully-self sufficient
+ * and processes data at speeds close to RAM limits. xxHash64 generates 64-bit hashes.
+ *
+ * Copyright: 2012-2020 Yann Collet, 2019-2020 Devin Hussey
+ * License: $(LINK2 opensource.org/license/BSD-2-Clause, BSD 2-Clause License).
+ * Authors: Yann Collet, Devin Hussey
  */
 module dlib.hash.xxhash64;
 
