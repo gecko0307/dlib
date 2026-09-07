@@ -1,3 +1,8 @@
+dlib 1.7.1 - 9 Sep, 2026
+------------------------
+- **dlib.container**
+  - Fix instantiation of `FlatHashMap` for classes.
+
 dlib 1.7.0 - 9 Sep, 2026
 ------------------------
 - **dlib.math**

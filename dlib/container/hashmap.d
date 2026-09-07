@@ -139,7 +139,7 @@ class FlatHashMap(T): Owner
     }
 
     /// Lookup a value.
-    T get(ulong key) const nothrow @nogc
+    T get(ulong key) nothrow @nogc
     {
         if (key == 0 || key == TOMBSTONE) key = 1;
 
@@ -199,13 +199,13 @@ class FlatHashMap(T): Owner
     }
     
     /// Lookup a value by string hash.
-    T get(string key) const nothrow @nogc
+    T get(string key) nothrow @nogc
     {
         return get(xxHash64(key, XXHASH64_SEED));
     }
 
     /// Bracket syntax to get a value by string hash.
-    T opIndex(string key) const nothrow @nogc
+    T opIndex(string key) nothrow @nogc
     {
         return get(xxHash64(key, XXHASH64_SEED));
     }
