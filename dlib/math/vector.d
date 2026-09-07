@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2025 Timur Gafarov
+Copyright (c) 2011-2026 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Vectors of Euclidean space
  *
- * Copyright: Timur Gafarov 2011-2025.
+ * Copyright: Timur Gafarov 2011-2026.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
@@ -45,14 +45,40 @@ import dlib.math.base;
 import dlib.math.utils;
 import dlib.math.matrix;
 
+version(X86)
+{
+    version = X86_Any;
+}
+version(X86_64)
+{
+    version = X86_Any;
+}
+
 /// SIMD float vector type.
 alias float4 = __vector(float[4]);
 
 enum bool _SIMD_Enabled = (){
     version(NO_SIMD)
         return false;
-    else version(LDC)
+    else
         return true;
+}();
+
+enum bool _SIMD_DMD = () {
+    version(X86_Any)
+    {
+        version(DigitalMars)
+            return _SIMD_Enabled;
+        else
+            return false;
+    }
+    else
+        return false;
+}();
+
+enum bool _SIMD_LDC = () {
+    version(LDC)
+        return _SIMD_Enabled;
     else
         return false;
 }();

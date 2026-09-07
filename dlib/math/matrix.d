@@ -285,7 +285,7 @@ struct Matrix(T, size_t N)
         }
         else static if (N == 4)
         {
-            static if (is(T == float) && _SIMD_Enabled)
+            static if (is(T == float) && _SIMD_LDC)
             {
                 Matrix!(T,N) res;
 

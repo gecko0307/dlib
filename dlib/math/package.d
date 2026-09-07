@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2025 Timur Gafarov
+Copyright (c) 2013-2026 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -36,7 +36,7 @@ DEALINGS IN THE SOFTWARE.
  * OpenGL-friendly: you can pass your 4x4 matrices to OpenGL functions directly, 
  * without any conversion.
  *
- * Copyright: Timur Gafarov 2013-2025.
+ * Copyright: Timur Gafarov 2013-2026.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
@@ -56,7 +56,6 @@ public
     import dlib.math.linsolve;
     import dlib.math.matrix;
     import dlib.math.quaternion;
-    import dlib.math.sse;
     import dlib.math.tensor;
     import dlib.math.transformation;
     import dlib.math.utils;
