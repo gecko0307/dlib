@@ -107,7 +107,7 @@ version(LDC)
     
     // Algebraic
     alias abs       = std.math.abs;
-    alias fabs      = std.math.fabs;
+    alias fabs      = llvm_fabs;
     alias sqrt      = llvm_sqrt;
     alias cbrt      = std.math.cbrt;
     alias hypot     = std.math.hypot;
@@ -135,10 +135,10 @@ version(LDC)
     alias floor     = llvm_floor;
     alias round     = llvm_round;
     alias lround    = std.math.lround;
-    alias trunc     = std.math.trunc;
-    alias rint      = std.math.rint;
+    alias trunc     = llvm_trunc;
+    alias rint      = llvm_rint;
     alias lrint     = std.math.lrint;
-    alias nearbyint = std.math.nearbyint;
+    alias nearbyint = llvm_nearbyint;
     alias rndtol    = std.math.rndtol;
     alias quantize  = std.math.quantize;
     
@@ -167,9 +167,9 @@ version(LDC)
     alias approxEqual   = std.math.approxEqual;
     alias feqrel        = std.math.feqrel;
     alias fdim          = std.math.fdim;
-    alias fmax          = std.math.fmax;
-    alias fmin          = std.math.fmin;
-    alias fma           = std.math.fma;
+    alias fmax          = llvm_maxnum;
+    alias fmin          = llvm_minnum;
+    alias fma           = llvm_fma;
     alias isClose       = std.math.isClose;
     alias nextDown      = std.math.nextDown;
     alias nextUp        = std.math.nextUp;
@@ -185,7 +185,7 @@ version(LDC)
     alias isSubnormal   = std.math.isSubnormal;
     alias signbit       = std.math.signbit;
     alias sgn           = std.math.sgn;
-    alias copysign      = std.math.copysign;
+    alias copysign      = llvm_copysign;
     alias isPowerOf2    = std.math.isPowerOf2;
     
     // Hardware Control
