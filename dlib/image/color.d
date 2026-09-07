@@ -36,6 +36,7 @@ DEALINGS IN THE SOFTWARE.
 module dlib.image.color;
 
 import dlib.math.vector;
+import dlib.math.base;
 import dlib.math.utils;
 
 /// RGBA color channel

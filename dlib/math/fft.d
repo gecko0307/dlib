@@ -35,7 +35,7 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.math.fft;
 
-import std.math;
+import dlib.math.base;
 import dlib.math.utils;
 import dlib.math.complex;
 

@@ -36,7 +36,7 @@ DEALINGS IN THE SOFTWARE.
 module dlib.image.hdri;
 
 import core.stdc.string;
-import std.math;
+import dlib.math.base;
 import dlib.core.memory;
 import dlib.image.image;
 import dlib.image.color;

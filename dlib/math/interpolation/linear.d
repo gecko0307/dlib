@@ -35,7 +35,7 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.math.interpolation.linear;
 
-import std.math;
+import dlib.math.base;
 
 /// Linear interpolation
 T interpLinear(T)(T a, T b, float t)

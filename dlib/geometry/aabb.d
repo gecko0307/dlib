@@ -33,8 +33,8 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.geometry.aabb;
 
-import std.math;
 import std.algorithm;
+import dlib.math.base;
 import dlib.math.vector;
 import dlib.geometry.sphere;
 import dlib.geometry.intersection;
@@ -84,9 +84,9 @@ struct AABB
     bool intersectsAABB(AABB b)
     {
         Vector3f t = b.center - center;
-        return fabs(t.x) <= (size.x + b.size.x) &&
-               fabs(t.y) <= (size.y + b.size.y) &&
-               fabs(t.z) <= (size.z + b.size.z);
+        return abs(t.x) <= (size.x + b.size.x) &&
+               abs(t.y) <= (size.y + b.size.y) &&
+               abs(t.z) <= (size.z + b.size.z);
     }
 
     deprecated("use dlib.geometry.intersection.intrSphereVsAABB instead")
@@ -111,7 +111,7 @@ struct AABB
     {
         float raydir = rayend - raystart;
 
-        if (fabs(raydir) < 1.0e-9f)
+        if (abs(raydir) < 1.0e-9f)
         {
             if (raystart < slabmin || raystart > slabmax)
                 return false;
@@ -133,8 +133,8 @@ struct AABB
         }
         else
         {
-            tbenter = max(tbenter, tsenter);
-            tbexit = min(tbexit, tsexit);
+            tbenter = max2(tbenter, tsenter);
+            tbexit = min2(tbexit, tsexit);
             return true;
         }
     }

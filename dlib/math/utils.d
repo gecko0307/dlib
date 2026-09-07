@@ -38,15 +38,10 @@ module dlib.math.utils;
 private
 {
     import core.stdc.stdlib;
-    import std.math;
+    import dlib.math.base;
 }
 
 public:
-
-/**
- * Very small value
- */
-enum EPSILON = 0.000001;
 
 /**
  * Axes of Cartesian space
@@ -57,41 +52,10 @@ enum Axis
 }
 
 /**
- * Convert degrees to radians
- */
-T degtorad(T) (T angle) nothrow
-{
-    return (angle / 180.0) * PI;
-}
-
-/**
- * Convert radians to degrees
- */
-T radtodeg(T) (T angle) nothrow
-{
-    return (angle / PI) * 180.0;
-}
-
-/**
- * Convert radians to revolutions
- */
-T radtorev(T)(T angle) nothrow
-{
-    return angle / (2.0 * PI);
-}
-
-/**
- * Convert revolutions to radians
- */
-T revtorad(T)(angle) nothrow
-{
-    return angle * (2.0 * PI);
-}
-
-/**
  * Find maximum of two values
  */
-T max2(T) (T x, T y) nothrow
+pragma(inline, true)
+T max2(T) (T x, T y) pure nothrow @nogc
 {
     return (x > y)? x : y;
 }
@@ -105,7 +69,8 @@ unittest
 /**
  * Find minimum of two values
  */
-T min2(T) (T x, T y) nothrow
+pragma(inline, true)
+T min2(T) (T x, T y) pure nothrow @nogc
 {
     return (x < y)? x : y;
 }
@@ -119,7 +84,8 @@ unittest
 /**
  * Find maximum of three values
  */
-T max3(T) (T x, T y, T z) nothrow
+pragma(inline, true)
+T max3(T) (T x, T y, T z) pure nothrow @nogc
 {
     T temp = (x > y)? x : y;
     return (temp > z) ? temp : z;
@@ -134,7 +100,8 @@ unittest
 /**
  * Find minimum of three values
  */
-T min3(T) (T x, T y, T z) nothrow
+pragma(inline, true)
+T min3(T) (T x, T y, T z) pure nothrow @nogc
 {
     T temp = (x < y)? x : y;
     return (temp < z) ? temp : z;
@@ -155,29 +122,106 @@ static if (__traits(compiles, (){import std.algorithm: clamp;}))
 }
 else
 {
-    T clamp(T) (T v, T minimal, T maximal) nothrow
+    pragma(inline, true)
+    T clamp(T)(T v, T mi, T ma) pure nothrow @nogc
     {
-        if (v > minimal)
-        {
-            if (v < maximal) return v;
-                else return maximal;
-        }
-        else return minimal;
+        if (v < mi) return mi;
+        else if (v > ma) return ma;
+        else return v;
     }
+}
+
+/**
+ * Is difference between a and b is smaller than delta.
+ */
+pragma(inline, true)
+bool isClose(T)(T a, T b, T delta) pure nothrow @nogc
+{
+    return abs(a - b) < delta;
 }
 
 /**
  * Is less than EPSILON
  */
-bool isConsiderZero(T) (T f) nothrow
+pragma(inline, true)
+bool isConsiderZero(T) (T f) pure nothrow @nogc
 {
     return (abs(f) < EPSILON);
 }
 
 /**
+ * Fractional part
+ */
+real frac(real v) nothrow @nogc
+{
+    real ipart;
+    return modf(v, ipart);
+}
+
+///
+unittest
+{
+    assert(abs(frac(54.832f) - 0.832f) <= EPSILON);
+}
+
+/**
+ * Integer part
+ */
+pragma(inline, true)
+real integer(real v) nothrow @nogc
+{
+    real ipart;
+    modf(v, ipart);
+    return ipart;
+}
+
+///
+unittest
+{
+    assert(integer(54.832f) == 54.0f);
+}
+
+/**
+ * Convert degrees to radians
+ */
+pragma(inline, true)
+T degtorad(T) (T angle) pure nothrow @nogc
+{
+    return (angle / 180.0) * PI;
+}
+
+/**
+ * Convert radians to degrees
+ */
+pragma(inline, true)
+T radtodeg(T) (T angle) pure nothrow @nogc
+{
+    return (angle / PI) * 180.0;
+}
+
+/**
+ * Convert radians to revolutions
+ */
+pragma(inline, true)
+T radtorev(T)(T angle) pure nothrow @nogc
+{
+    return angle / (2.0 * PI);
+}
+
+/**
+ * Convert revolutions to radians
+ */
+pragma(inline, true)
+T revtorad(T)(angle) pure nothrow @nogc
+{
+    return angle * (2.0 * PI);
+}
+
+/**
  * Is power of 2
  */
-bool isPowerOfTwo(T)(T x) nothrow
+pragma(inline, true)
+bool isPowerOfTwo(T)(T x) pure nothrow @nogc
 {
     return (x != 0) && ((x & (x - 1)) == 0);
 }
@@ -192,7 +236,7 @@ unittest
 /**
  * Round to next power of 2
  */
-T nextPowerOfTwo(T) (T k) nothrow
+T nextPowerOfTwo(T) (T k) pure nothrow @nogc
 {
     if (k == 0)
         return 1;
@@ -212,9 +256,10 @@ unittest
 /**
  * Round to next power of 10
  */
-T nextPowerOfTen(T) (T k) nothrow
+pragma(inline, true)
+T nextPowerOfTen(T) (T k) pure nothrow @nogc
 {
-    return pow(10, cast(int)ceil(log10(k)));
+    return cast(T)pow(10, ceil(log10(k)));
 }
 
 ///
@@ -226,7 +271,7 @@ unittest
 /**
  * If at least one element is zero
  */
-bool oneOfIsZero(T) (T[] array...) nothrow
+bool oneOfIsZero(T) (T[] array...) pure nothrow @nogc
 {
     foreach(i, v; array)
         if (v == 0) return true;
@@ -238,7 +283,8 @@ bool oneOfIsZero(T) (T[] array...) nothrow
  */
 version (BigEndian)
 {
-    ushort bigEndian(ushort value) nothrow
+    pragma(inline, true)
+    ushort bigEndian(ushort value) pure nothrow @nogc
     {
         return value;
     }
@@ -249,7 +295,8 @@ version (BigEndian)
         assert(bigEndian(cast(ushort)0x00FF) == 0x00FF);
     }
 
-    uint bigEndian(uint value) nothrow
+    pragma(inline, true)
+    uint bigEndian(uint value) pure nothrow @nogc
     {
         return value;
     }
@@ -260,7 +307,8 @@ version (BigEndian)
         assert(bigEndian(cast(uint)0x000000FF) == cast(uint)0x000000FF);
     }
 
-    ushort networkByteOrder(ushort value) nothrow
+    pragma(inline, true)
+    ushort networkByteOrder(ushort value) pure nothrow @nogc
     {
         return value;
     }
@@ -271,7 +319,8 @@ version (BigEndian)
         assert(networkByteOrder(cast(ushort)0x00FF) == 0x00FF);
     }
 
-    uint networkByteOrder(uint value) nothrow
+    pragma(inline, true)
+    uint networkByteOrder(uint value) pure nothrow @nogc
     {
         return value;
     }
@@ -285,7 +334,8 @@ version (BigEndian)
 
 version (LittleEndian)
 {
-    ushort bigEndian(ushort value) nothrow
+    pragma(inline, true)
+    ushort bigEndian(ushort value) pure nothrow @nogc
     {
         return ((value & 0xFF) << 8) | ((value >> 8) & 0xFF);
     }
@@ -296,7 +346,8 @@ version (LittleEndian)
         assert(bigEndian(cast(ushort)0x00FF) == 0xFF00);
     }
 
-    uint bigEndian(uint value) nothrow
+    pragma(inline, true)
+    uint bigEndian(uint value) pure nothrow @nogc
     {
         return value << 24
             | (value & 0x0000FF00) << 8
@@ -310,7 +361,8 @@ version (LittleEndian)
         assert(bigEndian(cast(uint)0x000000FF) == cast(uint)0xFF000000);
     }
 
-    ushort networkByteOrder(ushort value) nothrow
+    pragma(inline, true)
+    ushort networkByteOrder(ushort value) pure nothrow @nogc
     {
         return bigEndian(value);
     }
@@ -321,7 +373,8 @@ version (LittleEndian)
         assert(networkByteOrder(cast(ushort)0x00FF) == 0xFF00);
     }
 
-    uint networkByteOrder(uint value) nothrow
+    pragma(inline, true)
+    uint networkByteOrder(uint value) pure nothrow @nogc
     {
         return bigEndian(value);
     }
@@ -336,7 +389,8 @@ version (LittleEndian)
 /**
  * Returns 16-bit integer n with swapped endianness
  */
-T swapEndian16(T)(T n)
+pragma(inline, true)
+T swapEndian16(T)(T n) pure nothrow @nogc
 {
     return cast(T)((n >> 8) | (n << 8));
 }
@@ -350,7 +404,8 @@ unittest
 /**
  * Constructs uint from an array of bytes
  */
-uint bytesToUint(ubyte[4] src) nothrow
+pragma(inline, true)
+uint bytesToUint(ubyte[4] src) pure nothrow @nogc
 {
     return (src[0] << 24 | src[1] << 16 | src[2] << 8 | src[3]);
 }
@@ -364,7 +419,8 @@ unittest
 /**
  * Field of view angle Y from X
  */
-T fovYfromX(T) (T xfov, T aspectRatio) nothrow
+pragma(inline, true)
+T fovYfromX(T) (T xfov, T aspectRatio) pure nothrow @nogc
 {
     xfov = degtorad(xfov);
     T yfov = 2.0 * atan(tan(xfov * 0.5)/aspectRatio);
@@ -374,7 +430,8 @@ T fovYfromX(T) (T xfov, T aspectRatio) nothrow
 /**
  * Field of view angle X from Y
  */
-T fovXfromY(T) (T yfov, T aspectRatio) nothrow
+pragma(inline, true)
+T fovXfromY(T) (T yfov, T aspectRatio) pure nothrow @nogc
 {
     yfov = degtorad(yfov);
     T xfov = 2.0 * atan(tan(yfov * 0.5) * aspectRatio);
@@ -384,7 +441,8 @@ T fovXfromY(T) (T yfov, T aspectRatio) nothrow
 /**
  * Sign of a number
  */
-int sign(T)(T x) nothrow
+pragma(inline, true)
+int sign(T)(T x) pure nothrow @nogc
 {
     return (x > 0) - (x < 0);
 }
@@ -392,7 +450,8 @@ int sign(T)(T x) nothrow
 /**
  * Swap values
  */
-void swap(T)(T* a, T* b)
+pragma(inline, true)
+void swap(T)(T* a, T* b) pure nothrow @nogc
 {
     T c = *a;
     *a = *b;
@@ -402,7 +461,8 @@ void swap(T)(T* a, T* b)
 /**
  * Is perfect square
  */
-bool isPerfectSquare(float n) nothrow
+pragma(inline, true)
+bool isPerfectSquare(float n) pure nothrow @nogc
 {
     float r = sqrt(n);
     return(r * r == n);
@@ -412,37 +472,6 @@ bool isPerfectSquare(float n) nothrow
 unittest
 {
     assert(isPerfectSquare(64.0f));
-}
-
-/**
- * Integer part
- */
-real integer(real v)
-{
-    real ipart;
-    modf(v, ipart);
-    return ipart;
-}
-
-///
-unittest
-{
-    assert(integer(54.832f) == 54.0f);
-}
-
-/**
- * Fractional part
- */
-real frac(real v)
-{
-    real ipart;
-    return modf(v, ipart);
-}
-
-///
-unittest
-{
-    assert(abs(frac(54.832f) - 0.832f) <= EPSILON);
 }
 
 /** 
@@ -456,7 +485,8 @@ unittest
  * Returns:
  *   Wrapped angle.
  */
-T wrapAngle(T)(T angle, T period = 360.0) nothrow
+pragma(inline, true)
+T wrapAngle(T)(T angle, T period = 360.0) pure nothrow @nogc
 {
     return angle - period * floor((angle + period * 0.5) / period);
 }
@@ -470,7 +500,7 @@ unittest
 /**
  * Returns shortest angular distance between two angles (in radians).
  */
-T shortestAngleDelta(T)(T angleFrom, T angleTo) nothrow
+T shortestAngleDelta(T)(T angleFrom, T angleTo) pure nothrow @nogc
 {
     float delta = angleTo - angleFrom;
     while (delta > PI)  delta -= 2.0 * PI;

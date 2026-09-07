@@ -35,6 +35,7 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.image.filters.chromakey;
 
+import dlib.math.base;
 import dlib.math.utils;
 import dlib.image.image;
 import dlib.image.color;

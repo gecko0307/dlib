@@ -35,8 +35,7 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.math.transformation;
 
-import std.math;
-
+import dlib.math.base;
 import dlib.math.utils;
 import dlib.math.vector;
 import dlib.math.matrix;

@@ -36,12 +36,12 @@ DEALINGS IN THE SOFTWARE.
 module dlib.math.vector;
 
 import std.conv;
-import std.math;
 import std.random;
 import std.range;
 import std.format;
 import std.traits;
 import dlib.core.tuple;
+import dlib.math.base;
 import dlib.math.utils;
 import dlib.math.matrix;
 

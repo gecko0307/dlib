@@ -35,8 +35,7 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.image.canvas;
 
-import std.math;
-
+import dlib.math.base;
 import dlib.math.vector;
 import dlib.math.matrix;
 import dlib.math.transformation;

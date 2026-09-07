@@ -36,7 +36,6 @@ DEALINGS IN THE SOFTWARE.
 module dlib.image.io.hdr;
 
 import std.stdio;
-import std.math;
 import dlib.core.memory;
 import dlib.core.stream;
 import dlib.core.compound;
@@ -46,6 +45,7 @@ import dlib.image.color;
 import dlib.image.image;
 import dlib.image.hdri;
 import dlib.image.io;
+import dlib.math.base;
 import dlib.math.utils;
 
 struct ColorRGBE

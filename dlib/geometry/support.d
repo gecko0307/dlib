@@ -33,7 +33,7 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.geometry.support;
 
-import std.math;
+import dlib.math.base;
 import dlib.math.vector;
 import dlib.math.matrix;
 import dlib.math.utils;

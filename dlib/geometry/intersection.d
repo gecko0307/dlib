@@ -33,7 +33,7 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.geometry.intersection;
 
-import std.math;
+import dlib.math.base;
 import dlib.math.vector;
 import dlib.math.utils;
 import dlib.math.transformation;

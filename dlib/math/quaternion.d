@@ -35,9 +35,9 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.math.quaternion;
 
-import std.math;
 import std.traits;
 
+import dlib.math.base;
 import dlib.math.vector;
 import dlib.math.matrix;
 import dlib.math.utils;
