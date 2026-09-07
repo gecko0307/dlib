@@ -43,8 +43,8 @@ import dlib.hash.xxhash64;
 enum XXHASH64_SEED = 42;
 
 /**
- * An open-addressing hash map that stores data in a contiguous buffer. GC-free.
- * Works in near-constant time.
+ * An open-addressing hash map that stores data in a contiguous buffer
+ * and associates entries with 64-bit keys. GC-free. Works in near-constant time.
  * Insertion is 36x faster than dlib.container.dict and 1.7x faster than native AA.
  * Searching is 15x faster than dlib.container.dict and 1.6x faster than native AA.
  * For string-based access, xxHash64 is used.
@@ -218,7 +218,7 @@ class FlatHashMap(T): Owner
         return value;
     }
     
-    /// "in" operator.
+    /// "in" operator. Yields a pointer to the entry's value, or null if it doesn't exist.
     T* opBinaryRight(string op)(string key) if (op == "in")
     {
         return getPtr(xxHash64(key, XXHASH64_SEED));

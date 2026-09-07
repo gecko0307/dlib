@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2025 Timur Gafarov
+Copyright (c) 2015-2026 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Trie-based dictionary (associative array) that can use any type as a key
  *
- * Copyright: Timur Gafarov 2015-2025.
+ * Copyright: Timur Gafarov 2015-2026.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov, Andrey Penechko, Roman Chistokhodov, ijet
  */
@@ -42,6 +42,7 @@ import std.string;
 import dlib.core.memory;
 import dlib.container.array;
 
+/// Returns size of the value in bytes.
 size_t dataSize(T)(T v)
 {
     static if (is(T == class) || is(T == interface))
@@ -53,6 +54,7 @@ size_t dataSize(T)(T v)
         return T.sizeof;
 }
 
+///
 auto byteRange(T)(T v)
 {
     struct R
@@ -91,7 +93,10 @@ auto byteRange(T)(T v)
 }
 
 /**
- * Trie-based dictionary (associative array) that can use any type as a key. No hash functions are required.
+ * GC-free trie-based dictionary (associative array) that can use any type as a key.
+ * No hash function is required, so it is 100% collision-free and works with keys of any length.
+ * The drawback is that it is much slower than most hash-based solutions,
+ * so in practice it should be used when correctness is more important than performance.
  */
 class Trie(T, K)
 {
@@ -102,10 +107,12 @@ class Trie(T, K)
     bool active = false;
     size_t length = 0;
 
+    ///
     this()
     {
     }
 
+    ///
     this(ubyte s)
     {
         symbol = s;
@@ -224,19 +231,20 @@ class Trie(T, K)
             assert(0, format("Non-existing key in Trie.opIndex: %s", k));
     }
 
-    /// Set value by key
+    /// Set value by key.
     T opIndexAssign(T v, K k)
     {
         set(k, v);
         return v;
     }
 
-    ///
+    /// "in" operator. Yields a pointer to the entry's value, or null if it doesn't exist.
     T* opBinaryRight(string op)(K k) if (op == "in")
     {
         return get(k);
     }
 
+    /// Applies an iterator delegate to all entries.
     int opApply(scope int delegate(K, ref T) dg)
     {
         int result = 0;
@@ -270,6 +278,7 @@ class Trie(T, K)
         length = 0;
     }
 
+    /// Destructor. Releases the allocated memory.
     ~this()
     {
         clear();
@@ -282,10 +291,10 @@ class Trie(T, K)
     }
 }
 
-/// Convenient alias
+/// Convenient alias.
 alias Dict = Trie;
 
-/// Convenient function for dict creation.
+/// Convenient function for Dict creation.
 Dict!(T, K) dict(T, K)()
 {
     return New!(Dict!(T, K))();
