@@ -71,14 +71,14 @@ alias M_1_PI = INVPI;
 enum double M_2_PI = 0.63661977236;
 enum double M_2_SQRTPI = 1.1283791671;
 
-///
+/// Returns true is the input is NaN.
 bool isNaN(T)(T x) pure nothrow @nogc
 {
     pragma(inline, true);
     return x != x;
 }
 
-///
+/// Returns true is the input is infinity.
 int isInfinity(T)(T x) pure nothrow @nogc
 {
     pragma(inline, true);
