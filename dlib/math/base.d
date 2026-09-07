@@ -43,11 +43,6 @@ module dlib.math.base;
 
 public import dlib.math.utils;
 
-/**
- * Very small value
- */
-enum EPSILON = 0.000001;
-
 /*
  * Basic math constants
  */

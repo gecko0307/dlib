@@ -44,6 +44,11 @@ private
 public:
 
 /**
+ * Very small value
+ */
+enum EPSILON = 0.000001;
+
+/**
  * Axes of Cartesian space
  */
 enum Axis
