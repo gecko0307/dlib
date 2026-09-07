@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2025 Timur Gafarov, Alexander Perfilyev
+Copyright (c) 2015-2026 Timur Gafarov, Alexander Perfilyev
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -27,12 +27,14 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
- * SSE-based optimizations for common vector and matrix operations
+ * SSE-based versions of common vector and matrix operations
  *
  * Description:
  * This module implements some frequently used vector and matrix operations using SSE instructions.
+ * Warning: this module is kept only for compatibility! It is very old, not optimal, and technically
+ * obsolete when using LDC, because SIMD optimizations are already present in dlib.math.matrix.
  *
- * Copyright: Timur Gafarov, Alexander Perfilyev 2015-2025.
+ * Copyright: Timur Gafarov, Alexander Perfilyev 2015-2026.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov, Alexander Perfilyev
  */
@@ -40,6 +42,15 @@ module dlib.math.sse;
 
 import dlib.math.vector;
 import dlib.math.matrix;
+
+version(X86)
+{
+    version = X86_Any;
+}
+version(X86_64)
+{
+    version = X86_Any;
+}
 
 version(GNU)
 {
@@ -246,12 +257,12 @@ version(GNU)
     }
 }
 
-version(DMD)
+version(DigitalMars)
 {
-    pragma(inline, true):
-    
     version(X86_Any)
     {
+        pragma(inline, true):
+        
         /// Vector addition
         Vector4f sseAdd4(Vector4f a, Vector4f b)
         {
@@ -355,7 +366,7 @@ version(DMD)
             
             return a;
         }
-    
+        
         /// Matrix multiplication
         Matrix4x4f sseMulMat4(Matrix4x4f a, Matrix4x4f b)
         {

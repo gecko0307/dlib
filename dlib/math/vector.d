@@ -45,6 +45,18 @@ import dlib.math.base;
 import dlib.math.utils;
 import dlib.math.matrix;
 
+/// SIMD float vector type.
+alias float4 = __vector(float[4]);
+
+enum bool _SIMD_Enabled = (){
+    version(NO_SIMD)
+        return false;
+    else version(LDC)
+        return true;
+    else
+        return false;
+}();
+
 /**
  * Vector representation
  */
@@ -133,12 +145,12 @@ struct Vector(T, int size)
     {
         if (v.arrayof.length >= size)
         {
-            foreach(i; 0..size)
+            static foreach(i; 0..size)
                 arrayof[i] = cast(T)v.arrayof[i];
         }
         else
         {
-            foreach(i; 0..v.arrayof.length)
+            static foreach(i; 0..v.arrayof.length)
                 arrayof[i] = cast(T)v.arrayof[i];
         }
     }
@@ -158,7 +170,7 @@ struct Vector(T, int size)
     do
     {
         Vector!(T,size) res;
-        foreach(i; RangeTuple!(0, size))
+        static foreach(i; RangeTuple!(0, size))
             res.arrayof[i] = -arrayof[i];
         return res;
     }
@@ -179,7 +191,7 @@ struct Vector(T, int size)
     do
     {
         Vector!(T,size) res;
-        foreach(i; RangeTuple!(0, size))
+        static foreach(i; RangeTuple!(0, size))
             res.arrayof[i] = cast(T)(arrayof[i] + v.arrayof[i]);
         return res;
     }
@@ -191,7 +203,7 @@ struct Vector(T, int size)
     do
     {
         Vector!(T,size) res;
-        foreach(i; RangeTuple!(0, size))
+        static foreach(i; RangeTuple!(0, size))
             res.arrayof[i] = cast(T)(arrayof[i] - v.arrayof[i]);
         return res;
     }
@@ -203,7 +215,7 @@ struct Vector(T, int size)
     do
     {
         Vector!(T,size) res;
-        foreach(i; RangeTuple!(0, size))
+        static foreach(i; RangeTuple!(0, size))
             res.arrayof[i] = cast(T)(arrayof[i] * v.arrayof[i]);
         return res;
     }
@@ -215,7 +227,7 @@ struct Vector(T, int size)
     do
     {
         Vector!(T,size) res;
-        foreach(i; RangeTuple!(0, size))
+        static foreach(i; RangeTuple!(0, size))
             res.arrayof[i] = cast(T)(arrayof[i] / v.arrayof[i]);
         return res;
     }
@@ -227,7 +239,7 @@ struct Vector(T, int size)
     do
     {
         Vector!(T,size) res;
-        foreach(i; RangeTuple!(0, size))
+        static foreach(i; RangeTuple!(0, size))
             res.arrayof[i] = cast(T)(arrayof[i] + t);
         return res;
     }
@@ -239,7 +251,7 @@ struct Vector(T, int size)
     do
     {
         Vector!(T,size) res;
-        foreach(i; RangeTuple!(0, size))
+        static foreach(i; RangeTuple!(0, size))
             res.arrayof[i] = cast(T)(arrayof[i] - t);
         return res;
     }
@@ -251,7 +263,7 @@ struct Vector(T, int size)
     do
     {
         Vector!(T,size) res;
-        foreach(i; RangeTuple!(0, size))
+        static foreach(i; RangeTuple!(0, size))
             res.arrayof[i] = cast(T)(arrayof[i] * t);
         return res;
     }
@@ -264,7 +276,7 @@ struct Vector(T, int size)
     do
     {
         Vector!(T,size) res;
-        foreach(i; RangeTuple!(0, size))
+        static foreach(i; RangeTuple!(0, size))
             res.arrayof[i] = cast(T)(arrayof[i] * t);
         return res;
     }
@@ -276,7 +288,7 @@ struct Vector(T, int size)
     do
     {
         Vector!(T,size) res;
-        foreach(i; RangeTuple!(0, size))
+        static foreach(i; RangeTuple!(0, size))
             res.arrayof[i] = cast(T)(arrayof[i] / t);
         return res;
     }
@@ -288,7 +300,7 @@ struct Vector(T, int size)
     do
     {
         Vector!(T,size) res;
-        foreach(i; RangeTuple!(0, size))
+        static foreach(i; RangeTuple!(0, size))
             res.arrayof[i] = cast(T)(arrayof[i] % t);
         return res;
     }
@@ -299,7 +311,7 @@ struct Vector(T, int size)
     Vector!(T,size) opOpAssign(string op)(Vector!(T,size) v) if (op == "+")
     do
     {
-        foreach(i; RangeTuple!(0, size))
+        static foreach(i; RangeTuple!(0, size))
             arrayof[i] += v.arrayof[i];
         return this;
     }
@@ -310,7 +322,7 @@ struct Vector(T, int size)
     Vector!(T,size) opOpAssign(string op)(Vector!(T,size) v) if (op == "-")
     do
     {
-        foreach(i; RangeTuple!(0, size))
+        static foreach(i; RangeTuple!(0, size))
             arrayof[i] -= v.arrayof[i];
         return this;
     }
@@ -321,7 +333,7 @@ struct Vector(T, int size)
     Vector!(T,size) opOpAssign(string op)(Vector!(T,size) v) if (op == "*")
     do
     {
-        foreach(i; RangeTuple!(0, size))
+        static foreach(i; RangeTuple!(0, size))
             arrayof[i] *= v.arrayof[i];
         return this;
     }
@@ -332,7 +344,7 @@ struct Vector(T, int size)
     Vector!(T,size) opOpAssign(string op)(Vector!(T,size) v) if (op == "/")
     do
     {
-        foreach(i; RangeTuple!(0, size))
+        static foreach(i; RangeTuple!(0, size))
             arrayof[i] /= v.arrayof[i];
         return this;
     }
@@ -343,7 +355,7 @@ struct Vector(T, int size)
     Vector!(T,size) opOpAssign(string op)(T t) if (op == "+")
     do
     {
-        foreach(i; RangeTuple!(0, size))
+        static foreach(i; RangeTuple!(0, size))
             arrayof[i] += t;
         return this;
     }
@@ -354,7 +366,7 @@ struct Vector(T, int size)
     Vector!(T,size) opOpAssign(string op)(T t) if (op == "-")
     do
     {
-        foreach(i; RangeTuple!(0, size))
+        static foreach(i; RangeTuple!(0, size))
             arrayof[i] -= t;
         return this;
     }
@@ -365,7 +377,7 @@ struct Vector(T, int size)
     Vector!(T,size) opOpAssign(string op)(T t) if (op == "*")
     do
     {
-        foreach(i; RangeTuple!(0, size))
+        static foreach(i; RangeTuple!(0, size))
             arrayof[i] *= t;
         return this;
     }
@@ -376,7 +388,7 @@ struct Vector(T, int size)
     Vector!(T,size) opOpAssign(string op)(T t) if (op == "/")
     do
     {
-        foreach(i; RangeTuple!(0, size))
+        static foreach(i; RangeTuple!(0, size))
             arrayof[i] /= t;
         return this;
     }
@@ -387,7 +399,7 @@ struct Vector(T, int size)
     Vector!(T,size) opOpAssign(string op, T2)(T2 t) if (op == "%")
     do
     {
-        foreach(i; RangeTuple!(0, size))
+        static foreach(i; RangeTuple!(0, size))
             arrayof[i] %= t;
         return this;
     }
@@ -464,7 +476,7 @@ struct Vector(T, int size)
     T opSliceAssign(T t)
     do
     {
-        foreach(i; RangeTuple!(0, size))
+        static foreach(i; RangeTuple!(0, size))
             arrayof[i] = t;
         return t;
     }
@@ -550,9 +562,11 @@ struct Vector(T, int size)
         @property bool isZero() const
         do
         {
-            foreach(i; RangeTuple!(0, size))
+            static foreach(i; RangeTuple!(0, size))
+            {
                 if (arrayof[i] != 0)
                     return false;
+            }
             return true;
         }
 
@@ -699,7 +713,7 @@ struct Vector(T, int size)
     do
     {
         string res;
-        foreach (i; 0..size)
+        static foreach (i; 0..size)
         {
             res ~= "T " ~ letters[i] ~ "; ";
         }
@@ -905,6 +919,7 @@ unittest
 /**
  * Dot product
  */
+pragma(inline, true)
 T dot(T, int size) (Vector!(T,size) a, Vector!(T,size) b)
 do
 {
@@ -930,7 +945,7 @@ do
     else
     {
         T d = 0;
-        foreach(i; RangeTuple!(0, size))
+        static foreach(i; RangeTuple!(0, size))
             d += a[i] * b[i];
         return d;
     }
@@ -949,6 +964,7 @@ unittest
 /**
  * Cross product
  */
+pragma(inline, true)
 Vector!(T,size) cross(T, int size) (Vector!(T,size) a, Vector!(T,size) b) if (size == 3)
 do
 {
@@ -963,6 +979,7 @@ do
 /**
  * Cross product for 4-vectors
  */
+pragma(inline, true)
 Vector!(T,size) cross(T, int size) (Vector!(T,size) a, Vector!(T,size) b, Vector!(T,size) c) if (size == 4)
 do
 {
@@ -993,8 +1010,8 @@ Matrix!(T,N) tensorProduct(T, size_t N) (Vector!(T,N) u, Vector!(T,N) v)
 do
 {
     Matrix!(T,N) res;
-    foreach(i; 0..N)
-    foreach(j; 0..N)
+    static foreach(i; 0..N)
+    static foreach(j; 0..N)
     {
         res[i, j] = u[i] * v[j];
     }

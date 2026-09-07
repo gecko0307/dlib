@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2025 Timur Gafarov, Martin Cejp
+Copyright (c) 2013-2026 Timur Gafarov, Martin Cejp
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,11 +29,16 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Square matrices with static memory allocation
  *
- * Copyright: Timur Gafarov, Martin Cejp 2013-2025.
+ * Copyright: Timur Gafarov, Martin Cejp 2013-2026.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov, Martin Cejp
  */
 module dlib.math.matrix;
+
+version(LDC)
+{
+    import core.simd: loadUnaligned, storeUnaligned;
+}
 
 import std.math;
 import std.range;
@@ -280,29 +285,54 @@ struct Matrix(T, size_t N)
         }
         else static if (N == 4)
         {
-            Matrix!(T,N) res;
+            static if (is(T == float) && _SIMD_Enabled)
+            {
+                Matrix!(T,N) res;
 
-            res.a11 = (a11 * mat.a11) + (a12 * mat.a21) + (a13 * mat.a31) + (a14 * mat.a41);
-            res.a12 = (a11 * mat.a12) + (a12 * mat.a22) + (a13 * mat.a32) + (a14 * mat.a42);
-            res.a13 = (a11 * mat.a13) + (a12 * mat.a23) + (a13 * mat.a33) + (a14 * mat.a43);
-            res.a14 = (a11 * mat.a14) + (a12 * mat.a24) + (a13 * mat.a34) + (a14 * mat.a44);
+                float4 a0 = loadUnaligned!float4(cast(float*)(arrayof.ptr));
+                float4 a1 = loadUnaligned!float4(cast(float*)(arrayof.ptr + 4));
+                float4 a2 = loadUnaligned!float4(cast(float*)(arrayof.ptr + 8));
+                float4 a3 = loadUnaligned!float4(cast(float*)(arrayof.ptr + 12));
 
-            res.a21 = (a21 * mat.a11) + (a22 * mat.a21) + (a23 * mat.a31) + (a24 * mat.a41);
-            res.a22 = (a21 * mat.a12) + (a22 * mat.a22) + (a23 * mat.a32) + (a24 * mat.a42);
-            res.a23 = (a21 * mat.a13) + (a22 * mat.a23) + (a23 * mat.a33) + (a24 * mat.a43);
-            res.a24 = (a21 * mat.a14) + (a22 * mat.a24) + (a23 * mat.a34) + (a24 * mat.a44);
+                static foreach(i; 0..4)
+                {{
+                    auto r0 = a0 * mat.arrayof[i * 4];
+                    auto r1 = a1 * mat.arrayof[i * 4 + 1];
+                    auto r2 = a2 * mat.arrayof[i * 4 + 2];
+                    auto r3 = a3 * mat.arrayof[i * 4 + 3];
+                    
+                    auto result = (r0 + r1) + (r2 + r3);
+                    
+                    storeUnaligned!float4(result, cast(float*)(res.arrayof.ptr + i * 4));
+                }}
+                return res;
+            }
+            else
+            {
+                Matrix!(T,N) res;
 
-            res.a31 = (a31 * mat.a11) + (a32 * mat.a21) + (a33 * mat.a31) + (a34 * mat.a41);
-            res.a32 = (a31 * mat.a12) + (a32 * mat.a22) + (a33 * mat.a32) + (a34 * mat.a42);
-            res.a33 = (a31 * mat.a13) + (a32 * mat.a23) + (a33 * mat.a33) + (a34 * mat.a43);
-            res.a34 = (a31 * mat.a14) + (a32 * mat.a24) + (a33 * mat.a34) + (a34 * mat.a44);
+                res.a11 = (a11 * mat.a11) + (a12 * mat.a21) + (a13 * mat.a31) + (a14 * mat.a41);
+                res.a12 = (a11 * mat.a12) + (a12 * mat.a22) + (a13 * mat.a32) + (a14 * mat.a42);
+                res.a13 = (a11 * mat.a13) + (a12 * mat.a23) + (a13 * mat.a33) + (a14 * mat.a43);
+                res.a14 = (a11 * mat.a14) + (a12 * mat.a24) + (a13 * mat.a34) + (a14 * mat.a44);
 
-            res.a41 = (a41 * mat.a11) + (a42 * mat.a21) + (a43 * mat.a31) + (a44 * mat.a41);
-            res.a42 = (a41 * mat.a12) + (a42 * mat.a22) + (a43 * mat.a32) + (a44 * mat.a42);
-            res.a43 = (a41 * mat.a13) + (a42 * mat.a23) + (a43 * mat.a33) + (a44 * mat.a43);
-            res.a44 = (a41 * mat.a14) + (a42 * mat.a24) + (a43 * mat.a34) + (a44 * mat.a44);
+                res.a21 = (a21 * mat.a11) + (a22 * mat.a21) + (a23 * mat.a31) + (a24 * mat.a41);
+                res.a22 = (a21 * mat.a12) + (a22 * mat.a22) + (a23 * mat.a32) + (a24 * mat.a42);
+                res.a23 = (a21 * mat.a13) + (a22 * mat.a23) + (a23 * mat.a33) + (a24 * mat.a43);
+                res.a24 = (a21 * mat.a14) + (a22 * mat.a24) + (a23 * mat.a34) + (a24 * mat.a44);
 
-            return res;
+                res.a31 = (a31 * mat.a11) + (a32 * mat.a21) + (a33 * mat.a31) + (a34 * mat.a41);
+                res.a32 = (a31 * mat.a12) + (a32 * mat.a22) + (a33 * mat.a32) + (a34 * mat.a42);
+                res.a33 = (a31 * mat.a13) + (a32 * mat.a23) + (a33 * mat.a33) + (a34 * mat.a43);
+                res.a34 = (a31 * mat.a14) + (a32 * mat.a24) + (a33 * mat.a34) + (a34 * mat.a44);
+
+                res.a41 = (a41 * mat.a11) + (a42 * mat.a21) + (a43 * mat.a31) + (a44 * mat.a41);
+                res.a42 = (a41 * mat.a12) + (a42 * mat.a22) + (a43 * mat.a32) + (a44 * mat.a42);
+                res.a43 = (a41 * mat.a13) + (a42 * mat.a23) + (a43 * mat.a33) + (a44 * mat.a43);
+                res.a44 = (a41 * mat.a14) + (a42 * mat.a24) + (a43 * mat.a34) + (a44 * mat.a44);
+
+                return res;
+            }
         }
         else
         {
@@ -672,7 +702,7 @@ struct Matrix(T, size_t N)
         {
             Matrix!(T,N) res;
 
-            // Inversion via LU decomposition
+            // Inversion via LUP decomposition
             enum inv = q{{
                 Matrix!(T,N) l, u, p;
                 decomposeLUP(this, l, u, p);
