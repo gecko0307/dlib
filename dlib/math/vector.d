@@ -923,9 +923,13 @@ do
         return ((a.x * b.x) + (a.y * b.y) + (a.z * b.z));
     }
     else
+    static if (size == 4)
+    {
+        return ((a.x * b.x) + (a.y * b.y) + (a.z * b.z) + (a.w * b.w));
+    }
+    else
     {
         T d = 0;
-        //foreach (i; 0..size)
         foreach(i; RangeTuple!(0, size))
             d += a[i] * b[i];
         return d;
@@ -1130,6 +1134,7 @@ do
  */
 Vector!(T,2) randomUnitVector2(T)()
 {
+    // TODO: use dlib.random
     float azimuth = uniform(0.0, 1.0) * 2 * PI;
     return Vector!(T,2)(cos(azimuth), sin(azimuth));
 }
@@ -1139,6 +1144,7 @@ Vector!(T,2) randomUnitVector2(T)()
  */
 Vector!(T,3) randomUnitVector3(T)()
 {
+     // TODO: use dlib.random
     float z = (2 * uniform(0.0, 1.0)) - 1;
     Vector!(T,2) planar = randomUnitVector2!(T)() * sqrt(1 - z * z);
     return Vector!(T,3)(planar.x, planar.y, z);
