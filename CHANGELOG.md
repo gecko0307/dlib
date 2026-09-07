@@ -1,5 +1,7 @@
 dlib 1.7.0 - TBD
 ----------------
+- **dlib.math**
+  - New module `dlib.math.base`, a direct replacement for `std.math` that implicitly uses LLVM intrinsics instead of Phobos functions when possible for maximum performance
 - **dlib.container**
   - New module `dlib.container.hashmap`, a flat hash map implementation that is faster than both `dlib.container.dict` and native associative arrays
 - **dlib.hash**
