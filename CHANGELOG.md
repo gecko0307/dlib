@@ -1,5 +1,5 @@
-dlib 1.7.0 - TBD
-----------------
+dlib 1.7.0 - 9 Sep, 2026
+------------------------
 - **dlib.math**
   - New module `dlib.math.base`, a direct replacement for `std.math` that implicitly uses LLVM intrinsics instead of Phobos functions when possible for maximum performance
   - SIMD-optimized 4x4 matrix multiplication

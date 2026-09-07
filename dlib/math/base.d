@@ -41,7 +41,7 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.math.base;
 
-public import dlib.math.utils;
+import std.math;
 
 /*
  * Basic math constants
@@ -96,7 +96,6 @@ T ctg(T)(T x) pure nothrow @nogc
 version(LDC)
 {
     import ldc.intrinsics;
-    import std.math;
     
     pragma(inline, true)
     T llvm_tan(T)(T x) pure nothrow @nogc
@@ -156,7 +155,8 @@ version(LDC)
     alias log10  = llvm_log10;
     alias logb   = std.math.logb;
     alias ilogb  = std.math.ilogb;
-    alias log1p  = std.math.scalbn;
+    alias log1p  = std.math.log1p;
+    alias scalbn = std.math.scalbn;
     
     // Remainder
     alias fmod      = std.math.fmod;
@@ -196,8 +196,6 @@ version(LDC)
 }
 else
 {
-    import std.math;
-    
     // Use std.math
     
     // Algebraic
@@ -250,7 +248,8 @@ else
     alias log10  = std.math.log10;
     alias logb   = std.math.logb;
     alias ilogb  = std.math.ilogb;
-    alias log1p  = std.math.scalbn;
+    alias log1p  = std.math.log1p;
+    alias scalbn = std.math.scalbn;
     
     // Remainder
     alias fmod      = std.math.fmod;

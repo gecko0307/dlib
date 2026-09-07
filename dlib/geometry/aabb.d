@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2025 Timur Gafarov
+Copyright (c) 2011-2026 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -27,7 +27,7 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
- * Copyright: Timur Gafarov 2011-2025.
+ * Copyright: Timur Gafarov 2011-2026.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
@@ -35,6 +35,7 @@ module dlib.geometry.aabb;
 
 import std.algorithm;
 import dlib.math.base;
+import dlib.math.utils;
 import dlib.math.vector;
 import dlib.geometry.sphere;
 import dlib.geometry.intersection;
