@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2025 Timur Gafarov
+Copyright (c) 2025-2026 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,6 +26,13 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 */
 
+/**
+ * Pseudo-random number generators.
+ *
+ * Copyright: Timur Gafarov 2025-2026.
+ * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
+ * Authors: Timur Gafarov
+ */
 module dlib.random;
 
 public
