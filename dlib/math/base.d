@@ -73,8 +73,8 @@ enum double SQRT1_2     = 0.7071067811865476; // sqrt(1/2)
 alias PI_2 = HALFPI;
 alias PI_4 = QUARTPI;
 alias M_1_PI = INVPI;
-enum double M_2_PI = 0.63661977236;
-enum double M_2_SQRTPI = 1.1283791671;
+enum double M_2_PI      = 0.6366197723675813; // 2/PI
+enum double M_2_SQRTPI  = 1.1283791670955125; // 2/sqrt(PI)
 
 /// Returns true is the input is NaN.
 pragma(inline, true)
