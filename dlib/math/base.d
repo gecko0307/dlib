@@ -41,6 +41,11 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.math.base;
 
+version(LDC)
+{
+    import ldc.intrinsics;
+}
+
 import std.math;
 
 /*
@@ -72,16 +77,16 @@ enum double M_2_PI = 0.63661977236;
 enum double M_2_SQRTPI = 1.1283791671;
 
 /// Returns true is the input is NaN.
+pragma(inline, true)
 bool isNaN(T)(T x) pure nothrow @nogc
 {
-    pragma(inline, true);
     return x != x;
 }
 
 /// Returns true is the input is infinity.
+pragma(inline, true)
 int isInfinity(T)(T x) pure nothrow @nogc
 {
-    pragma(inline, true);
     return !isNaN(x) && isNaN(x - x);
 }
 
@@ -89,14 +94,41 @@ int isInfinity(T)(T x) pure nothrow @nogc
 pragma(inline, true)
 T ctg(T)(T x) pure nothrow @nogc
 {
-    pragma(inline, true);
     return cos(x) / sin(x);
 }
 
 version(LDC)
 {
-    import ldc.intrinsics;
-    
+    // Inverse square root via LLVM intrinsic.
+    pragma(inline, true)
+    float rsqrt(float number) pure nothrow @nogc
+    {
+        return 1.0f / llvm_sqrt(number);
+    }
+}
+else
+{
+    // John Carmack's fast inverse square root, just for fun (a bit faster than std.math).
+    pragma(inline, true)
+    float rsqrt(float number) pure nothrow @nogc
+    {
+        uint i;
+        float x2, y;
+        const float threehalfs = 1.5f;
+        x2 = number * 0.5f;
+        y  = number;
+        i  = *cast(uint*)&y;                  // evil floating point bit level hacking
+        i  = 0x5f3759df - (i >> 1);           // what the fuck?
+        y  = *cast(float*)&i;
+        y  = y * (threehalfs - (x2 * y * y)); // 1st iteration
+    //  y  = y * (threehalfs - (x2 * y * y)); // 2nd iteration, this can be removed
+        return y;
+    }
+}
+
+version(LDC)
+{
+    // Tangent via LLVM intrinsics.
     pragma(inline, true)
     T llvm_tan(T)(T x) pure nothrow @nogc
     {
