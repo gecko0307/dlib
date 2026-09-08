@@ -51,23 +51,23 @@ import std.math;
 /*
  * Basic math constants
  */
-enum double E = 2.71828;
-enum double PI = 3.14159265358979323846;
-enum double HALFPI = 1.5707964;
-enum double QUARTPI = 0.7853982;
-enum double INVPI = 0.31830988618;
-enum double INVTWOPI = 0.15915494309;
-enum double TWOPI = 6.28318530718;
-enum double THREEHALFPI = 4.7123889;
-enum double LN10 = 2.30258509;
-enum double LN2 = 0.693147180559945309417232121458;
-enum double INVLN2 = 1.0 / LN2;
-enum double LOG2 = 0.30103;
-enum double LOG2E = 1.4426950408889634;
-enum double LOG10E = 0.4342944819032518;
-enum double LOG2T = 3.321928;
-enum double SQRT2 = 1.4142135623730951;
-enum double SQRT1_2 = 0.7071067811865476;
+enum double E           = 2.7182818284590452;
+enum double PI          = 3.1415926535897932;
+enum double HALFPI      = 1.5707963267948966; // PI/2
+enum double QUARTPI     = 0.7853981633974483; // PI/4
+enum double INVPI       = 0.3183098861837907; // 1/PI
+enum double INVTWOPI    = 0.1591549430918953; // 1/2PI
+enum double TWOPI       = 6.2831853071795865; // 2PI
+enum double THREEHALFPI = 4.7123889803846899; // 3PI/2
+enum double LN10        = 2.3025850929940457; // ln(10)
+enum double LN2         = 0.6931471805599453; // ln(2)
+enum double INVLN2      = 1.4426950408889634; // 1/ln(2)
+enum double LOG2        = 0.3010299956639812; // log10(2)
+enum double LOG2E       = 1.4426950408889634; // log2(e)
+enum double LOG10E      = 0.4342944819032518; // log10(E)
+enum double LOG2T       = 3.3219280948873623; // log2(10)
+enum double SQRT2       = 1.4142135623730951; // sqrt(2)
+enum double SQRT1_2     = 0.7071067811865476; // sqrt(1/2)
 
 // std.math compatibility
 alias PI_2 = HALFPI;
