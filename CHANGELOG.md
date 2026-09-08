@@ -1,3 +1,8 @@
+dlib 1.8.0 - TBD
+----------------
+- **dlib.random**
+  - New module `dlib.random.ziggurat` and function `gaussian` - a random Gaussian distribution sampler using Ziggurat algorithm.
+
 dlib 1.7.1 - 9 Sep, 2026
 ------------------------
 - **dlib.container**

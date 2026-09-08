@@ -27,7 +27,7 @@ DEALINGS IN THE SOFTWARE.
 */
 
 /**
- * Pseudo-random numbers (non-cryptographic) based on PCG.
+ * Pseudo-random numbers (non-cryptographic) based on PCG and Ziggurat.
  *
  * Copyright: Timur Gafarov 2025-2026.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
@@ -40,14 +40,18 @@ import std.algorithm: sum;
 
 public import dlib.random.seed;
 public import dlib.random.pcg;
+public import dlib.random.ziggurat;
 
+// Initialize built-in PRNGs with system entropy
 static this()
 {
     ulong seed64 = seed();
     uint seed32 = cast(uint)fmix64(seed64);
     dlib.random.pcg.init(seed64, seed32);
+    dlib.random.ziggurat.init(seed32);
 }
 
+//
 private uint random(uint bound) @nogc nothrow
 {
     uint threshold = -bound % bound;
@@ -89,7 +93,8 @@ uint rollDice(uint sides) @nogc nothrow
 }
 
 /**
- * Returns pseudo-random floating-point number in 0..1 range,
+ * Returns a pseudo-random floating-point number
+ * with uniform distribution in 0..1 range,
  * analogous to `uniform(0.0, 1.0)` from std.random.
  */
 T random(T)() @nogc nothrow
@@ -101,6 +106,12 @@ T random(T)() @nogc nothrow
     else
         static assert(false, "random() supports only float and double");
 }
+
+/**
+ * Returns a pseudo-random floating-point number
+ * with non-uniform (Gaussian) distribution.
+ */
+alias gaussian = zigGaussian;
 
 unittest
 {
