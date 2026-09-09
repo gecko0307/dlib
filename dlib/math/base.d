@@ -108,15 +108,14 @@ version(LDC)
 }
 else
 {
-    // John Carmack's fast inverse square root, just for fun (a bit faster than std.math).
+    // John Carmack's fast inverse square root, just for fun (a bit faster than 1/sqrt of std.math).
     pragma(inline, true)
     float rsqrt(float number) pure nothrow @nogc
     {
         uint i;
-        float x2, y;
         const float threehalfs = 1.5f;
-        x2 = number * 0.5f;
-        y  = number;
+        float x2 = number * 0.5f;
+        float y  = number;
         i  = *cast(uint*)&y;                  // evil floating point bit level hacking
         i  = 0x5f3759df - (i >> 1);           // what the fuck?
         y  = *cast(float*)&i;
