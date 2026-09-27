@@ -501,7 +501,7 @@ struct Array(T, size_t chunkSize = 32)
         if (i < pos)
         {
             T* s = storage();
-            for (size_t p = i+1; p <= pos; p++)
+            for (size_t p = i+1; p < pos; p++)
             {
                 s[p-1] = s[p];
             }
