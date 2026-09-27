@@ -528,18 +528,24 @@ struct Vector(T, int size)
         do
         {
             static if (isFloatingPoint!T)
+                alias CastTo = T;
+            else
+                alias CastTo = float;
+
+            static if (size == 2)
             {
-                T t = 0;
-                foreach (component; arrayof)
-                    t += component * component;
-                return sqrt(t);
+                return cast(T)hypot(cast(CastTo)x, cast(CastTo)y);
+            }
+            else static if (size == 3)
+            {
+                return cast(T)hypot3(cast(CastTo)x, cast(CastTo)y, cast(CastTo)z);
             }
             else
             {
                 T t = 0;
                 foreach (component; arrayof)
                     t += component * component;
-                return cast(T)sqrt(cast(float)t);
+                return cast(T)sqrt(cast(CastTo)t);
             }
         }
 
@@ -1134,7 +1140,17 @@ do
 {
     T dx = a.x - b.x;
     T dy = a.y - b.y;
-    return sqrt((dx * dx) + (dy * dy));
+    return hypot(dx, dy);
+}
+
+///
+unittest
+{
+    const a = Vector2f(4, 0);
+    const b = Vector2f(1, 4);
+    const l = distance(a, b);
+
+    assert(isConsiderZero(l - 5));
 }
 
 /**
@@ -1157,7 +1173,7 @@ do
     T dx = a.x - b.x;
     T dy = a.y - b.y;
     T dz = a.z - b.z;
-    return sqrt((dx * dx) + (dy * dy) + (dz * dz));
+    return hypot3(dx, dy, dz);
 }
 
 /**
