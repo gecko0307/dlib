@@ -110,7 +110,7 @@ struct MCU
         if (crBlocks.length) Delete(crBlocks);
     }
 
-    Color4f getPixel(uint x, uint y) // coordinates relative to upper-left MCU corner
+    Color4f getPixel(uint x, uint y, bool grayscale = false) // coordinates relative to upper-left MCU corner
     {
         // Y block coordinates
         uint ybx = x / yWidth;
@@ -120,6 +120,13 @@ struct MCU
         // Pixel coordinates in Y block
         uint ybpx = x - ybx * yWidth;
         uint ybpy = y - yby * yHeight;
+
+        float Y = cast(float)yBlocks[ybi][ybpy * 8 + ybpx] + 128.0f;
+        if (grayscale)
+        {
+            float gray = Y / 255.0f;
+            return Color4f(gray, gray, gray, 1.0f);
+        }
 
         // Cb block coordinates
         uint cbx = x / cbWidth;
@@ -140,7 +147,6 @@ struct MCU
         uint crpy = (y - cry * crHeight) / ySamplesV;
 
         // Get color components
-        float Y  = cast(float)yBlocks [ybi][ybpy * 8 + ybpx] + 128.0f;
         float Cb = cast(float)cbBlocks[cbi][cbpy * 8 + cbpx];
         float Cr = cast(float)crBlocks[cri][crpy * 8 + crpx];
 
@@ -154,4 +160,17 @@ struct MCU
 
         return col;
     }
+}
+
+unittest
+{
+    MCU mcu;
+    mcu.createYBlocks(1, 1);
+    mcu.yBlocks[0][0] = 127;
+    auto pixelValue = mcu.getPixel(0, 0, true);
+    assert(pixelValue.r == pixelValue.g);
+    assert(pixelValue.g == pixelValue.b);
+    assert(pixelValue.r == 1.0f);
+    assert(pixelValue.a == 1.0f);
+    mcu.free();
 }
