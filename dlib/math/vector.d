@@ -609,7 +609,8 @@ struct Vector(T, int size)
    /**
     * Swizzling
     */
-    template opDispatch(string s) if (valid(s))
+    template opDispatch(string s)
+        if (isValidSwizzle(s))
     {
         static if (s.length <= 4)
         {
@@ -624,18 +625,27 @@ struct Vector(T, int size)
             {
                 assert(extend("x") == "xxxx");
             }
+            
+            private enum i = (char c)
+            {
+                final switch(c)
+                {
+                    case 'x', 'r', 's': return 0;
+                    case 'y', 'g', 't': return 1;
+                    case 'z', 'b', 'p': return 2;
+                    case 'w', 'a', 'q': return 3;
+                }
+            };
+            
+            private enum p = extend(s);
+            
+            private enum i0 = i(p[0]),
+                         i1 = i(p[1]),
+                         i2 = i(p[2]),
+                         i3 = i(p[3]);
 
             @property auto ref opDispatch(this X)()
             {
-                enum p = extend(s);
-                enum i = (char c) => ['x':0, 'y':1, 'z':2, 'w':3,
-                                      'r':0, 'g':1, 'b':2, 'a':3,
-                                      's':0, 't':1, 'p':2, 'q':3][c];
-                enum i0 = i(p[0]),
-                     i1 = i(p[1]),
-                     i2 = i(p[2]),
-                     i3 = i(p[3]);
-
                 static if (s.length == 4)
                     return Vector!(T,4)(arrayof[i0], arrayof[i1], arrayof[i2], arrayof[i3]);
                 else static if (s.length == 3)
@@ -647,15 +657,6 @@ struct Vector(T, int size)
             @property void opDispatch(this X, T2, alias n)(Vector!(T2, n) vec)
                 if (s.length == n)
             {
-                enum p = extend(s);
-                enum i = (char c) => ['x':0, 'y':1, 'z':2, 'w':3,
-                                      'r':0, 'g':1, 'b':2, 'a':3,
-                                      's':0, 't':1, 'p':2, 'q':3][c];
-                enum i0 = i(p[0]),
-                     i1 = i(p[1]),
-                     i2 = i(p[2]),
-                     i3 = i(p[3]);
-
                 static if (s.length == 4)
                 {
                     arrayof[i3] = vec.arrayof[3];
@@ -675,7 +676,7 @@ struct Vector(T, int size)
         }
     }
 
-    private static bool valid(string s)
+    private static bool isValidSwizzle(string s)
     {
         if (s.length < 2)
             return false;
@@ -707,17 +708,17 @@ struct Vector(T, int size)
     {
         static if (size == 3)
         {
-            assert(valid("xyz"));
-            assert(valid("rgb"));
-            assert(valid("stp"));
-            assert(!valid("m"));
-            assert(!valid("km"));
+            assert(isValidSwizzle("xyz"));
+            assert(isValidSwizzle("rgb"));
+            assert(isValidSwizzle("stp"));
+            assert(!isValidSwizzle("m"));
+            assert(!isValidSwizzle("km"));
         }
         else static if (size == 4)
         {
-            assert(valid("xyzw"));
-            assert(valid("rgba"));
-            assert(valid("stpq"));
+            assert(isValidSwizzle("xyzw"));
+            assert(isValidSwizzle("rgba"));
+            assert(isValidSwizzle("stpq"));
         }
     }
 
