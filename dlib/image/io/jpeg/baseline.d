@@ -90,7 +90,7 @@ Compound!(SuperImage, string) decodeBaseline(
             return value - 2^^numBits + 1;
     }
 
-    if (jpg.scan.componentsNum != 3)
+    if (jpg.scan.componentsNum != 1 && jpg.scan.componentsNum != 3)
     {
         return error(format(
                 "loadJPEG error: unsupported number of scan components: %s",
@@ -236,7 +236,7 @@ Compound!(SuperImage, string) decodeBaseline(
         foreach(y; 0..mcu.height) // Pixel coordinates in MCU
         foreach(x; 0..mcu.width)
         {
-            Color4f col = mcu.getPixel(x, y);
+            Color4f col = mcu.getPixel(x, y, jpg.scan.componentsNum == 1);
 
             // Pixel coordinates in image
             uint ix = mcuX * mcu.width + x;
