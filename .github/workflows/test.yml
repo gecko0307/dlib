@@ -36,6 +36,8 @@ jobs:
       - uses: dlang-community/setup-dlang@v1
         with:
           compiler: dmd-latest
+      - name: Install dependencies
+        run: sudo apt-get install -y libcurl4-openssl-dev
       - name: Run tests with coverage
         run: dub test --build=unittest-cov
       - name: Run code coverage
