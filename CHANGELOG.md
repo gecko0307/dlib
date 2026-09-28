@@ -1,3 +1,8 @@
+dlib 1.8.1 - TBD
+----------------
+- **dlib.math**
+  - Fix vector -> vector constructor.
+
 dlib 1.8.0 - 28 Sep, 2026
 -------------------------
 - **dlib.math**
