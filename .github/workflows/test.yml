@@ -23,14 +23,22 @@ jobs:
         dc: [dmd-latest, ldc-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: dlang-community/setup-dlang@v1
         with:
           compiler: ${{ matrix.dc }}
       - name: Run tests
+        run: dub test
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dlang-community/setup-dlang@v1
+        with:
+          compiler: dmd-latest
+      - name: Run tests with coverage
         run: dub test --build=unittest-cov
       - name: Run code coverage
-        if: success()
-        run: |
-          curl https://codecov.io/bash > codecov.sh
-          bash codecov.sh
+        run: dub run doveralls
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
