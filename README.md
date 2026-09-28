@@ -9,6 +9,7 @@ dlib has no external dependencies aside D's standard library. The project was fo
 [![DUB Downloads](https://img.shields.io/dub/dm/dlib.svg)](https://code.dlang.org/packages/dlib)
 [![License](http://img.shields.io/badge/license-boost-blue.svg)](http://www.boost.org/LICENSE_1_0.txt)
 [![Coverage Status](https://coveralls.io/repos/github/gecko0307/dlib/badge.svg?branch=master)](https://coveralls.io/github/gecko0307/dlib?branch=master)
+[![Discord](https://img.shields.io/discord/1554208221286105270)](https://discord.gg/pMhGpeNCKN)
 
 If you like dlib, please support its development on [Patreon](https://www.patreon.com/gecko0307) or [Liberapay](https://liberapay.com/gecko0307). You can also make one-time donation via [NOWPayments](https://nowpayments.io/donation/gecko0307). I appreciate any support. Thanks in advance!
 
@@ -46,7 +47,10 @@ HTML documentation can be generated from source code using ddox (run `dub build 
 * [FAQ](https://github.com/gecko0307/dlib/wiki/FAQ)
 * [Best Practices](https://github.com/gecko0307/dlib/wiki/Best-Practices)
 * [Contributing Guidelines](https://github.com/gecko0307/dlib/blob/master/CONTRIBUTING.md)
-* [Gitter chat room](https://gitter.im/gecko0307/dlib)
+
+Community
+---------
+* [Discord Server](https://discord.gg/pMhGpeNCKN)
 
 License
 -------
