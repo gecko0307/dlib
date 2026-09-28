@@ -1,5 +1,12 @@
-dlib 1.8.0 - TBD
-----------------
+dlib 1.8.0 - 28 Sep, 2026
+-------------------------
+- **dlib.math**
+  - New function `rsqrt` in `dlib.math.base`
+  - Uniform precision across all `dlib.math.base` constants
+- **dlib.image**
+  - Progressive JPEG support, grayscale JPEG support
+- **dlib.container**
+  - Fix out-of-bounds read in `Array.removeKey`
 - **dlib.random**
   - New module `dlib.random.ziggurat` and function `gaussian` - a random Gaussian distribution sampler using Ziggurat algorithm.
 
