@@ -9,6 +9,8 @@ dlib 1.8.0 - 28 Sep, 2026
   - Fix out-of-bounds read in `Array.removeKey`
 - **dlib.random**
   - New module `dlib.random.ziggurat` and function `gaussian` - a random Gaussian distribution sampler using Ziggurat algorithm.
+- **Misc**
+  - dlib now uses [Coveralls](https://coveralls.io/) to track coverage statistics.
 
 dlib 1.7.1 - 9 Sep, 2026
 ------------------------
