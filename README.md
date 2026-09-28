@@ -1,6 +1,6 @@
 <img align="left" alt="dlib logo" src="https://github.com/gecko0307/dlib/raw/master/logo/dlib-logo.png" height="66" />
 
-dlib is a general purpose library written in [D language](https://dlang.org). Its main purpose is to faciliate the development of real-time and multimedia applications by providing basic components such as containers, allocators, math functions, image decoders and more. dlib is efficient, cross-platform, and easy to use.
+dlib is a general purpose library written in [D language](https://dlang.org). Its main purpose is to facilitate the development of real-time and multimedia applications by providing basic components such as containers, allocators, math functions, image decoders and more. dlib is efficient, cross-platform, and easy to use.
 
 dlib has no external dependencies aside D's standard library. The project was founded and is maintained by [Timur Gafarov](https://github.com/gecko0307).
 
