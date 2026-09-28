@@ -40,6 +40,7 @@ import std.random;
 import std.range;
 import std.format;
 import std.traits;
+import std.meta: allSatisfy;
 import dlib.core.tuple;
 import dlib.math.base;
 import dlib.math.utils;
@@ -87,67 +88,86 @@ enum bool _SIMD_LDC = () {
  * Vector representation
  */
 struct Vector(T, int size)
+    if (isNumeric!T && size > 0)
 {
     public:
 
    /**
     * Vector constructor.
-    * Supports initializing from vector of arbitrary length and type
+    * Supports initializing from vector of arbitrary length and optional scalars
     */
-    this (T2, int size2)(Vector!(T2, size2) v)
+    this (T2, int size2, Args...)(Vector!(T2, size2) v, Args scalars)
+        if (Args.length == 0 || allSatisfy!(isNumeric, Args))
     {
-        if (v.arrayof.length >= size)
+        static if (size2 >= size)
         {
-            foreach(i; 0..size)
+            static foreach(i; 0..size)
                 arrayof[i] = cast(T)v.arrayof[i];
         }
         else
         {
-            foreach(i; 0..v.arrayof.length)
+            static foreach(i; 0..size2)
                 arrayof[i] = cast(T)v.arrayof[i];
+            
+            static if (scalars.length > 0)
+            {
+                static if (scalars.length >= size - size2)
+                {
+                    static foreach(i; 0..size-size2)
+                        arrayof[size2 + i] = cast(T)scalars[i];
+                }
+                else
+                {
+                    static foreach(i; 0..scalars.length)
+                        arrayof[size2 + i] = cast(T)scalars[i];
+                }
+            }
         }
     }
 
    /**
-    * Array constructor
+    * Dynamic array constructor
     */
-    this (A)(A components) if (isDynamicArray!A && !isSomeString!A)
+    this (A)(A[] arr)
+        if (isNumeric!A)
     {
-        if (components.length >= size)
+        if (arr.length >= size)
         {
             foreach(i; 0..size)
-                arrayof[i] = cast(T)components[i];
+                arrayof[i] = cast(T)arr[i];
         }
         else
         {
-            foreach(i; 0..components.length)
-                arrayof[i] = cast(T)components[i];
+            foreach(i; 0..arr.length)
+                arrayof[i] = cast(T)arr[i];
         }
     }
 
    /**
     * Static array constructor
     */
-    this (T2, size_t arrSize)(T2[arrSize] components)
+    this (A, size_t arrSize)(A[arrSize] arr)
+        if (isNumeric!A)
     {
-        if (components.length >= size)
+        static if (arrSize >= size)
         {
-            foreach(i; 0..size)
-                arrayof[i] = cast(T)components[i];
+            static foreach(i; 0..size)
+                arrayof[i] = cast(T)arr[i];
         }
         else
         {
-            foreach(i; 0..components.length)
-                arrayof[i] = cast(T)components[i];
+            static foreach(i; 0..arrSize)
+                arrayof[i] = cast(T)arr[i];
         }
     }
 
    /**
-    * Tuple constructor
+    * Variadic constructor
     */
-    this (F...)(F components)
+    this (Args...)(Args components)
+        if (Args.length == 0 || allSatisfy!(isNumeric, Args))
     {
-        foreach(i; RangeTuple!(0, size))
+        static foreach(i; 0..size)
         {
             static if (i < components.length)
                 arrayof[i] = cast(T)components[i];
@@ -159,7 +179,8 @@ struct Vector(T, int size)
    /**
     * String constructor
     */
-    this (S)(S str) if (isSomeString!S)
+    this (S)(S str)
+        if (isSomeString!S)
     {
         arrayof = parse!(T[size])(str);
     }
@@ -169,14 +190,14 @@ struct Vector(T, int size)
     */
     void opAssign(T2, int size2)(Vector!(T2,size2) v)
     {
-        if (v.arrayof.length >= size)
+        static if (size2 >= size)
         {
             static foreach(i; 0..size)
                 arrayof[i] = cast(T)v.arrayof[i];
         }
         else
         {
-            static foreach(i; 0..v.arrayof.length)
+            static foreach(i; 0..size2)
                 arrayof[i] = cast(T)v.arrayof[i];
         }
     }
@@ -193,10 +214,9 @@ struct Vector(T, int size)
     * -Vector!(T,size)
     */
     Vector!(T,size) opUnary(string s) () const if (s == "-")
-    do
     {
         Vector!(T,size) res;
-        static foreach(i; RangeTuple!(0, size))
+        static foreach(i; 0..size)
             res.arrayof[i] = -arrayof[i];
         return res;
     }
@@ -205,7 +225,6 @@ struct Vector(T, int size)
     * +Vector!(T,size)
     */
     Vector!(T,size) opUnary(string s) () const if (s == "+")
-    do
     {
         return Vector!(T,size)(this);
     }
@@ -214,10 +233,9 @@ struct Vector(T, int size)
     * Vector!(T,size) + Vector!(T,size)
     */
     Vector!(T,size) opBinary(string op)(Vector!(T,size) v) const if (op == "+")
-    do
     {
         Vector!(T,size) res;
-        static foreach(i; RangeTuple!(0, size))
+        static foreach(i; 0..size)
             res.arrayof[i] = cast(T)(arrayof[i] + v.arrayof[i]);
         return res;
     }
@@ -226,10 +244,9 @@ struct Vector(T, int size)
     * Vector!(T,size) - Vector!(T,size)
     */
     Vector!(T,size) opBinary(string op)(Vector!(T,size) v) const if (op == "-")
-    do
     {
         Vector!(T,size) res;
-        static foreach(i; RangeTuple!(0, size))
+        static foreach(i; 0..size)
             res.arrayof[i] = cast(T)(arrayof[i] - v.arrayof[i]);
         return res;
     }
@@ -238,10 +255,9 @@ struct Vector(T, int size)
     * Vector!(T,size) * Vector!(T,size)
     */
     Vector!(T,size) opBinary(string op)(Vector!(T,size) v) const if (op == "*")
-    do
     {
         Vector!(T,size) res;
-        static foreach(i; RangeTuple!(0, size))
+        static foreach(i; 0..size)
             res.arrayof[i] = cast(T)(arrayof[i] * v.arrayof[i]);
         return res;
     }
@@ -250,10 +266,9 @@ struct Vector(T, int size)
     * Vector!(T,size) / Vector!(T,size)
     */
     Vector!(T,size) opBinary(string op)(Vector!(T,size) v) const if (op == "/")
-    do
     {
         Vector!(T,size) res;
-        static foreach(i; RangeTuple!(0, size))
+        static foreach(i; 0..size)
             res.arrayof[i] = cast(T)(arrayof[i] / v.arrayof[i]);
         return res;
     }
@@ -262,10 +277,9 @@ struct Vector(T, int size)
     * Vector!(T,size) + T
     */
     Vector!(T,size) opBinary(string op)(T t) const if (op == "+")
-    do
     {
         Vector!(T,size) res;
-        static foreach(i; RangeTuple!(0, size))
+        static foreach(i; 0..size)
             res.arrayof[i] = cast(T)(arrayof[i] + t);
         return res;
     }
@@ -274,10 +288,9 @@ struct Vector(T, int size)
     * Vector!(T,size) - T
     */
     Vector!(T,size) opBinary(string op)(T t) const if (op == "-")
-    do
     {
         Vector!(T,size) res;
-        static foreach(i; RangeTuple!(0, size))
+        static foreach(i; 0..size)
             res.arrayof[i] = cast(T)(arrayof[i] - t);
         return res;
     }
@@ -286,10 +299,9 @@ struct Vector(T, int size)
     * Vector!(T,size) * T
     */
     Vector!(T,size) opBinary(string op)(T t) const if (op == "*")
-    do
     {
         Vector!(T,size) res;
-        static foreach(i; RangeTuple!(0, size))
+        static foreach(i; 0..size)
             res.arrayof[i] = cast(T)(arrayof[i] * t);
         return res;
     }
@@ -299,10 +311,9 @@ struct Vector(T, int size)
     */
     Vector!(T,size) opBinaryRight(string op) (T t) const
         if (op == "*" && isNumeric!T)
-    do
     {
         Vector!(T,size) res;
-        static foreach(i; RangeTuple!(0, size))
+        static foreach(i; 0..size)
             res.arrayof[i] = cast(T)(arrayof[i] * t);
         return res;
     }
@@ -311,10 +322,9 @@ struct Vector(T, int size)
     * Vector!(T,size) / T
     */
     Vector!(T,size) opBinary(string op)(T t) const if (op == "/")
-    do
     {
         Vector!(T,size) res;
-        static foreach(i; RangeTuple!(0, size))
+        static foreach(i; 0..size)
             res.arrayof[i] = cast(T)(arrayof[i] / t);
         return res;
     }
@@ -323,10 +333,9 @@ struct Vector(T, int size)
     * Vector!(T,size) % T
     */
     Vector!(T,size) opBinary(string op, T2) (T2 t) const if (op == "%")
-    do
     {
         Vector!(T,size) res;
-        static foreach(i; RangeTuple!(0, size))
+        static foreach(i; 0..size)
             res.arrayof[i] = cast(T)(arrayof[i] % t);
         return res;
     }
@@ -335,9 +344,8 @@ struct Vector(T, int size)
     * Vector!(T,size) += Vector!(T,size)
     */
     Vector!(T,size) opOpAssign(string op)(Vector!(T,size) v) if (op == "+")
-    do
     {
-        static foreach(i; RangeTuple!(0, size))
+        static foreach(i; 0..size)
             arrayof[i] += v.arrayof[i];
         return this;
     }
@@ -346,9 +354,8 @@ struct Vector(T, int size)
     * Vector!(T,size) -= Vector!(T,size)
     */
     Vector!(T,size) opOpAssign(string op)(Vector!(T,size) v) if (op == "-")
-    do
     {
-        static foreach(i; RangeTuple!(0, size))
+        static foreach(i; 0..size)
             arrayof[i] -= v.arrayof[i];
         return this;
     }
@@ -357,9 +364,8 @@ struct Vector(T, int size)
     * Vector!(T,size) *= Vector!(T,size)
     */
     Vector!(T,size) opOpAssign(string op)(Vector!(T,size) v) if (op == "*")
-    do
     {
-        static foreach(i; RangeTuple!(0, size))
+        static foreach(i; 0..size)
             arrayof[i] *= v.arrayof[i];
         return this;
     }
@@ -368,9 +374,8 @@ struct Vector(T, int size)
     * Vector!(T,size) /= Vector!(T,size)
     */
     Vector!(T,size) opOpAssign(string op)(Vector!(T,size) v) if (op == "/")
-    do
     {
-        static foreach(i; RangeTuple!(0, size))
+        static foreach(i; 0..size)
             arrayof[i] /= v.arrayof[i];
         return this;
     }
@@ -379,9 +384,8 @@ struct Vector(T, int size)
     * Vector!(T,size) += T
     */
     Vector!(T,size) opOpAssign(string op)(T t) if (op == "+")
-    do
     {
-        static foreach(i; RangeTuple!(0, size))
+        static foreach(i; 0..size)
             arrayof[i] += t;
         return this;
     }
@@ -390,9 +394,8 @@ struct Vector(T, int size)
     * Vector!(T,size) -= T
     */
     Vector!(T,size) opOpAssign(string op)(T t) if (op == "-")
-    do
     {
-        static foreach(i; RangeTuple!(0, size))
+        static foreach(i; 0..size)
             arrayof[i] -= t;
         return this;
     }
@@ -401,9 +404,8 @@ struct Vector(T, int size)
     * Vector!(T,size) *= T
     */
     Vector!(T,size) opOpAssign(string op)(T t) if (op == "*")
-    do
     {
-        static foreach(i; RangeTuple!(0, size))
+        static foreach(i; 0..size)
             arrayof[i] *= t;
         return this;
     }
@@ -412,9 +414,8 @@ struct Vector(T, int size)
     * Vector!(T,size) /= T
     */
     Vector!(T,size) opOpAssign(string op)(T t) if (op == "/")
-    do
     {
-        static foreach(i; RangeTuple!(0, size))
+        static foreach(i; 0..size)
             arrayof[i] /= t;
         return this;
     }
@@ -423,9 +424,8 @@ struct Vector(T, int size)
     * Vector!(T,size) %= T
     */
     Vector!(T,size) opOpAssign(string op, T2)(T2 t) if (op == "%")
-    do
     {
-        static foreach(i; RangeTuple!(0, size))
+        static foreach(i; 0..size)
             arrayof[i] %= t;
         return this;
     }
@@ -491,7 +491,6 @@ struct Vector(T, int size)
     * T = Vector!(T,size)[]
     */
     auto opSlice(this X)()
-    do
     {
         return arrayof[];
     }
@@ -500,117 +499,107 @@ struct Vector(T, int size)
     * Vector!(T,size)[] = T
     */
     T opSliceAssign(T t)
-    do
     {
-        static foreach(i; RangeTuple!(0, size))
+        static foreach(i; 0..size)
             arrayof[i] = t;
         return t;
     }
 
-    static if (isNumeric!(T))
+    /**
+     * Get vector length squared
+     */
+    @property T lengthsqr() const
     {
-       /**
-        * Get vector length squared
-        */
-        @property T lengthsqr() const
-        do
+        T res = 0;
+        foreach (component; arrayof)
+            res += component * component;
+        return res;
+    }
+
+    /**
+     * Get vector length
+     */
+    @property T length() const
+    {
+        static if (isFloatingPoint!T)
         {
-            T res = 0;
+            T t = 0;
             foreach (component; arrayof)
-                res += component * component;
-            return res;
+                t += component * component;
+            return sqrt(t);
         }
-
-       /**
-        * Get vector length
-        */
-        @property T length() const
-        do
+        else
         {
-            static if (isFloatingPoint!T)
-            {
-                T t = 0;
-                foreach (component; arrayof)
-                    t += component * component;
-                return sqrt(t);
-            }
-            else
-            {
-                T t = 0;
-                foreach (component; arrayof)
-                    t += component * component;
-                return cast(T)sqrt(cast(float)t);
-            }
+            T t = 0;
+            foreach (component; arrayof)
+                t += component * component;
+            return cast(T)sqrt(cast(float)t);
         }
+    }
 
-       /**
-        * Set vector length to 1
-        */
-        void normalize()
-        do
+    /**
+     * Set vector length to 1
+     */
+    void normalize()
+    {
+        static if (isFloatingPoint!T)
         {
-            static if (isFloatingPoint!T)
+            T lensqr = lengthsqr();
+            if (lensqr > 0)
             {
-                T lensqr = lengthsqr();
-                if (lensqr > 0)
-                {
-                    T coef = 1.0 / sqrt(lensqr);
-                    foreach (ref component; arrayof)
-                        component *= coef;
-                }
-            }
-            else
-            {
-                T lensqr = lengthsqr();
-                if (lensqr > 0)
-                {
-                    float coef = 1.0 / sqrt(cast(float)lensqr);
-                    foreach (ref component; arrayof)
-                        component = cast(T)(component * coef);
-                }
+                T coef = 1.0 / sqrt(lensqr);
+                foreach (ref component; arrayof)
+                    component *= coef;
             }
         }
-
-       /**
-        * Return normalized copy
-        */
-        @property Vector!(T,size) normalized() const
-        do
+        else
         {
-            Vector!(T,size) res = this;
-            res.normalize();
-            return res;
-        }
-
-       /**
-        * Return true if all components are zero
-        */
-        @property bool isZero() const
-        do
-        {
-            static foreach(i; RangeTuple!(0, size))
+            T lensqr = lengthsqr();
+            if (lensqr > 0)
             {
-                if (arrayof[i] != 0)
-                    return false;
+                float coef = 1.0 / sqrt(cast(float)lensqr);
+                foreach (ref component; arrayof)
+                    component = cast(T)(component * coef);
             }
-            return true;
         }
+    }
+    
+    /**
+     * Return normalized copy
+     */
+    @property Vector!(T,size) normalized() const
+    {
+        Vector!(T,size) res = this;
+        res.normalize();
+        return res;
+    }
 
-       /**
-        * Clamp components to min/max value
-        */
-        void clamp(T minv, T maxv)
+    /**
+     * Return true if all components are zero
+     */
+    @property bool isZero() const
+    {
+        static foreach(i; 0..size)
         {
-            foreach (ref v; arrayof)
-                v = .clamp(v, minv, maxv);
+            if (arrayof[i] != 0)
+                return false;
         }
+        return true;
+    }
+
+    /**
+     * Clamp components to min/max value
+     */
+    void clamp(T minv, T maxv)
+    {
+        foreach (ref v; arrayof)
+            v = .clamp(v, minv, maxv);
     }
 
    /**
     * Convert to string
     */
     @property string toString() const
-    do
     {
         auto writer = appender!string();
         formattedWrite(writer, "%s", arrayof);
@@ -872,8 +861,8 @@ unittest
 
     {
         Vector3f a = Vector3f(2, 5, 7);
-        Vector4f b = Vector4f(a);
-        assert(b == Vector4f(2, 5, 7, float.nan));
+        Vector4f b = Vector4f(a, 1);
+        assert(b == Vector4f(2, 5, 7, 1));
     }
 
     {
@@ -971,7 +960,7 @@ do
     else
     {
         T d = 0;
-        static foreach(i; RangeTuple!(0, size))
+        static foreach(i; 0..size)
             d += a[i] * b[i];
         return d;
     }
@@ -1342,12 +1331,16 @@ auto lvector(T...)(ref T x)
 
         void opAssign(int size2)(Vector!(T,size2) v)
         {
-            if (v.arrayof.length >= size)
-                foreach(i; 0..size)
+            static if (size2 >= size)
+            {
+                static foreach(i; 0..size)
                     *arrayof[i] = v.arrayof[i];
+            }
             else
-                foreach(i; 0..v.arrayof.length)
+            {
+                static foreach(i; 0..size2)
                     *arrayof[i] = v.arrayof[i];
+            }
         }
     }
 
@@ -1357,4 +1350,14 @@ auto lvector(T...)(ref T x)
         res.arrayof[i] = &v;
 
     return res;
+}
+
+///
+unittest
+{
+    float a, b, c;
+    lvector(a, b, c) = Vector3f(10, 4, 2);
+    assert(a == 10);
+    assert(b == 4);
+    assert(c == 2);
 }
