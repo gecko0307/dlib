@@ -37,5 +37,6 @@ module dlib.hash;
 
 public
 {
+    import dlib.hash.xxhash32;
     import dlib.hash.xxhash64;
 }

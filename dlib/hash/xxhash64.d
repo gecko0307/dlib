@@ -42,9 +42,11 @@
  *
  * Copyright: 2012-2020 Yann Collet, 2019-2020 Devin Hussey
  * License: $(LINK2 opensource.org/license/BSD-2-Clause, BSD 2-Clause License).
- * Authors: Yann Collet, Devin Hussey
+ * Authors: Yann Collet, Devin Hussey; D port by Timur Gafarov
  */
 module dlib.hash.xxhash64;
+
+import dlib.hash.xxhash32;
 
 private enum ulong PRIME64_1 = 0x9E3779B185EBCA87UL; // 0b1001111000110111011110011011000110000101111010111100101010000111
 private enum ulong PRIME64_2 = 0xC2B2AE3D27D4EB4FUL; // 0b1100001010110010101011100011110100100111110101001110101101001111
@@ -56,15 +58,6 @@ private enum ulong PRIME64_5 = 0x27D4EB2F165667C5UL; // 0b0010011111010100111010
 private ulong xxRotl64(ulong value, uint amt) pure nothrow @safe @nogc
 {
     return (value << (amt % 64)) | (value >> (64 - amt % 64));
-}
-
-/// Portably reads a 32-bit little endian integer from data at the given offset.
-private uint xxRead32(const(ubyte)* data, size_t offset) pure nothrow @nogc
-{
-    return cast(uint)data[offset + 0]
-        | (cast(uint)data[offset + 1] <<  8)
-        | (cast(uint)data[offset + 2] << 16)
-        | (cast(uint)data[offset + 3] << 24);
 }
 
 /// Portably reads a 64-bit little endian integer from data at the given offset.

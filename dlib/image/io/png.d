@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2025 Timur Gafarov, Martin Cejp, Vadim Lopatin
+Copyright (c) 2011-2026 Timur Gafarov, Martin Cejp, Vadim Lopatin
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,20 +29,20 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Decode and encode PNG/APNG images
  *
- * Copyright: Timur Gafarov, Martin Cejp, Vadim Lopatin 2011-2025.
+ * Copyright: Timur Gafarov, Martin Cejp, Vadim Lopatin 2011-2026.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov, Martin Cejp, Vadim Lopatin
  */
 module dlib.image.io.png;
 
 import std.stdio;
-import std.math;
 import std.string;
 import std.range;
 import dlib.core.memory;
 import dlib.core.stream;
 import dlib.core.compound;
 import dlib.filesystem.local;
+import dlib.math.base;
 import dlib.math.utils;
 import dlib.math.interpolation;
 import dlib.coding.zlib;
@@ -1348,9 +1348,9 @@ Color4f getColor(
 pure ubyte paeth(ubyte a, ubyte b, ubyte c)
 {
     int p = a + b - c;
-    int pa = std.math.abs(p - a);
-    int pb = std.math.abs(p - b);
-    int pc = std.math.abs(p - c);
+    int pa = dlib.math.base.abs(p - a);
+    int pb = dlib.math.base.abs(p - b);
+    int pc = dlib.math.base.abs(p - c);
     if (pa <= pb && pa <= pc) return a;
     else if (pb <= pc) return b;
     else return c;
