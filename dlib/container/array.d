@@ -31,7 +31,7 @@ DEALINGS IN THE SOFTWARE.
  *
  * Copyright: Timur Gafarov 2015-2025.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
- * Authors: Timur Gafarov, Roman Vlasov, Andrey Penechko, Eugene Wissner, Roman Chistokhodov, aferust, ijet
+ * Authors: Timur Gafarov, Roman Vlasov, Andrey Penechko, Eugene Wissner, Roman Chistokhodov, Ferhat Kurtulmuş, ijet
  */
 module dlib.container.array;
 
