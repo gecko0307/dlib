@@ -1,7 +1,9 @@
-dlib 1.8.1 - TBD
-----------------
+dlib 1.8.1 - 29 Sep, 2026
+-------------------------
 - **dlib.math**
-  - Fix vector -> vector constructor.
+  - Fix vector -> vector constructor
+- **dlib.hash**
+  - New module `dlib.hash.xxhash32`.
 
 dlib 1.8.0 - 28 Sep, 2026
 -------------------------
