@@ -54,7 +54,9 @@ Community
 
 License
 -------
-Copyright (c) 2011-2026 Timur Gafarov, Martin Cejp, Andrey Penechko, Vadim Lopatin, Nick Papanastasiou, Oleg Baharev, Roman Chistokhodov, Eugene Wissner, Roman Vlasov, Basile Burg, Valeriy Fedotov, Ferhat Kurtulmuş, João Lourenço, Ate Eskola, Aaron Nédélec, Alexander Perfilyev. Distributed under the Boost Software License, Version 1.0 (see accompanying file COPYING or at https://www.boost.org/LICENSE_1_0.txt).
+Distributed under the Boost Software License, Version 1.0 (see accompanying file COPYING or at https://www.boost.org/LICENSE_1_0.txt).
+
+Copyright (c) 2011-2026 Timur Gafarov, Martin Cejp, Andrey Penechko, Vadim Lopatin, Nick Papanastasiou, Oleg Baharev, Roman Chistokhodov, Eugene Wissner, Roman Vlasov, Basile Burg, Valeriy Fedotov, Ferhat Kurtulmuş, João Lourenço, Ate Eskola, Aaron Nédélec, Alexander Perfilyev.
 
 Sponsors
 --------
