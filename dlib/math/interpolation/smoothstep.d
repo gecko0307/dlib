@@ -35,14 +35,16 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.math.interpolation.smoothstep;
 
-import std.math;
+import std.traits;
+import dlib.math.base;
 import dlib.math.utils;
 
 /**
  * Hermite polynomial, analogous to GLSL smoothstep.
  * e0 and e1 define lower and upper edges of Hermite function.
  */
-T hermiteSmoothstep(T)(T x, float e0, float e1)
+T hermiteSmoothstep(T, T_e)(T x, T_e e0, T_e e1)
+    if (isFloatingPoint!T_e)
 {
     T t = clamp((x - e0) / (e1 - e0), 0.0, 1.0);
     return t * t * (3.0 - 2.0 * t);
@@ -52,7 +54,8 @@ T hermiteSmoothstep(T)(T x, float e0, float e1)
  * Rational sigmoid that becomes linear at k=0 and discrete at k=1.
  * Allows varying between linear and nearest-neighbour interpolation.
  */
-T rationalSmoothstep(T)(T x, float k)
+T rationalSmoothstep(T, T_k)(T x, T_k k)
+    if (isFloatingPoint!T_k)
 {
     T s = (x + x * k - k * 0.5 - 0.5) / (abs(x * k * 4.0 - k * 2.0) - k + 1.0) + 0.5;
     return clamp(s, 0.0, 1.0);

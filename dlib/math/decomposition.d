@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2025 Timur Gafarov
+Copyright (c) 2013-2026 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,13 +29,13 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Matrix decomposition
  *
- * Copyright: Timur Gafarov 2013-2025.
+ * Copyright: Timur Gafarov 2013-2026.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
 module dlib.math.decomposition;
 
-import std.math;
+import dlib.math.base;
 import dlib.math.matrix;
 
 /**

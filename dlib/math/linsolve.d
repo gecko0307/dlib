@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2025 Timur Gafarov
+Copyright (c) 2013-2026 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -55,13 +55,13 @@ DEALINGS IN THE SOFTWARE.
  * [x, y, z]
  * ---
  *
- * Copyright: Timur Gafarov 2013-2025.
+ * Copyright: Timur Gafarov 2013-2026.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
 module dlib.math.linsolve;
 
-import std.math;
+import dlib.math.base;
 import dlib.math.matrix;
 import dlib.math.vector;
 import dlib.math.decomposition;
@@ -77,29 +77,6 @@ void solve(T, size_t N)(
     Matrix!(T,N) L, U, P;
     decomposeLUP(a, L, U, P);
     solveLU(L, U, x, b * P);
-}
-
-///
-unittest
-{
-    bool isConsiderZeroTolerant(T) (T f) nothrow
-    {
-        return (abs(f) < 0.0001f);
-    }
-    
-    Matrix3f a = matrixf(
-        1, 3, -2,
-        3, 5,  6,
-        2, 4,  3
-    );
-    Vector3f b = Vector3f(5, 7, 8);
-    Vector3f x = Vector3f(0, 0, 0);
-    
-    solve(a, x, b);
-    
-    assert(isConsiderZeroTolerant(-15 - x[0]));
-    assert(isConsiderZeroTolerant(8 - x[1]));
-    assert(isConsiderZeroTolerant(2 - x[2]));
 }
 
 /// Solve LUx = b
@@ -130,4 +107,27 @@ ref Vector!(T,N) x,
             x[i] -= U[i, j] * x[j];
         x[i] /= U[i, i];
     }
+}
+
+///
+unittest
+{
+    bool isConsiderZeroTolerant(T) (T f) nothrow
+    {
+        return (abs(f) < 0.0001f);
+    }
+    
+    Matrix3f a = matrixf(
+        1, 3, -2,
+        3, 5,  6,
+        2, 4,  3
+    );
+    Vector3f b = Vector3f(5, 7, 8);
+    Vector3f x = Vector3f(0, 0, 0);
+    
+    solve(a, x, b);
+    
+    assert(isConsiderZeroTolerant(-15 - x[0]));
+    assert(isConsiderZeroTolerant(8 - x[1]));
+    assert(isConsiderZeroTolerant(2 - x[2]));
 }

@@ -35,13 +35,8 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.math.utils;
 
-private
-{
-    import core.stdc.stdlib;
-    import dlib.math.base;
-}
-
-public:
+import core.stdc.stdlib;
+import dlib.math.base;
 
 /**
  * Very small value

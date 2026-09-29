@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2025 Timur Gafarov
+Copyright (c) 2013-2026 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,12 +29,13 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Automatic differentiation
  *
- * Copyright: Timur Gafarov 2013-2025.
+ * Copyright: Timur Gafarov 2013-2026.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
 module dlib.math.diff;
 
+import std.traits;
 import dlib.math.dual;
 import dlib.core.compound;
 
@@ -48,7 +49,8 @@ import dlib.core.compound;
  * ---
  */
 auto diff(alias F, T)(T x)
+    if (isNumeric!T)
 {
-    auto eval = F(Dual!(T)(x, 1.0));
+    auto eval = F(Dual!(T)(x, 1));
     return compound(eval.re, eval.du);
 }

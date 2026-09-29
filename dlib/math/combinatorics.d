@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2015-2025 Nick Papanastasiou, Timur Gafarov
+Copyright (c) 2015-2026 Nick Papanastasiou, Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Combinatorics
  *
- * Copyright: Nick Papanastasiou 2015-2025.
+ * Copyright: Nick Papanastasiou 2015-2026.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Nick Papanastasiou, Timur Gafarov
  */
@@ -40,7 +40,7 @@ import std.algorithm: reduce, map;
 import std.range: iota;
 import std.bigint;
 
-/// Returns the factorial of n
+/// Returns the factorial of n.
 ulong factorial(ulong n) @safe nothrow
 {
     if(n <= 1)
@@ -62,7 +62,7 @@ unittest
     assert(n.factorial == 5.factorial && 5.factorial == 120);
 }
 
-/// Computes the nth fibonacci number
+/// Computes the nth Fibonacci number.
 ulong fibonacci(ulong n)
 {
     if(n == 0 || n == 1)
@@ -75,7 +75,7 @@ ulong fibonacci(ulong n)
     return mfib(n - 1) + mfib(n - 2);
 }
 
-/// Common vernacular for fibonacci
+/// Common vernacular for fibonacci.
 alias fib = fibonacci;
 
 ///
@@ -88,7 +88,7 @@ unittest
 }
 
 
-/// Computes the double factorial of n: n * (n - 2) * (n - 4) * ... * 1
+/// Computes the double factorial of n: n * (n - 2) * (n - 4) * ... * 1.
 ulong doubleFactorial(ulong n)
 {
     if (n <= 1)
@@ -112,10 +112,10 @@ unittest
                     3715891200]);
 }
 
-/// Computes the hyperfactorial of n: 1^1 * 2^2 * 3^3 * ... n^n
+/// Computes the hyperfactorial of n: 1^1 * 2^2 * 3^3 * ... n^n.
 BigInt hyperFactorial(ulong n)
 {
-    if(n <= 1)
+    if (n <= 1)
     {
         return BigInt("1");
     }
@@ -133,10 +133,10 @@ unittest
     assert(hfacs == [1, 4, 108, 27648, 86400000]);
 }
 
-/++
-+ Compute the number of combinations of `objects` types of items
-+ when considered `taken` at a time, where order is ignored
-+/
+/**
+ * Compute the number of combinations of `objects` types of items
+ * when considered `taken` at a time, where order is ignored.
+ */
 ulong combinations(ulong objects, ulong taken) @safe nothrow
 {
     if (objects < taken)
@@ -147,7 +147,7 @@ ulong combinations(ulong objects, ulong taken) @safe nothrow
     return objects.factorial / (taken.factorial * (objects - taken).factorial);
 }
 
-/// Common vernacular for combinations
+/// Common vernacular for combinations.
 alias C = combinations;
 
 /// Ditto
@@ -160,16 +160,16 @@ unittest
     assert(5.choose(2) == 10);
 }
 
-/++
-+  Compute the number of permutations of `objects` types of items
-+ when considered `taken` at a time, where order is considered
-+/
+/**
+ * Compute the number of permutations of `objects` types of items
+ * when considered `taken` at a time, where order is considered.
+ */
 ulong permutations(ulong objects, ulong taken) @safe nothrow
 {
     return objects.factorial / (objects - taken).factorial;
 }
 
-// Common vernacular for permutations
+/// Common vernacular for permutations.
 alias P = permutations;
 
 ///
@@ -178,7 +178,7 @@ unittest
     assert(10.P(2) == 90);
 }
 
-/// Computes the nth Lucas number
+/// Computes the nth Lucas number.
 ulong lucas(ulong n) @safe nothrow
 {
     if (n == 0)

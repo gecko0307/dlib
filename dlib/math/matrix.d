@@ -40,12 +40,13 @@ version(LDC)
     import core.simd: loadUnaligned, storeUnaligned;
 }
 
-import std.math;
+import std.traits;
 import std.range;
 import std.format;
 import std.conv;
 import std.string;
 
+import dlib.math.base;
 import dlib.math.vector;
 import dlib.math.utils;
 import dlib.math.decomposition;
@@ -71,6 +72,7 @@ import dlib.math.linsolve;
  *   manipulated in real-time (in game engines, rendering pipelines etc).
  */
 struct Matrix(T, size_t N)
+    if (isNumeric!T && N > 0)
 {
     /**
      * Compare two matrices.
@@ -89,7 +91,6 @@ struct Matrix(T, size_t N)
     * Return zero matrix
     */
     static zero()
-    do
     {
         Matrix!(T,N) res;
         foreach (ref v; res.arrayof)
@@ -101,7 +102,6 @@ struct Matrix(T, size_t N)
     * Return identity matrix
     */
     static identity()
-    do
     {
         Matrix!(T,N) res;
         res.setIdentity();
@@ -112,7 +112,6 @@ struct Matrix(T, size_t N)
     * Set to identity
     */
     void setIdentity()
-    do
     {
         foreach(y; 0..N)
         foreach(x; 0..N)
@@ -148,7 +147,6 @@ struct Matrix(T, size_t N)
     * T = Matrix[i, j]
     */
     T opIndex(in size_t i, in size_t j) const
-    do
     {
         return arrayof[j * N + i];
     }
@@ -157,7 +155,6 @@ struct Matrix(T, size_t N)
     * Matrix[i, j] = T
     */
     T opIndexAssign(in T t, in size_t i, in size_t j)
-    do
     {
         return (arrayof[j * N + i] = t);
     }
@@ -212,7 +209,6 @@ struct Matrix(T, size_t N)
     * Matrix[] = T
     */
     T[] opSliceAssign(in T t)
-    do
     {
         return (arrayof[] = t);
     }
@@ -221,7 +217,6 @@ struct Matrix(T, size_t N)
     * Matrix + Matrix
     */
     Matrix!(T,N) opBinary(string op)(Matrix!(T,N) mat) const if (op == "+")
-    do
     {
         auto res = Matrix!(T,N)();
         foreach (i; 0..N)
@@ -236,7 +231,6 @@ struct Matrix(T, size_t N)
     * Matrix - Matrix
     */
     Matrix!(T,N) opBinary(string op)(Matrix!(T,N) mat) const if (op == "-")
-    do
     {
         auto res = Matrix!(T,N)();
         foreach (i; 0..N)
@@ -251,7 +245,6 @@ struct Matrix(T, size_t N)
     * Matrix * Matrix
     */
     Matrix!(T,N) opBinary(string op)(Matrix!(T,N) mat) const if (op == "*")
-    do
     {
         static if (N == 2)
         {
@@ -355,7 +348,6 @@ struct Matrix(T, size_t N)
     * Matrix += Matrix
     */
     Matrix!(T,N) opOpAssign(string op)(Matrix!(T,N) mat) if (op == "+")
-    do
     {
         this = this + mat;
         return this;
@@ -365,7 +357,6 @@ struct Matrix(T, size_t N)
     * Matrix -= Matrix
     */
     Matrix!(T,N) opOpAssign(string op)(Matrix!(T,N) mat) if (op == "-")
-    do
     {
         this = this - mat;
         return this;
@@ -375,7 +366,6 @@ struct Matrix(T, size_t N)
     * Matrix *= Matrix
     */
     Matrix!(T,N) opOpAssign(string op)(Matrix!(T,N) mat) if (op == "*")
-    do
     {
         this = this * mat;
         return this;
@@ -385,7 +375,6 @@ struct Matrix(T, size_t N)
     * Matrix * T
     */
     Matrix!(T,N) opBinary(string op)(T k) const if (op == "*")
-    do
     {
         auto res = Matrix!(T,N)();
         foreach(i, v; arrayof)
@@ -397,7 +386,6 @@ struct Matrix(T, size_t N)
     * Matrix *= T
     */
     Matrix!(T,N) opOpAssign(string op)(T k) if (op == "*")
-    do
     {
         foreach(ref v; arrayof)
             v *= k;
@@ -410,7 +398,6 @@ struct Matrix(T, size_t N)
     static if (N == 2)
     {
         Vector!(T,2) opBinaryRight(string op) (Vector!(T,2) v) const if (op == "*")
-        do
         {
             return Vector!(T,2)
             (
@@ -423,7 +410,6 @@ struct Matrix(T, size_t N)
     static if (N == 3)
     {
         Vector!(T,3) opBinaryRight(string op) (Vector!(T,3) v) const if (op == "*")
-        do
         {
             return Vector!(T,3)
             (
@@ -436,7 +422,6 @@ struct Matrix(T, size_t N)
     else
     {
         Vector!(T,N) opBinaryRight(string op) (Vector!(T,N) v) const if (op == "*")
-        do
         {
             Vector!(T,N) res;
             foreach(x; 0..N)
@@ -456,7 +441,6 @@ struct Matrix(T, size_t N)
     static if (N == 4)
     {
         Vector!(T,3) opBinaryRight(string op) (Vector!(T,3) v) const if (op == "*")
-        do
         {
             return Vector!(T,3)
             (
@@ -473,7 +457,6 @@ struct Matrix(T, size_t N)
         * Rotate a vector by the 3x3 upper-left portion of the matrix
         */
         Vector!(T,3) rotate(Vector!(T,3) v) const
-        do
         {
             return Vector!(T,3)
             (
@@ -487,7 +470,6 @@ struct Matrix(T, size_t N)
         * Rotate a vector by the inverse 3x3 upper-left portion of the matrix
         */
         Vector!(T,3) invRotate(Vector!(T,3) v) const
-        do
         {
             return Vector!(T,3)
             (
@@ -501,7 +483,6 @@ struct Matrix(T, size_t N)
     static if (N == 4 || N == 3)
     {
         T determinant3x3() const
-        do
         {
             return a11 * (a33 * a22 - a32 * a23)
                  - a21 * (a33 * a12 - a32 * a13)
@@ -515,7 +496,6 @@ struct Matrix(T, size_t N)
         * Determinant (of upper-left 3x3 portion for 4x4 matrices)
         */
         T determinant() const
-        do
         {
             return a11;
         }
@@ -524,7 +504,6 @@ struct Matrix(T, size_t N)
     static if (N == 2)
     {
         T determinant() const
-        do
         {
             return a11 * a22 - a12 * a21;
         }
@@ -538,7 +517,6 @@ struct Matrix(T, size_t N)
     {
         // Determinant of a given upper-left portion
         T determinant(size_t n = N) const
-        do
         {
             T d = 0;
 
@@ -580,7 +558,6 @@ struct Matrix(T, size_t N)
     * Return true if matrix is singular
     */
     bool isSingular() @property
-    do
     {
         return (determinant == 0);
     }
@@ -593,7 +570,6 @@ struct Matrix(T, size_t N)
     static if (N == 4)
     {
         bool isAffine() const @property
-        do
         {
             return (a41 == 0.0
                  && a42 == 0.0
@@ -608,7 +584,6 @@ struct Matrix(T, size_t N)
     * Transpose
     */
     void transpose()
-    do
     {
         this = transposed;
     }
@@ -617,7 +592,6 @@ struct Matrix(T, size_t N)
     * Return the transposed matrix
     */
     Matrix!(T,N) transposed() @property
-    do
     {
         Matrix!(T,N) res;
 
@@ -632,7 +606,6 @@ struct Matrix(T, size_t N)
     * Invert
     */
     void invert()
-    do
     {
         this = inverse;
     }
@@ -643,7 +616,6 @@ struct Matrix(T, size_t N)
     static if (N == 1)
     {
         Matrix!(T,N) inverse() const @property
-        do
         {
             Matrix!(T,N) res;
             res.a11 = 1.0 / a11;
@@ -654,7 +626,6 @@ struct Matrix(T, size_t N)
     static if (N == 2)
     {
         Matrix!(T,N) inverse() const @property
-        do
         {
             Matrix!(T,N) res;
 
@@ -672,7 +643,6 @@ struct Matrix(T, size_t N)
     static if (N == 3)
     {
         Matrix!(T,N) inverse() const @property
-        do
         {
             T d = determinant;
 
@@ -698,7 +668,6 @@ struct Matrix(T, size_t N)
     else
     {
         Matrix!(T,N) inverse() const @property
-        do
         {
             Matrix!(T,N) res;
 
@@ -743,7 +712,6 @@ struct Matrix(T, size_t N)
     static if (N == 1)
     {
         Matrix!(T,N) adjugate() @property
-        do
         {
             Matrix!(T,N) res;
             res.arrayof[0] = 1;
@@ -761,7 +729,6 @@ struct Matrix(T, size_t N)
     static if (N == 2)
     {
         Matrix!(T,N) adjugate() @property
-        do
         {
             Matrix!(T,N) res;
             res.arrayof[0] =  arrayof[3];
@@ -784,13 +751,11 @@ struct Matrix(T, size_t N)
     else
     {
         Matrix!(T,N) adjugate() @property
-        do
         {
             return cofactor.transposed;
         }
 
         Matrix!(T,N) cofactor() @property
-        do
         {
             Matrix!(T,N) res;
 
@@ -824,7 +789,6 @@ struct Matrix(T, size_t N)
     * Negative matrix
     */
     Matrix!(T,N) negative() @property
-    do
     {
         return this * -1;
     }
@@ -833,7 +797,6 @@ struct Matrix(T, size_t N)
     * Convert to string
     */
     string toString() @property
-    do
     {
         return matrixToStr(this);
     }
@@ -842,7 +805,6 @@ struct Matrix(T, size_t N)
     * Symbolic element access
     */
     private static string elements(string letter) @property
-    do
     {
         string res;
         foreach (x; 0..N)
@@ -904,6 +866,7 @@ struct Matrix(T, size_t N)
         }
     }
 
+    ///
     auto flatten()
     {
         return transposed.arrayof;

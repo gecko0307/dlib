@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2016-2025 Timur Gafarov
+Copyright (c) 2016-2026 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,14 +29,13 @@ DEALINGS IN THE SOFTWARE.
 /**
  * N-dimensional numeric data structure
  *
- * Copyright: Timur Gafarov 2016-2025.
+ * Copyright: Timur Gafarov 2016-2026.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
 module dlib.math.tensor;
 
 import std.traits;
-import std.math;
 import std.conv;
 import std.range;
 import std.format;
@@ -44,13 +43,16 @@ import std.format;
 import dlib.core.tuple;
 import dlib.core.compound;
 import dlib.core.memory;
+import dlib.math.base;
 
-T zero(T)() if (isNumeric!T)
+T zero(T)()
+    if (isNumeric!T)
 {
     return T(0);
 }
 
 size_t calcLen(T...)(T n)
+    if (isNumeric!T)
 {
     size_t len = 1;
     foreach(s; n)
@@ -95,6 +97,7 @@ enum MaxStaticTensorSize = double.sizeof * 16; // fit 4x4 matrix of doubles
   on heap (as dynamic array). Otherwise, data is allocated on stack (as static array).
  */
 template Tensor(T, size_t dim, sizes...)
+    if (isNumeric!T)
 {
     // TODO:
     // - External storage
@@ -357,7 +360,7 @@ template Tensor(T, size_t dim, sizes...)
 
         static if (isVector)
         {
-            private static bool valid(string s)
+            private static bool isValidSwizzle(string s)
             {
                 if (s.length < 2)
                     return false;
@@ -404,7 +407,8 @@ template Tensor(T, size_t dim, sizes...)
            /**
             * Swizzling
             */
-            template opDispatch(string s) if (valid(s))
+            template opDispatch(string s)
+                if (isValidSwizzle(s))
             {
                 static if (s.length <= 4)
                 {

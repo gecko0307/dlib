@@ -35,12 +35,13 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.math.interpolation.nearest;
 
-import std.math;
+import std.traits;
 
 /// Nearest-neighbour interpolation
-T interpNearest(T) (T x, T y, float t)
+T interpNearest(T, T_t) (T x, T y, T_t t)
+    if (isFloatingPoint!T_t)
 {
-    if (t < 0.5f)
+    if (t < 0.5)
         return x;
     else
         return y;

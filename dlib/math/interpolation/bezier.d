@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2025 Timur Gafarov
+Copyright (c) 2013-2026 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,12 +29,13 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Bézier interpolation functions
  *
- * Copyright: Timur Gafarov 2013-2025.
+ * Copyright: Timur Gafarov 2013-2026.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
 module dlib.math.interpolation.bezier;
 
+import std.traits;
 import dlib.math.vector;
 
 /**
@@ -86,6 +87,7 @@ Vector!(T,2) bezierVector2(T)(
     Vector!(T,2) c,
     Vector!(T,2) d,
     T t)
+    if (isNumeric!T)
 {
     return Vector!(T,2)
     (
@@ -103,6 +105,7 @@ Vector!(T,3) bezierVector3(T)(
     Vector!(T,3) c,
     Vector!(T,3) d,
     T t)
+    if (isNumeric!T)
 {
     return Vector!(T,3)
     (
@@ -121,6 +124,7 @@ Vector!(T,2) bezierTangentVector2(T)(
     Vector!(T,2) c,
     Vector!(T,2) d,
     T t)
+    if (isNumeric!T)
 {
     return Vector!(T,2)
     (
@@ -138,6 +142,7 @@ Vector!(T,3) bezierTangentVector3(T)(
     Vector!(T,3) c,
     Vector!(T,3) d,
     T t)
+    if (isNumeric!T)
 {
     return Vector!(T,3)
     (

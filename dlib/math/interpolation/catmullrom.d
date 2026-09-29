@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2025 Timur Gafarov
+Copyright (c) 2011-2026 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,18 +29,20 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Catmull-Rom interpolation functions
  *
- * Copyright: Timur Gafarov 2011-2025.
+ * Copyright: Timur Gafarov 2011-2026.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
 module dlib.math.interpolation.catmullrom;
 
-import std.math;
+import std.traits;
+import dlib.math.base;
 
 /**
  * Catmull-Rom curve
  */
-T interpCatmullRom(T) (T p0, T p1, T p2, T p3, float t)
+T interpCatmullRom(T, T_t) (T p0, T p1, T p2, T p3, T_t t)
+    if (isFloatingPoint!T_t)
 {
     return 0.5 * ((2 * p1) +
                   (-p0 + p2) * t +
@@ -51,7 +53,8 @@ T interpCatmullRom(T) (T p0, T p1, T p2, T p3, float t)
 /**
  * Catmull-Rom curve derivative
  */
-T interpCatmullRomDerivative(T) (T p0, T p1, T p2, T p3, float t)
+T interpCatmullRomDerivative(T, T_t) (T p0, T p1, T p2, T p3, T_t t)
+    if (isFloatingPoint!T_t)
 {
     return 0.5 * ((2 * p1) +
                   (-p0 + p2) +

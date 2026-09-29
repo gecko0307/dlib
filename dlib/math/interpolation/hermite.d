@@ -35,10 +35,13 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.math.interpolation.hermite;
 
+import std.traits;
+
 /**
  * Hermite curve
  */
-T interpHermite(T) (T x, T tx, T y, T ty, float t)
+T interpHermite(T, T_t) (T x, T tx, T y, T ty, T_t t)
+    if (isFloatingPoint!T_t)
 {
     float t2 = t * t;
     float t3 = t2 * t;
@@ -52,7 +55,8 @@ T interpHermite(T) (T x, T tx, T y, T ty, float t)
 /**
  * Hermite curve derivative
  */
-T interpHermiteDerivative(T) (T x, T tx, T y, T ty, float t)
+T interpHermiteDerivative(T, T_t) (T x, T tx, T y, T ty, T_t t)
+    if (isFloatingPoint!T_t)
 {
     float t2 = t * t;
     float h1 = t2 * 6.0 - t * 6.0;

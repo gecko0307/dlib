@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2025 Timur Gafarov
+Copyright (c) 2011-2026 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Functions that return other functions
  *
- * Copyright: Timur Gafarov 2011-2025.
+ * Copyright: Timur Gafarov 2011-2026.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
@@ -37,8 +37,9 @@ module dlib.math.hof;
 
 /**
  * Functional composition.
+ *
  * Description:
- * Returns a function that applies function f to the return value of function g
+ * Returns a function that applies function f to the return value of function g.
  */
 T delegate(S) compose(T, U, S)(T function(U) f, U function(S) g)
 {
@@ -46,30 +47,30 @@ T delegate(S) compose(T, U, S)(T function(U) f, U function(S) g)
 }
 
 /**
- Y combinator
- Description:
- We're all familiar with the idea of a function as something that takes some
- input value and returns some output value. Say, the function for squaring numbers:
- ---
-   f(x) = x*x;
- ---
- The fixed points of a function are any input values for which f(x) is equal to x.
- So, the fixed points of f(x) = x*x are 0 and 1.
-
- Now, we have things called higher-order functions. These are functions that take another
- function as input, or return a function as output, or both.
-
- The fixed point of a higher-order function f is another function p such that f(p) = p.
- It may be more helpful to think in terms of functions actually being executed.
- The previous statement is equivalent to the statement that f(p)(x) = p(x) for all values of x.
-
- Y (the Y combinator) is a special function that returns the fixed points of higher-order
- functions, that is to say:
- ---
-   f(Y(f)) = Y(f)
- ---
- Y combinator is commonly use to allow anonymous recursion without assuming your host
- language supports it.
+ * Y combinator
+ * Description:
+ * We're all familiar with the idea of a function as something that takes some
+ * input value and returns some output value. Say, the function for squaring numbers:
+ * ---
+ *   f(x) = x*x;
+ * ---
+ * The fixed points of a function are any input values for which f(x) is equal to x.
+ * So, the fixed points of f(x) = x*x are 0 and 1.
+ * 
+ * Now, we have things called higher-order functions. These are functions that take another
+ * function as input, or return a function as output, or both.
+ * 
+ * The fixed point of a higher-order function f is another function p such that f(p) = p.
+ * It may be more helpful to think in terms of functions actually being executed.
+ * The previous statement is equivalent to the statement that f(p)(x) = p(x) for all values of x.
+ * 
+ * Y (the Y combinator) is a special function that returns the fixed points of higher-order
+ * functions, that is to say:
+ * ---
+ *   f(Y(f)) = Y(f)
+ * ---
+ * Y combinator is commonly use to allow anonymous recursion without assuming your host
+ * language supports it.
 */
 auto Y(R, P...) (R delegate(P) delegate(R delegate(P)) lambda)
 {

@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011-2025 Timur Gafarov
+Copyright (c) 2011-2026 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,16 +29,18 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Linear interpolation
  *
- * Copyright: Timur Gafarov 2013-2025.
+ * Copyright: Timur Gafarov 2013-2026.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
 module dlib.math.interpolation.linear;
 
+import std.traits;
 import dlib.math.base;
 
 /// Linear interpolation
-T interpLinear(T)(T a, T b, float t)
+T interpLinear(T, T_t)(T a, T b, T_t t)
+    if (isFloatingPoint!T_t)
 {
     return a + (b - a) * t;
 }
@@ -57,6 +59,7 @@ unittest
  * along the shortest arc.
  */
 T lerpAngle(T)(T a, T b, T t)
+    if (isNumeric!T)
 {
     T delta = b - a;
     T pi2 = 2.0 * PI;

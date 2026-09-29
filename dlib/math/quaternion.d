@@ -46,6 +46,7 @@ import dlib.math.utils;
  * Quaternion representation
  */
 struct Quaternion(T)
+    if (isNumeric!T)
 {
     Vector!(T,4) vectorof;
     alias vectorof this;

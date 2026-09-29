@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2025 Timur Gafarov
+Copyright (c) 2013-2026 Timur Gafarov
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,18 +29,20 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Complex numbers
  *
- * Copyright: Timur Gafarov 2013-2025.
+ * Copyright: Timur Gafarov 2013-2026.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
 module dlib.math.complex;
 
-import std.math;
+import std.traits;
 import std.range;
 import std.format;
+import dlib.math.base;
 
 /// Complex number representation
 struct Complex(T)
+    if (isNumeric!T)
 {
     T re;
     T im;
@@ -184,7 +186,7 @@ unittest
 /// Complex abs
 T abs(T)(Complex!T x)
 {
-    return sqrt(x.re * x.re + x.im * x.im);
+    return dlib.math.base.sqrt(x.re * x.re + x.im * x.im);
 }
 
 ///
@@ -197,7 +199,7 @@ unittest
 /// Complex atan2
 T atan2(T)(Complex!T x)
 {
-    return std.math.atan2(x.im, x.re);
+    return dlib.math.base.atan2(x.im, x.re);
 }
 
 ///
@@ -210,14 +212,14 @@ unittest
 /// Complex pow
 Complex!T pow(T)(Complex!T x, Complex!T n)
 {
-    T r = abs(x);
+    T r = .abs(x);
     T t = x.magnitude;
     T c = n.re;
     T d = n.im;
 
     Complex!T res;
-    res.re = std.math.pow(r, c) * std.math.exp(-d*t) * cos(c*t + d*log(r));
-    res.im = std.math.pow(r, c) * std.math.exp(-d*t) * sin(c*t + d*log(r));
+    res.re = dlib.math.base.pow(r, c) * dlib.math.base.exp(-d * t) * cos(c * t + d * dlib.math.base.log(r));
+    res.im = dlib.math.base.pow(r, c) * dlib.math.base.exp(-d * t) * sin(c * t + d * dlib.math.base.log(r));
 
     return res;
 }
@@ -226,8 +228,8 @@ Complex!T pow(T)(Complex!T x, Complex!T n)
 Complex!T exp(T)(Complex!T s)
 {
     return Complex!T(
-        std.math.exp(s.re) * cos(s.im),
-        std.math.exp(s.re) * sin(s.im));
+        dlib.math.base.exp(s.re) * dlib.math.base.cos(s.im),
+        dlib.math.base.exp(s.re) * dlib.math.base.sin(s.im));
 }
 
 /*

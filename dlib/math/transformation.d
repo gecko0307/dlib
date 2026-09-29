@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2013-2025 Timur Gafarov, Martin Cejp
+Copyright (c) 2013-2026 Timur Gafarov, Martin Cejp
 
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 /**
  * Matrix-based geometric transformations
  * 
- * Copyright: Timur Gafarov 2013-2025.
+ * Copyright: Timur Gafarov 2013-2026.
  * License: $(LINK2 boost.org/LICENSE_1_0.txt, Boost License 1.0).
  * Authors: Timur Gafarov
  */
@@ -77,7 +77,6 @@ Matrix!(T,4) fromEuler(T) (Vector!(T,3) v)
  * Setup the Euler angles in radians, given a rotation matrix
  */
 Vector!(T,3) toEuler(T) (Matrix!(T,4) m)
-do
 {
     Vector!(T,3) v;
 
@@ -104,7 +103,6 @@ do
  * Right vector of the matrix
  */
 Vector!(T,3) right(T) (Matrix!(T,4) m)
-do
 {
     return Vector!(T,3)(m.a11, m.a21, m.a31);
 }
@@ -113,7 +111,6 @@ do
  * Up vector of the matrix
  */
 Vector!(T,3) up(T) (Matrix!(T,4) m)
-do
 {
     return Vector!(T,3)(m.a12, m.a22, m.a32);
 }
@@ -122,7 +119,6 @@ do
  * Forward vector of the matrix
  */
 Vector!(T,3) forward(T) (Matrix!(T,4) m)
-do
 {
     return Vector!(T,3)(m.a13, m.a23, m.a33);
 }
@@ -131,7 +127,6 @@ do
  * Translation vector of the matrix
  */
 Vector!(T,3) translation(T) (Matrix!(T,4) m)
-do
 {
     return Vector!(T,3)(m.a14, m.a24, m.a34);
 }
@@ -155,7 +150,6 @@ unittest
  * Scaling vector of the matrix
  */
 Vector!(T,3) scaling(T) (Matrix!(T,4) m)
-do
 {
     T sx = Vector!(T,3)(m.a11, m.a12, m.a13).length;
     T sy = Vector!(T,3)(m.a21, m.a22, m.a23).length;
@@ -168,7 +162,6 @@ do
  * (theta in radians)
  */
 Matrix!(T,4) rotationMatrix(T) (uint rotaxis, T theta)
-do
 {
     auto res = Matrix!(T,4).identity;
 
@@ -206,7 +199,6 @@ do
  * Create a translation matrix given a translation vector
  */
 Matrix!(T,4) translationMatrix(T) (Vector!(T,3) v)
-do
 {
     auto res = Matrix!(T,4).identity;
     res.a14 = v.x;
@@ -227,7 +219,6 @@ unittest
  * Create a matrix to perform scale on each axis
  */
 Matrix!(T,4) scaleMatrix(T) (Vector!(T,3) v)
-do
 {
     auto res = Matrix!(T,4).identity;
     res.a11 = v.x;
@@ -291,7 +282,6 @@ do
  * Create a matrix to perform uniform scale with respect to a point
  */
 Matrix!(T,4) homothetyMatrix(T) (Vector!(T,3) point, T scale)
-do
 {
     auto res = Matrix!(T,4).identity;
     Vector!(T,3) t = point * (1.0 - scale);
@@ -305,7 +295,6 @@ do
  * Setup the matrix to perform a shear
  */
 Matrix!(T,4) shearMatrix(T) (uint shearAxis, T s, T t)
-do
 {
     // NOTE: needs test
     auto res = Matrix!(T,4).identity;
@@ -368,7 +357,6 @@ do
  * to a cardinal plane.
  */
 Matrix!(T,4) reflectionMatrix(T) (Axis reflectionAxis, T k)
-do
 {
     auto res = Matrix!(T,4).identity;
 
@@ -432,7 +420,6 @@ do
  * like a first person camera
  */
 Matrix!(T,4) lookAtMatrix(T) (Vector!(T,3) eye, Vector!(T,3) center, Vector!(T,3) up)
-do
 {
     auto Result = Matrix!(T,4).identity;
 
@@ -503,7 +490,6 @@ do
  * in degrees, the aspect ratio of Y/X, and near and far plane distances
  */
 Matrix!(T,4) perspectiveMatrix(T) (T fovY, T aspect, T n, T f)
-do
 {
     auto res = Matrix!(T,4).identity;
 
@@ -543,7 +529,6 @@ do
  * and far values for the frustum boundaries.
  */
 Matrix!(T,4) orthoMatrix(T) (T l, T r, T b, T t, T n, T f)
-do
 {
     auto res = Matrix!(T,4).identity;
 
@@ -578,7 +563,6 @@ do
  * Setup an orientation matrix using 3 basis normalized vectors
  */
 Matrix!(T,4) orthoNormalMatrix(T) (Vector!(T,3) xdir, Vector!(T,3) ydir, Vector!(T,3) zdir)
-do
 {
     auto res = Matrix!(T,4).identity;
 
@@ -713,7 +697,7 @@ unittest
 /**
  * Affine transformations in 2D space
  */
- Vector!(T,2) affineTransform2D(T)(Vector!(T,2) v, Matrix!(T,3) m)
+Vector!(T,2) affineTransform2D(T)(Vector!(T,2) v, Matrix!(T,3) m)
 {
     return Vector!(T,2)
     (
@@ -726,7 +710,6 @@ unittest
  * Translation in 2D space
  */
 Matrix!(T,3) translationMatrix2D(T) (Vector!(T,2) t)
-do
 {
     Matrix!(T,3) res;
     res.a11 = 1; res.a12 = 0; res.a13 = t.x;
@@ -741,7 +724,6 @@ alias translation2 = translationMatrix2D;
  * Rotation in 2D space
  */
 Matrix!(T,3) rotationMatrix2D(T) (T theta)
-do
 {
     Matrix!(T,3) res;
     T s = sin(theta);
@@ -758,7 +740,6 @@ alias rotation2 = rotationMatrix2D;
  * Scale in 2D space
  */
 Matrix!(T,3) scaleMatrix2D(T) (Vector!(T,2) s)
-do
 {
     Matrix!(T,3) res;
     res.a11 = s.x; res.a12 = 0;   res.a13 = 0;
@@ -773,7 +754,6 @@ alias scale2 = scaleMatrix2D;
  * Homothety (scale with respect to a point) in 2D space
  */
 Matrix!(T,3) homothetyMatrix2D(T) (Vector!(T,2) point, T scale)
-do
 {
     auto res = Matrix!(T,3).identity;
     Vector!(T,2) t = point * (1.0 - scale);
@@ -790,7 +770,6 @@ unittest
     bool isAlmostZero2(Vector2f v)
     {
         float e = 0.002f;
-
         return abs(v.x) < e &&
                abs(v.y) < e;
     }

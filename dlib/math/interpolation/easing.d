@@ -35,7 +35,7 @@ DEALINGS IN THE SOFTWARE.
  */
 module dlib.math.interpolation.easing;
 
-import std.math;
+import dlib.math.base;
 
 /// Quadratic ease in
 T easeInQuad(T)(T t)
