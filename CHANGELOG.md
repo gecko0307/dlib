@@ -1,3 +1,8 @@
+dlib 1.8.2 - 6 Nov, 2026
+------------------------
+- **dlib.container**
+  - Fix `Array.opApply`.
+
 dlib 1.8.1 - 29 Sep, 2026
 -------------------------
 - **dlib.math**
