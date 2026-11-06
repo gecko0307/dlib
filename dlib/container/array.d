@@ -645,7 +645,7 @@ struct Array(T, size_t chunkSize = 32)
     }
 
     /**
-     * Iterating over array via foreach.
+     * Iterating over the array via foreach.
      */
     int opApply(scope int delegate(size_t i, ref T) dg)
     {
@@ -662,7 +662,7 @@ struct Array(T, size_t chunkSize = 32)
     }
 
     /**
-     * Iterating over array via foreach_reverse.
+     * Iterating over the array via foreach_reverse.
      */
     int opApplyReverse(scope int delegate(size_t i, ref T) dg)
     {
@@ -696,7 +696,7 @@ struct Array(T, size_t chunkSize = 32)
     }
 
     /**
-     * Iterating over array via foreach.
+     * Iterating over the array via foreach.
      */
     int opApply(scope int delegate(ref T) dg)
     {
@@ -709,11 +709,11 @@ struct Array(T, size_t chunkSize = 32)
                 break;
         }
 
-        return 0;
+        return result;
     }
 
      /**
-     * Iterating over array via foreach_reverse.
+     * Iterating over the array via foreach_reverse.
      */
     int opApplyReverse(scope int delegate(ref T) dg)
     {
