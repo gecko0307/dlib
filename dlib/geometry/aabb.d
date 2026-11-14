@@ -190,15 +190,9 @@ unittest
 /// Creates AABB from minimum and maximum points
 AABB boxFromMinMaxPoints(Vector3f mi, Vector3f ma)
 {
-    AABB box;
-    box.pmin = mi;
-    box.pmax = ma;
-    box.center = (box.pmax + box.pmin) * 0.5f;
-    box.size = box.pmax - box.center;
-    box.size.x = abs(box.size.x);
-    box.size.y = abs(box.size.y);
-    box.size.z = abs(box.size.z);
-    return box;
+    Vector3f center = (ma + mi) * 0.5f;
+    Vector3f size = (ma - mi) * 0.5f;
+    return AABB(center, size);
 }
 
 ///
