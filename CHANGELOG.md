@@ -1,3 +1,8 @@
+dlib 1.8.3 - 14 Nov, 2026
+-------------------------
+- **dlib.geometry**
+  - Fix `boxFromMinMaxPoints`.
+
 dlib 1.8.2 - 6 Nov, 2026
 ------------------------
 - **dlib.container**
